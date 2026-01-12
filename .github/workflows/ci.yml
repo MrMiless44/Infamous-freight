@@ -55,6 +55,11 @@ jobs:
         run: pnpm lint
         continue-on-error: false
 
+      - name: notify vercel
+        uses: vercel/repository-dispatch/actions/status@v1
+        with:
+          name: Vercel - genesis: lint
+
       - name: Typecheck
         run: pnpm typecheck
         continue-on-error: false
