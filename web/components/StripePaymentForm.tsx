@@ -17,9 +17,11 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-);
+const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+if (!publishableKey) {
+  throw new Error("Stripe publishable key is not configured");
+}
+const stripePromise = loadStripe(publishableKey);
 
 interface PaymentFormProps {
   amount: number;

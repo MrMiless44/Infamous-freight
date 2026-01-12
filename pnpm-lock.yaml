@@ -162,6 +162,12 @@ importers:
       '@infamous-freight/shared':
         specifier: workspace:*
         version: link:../packages/shared
+      '@stripe/react-stripe-js':
+        specifier: ^2.8.0
+        version: 2.9.0(@stripe/stripe-js@3.5.0)(react-dom@18.3.1)(react@18.3.1)
+      '@stripe/stripe-js':
+        specifier: ^3.4.1
+        version: 3.5.0
       next:
         specifier: ^14.2.4
         version: 14.2.35(@playwright/test@1.57.0)(react-dom@18.3.1)(react@18.3.1)
@@ -1312,6 +1318,24 @@ packages:
 
   /@streamparser/json@0.0.20:
     resolution: {integrity: sha512-VqAAkydywPpkw63WQhPVKCD3SdwXuihCUVZbbiY3SfSTGQyHmwRoq27y4dmJdZuJwd5JIlQoMPyGvMbUPY0RKQ==}
+    dev: false
+
+  /@stripe/react-stripe-js@2.9.0(@stripe/stripe-js@3.5.0)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-+/j2g6qKAKuWSurhgRMfdlIdKM+nVVJCy/wl0US2Ccodlqx0WqfIIBhUkeONkCG+V/b+bZzcj4QVa3E/rXtT4Q==}
+    peerDependencies:
+      '@stripe/stripe-js': ^1.44.1 || ^2.0.0 || ^3.0.0 || ^4.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@stripe/stripe-js': 3.5.0
+      prop-types: 15.8.1
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    dev: false
+
+  /@stripe/stripe-js@3.5.0:
+    resolution: {integrity: sha512-pKS3wZnJoL1iTyGBXAvCwduNNeghJHY6QSRSNNvpYnrrQrLZ6Owsazjyynu0e0ObRgks0i7Rv+pe2M7/MBTZpQ==}
+    engines: {node: '>=12.16'}
     dev: false
 
   /@swc/counter@0.1.3:
