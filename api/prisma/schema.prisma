@@ -1,0 +1,101 @@
+// Prisma schema for Infamous Freight Enterprises
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Driver {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  phone     String
+  status    String   @default("available")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  shipments Shipment[]
+
+  @@map("drivers")
+}
+
+model Shipment {
+  id          String   @id @default(uuid())
+  trackingId  String   @unique
+  origin      String
+  destination String
+  status      String   @default("pending")
+  driverId    String?
+  driver      Driver?  @relation(fields: [driverId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("shipments")
+}
+
+model AiEvent {
+  id        String   @id @default(uuid())
+  userId    String
+  command   String
+  response  String
+  provider  String   @default("openai")
+  createdAt DateTime @default(now())
+
+  @@map("ai_events")
+}
+
+model Payment {
+  id            String   @id @default(uuid())
+  userId        String
+  amount        Int // in cents
+  currency      String   @default("usd")
+  status        String   @default("pending")
+  provider      String // stripe or paypal
+  transactionId String?  @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("payments")
+}
+
+model Subscription {
+  id          String   @id @default(uuid())
+  userId      String
+  tier        String   // basic, premium, enterprise
+  status      String   @default("active")
+  amount      Int      // monthly amount in cents
+  email       String
+  stripeId    String?  @unique
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("subscriptions")
+}
+
+model StripeCustomer {
+  id         String   @id @default(uuid())
+  userId     String   @unique
+  stripeId   String   @unique
+  email      String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("stripe_customers")
+}
