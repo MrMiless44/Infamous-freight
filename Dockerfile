@@ -23,12 +23,16 @@ COPY . .
 # Build the application (builds shared first, then api)
 RUN pnpm --filter @infamous-freight/shared build && pnpm --filter api build
 
-# Expose ports
-EXPOSE 3000 3001 8080
+# Expose port for web
+EXPOSE 3000
 
-# Default command
-CMD ["pnpm", "dev"]
+# Set production environment
+ENV NODE_ENV=production
+ENV PORT=3000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3001/api/health', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
+# Production command - run the web server
+CMD ["sh", "-c", "cd web && npm start"]
+
+# Health check for web frontend
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
