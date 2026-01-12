@@ -537,3 +537,4 @@ For issues or questions, please open a GitHub issue or contact the development t
 - `[optional] TEAMS_WEBHOOK_URL`: To receive deploy/promotion/rollback notifications in Microsoft Teams.
 
 See docs/ENVIRONMENT_PROTECTION_CHECKLIST.md for environment-scoped setup.
+# Auto-deploy test
