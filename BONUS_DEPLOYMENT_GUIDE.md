@@ -37,6 +37,7 @@
 ```
 
 ### Key Features
+
 - ✅ 4-tier loyalty system (Bronze → Platinum)
 - ✅ 6 bonus categories (Referral, Loyalty, Performance, Milestone, Promotional, Enterprise)
 - ✅ Real-time points calculation
@@ -50,6 +51,7 @@
 ## ✅ PRE-DEPLOYMENT CHECKLIST
 
 ### Code Quality
+
 - [x] All files created and tested
 - [x] Code follows project patterns
 - [x] Error handling implemented
@@ -58,18 +60,21 @@
 - [x] No console.logs in production code
 
 ### Dependencies
+
 - [x] No new npm packages required
 - [x] Uses existing middleware
 - [x] Compatible with Express.js stack
 - [x] Prisma ORM ready
 
 ### Documentation
+
 - [x] API documentation complete
 - [x] Database schema documented
 - [x] Integration tests included
 - [x] Deployment guide provided
 
 ### Testing
+
 - [x] Unit tests written
 - [x] Integration tests included
 - [x] Error cases covered
@@ -80,50 +85,55 @@
 ## 🗄️ DATABASE MIGRATION
 
 ### Step 1: Review Schema
+
 ```bash
 # Check the bonus schema
 cat prisma/bonus-schema.prisma
 ```
 
 ### Step 2: Create Migration
+
 ```bash
 cd api
 pnpm prisma migrate dev --name add-bonus-system
 ```
 
 This will:
+
 - Create migration file
 - Apply to development database
 - Generate Prisma Client
 
 ### Step 3: Verify Schema
+
 ```bash
 pnpm prisma db push
 ```
 
 ### Step 4: Seed Initial Data (Optional)
+
 ```javascript
 // api/prisma/seed.js - Add:
 
-const prisma = require('@prisma/client');
+const prisma = require("@prisma/client");
 
 async function seedBonusData() {
   // Create promotional bonuses
   await prisma.promotionalBonus.createMany({
     data: [
       {
-        promotionCode: 'NEWUSER2026',
-        name: 'New User Welcome',
-        bonusAmount: 50.00,
-        startDate: new Date('2026-01-01'),
-        endDate: new Date('2026-12-31'),
+        promotionCode: "NEWUSER2026",
+        name: "New User Welcome",
+        bonusAmount: 50.0,
+        startDate: new Date("2026-01-01"),
+        endDate: new Date("2026-12-31"),
         active: true,
       },
       // ... more promos
     ],
   });
 
-  console.log('Bonus seed data created');
+  console.log("Bonus seed data created");
 }
 ```
 
@@ -132,15 +142,17 @@ async function seedBonusData() {
 ## 🔌 API ROUTES SETUP
 
 ### Step 1: Mount Routes in Express App
+
 ```javascript
 // api/src/app.js or main.js
 
-const bonusesRouter = require('./routes/bonuses');
+const bonusesRouter = require("./routes/bonuses");
 
-app.use('/api/bonuses', bonusesRouter);
+app.use("/api/bonuses", bonusesRouter);
 ```
 
 ### Step 2: Verify Route Registration
+
 ```bash
 # Test health endpoint
 curl http://localhost:4000/api/bonuses/health
@@ -154,10 +166,11 @@ curl http://localhost:4000/api/bonuses/health
 ```
 
 ### Step 3: Import Services
+
 ```javascript
 // routes/bonuses.js already includes:
-const BonusEngine = require('../services/bonusEngine');
-const LoyaltyProgram = require('../services/loyaltyProgram');
+const BonusEngine = require("../services/bonusEngine");
+const LoyaltyProgram = require("../services/loyaltyProgram");
 ```
 
 ---
@@ -165,6 +178,7 @@ const LoyaltyProgram = require('../services/loyaltyProgram');
 ## ⚙️ CONFIGURATION & ENVIRONMENT
 
 ### Add to `.env` or `.env.example`
+
 ```env
 # Bonus System Configuration
 BONUS_SYSTEM_ENABLED=true
@@ -189,6 +203,7 @@ JWT_SCOPES=bonus:referral,bonus:loyalty,bonus:points,bonus:redeem,bonus:mileston
 ```
 
 ### Verify JWT Scopes
+
 ```javascript
 // In your JWT creation logic, include bonus scopes:
 
@@ -197,13 +212,13 @@ const payload = {
   email: userEmail,
   role: userRole,
   scopes: [
-    'bonus:referral',
-    'bonus:loyalty',
-    'bonus:points',
-    'bonus:redeem',
-    'bonus:milestones',
-    'bonus:performance',
-    'bonus:report'
+    "bonus:referral",
+    "bonus:loyalty",
+    "bonus:points",
+    "bonus:redeem",
+    "bonus:milestones",
+    "bonus:performance",
+    "bonus:report",
   ],
 };
 ```
@@ -342,13 +357,13 @@ SELECT COUNT(*) FROM driver_performance;
 
 ### Performance Benchmarks
 
-| Endpoint | Target | Acceptable |
-|----------|--------|------------|
-| `/loyalty/tier/:id` | <100ms | <200ms |
-| `/points/balance/:id` | <100ms | <200ms |
-| `/milestones/:id` | <150ms | <300ms |
-| `/performance/calculate` | <200ms | <400ms |
-| `/report/:id` | <300ms | <500ms |
+| Endpoint                 | Target | Acceptable |
+| ------------------------ | ------ | ---------- |
+| `/loyalty/tier/:id`      | <100ms | <200ms     |
+| `/points/balance/:id`    | <100ms | <200ms     |
+| `/milestones/:id`        | <150ms | <300ms     |
+| `/performance/calculate` | <200ms | <400ms     |
+| `/report/:id`            | <300ms | <500ms     |
 
 ---
 
@@ -382,6 +397,7 @@ SELECT COUNT(*) FROM driver_performance;
 ### Common Issues & Solutions
 
 #### Issue: Bonus Routes Not Found (404)
+
 ```
 Solution:
 1. Verify routes are mounted in app.js
@@ -391,6 +407,7 @@ Solution:
 ```
 
 #### Issue: Database Connection Errors
+
 ```
 Solution:
 1. Verify DATABASE_URL env variable
@@ -400,6 +417,7 @@ Solution:
 ```
 
 #### Issue: JWT Scope Errors (403)
+
 ```
 Solution:
 1. Verify scopes in JWT token
@@ -409,6 +427,7 @@ Solution:
 ```
 
 #### Issue: Null/Undefined Values in Calculations
+
 ```
 Solution:
 1. Check input parameters are valid
@@ -458,6 +477,7 @@ curl http://localhost:4000/api/health
 ## 📈 SCALING CONSIDERATIONS
 
 ### Database Optimization
+
 ```sql
 -- Add indexes for performance
 CREATE INDEX idx_loyalty_tier_customer ON loyalty_tiers(customer_id);
@@ -468,6 +488,7 @@ CREATE INDEX idx_bonus_audit_timestamp ON bonus_audit_log(timestamp);
 ```
 
 ### Caching Strategy
+
 ```javascript
 // Cache tier benefits (rarely changes)
 const tierBenefitsCache = new Map();
@@ -478,6 +499,7 @@ const CACHE_TTL = 3600000; // 1 hour
 ```
 
 ### Rate Limiting Adjustments
+
 ```javascript
 // For high-volume periods, adjust limits:
 limiters.general: 200 requests/15 min (increased from 100)
@@ -489,18 +511,21 @@ limiters.performance: 50 requests/1 min (increased from 20)
 ## 📞 SUPPORT & ESCALATION
 
 ### Critical Issues (P1)
+
 - System down/500 errors
 - Data corruption
 - Security breaches
 - Contact: engineering-oncall@infamousfreight.com
 
 ### High Priority (P2)
+
 - Feature broken (e.g., points not accumulating)
 - Performance degradation
 - Database issues
 - Contact: backend-team@infamousfreight.com
 
 ### Medium Priority (P3)
+
 - Minor bugs
 - Documentation updates
 - Performance optimization
