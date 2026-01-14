@@ -36,12 +36,12 @@ const DATA_FILE = path.join(DATA_DIR, 'avatars.json');
  * Ensure data directory and file exist
  */
 function ensure() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-  }
-  if (!fs.existsSync(DATA_FILE)) {
-    fs.writeFileSync(DATA_FILE, JSON.stringify({ avatars: [], selections: {} }, null, 2));
-  }
+    if (!fs.existsSync(DATA_DIR)) {
+        fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    if (!fs.existsSync(DATA_FILE)) {
+        fs.writeFileSync(DATA_FILE, JSON.stringify({ avatars: [], selections: {} }, null, 2));
+    }
 }
 
 /**
@@ -49,13 +49,13 @@ function ensure() {
  * @returns {StoreShape}
  */
 function read() {
-  ensure();
-  try {
-    return JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
-  } catch (err) {
-    console.error('Failed to read avatar store:', err);
-    return { avatars: [], selections: {} };
-  }
+    ensure();
+    try {
+        return JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
+    } catch (err) {
+        console.error('Failed to read avatar store:', err);
+        return { avatars: [], selections: {} };
+    }
 }
 
 /**
@@ -63,12 +63,12 @@ function read() {
  * @param {StoreShape} store
  */
 function write(store) {
-  ensure();
-  try {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(store, null, 2));
-  } catch (err) {
-    console.error('Failed to write avatar store:', err);
-  }
+    ensure();
+    try {
+        fs.writeFileSync(DATA_FILE, JSON.stringify(store, null, 2));
+    } catch (err) {
+        console.error('Failed to write avatar store:', err);
+    }
 }
 
 /**
@@ -77,7 +77,7 @@ function write(store) {
  * @returns {StoredAvatar[]}
  */
 function listUserAvatars(ownerUserId) {
-  return read().avatars.filter(a => a.ownerUserId === ownerUserId);
+    return read().avatars.filter(a => a.ownerUserId === ownerUserId);
 }
 
 /**
@@ -86,11 +86,11 @@ function listUserAvatars(ownerUserId) {
  * @returns {StoredAvatar}
  */
 function createUserAvatar(avatar) {
-  const store = read();
-  const created = { ...avatar, createdAt: new Date().toISOString() };
-  store.avatars.push(created);
-  write(store);
-  return created;
+    const store = read();
+    const created = { ...avatar, createdAt: new Date().toISOString() };
+    store.avatars.push(created);
+    write(store);
+    return created;
 }
 
 /**
@@ -100,12 +100,12 @@ function createUserAvatar(avatar) {
  * @returns {boolean}
  */
 function deleteUserAvatar(avatarId, ownerUserId) {
-  const store = read();
-  const idx = store.avatars.findIndex(a => a.id === avatarId && a.ownerUserId === ownerUserId);
-  if (idx < 0) return false;
-  store.avatars.splice(idx, 1);
-  write(store);
-  return true;
+    const store = read();
+    const idx = store.avatars.findIndex(a => a.id === avatarId && a.ownerUserId === ownerUserId);
+    if (idx < 0) return false;
+    store.avatars.splice(idx, 1);
+    write(store);
+    return true;
 }
 
 /**
@@ -114,7 +114,7 @@ function deleteUserAvatar(avatarId, ownerUserId) {
  * @returns {AvatarSelection|null}
  */
 function getSelection(userId) {
-  return read().selections[userId] ?? null;
+    return read().selections[userId] ?? null;
 }
 
 /**
@@ -124,18 +124,18 @@ function getSelection(userId) {
  * @returns {AvatarSelection}
  */
 function setSelection(userId, selection) {
-  const store = read();
-  store.selections[userId] = selection;
-  write(store);
-  return selection;
+    const store = read();
+    store.selections[userId] = selection;
+    write(store);
+    return selection;
 }
 
 module.exports = {
-  listUserAvatars,
-  createUserAvatar,
-  deleteUserAvatar,
-  getSelection,
-  setSelection,
-  read,
-  write,
+    listUserAvatars,
+    createUserAvatar,
+    deleteUserAvatar,
+    getSelection,
+    setSelection,
+    read,
+    write,
 };

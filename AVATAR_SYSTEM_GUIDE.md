@@ -9,6 +9,7 @@
 ## 📋 Overview
 
 The Avatar System provides:
+
 - ✅ **4 Featured System Avatars** (shipped defaults) displayed to all users
 - ✅ **User Avatar Uploads** (6 MB limit, PNG/JPEG/WebP)
 - ✅ **Avatar Selection & Persistence** (JSON-based store)
@@ -46,10 +47,12 @@ api/
 **Location**: `web/public/avatars/main/`
 
 **Method**: Upload via VS Code Explorer
+
 1. Right-click `web/public/avatars/main/` → Upload Files
 2. Name them exactly: `main-01.png`, `main-02.png`, `main-03.png`, `main-04.png`
 
 Or via terminal:
+
 ```bash
 cp your-image-1.png web/public/avatars/main/main-01.png
 cp your-image-2.png web/public/avatars/main/main-02.png
@@ -66,10 +69,10 @@ The manifest at `web/public/avatars/main/manifest.json` already maps these files
 **Example** (`web/pages/profile.tsx` or similar):
 
 ```tsx
-'use client';
+"use client";
 
-import { AvatarSelector } from '../components/AvatarSelector';
-import { useAuth } from '../hooks/useAuth'; // Your auth hook
+import { AvatarSelector } from "../components/AvatarSelector";
+import { useAuth } from "../hooks/useAuth"; // Your auth hook
 
 export default function ProfilePage() {
   const { token } = useAuth();
@@ -81,7 +84,7 @@ export default function ProfilePage() {
         token={token}
         showUpload={true}
         onSelectionChange={(selection) => {
-          console.log('Avatar selected:', selection);
+          console.log("Avatar selected:", selection);
           // Optionally sync to your user profile DB
         }}
       />
@@ -97,6 +100,7 @@ export default function ProfilePage() {
 All endpoints are at `POST /api/avatars/*` and require proper authentication.
 
 ### Get System Avatars
+
 **Endpoint**: `GET /api/avatars/system`  
 **Auth**: No  
 **Rate Limit**: 100/15min
@@ -106,6 +110,7 @@ curl http://localhost:3001/api/avatars/system
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -116,7 +121,7 @@ curl http://localhost:3001/api/avatars/system
         "name": "Infinity Operator",
         "imageUrl": "/avatars/main/main-01.png",
         "type": "system"
-      },
+      }
       // ... (3 more)
     ]
   }
@@ -126,6 +131,7 @@ curl http://localhost:3001/api/avatars/system
 ---
 
 ### List User Avatars
+
 **Endpoint**: `GET /api/avatars/user`  
 **Auth**: Required (Bearer token)  
 **Rate Limit**: 100/15min
@@ -136,6 +142,7 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -157,6 +164,7 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 ---
 
 ### Upload User Avatar
+
 **Endpoint**: `POST /api/avatars/user/upload`  
 **Auth**: Required (Bearer token)  
 **Rate Limit**: 100/15min  
@@ -171,10 +179,12 @@ curl -X POST \
 ```
 
 **Parameters**:
+
 - `avatar` (file, required): PNG/JPEG/WebP, max 6 MB
 - `name` (string, required): Display name (1-100 chars)
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -194,6 +204,7 @@ curl -X POST \
 ---
 
 ### Delete User Avatar
+
 **Endpoint**: `DELETE /api/avatars/user/:avatarId`  
 **Auth**: Required (Bearer token)  
 **Rate Limit**: 100/15min
@@ -205,6 +216,7 @@ curl -X DELETE \
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -215,6 +227,7 @@ curl -X DELETE \
 ---
 
 ### Get Avatar Selection
+
 **Endpoint**: `GET /api/avatars/selection`  
 **Auth**: Required (Bearer token)  
 **Rate Limit**: 100/15min
@@ -225,6 +238,7 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -240,6 +254,7 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 ---
 
 ### Set Avatar Selection
+
 **Endpoint**: `POST /api/avatars/selection`  
 **Auth**: Required (Bearer token)  
 **Rate Limit**: 100/15min
@@ -253,6 +268,7 @@ curl -X POST \
 ```
 
 **Request Body**:
+
 ```json
 {
   "type": "system" | "user",
@@ -261,6 +277,7 @@ curl -X POST \
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -279,12 +296,14 @@ curl -X POST \
 ## 📦 Storage Details
 
 ### System Avatars
+
 - **Location**: `web/public/avatars/main/manifest.json`
 - **Format**: JSON with featured avatars metadata
 - **Scope**: Read-only, global for all users
 - **Updates**: Manual (edit manifest.json + add images)
 
 ### User Avatars
+
 - **Database**: `api/data/avatars.json` (persistent JSON store)
 - **Structure**:
   ```json
@@ -305,6 +324,7 @@ curl -X POST \
   ```
 
 ### Upload Storage
+
 - **Location**: `api/public/uploads/avatars/`
 - **Naming**: Random hex + file extension (e.g., `abc123def456.png`)
 - **Cleanup**: Manual (delete files from this folder as needed)
@@ -314,16 +334,19 @@ curl -X POST \
 ## 🔐 Security & Validation
 
 ### Rate Limiting
+
 - All endpoints: **100 requests / 15 minutes** (per user or IP)
 - Multer file size: **6 MB maximum**
 
 ### Validation
+
 - **File types**: PNG, JPEG, WebP only
 - **Name length**: 1-100 characters
 - **User ownership**: Avatars can only be deleted by owner
 - **Auth**: JWT Bearer token required for user operations
 
 ### Error Handling
+
 - Invalid file type → 400 Bad Request
 - File too large → 413 Payload Too Large
 - Unauthorized user → 401 Unauthorized
@@ -375,9 +398,9 @@ curl -X POST \
 
 ```tsx
 interface AvatarSelectorProps {
-  token?: string;              // JWT token for authenticated operations
-  onSelectionChange?: (selection: AvatarSelection) => void;  // Callback when user selects
-  showUpload?: boolean;        // Show upload button (default: true)
+  token?: string; // JWT token for authenticated operations
+  onSelectionChange?: (selection: AvatarSelection) => void; // Callback when user selects
+  showUpload?: boolean; // Show upload button (default: true)
 }
 ```
 
@@ -386,16 +409,19 @@ interface AvatarSelectorProps {
 ## 🚀 Deploy Instructions
 
 ### Docker
+
 ```bash
 # Avatars are built into the images
 docker-compose up -d
 ```
 
 ### Vercel (Web)
+
 - Next.js automatically serves `/public/avatars/main/` as static files
 - No special configuration needed
 
 ### API (Standalone)
+
 - Ensure `api/public/uploads/avatars/` is writable
 - Set `API_PORT` env var if needed (default: 4000)
 - Store persists to `api/data/avatars.json`
@@ -428,13 +454,13 @@ docker-compose up -d
 
 ## 📞 Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| Images not showing | Ensure `main-01.png` etc. exist in `web/public/avatars/main/` |
-| Upload fails | Check file size (< 6 MB) and type (PNG/JPEG/WebP) |
-| 401 Unauthorized | Verify Bearer token is valid and not expired |
-| Upload folder missing | API creates `api/public/uploads/avatars/` on first request |
-| Store not persisting | Check permissions on `api/data/` directory |
+| Issue                 | Solution                                                      |
+| --------------------- | ------------------------------------------------------------- |
+| Images not showing    | Ensure `main-01.png` etc. exist in `web/public/avatars/main/` |
+| Upload fails          | Check file size (< 6 MB) and type (PNG/JPEG/WebP)             |
+| 401 Unauthorized      | Verify Bearer token is valid and not expired                  |
+| Upload folder missing | API creates `api/public/uploads/avatars/` on first request    |
+| Store not persisting  | Check permissions on `api/data/` directory                    |
 
 ---
 
