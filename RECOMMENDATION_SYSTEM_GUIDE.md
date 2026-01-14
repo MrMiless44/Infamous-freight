@@ -73,8 +73,8 @@ The Infamous Freight Enterprises AI-Powered Recommendation System provides intel
 ### Data Flow
 
 ```
-User Request → JWT Auth → Scope Validation → Input Validation → 
-RecommendationService → Database Queries → AI Algorithms → 
+User Request → JWT Auth → Scope Validation → Input Validation →
+RecommendationService → Database Queries → AI Algorithms →
 Scoring & Ranking → Confidence Calculation → Response with Reasons
 ```
 
@@ -89,10 +89,11 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 **Authentication**: Required (JWT + `recommendations:view` scope)
 
 **Request Body**:
+
 ```json
 {
   "customerId": "cust_123",
-  "origin": { "lat": 40.7128, "lng": -74.0060 },
+  "origin": { "lat": 40.7128, "lng": -74.006 },
   "destination": { "lat": 34.0522, "lng": -118.2437 },
   "weight": 500,
   "dimensions": { "length": 120, "width": 80, "height": 100 },
@@ -106,6 +107,7 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -124,7 +126,11 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
       ],
       "price": 170,
       "estimatedDeliveryTime": 24,
-      "features": ["real-time tracking", "insurance included", "signature required"]
+      "features": [
+        "real-time tracking",
+        "insurance included",
+        "signature required"
+      ]
     },
     {
       "serviceId": "svc_express_002",
@@ -151,6 +157,7 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 ```
 
 **Scoring Factors**:
+
 - Historical Usage (3x weight): Customer's past service preferences
 - Cost Efficiency (2x weight): Price vs. budget ratio
 - Speed Match (2-4x weight): Delivery time vs. urgency
@@ -169,21 +176,25 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 **Authentication**: Required (JWT + `recommendations:view` scope)
 
 **Request Body**:
+
 ```json
 {
-  "origin": { "lat": 40.7128, "lng": -74.0060, "name": "New York, NY" },
-  "destination": { "lat": 34.0522, "lng": -118.2437, "name": "Los Angeles, CA" },
+  "origin": { "lat": 40.7128, "lng": -74.006, "name": "New York, NY" },
+  "destination": {
+    "lat": 34.0522,
+    "lng": -118.2437,
+    "name": "Los Angeles, CA"
+  },
   "vehicleType": "semi_truck",
   "urgency": "standard",
   "avoidTolls": false,
   "avoidHighways": false,
-  "waypoints": [
-    { "lat": 39.7392, "lng": -104.9903, "name": "Denver, CO" }
-  ]
+  "waypoints": [{ "lat": 39.7392, "lng": -104.9903, "name": "Denver, CO" }]
 }
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -205,15 +216,14 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
       "safetyScore": 92,
       "tollCost": 45,
       "estimatedFuelCost": 320,
-      "waypoints": [
-        { "lat": 39.7392, "lng": -104.9903, "name": "Denver, CO" }
-      ]
+      "waypoints": [{ "lat": 39.7392, "lng": -104.9903, "name": "Denver, CO" }]
     }
   ]
 }
 ```
 
 **Scoring Factors**:
+
 - Distance (2x weight): Total km
 - Duration (2-4x weight): Estimated travel time
 - Historical Success (3x weight): Completion rate
@@ -232,9 +242,10 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 **Authentication**: Required (JWT + `recommendations:view` scope)
 
 **Request Body**:
+
 ```json
 {
-  "origin": { "lat": 40.7128, "lng": -74.0060 },
+  "origin": { "lat": 40.7128, "lng": -74.006 },
   "destination": { "lat": 34.0522, "lng": -118.2437 },
   "shipmentId": "ship_123",
   "pickupTime": "2024-01-21T08:00:00Z",
@@ -244,6 +255,7 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -276,6 +288,7 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 ```
 
 **Scoring Factors**:
+
 - Proximity (4x weight): Distance from pickup
 - Experience (2x weight): Years of driving experience
 - Rating (3x weight): Customer rating (1-5)
@@ -295,18 +308,20 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 **Authentication**: Required (JWT + `recommendations:view` scope)
 
 **Request Body**:
+
 ```json
 {
   "weight": 5000,
   "dimensions": { "length": 240, "width": 102, "height": 102 },
   "cargoType": "refrigerated",
-  "origin": { "lat": 40.7128, "lng": -74.0060 },
+  "origin": { "lat": 40.7128, "lng": -74.006 },
   "specialRequirements": ["temperature_controlled", "reefer_unit"],
   "preferredFuelType": "diesel"
 }
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -339,6 +354,7 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 ```
 
 **Scoring Factors**:
+
 - Capacity Match (4x weight): Vehicle capacity vs load weight
 - Proximity (3x weight): Distance from origin
 - Suitability (4x weight): Cargo type compatibility
@@ -358,10 +374,15 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 **Authentication**: Required (JWT + `recommendations:view` scope)
 
 **Request Body**:
+
 ```json
 {
-  "origin": { "lat": 40.7128, "lng": -74.0060, "name": "New York, NY" },
-  "destination": { "lat": 34.0522, "lng": -118.2437, "name": "Los Angeles, CA" },
+  "origin": { "lat": 40.7128, "lng": -74.006, "name": "New York, NY" },
+  "destination": {
+    "lat": 34.0522,
+    "lng": -118.2437,
+    "name": "Los Angeles, CA"
+  },
   "weight": 500,
   "serviceType": "express",
   "urgency": "standard",
@@ -370,11 +391,12 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
   "recommended": {
-    "price": 152.50,
+    "price": 152.5,
     "confidence": 87,
     "reasons": [
       "Based on 248 similar shipments last 90 days",
@@ -384,25 +406,19 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
     "conversionRate": 68
   },
   "competitive": {
-    "price": 145.00,
+    "price": 145.0,
     "confidence": 82,
-    "reasons": [
-      "Lowest competitive price",
-      "May reduce profit margin"
-    ],
+    "reasons": ["Lowest competitive price", "May reduce profit margin"],
     "conversionRate": 75
   },
   "premium": {
-    "price": 175.00,
+    "price": 175.0,
     "confidence": 79,
-    "reasons": [
-      "Premium positioning",
-      "Includes value-added services"
-    ],
+    "reasons": ["Premium positioning", "Includes value-added services"],
     "conversionRate": 52
   },
   "marketAnalysis": {
-    "averagePrice": 155.20,
+    "averagePrice": 155.2,
     "priceRange": { "min": 130, "max": 195 },
     "dataPoints": 248,
     "lastUpdated": "2024-01-20T10:30:00Z"
@@ -411,6 +427,7 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 ```
 
 **Pricing Tiers**:
+
 - **Recommended**: Optimal balance of profit and conversion
 - **Competitive**: Market-low pricing for high conversion
 - **Premium**: Higher margin with value-added services
@@ -426,6 +443,7 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 **Authentication**: Required (JWT + `recommendations:view` scope)
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -439,7 +457,7 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
       "origin": "New York, NY",
       "destination": "Los Angeles, CA",
       "count": 15,
-      "averagePrice": 152.30
+      "averagePrice": 152.3
     }
   ],
   "recommendations": [
@@ -468,13 +486,14 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
   "insights": {
     "totalShipments": 70,
     "totalSpending": 10675,
-    "averageShipmentValue": 152.50,
+    "averageShipmentValue": 152.5,
     "topDestinations": ["Los Angeles, CA", "Chicago, IL", "Miami, FL"]
   }
 }
 ```
 
 **Recommendation Types**:
+
 - **cost_savings**: Opportunities to reduce costs
 - **volume_discount**: Volume-based discounts
 - **service_upgrade**: Premium feature suggestions
@@ -492,6 +511,7 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 **Authentication**: Required (JWT + `recommendations:view` scope)
 
 **Request Body**:
+
 ```json
 {
   "itemType": "customer",
@@ -500,13 +520,14 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
     "totalShipments": 70,
     "averageWeight": 450,
     "preferredService": "express",
-    "averageSpend": 152.50
+    "averageSpend": 152.5
   },
   "limit": 10
 }
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -535,6 +556,7 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 **Authentication**: Required (JWT + `recommendations:update` scope)
 
 **Request Body**:
+
 ```json
 {
   "recommendationId": "rec_001",
@@ -547,11 +569,13 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 ```
 
 **Actions**:
+
 - `accepted`: User accepted the recommendation
 - `rejected`: User rejected the recommendation
 - `modified`: User modified the recommendation
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -571,16 +595,18 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 **Authentication**: Required (JWT + `recommendations:view` scope)
 
 **Query Parameters**:
+
 - `timeRange`: `week`, `month`, `quarter`, `year`
 
 **Response**:
+
 ```json
 {
   "success": true,
   "insights": {
     "spendingPatterns": {
       "totalSpent": 10675,
-      "averagePerShipment": 152.50,
+      "averagePerShipment": 152.5,
       "trend": "increasing",
       "percentageChange": 12.5
     },
@@ -607,9 +633,11 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 **Authentication**: Required (JWT + `recommendations:view` scope)
 
 **Query Parameters**:
+
 - `category`: `services`, `routes`, `features`, `all`
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -654,6 +682,7 @@ Scoring & Ranking → Confidence Calculation → Response with Reasons
 **Authentication**: Not required
 
 **Response**:
+
 ```json
 {
   "status": "healthy",
@@ -677,6 +706,7 @@ score = Σ (factor_value × factor_weight) / Σ (factor_weight)
 ```
 
 **Example for Service Recommendations**:
+
 ```
 Score = (
   (historicalUsage × 3) +
@@ -697,15 +727,17 @@ similarity = (A · B) / (||A|| × ||B||)
 ```
 
 Where:
+
 - A and B are feature vectors
 - · represents dot product
 - ||A|| represents magnitude of vector A
 
 **Example**:
+
 ```javascript
-customer1 = [70, 450, 1, 152] // [shipments, avgWeight, serviceType, avgSpend]
-customer2 = [68, 480, 1, 148]
-similarity = 0.99 // Highly similar
+customer1 = [70, 450, 1, 152]; // [shipments, avgWeight, serviceType, avgSpend]
+customer2 = [68, 480, 1, 148];
+similarity = 0.99; // Highly similar
 ```
 
 ### Pattern Analysis
@@ -717,8 +749,8 @@ patterns = {
   frequency: shipmentsPerMonth,
   seasonality: peakMonths,
   preferences: mostUsedServices,
-  trends: spendingTrend
-}
+  trends: spendingTrend,
+};
 ```
 
 ### Confidence Calculation
@@ -739,6 +771,7 @@ Low variance = High confidence
 ### Key Tables
 
 **RecommendationLog**
+
 ```prisma
 model RecommendationLog {
   id                   String   @id @default(cuid())
@@ -753,6 +786,7 @@ model RecommendationLog {
 ```
 
 **RecommendationFeedback**
+
 ```prisma
 model RecommendationFeedback {
   id                   String   @id @default(cuid())
@@ -768,6 +802,7 @@ model RecommendationFeedback {
 ```
 
 **CustomerPreferences**
+
 ```prisma
 model CustomerPreferences {
   id                      String   @id @default(cuid())
@@ -806,6 +841,7 @@ pnpm prisma:generate
 ### Step 3: Environment Variables
 
 Add to `.env`:
+
 ```env
 # Recommendation System
 RECOMMENDATION_CACHE_TTL=3600
@@ -816,8 +852,8 @@ RECOMMENDATION_MIN_CONFIDENCE=70
 ### Step 4: Initialize Service
 
 ```javascript
-const { RecommendationService } = require('./services/recommendationService');
-const { PrismaClient } = require('@prisma/client');
+const { RecommendationService } = require("./services/recommendationService");
+const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 const recommendationService = new RecommendationService(prisma);
@@ -826,13 +862,15 @@ const recommendationService = new RecommendationService(prisma);
 ### Step 5: Use in Routes
 
 ```javascript
-router.post('/recommendations/services',
+router.post(
+  "/recommendations/services",
   authenticate,
-  requireScope('recommendations:view'),
+  requireScope("recommendations:view"),
   async (req, res) => {
-    const recommendations = await recommendationService.getServiceRecommendations(req.body);
+    const recommendations =
+      await recommendationService.getServiceRecommendations(req.body);
     res.json({ success: true, ...recommendations });
-  }
+  },
 );
 ```
 
@@ -843,41 +881,42 @@ router.post('/recommendations/services',
 ### Example 1: Get Service Recommendations
 
 ```javascript
-const axios = require('axios');
+const axios = require("axios");
 
 const getServiceRecommendations = async () => {
   try {
     const response = await axios.post(
-      'https://api.infamous-freight.com/api/recommendations/services',
+      "https://api.infamous-freight.com/api/recommendations/services",
       {
-        customerId: 'cust_123',
-        origin: { lat: 40.7128, lng: -74.0060 },
+        customerId: "cust_123",
+        origin: { lat: 40.7128, lng: -74.006 },
         destination: { lat: 34.0522, lng: -118.2437 },
         weight: 500,
-        urgency: 'express',
-        budget: 200
+        urgency: "express",
+        budget: 200,
       },
       {
         headers: {
-          'Authorization': `Bearer ${JWT_TOKEN}`,
-          'Content-Type': 'application/json'
-        }
-      }
+          Authorization: `Bearer ${JWT_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      },
     );
 
     const recommendations = response.data.recommendations;
     console.log(`Found ${recommendations.length} recommendations`);
-    
+
     recommendations.forEach((rec, index) => {
       console.log(`\n${index + 1}. ${rec.serviceName}`);
-      console.log(`   Score: ${rec.score}/100 (Confidence: ${rec.confidence}%)`);
+      console.log(
+        `   Score: ${rec.score}/100 (Confidence: ${rec.confidence}%)`,
+      );
       console.log(`   Price: $${rec.price}`);
       console.log(`   Reasons:`);
-      rec.reasons.forEach(reason => console.log(`   - ${reason}`));
+      rec.reasons.forEach((reason) => console.log(`   - ${reason}`));
     });
-
   } catch (error) {
-    console.error('Error:', error.response?.data || error.message);
+    console.error("Error:", error.response?.data || error.message);
   }
 };
 ```
@@ -888,26 +927,26 @@ const getServiceRecommendations = async () => {
 const recordFeedback = async (recommendationId, action, rating) => {
   try {
     await axios.post(
-      'https://api.infamous-freight.com/api/recommendations/feedback',
+      "https://api.infamous-freight.com/api/recommendations/feedback",
       {
         recommendationId,
-        recommendationType: 'service',
-        itemId: 'svc_express_001',
+        recommendationType: "service",
+        itemId: "svc_express_001",
         action, // 'accepted', 'rejected', 'modified'
         rating, // 1-5
-        feedback: 'Great recommendation!'
+        feedback: "Great recommendation!",
       },
       {
         headers: {
-          'Authorization': `Bearer ${JWT_TOKEN}`,
-          'Content-Type': 'application/json'
-        }
-      }
+          Authorization: `Bearer ${JWT_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      },
     );
 
-    console.log('Feedback recorded successfully');
+    console.log("Feedback recorded successfully");
   } catch (error) {
-    console.error('Error:', error.response?.data || error.message);
+    console.error("Error:", error.response?.data || error.message);
   }
 };
 ```
@@ -921,28 +960,27 @@ const getPersonalizedRecommendations = async (customerId) => {
       `https://api.infamous-freight.com/api/recommendations/personalized/${customerId}`,
       {
         headers: {
-          'Authorization': `Bearer ${JWT_TOKEN}`
-        }
-      }
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      },
     );
 
     const data = response.data;
-    console.log('\nPreferred Services:');
-    data.preferredServices.forEach(service => {
+    console.log("\nPreferred Services:");
+    data.preferredServices.forEach((service) => {
       console.log(`  ${service.serviceType}: ${service.percentage}%`);
     });
 
-    console.log('\nRecommendations:');
-    data.recommendations.forEach(rec => {
+    console.log("\nRecommendations:");
+    data.recommendations.forEach((rec) => {
       console.log(`\n  ${rec.title}`);
       console.log(`  ${rec.description}`);
       if (rec.potentialSavings) {
         console.log(`  Potential Savings: $${rec.potentialSavings}`);
       }
     });
-
   } catch (error) {
-    console.error('Error:', error.response?.data || error.message);
+    console.error("Error:", error.response?.data || error.message);
   }
 };
 ```
@@ -961,6 +999,7 @@ pnpm test recommendationService.test.js
 ### Test Coverage
 
 The test suite includes:
+
 - **Service Recommendations**: 4 test cases
 - **Route Recommendations**: 4 test cases
 - **Driver Recommendations**: 3 test cases
@@ -975,23 +1014,23 @@ The test suite includes:
 ### Example Test
 
 ```javascript
-it('should recommend services based on customer history', async () => {
+it("should recommend services based on customer history", async () => {
   mockPrisma.shipment.findMany.mockResolvedValue([
-    { serviceType: 'express', price: 150, status: 'delivered' }
+    { serviceType: "express", price: 150, status: "delivered" },
   ]);
 
   const result = await service.getServiceRecommendations({
-    customerId: 'cust_123',
-    origin: { lat: 40.7128, lng: -74.0060 },
+    customerId: "cust_123",
+    origin: { lat: 40.7128, lng: -74.006 },
     destination: { lat: 34.0522, lng: -118.2437 },
     weight: 500,
-    urgency: 'express'
+    urgency: "express",
   });
 
   expect(result.recommendations).toBeDefined();
   expect(result.recommendations.length).toBeGreaterThan(0);
-  expect(result.recommendations[0]).toHaveProperty('score');
-  expect(result.recommendations[0]).toHaveProperty('confidence');
+  expect(result.recommendations[0]).toHaveProperty("score");
+  expect(result.recommendations[0]).toHaveProperty("confidence");
 });
 ```
 
@@ -1030,7 +1069,7 @@ const getCachedRecommendations = (key) => {
 const setCachedRecommendations = (key, data) => {
   cache.set(key, {
     data,
-    timestamp: Date.now()
+    timestamp: Date.now(),
   });
 };
 ```
@@ -1062,7 +1101,7 @@ try {
 ```javascript
 const recommendations = await service.getServiceRecommendations({
   ...params,
-  limit: 10 // Don't overwhelm users
+  limit: 10, // Don't overwhelm users
 });
 ```
 
@@ -1071,7 +1110,7 @@ const recommendations = await service.getServiceRecommendations({
 ```javascript
 if (recommendation.confidence < 70) {
   // Show warning to user
-  console.warn('Low confidence recommendation');
+  console.warn("Low confidence recommendation");
 }
 ```
 
@@ -1082,7 +1121,7 @@ if (recommendation.confidence < 70) {
 await prisma.customerPreferences.upsert({
   where: { customerId },
   update: { preferredServiceTypes: updatedServices },
-  create: { customerId, preferredServiceTypes: updatedServices }
+  create: { customerId, preferredServiceTypes: updatedServices },
 });
 ```
 
@@ -1095,6 +1134,7 @@ await prisma.customerPreferences.upsert({
 **Cause**: Insufficient historical data
 
 **Solution**:
+
 ```javascript
 // Collect more data points
 // Increase weight of available factors
@@ -1106,6 +1146,7 @@ await prisma.customerPreferences.upsert({
 **Cause**: Complex queries or missing indexes
 
 **Solution**:
+
 ```javascript
 // Add database indexes
 @@index([customerId, timestamp])
@@ -1120,6 +1161,7 @@ if (cached) return cached;
 **Cause**: Outdated data or poor feedback loop
 
 **Solution**:
+
 ```javascript
 // Implement feedback recording
 // Update algorithm weights
@@ -1131,13 +1173,14 @@ if (cached) return cached;
 **Cause**: Too restrictive filters or no matching data
 
 **Solution**:
+
 ```javascript
 // Relax constraints gradually
 if (recommendations.length === 0) {
   // Retry with broader criteria
   recommendations = await getRecommendations({
     ...params,
-    budget: params.budget * 1.2 // Increase budget by 20%
+    budget: params.budget * 1.2, // Increase budget by 20%
   });
 }
 ```
@@ -1157,12 +1200,12 @@ if (recommendations.length === 0) {
 ### Logging Example
 
 ```javascript
-logger.info('Recommendation generated', {
+logger.info("Recommendation generated", {
   customerId,
-  recommendationType: 'service',
+  recommendationType: "service",
   recommendationCount: recommendations.length,
   averageConfidence: avgConfidence,
-  responseTime: Date.now() - startTime
+  responseTime: Date.now() - startTime,
 });
 ```
 
@@ -1219,4 +1262,3 @@ For questions or issues:
 - `500` - Server error
 
 ---
-
