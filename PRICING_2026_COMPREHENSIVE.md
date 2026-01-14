@@ -24,6 +24,7 @@ Comprehensive worldwide pricing for all Infamous Freight Enterprises services, p
 ## 🎯 Subscription Plans
 
 ### FREE Tier
+
 **$0/month** | Perfect for getting started
 
 - 10 shipments/month
@@ -34,6 +35,7 @@ Comprehensive worldwide pricing for all Infamous Freight Enterprises services, p
 - No API access
 
 ### STARTER
+
 **$79/month** ($790/year with 20% discount) | For small teams
 
 - 500 shipments/month
@@ -48,6 +50,7 @@ Comprehensive worldwide pricing for all Infamous Freight Enterprises services, p
 **Best for:** Small teams, local operations, startups
 
 ### PROFESSIONAL ⭐
+
 **$199/month** ($1,990/year with 20% discount) | For growing businesses
 
 - 2,500 shipments/month
@@ -66,6 +69,7 @@ Comprehensive worldwide pricing for all Infamous Freight Enterprises services, p
 **Best for:** Growing businesses, regional networks, mid-size operations
 
 ### ENTERPRISE
+
 **$599/month** ($5,990/year with 20% discount) | For large-scale operations
 
 - Unlimited shipments
@@ -97,6 +101,7 @@ Comprehensive worldwide pricing for all Infamous Freight Enterprises services, p
 **Weight-Based:** $0.50/kg (with minimums)
 
 **Distance-Based Rates:**
+
 - **Local** (0-50 km): $0.08/km
 - **Regional** (50-200 km): $0.06/km
 - **Long Distance** (200-500 km): $0.05/km
@@ -335,6 +340,7 @@ Comprehensive worldwide pricing for all Infamous Freight Enterprises services, p
 All prices are in USD. Regional multipliers apply to adjust for local markets:
 
 ### North America
+
 - **US East:** 1.0x (base rate)
 - **US West:** 1.05x
 - **US Central:** 0.95x
@@ -342,6 +348,7 @@ All prices are in USD. Regional multipliers apply to adjust for local markets:
 - **Canada West:** 1.20x (CAD 1.35/USD)
 
 ### Europe
+
 - **UK:** 1.10x (GBP 1.27/USD)
 - **Germany:** 1.08x (EUR 1.10/USD)
 - **France:** 1.12x (EUR 1.10/USD)
@@ -352,6 +359,7 @@ All prices are in USD. Regional multipliers apply to adjust for local markets:
 - **Russia:** 0.60x (RUB 100/USD)
 
 ### Asia Pacific
+
 - **Japan:** 1.30x (JPY 150/USD)
 - **South Korea:** 1.15x (KRW 1,300/USD)
 - **China:** 0.65x (CNY 7.25/USD)
@@ -362,12 +370,14 @@ All prices are in USD. Regional multipliers apply to adjust for local markets:
 - **Vietnam:** 0.45x (VND 24,500/USD)
 
 ### Latin America
+
 - **Brazil:** 0.75x (BRL 5.00/USD)
 - **Mexico:** 0.85x (MXN 17/USD)
 - **Argentina:** 0.50x (ARS 42/USD)
 - **Colombia:** 0.70x (COP 4,000/USD)
 
 ### Middle East & Africa
+
 - **UAE:** 1.00x (AED 3.67/USD)
 - **Saudi Arabia:** 0.95x (SAR 3.75/USD)
 - **Israel:** 1.10x (ILS 3.80/USD)
@@ -382,34 +392,39 @@ All prices are in USD. Regional multipliers apply to adjust for local markets:
 Discounts on per-shipment pricing for volume commitments:
 
 | Annual Shipments | Discount |
-|------------------|----------|
-| 100-500 | 5% |
-| 501-1,000 | 10% |
-| 1,001-5,000 | 15% |
-| 5,001-10,000 | 20% |
-| 10,001+ | 25% |
+| ---------------- | -------- |
+| 100-500          | 5%       |
+| 501-1,000        | 10%      |
+| 1,001-5,000      | 15%      |
+| 5,001-10,000     | 20%      |
+| 10,001+          | 25%      |
 
 ---
 
 ## 🎁 Promotional Pricing
 
 ### New Customer Discount
+
 - **20% off** for first 30 days
 - Minimum order: $50
 
 ### Volume Commitment
+
 - **15% off** for 100+ shipments/month
 - Annual commitment
 
 ### Annual Plan Discount
+
 - **20% off** for annual prepayment
 - Auto-renewal available
 
 ### Referral Program
+
 - **15% off** for referred customers
 - **$50 credit** for referrer
 
 ### Seasonal Pricing
+
 - **Off-season discount:** 25% (June-August)
 - **Peak season surcharge:** 30% (November-December)
 
@@ -418,24 +433,29 @@ Discounts on per-shipment pricing for volume commitments:
 ## 💳 Payment Methods
 
 ### Credit Card
+
 - **Fee:** 2.9% + $0.30
 - Supported: Visa, Mastercard, Amex, Discover
 - Instant processing
 
 ### Bank Transfer (ACH)
+
 - **Fee:** 1%
 - Processing: 3-5 days
 - Available: US, EU, UK
 
 ### PayPal
+
 - **Fee:** 4.9% + $0.30
 - Instant processing
 
 ### Stripe
+
 - **Fee:** 2.9% + $0.30
 - Instant processing
 
 ### Invoice (Net 30)
+
 - **Fee:** $0 (no transaction fee)
 - Minimum: $1,000
 - Credit check required
@@ -446,26 +466,31 @@ Discounts on per-shipment pricing for volume commitments:
 ## 🤝 Support Tiers
 
 ### Community Support (Free)
+
 - Response time: 48 hours
 - Email & forum support
 - Included with: Free plan
 
 ### Email Support (24h)
+
 - Response time: 24 hours
 - Email & ticket system
 - Included with: Starter, Professional, Enterprise
 
 ### Priority Support (12h)
+
 - Response time: 12 hours
 - Email, priority phone, ticket system
 - Included with: Professional, Enterprise
 
 ### Premium 24/7 Support
+
 - Response time: 2 hours
 - Phone, email, video, Slack
 - **$299/month** (add-on)
 
 ### Dedicated Account Manager
+
 - Response time: 1 hour
 - Dedicated contact
 - Strategic consulting
@@ -478,6 +503,7 @@ Discounts on per-shipment pricing for volume commitments:
 ### Quick Estimate Example
 
 **Shipment Details:**
+
 - Weight: 50 kg
 - Distance: 200 km
 - Region: US-East
@@ -485,6 +511,7 @@ Discounts on per-shipment pricing for volume commitments:
 - Insurance: Yes ($500 value)
 
 **Calculation:**
+
 1. Base domestic: $2.50
 2. Express surcharge: $35.00
 3. Weight (50 kg @ $0.40/kg): $20.00
@@ -500,15 +527,15 @@ Discounts on per-shipment pricing for volume commitments:
 
 ```javascript
 // In your code
-const pricingEngine = require('./services/pricingEngine');
+const pricingEngine = require("./services/pricingEngine");
 
 // Calculate shipment pricing
 const quote = await pricingEngine.calculateShipmentPrice({
   weight: 50,
   distance: 200,
-  region: 'US-East',
-  serviceLevel: 'express',
-  freightType: 'general',
+  region: "US-East",
+  serviceLevel: "express",
+  freightType: "general",
   hasInsurance: true,
   insuranceValue: 500,
 });

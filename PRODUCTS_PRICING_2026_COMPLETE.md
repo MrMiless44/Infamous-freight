@@ -17,14 +17,15 @@ Infamous Freight Enterprises has been fully updated with comprehensive 2026 worl
 
 ### 1. **Subscription Plans** - Updated to 2026 Market Rates
 
-| Tier | Monthly | Annual | Status |
-|------|---------|--------|--------|
-| FREE | $0 | N/A | ✅ Updated |
-| STARTER | $79 | $790 (20% off) | ✅ Updated |
-| PROFESSIONAL | $199 | $1,990 (20% off) | ✅ Updated |
-| ENTERPRISE | $599 | $5,990 (20% off) | ✅ Updated |
+| Tier         | Monthly | Annual           | Status     |
+| ------------ | ------- | ---------------- | ---------- |
+| FREE         | $0      | N/A              | ✅ Updated |
+| STARTER      | $79     | $790 (20% off)   | ✅ Updated |
+| PROFESSIONAL | $199    | $1,990 (20% off) | ✅ Updated |
+| ENTERPRISE   | $599    | $5,990 (20% off) | ✅ Updated |
 
 **New Features:**
+
 - Annual discount pricing (20% savings)
 - Ideal customer profile for each tier
 - Enhanced feature descriptions
@@ -32,19 +33,20 @@ Infamous Freight Enterprises has been fully updated with comprehensive 2026 worl
 
 ### 2. **Freight Services Pricing** - Complete Cost Structure
 
-| Service | Base Price | Details |
-|---------|-----------|---------|
-| Domestic Ground | $2.50 | + weight/distance-based |
-| Express Overnight | $35.00 | Next-day guaranteed |
-| Same Day Delivery | $75.00 | Same-day guaranteed |
-| International | $50.00 | + weight-based escalation |
-| LTL | $200.00 | 100-5000 kg |
-| FTL | $1,500.00 | 5000-30,000 kg |
-| Drayage | $75.00 | + $1.50/mile |
+| Service           | Base Price | Details                   |
+| ----------------- | ---------- | ------------------------- |
+| Domestic Ground   | $2.50      | + weight/distance-based   |
+| Express Overnight | $35.00     | Next-day guaranteed       |
+| Same Day Delivery | $75.00     | Same-day guaranteed       |
+| International     | $50.00     | + weight-based escalation |
+| LTL               | $200.00    | 100-5000 kg               |
+| FTL               | $1,500.00  | 5000-30,000 kg            |
+| Drayage           | $75.00     | + $1.50/mile              |
 
 ### 3. **Specialized Services** - Premium Offerings
 
 Pricing for specialized freight types:
+
 - **Hazmat Transport:** $150 + $25 surcharge
 - **Refrigerated:** $4.50/km + $20 surcharge
 - **Pharmaceutical:** $200 + $40 surcharge
@@ -56,6 +58,7 @@ Pricing for specialized freight types:
 ### 4. **Value-Added Services** - Customer Convenience
 
 Comprehensive add-on services:
+
 - Full Value Insurance: 2% of value (min $5)
 - Signature Confirmation: $8/shipment
 - Photo Proof: $5/shipment
@@ -68,6 +71,7 @@ Comprehensive add-on services:
 ### 5. **Regional Pricing** - 24 Global Regions
 
 Complete regional multiplier coverage:
+
 - **North America:** 4 regions (0.95x - 1.20x)
 - **Europe:** 8 regions (0.60x - 1.25x)
 - **Asia Pacific:** 8 regions (0.40x - 1.30x)
@@ -75,6 +79,7 @@ Complete regional multiplier coverage:
 - **Middle East & Africa:** 6 regions (0.35x - 1.10x)
 
 **Sample Regional Rates (Base $10):**
+
 - Egypt (0.35x): $3.50
 - India (0.40x): $4.00
 - Vietnam (0.45x): $4.50
@@ -85,12 +90,12 @@ Complete regional multiplier coverage:
 ### 6. **Bulk Discounts** - Volume Incentives
 
 | Annual Shipments | Discount |
-|------------------|----------|
-| 100-500 | 5% |
-| 501-1,000 | 10% |
-| 1,001-5,000 | 15% |
-| 5,001-10,000 | 20% |
-| 10,001+ | 25% |
+| ---------------- | -------- |
+| 100-500          | 5%       |
+| 501-1,000        | 10%      |
+| 1,001-5,000      | 15%      |
+| 5,001-10,000     | 20%      |
+| 10,001+          | 25%      |
 
 ### 7. **Payment Methods** - Multiple Options
 
@@ -102,13 +107,13 @@ Complete regional multiplier coverage:
 
 ### 8. **Support Tiers** - Professional Support
 
-| Tier | Response Time | Price | Details |
-|------|---------------|-------|---------|
-| Community | 48 hours | Free | Forum + email |
-| Email | 24 hours | Free | Included in plans |
-| Priority | 12 hours | Free | Professional+ |
-| Premium 24/7 | 2 hours | $299/mo | Add-on |
-| Dedicated AM | 1 hour | $999/mo | Enterprise only |
+| Tier         | Response Time | Price   | Details           |
+| ------------ | ------------- | ------- | ----------------- |
+| Community    | 48 hours      | Free    | Forum + email     |
+| Email        | 24 hours      | Free    | Included in plans |
+| Priority     | 12 hours      | Free    | Professional+     |
+| Premium 24/7 | 2 hours       | $299/mo | Add-on            |
+| Dedicated AM | 1 hour        | $999/mo | Enterprise only   |
 
 ---
 
@@ -160,6 +165,7 @@ Complete regional multiplier coverage:
 ### Competitive Positioning
 
 **Starter ($79/mo):**
+
 - Perfect entry point for small teams
 - 500 shipments/month
 - 3 users, 5 drivers
@@ -167,6 +173,7 @@ Complete regional multiplier coverage:
 - Real-time tracking
 
 **Professional ($199/mo) - RECOMMENDED**
+
 - Growing business sweet spot
 - 2,500 shipments/month
 - 10 users, 25 drivers
@@ -175,6 +182,7 @@ Complete regional multiplier coverage:
 - Predictive analytics
 
 **Enterprise ($599/mo):**
+
 - Unlimited everything
 - Dedicated account manager
 - 24/7 premium support
@@ -185,17 +193,20 @@ Complete regional multiplier coverage:
 ### Per-Shipment Pricing
 
 **Domestic:**
+
 - Base: $2.50
 - Weight: $0.40-0.50/kg
 - Distance: $0.04-0.08/km
 - Service level surcharge: $0-75
 
 **International:**
+
 - Base: $50.00
 - Weight: $0.60-1.50/kg
 - Estimated: 10-14 days
 
 **Specialized:**
+
 - Hazmat: +$25 surcharge
 - Refrigerated: +$20 surcharge
 - Pharmaceutical: +$40 surcharge
@@ -214,22 +225,27 @@ Complete regional multiplier coverage:
 ### Regions Supported: 24 Total
 
 **North America (4):**
+
 - US East, US West, US Central
 - Canada East, Canada West
 
 **Europe (8):**
+
 - UK, Germany, France, Spain, Italy
 - Benelux, Scandinavia, Eastern Europe, Russia
 
 **Asia Pacific (8):**
+
 - Japan, South Korea, China
 - Singapore, Australia, India
 - Thailand, Vietnam
 
 **Latin America (4):**
+
 - Brazil, Mexico, Argentina, Colombia
 
 **Middle East & Africa (6):**
+
 - UAE, Saudi Arabia, Israel
 - South Africa, Egypt, Nigeria
 
@@ -260,7 +276,7 @@ USD, EUR, GBP, JPY, AUD, CAD, CHF, CNY, INR, MXN, BRL, AED, SGD, HKD, KRW, RUB, 
 ✅ **Flat-Rate Options** - Simple packages for small teams  
 ✅ **Flexible Billing** - Monthly or annual options  
 ✅ **Multi-Currency** - 20+ currency support  
-✅ **No Hidden Fees** - All costs disclosed upfront  
+✅ **No Hidden Fees** - All costs disclosed upfront
 
 ---
 
@@ -271,15 +287,15 @@ USD, EUR, GBP, JPY, AUD, CAD, CHF, CNY, INR, MXN, BRL, AED, SGD, HKD, KRW, RUB, 
 The pricing engine can be used in code:
 
 ```javascript
-const pricingEngine = require('./services/pricingEngine');
+const pricingEngine = require("./services/pricingEngine");
 
 // Calculate shipment price
 const quote = pricingEngine.calculateShipmentPrice({
-  weight: 50,           // kg
-  distance: 200,        // km
-  region: 'US-East',
-  serviceLevel: 'express',
-  freightType: 'general',
+  weight: 50, // kg
+  distance: 200, // km
+  region: "US-East",
+  serviceLevel: "express",
+  freightType: "general",
   hasInsurance: true,
   insuranceValue: 500,
 });
@@ -291,7 +307,7 @@ const quote = pricingEngine.calculateShipmentPrice({
 
 ```javascript
 // Fast estimate without detail
-const estimate = pricingEngine.quickEstimate(50, 200, 'US-East');
+const estimate = pricingEngine.quickEstimate(50, 200, "US-East");
 // Result: { estimate: 17.50, range: {min: 15.75, max: 21.00} }
 ```
 
@@ -300,9 +316,9 @@ const estimate = pricingEngine.quickEstimate(50, 200, 'US-East');
 ```javascript
 // Get regional pricing for subscription
 const pricing = pricingEngine.calculateSubscriptionPrice(
-  'PROFESSIONAL',
-  'Germany',
-  'monthly'
+  "PROFESSIONAL",
+  "Germany",
+  "monthly",
 );
 // Result: { adjustedPrice: 214.92, currency: 'EUR', ... }
 ```
@@ -311,18 +327,18 @@ const pricing = pricingEngine.calculateSubscriptionPrice(
 
 ## 📊 Implementation Status
 
-| Component | Status | Details |
-|-----------|--------|---------|
-| Subscription Plans | ✅ Complete | 4 tiers with annual discounts |
-| Freight Services | ✅ Complete | 7 major services with pricing |
-| Specialized Services | ✅ Complete | 7 specialized freight types |
-| Value-Added Services | ✅ Complete | 8 optional services |
-| Regional Pricing | ✅ Complete | 24 regions, 20+ currencies |
-| Bulk Discounts | ✅ Complete | 5-tier discount structure |
-| Promotional Pricing | ✅ Complete | 5 promotional programs |
-| Pricing Engine | ✅ Complete | Full calculation service |
-| API Integration | ✅ Complete | Ready to integrate |
-| Documentation | ✅ Complete | Comprehensive guide |
+| Component            | Status      | Details                       |
+| -------------------- | ----------- | ----------------------------- |
+| Subscription Plans   | ✅ Complete | 4 tiers with annual discounts |
+| Freight Services     | ✅ Complete | 7 major services with pricing |
+| Specialized Services | ✅ Complete | 7 specialized freight types   |
+| Value-Added Services | ✅ Complete | 8 optional services           |
+| Regional Pricing     | ✅ Complete | 24 regions, 20+ currencies    |
+| Bulk Discounts       | ✅ Complete | 5-tier discount structure     |
+| Promotional Pricing  | ✅ Complete | 5 promotional programs        |
+| Pricing Engine       | ✅ Complete | Full calculation service      |
+| API Integration      | ✅ Complete | Ready to integrate            |
+| Documentation        | ✅ Complete | Comprehensive guide           |
 
 ---
 
@@ -337,7 +353,7 @@ const pricing = pricingEngine.calculateSubscriptionPrice(
 ✅ Currency conversion support active  
 ✅ Comprehensive documentation complete  
 ✅ Examples and calculations provided  
-✅ Git committed and pushed to GitHub  
+✅ Git committed and pushed to GitHub
 
 ### Next Steps (Optional):
 
@@ -352,12 +368,14 @@ const pricing = pricingEngine.calculateSubscriptionPrice(
 ## 💡 Key Features
 
 ### For Small Businesses
+
 - **Starter Plan:** $79/month - Everything needed to start
 - **Pay-as-you-go:** $2.50 base per shipment
 - **Email Support:** 24-hour response time
 - **Basic Analytics:** Track shipments and costs
 
 ### For Growing Businesses
+
 - **Professional Plan:** $199/month - Industry favorite
 - **Advanced Analytics:** Predictive insights and trends
 - **AI Routing:** Automatic optimization
@@ -365,6 +383,7 @@ const pricing = pricingEngine.calculateSubscriptionPrice(
 - **Volume Discounts:** Save up to 25% on high volumes
 
 ### For Enterprises
+
 - **Enterprise Plan:** $599/month - Full power
 - **Unlimited Everything:** Shipments, users, drivers
 - **Dedicated Support:** Account manager + 1-hour response
