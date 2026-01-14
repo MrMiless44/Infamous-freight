@@ -41,6 +41,7 @@ const aiSimRoutes = require("./routes/aiSim.internal");
 const usersRoutes = require("./routes/users");
 const shipmentsRoutes = require("./routes/shipments");
 const analyticsRoutes = require("./routes/analytics");
+const avatarsRouter = require("./avatars/routes");
 
 const app = express();
 
@@ -107,6 +108,7 @@ app.use("/api", voiceRoutes);
 app.use("/api", usersRoutes);
 app.use("/api", shipmentsRoutes);
 app.use("/api", analyticsRoutes);
+app.use("/api/avatars", avatarsRouter);
 app.get("/health", (_req, res) => res.status(200).send("ok"));
 
 // CSP Violation Report Handler
