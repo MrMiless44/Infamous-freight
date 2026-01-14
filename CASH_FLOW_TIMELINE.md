@@ -3,6 +3,7 @@
 ## COMPLETE PAYMENT JOURNEY
 
 ### Phase 1: Customer Payment → Stripe (Seconds)
+
 ```
 Time: T+0s
 Customer Action: Clicks "Subscribe" button
@@ -16,9 +17,10 @@ Example:
 ```
 
 ### Phase 2: Stripe Processes Transaction (Instant - Seconds)
+
 ```
 Time: T+0s to T+60s
-Process: 
+Process:
 1. Card validation
 2. Risk assessment
 3. Fee calculation
@@ -31,6 +33,7 @@ Your Visibility:
 ```
 
 ### Phase 3: Funds Available for Withdrawal (1-2 Business Days)
+
 ```
 Time: T+1 to T+2 business days
 Status: Funds in your bank account
@@ -47,6 +50,7 @@ Wednesday onwards - YOU CAN WITHDRAW ANYTIME
 ## DETAILED CASH FLOW FOR 1,200 CUSTOMERS/MONTH
 
 ### Daily Revenue Pattern
+
 ```
 EXAMPLE DAY (Tue, Nov 5, 2024)
 
@@ -66,6 +70,7 @@ TOTAL FOR DAY: $21,924
 ```
 
 ### Weekly Breakdown
+
 ```
 WEEK OF NOVEMBER 4-10, 2024
 
@@ -228,6 +233,7 @@ ANNUALIZED (1,800 Professional customers):
 ## EARNING TIMELINE: From Month 1 to Year 2
 
 ### Month 1-2: Bootstrap Phase
+
 ```
 Month 1:
 ├── Revenue: $0-$2,000 (friends/family beta)
@@ -243,6 +249,7 @@ Month 2:
 ```
 
 ### Month 3-4: Early Growth
+
 ```
 Month 3:
 ├── Revenue: $5,000-$10,000 (15-20 customers)
@@ -260,6 +267,7 @@ Month 4:
 ```
 
 ### Month 5-8: Traction Phase
+
 ```
 Month 6:
 ├── Revenue: $20,000 (100+ customers)
@@ -277,6 +285,7 @@ Month 9:
 ```
 
 ### Month 10-12: Scale Phase
+
 ```
 Month 12:
 ├── Revenue: $100,000-$150,000 (800+ customers)
@@ -289,6 +298,7 @@ Month 12:
 ```
 
 ### Year 2: Mature Phase
+
 ```
 Month 13+:
 ├── Revenue: $438,000+/month
@@ -307,6 +317,7 @@ Month 13+:
 ### Banking Requirements
 
 **Account Setup**:
+
 ```
 ✅ Business checking account
 ✅ Separate from personal account
@@ -316,6 +327,7 @@ Month 13+:
 ```
 
 **Month 1 Balance**:
+
 ```
 Starting: $0
 Day 1: +$2,000 (first customer payment)
@@ -325,6 +337,7 @@ Balance: $1,000
 ```
 
 **Month 6 Balance**:
+
 ```
 Starting: $1,000
 Deposits: +$20,000 (6 Stripe deposits of $3,333)
@@ -335,6 +348,7 @@ Balance: $7,500
 ```
 
 **Month 12 Balance**:
+
 ```
 Starting: $7,500
 Deposits: +$100,000 (monthly revenue)
@@ -345,6 +359,7 @@ Balance: $37,500 (operating buffer)
 ```
 
 **Year 2+ Balance**:
+
 ```
 Starting: $37,500
 Monthly deposits: +$438,000
@@ -362,6 +377,7 @@ Excess withdraw: $100,000+ (to personal account as needed)
 ## WITHDRAWAL OPTIONS & TIMELINES
 
 ### Option 1: Automatic Daily Deposits (Default) ⭐
+
 ```
 Setup:
 1. Log into Stripe
@@ -391,6 +407,7 @@ Advantages:
 ```
 
 ### Option 2: Weekly Deposits
+
 ```
 Setup:
 1. Stripe Settings → Payouts
@@ -412,6 +429,7 @@ Best for: Larger sums, less frequent transfers
 ```
 
 ### Option 3: Manual Withdrawal (Instant Access)
+
 ```
 Setup:
 Any time you need money, log into Stripe
@@ -432,13 +450,14 @@ Withdraw: $10,000 for emergency
 Fee: $100 (1%)
 Arrives in: 1-2 hours
 
-Use case: 
+Use case:
 - Emergency cash needs
 - Time-sensitive expenses
 - Large lump sums
 ```
 
 ### Option 4: International Transfers (ACH/Wire)
+
 ```
 Setup:
 Bank transfer settings in Stripe
@@ -463,6 +482,7 @@ Ideal for:
 ### Scenario 1: Your First Customer
 
 **Day 1**:
+
 ```
 Time: 2:15 PM
 Event: First customer signs up for Starter plan ($79/mo)
@@ -481,6 +501,7 @@ Action: You can now withdraw if needed
 ### Scenario 2: Your 100th Customer
 
 **Day 30**:
+
 ```
 Customers: 100 (mix of plans)
 Total monthly revenue: $6,500
@@ -496,6 +517,7 @@ Profit for month: $2,177 ✅
 ### Scenario 3: Your 500th Customer (Month 6)
 
 **Day 150**:
+
 ```
 Customers: 500 (growing)
 Weekly MRR: $20,000
@@ -515,6 +537,7 @@ Remaining for growth: $6,000/month reinvestment
 ### Scenario 4: Your 3,500th Customer (Month 12)
 
 **Day 360**:
+
 ```
 Customers: 3,500 (matured)
 Monthly MRR: $438,000
@@ -536,6 +559,7 @@ Remaining: $107,000 for growth/taxes/reserve
 ### Quarterly Tax Payments
 
 **Q1 (Jan-Mar)**
+
 ```
 Jan payments: $150,000
 Feb payments: $175,000
@@ -553,6 +577,7 @@ Q1 Profit: $358,750
 ```
 
 **Q2 (Apr-Jun)**
+
 ```
 Q2 Revenue: $620,000
 Estimated Tax: $155,000
@@ -566,6 +591,7 @@ Q2 Profit: $423,000
 ```
 
 **Q3 (Jul-Sep)**
+
 ```
 Q3 Revenue: $750,000
 Estimated Tax: $187,500
@@ -579,6 +605,7 @@ Q3 Profit: $512,500
 ```
 
 **Q4 (Oct-Dec)**
+
 ```
 Q4 Revenue: $945,000
 Estimated Tax: $236,250
@@ -592,6 +619,7 @@ Q4 Profit: $653,750
 ```
 
 **Annual Total**:
+
 ```
 Year Revenue: $2,840,000
 Total Tax Payments: $710,000

@@ -83,7 +83,7 @@
                             ↓
 
                     5 REVENUE STREAMS:
-            
+
         Subscriptions: $5,256,000 (68%)
         API Access:    $1,068,000 (14%)
         Add-Ons:       $720,000   (9%)
@@ -140,7 +140,7 @@
                 YOUR NET PROFIT ✅
                 $3,798,000/YEAR
                 $316,500/MONTH
-                
+
                 = YOUR MONEY IN THE BANK
 ```
 
@@ -255,40 +255,44 @@ Year 1 Total Profit: $3.6M
 ## The Numbers You Need
 
 ### Payment System
-| Metric | Value |
-|--------|-------|
-| Settlement Time | 1-2 business days |
-| Processing Fee | 2.9% + $0.30 |
-| You Receive | 97.1% of revenue |
-| Withdrawal Fee | $0 (standard), 1% (instant) |
-| Minimum Withdrawal | $1 |
-| Maximum Withdrawal | Unlimited |
-| Access Frequency | Anytime |
+
+| Metric             | Value                       |
+| ------------------ | --------------------------- |
+| Settlement Time    | 1-2 business days           |
+| Processing Fee     | 2.9% + $0.30                |
+| You Receive        | 97.1% of revenue            |
+| Withdrawal Fee     | $0 (standard), 1% (instant) |
+| Minimum Withdrawal | $1                          |
+| Maximum Withdrawal | Unlimited                   |
+| Access Frequency   | Anytime                     |
 
 ### Financial Metrics (Year 1 at Scale)
-| Metric | Value |
-|--------|-------|
-| Total Revenue | $7.77M |
+
+| Metric          | Value        |
+| --------------- | ------------ |
+| Total Revenue   | $7.77M       |
 | Operating Costs | $1.57M (20%) |
-| Payment Fees | $225K (2.9%) |
-| Taxes | $1.58M (29%) |
-| Your Profit | $3.8M (48%) |
-| Monthly Profit | $316K |
-| Daily Profit | $10.4K |
+| Payment Fees    | $225K (2.9%) |
+| Taxes           | $1.58M (29%) |
+| Your Profit     | $3.8M (48%)  |
+| Monthly Profit  | $316K        |
+| Daily Profit    | $10.4K       |
 
 ### Growth Timeline
-| Phase | Timeline | Monthly Profit |
-|-------|----------|---|
-| Bootstrap | Month 1-2 | Loss (-$2.5K) |
-| Traction | Month 3-6 | $2K → $38K |
-| Growth | Month 7-9 | $52K → $115K |
-| Scale | Month 10-12 | $168K → $368K |
+
+| Phase     | Timeline    | Monthly Profit |
+| --------- | ----------- | -------------- |
+| Bootstrap | Month 1-2   | Loss (-$2.5K)  |
+| Traction  | Month 3-6   | $2K → $38K     |
+| Growth    | Month 7-9   | $52K → $115K   |
+| Scale     | Month 10-12 | $168K → $368K  |
 
 ---
 
 ## Tax Optimization
 
 ### Solo Founder (Default)
+
 ```
 Annual Profit:         $3,798,000
 Self-Employment Tax:   -$538,000
@@ -299,6 +303,7 @@ Monthly:               $195,000
 ```
 
 ### S-Corp Election (Recommended)
+
 ```
 Annual Profit:         $3,798,000
 W-2 Salary:            $80,000/year
@@ -320,6 +325,7 @@ Monthly Savings:       $40,471
 ## Action Steps to Get Paid
 
 ### Step 1: Business Bank Account (Day 1)
+
 ```
 □ Go to Chase, Bank of America, or local bank
 □ Open business checking account
@@ -329,6 +335,7 @@ Monthly Savings:       $40,471
 ```
 
 ### Step 2: Payment Setup (Day 2)
+
 ```
 □ Log into Stripe dashboard
 □ Go to Settings → Payouts
@@ -338,6 +345,7 @@ Monthly Savings:       $40,471
 ```
 
 ### Step 3: Go Live (Day 3)
+
 ```
 □ Start accepting payments
 □ Watch daily deposits arrive
@@ -347,6 +355,7 @@ Monthly Savings:       $40,471
 ```
 
 ### Step 4: Tax Planning (Month 1)
+
 ```
 □ Hire CPA or accountant
 □ Discuss S-Corp election timing
@@ -445,6 +454,7 @@ WITHDRAW ANYTIME
 ## The Bottom Line
 
 ### Your Payment System is:
+
 - ✅ **Transparent** - See every transaction
 - ✅ **Fast** - Money in bank in 1-2 days
 - ✅ **Automatic** - Daily deposits, no work
@@ -454,6 +464,7 @@ WITHDRAW ANYTIME
 - ✅ **Optimizable** - Save $30K-$50K+ in taxes
 
 ### You Are Ready To:
+
 - ✅ Launch and accept payments
 - ✅ Track every transaction
 - ✅ Withdraw funds anytime
@@ -462,6 +473,7 @@ WITHDRAW ANYTIME
 - ✅ Plan taxes and growth strategically
 
 ### Your Potential (Year 1):
+
 - ✅ $7.77M revenue
 - ✅ $3.8M profit
 - ✅ $368K/month in your pocket
