@@ -24,20 +24,39 @@ const upload = multer({
  * POST /api/voice/ingest
  * Upload and process voice audio file
  * Scope: voice:ingest
+ * Feature flag: ENABLE_VOICE_PROCESSING
  */
 router.post(
     '/voice/ingest',
-    limiters.ai,
+    limiters.voice,
     authenticate,
     requireScope('voice:ingest'),
     upload.single('audio'),
     auditLog,
     async (req, res, next) => {
         try {
+            // Feature flag check
+            if (process.env.ENABLE_VOICE_PROCESSING === 'false') {
+                return res.status(503).json({
+                    ok: false,
+                    error: 'Voice processing is currently disabled',
+                });
+            }
+
             if (!req.file) {
                 return res.status(400).json({
                     ok: false,
                     error: 'No audio file uploaded',
+                });
+            }
+
+            const startTime = Date.now();
+
+            // Validate file size
+            if (req.file.size > VOICE_MAX_FILE_SIZE_MB * 1024 * 1024) {
+                return res.status(413).json({
+                    ok: false,
+                    error: `File too large. Maximum size: ${VOICE_MAX_FILE_SIZE_MB}MB`,
                 });
             }
 
@@ -51,6 +70,7 @@ router.post(
                 },
                 transcription: 'Audio transcription not yet implemented',
                 timestamp: new Date().toISOString(),
+                processingTime: Date.now() - startTime,
             };
 
             res.json(result);

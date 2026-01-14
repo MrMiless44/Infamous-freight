@@ -29,6 +29,7 @@ pnpm install
 ```
 
 This installs all dependencies for:
+
 - `api/` (Express.js backend)
 - `web/` (Next.js frontend)
 - `packages/shared/` (Shared TypeScript library)
@@ -44,22 +45,27 @@ pnpm --filter @infamous-freight/shared build
 ### Step 3: Start Development Servers
 
 **Option A: Start All Services (Recommended)**
+
 ```bash
 pnpm dev
 ```
+
 This runs:
+
 - API on http://localhost:4000 (or `$API_PORT`)
 - Web on http://localhost:3000 (or `$WEB_PORT`)
 
 **Option B: Start Services Separately**
 
 Terminal 1 — API:
+
 ```bash
 pnpm api:dev
 # API listens on http://localhost:4000
 ```
 
 Terminal 2 — Web:
+
 ```bash
 pnpm web:dev
 # Web listens on http://localhost:3000
@@ -115,17 +121,20 @@ SENTRY_DSN=your_sentry_url
 ### Step 2: Deploy with Docker Compose
 
 **Production Setup** (Recommended):
+
 ```bash
 docker-compose -f docker-compose.prod.yml up -d
 ```
 
 This deploys:
+
 - **API** (Express.js) on port 3001
 - **Web** (Next.js) on port 3000
 - **PostgreSQL** (Database) on port 5432
 - **Redis** (Cache) on port 6379
 
 **Verify Deployment**:
+
 ```bash
 # Check service status
 docker-compose -f docker-compose.prod.yml ps
@@ -215,18 +224,21 @@ pnpm --filter web build
 ### Step 6: Start Services
 
 **Terminal 1 — API**:
+
 ```bash
 pnpm --filter api start
 # Listens on http://localhost:4000 (or $API_PORT)
 ```
 
 **Terminal 2 — Web**:
+
 ```bash
 pnpm --filter web start
 # Listens on http://localhost:3000 (or $WEB_PORT)
 ```
 
 **Terminal 3 — Database** (if not running separately):
+
 ```bash
 # PostgreSQL should be running on port 5432
 # Redis should be running on port 6379
@@ -292,6 +304,7 @@ vercel deploy --prod
 ```
 
 **Environment Variables** (in Vercel dashboard):
+
 ```
 NEXT_PUBLIC_API_URL=https://your-api.example.com
 NEXT_PUBLIC_ENV=production
@@ -314,6 +327,7 @@ flyctl logs
 ### AWS / GCP / Azure
 
 Use the provided `Dockerfile` and deploy via:
+
 - **AWS ECS**: Push image to ECR, deploy via ECS
 - **GCP Cloud Run**: Deploy containerized app
 - **Azure App Service**: Deploy Docker container
@@ -369,14 +383,17 @@ docker-compose -f docker-compose.prod.yml logs -f web
 ### Production Monitoring
 
 **Sentry** (Error tracking):
+
 - Configured in `api/src/instrument.js`
 - Set `SENTRY_DSN` env var
 
 **Datadog** (APM & RUM):
+
 - Configured in `api/src/server.js` and `web/pages/_app.tsx`
 - Set `DD_TRACE_ENABLED`, `DD_SERVICE`, etc.
 
 **Health Checks**:
+
 - API: `GET /health`
 - Web: Check HTTP status 200
 - Database: Connection verification
@@ -512,6 +529,7 @@ pnpm build
 ## 📞 Support
 
 For detailed system information:
+
 - See: [DEPLOYMENT_STATUS_100.md](DEPLOYMENT_STATUS_100.md)
 - API Docs: http://localhost:4000/api/docs (when running)
 - GitHub: https://github.com/MrMiless44/Infamous-freight-enterprises

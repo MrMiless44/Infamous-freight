@@ -104,12 +104,17 @@ router.get("/health/detailed", auditLog, async (_req, res) => {
 // Readiness check (for Kubernetes/orchestration)
 router.get("/health/ready", auditLog, async (_req, res) => {
   try {
-    await prisma.$queryRaw`SELECT 1`;
-    res.json({ status: "ready" });
+    // Check database with timeout
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('DB health check timeout')), 5000)
+    );
+    await Promise.race([prisma.$queryRaw`SELECT 1`, timeoutPromise]);
+    res.status(200).json({ status: "ready", timestamp: new Date().toISOString() });
   } catch (error) {
     res.status(503).json({
       status: "not ready",
       error: error.message,
+      timestamp: new Date().toISOString(),
     });
   }
 });

@@ -7,36 +7,44 @@
 const rateLimit = require("express-rate-limit");
 const jwt = require("jsonwebtoken");
 
-// Rate limiters
+// Rate limiters with enhanced configuration
+const createLimiter = (options) => rateLimit({
+  ...options,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => req.path === '/api/health' || req.path === '/api/health/live',
+});
+
 const limiters = {
-  general: rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    standardHeaders: true,
-    legacyHeaders: false,
+  general: createLimiter({
+    windowMs: parseInt(process.env.RATE_LIMIT_GENERAL_WINDOW_MS || '15') * 60 * 1000,
+    max: parseInt(process.env.RATE_LIMIT_GENERAL_MAX || '100'),
     keyGenerator: (req) => req.user?.sub || req.ip,
+    message: { error: 'Too many requests. Please try again later.' },
   }),
-  auth: rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 5,
-    standardHeaders: true,
-    legacyHeaders: false,
+  auth: createLimiter({
+    windowMs: parseInt(process.env.RATE_LIMIT_AUTH_WINDOW_MS || '15') * 60 * 1000,
+    max: parseInt(process.env.RATE_LIMIT_AUTH_MAX || '5'),
     keyGenerator: (req) => req.ip,
     message: { error: "Too many authentication attempts. Try again later." },
   }),
-  ai: rateLimit({
-    windowMs: 60 * 1000,
-    max: 20,
-    standardHeaders: true,
-    legacyHeaders: false,
+  ai: createLimiter({
+    windowMs: parseInt(process.env.RATE_LIMIT_AI_WINDOW_MS || '1') * 60 * 1000,
+    max: parseInt(process.env.RATE_LIMIT_AI_MAX || '20'),
     keyGenerator: (req) => req.user?.sub || req.ip,
+    message: { error: 'AI service rate limit exceeded.' },
   }),
-  billing: rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 30,
-    standardHeaders: true,
-    legacyHeaders: false,
+  billing: createLimiter({
+    windowMs: parseInt(process.env.RATE_LIMIT_BILLING_WINDOW_MS || '15') * 60 * 1000,
+    max: parseInt(process.env.RATE_LIMIT_BILLING_MAX || '30'),
     keyGenerator: (req) => req.user?.sub || req.ip,
+    message: { error: 'Billing rate limit exceeded.' },
+  }),
+  voice: createLimiter({
+    windowMs: parseInt(process.env.RATE_LIMIT_VOICE_WINDOW_MS || '1') * 60 * 1000,
+    max: parseInt(process.env.RATE_LIMIT_VOICE_MAX || '10'),
+    keyGenerator: (req) => req.user?.sub || req.ip,
+    message: { error: 'Voice processing rate limit exceeded.' },
   }),
 };
 

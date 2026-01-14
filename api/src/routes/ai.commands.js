@@ -8,6 +8,7 @@ const router = express.Router();
  * POST /api/ai/command
  * Process AI command with scope-based auth and rate limiting
  * Scope: ai:command
+ * Feature flag: ENABLE_AI_COMMANDS
  */
 router.post(
     '/ai/command',
@@ -21,7 +22,16 @@ router.post(
     auditLog,
     async (req, res, next) => {
         try {
+            // Feature flag check
+            if (process.env.ENABLE_AI_COMMANDS === 'false') {
+                return res.status(503).json({
+                    ok: false,
+                    error: 'AI commands are currently disabled',
+                });
+            }
+
             const { command } = req.body;
+            const startTime = Date.now();
 
             // TODO: Integrate with AI service (e.g., OpenAI, Anthropic, synthetic)
             const response = {
@@ -29,6 +39,7 @@ router.post(
                 command,
                 result: 'AI processing not yet implemented',
                 timestamp: new Date().toISOString(),
+                processingTime: Date.now() - startTime,
             };
 
             res.json(response);
