@@ -1,0 +1,50 @@
+{
+  "shipments": [
+    {
+      "id": 2,
+      "trackingNumber": "IFE-002",
+      "status": "DELIVERED",
+      "origin": "Chicago",
+      "destination": "Miami",
+      "weight": 200,
+      "value": 7500,
+      "createdAt": "2026-01-12T16:13:53.494Z",
+      "updatedAt": "2026-01-14T15:13:53.494Z",
+      "createdBy": "user-123"
+    },
+    {
+      "id": 1,
+      "trackingNumber": "IFE-001",
+      "status": "IN_TRANSIT",
+      "origin": "Los Angeles",
+      "destination": "New York",
+      "weight": 150,
+      "value": 5000,
+      "createdAt": "2026-01-13T16:13:53.494Z",
+      "updatedAt": "2026-01-13T16:13:53.494Z",
+      "createdBy": "user-123"
+    },
+    {
+      "id": 3,
+      "trackingNumber": "IFE-003",
+      "status": "PENDING",
+      "origin": "Seattle",
+      "destination": "Boston",
+      "weight": 100,
+      "value": 3000,
+      "createdAt": "2026-01-14T14:13:53.494Z",
+      "updatedAt": "2026-01-14T14:13:53.494Z",
+      "createdBy": "user-123"
+    }
+  ],
+  "users": [
+    {
+      "id": "user-123",
+      "email": "admin@example.com",
+      "password": "hashed_password",
+      "role": "admin",
+      "createdAt": "2026-01-14T16:13:53.485Z"
+    }
+  ],
+  "lastSaved": "2026-01-14T16:32:47.418Z"
+}

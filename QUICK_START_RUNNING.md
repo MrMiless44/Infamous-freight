@@ -19,6 +19,7 @@
 **Open in browser**: http://localhost:3000
 
 You'll see:
+
 - 🚚 Real-time shipment tracking
 - 📊 Live API health monitoring
 - ⏱️ System uptime display
@@ -29,16 +30,19 @@ You'll see:
 ## 🔌 API Endpoints
 
 ### Health Check
+
 ```bash
 curl http://localhost:4000/api/health
 ```
 
 ### Get All Shipments
+
 ```bash
 curl http://localhost:4000/api/shipments
 ```
 
 ### API Info
+
 ```bash
 curl http://localhost:4000/api
 ```
@@ -96,6 +100,7 @@ sleep 2 && netstat -tuln | grep -E ":(3000|4000)"
 ## 📚 Full Documentation
 
 See [DO_ALL_SAID_ABOVE_100_COMPLETE.md](DO_ALL_SAID_ABOVE_100_COMPLETE.md) for:
+
 - Complete implementation details
 - All verification results
 - Technical architecture
