@@ -1,6 +1,10 @@
 // IMPORTANT: Initialize Sentry instrumentation first, before requiring any other modules
 require("./instrument.js");
 
+// Initialize Vercel Web Analytics early
+const { initializeAnalytics } = require("./config/analytics");
+initializeAnalytics();
+
 // Initialize Datadog APM early, before requiring Express internals
 if (process.env.DD_TRACE_ENABLED === "true") {
   try {
