@@ -48,6 +48,7 @@ The Infamous Freight Instant Payout System enables **same-day payments** with fu
 **Methods**: Stripe, PayPal, Debit Card
 
 **Perfect for:**
+
 - Urgent expenses
 - Same-day needs
 - Immediate bonus redemption
@@ -62,6 +63,7 @@ The Infamous Freight Instant Payout System enables **same-day payments** with fu
 **Methods**: Bank Transfer (ACH), Stripe, PayPal
 
 **Perfect for:**
+
 - Weekly earnings
 - Large transfers
 - Cost-conscious users
@@ -80,6 +82,7 @@ The Infamous Freight Instant Payout System enables **same-day payments** with fu
 **Fee**: 1.5% + $0.25 (instant), 0.25% (standard)
 
 **Setup**:
+
 ```bash
 # User connects Stripe account
 POST /api/payments/methods/connect
@@ -98,6 +101,7 @@ POST /api/payments/methods/connect
 **Fee**: 1.5% + $0.25 (instant), 0.25% (standard)
 
 **Setup**:
+
 ```bash
 POST /api/payments/methods/connect
 {
@@ -137,9 +141,10 @@ POST /api/payments/methods/connect
 **Rate Limit**: 30 requests per 15 minutes
 
 **Request**:
+
 ```json
 {
-  "amount": 100.00,
+  "amount": 100.0,
   "method": "stripe",
   "destination": "acct_1234567890",
   "currency": "USD",
@@ -148,17 +153,18 @@ POST /api/payments/methods/connect
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
   "data": {
     "id": "payout_abc123",
-    "amount": 100.00,
+    "amount": 100.0,
     "netAmount": 98.25,
     "currency": "USD",
     "method": "stripe",
     "fees": {
-      "percentage": 1.50,
+      "percentage": 1.5,
       "fixed": 0.25,
       "total": 1.75,
       "rate": "1.5% + $0.25"
@@ -178,9 +184,10 @@ POST /api/payments/methods/connect
 **Rate Limit**: 30 requests per 15 minutes
 
 **Request**:
+
 ```json
 {
-  "amount": 500.00,
+  "amount": 500.0,
   "method": "bankTransfer",
   "destination": "bank_account_123",
   "currency": "USD",
@@ -189,18 +196,19 @@ POST /api/payments/methods/connect
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
   "data": {
     "id": "payout_xyz789",
-    "amount": 500.00,
+    "amount": 500.0,
     "netAmount": 498.75,
     "currency": "USD",
     "method": "bankTransfer",
     "fees": {
       "percentage": 1.25,
-      "fixed": 0.00,
+      "fixed": 0.0,
       "total": 1.25,
       "rate": "0.25% + $0"
     },
@@ -219,23 +227,25 @@ POST /api/payments/methods/connect
 **Rate Limit**: 30 requests per 15 minutes
 
 **Request**:
+
 ```json
 {
   "bonusId": "bonus_ref_123",
-  "amount": 50.00,
+  "amount": 50.0,
   "bonusType": "referral",
   "paymentMethod": "stripe"
 }
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
   "data": {
     "id": "payout_bonus_456",
-    "amount": 50.00,
-    "netAmount": 48.50,
+    "amount": 50.0,
+    "netAmount": 48.5,
     "bonusType": "referral",
     "status": "processing",
     "estimatedArrival": "2026-01-14T12:15:00Z"
@@ -251,13 +261,14 @@ POST /api/payments/methods/connect
 **Rate Limit**: 100 requests per 15 minutes
 
 **Response**:
+
 ```json
 {
   "success": true,
   "data": {
     "status": "completed",
     "arrivalDate": "2026-01-14T12:12:00Z",
-    "amount": 100.00,
+    "amount": 100.0,
     "currency": "USD"
   }
 }
@@ -270,6 +281,7 @@ POST /api/payments/methods/connect
 **Rate Limit**: 100 requests per 15 minutes
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -304,17 +316,19 @@ POST /api/payments/methods/connect
 **Rate Limit**: 100 requests per 15 minutes
 
 **Query Parameters**:
+
 - `amount` (required): Payout amount
 - `type` (optional): `instant` or `standard` (default: `instant`)
 
 **Response**:
+
 ```json
 {
   "success": true,
   "data": {
-    "amount": 100.00,
+    "amount": 100.0,
     "fees": {
-      "percentage": 1.50,
+      "percentage": 1.5,
       "fixed": 0.25,
       "total": 1.75,
       "rate": "1.5% + $0.25"
@@ -332,22 +346,22 @@ POST /api/payments/methods/connect
 ### Instant Payout Fees
 
 | Amount | Percentage Fee | Fixed Fee | Total Fee | You Receive |
-|--------|---------------|-----------|-----------|-------------|
-| $50 | $0.75 | $0.25 | $1.00 | $49.00 |
-| $100 | $1.50 | $0.25 | $1.75 | $98.25 |
-| $500 | $7.50 | $0.25 | $7.75 | $492.25 |
-| $1,000 | $15.00 | $0.25 | $15.25 | $984.75 |
+| ------ | -------------- | --------- | --------- | ----------- |
+| $50    | $0.75          | $0.25     | $1.00     | $49.00      |
+| $100   | $1.50          | $0.25     | $1.75     | $98.25      |
+| $500   | $7.50          | $0.25     | $7.75     | $492.25     |
+| $1,000 | $15.00         | $0.25     | $15.25    | $984.75     |
 
 **Formula**: `fee = (amount × 0.015) + 0.25`
 
 ### Standard Payout Fees
 
 | Amount | Percentage Fee | Fixed Fee | Total Fee | You Receive |
-|--------|---------------|-----------|-----------|-------------|
-| $100 | $0.25 | $0.00 | $0.25 | $99.75 |
-| $500 | $1.25 | $0.00 | $1.25 | $498.75 |
-| $1,000 | $2.50 | $0.00 | $2.50 | $997.50 |
-| $5,000 | $12.50 | $0.00 | $12.50 | $4,987.50 |
+| ------ | -------------- | --------- | --------- | ----------- |
+| $100   | $0.25          | $0.00     | $0.25     | $99.75      |
+| $500   | $1.25          | $0.00     | $1.25     | $498.75     |
+| $1,000 | $2.50          | $0.00     | $2.50     | $997.50     |
+| $5,000 | $12.50         | $0.00     | $12.50    | $4,987.50   |
 
 **Formula**: `fee = amount × 0.0025`
 
@@ -360,18 +374,18 @@ POST /api/payments/methods/connect
 ```javascript
 // Frontend: Stripe Connect integration
 const connectStripe = async () => {
-  const response = await fetch('/api/payments/methods/connect', {
-    method: 'POST',
+  const response = await fetch("/api/payments/methods/connect", {
+    method: "POST",
     headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      provider: 'stripe',
+      provider: "stripe",
       accountId: stripeAccountId,
     }),
   });
-  
+
   return response.json();
 };
 ```
@@ -381,28 +395,28 @@ const connectStripe = async () => {
 ```javascript
 // Frontend: Request instant payout
 const requestPayout = async (amount) => {
-  const response = await fetch('/api/payments/payout/instant', {
-    method: 'POST',
+  const response = await fetch("/api/payments/payout/instant", {
+    method: "POST",
     headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       amount: parseFloat(amount),
-      method: 'stripe',
+      method: "stripe",
       destination: userPaymentDestination,
-      currency: 'USD',
-      reason: 'User requested payout',
+      currency: "USD",
+      reason: "User requested payout",
     }),
   });
-  
+
   const result = await response.json();
-  
+
   if (result.success) {
-    console.log('Payout initiated:', result.data.id);
-    console.log('Arriving at:', result.data.estimatedArrival);
+    console.log("Payout initiated:", result.data.id);
+    console.log("Arriving at:", result.data.estimatedArrival);
   }
-  
+
   return result;
 };
 ```
@@ -414,19 +428,19 @@ const requestPayout = async (amount) => {
 const checkPayoutStatus = async (payoutId) => {
   const response = await fetch(`/api/payments/payout/${payoutId}/status`, {
     headers: {
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   });
-  
+
   return response.json();
 };
 
 // Poll every 30 seconds
 const pollStatus = setInterval(async () => {
   const status = await checkPayoutStatus(payoutId);
-  
-  if (status.data.status === 'completed') {
-    console.log('Payout completed!');
+
+  if (status.data.status === "completed") {
+    console.log("Payout completed!");
     clearInterval(pollStatus);
   }
 }, 30000);
@@ -439,6 +453,7 @@ const pollStatus = setInterval(async () => {
 ### Authentication
 
 All payout endpoints require:
+
 - ✅ Valid JWT token
 - ✅ Required scopes (`payment:payout`, `payment:view`, etc.)
 - ✅ Rate limiting (30 requests per 15 minutes for payouts)
@@ -466,6 +481,7 @@ All payout endpoints require:
 #### `VALIDATION_ERROR` - Amount below minimum
 
 **Error**:
+
 ```json
 {
   "success": false,
@@ -479,6 +495,7 @@ All payout endpoints require:
 #### `VALIDATION_ERROR` - Amount above maximum
 
 **Error**:
+
 ```json
 {
   "success": false,
@@ -492,6 +509,7 @@ All payout endpoints require:
 #### `INVALID_METHOD` - Unsupported payment method
 
 **Error**:
+
 ```json
 {
   "success": false,
@@ -505,6 +523,7 @@ All payout endpoints require:
 #### `NO_PAYMENT_METHOD` - Missing payment configuration
 
 **Error**:
+
 ```json
 {
   "success": false,
@@ -518,6 +537,7 @@ All payout endpoints require:
 #### `PAYOUT_FAILED` - Processing error
 
 **Error**:
+
 ```json
 {
   "success": false,
