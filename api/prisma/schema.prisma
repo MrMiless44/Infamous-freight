@@ -68,6 +68,7 @@ model Shipment {
   @@index([driverId])
   @@index([createdAt])
   @@index([updatedAt])
+  @@index([userId, status])
   @@map("shipments")
 }
 
@@ -109,6 +110,7 @@ model Payment {
   @@index([status])
   @@index([stripePaymentIntentId])
   @@index([createdAt])
+  @@index([userId, status])
   @@map("payments")
 }
 

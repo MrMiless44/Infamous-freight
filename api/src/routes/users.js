@@ -1,4 +1,6 @@
 const express = require('express');
+const { prisma } = require('../db/prisma');
+const { cacheMiddleware, invalidateCache } = require('../middleware/cache');
 const { limiters, authenticate, requireScope, auditLog } = require('../middleware/security');
 const { validateString, validateEmail, handleValidationErrors } = require('../middleware/validation');
 
@@ -14,16 +16,20 @@ router.get(
     limiters.general,
     authenticate,
     requireScope('users:read'),
+    cacheMiddleware(30),
     auditLog,
     async (req, res, next) => {
         try {
-            // Return user from JWT payload
-            const user = {
-                id: req.user.sub,
-                email: req.user.email,
-                role: req.user.role,
-                scopes: req.user.scopes,
-            };
+            const user = await prisma.user.findUnique({
+                where: { id: req.user.sub },
+                include: {
+                    shipments: { select: { id: true, status: true }, take: 5, orderBy: { createdAt: 'desc' } },
+                },
+            });
+
+            if (!user) {
+                return res.status(404).json({ ok: false, error: 'User not found' });
+            }
 
             res.json({
                 ok: true,
@@ -54,19 +60,17 @@ router.patch(
     async (req, res, next) => {
         try {
             const { name, email } = req.body;
-
-            // TODO: Update user in database
-            const user = {
-                id: req.user.sub,
-                name,
-                email,
-                updatedAt: new Date().toISOString(),
-            };
+            const user = await prisma.user.update({
+                where: { id: req.user.sub },
+                data: { name, email },
+            });
 
             res.json({
                 ok: true,
                 user,
             });
+
+            await invalidateCache(`*users*${req.user.sub}*`);
         } catch (err) {
             next(err);
         }
@@ -83,16 +87,36 @@ router.get(
     limiters.general,
     authenticate,
     requireScope('admin'),
+    cacheMiddleware(30),
     auditLog,
     async (req, res, next) => {
         try {
-            // TODO: Fetch from database
-            const users = [];
+            const { take = 50, skip = 0 } = req.query;
+            const limit = Math.min(Number(take) || 50, 100);
+            const offset = Number(skip) || 0;
+
+            const [users, total] = await Promise.all([
+                prisma.user.findMany({
+                    take: limit,
+                    skip: offset,
+                    orderBy: { createdAt: 'desc' },
+                    select: {
+                        id: true,
+                        email: true,
+                        role: true,
+                        createdAt: true,
+                        updatedAt: true,
+                    },
+                }),
+                prisma.user.count(),
+            ]);
 
             res.json({
                 ok: true,
                 users,
                 count: users.length,
+                total,
+                pagination: { take: limit, skip: offset },
             });
         } catch (err) {
             next(err);

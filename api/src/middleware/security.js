@@ -6,6 +6,7 @@
 
 const rateLimit = require("express-rate-limit");
 const jwt = require("jsonwebtoken");
+const { authenticateWithRotation } = require("./advancedSecurity");
 
 // Rate limiters with enhanced configuration
 const createLimiter = (options) => rateLimit({
@@ -89,6 +90,14 @@ function authenticate(req, res, next) {
   }
 }
 
+// Optional rotation-aware authentication controlled via env
+function authenticateFlexible(req, res, next) {
+  if (process.env.ENABLE_TOKEN_ROTATION === "true") {
+    return authenticateWithRotation(req, res, next);
+  }
+  return authenticate(req, res, next);
+}
+
 // Scope enforcement
 function requireScope(required) {
   const requiredScopes = Array.isArray(required) ? required : [required];
@@ -150,6 +159,7 @@ module.exports = {
   limiters,
   rateLimit: limiters.general,
   authenticate,
+  authenticateFlexible,
   requireScope,
   auditLog,
   validateUserOwnership,

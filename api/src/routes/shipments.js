@@ -1,4 +1,5 @@
 const express = require("express");
+const { v4: uuid } = require("uuid");
 const { prisma } = require("../db/prisma");
 const {
   limiters,
@@ -6,6 +7,7 @@ const {
   requireScope,
   auditLog,
 } = require("../middleware/security");
+const { cacheMiddleware, invalidateCache } = require("../middleware/cache");
 const {
   exportToCSV,
   exportToPDF,
@@ -21,11 +23,16 @@ router.get(
   limiters.general,
   authenticate,
   requireScope("shipments:read"),
+  cacheMiddleware(60),
   auditLog,
   async (req, res, next) => {
     try {
       const { status, driverId } = req.query;
       const where = {};
+
+      if (req.user?.role !== "admin") {
+        where.userId = req.user?.sub;
+      }
 
       if (status) where.status = status;
       if (driverId) where.driverId = driverId;
@@ -60,6 +67,7 @@ router.get(
   limiters.general,
   authenticate,
   requireScope("shipments:read"),
+  cacheMiddleware(60),
   auditLog,
   async (req, res, next) => {
     try {
@@ -81,6 +89,10 @@ router.get(
         return res.status(404).json({ ok: false, error: "Shipment not found" });
       }
 
+      if (req.user?.role !== "admin" && shipment.userId !== req.user?.sub) {
+        return res.status(403).json({ ok: false, error: "Forbidden" });
+      }
+
       res.json({ ok: true, shipment });
     } catch (err) {
       next(err);
@@ -97,25 +109,31 @@ router.post(
   auditLog,
   async (req, res, next) => {
     try {
-      const { reference, origin, destination, driverId } = req.body;
+      const { reference, trackingId, origin, destination, driverId } = req.body;
 
-      if (!reference || !origin || !destination) {
+      if (!origin || !destination) {
         return res.status(400).json({
           ok: false,
-          error: "Reference, origin, and destination are required",
+          error: "Origin and destination are required",
         });
       }
+
+      const userId = req.user?.sub;
+      const newTrackingId =
+        trackingId || reference || `TRK-${uuid().replace(/-/g, "").slice(0, 12)}`;
 
       // Use transaction to ensure atomic operation
       const result = await prisma.$transaction(
         async (tx) => {
           const shipment = await tx.shipment.create({
             data: {
-              reference,
+              trackingId: newTrackingId,
+              reference: reference || newTrackingId,
+              userId,
               origin,
               destination,
               driverId: driverId || null,
-              status: "created",
+              status: "pending",
             },
             include: {
               driver: {
@@ -132,14 +150,13 @@ router.post(
           // Log AI event
           await tx.aiEvent.create({
             data: {
-              type: "shipment.created",
-              payload: {
+              userId,
+              command: "shipment.created",
+              response: JSON.stringify({
                 shipmentId: shipment.id,
-                reference: shipment.reference,
-                origin: shipment.origin,
-                destination: shipment.destination,
-                userId: req.user?.id,
-              },
+                trackingId: shipment.trackingId,
+              }),
+              provider: "system",
             },
           });
 
@@ -151,6 +168,8 @@ router.post(
       );
 
       res.status(201).json({ ok: true, shipment: result });
+
+      await invalidateCache(`*shipments*${userId || ""}*`);
 
       // Emit WebSocket event
       emitShipmentUpdate(result.id, {
@@ -180,6 +199,19 @@ router.patch(
       const { status, driverId } = req.body;
       const updates = {};
 
+      const existing = await prisma.shipment.findUnique({
+        where: { id: req.params.id },
+        select: { id: true, userId: true },
+      });
+
+      if (!existing) {
+        return res.status(404).json({ ok: false, error: "Shipment not found" });
+      }
+
+      if (req.user?.role !== "admin" && existing.userId !== req.user?.sub) {
+        return res.status(403).json({ ok: false, error: "Forbidden" });
+      }
+
       if (status !== undefined) updates.status = status;
       if (driverId !== undefined) updates.driverId = driverId;
 
@@ -204,13 +236,14 @@ router.patch(
           if (status) {
             await tx.aiEvent.create({
               data: {
-                type: "shipment.status.changed",
-                payload: {
+                userId: shipment.userId,
+                command: "shipment.status.changed",
+                response: JSON.stringify({
                   shipmentId: shipment.id,
-                  reference: shipment.reference,
+                  trackingId: shipment.trackingId,
                   newStatus: status,
-                  userId: req.user?.id,
-                },
+                }),
+                provider: "system",
               },
             });
           }
@@ -223,6 +256,8 @@ router.patch(
       );
 
       res.json({ ok: true, shipment: result });
+
+      await invalidateCache(`*shipments*${result.userId || ""}*`);
 
       // Emit WebSocket event
       emitShipmentUpdate(result.id, {
@@ -248,11 +283,26 @@ router.delete(
   auditLog,
   async (req, res, next) => {
     try {
+      const existing = await prisma.shipment.findUnique({
+        where: { id: req.params.id },
+        select: { id: true, userId: true },
+      });
+
+      if (!existing) {
+        return res.status(404).json({ ok: false, error: "Shipment not found" });
+      }
+
+      if (req.user?.role !== "admin" && existing.userId !== req.user?.sub) {
+        return res.status(403).json({ ok: false, error: "Forbidden" });
+      }
+
       await prisma.shipment.delete({
         where: { id: req.params.id },
       });
 
       res.json({ ok: true, message: "Shipment deleted successfully" });
+
+      await invalidateCache("*shipments*");
     } catch (err) {
       if (err.code === "P2025") {
         return res.status(404).json({ ok: false, error: "Shipment not found" });

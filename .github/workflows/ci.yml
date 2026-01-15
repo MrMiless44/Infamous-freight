@@ -48,6 +48,35 @@ jobs:
             exit 1
           fi
 
+  web-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node + pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        env:
+          HUSKY: 0
+        run: pnpm install --frozen-lockfile
+
+      - name: Build shared package
+        run: pnpm --filter @infamous-freight/shared build
+
+      - name: Build web
+        run: pnpm --filter web build
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 

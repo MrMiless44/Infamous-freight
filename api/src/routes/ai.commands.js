@@ -1,4 +1,6 @@
 const express = require('express');
+const { prisma } = require('../db/prisma');
+const { cacheMiddleware } = require('../middleware/cache');
 const { limiters, authenticate, requireScope, auditLog } = require('../middleware/security');
 const { validateString, handleValidationErrors } = require('../middleware/validation');
 
@@ -31,16 +33,23 @@ router.post(
             const { command } = req.body;
             const startTime = Date.now();
 
-            // TODO: Integrate with AI service (e.g., OpenAI, Anthropic, synthetic)
-            const response = {
+            // Persist request placeholder
+            await prisma.aiEvent.create({
+                data: {
+                    userId: req.user.sub,
+                    command,
+                    response: 'pending',
+                    provider: process.env.AI_PROVIDER || 'synthetic',
+                },
+            });
+
+            res.json({
                 ok: true,
                 command,
-                result: 'AI processing not yet implemented',
+                result: 'AI processing queued',
                 timestamp: new Date().toISOString(),
                 processingTime: Date.now() - startTime,
-            };
-
-            res.json(response);
+            });
         } catch (err) {
             next(err);
         }
@@ -57,16 +66,26 @@ router.get(
     limiters.general,
     authenticate,
     requireScope('ai:history'),
+    cacheMiddleware(30),
     auditLog,
     async (req, res, next) => {
         try {
-            // TODO: Fetch from database
-            const history = [];
+            const { take = 20, skip = 0 } = req.query;
+            const limit = Math.min(Number(take) || 20, 100);
+            const offset = Number(skip) || 0;
+
+            const history = await prisma.aiEvent.findMany({
+                where: { userId: req.user.sub },
+                take: limit,
+                skip: offset,
+                orderBy: { createdAt: 'desc' },
+            });
 
             res.json({
                 ok: true,
                 history,
                 count: history.length,
+                pagination: { take: limit, skip: offset },
             });
         } catch (err) {
             next(err);
