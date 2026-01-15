@@ -46,6 +46,27 @@ const limiters = {
     keyGenerator: (req) => req.user?.sub || req.ip,
     message: { error: 'Voice processing rate limit exceeded.' },
   }),
+  // High-cost operations (exports, reports)
+  export: createLimiter({
+    windowMs: parseInt(process.env.RATE_LIMIT_EXPORT_WINDOW_MS || '60') * 60 * 1000,
+    max: parseInt(process.env.RATE_LIMIT_EXPORT_MAX || '5'),
+    keyGenerator: (req) => req.user?.sub || req.ip,
+    message: { error: 'Export rate limit exceeded. Maximum 5 exports per hour.' },
+  }),
+  // Password/account operations
+  passwordReset: createLimiter({
+    windowMs: parseInt(process.env.RATE_LIMIT_PASSWORD_RESET_WINDOW_MS || '24') * 60 * 60 * 1000,
+    max: parseInt(process.env.RATE_LIMIT_PASSWORD_RESET_MAX || '3'),
+    keyGenerator: (req) => req.body?.email || req.ip,
+    message: { error: 'Too many password reset attempts. Try again in 24 hours.' },
+  }),
+  // Webhook validation (allow bursts but track)
+  webhook: createLimiter({
+    windowMs: parseInt(process.env.RATE_LIMIT_WEBHOOK_WINDOW_MS || '1') * 60 * 1000,
+    max: parseInt(process.env.RATE_LIMIT_WEBHOOK_MAX || '100'),
+    keyGenerator: (req) => req.ip,
+    message: { error: 'Webhook rate limit exceeded.' },
+  }),
 };
 
 // Authentication via JWT
@@ -102,10 +123,34 @@ function auditLog(req, res, next) {
   next();
 }
 
+// Validate user owns resource (for routes like /users/:id, /shipments/:id)
+function validateUserOwnership(paramName = 'userId') {
+  return async (req, res, next) => {
+    const resourceUserId = req.params[paramName] || req.body?.[paramName];
+    const currentUserId = req.user?.sub;
+
+    // Admin can bypass ownership check
+    if (req.user?.role === 'admin') {
+      return next();
+    }
+
+    // User can only access own resources
+    if (resourceUserId && resourceUserId !== currentUserId) {
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: 'You do not have access to this resource',
+      });
+    }
+
+    next();
+  };
+}
+
 module.exports = {
   limiters,
   rateLimit: limiters.general,
   authenticate,
   requireScope,
   auditLog,
+  validateUserOwnership,
 };

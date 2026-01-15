@@ -53,6 +53,16 @@ jobs:
         run: pnpm --filter @infamous-freight/shared build
         continue-on-error: false
 
+      - name: Setup git for shallow clone handling
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          # For shallow clones, ensure we have enough history
+          if git rev-parse HEAD^ >/dev/null 2>&1; then
+            echo "✅ Full git history available"
+          else
+            echo "⚠️  Shallow clone detected, will handle gracefully in Vercel"
+          fi
+
       - name: Pull Vercel Environment Information
         id: vercel-env
         run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}

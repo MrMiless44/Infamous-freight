@@ -30,18 +30,47 @@ const nextConfig = {
                     cacheGroups: {
                         default: false,
                         vendors: false,
-                        commons: {
-                            name: 'commons',
-                            chunks: 'all',
-                            minChunks: 2,
+                        // Core vendor chunk (React, Next.js essentials)
+                        core: {
+                            test: /[\\/]node_modules[\\/](react|react-dom|next)[\\/]/,
+                            name: 'core-vendors',
+                            priority: 20,
+                            reuseExistingChunk: true,
+                            enforce: true,
                         },
-                        lib: {
+                        // Stripe and payment vendors
+                        payments: {
+                            test: /[\\/]node_modules[\\/](@stripe|stripe)[\\/]/,
+                            name: 'payment-vendors',
+                            priority: 15,
+                            reuseExistingChunk: true,
+                        },
+                        // Chart libraries (recharts)
+                        charts: {
+                            test: /[\\/]node_modules[\\/](recharts)[\\/]/,
+                            name: 'chart-vendors',
+                            priority: 10,
+                            reuseExistingChunk: true,
+                        },
+                        // All other vendors
+                        commons: {
                             test: /[\\/]node_modules[\\/]/,
-                            name(module) {
-                                const packageName = module.context.match(
-                                    /[\\/]node_modules[\\/](.*?)([\\/]|$)/
-                                )?.[1];
-                                return `npm.${packageName?.replace('@', '')}`;
+                            name: 'common-vendors',
+                            priority: 5,
+                            minChunks: 2,
+                            reuseExistingChunk: true,
+                        },
+                        // Shared app components
+                        shared: {
+                            minChunks: 2,
+                            priority: 3,
+                            reuseExistingChunk: true,
+                            name(module, chunks) {
+                                const hash = require('crypto')
+                                    .createHash('sha1')
+                                    .update(chunks.map((c) => c.name).join('_'))
+                                    .digest('hex');
+                                return `shared-${hash.substring(0, 8)}`;
                             },
                         },
                     },

@@ -3,13 +3,26 @@
 // ROI: 20-30% revenue increase through data-driven decisions
 
 import React, { useEffect, useState } from 'react';
-import {
-  LineChart,
+import dynamic from 'next/dynamic';
+
+// Lazy-load heavy recharts components with fallback
+const LineChart = dynamic(
+  () => import('recharts').then((mod) => mod.LineChart),
+  { loading: () => <div className="h-[300px] bg-gray-100 animate-pulse rounded" /> }
+);
+const BarChart = dynamic(
+  () => import('recharts').then((mod) => mod.BarChart),
+  { loading: () => <div className="h-[300px] bg-gray-100 animate-pulse rounded" /> }
+);
+const PieChart = dynamic(
+  () => import('recharts').then((mod) => mod.PieChart),
+  { loading: () => <div className="h-[300px] bg-gray-100 animate-pulse rounded" /> }
+);
+
+// Import only required recharts components once dynamically
+const {
   Line,
-  BarChart,
   Bar,
-  PieChart,
-  Pie,
   Cell,
   XAxis,
   YAxis,
@@ -17,7 +30,8 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-} from 'recharts';
+  Pie,
+} = require('recharts');
 
 interface RevenueMetrics {
   mrr: number;

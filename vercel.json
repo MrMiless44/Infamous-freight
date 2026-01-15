@@ -5,7 +5,7 @@
   "devCommand": "pnpm --filter web dev",
   "installCommand": "pnpm install",
   "outputDirectory": "web/.next",
-  "ignoreCommand": "bash -c 'git rev-parse --is-inside-work-tree >/dev/null 2>&1 || exit 1; git rev-parse HEAD^ >/dev/null 2>&1 || exit 1; git diff --quiet HEAD^ HEAD . ":(exclude)api/**" ":(exclude)packages/**" ":(exclude)archive/**"'",
+  "ignoreCommand": "bash -c 'if [ -d .git ]; then git diff --quiet HEAD -- . \":(exclude)api/**\" \":(exclude)packages/**\" \":(exclude)archive/**\" || exit 1; fi'",
   "github": {
     "silent": false,
     "enabled": true

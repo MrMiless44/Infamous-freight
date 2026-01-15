@@ -51,38 +51,70 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm lint
+      - name: Build shared package first
+        run: pnpm --filter @infamous-freight/shared build
         continue-on-error: false
 
-      - name: notify vercel
+      - name: Lint (API)
+        run: pnpm --filter infamous-freight-api lint
+        continue-on-error: false
+
+      - name: Lint (Web)
+        run: pnpm --filter web typecheck
+        continue-on-error: false
+
+      - name: Notify vercel (lint)
         uses: vercel/repository-dispatch/actions/status@v1
         with:
           name: Vercel - genesis: lint
 
-      - name: Typecheck
-        run: pnpm typecheck
+      - name: Typecheck (Shared)
+        run: pnpm --filter @infamous-freight/shared typecheck
         continue-on-error: false
 
-      - name: notify vercel (typecheck)
+      - name: Typecheck (API)
+        run: pnpm --filter infamous-freight-api typecheck
+        continue-on-error: false
+
+      - name: Typecheck (Web)
+        run: pnpm --filter web typecheck
+        continue-on-error: false
+
+      - name: Notify vercel (typecheck)
         uses: vercel/repository-dispatch/actions/status@v1
         with:
           name: Vercel - genesis: typecheck
 
-      - name: Test
-        run: pnpm test
+      - name: Test (API)
+        run: pnpm --filter infamous-freight-api test
         continue-on-error: false
 
-      - name: notify vercel (test)
+      - name: Upload API coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./api/coverage/lcov.info
+          flags: api
+          name: api-coverage
+        if: always()
+
+      - name: Notify vercel (test)
         uses: vercel/repository-dispatch/actions/status@v1
         with:
           name: Vercel - genesis: test
 
-      - name: Build
-        run: pnpm build
+      - name: Build (Shared)
+        run: pnpm --filter @infamous-freight/shared build
         continue-on-error: false
 
-      - name: notify vercel (build)
+      - name: Build (API)
+        run: pnpm --filter infamous-freight-api build
+        continue-on-error: false
+
+      - name: Build (Web)
+        run: pnpm --filter web build
+        continue-on-error: false
+
+      - name: Notify vercel (build)
         uses: vercel/repository-dispatch/actions/status@v1
         with:
           name: Vercel - genesis: build

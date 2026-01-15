@@ -1,7 +1,7 @@
 # Dependencies
 
 node_modules
-\*\*/node_modules
+**/node_modules
 .pnpm-store
 pnpm-lock.yaml.orig
 
@@ -29,24 +29,24 @@ playwright-report
 
 # Logs and temporary
 
-_.log
+*.log
 .DS_Store
-_.pem
+*.pem
 
 # IDE
 
 .vscode
 .idea
-_.swp
-_.swo
+*.swp
+*.swo
 
 # Test files
 
-**tests** \*_/**tests**
-_.test.ts
-_.test.js
-_.spec.ts
-\*.spec.js
+**/*test** **/*tests**
+*.test.ts
+*.test.js
+*.spec.ts
+*.spec.js
 junit.xml
 tests/e2e
 

@@ -1,6 +1,8 @@
 const express = require('express');
 const multer = require('multer');
 const { limiters, authenticate, requireScope, auditLog } = require('../middleware/security');
+const { validateString, handleValidationErrors } = require('../middleware/validation');
+const { validateString, handleValidationErrors } = require('../middleware/validation');
 
 const router = express.Router();
 
@@ -31,8 +33,8 @@ router.post(
     limiters.voice,
     authenticate,
     requireScope('voice:ingest'),
-    upload.single('audio'),
     auditLog,
+    upload.single('audio'),
     async (req, res, next) => {
         try {
             // Feature flag check
@@ -87,20 +89,15 @@ router.post(
  */
 router.post(
     '/voice/command',
-    limiters.ai,
+    limiters.voice,
     authenticate,
     requireScope('voice:command'),
     auditLog,
+    validateString('text', { maxLength: 500 }),
+    handleValidationErrors,
     async (req, res, next) => {
         try {
             const { text } = req.body;
-
-            if (!text) {
-                return res.status(400).json({
-                    ok: false,
-                    error: 'Text command is required',
-                });
-            }
 
             // TODO: Process voice command
             const result = {

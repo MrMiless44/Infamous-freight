@@ -1,0 +1,165 @@
+config:
+  target: "{{ $processEnvironment.API_URL || 'http://localhost:3001' }}"
+  phases:
+    # Phase 1: Warm up (ramp up to 100 RPS over 2 minutes)
+    - duration: 120
+      arrivalRate: 0.833  # ~50 requests per second at end
+      name: "Warm up"
+
+    # Phase 2: Normal load (steady 100 RPS for 5 minutes)
+    - duration: 300
+      arrivalRate: 1.667  # 100 RPS
+      name: "Normal load"
+
+    # Phase 3: Spike test (jump to 500 RPS for 1 minute)
+    - duration: 60
+      arrivalRate: 8.333  # 500 RPS
+      name: "Spike test"
+
+    # Phase 4: Stress test (up to 1000 RPS for 3 minutes)
+    - duration: 180
+      arrivalRate: 16.667  # 1000 RPS
+      name: "Stress test"
+
+    # Phase 5: Cool down (scale back to 50 RPS)
+    - duration: 120
+      arrivalRate: 0.833  # 50 RPS
+      name: "Cool down"
+
+  processor: "./loadtest-processor.js"
+  variables:
+    baseUrl: "{{ $processEnvironment.API_URL || 'http://localhost:3001' }}"
+    token: ""
+  defaults:
+    headers:
+      Content-Type: "application/json"
+      User-Agent: "Artillery Load Test"
+  timeout: 30
+  http:
+    timeout: 30000
+
+scenarios:
+  - name: "Health Check"
+    weight: 5
+    flow:
+      - get:
+          url: "/api/health"
+          expect:
+            - statusCode: 200
+
+  - name: "User Authentication"
+    weight: 10
+    flow:
+      - post:
+          url: "/api/auth/login"
+          json:
+            email: "{{ $randomString(10) }}@test.local"
+            password: "testPassword123!"
+          expect:
+            - statusCode: [200, 401]
+          capture:
+            json: "$.token"
+            as: "authToken"
+
+  - name: "List Shipments"
+    weight: 25
+    flow:
+      - function: "setAuthHeader"
+      - get:
+          url: "/api/shipments?limit=50"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          expect:
+            - statusCode: [200, 401]
+
+  - name: "Get Shipment Detail"
+    weight: 25
+    flow:
+      - function: "setAuthHeader"
+      - function: "getRandomShipmentId"
+      - get:
+          url: "/api/shipments/{{ shipmentId }}"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          expect:
+            - statusCode: [200, 404]
+
+  - name: "Create Shipment"
+    weight: 15
+    flow:
+      - function: "setAuthHeader"
+      - post:
+          url: "/api/shipments"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          json:
+            origin: "New York, NY"
+            destination: "Los Angeles, CA"
+            items:
+              - name: "Package"
+                weight: 10
+                dimensions:
+                  length: 12
+                  width: 8
+                  height: 6
+            estimatedValue: 500
+          expect:
+            - statusCode: [201, 400, 401]
+
+  - name: "Update Shipment Status"
+    weight: 10
+    flow:
+      - function: "setAuthHeader"
+      - function: "getRandomShipmentId"
+      - patch:
+          url: "/api/shipments/{{ shipmentId }}"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          json:
+            status: "in_transit"
+          expect:
+            - statusCode: [200, 404, 401]
+
+  - name: "Search Shipments"
+    weight: 15
+    flow:
+      - function: "setAuthHeader"
+      - get:
+          url: "/api/shipments/search?q=package&status=pending"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          expect:
+            - statusCode: [200, 400]
+
+  - name: "Payment Processing"
+    weight: 8
+    flow:
+      - function: "setAuthHeader"
+      - post:
+          url: "/api/billing/payment-intent"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          json:
+            amount: 9999
+            currency: "usd"
+            shipmentId: "{{ $randomString(36) }}"
+          expect:
+            - statusCode: [200, 400]
+
+  - name: "Get User Profile"
+    weight: 7
+    flow:
+      - function: "setAuthHeader"
+      - get:
+          url: "/api/users/profile"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          expect:
+            - statusCode: [200, 401]
+
+# Assertions to verify performance SLAs
+assertions:
+  - jitter < 100  # Latency variance
+  - p95 < 250     # 95th percentile under 250ms
+  - p99 < 500     # 99th percentile under 500ms
+  - errorRate < 1 # Less than 1% error rate

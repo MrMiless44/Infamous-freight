@@ -36,6 +36,9 @@
     "docker:down": "docker-compose down",
     "docker:logs": "docker-compose logs -f",
     "docker:rebuild": "docker-compose up -d --build",
+    "env:setup": "./scripts/setup-environments.sh",
+    "env:validate": "./scripts/env-validate.sh",
+    "env:check": "./scripts/env-validate.sh",
     "prepare": "husky install || true"
   },
   "workspaces": [

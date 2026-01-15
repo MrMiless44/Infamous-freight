@@ -27,12 +27,10 @@ router.post(
     limiters.billing,
     authenticate,
     requireScope('billing:write'),
-    [
-        validateString('amount'),
-        validateString('currency'),
-        handleValidationErrors,
-    ],
     auditLog,
+    validateString('amount'),
+    validateString('currency'),
+    handleValidationErrors,
     async (req, res, next) => {
         try {
             const { amount, currency = 'usd', description, metadata = {} } = req.body;
@@ -89,11 +87,9 @@ router.post(
     limiters.billing,
     authenticate,
     requireScope('billing:write'),
-    [
-        validateString('priceId'),
-        handleValidationErrors,
-    ],
     auditLog,
+    validateString('priceId'),
+    handleValidationErrors,
     async (req, res, next) => {
         try {
             const { priceId, email = req.user.email, metadata = {} } = req.body;

@@ -15,11 +15,9 @@ router.post(
     limiters.ai,
     authenticate,
     requireScope('ai:command'),
-    [
-        validateString('command', { maxLength: 500 }),
-        handleValidationErrors,
-    ],
     auditLog,
+    validateString('command', { maxLength: 500 }),
+    handleValidationErrors,
     async (req, res, next) => {
         try {
             // Feature flag check

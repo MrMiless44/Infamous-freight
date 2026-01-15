@@ -8,24 +8,26 @@ function securityHeaders(app) {
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
-          scriptSrc: ["'self'", "'unsafe-inline'"],
-          styleSrc: ["'self'", "'unsafe-inline'"],
+          scriptSrc: ["'self'"],
+          styleSrc: ["'self'"],
           imgSrc: ["'self'", 'data:', 'https:'],
           connectSrc: ["'self'", process.env.CORS_ORIGINS || 'http://localhost:3000'],
           fontSrc: ["'self'"],
           objectSrc: ["'none'"],
+          mediaSrc: ["'self'"],
+          frameSrc: ["'none'"],
           upgradeInsecureRequests: process.env.NODE_ENV === 'production' ? [] : [],
+          reportUri: process.env.CSP_REPORT_URI ? [process.env.CSP_REPORT_URI] : [],
         },
-        reportUri: process.env.CSP_REPORT_URI,
       },
-      crossOriginEmbedderPolicy: process.env.NODE_ENV === 'production',
+      crossOriginEmbedderPolicy: true,
       crossOriginResourcePolicy: { policy: 'cross-origin' },
-      crossOriginOpenerPolicy: { policy: 'same-origin' },
+      crossOriginOpenerPolicy: { policy: 'same-origin-allow-popups' },
       dnsPrefetchControl: { allow: false },
       frameguard: { action: 'deny' },
       hidePoweredBy: true,
       hsts: {
-        maxAge: 31536000,
+        maxAge: 63072000, // 2 years
         includeSubDomains: true,
         preload: true,
       },
@@ -36,7 +38,7 @@ function securityHeaders(app) {
     }),
   );
 
-  // SameSite cookie protection
+  // SameSite cookie protection (Strict by default)
   app.use((req, res, next) => {
     const oldSet = res.set.bind(res);
     res.set = function (key, val) {
@@ -44,13 +46,41 @@ function securityHeaders(app) {
         val = Array.isArray(val) ? val : [val];
         val = val.map(v => {
           if (!v.includes('SameSite')) {
-            v += '; SameSite=Strict';
+            v += '; SameSite=Strict; Secure; HttpOnly';
           }
           return v;
         });
       }
       return oldSet(key, val);
     };
+    next();
+  });
+
+  // Additional OWASP headers
+  app.use((req, res, next) => {
+    // Prevent browsers from MIME-sniffing
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+
+    // Prevent clickjacking
+    res.setHeader('X-Frame-Options', 'DENY');
+
+    // Enable XSS protection
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+
+    // Prevent information disclosure
+    res.setHeader('Server', 'Server'); // Generic, don't reveal Express
+
+    // Strict Transport Security
+    res.setHeader(
+      'Strict-Transport-Security',
+      'max-age=63072000; includeSubDomains; preload'
+    );
+
+    // Require HTTPS for all cookies
+    if (process.env.NODE_ENV === 'production') {
+      res.setHeader('Expect-CT', 'max-age=86400, enforce');
+    }
+
     next();
   });
 }

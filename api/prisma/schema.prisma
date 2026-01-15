@@ -17,6 +17,15 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // Relations
+  shipments     Shipment[]
+  payments      Payment[]
+  subscriptions Subscription[]
+  aiEvents      AiEvent[]
+
+  @@index([email])
+  @@index([role])
+  @@index([createdAt])
   @@map("users")
 }
 
@@ -31,20 +40,34 @@ model Driver {
 
   shipments Shipment[]
 
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
   @@map("drivers")
 }
 
 model Shipment {
   id          String   @id @default(uuid())
   trackingId  String   @unique
+  userId      String
+  driverId    String?
   origin      String
   destination String
   status      String   @default("pending")
-  driverId    String?
-  driver      Driver?  @relation(fields: [driverId], references: [id])
+  reference   String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  // Relations
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  driver Driver? @relation(fields: [driverId], references: [id], onDelete: SetNull)
+
+  @@index([trackingId])
+  @@index([userId])
+  @@index([status])
+  @@index([driverId])
+  @@index([createdAt])
+  @@index([updatedAt])
   @@map("shipments")
 }
 
@@ -52,50 +75,74 @@ model AiEvent {
   id        String   @id @default(uuid())
   userId    String
   command   String
-  response  String
+  response  String?
   provider  String   @default("openai")
   createdAt DateTime @default(now())
 
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([provider])
+  @@index([createdAt])
   @@map("ai_events")
 }
 
 model Payment {
-  id            String   @id @default(uuid())
-  userId        String
-  amount        Int // in cents
-  currency      String   @default("usd")
-  status        String   @default("pending")
-  provider      String // stripe or paypal
-  transactionId String?  @unique
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id                    String   @id @default(uuid())
+  userId                String
+  stripePaymentIntentId String?  @unique
+  amount                Float    // in cents or currency
+  currency              String   @default("usd")
+  status                String   @default("pending")
+  description           String?
+  metadata              String?  // JSON
+  encryptedCardLast4    String?  // Encrypted last 4 digits
+  encryptedMetadata     String?  // Encrypted sensitive metadata
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
 
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([stripePaymentIntentId])
+  @@index([createdAt])
   @@map("payments")
 }
 
 model Subscription {
-  id          String   @id @default(uuid())
-  userId      String
-  tier        String   // basic, premium, enterprise
-  status      String   @default("active")
-  amount      Int      // monthly amount in cents
-  email       String
-  stripeId    String?  @unique
-  currentPeriodStart DateTime?
-  currentPeriodEnd   DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                   String   @id @default(uuid())
+  userId               String
+  stripeSubscriptionId String?  @unique
+  stripeCustomerId     String?
+  stripePriceId        String?
+  status               String   @default("active")
+  currentPeriodStart   DateTime?
+  currentPeriodEnd     DateTime?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([stripeSubscriptionId])
+  @@index([createdAt])
   @@map("subscriptions")
 }
 
 model StripeCustomer {
-  id         String   @id @default(uuid())
-  userId     String   @unique
-  stripeId   String   @unique
-  email      String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id               String   @id @default(uuid())
+  userId           String   @unique
+  stripeCustomerId String   @unique
+  email            String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
+  @@index([userId])
+  @@index([stripeCustomerId])
   @@map("stripe_customers")
 }
