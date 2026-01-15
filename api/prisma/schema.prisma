@@ -21,6 +21,7 @@ model User {
   shipments     Shipment[]
   payments      Payment[]
   subscriptions Subscription[]
+  entitlements  Entitlement[]
   aiEvents      AiEvent[]
 
   @@index([email])
@@ -147,4 +148,40 @@ model StripeCustomer {
   @@index([userId])
   @@index([stripeCustomerId])
   @@map("stripe_customers")
+}
+model Subscription {
+  id                String   @id @default(uuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  provider          String   // "stripe"
+  customerId        String?
+  subscriptionId    String?
+  priceId           String?
+  status            String?  // "active", "canceled", "past_due", ...
+
+  currentPeriodEnd  DateTime?
+  cancelAtPeriodEnd Boolean  @default(false)
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([userId])
+  @@index([subscriptionId])
+  @@index([customerId])
+  @@map("subscriptions")
+}
+
+model Entitlement {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  key       String   // e.g. "plan", "features"
+  value     String   // e.g. "starter|pro|enterprise"
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, key])
+  @@index([userId])
+  @@map("entitlements")
 }

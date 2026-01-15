@@ -14,7 +14,8 @@ if (process.env.DD_TRACE_ENABLED === "true") {
   }
 }
 const express = require("express");
-const cors = require("cors");
+const { corsMiddleware } = require("./middleware/cors");
+const path = require("path");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./swagger");
 const {
@@ -42,46 +43,27 @@ const usersRoutes = require("./routes/users");
 const shipmentsRoutes = require("./routes/shipments");
 const analyticsRoutes = require("./routes/analytics");
 const avatarsRouter = require("./avatars/routes");
+const genesisRouter = require("./genesis/routes");
+const satelliteRouter = require("./satellite/routes");
+const billingRouter = require("./billing/routes");
+const authRouter = require("./auth/routes");
+const { validateRuntimeEnv } = require("./config/validate");
 
 const app = express();
+
+// Validate critical runtime env early
+validateRuntimeEnv();
 
 // Initialize Sentry for error tracking (must be early)
 initSentry(app);
 
 app.set("trust proxy", 1);
 
-const defaultOrigins = ["http://localhost:3000"];
-const allowedOrigins = (process.env.CORS_ORIGINS || defaultOrigins.join(","))
-  .split(",")
-  .map((origin) => origin.trim())
-  .filter(Boolean);
-const allowedOriginsSet = new Set(allowedOrigins);
-
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (origin && !allowedOriginsSet.has(origin)) {
-    return res.status(403).json({
-      error: "CORS Rejected",
-      message:
-        "Origin is not allowed. Update CORS_ORIGINS to permit this origin.",
-    });
-  }
-  next();
-});
-
 // Apply enhanced security headers
 securityHeaders(app);
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      if (allowedOriginsSet.has(origin)) return callback(null, true);
-      return callback(null, false);
-    },
-    credentials: true,
-  }),
-);
+// CORS allowlist (server-to-server allowed when Origin is absent)
+app.use(corsMiddleware());
 app.use(correlationMiddleware);
 app.use(performanceMiddleware);
 app.use(httpLogger);
@@ -108,7 +90,18 @@ app.use("/api", voiceRoutes);
 app.use("/api", usersRoutes);
 app.use("/api", shipmentsRoutes);
 app.use("/api", analyticsRoutes);
-app.use("/api/avatars", avatarsRouter);
+app.use("/v1/auth", authRouter);
+
+// Serve static avatar files (Phase 1 & Phase 2)
+app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
+app.use("/avatars/main", express.static(path.join(__dirname, "../../web/public/avatars/main")));
+
+// Avatar routes (Phase 1 & Phase 2)
+app.use("/v1/avatars", avatarsRouter);
+app.use("/api/avatars", avatarsRouter);  // Legacy path support
+app.use("/v1/genesis", genesisRouter);
+app.use("/v1/satellite", satelliteRouter);
+app.use("/v1/billing", billingRouter);
 app.get("/health", (_req, res) => res.status(200).send("ok"));
 
 // CSP Violation Report Handler
