@@ -14,7 +14,7 @@ type Plan = {
 export default function Pricing() {
   const router = useRouter();
   const locale = getLocaleFromRouter(router.locale);
-  
+
   const [plans, setPlans] = useState<Plan[]>([]);
   const [configured, setConfigured] = useState(false);
   const [err, setErr] = useState<string | null>(null);

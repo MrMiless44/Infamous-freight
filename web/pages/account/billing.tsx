@@ -8,7 +8,7 @@ const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 export default function Billing() {
   const router = useRouter();
   const locale = getLocaleFromRouter(router.locale);
-  
+
   const [ent, setEnt] = useState<any>(null);
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -36,9 +36,7 @@ export default function Billing() {
     setErr(null);
     try {
       const customerId =
-        prompt(
-          "Enter Stripe customerId (enable DB lookup in Phase-15):"
-        ) || "";
+        prompt("Enter Stripe customerId (enable DB lookup in Phase-15):") || "";
       const token = localStorage.getItem("genesisToken") || "dev-token";
       const res = await fetch(`${apiBase}/v1/billing/portal`, {
         method: "POST",
@@ -97,7 +95,13 @@ export default function Billing() {
               <strong>Features:</strong> {ent.features}
             </div>
             <div style={{ fontSize: 12, opacity: 0.8 }}>
-              <pre style={{ background: "rgba(0,0,0,0.05)", padding: 8, borderRadius: 8 }}>
+              <pre
+                style={{
+                  background: "rgba(0,0,0,0.05)",
+                  padding: 8,
+                  borderRadius: 8,
+                }}
+              >
                 {JSON.stringify(ent, null, 2)}
               </pre>
             </div>

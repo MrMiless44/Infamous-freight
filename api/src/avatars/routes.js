@@ -19,15 +19,11 @@ const {
     getSelection,
     setSelection,
 } = require('./store');
+const { getUserId } = require('../auth/user');
 const { authenticate, requireScope, limiters, auditLog } = require('../middleware/security');
 const { handleValidationErrors } = require('../middleware/validation');
 
 const router = express.Router();
-
-// Helper: Extract user ID from JWT or header
-function getUserId(req) {
-    return req.user?.sub || req.headers['x-user-id'] || 'anonymous';
-}
 
 // ==================== SYSTEM AVATARS ====================
 

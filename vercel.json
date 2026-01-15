@@ -5,6 +5,7 @@
   "devCommand": "pnpm --filter web dev",
   "installCommand": "pnpm install",
   "outputDirectory": "web/.next",
+  "ignoreCommand": "bash -c 'if [ -d .git ]; then git diff --quiet HEAD -- . \":(exclude)api/**\" \":(exclude)packages/**\" \":(exclude)archive/**\" || exit 1; fi'",
   "github": {
     "silent": false,
     "enabled": true

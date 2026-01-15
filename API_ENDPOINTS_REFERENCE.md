@@ -11,13 +11,16 @@
 ## 🏥 Health & Status Endpoints
 
 ### Health Check (Public)
+
 ```http
 GET /api/health
 ```
+
 **Description**: General health status, database connection, uptime  
 **Auth**: None  
 **Rate Limit**: Unlimited (health check exclusion)  
 **Response**:
+
 ```json
 {
   "status": "ok",
@@ -28,18 +31,22 @@ GET /api/health
 ```
 
 ### Liveness Probe (Public)
+
 ```http
 GET /api/health/live
 ```
+
 **Description**: Kubernetes liveness probe  
 **Auth**: None  
 **Rate Limit**: Unlimited  
 **Response**: `200 OK` or `503 Service Unavailable`
 
 ### Readiness Probe (Public)
+
 ```http
 GET /api/health/ready
 ```
+
 **Description**: Kubernetes readiness probe  
 **Auth**: None  
 **Rate Limit**: Unlimited  
@@ -52,18 +59,22 @@ GET /api/health/ready
 ## 👥 User Management Endpoints
 
 ### List All Users (Admin)
+
 ```http
 GET /api/users
 Authorization: Bearer <token>
 ```
+
 **Auth**: Required, scope `users:read`  
 **Rate Limit**: 100 requests/15 min  
 **Query Params**:
+
 - `skip` - Number of records to skip (pagination)
 - `take` - Number of records to return (max 100)
 - `role` - Filter by role (admin, driver, manager)
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -81,15 +92,18 @@ Authorization: Bearer <token>
 ```
 
 ### Get User by ID
+
 ```http
 GET /api/users/:userId
 Authorization: Bearer <token>
 ```
+
 **Auth**: Required, own user or admin scope `users:read`  
 **Rate Limit**: 100 requests/15 min  
 **Params**: `userId` - User UUID
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -105,13 +119,16 @@ Authorization: Bearer <token>
 ```
 
 ### Create User (Signup)
+
 ```http
 POST /api/users
 Content-Type: application/json
 ```
+
 **Auth**: None  
 **Rate Limit**: 5 attempts/15 min (password reset limiter)  
 **Body**:
+
 ```json
 {
   "email": "newuser@example.com",
@@ -122,6 +139,7 @@ Content-Type: application/json
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -134,11 +152,13 @@ Content-Type: application/json
 ```
 
 ### Update User
+
 ```http
 PATCH /api/users/:userId
 Authorization: Bearer <token>
 Content-Type: application/json
 ```
+
 **Auth**: Required, own user or admin scope `users:write`  
 **Rate Limit**: 100 requests/15 min  
 **Body**: Partial user object (email, name, phone, preferences)
@@ -146,13 +166,16 @@ Content-Type: application/json
 **Response**: Updated user object
 
 ### Delete User
+
 ```http
 DELETE /api/users/:userId
 Authorization: Bearer <token>
 ```
+
 **Auth**: Required, own user or admin scope `users:delete`  
 **Rate Limit**: 100 requests/15 min  
 **Response**:
+
 ```json
 {
   "success": true,
@@ -167,19 +190,23 @@ Authorization: Bearer <token>
 ## 📦 Shipment Management Endpoints
 
 ### List Shipments
+
 ```http
 GET /api/shipments
 Authorization: Bearer <token>
 ```
+
 **Auth**: Required, scope `shipments:read`  
 **Rate Limit**: 100 requests/15 min (cached 5 min)  
 **Query Params**:
+
 - `status` - Filter by status (pending, in_transit, delivered, cancelled)
 - `driverId` - Filter by driver
 - `skip` - Pagination offset
 - `take` - Pagination limit
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -200,23 +227,28 @@ Authorization: Bearer <token>
 ```
 
 ### Get Shipment by ID
+
 ```http
 GET /api/shipments/:shipmentId
 Authorization: Bearer <token>
 ```
+
 **Auth**: Required, scope `shipments:read`  
 **Rate Limit**: 100 requests/15 min (cached 5 min)  
 **Response**: Full shipment object with real-time location
 
 ### Create Shipment
+
 ```http
 POST /api/shipments
 Authorization: Bearer <token>
 Content-Type: application/json
 ```
+
 **Auth**: Required, scope `shipments:create`  
 **Rate Limit**: 100 requests/15 min  
 **Body**:
+
 ```json
 {
   "origin": "New York, NY",
@@ -233,6 +265,7 @@ Content-Type: application/json
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -246,26 +279,31 @@ Content-Type: application/json
 ```
 
 ### Update Shipment Status
+
 ```http
 PATCH /api/shipments/:shipmentId
 Authorization: Bearer <token>
 Content-Type: application/json
 ```
+
 **Auth**: Required, scope `shipments:update`  
 **Rate Limit**: 100 requests/15 min  
 **Body**:
+
 ```json
 {
   "status": "in_transit",
-  "location": { "lat": 40.7128, "lng": -74.0060 }
+  "location": { "lat": 40.7128, "lng": -74.006 }
 }
 ```
 
 ### Delete Shipment
+
 ```http
 DELETE /api/shipments/:shipmentId
 Authorization: Bearer <token>
 ```
+
 **Auth**: Required, scope `shipments:delete`  
 **Rate Limit**: 100 requests/15 min  
 **Response**: Success message
@@ -277,14 +315,17 @@ Authorization: Bearer <token>
 ## 🤖 AI Commands Endpoints
 
 ### Execute AI Command
+
 ```http
 POST /api/ai/commands
 Authorization: Bearer <token>
 Content-Type: application/json
 ```
+
 **Auth**: Required, scope `ai:command`  
 **Rate Limit**: 20 requests/1 min  
 **Body**:
+
 ```json
 {
   "command": "route_optimization",
@@ -296,6 +337,7 @@ Content-Type: application/json
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -308,12 +350,15 @@ Content-Type: application/json
 ```
 
 ### List AI Providers
+
 ```http
 GET /api/ai/providers
 Authorization: Bearer <token>
 ```
+
 **Auth**: Required, scope `ai:read`  
 **Response**:
+
 ```json
 {
   "success": true,
@@ -332,18 +377,22 @@ Authorization: Bearer <token>
 ## 🎙️ Voice Processing Endpoints
 
 ### Upload Voice Command
+
 ```http
 POST /api/voice/ingest
 Authorization: Bearer <token>
 Content-Type: multipart/form-data
 ```
+
 **Auth**: Required, scope `voice:ingest`  
 **Rate Limit**: 10 uploads/1 min  
 **Multipart Fields**:
+
 - `audio` - Audio file (mp3, wav, m4a, max 10MB)
 - `metadata` - JSON object with shipmentId, driverId, etc.
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -357,14 +406,17 @@ Content-Type: multipart/form-data
 ```
 
 ### Execute Voice Command
+
 ```http
 POST /api/voice/command
 Authorization: Bearer <token>
 Content-Type: application/json
 ```
+
 **Auth**: Required, scope `voice:command`  
 **Rate Limit**: 10 commands/1 min  
 **Body**:
+
 ```json
 {
   "transcription": "Update status to delivered",
@@ -374,6 +426,7 @@ Content-Type: application/json
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -392,14 +445,17 @@ Content-Type: application/json
 ## 💳 Billing Endpoints
 
 ### Create Payment Intent
+
 ```http
 POST /api/billing/payment-intent
 Authorization: Bearer <token>
 Content-Type: application/json
 ```
+
 **Auth**: Required, scope `billing:create`  
 **Rate Limit**: 30 requests/15 min  
 **Body**:
+
 ```json
 {
   "amount": 9999,
@@ -412,6 +468,7 @@ Content-Type: application/json
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -423,14 +480,17 @@ Content-Type: application/json
 ```
 
 ### Confirm Payment
+
 ```http
 POST /api/billing/payment-confirm
 Authorization: Bearer <token>
 Content-Type: application/json
 ```
+
 **Auth**: Required, scope `billing:write`  
 **Rate Limit**: 30 requests/15 min  
 **Body**:
+
 ```json
 {
   "paymentIntentId": "pi_1234567890",
@@ -439,6 +499,7 @@ Content-Type: application/json
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -452,10 +513,12 @@ Content-Type: application/json
 ```
 
 ### List Invoices
+
 ```http
 GET /api/billing/invoices
 Authorization: Bearer <token>
 ```
+
 **Auth**: Required, scope `billing:read`  
 **Rate Limit**: 30 requests/15 min (cached 5 min)  
 **Response**: Array of invoice objects
@@ -467,17 +530,21 @@ Authorization: Bearer <token>
 ## 🔔 WebSocket Real-Time Endpoints
 
 ### Connect to WebSocket
+
 ```
 wss://infamous-freight-api.fly.dev/ws
 Authorization: Bearer <token>
 ```
+
 **Auth**: Required, JWT token in query or header  
 **Rate Limit**: Unlimited connections (per user)
 
 **Connection Flow**:
+
 1. Client connects with JWT token
 2. Server validates token
 3. Client sends subscribe message:
+
 ```json
 {
   "type": "subscribe",
@@ -487,6 +554,7 @@ Authorization: Bearer <token>
 ```
 
 **Server Response**:
+
 ```json
 {
   "type": "subscribed",
@@ -496,13 +564,14 @@ Authorization: Bearer <token>
 ```
 
 **Real-Time Updates** (from server):
+
 ```json
 {
   "type": "update",
   "channel": "shipment:123",
   "data": {
     "status": "in_transit",
-    "location": { "lat": 40.7128, "lng": -74.0060 },
+    "location": { "lat": 40.7128, "lng": -74.006 },
     "timestamp": "2025-01-15T00:00:00Z"
   }
 }
@@ -515,13 +584,16 @@ Authorization: Bearer <token>
 ## 🔐 Authentication Endpoints
 
 ### Login
+
 ```http
 POST /api/auth/login
 Content-Type: application/json
 ```
+
 **Auth**: None  
 **Rate Limit**: 5 attempts/15 min  
 **Body**:
+
 ```json
 {
   "email": "user@example.com",
@@ -530,6 +602,7 @@ Content-Type: application/json
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -546,12 +619,15 @@ Content-Type: application/json
 ```
 
 ### Logout
+
 ```http
 POST /api/auth/logout
 Authorization: Bearer <token>
 ```
+
 **Auth**: Required  
 **Response**:
+
 ```json
 {
   "success": true,
@@ -560,12 +636,15 @@ Authorization: Bearer <token>
 ```
 
 ### Refresh Token
+
 ```http
 POST /api/auth/refresh
 Authorization: Bearer <token>
 ```
+
 **Auth**: Required  
 **Response**:
+
 ```json
 {
   "success": true,
@@ -576,13 +655,16 @@ Authorization: Bearer <token>
 ```
 
 ### Request Password Reset
+
 ```http
 POST /api/auth/password-reset-request
 Content-Type: application/json
 ```
+
 **Auth**: None  
 **Rate Limit**: 3 attempts/24 hours  
 **Body**:
+
 ```json
 {
   "email": "user@example.com"
@@ -590,6 +672,7 @@ Content-Type: application/json
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -602,6 +685,7 @@ Content-Type: application/json
 ## 📊 Error Responses
 
 ### Standard Error Format
+
 ```json
 {
   "success": false,
@@ -618,16 +702,16 @@ Content-Type: application/json
 
 ### HTTP Status Codes
 
-| Code | Meaning | Example |
-|------|---------|---------|
-| 200 | OK | Request successful |
-| 201 | Created | Resource created |
-| 400 | Bad Request | Validation error |
-| 401 | Unauthorized | Missing/invalid token |
-| 403 | Forbidden | Insufficient scope |
-| 404 | Not Found | Resource not found |
-| 429 | Too Many Requests | Rate limit exceeded |
-| 500 | Server Error | Internal error |
+| Code | Meaning           | Example               |
+| ---- | ----------------- | --------------------- |
+| 200  | OK                | Request successful    |
+| 201  | Created           | Resource created      |
+| 400  | Bad Request       | Validation error      |
+| 401  | Unauthorized      | Missing/invalid token |
+| 403  | Forbidden         | Insufficient scope    |
+| 404  | Not Found         | Resource not found    |
+| 429  | Too Many Requests | Rate limit exceeded   |
+| 500  | Server Error      | Internal error        |
 
 ---
 
@@ -635,18 +719,19 @@ Content-Type: application/json
 
 All endpoints enforce rate limiting based on scope:
 
-| Limiter | Window | Max | Key Generator |
-|---------|--------|-----|----------------|
-| **General** | 15 min | 100 | User ID or IP |
-| **Auth** | 15 min | 5 | IP only |
-| **AI** | 1 min | 20 | User ID or IP |
-| **Billing** | 15 min | 30 | User ID or IP |
-| **Voice** | 1 min | 10 | User ID or IP |
-| **Export** | 60 min | 5 | User ID or IP |
-| **Password Reset** | 24 hours | 3 | Email or IP |
-| **Webhook** | 1 min | 100 | IP only |
+| Limiter            | Window   | Max | Key Generator |
+| ------------------ | -------- | --- | ------------- |
+| **General**        | 15 min   | 100 | User ID or IP |
+| **Auth**           | 15 min   | 5   | IP only       |
+| **AI**             | 1 min    | 20  | User ID or IP |
+| **Billing**        | 15 min   | 30  | User ID or IP |
+| **Voice**          | 1 min    | 10  | User ID or IP |
+| **Export**         | 60 min   | 5   | User ID or IP |
+| **Password Reset** | 24 hours | 3   | Email or IP   |
+| **Webhook**        | 1 min    | 100 | IP only       |
 
 **Rate Limit Headers**:
+
 ```
 RateLimit-Limit: 100
 RateLimit-Remaining: 95
@@ -684,6 +769,7 @@ RateLimit-Reset: 1705334400
 ## 📡 Webhook Events
 
 ### Event Types
+
 - `shipment.created` - New shipment created
 - `shipment.updated` - Shipment status changed
 - `shipment.delivered` - Shipment delivered
@@ -691,6 +777,7 @@ RateLimit-Reset: 1705334400
 - `user.registered` - New user signup
 
 ### Webhook Payload
+
 ```json
 {
   "event": "shipment.updated",
@@ -705,6 +792,7 @@ RateLimit-Reset: 1705334400
 ```
 
 ### Webhook Signature
+
 ```
 X-Webhook-Signature: sha256=abc123...
 X-Webhook-Timestamp: 1705334400

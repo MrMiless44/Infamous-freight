@@ -3,6 +3,7 @@
 ## ✅ Completed Features
 
 ### Priority 1: Bundle Optimization
+
 - [x] Code splitting implemented
 - [x] Image optimization configured
 - [x] Lazy loading for components
@@ -10,12 +11,14 @@
 - [x] Webpack optimization
 
 ### Priority 2: Mobile Features
+
 - [x] Offline queue service
 - [x] Push notification service
 - [x] Biometric authentication
 - [x] AsyncStorage integration
 
 ### Priority 3: API Enhancements
+
 - [x] Redis caching layer
 - [x] WebSocket server
 - [x] Real-time updates
@@ -26,6 +29,7 @@
 ### 1. Environment Configuration
 
 #### API (.env.production)
+
 ```bash
 # Required for Priority 3
 REDIS_URL=redis://your-redis-host:6379
@@ -37,6 +41,7 @@ JWT_SECRET=your-secret
 ```
 
 #### Mobile (.env)
+
 ```bash
 # Required for Priority 2
 EXPO_PROJECT_ID=your-project-id
@@ -47,6 +52,7 @@ WS_URL=wss://your-api.fly.dev/ws
 ### 2. Infrastructure Setup
 
 #### Redis Cache (Priority 3)
+
 ```bash
 # Option A: Fly.io Redis
 fly redis create
@@ -60,6 +66,7 @@ fly redis create
 ```
 
 #### WebSocket Support
+
 ```bash
 # Update Fly.io to support WebSocket
 fly deploy
@@ -69,6 +76,7 @@ fly deploy
 ### 3. Mobile App Configuration
 
 #### Install Required Packages
+
 ```bash
 cd mobile
 npm install @react-native-async-storage/async-storage
@@ -78,6 +86,7 @@ npm install expo-device
 ```
 
 #### Update app.json
+
 ```json
 {
   "expo": {
@@ -96,10 +105,7 @@ npm install expo-device
       }
     },
     "android": {
-      "permissions": [
-        "USE_BIOMETRIC",
-        "USE_FINGERPRINT"
-      ]
+      "permissions": ["USE_BIOMETRIC", "USE_FINGERPRINT"]
     }
   }
 }
@@ -108,9 +114,10 @@ npm install expo-device
 ### 4. API Integration
 
 #### Initialize Services (api/src/server.js)
+
 ```javascript
-const { cacheService } = require('./services/cacheService');
-const WebSocketServer = require('./services/websocketServer');
+const { cacheService } = require("./services/cacheService");
+const WebSocketServer = require("./services/websocketServer");
 
 // Initialize cache
 await cacheService.initialize();
@@ -120,24 +127,25 @@ const wsServer = new WebSocketServer(server);
 ```
 
 #### Add Caching Middleware
+
 ```javascript
 // api/src/middleware/cache.js
-const { cacheService } = require('../services/cacheService');
+const { cacheService } = require("../services/cacheService");
 
 async function cacheMiddleware(req, res, next) {
   const key = `cache:${req.method}:${req.path}`;
   const cached = await cacheService.get(key);
-  
+
   if (cached) {
     return res.json(cached);
   }
-  
+
   const originalJson = res.json.bind(res);
   res.json = (data) => {
     cacheService.set(key, data, 300); // 5 min TTL
     originalJson(data);
   };
-  
+
   next();
 }
 ```
@@ -145,10 +153,11 @@ async function cacheMiddleware(req, res, next) {
 ### 5. Mobile App Initialization
 
 #### App Entry Point (mobile/App.tsx)
+
 ```typescript
-import { offlineQueue } from './services/offlineQueue';
-import { pushNotifications } from './services/pushNotifications';
-import { biometricAuth } from './services/biometricAuth';
+import { offlineQueue } from "./services/offlineQueue";
+import { pushNotifications } from "./services/pushNotifications";
+import { biometricAuth } from "./services/biometricAuth";
 
 // Initialize services
 useEffect(() => {
@@ -156,12 +165,12 @@ useEffect(() => {
     await offlineQueue.initialize();
     await biometricAuth.initialize();
     const token = await pushNotifications.initialize();
-    
+
     if (token) {
       await pushNotifications.registerToken(apiClient);
     }
   }
-  
+
   initServices();
 }, []);
 ```
@@ -169,6 +178,7 @@ useEffect(() => {
 ### 6. Testing
 
 #### Redis Cache
+
 ```bash
 curl https://your-api.fly.dev/api/shipments/1
 # First call: slow (no cache)
@@ -177,14 +187,16 @@ curl https://your-api.fly.dev/api/shipments/1
 ```
 
 #### WebSocket Connection
+
 ```javascript
-const ws = new WebSocket('wss://your-api.fly.dev/ws');
+const ws = new WebSocket("wss://your-api.fly.dev/ws");
 ws.onopen = () => {
-  ws.send(JSON.stringify({ type: 'auth', token: 'your-jwt' }));
+  ws.send(JSON.stringify({ type: "auth", token: "your-jwt" }));
 };
 ```
 
 #### Push Notifications
+
 ```bash
 # Test from Expo dashboard
 # Or use expo-notifications-tool
@@ -192,16 +204,18 @@ npx expo-notifications-tool send --to "ExponentPushToken[...]"
 ```
 
 #### Biometric Auth
+
 ```typescript
 const result = await biometricAuth.authenticate();
 if (result) {
-  console.log('Authenticated successfully');
+  console.log("Authenticated successfully");
 }
 ```
 
 ### 7. Monitoring
 
 #### Check Cache Hit Rate
+
 ```bash
 # Connect to Redis
 redis-cli
@@ -210,6 +224,7 @@ redis-cli
 ```
 
 #### Monitor WebSocket Connections
+
 ```bash
 # API logs
 fly logs --app your-api-app
@@ -220,6 +235,7 @@ fly logs --app your-api-app
 ```
 
 #### Mobile Analytics
+
 ```bash
 # Expo dashboard
 https://expo.dev/@your-username/your-app
@@ -242,6 +258,7 @@ https://expo.dev/@your-username/your-app
 ## ⚠️ Common Issues
 
 ### Redis Connection Failed
+
 ```bash
 # Check Redis URL
 echo $REDIS_URL
@@ -252,6 +269,7 @@ redis-cli -u $REDIS_URL ping
 ```
 
 ### WebSocket Not Connecting
+
 ```bash
 # Ensure WebSocket path is correct
 # Fly.io: wss://app.fly.dev/ws
@@ -261,6 +279,7 @@ redis-cli -u $REDIS_URL ping
 ```
 
 ### Push Notifications Not Received
+
 ```bash
 # Verify Expo project ID
 expo whoami
@@ -273,6 +292,7 @@ npx expo-notifications-tool send
 ```
 
 ### Biometric Auth Fails
+
 ```bash
 # Check device has biometric hardware
 # iOS: Face ID or Touch ID enabled
@@ -309,6 +329,12 @@ eas channel:edit --channel production --branch previous-branch
 # Disable WebSocket
 # Comment out WebSocketServer initialization
 ```
+
+### AI Provider (optional)
+
+- Default: `AI_PROVIDER=stub` (no external keys needed)
+- OpenAI: set `AI_PROVIDER=openai`, `OPENAI_API_KEY`, optional `OPENAI_MODEL`
+- Anthropic: set `AI_PROVIDER=anthropic`, `ANTHROPIC_API_KEY`, optional `ANTHROPIC_MODEL`
 
 ## ✅ Final Verification
 

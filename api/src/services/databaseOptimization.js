@@ -6,32 +6,36 @@
  * - Minimize N+1 queries
  * - Optimize hot paths
  * - Monitor slow queries
+ * - Target: Handle 100K concurrent users, 1M+ shipments
  */
 
-// MIGRATION: Add comprehensive indexes
-// Run: pnpm prisma:migrate:dev --name add_performance_indexes
+// ============================================
+// PERFORMANCE TARGETS
+// ============================================
 
-// Current indexes (schema.prisma):
+const performanceTargets = {
+    singleRecordQuery: '< 10ms',
+    listQuery: '< 50ms',
+    aggregation: '< 200ms',
+    connectionPoolUtilization: '< 70%',
+    tableBloom: '< 30%',
+    transactionsPerSecond: '> 1000',
+};
+
+// ============================================
+// CURRENT INDEXES (schema.prisma)
+// ============================================
+
 // ✅ User: email, role, createdAt
-// ✅ Driver: email, status, createdAt
-// ✅ Shipment: trackingId, userId, status, driverId, createdAt, updatedAt
+// ✅ Driver: email, status, createdAt  
+// ✅ Shipment: trackingId, userId, status, driverId, createdAt, updatedAt, [userId, status]
 // ✅ Payment: userId, status, stripePaymentIntentId, createdAt
 // ✅ AiEvent: userId, provider, createdAt
 // ✅ Subscription: userId, status, stripeSubscriptionId, createdAt
 
-// ADDITIONAL RECOMMENDED INDEXES:
-// 1. Composite indexes for common queries
-
---Shipments by user and status
-CREATE INDEX idx_shipments_user_status ON shipments(user_id, status);
-
---Recent shipments
-CREATE INDEX idx_shipments_created_desc ON shipments(created_at DESC);
-
---Payments by user and status
-CREATE INDEX idx_payments_user_status ON payments(user_id, status);
-
---Query optimization patterns
+// ============================================
+// QUERY PATTERNS & OPTIMIZATION
+// ============================================
 
 // ❌ BAD: Fetches all shipments, then filters in memory
 const shipments = await prisma.shipment.findMany();

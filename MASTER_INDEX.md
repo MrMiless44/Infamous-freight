@@ -9,12 +9,14 @@ This is the **complete reference guide** for the entire platform. Use this index
 ## 🎯 Quick Start by Role
 
 ### 👨‍💼 **Project Manager**
+
 1. [Project Overview](README.md) - Architecture & features
 2. [Deployment Status Dashboard](DEPLOYMENT_CHECKLIST.md) - Live status
 3. [100% Completion Status](100_PERCENT_STATUS.md) - Progress tracking
 4. [Changelog](CHANGELOG.md) - Recent updates
 
 ### 👨‍💻 **Developer**
+
 1. [Developer Setup](CONTRIBUTING.md) - Local environment setup
 2. [Code References Index](CODE_REFERENCES_INDEX.md) - All 60+ files
 3. [AI Development Patterns](.github/copilot-instructions.md) - Best practices
@@ -22,6 +24,7 @@ This is the **complete reference guide** for the entire platform. Use this index
 5. [Prisma Schema](api/prisma/schema.prisma) - Database design
 
 ### 🚀 **DevOps Engineer**
+
 1. [Deployment Checklist](DEPLOYMENT_CHECKLIST.md) - Full deployment guide
 2. [Security Hardening](SECURITY_HARDENING_CHECKLIST.md) - Security setup
 3. [Health Monitoring](.github/workflows/health-check-monitoring.yml) - 24/7 checks
@@ -29,6 +32,7 @@ This is the **complete reference guide** for the entire platform. Use this index
 5. [CI/CD Workflows](.github/workflows/) - All pipelines
 
 ### 🔒 **Security Officer**
+
 1. [Security Hardening Checklist](SECURITY_HARDENING_CHECKLIST.md) - All controls
 2. [JWT Implementation](api/src/middleware/security.js) - Token strategy
 3. [Rate Limiting](API_ENDPOINTS_REFERENCE.md#-rate-limiting) - DDoS protection
@@ -40,41 +44,46 @@ This is the **complete reference guide** for the entire platform. Use this index
 ## 📖 Complete Documentation Map
 
 ### Core Documentation
-| Document | Purpose | Audience | Size |
-|----------|---------|----------|------|
-| [README.md](README.md) | Project overview, architecture | All | 2-3 min read |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | Development guidelines | Developers | 5-10 min |
-| [COPYRIGHT](COPYRIGHT) | License & legal | All | 1 min |
-| [AUTHORS](AUTHORS) | Project contributors | All | 1 min |
-| [CHANGELOG.md](CHANGELOG.md) | Version history | All | 5 min |
+
+| Document                           | Purpose                        | Audience   | Size         |
+| ---------------------------------- | ------------------------------ | ---------- | ------------ |
+| [README.md](README.md)             | Project overview, architecture | All        | 2-3 min read |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Development guidelines         | Developers | 5-10 min     |
+| [COPYRIGHT](COPYRIGHT)             | License & legal                | All        | 1 min        |
+| [AUTHORS](AUTHORS)                 | Project contributors           | All        | 1 min        |
+| [CHANGELOG.md](CHANGELOG.md)       | Version history                | All        | 5 min        |
 
 ### Reference Documentation
-| Document | Purpose | Links | Size |
-|----------|---------|-------|------|
-| [REFERENCES.md](REFERENCES.md) | Technology stack, platforms, resources | 50+ links | 15 min |
-| [CODE_REFERENCES_INDEX.md](CODE_REFERENCES_INDEX.md) | All files with descriptions | 60+ files | 20 min |
-| [API_ENDPOINTS_REFERENCE.md](API_ENDPOINTS_REFERENCE.md) | All endpoints with examples | 15+ endpoints | 15 min |
-| [This File - MASTER_INDEX.md](MASTER_INDEX.md) | Navigation hub (you are here) | 200+ links | 20 min |
+
+| Document                                                 | Purpose                                | Links         | Size   |
+| -------------------------------------------------------- | -------------------------------------- | ------------- | ------ |
+| [REFERENCES.md](REFERENCES.md)                           | Technology stack, platforms, resources | 50+ links     | 15 min |
+| [CODE_REFERENCES_INDEX.md](CODE_REFERENCES_INDEX.md)     | All files with descriptions            | 60+ files     | 20 min |
+| [API_ENDPOINTS_REFERENCE.md](API_ENDPOINTS_REFERENCE.md) | All endpoints with examples            | 15+ endpoints | 15 min |
+| [This File - MASTER_INDEX.md](MASTER_INDEX.md)           | Navigation hub (you are here)          | 200+ links    | 20 min |
 
 ### Phase & Feature Documentation
-| Document | Purpose | Tier | Status |
-|----------|---------|------|--------|
+
+| Document                                                 | Purpose                                   | Tier       | Status    |
+| -------------------------------------------------------- | ----------------------------------------- | ---------- | --------- |
 | [PHASE_1_GENESIS_AVATARS.md](PHASE_1_GENESIS_AVATARS.md) | System identity layer (4 Genesis avatars) | Foundation | 🔒 LOCKED |
 
 ### Deployment & Operations
-| Document | Purpose | Audience | Status |
-|----------|---------|----------|--------|
-| [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md) | Step-by-step deployment | DevOps | ✅ Complete |
-| [SECURITY_HARDENING_CHECKLIST.md](SECURITY_HARDENING_CHECKLIST.md) | Security configuration | Security | ✅ Complete |
-| [DEPLOYMENT_STATUS.md](DEPLOYMENT_STATUS.md) | Current status | All | ✅ Live |
-| [100_PERCENT_STATUS.md](100_PERCENT_STATUS.md) | Completion summary | PM | ✅ 100% |
+
+| Document                                                           | Purpose                 | Audience | Status      |
+| ------------------------------------------------------------------ | ----------------------- | -------- | ----------- |
+| [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md)                 | Step-by-step deployment | DevOps   | ✅ Complete |
+| [SECURITY_HARDENING_CHECKLIST.md](SECURITY_HARDENING_CHECKLIST.md) | Security configuration  | Security | ✅ Complete |
+| [DEPLOYMENT_STATUS.md](DEPLOYMENT_STATUS.md)                       | Current status          | All      | ✅ Live     |
+| [100_PERCENT_STATUS.md](100_PERCENT_STATUS.md)                     | Completion summary      | PM       | ✅ 100%     |
 
 ### Feature Documentation
-| Document | Priority | Components | Status |
-|----------|----------|------------|--------|
-| Bundle Optimization | 1 | Web (Next.js) | ✅ Complete |
-| Mobile Features | 2 | Mobile (Expo) | ✅ Complete |
-| API Enhancements | 3 | API (Express.js) | ✅ Complete |
+
+| Document            | Priority | Components       | Status      |
+| ------------------- | -------- | ---------------- | ----------- |
+| Bundle Optimization | 1        | Web (Next.js)    | ✅ Complete |
+| Mobile Features     | 2        | Mobile (Expo)    | ✅ Complete |
+| API Enhancements    | 3        | API (Express.js) | ✅ Complete |
 
 ---
 
@@ -198,12 +207,14 @@ Infamous-freight-enterprises/
 ## 🔍 Navigation by Topic
 
 ### Architecture & Design
+
 1. [Architecture Overview](README.md#-architecture) - System design
 2. [Technology Stack](REFERENCES.md#-technology-stack-references) - Tech choices
 3. [Database Schema](api/prisma/schema.prisma) - Data model
 4. [API Architecture](CODE_REFERENCES_INDEX.md#-api-backend-expressjs-nodejs-20) - Endpoint design
 
 ### Authentication & Security
+
 1. [JWT Implementation](api/src/middleware/security.js) - Token strategy
 2. [Scope-based Authorization](api/src/middleware/security.js) - Permission model
 3. [Rate Limiting](api/src/middleware/security.js#L32) - DDoS protection
@@ -212,6 +223,7 @@ Infamous-freight-enterprises/
 6. [Security Checklist](SECURITY_HARDENING_CHECKLIST.md) - Complete guide
 
 ### Web Frontend (Next.js 14)
+
 1. [Bundle Optimization](web/next.config.mjs) - Webpack config
 2. [Image Optimization](web/components/OptimizedImage.tsx) - Performance
 3. [Code Splitting](web/utils/dynamicImports.ts) - Lazy loading
@@ -219,6 +231,7 @@ Infamous-freight-enterprises/
 5. [Performance Metrics](REFERENCES.md#-performance-references) - Targets
 
 ### Mobile App (React Native + Expo)
+
 1. [Offline Queue](mobile/services/offlineQueue.ts) - AsyncStorage persistence
 2. [Push Notifications](mobile/services/pushNotifications.ts) - Expo SDK
 3. [Biometric Auth](mobile/services/biometricAuth.ts) - Face ID/Touch ID
@@ -226,6 +239,7 @@ Infamous-freight-enterprises/
 5. [Auto-sync](mobile/services/syncService.ts) - Background sync
 
 ### API Backend (Express.js)
+
 1. [Route Structure](api/src/routes/) - All 7+ routes
 2. [Middleware Stack](api/src/middleware/) - Request processing
 3. [Error Handling](api/src/middleware/errorHandler.js) - Error responses
@@ -234,18 +248,21 @@ Infamous-freight-enterprises/
 6. [AI Integration](api/src/services/aiSyntheticClient.js) - AI providers
 
 ### Database & Prisma
+
 1. [Schema Definition](api/prisma/schema.prisma) - Tables & relations
 2. [Migrations](api/prisma/migrations/) - Version history
 3. [Seeding](api/prisma/seed.ts) - Initial data
 4. [Query Optimization](CODE_REFERENCES_INDEX.md#-database--prisma) - Performance
 
 ### Testing & Quality
+
 1. [Unit Tests](api/src/__tests__/) - Jest test files
 2. [E2E Tests](e2e/tests/) - Playwright tests
 3. [ESLint Config](eslint.config.js) - Code quality
 4. [TypeScript Config](tsconfig.json) - Type checking
 
 ### Deployment & Operations
+
 1. [Deployment Guide](DEPLOYMENT_CHECKLIST.md) - Step-by-step
 2. [Platform Setup](REFERENCES.md#-platforms) - Vercel, Fly.io, EAS
 3. [Health Monitoring](.github/workflows/health-check-monitoring.yml) - 24/7 checks
@@ -253,12 +270,14 @@ Infamous-freight-enterprises/
 5. [CI/CD Pipelines](.github/workflows/) - GitHub Actions
 
 ### Monitoring & Logging
+
 1. [Health Checks](api/src/routes/health.js) - Liveness/readiness
 2. [Structured Logging](api/src/middleware/logger.js) - Winston setup
 3. [Error Tracking](api/src/middleware/errorHandler.js) - Sentry integration
 4. [Monitoring Script](scripts/monitor-build-status.sh) - Build tracking
 
 ### System Identity & Avatars (Phase-1)
+
 1. [Phase-1 Genesis Avatars](PHASE_1_GENESIS_AVATARS.md) - System identity layer
 2. [Avatar Manifest](web/public/avatars/main/manifest.json) - 4 Genesis personas
 3. [Avatar API](api/src/routes/avatar.ts) - `/v1/avatars/system` endpoint
@@ -270,19 +289,22 @@ Infamous-freight-enterprises/
 ## 🚀 Quick Tasks Guide
 
 ### "I want to understand how the system works"
+
 1. Read: [README.md](README.md) (5 min)
 2. Review: [Architecture diagram](README.md#-architecture)
 3. Explore: [REFERENCES.md](REFERENCES.md) (10 min)
 4. Deep dive: [CODE_REFERENCES_INDEX.md](CODE_REFERENCES_INDEX.md) (20 min)
 
 ### "I want to add a new API endpoint"
+
 1. Create route file in [api/src/routes/](api/src/routes/)
 2. Follow pattern: [ai.commands.js](api/src/routes/ai.commands.js)
 3. Add types to [packages/shared/src/types.ts](packages/shared/src/types.ts)
 4. Reference: [API_ENDPOINTS_REFERENCE.md](API_ENDPOINTS_REFERENCE.md)
-5. Test: Add unit test in [api/src/__tests__/](api/src/__tests__/)
+5. Test: Add unit test in [api/src/**tests**/](api/src/__tests__/)
 
 ### "I want to deploy to production"
+
 1. Read: [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md) (20 min)
 2. Security: [SECURITY_HARDENING_CHECKLIST.md](SECURITY_HARDENING_CHECKLIST.md) (15 min)
 3. Run: [scripts/setup-secrets-auto.sh](scripts/setup-secrets-auto.sh) (5 min local)
@@ -290,6 +312,7 @@ Infamous-freight-enterprises/
 5. Monitor: [health-check-monitoring.yml](.github/workflows/health-check-monitoring.yml) (automated)
 
 ### "I want to optimize performance"
+
 1. Web bundle: [web/next.config.mjs](web/next.config.mjs) + [OptimizedImage.tsx](web/components/OptimizedImage.tsx)
 2. API caching: [cacheService.js](api/src/services/cacheService.js)
 3. Real-time: [websocketServer.js](api/src/services/websocketServer.js)
@@ -297,6 +320,7 @@ Infamous-freight-enterprises/
 5. Reference: [REFERENCES.md#-performance-references](REFERENCES.md#-performance-references)
 
 ### "I want to secure the system"
+
 1. Read: [SECURITY_HARDENING_CHECKLIST.md](SECURITY_HARDENING_CHECKLIST.md)
 2. Auth: [security.js](api/src/middleware/security.js) middleware
 3. Validation: [validation.js](api/src/middleware/validation.js)
@@ -304,6 +328,7 @@ Infamous-freight-enterprises/
 5. Enhanced: [securityEnhanced.js](api/src/middleware/securityEnhanced.js)
 
 ### "I want to understand mobile features"
+
 1. Offline: [offlineQueue.ts](mobile/services/offlineQueue.ts) (AsyncStorage)
 2. Notifications: [pushNotifications.ts](mobile/services/pushNotifications.ts) (Expo)
 3. Biometric: [biometricAuth.ts](mobile/services/biometricAuth.ts) (Face ID/Touch ID)
@@ -311,6 +336,7 @@ Infamous-freight-enterprises/
 5. Client: [apiClient.ts](mobile/services/apiClient.ts) (queue integration)
 
 ### "I want to run tests"
+
 1. All tests: `pnpm test`
 2. API only: `pnpm --filter api test`
 3. Coverage: `cd api && pnpm test:coverage`
@@ -318,6 +344,7 @@ Infamous-freight-enterprises/
 5. Reference: [CONTRIBUTING.md](CONTRIBUTING.md#-testing)
 
 ### "I want to set up locally"
+
 1. Clone repo
 2. Install: `pnpm install`
 3. Env files: Copy `.env.example` → `.env`
@@ -330,6 +357,7 @@ Infamous-freight-enterprises/
 ## 📊 Project Status
 
 ### Completion Metrics (100%)
+
 - ✅ **Priority 1**: Bundle Optimization - **COMPLETE** (50% faster, 40% smaller)
 - ✅ **Priority 2**: Mobile Features - **COMPLETE** (offline + push + biometric)
 - ✅ **Priority 3**: API Enhancements - **COMPLETE** (caching + WebSocket + real-time)
@@ -339,6 +367,7 @@ Infamous-freight-enterprises/
 - ✅ **Documentation**: Reference guides - **COMPLETE** (this file + 3 others)
 
 ### Commits (9 total)
+
 1. `be4927c` - docs: add comprehensive references (100% coverage) ⭐
 2. `c856075` - chore: add automated secrets configuration script
 3. `d258809` - chore: finalize operational setup - security hardening
@@ -352,6 +381,7 @@ Infamous-freight-enterprises/
 11. `3316791` - perf: bundle optimization
 
 ### Deployment Platforms
+
 - **Web**: Vercel - https://infamous-freight-enterprises.vercel.app ✅
 - **API**: Fly.io - https://infamous-freight-api.fly.dev ✅
 - **Mobile**: EAS Build - iOS & Android ✅
@@ -359,6 +389,7 @@ Infamous-freight-enterprises/
 - **Cache**: Redis (Upstash/Railway/Fly.io) ✅
 
 ### Tech Stack
+
 - Frontend: Next.js 14, TypeScript, Tailwind CSS
 - Backend: Express.js, Node.js 20, PostgreSQL, Prisma
 - Mobile: React Native, Expo SDK v54, TypeScript
@@ -372,6 +403,7 @@ Infamous-freight-enterprises/
 ## 🔗 External Links
 
 ### Official Documentation
+
 - [Next.js Docs](https://nextjs.org/docs)
 - [Express.js Docs](https://expressjs.com/)
 - [React Native Docs](https://reactnative.dev/)
@@ -380,12 +412,14 @@ Infamous-freight-enterprises/
 - [TypeScript Docs](https://www.typescriptlang.org/docs/)
 
 ### Deployment Platforms
+
 - [Vercel Dashboard](https://vercel.com/dashboard)
 - [Fly.io Dashboard](https://fly.io/dashboard)
 - [EAS Dashboard](https://expo.dev/)
 - [GitHub Actions Docs](https://docs.github.com/en/actions)
 
 ### Our Platforms
+
 - [GitHub Repository](https://github.com/MrMiless44/Infamous-freight-enterprises)
 - [Web App](https://infamous-freight-enterprises.vercel.app)
 - [API Docs](API_ENDPOINTS_REFERENCE.md)

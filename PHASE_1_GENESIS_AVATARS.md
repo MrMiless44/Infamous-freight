@@ -14,14 +14,14 @@
 
 ### Canonical Hierarchy
 
-| File | Codename | Role | Function |
-|------|----------|------|----------|
-| **main-01.png** | Infinity Operator | Founder / Command AI | System control & initialization |
-| **main-02.png** | Crimson Neural | Interface / AI Empress | User-facing interaction layer |
-| **main-03.png** | Golden Sphinx Core | Guardian / Sovereign AI | Security & authorization |
-| **main-04.png** | Pharaoh Circuit* | Foresight / Neural Oracle | Predictive analytics & insight |
+| File            | Codename           | Role                      | Function                        |
+| --------------- | ------------------ | ------------------------- | ------------------------------- |
+| **main-01.png** | Infinity Operator  | Founder / Command AI      | System control & initialization |
+| **main-02.png** | Crimson Neural     | Interface / AI Empress    | User-facing interaction layer   |
+| **main-03.png** | Golden Sphinx Core | Guardian / Sovereign AI   | Security & authorization        |
+| **main-04.png** | Pharaoh Circuit\*  | Foresight / Neural Oracle | Predictive analytics & insight  |
 
-*Alternative name: "Genesis Oracle" (both canon-valid)*
+_Alternative name: "Genesis Oracle" (both canon-valid)_
 
 ### Identity Stack
 
@@ -134,6 +134,7 @@ Returns all Genesis avatars for system initialization:
 ### Web Component Integration
 
 These avatars are automatically loaded and selectable in:
+
 - Web dashboard avatar selector
 - User profile initialization
 - AI persona selection
@@ -142,6 +143,7 @@ These avatars are automatically loaded and selectable in:
 ### Mobile Integration
 
 Phase-1 avatars are bundled with mobile app builds via:
+
 - Expo asset bundling
 - Offline cache preload
 - Deep linking support
@@ -157,7 +159,7 @@ Once deployed, the system provides:
 ✔ **API-served `/v1/avatars/system`** — Programmatic access  
 ✔ **Web-selectable main characters** — UI fully wired  
 ✔ **Brand-anchored AI presence** — Professional persona tier  
-✔ **Zero dependency on users** — System-owned, not user-owned  
+✔ **Zero dependency on users** — System-owned, not user-owned
 
 ---
 
@@ -213,15 +215,15 @@ git push origin main
 
 ## 📊 Phase-1 Metrics
 
-| Metric | Value |
-|--------|-------|
-| Genesis avatars | 4 |
-| Identity tiers | 4 (Control → Interface → Authority → Foresight) |
-| API endpoints | 1 (`/v1/avatars/system`) |
-| Web components | 3+ (selector, profile, dashboard) |
-| Mobile support | Full (Expo SDK v54+) |
-| Deployment status | 🔒 Locked |
-| Production readiness | 100% |
+| Metric               | Value                                           |
+| -------------------- | ----------------------------------------------- |
+| Genesis avatars      | 4                                               |
+| Identity tiers       | 4 (Control → Interface → Authority → Foresight) |
+| API endpoints        | 1 (`/v1/avatars/system`)                        |
+| Web components       | 3+ (selector, profile, dashboard)               |
+| Mobile support       | Full (Expo SDK v54+)                            |
+| Deployment status    | 🔒 Locked                                       |
+| Production readiness | 100%                                            |
 
 ---
 

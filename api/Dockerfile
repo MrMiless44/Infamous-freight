@@ -1,57 +1,23 @@
-# Build stage
-FROM node:20-alpine AS builder
+## Monorepo-friendly API image for Render/Fly/DO
+FROM node:18-alpine AS base
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json pnpm-lock.yaml ./
+# Enable pnpm via corepack
+RUN corepack enable && corepack prepare pnpm@8.15.0 --activate
 
-# Install dependencies
-RUN npm install -g pnpm && \
-    pnpm install --frozen-lockfile
+# Cache deps first
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml* ./
+COPY api/package.json ./api/package.json
 
-# Copy source code
+RUN pnpm install --frozen-lockfile || pnpm install
+
+# Copy full repo (api + packages + shared assets)
 COPY . .
 
-# Generate Prisma Client
-RUN pnpm prisma generate
+# Build API if script exists (CI-safe)
+RUN pnpm -C api --if-present build || true
 
-# Build if needed
-RUN npm run build || true
-
-# Production stage
-FROM node:20-alpine
-
-WORKDIR /app
-
-# Install dumb-init for proper signal handling
-RUN apk add --no-cache dumb-init wget
-
-# Create app user for security
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001
-
-# Copy from builder
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json pnpm-lock.yaml ./
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/src ./src
-COPY --from=builder /app/api ./api
-
-# Set environment
+EXPOSE 3001
 ENV NODE_ENV=production
-ENV LOG_LEVEL=info
-ENV NODE_OPTIONS="--max-old-space-size=256"
-
-# Expose port
-EXPOSE 4000
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:4000/api/health || exit 1
-
-# Use dumb-init to handle signals properly
-ENTRYPOINT ["dumb-init", "--"]
-
-# Start application
-CMD ["node", "production-server.js"]
+CMD ["pnpm", "-C", "api", "start"]

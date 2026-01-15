@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: infamous-freight-api
+    env: node
+    plan: free
+    rootDir: api
+    buildCommand: pnpm install --frozen-lockfile || pnpm install && pnpm -C api --if-present build
+    startCommand: pnpm -C api start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: CORS_ORIGINS
+        value: https://YOUR_WEB_DOMAIN_HERE
+      - key: JWT_SECRET
+        value: CHANGE_ME_LONG_RANDOM
+      - key: AVATAR_STORAGE
+        value: local
+      - key: AI_PROVIDER
+        value: stub

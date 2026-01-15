@@ -64,9 +64,61 @@ function verifyPassword(password, hash) {
   return hashPassword(password) === hash;
 }
 
+/**
+ * Hash field for comparison (non-reversible)
+ */
+function hashField(data) {
+  return crypto
+    .createHash('sha256')
+    .update(String(data))
+    .digest('hex');
+}
+
+/**
+ * Secure Payment Storage Service
+ */
+class SecurePaymentService {
+  static async storePayment(prisma, paymentData) {
+    return prisma.payment.create({
+      data: {
+        userId: paymentData.userId,
+        stripePaymentIntentId: paymentData.stripePaymentIntentId,
+        amount: paymentData.amount,
+        currency: paymentData.currency,
+        status: paymentData.status,
+        encryptedCardLast4: paymentData.cardLast4
+          ? encrypt(paymentData.cardLast4)
+          : null,
+        encryptedMetadata: paymentData.metadata
+          ? encrypt(JSON.stringify(paymentData.metadata))
+          : null,
+      },
+    });
+  }
+
+  static async getPayment(prisma, paymentId) {
+    const payment = await prisma.payment.findUnique({
+      where: { id: paymentId },
+    });
+
+    if (payment) {
+      if (payment.encryptedCardLast4) {
+        payment.cardLast4 = decrypt(payment.encryptedCardLast4);
+      }
+      if (payment.encryptedMetadata) {
+        payment.metadata = JSON.parse(decrypt(payment.encryptedMetadata) || '{}');
+      }
+    }
+
+    return payment;
+  }
+}
+
 module.exports = {
   encrypt,
   decrypt,
   hashPassword,
   verifyPassword,
+  hashField,
+  SecurePaymentService,
 };
