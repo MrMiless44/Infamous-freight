@@ -3,16 +3,25 @@ import { test, expect } from '@playwright/test';
 /**
  * Shipment Management E2E Tests
  * Tests CRUD operations for shipments
+ * Updated for Week 2 database integration
  */
 
 test.describe('Shipment Management', () => {
   test.beforeEach(async ({ page }) => {
-    // Login before each test
-    await page.goto('/login');
-    await page.fill('input[type="email"]', 'test@example.com');
-    await page.fill('input[type="password"]', 'testpassword');
-    await page.click('button[type="submit"]');
-    await page.waitForURL(/dashboard/, { timeout: 10000 });
+    // Login before each test with database users
+    await page.goto('/');
+    // Try to click login button or navigate to login
+    const loginBtn = page.locator('button:has-text("Login")');
+    if (await loginBtn.isVisible()) {
+      await loginBtn.click();
+    } else {
+      await page.goto('/login');
+    }
+    
+    await page.fill('input[type="email"], input[name="email"]', 'admin@example.com');
+    await page.fill('input[type="password"], input[name="password"]', 'password123');
+    await page.click('button[type="submit"], button:has-text("Sign In")');
+    await page.waitForURL(/dashboard|shipments/, { timeout: 10000 });
   });
 
   test('should display shipments list', async ({ page }) => {
