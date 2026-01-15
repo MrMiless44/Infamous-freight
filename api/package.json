@@ -26,7 +26,9 @@
     "prisma:migrate:dev": "npx prisma migrate dev",
     "prisma:studio": "npx prisma studio",
     "prisma:seed": "node prisma/seed.js",
-    "validate:env": "node scripts/env.validation.js"
+    "validate:env": "node scripts/env.validation.js",
+    "db:up": "docker compose -f docker-compose.db.yml up -d",
+    "db:down": "docker compose -f docker-compose.db.yml down"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.20.0",

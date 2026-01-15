@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: infamous
+      POSTGRES_PASSWORD: infamous
+      POSTGRES_DB: infamous
+    ports:
+      - "5432:5432"
+    volumes:
+      - infamous_pg:/var/lib/postgresql/data
+
+volumes:
+  infamous_pg:
