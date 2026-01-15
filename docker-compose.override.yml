@@ -1,0 +1,106 @@
+# Copyright © 2025 Infæmous Freight. All Rights Reserved.
+# Proprietary and Confidential - See COPYRIGHT file for details.
+# Docker Compose Override - Development Settings (auto-loaded for local development)
+# Usage: docker-compose up -d (automatically loads this override)
+
+version: "3.9"
+
+services:
+  api:
+    build:
+      target: builder # Development stage for hot reload
+    command: pnpm --filter api dev
+    volumes:
+      - ./api/src:/app/api/src:ro # Read-only hot reload
+      - ./api/prisma:/app/api/prisma:ro
+      - ./packages/shared/src:/app/packages/shared/src:ro
+    environment:
+      NODE_ENV: development
+      LOG_LEVEL: debug # Verbose logging in dev
+      DEBUG: "infamous-freight:*"
+    ports:
+      - "${API_PORT:-4000}:4000" # Standard dev port
+
+  web:
+    build:
+      target: builder # Development stage
+    command: pnpm --filter web dev
+    volumes:
+      - ./web/pages:/app/web/pages:ro
+      - ./web/components:/app/web/components:ro
+      - ./web/public:/app/web/public:ro
+      - ./web/styles:/app/web/styles:ro
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_DEBUG: "true"
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+
+  postgres:
+    ports:
+      - "5432:5432" # Expose to host for local database tools
+    environment:
+      POSTGRES_LOG_STATEMENT: all # Log all SQL in development
+      POSTGRES_LOG_MIN_DURATION_STATEMENT: 0 # Log all queries
+    command: >
+      postgres
+      -c log_statement=all
+      -c log_min_duration_statement=0
+      -c shared_preload_libraries=pg_stat_statements
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+
+  redis:
+    ports:
+      - "6379:6379" # Expose for Redis CLI access
+    command: redis-server --loglevel verbose --save "" # No persistence in dev
+    environment:
+      REDIS_LOG_LEVEL: verbose
+
+  # pgAdmin for database management (dev only)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: infamous_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@infamous.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "False"
+      PGADMIN_CONFIG_COOKIE_DEFAULT_SECURE: "False"
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_dev_data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - infamous-network
+
+  # Redis Commander for Redis management (dev only)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: infamous_redis_commander
+    restart: unless-stopped
+    environment:
+      REDIS_HOSTS: local:redis:6379:0
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    networks:
+      - infamous-network
+
+volumes:
+  postgres_dev_data:
+    driver: local
+    name: infamous_postgres_dev_data
+  pgadmin_dev_data:
+    driver: local
+    name: infamous_pgadmin_dev_data
+
+networks:
+  infamous-network:
+    driver: bridge
+    name: infamous-network

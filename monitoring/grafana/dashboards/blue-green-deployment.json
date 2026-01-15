@@ -1,0 +1,216 @@
+{
+  "dashboard": {
+    "title": "Blue-Green Deployment",
+    "description": "Real-time blue-green deployment status and traffic split monitoring",
+    "tags": ["deployment", "blue-green", "infrastructure"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Active Deployment",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "label_join(up{job=~\"api-blue|api-green\"}, \"status\", \"\", \"job\")",
+            "format": "time_series",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "1": {
+                  "text": "Healthy",
+                  "color": "green"
+                },
+                "0": {
+                  "text": "Down",
+                  "color": "red"
+                }
+              }
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "id": 2,
+        "title": "Blue Deployment Health",
+        "type": "gauge",
+        "targets": [
+          {
+            "expr": "up{job=\"api-blue\"}",
+            "format": "time_series",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "mappings": {
+            "type": "value",
+            "options": {
+              "1": {
+                "text": "Healthy",
+                "color": "green"
+              },
+              "0": {
+                "text": "Down",
+                "color": "red"
+              }
+            }
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 12,
+          "y": 0
+        }
+      },
+      {
+        "id": 3,
+        "title": "Green Deployment Health",
+        "type": "gauge",
+        "targets": [
+          {
+            "expr": "up{job=\"api-green\"}",
+            "format": "time_series",
+            "refId": "A"
+          }
+        ],
+        "options": {
+          "mappings": {
+            "type": "value",
+            "options": {
+              "1": {
+                "text": "Healthy",
+                "color": "green"
+              },
+              "0": {
+                "text": "Down",
+                "color": "red"
+              }
+            }
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 18,
+          "y": 0
+        }
+      },
+      {
+        "id": 4,
+        "title": "Request Distribution (Blue vs Green)",
+        "type": "piechart",
+        "targets": [
+          {
+            "expr": "rate(http_requests_total{job=\"api-blue\"}[5m])",
+            "legendFormat": "Blue",
+            "refId": "A"
+          },
+          {
+            "expr": "rate(http_requests_total{job=\"api-green\"}[5m])",
+            "legendFormat": "Green",
+            "refId": "B"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        }
+      },
+      {
+        "id": 5,
+        "title": "Error Rate Comparison",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(http_requests_total{job=\"api-blue\",status=~\"5..\"}[5m]) * 100",
+            "legendFormat": "Blue Errors %",
+            "refId": "A"
+          },
+          {
+            "expr": "rate(http_requests_total{job=\"api-green\",status=~\"5..\"}[5m]) * 100",
+            "legendFormat": "Green Errors %",
+            "refId": "B"
+          }
+        ],
+        "options": {
+          "yaxes": [
+            {
+              "format": "percent",
+              "label": "Error Rate %"
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 8
+        }
+      },
+      {
+        "id": 6,
+        "title": "Response Time Comparison",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(http_request_duration_ms_bucket{job=\"api-blue\"}[5m]))",
+            "legendFormat": "Blue P95",
+            "refId": "A"
+          },
+          {
+            "expr": "histogram_quantile(0.95, rate(http_request_duration_ms_bucket{job=\"api-green\"}[5m]))",
+            "legendFormat": "Green P95",
+            "refId": "B"
+          }
+        ],
+        "options": {
+          "yaxes": [
+            {
+              "format": "ms",
+              "label": "Response Time (ms)"
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 16
+        }
+      },
+      {
+        "id": 7,
+        "title": "Deployment Events Timeline",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "changes(up{job=~\"api-blue|api-green\"}[1m])",
+            "legendFormat": "{{ job }}",
+            "refId": "A"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 16
+        }
+      }
+    ]
+  }
+}

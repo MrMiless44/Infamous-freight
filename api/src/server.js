@@ -34,6 +34,7 @@ const { initSentry, attachErrorHandler } = require("./config/sentry");
 const config = require("./config");
 const { compressionMiddleware } = require("./middleware/performance");
 const healthRoutes = require("./routes/health");
+const healthDetailedRoutes = require("./routes/health-detailed");
 const aiRoutes = require("./routes/ai.commands");
 const billingRoutes = require("./routes/billing");
 const billingPaymentsRoutes = require("./routes/billing-payments");
@@ -83,6 +84,7 @@ app.use(
 
 // Routes
 app.use("/api", healthRoutes);
+app.use("/api", healthDetailedRoutes);
 app.use("/api", aiRoutes);
 app.use("/api", billingRoutes);
 app.use("/api", billingPaymentsRoutes);
