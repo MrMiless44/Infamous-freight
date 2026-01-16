@@ -1,5 +1,5 @@
 const helmet = require("helmet");
-const { logger } = require('./logger');
+const { logger } = require("./logger");
 
 function securityHeaders(app) {
   // Comprehensive security headers with Helmet
@@ -10,21 +10,29 @@ function securityHeaders(app) {
           defaultSrc: ["'self'"],
           scriptSrc: ["'self'"],
           styleSrc: ["'self'"],
-          imgSrc: ["'self'", 'data:', 'https:'],
-          connectSrc: ["'self'", process.env.CORS_ORIGINS || 'http://localhost:3000'],
+          imgSrc: ["'self'", "data:", "https:"],
+          connectSrc: [
+            "'self'",
+            ...String(process.env.CORS_ORIGINS || "http://localhost:3000")
+              .split(",")
+              .map((o) => o.trim()),
+          ],
           fontSrc: ["'self'"],
           objectSrc: ["'none'"],
           mediaSrc: ["'self'"],
           frameSrc: ["'none'"],
-          upgradeInsecureRequests: process.env.NODE_ENV === 'production' ? [] : [],
-          reportUri: process.env.CSP_REPORT_URI ? [process.env.CSP_REPORT_URI] : [],
+          upgradeInsecureRequests:
+            process.env.NODE_ENV === "production" ? [] : [],
+          reportUri: process.env.CSP_REPORT_URI
+            ? [process.env.CSP_REPORT_URI]
+            : [],
         },
       },
       crossOriginEmbedderPolicy: true,
-      crossOriginResourcePolicy: { policy: 'cross-origin' },
-      crossOriginOpenerPolicy: { policy: 'same-origin-allow-popups' },
+      crossOriginResourcePolicy: { policy: "cross-origin" },
+      crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
       dnsPrefetchControl: { allow: false },
-      frameguard: { action: 'deny' },
+      frameguard: { action: "deny" },
       hidePoweredBy: true,
       hsts: {
         maxAge: 63072000, // 2 years
@@ -33,7 +41,7 @@ function securityHeaders(app) {
       },
       ieNoOpen: true,
       noSniff: true,
-      referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+      referrerPolicy: { policy: "strict-origin-when-cross-origin" },
       xssFilter: true,
     }),
   );
@@ -42,11 +50,11 @@ function securityHeaders(app) {
   app.use((req, res, next) => {
     const oldSet = res.set.bind(res);
     res.set = function (key, val) {
-      if (key?.toLowerCase() === 'set-cookie') {
+      if (key?.toLowerCase() === "set-cookie") {
         val = Array.isArray(val) ? val : [val];
-        val = val.map(v => {
-          if (!v.includes('SameSite')) {
-            v += '; SameSite=Strict; Secure; HttpOnly';
+        val = val.map((v) => {
+          if (!v.includes("SameSite")) {
+            v += "; SameSite=Strict; Secure; HttpOnly";
           }
           return v;
         });
@@ -59,26 +67,26 @@ function securityHeaders(app) {
   // Additional OWASP headers
   app.use((req, res, next) => {
     // Prevent browsers from MIME-sniffing
-    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader("X-Content-Type-Options", "nosniff");
 
     // Prevent clickjacking
-    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader("X-Frame-Options", "DENY");
 
     // Enable XSS protection
-    res.setHeader('X-XSS-Protection', '1; mode=block');
+    res.setHeader("X-XSS-Protection", "1; mode=block");
 
     // Prevent information disclosure
-    res.setHeader('Server', 'Server'); // Generic, don't reveal Express
+    res.setHeader("Server", "Server"); // Generic, don't reveal Express
 
     // Strict Transport Security
     res.setHeader(
-      'Strict-Transport-Security',
-      'max-age=63072000; includeSubDomains; preload'
+      "Strict-Transport-Security",
+      "max-age=63072000; includeSubDomains; preload",
     );
 
     // Require HTTPS for all cookies
-    if (process.env.NODE_ENV === 'production') {
-      res.setHeader('Expect-CT', 'max-age=86400, enforce');
+    if (process.env.NODE_ENV === "production") {
+      res.setHeader("Expect-CT", "max-age=86400, enforce");
     }
 
     next();
@@ -89,15 +97,15 @@ function handleCSPViolation(req, res) {
   const violation = req.body;
   logger.warn(
     {
-      type: 'csp-violation',
-      violatedDirective: violation['violated-directive'],
-      blockedURI: violation['blocked-uri'],
-      originalPolicy: violation['original-policy'],
-      sourceFile: violation['source-file'],
-      lineNumber: violation['line-number'],
-      columnNumber: violation['column-number'],
+      type: "csp-violation",
+      violatedDirective: violation["violated-directive"],
+      blockedURI: violation["blocked-uri"],
+      originalPolicy: violation["original-policy"],
+      sourceFile: violation["source-file"],
+      lineNumber: violation["line-number"],
+      columnNumber: violation["column-number"],
     },
-    'CSP Violation'
+    "CSP Violation",
   );
   res.status(204).end();
 }

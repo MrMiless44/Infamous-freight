@@ -31,7 +31,10 @@ const {
   securityHeaders,
   handleCSPViolation,
 } = require("./middleware/securityHeaders");
-const { initSentry: legacySentry, attachErrorHandler } = require("./config/sentry");
+const {
+  initSentry: legacySentry,
+  attachErrorHandler,
+} = require("./config/sentry");
 const { initSentry, Sentry } = require("./observability/sentry");
 const config = require("./config");
 const { compressionMiddleware } = require("./middleware/performance");
@@ -52,14 +55,27 @@ const genesisRouter = require("./genesis/routes");
 const satelliteRouter = require("./satellite/routes");
 const billingRouter = require("./billing/routes");
 const authRouter = require("./auth/routes");
-const marketplaceRouter = require("./marketplace/router");
-const marketplaceBillingRouter = require("./marketplace/billingRouter");
-const marketplaceWebhooks = require("./marketplace/webhooks");
-// Phase 15: Bull Board ops UI
-const { dispatchQueue, expiryQueue, etaQueue } = require("./queue/queues");
-const { createBullBoard } = require("@bull-board/api");
-const { BullMQAdapter } = require("@bull-board/api/bullMQAdapter");
-const { ExpressAdapter } = require("@bull-board/express");
+const marketplaceEnabled =
+  String(process.env.MARKETPLACE_ENABLED ?? "true").toLowerCase() === "true";
+let marketplaceRouter;
+let marketplaceBillingRouter;
+let marketplaceWebhooks;
+let dispatchQueue;
+let expiryQueue;
+let etaQueue;
+let createBullBoard;
+let BullMQAdapter;
+let ExpressAdapter;
+if (marketplaceEnabled) {
+  marketplaceRouter = require("./marketplace/router");
+  marketplaceBillingRouter = require("./marketplace/billingRouter");
+  marketplaceWebhooks = require("./marketplace/webhooks");
+  // Phase 15: Bull Board ops UI
+  ({ dispatchQueue, expiryQueue, etaQueue } = require("./queue/queues"));
+  ({ createBullBoard } = require("@bull-board/api"));
+  ({ BullMQAdapter } = require("@bull-board/api/bullMQAdapter"));
+  ({ ExpressAdapter } = require("@bull-board/express"));
+}
 const { notifyRouter } = require("./notify/router");
 const { uploadsRouter } = require("./uploads/router");
 const { validateRuntimeEnv } = require("./config/validate");
@@ -96,7 +112,9 @@ app.use(rateLimit);
 app.use(jwtRotationAuth());
 
 // Stripe webhooks need raw body - must be before express.json()
-app.use("/api/webhooks", marketplaceWebhooks);
+if (marketplaceEnabled && marketplaceWebhooks) {
+  app.use("/api/webhooks", marketplaceWebhooks);
+}
 
 app.use(express.json({ limit: "12mb" }));
 
@@ -126,23 +144,36 @@ app.use("/v1/auth", authRouter);
 
 // Serve static avatar files (Phase 1 & Phase 2)
 app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
-app.use("/avatars/main", express.static(path.join(__dirname, "../../web/public/avatars/main")));
+app.use(
+  "/avatars/main",
+  express.static(path.join(__dirname, "../../web/public/avatars/main")),
+);
 
 // Avatar routes (Phase 1 & Phase 2)
 app.use("/v1/avatars", avatarsRouter);
-app.use("/api/avatars", avatarsRouter);  // Legacy path support
+app.use("/api/avatars", avatarsRouter); // Legacy path support
 app.use("/v1/genesis", genesisRouter);
 app.use("/v1/satellite", satelliteRouter);
 app.use("/v1/billing", billingRouter);
 app.use("/api/notify", notifyRouter);
 app.use("/api/uploads", uploadsRouter);
-app.use("/api/marketplace", marketplaceRouter);
-app.use("/api/marketplace/billing", marketplaceBillingRouter);
+if (marketplaceEnabled && marketplaceRouter) {
+  app.use("/api/marketplace", marketplaceRouter);
+}
+if (marketplaceEnabled && marketplaceBillingRouter) {
+  app.use("/api/marketplace/billing", marketplaceBillingRouter);
+}
 app.get("/health", (_req, res) => res.status(200).send("ok"));
 
 // Mount Bull Board (ops dashboard)
 try {
-  if (String(process.env.BULLBOARD_ENABLED || "true").toLowerCase() === "true") {
+  if (
+    marketplaceEnabled &&
+    dispatchQueue &&
+    expiryQueue &&
+    etaQueue &&
+    String(process.env.BULLBOARD_ENABLED || "true").toLowerCase() === "true"
+  ) {
     const serverAdapter = new ExpressAdapter();
     serverAdapter.setBasePath(process.env.BULLBOARD_PATH || "/ops/queues");
     createBullBoard({
@@ -153,7 +184,10 @@ try {
       ],
       serverAdapter,
     });
-    app.use(process.env.BULLBOARD_PATH || "/ops/queues", serverAdapter.getRouter());
+    app.use(
+      process.env.BULLBOARD_PATH || "/ops/queues",
+      serverAdapter.getRouter(),
+    );
   }
 } catch (e) {
   // Fail open if bull-board not available
@@ -164,6 +198,17 @@ app.post("/api/csp-violation", handleCSPViolation);
 
 // Status endpoint - operational snapshot (for ops monitoring)
 app.get("/api/status", async (_req, res) => {
+  if (!marketplaceEnabled || !dispatchQueue) {
+    return res.json({
+      ok: true,
+      time: new Date().toISOString(),
+      release: process.env.RELEASE_SHA || null,
+      environment: process.env.NODE_ENV || "development",
+      queues: null,
+      worker: null,
+    });
+  }
+
   try {
     const queues = await Promise.all([
       dispatchQueue.getJobCounts("waiting", "active", "delayed", "failed"),

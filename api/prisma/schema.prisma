@@ -680,6 +680,7 @@ model Lead {
   
   // Relations
   opportunities SalesOpportunity[]
+  demoBooking  DemoBooking?
   
   @@index([email])
   @@index([type])
