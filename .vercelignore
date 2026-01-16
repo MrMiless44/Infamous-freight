@@ -24,8 +24,6 @@ playwright-report
 .env.\*.local
 .env.development
 .env.test
-.git
-.gitignore
 
 # Logs and temporary
 
