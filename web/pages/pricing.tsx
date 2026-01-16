@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { getLocaleFromRouter, t } from "../lib/i18n/t";
+import { GetStaticProps } from "next";
 
 const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
@@ -11,15 +12,21 @@ type Plan = {
   priceId?: string;
 };
 
-export default function Pricing() {
+type PricingProps = {
+  initialPlans: Plan[];
+  initialConfigured: boolean;
+};
+
+export default function Pricing({ initialPlans, initialConfigured }: PricingProps) {
   const router = useRouter();
   const locale = getLocaleFromRouter(router.locale);
 
-  const [plans, setPlans] = useState<Plan[]>([]);
-  const [configured, setConfigured] = useState(false);
+  const [plans, setPlans] = useState<Plan[]>(initialPlans || []);
+  const [configured, setConfigured] = useState(initialConfigured || false);
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
 
+  // Client-side refresh (optional, for real-time updates)
   useEffect(() => {
     fetch(`${apiBase}/v1/billing/plans`)
       .then((r) => r.json())
@@ -126,3 +133,44 @@ export default function Pricing() {
     </main>
   );
 }
+
+/**
+ * ISR (Incremental Static Regeneration)
+ * - Page is pre-rendered at build time
+ * - Revalidates every 60 seconds
+ * - Serves stale content while regenerating
+ */
+export const getStaticProps: GetStaticProps = async () => {
+  try {
+    const apiUrl = process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+    const res = await fetch(`${apiUrl}/v1/billing/plans`, {
+      headers: { 'User-Agent': 'Next.js-ISR' },
+    });
+    
+    if (!res.ok) {
+      throw new Error(`API responded with ${res.status}`);
+    }
+    
+    const data = await res.json();
+    
+    return {
+      props: {
+        initialPlans: data.plans || [],
+        initialConfigured: !!data.configured,
+      },
+      // Revalidate every 60 seconds (ISR)
+      revalidate: 60,
+    };
+  } catch (error) {
+    console.warn('ISR: Failed to fetch plans, using fallback', error);
+    
+    // Fallback to empty state on error
+    return {
+      props: {
+        initialPlans: [],
+        initialConfigured: false,
+      },
+      revalidate: 60,
+    };
+  }
+};

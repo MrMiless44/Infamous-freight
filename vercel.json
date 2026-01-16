@@ -20,6 +20,10 @@
   "git": {
     "deploymentEnabled": true
   },
+  "alias": [
+    "infamous-freight.vercel.app",
+    "www.infamous-freight.vercel.app"
+  ],
   "headers": [
     {
       "source": "/(.*)",
