@@ -241,17 +241,17 @@ $ node --check src/server.js
 
 ### Test Fixes
 
-1. **[api/src/lib/**tests**/pricing.test.js](api/src/lib/__tests__/pricing.test.js)**
+1. **[api/src/lib/**tests**/pricing.test.js](api/src/lib/**tests**/pricing.test.js)**
    - Updated test cases from positional args to object signature
    - Fixed 16 test cases for plan-based pricing calculations
    - Validates BASIC/STARTER/PRO/ENTERPRISE discount tiers
 
-2. **[api/**tests**/routes/users.test.js](api/__tests__/routes/users.test.js)**
+2. **[api/**tests**/routes/users.test.js](api/**tests**/routes/users.test.js)**
    - Added Prisma mock implementations
    - Fixed admin scope requirement ('admin:all' → 'admin')
    - Validates user authentication and authorization
 
-3. **[api/**tests**/api.test.js](api/__tests__/api.test.js)**
+3. **[api/**tests**/api.test.js](api/**tests**/api.test.js)**
    - Wrapped tests in Jest describe block
    - Removed process.exit() calls
    - Made compatible with Jest framework
