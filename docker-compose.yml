@@ -10,6 +10,7 @@ services:
     image: postgres:16-alpine
     container_name: infamous_postgres
     restart: unless-stopped
+    profiles: ["dev", "monitoring", "prod"]
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-infamous}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-infamouspass}
@@ -40,6 +41,7 @@ services:
     image: redis:7-alpine
     container_name: infamous_redis
     restart: unless-stopped
+    profiles: ["dev", "monitoring", "prod"]
     command: >
       redis-server
       --requirepass ${REDIS_PASSWORD:-redispass}
@@ -71,6 +73,7 @@ services:
         - NODE_ENV=production
     container_name: infamous_api
     restart: unless-stopped
+    profiles: ["dev", "prod"]
     env_file:
       - .env
     environment:

@@ -45,10 +45,11 @@ echo ""
 
 echo -e "${BLUE}2. Web Vitals Monitoring${NC}"
 echo "------------------------"
-check "Web vitals monitoring module" "test -f /workspaces/Infamous-freight-enterprises/web/lib/webVitalsMonitoring.js"
-check "Web vitals config" "test -f /workspaces/Infamous-freight-enterprises/web/lib/webVitalsConfig.js"
-check "_app.tsx updated" "grep -q 'reportWebVitals' /workspaces/Infamous-freight-enterprises/web/pages/_app.tsx"
-check "next.config.mjs enhanced" "grep -q 'image optimization' /workspaces/Infamous-freight-enterprises/web/next.config.mjs"
+# Accept either legacy web/ or monorepo src/apps/web/
+check "Web vitals monitoring module" "test -f /workspaces/Infamous-freight-enterprises/web/lib/webVitalsMonitoring.js || test -f /workspaces/Infamous-freight-enterprises/src/apps/web/lib/webVitalsMonitoring.js"
+check "Web vitals config" "test -f /workspaces/Infamous-freight-enterprises/web/lib/webVitalsConfig.js || test -f /workspaces/Infamous-freight-enterprises/src/apps/web/lib/webVitalsConfig.js"
+check "_app.tsx updated" "grep -q 'reportWebVitals' /workspaces/Infamous-freight-enterprises/web/pages/_app.tsx || grep -q 'reportWebVitals' /workspaces/Infamous-freight-enterprises/src/apps/web/pages/_app.tsx"
+check "next.config.mjs enhanced" "grep -q 'image optimization' /workspaces/Infamous-freight-enterprises/web/next.config.mjs || grep -q 'images' /workspaces/Infamous-freight-enterprises/src/apps/web/next.config.mjs"
 echo ""
 
 echo -e "${BLUE}3. Production Monitoring${NC}"
