@@ -9,18 +9,25 @@
 [![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)]()
 [![License](https://img.shields.io/badge/license-Proprietary-red.svg)](./LICENSE)
 
-## � Deployment Status
+## Deployment Status
 
 [![Auto Deploy](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/auto-deploy.yml/badge.svg)](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/auto-deploy.yml)
 [![Deploy API (Fly.io)](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/fly-deploy.yml/badge.svg)](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/fly-deploy.yml)
 [![Deploy Web (Vercel)](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/vercel-deploy.yml/badge.svg)](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/vercel-deploy.yml)
 [![Deploy Mobile (Expo)](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/mobile-deploy.yml/badge.svg)](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/mobile-deploy.yml)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/1510fd23-d20a-48ab-9603-15d3b58aa34b/deploy-status)](https://app.netlify.com/projects/infamousfreight/deploys)
 
 **Live Deployments:**
 
-- 🌐 **Web**: [infamous-freight-enterprises.vercel.app](https://infamous-freight-enterprises.vercel.app)
+- 🌐 **Web**: [infamous-freight-enterprises.vercel.app](https://infamous-freight-enterprises.vercel.app) | Netlify Project: [infamousfreight](https://app.netlify.com/projects/infamousfreight/deploys)
 - 🔌 **API**: [infamous-freight-api.fly.dev](https://infamous-freight-api.fly.dev/api/health)
 - 📱 **Mobile**: [Expo EAS](https://expo.dev/@infamous-freight/mobile)
+
+**China CDN Integration (Netlify):**
+- Adds `@21yunbox/netlify-plugin-21yunbox-deploy-to-china-cdn` to publish static assets to a mainland China CDN.
+- Configure required env vars in Netlify:
+   - `YUNBOX_TOKEN` and `YUNBOX_SITE_ID` (per plugin docs)
+   - Optionally set `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_API_BASE` to your public API.
 
 > **🎉 100% AUTO-DEPLOYMENT READY!** All platforms configured with smart change detection. Push to `main` to deploy automatically!
 

@@ -9,3 +9,6 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+[[plugins]]
+  package = "@21yunbox/netlify-plugin-21yunbox-deploy-to-china-cdn"

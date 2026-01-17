@@ -32,7 +32,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: "pnpm"
 
       - name: Install dependencies
@@ -65,19 +65,24 @@ jobs:
 
       - name: Pull Vercel Environment Information
         id: vercel-env
-        run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        run: |
+          cd web
+          npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
         continue-on-error: true
 
       - name: Build Project Artifacts
         id: build
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'https://infamous-freight-api.fly.dev' }}
-          NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'https://infamous-freight-api.fly.dev' }}
-        run: npx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+          NEXT_PUBLIC_API_BASE: ${{ secrets.NEXT_PUBLIC_API_BASE || 'https://infamous-freight-api.fly.dev/api' }}
+        run: |
+          cd web
+          npx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy to Vercel
         id: deploy
         run: |
+          cd web
           DEPLOY_URL=$(npx vercel deploy --prod --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
           echo "deploy_url=$DEPLOY_URL" >> $GITHUB_OUTPUT
           echo "✅ Deployed to: $DEPLOY_URL"
@@ -90,8 +95,10 @@ jobs:
         run: |
           MAX_RETRIES=5
           RETRY_COUNT=0
+          URL=${{ steps.deploy.outputs.deploy_url }}
+          echo "🔍 Checking deployed URL: $URL"
           while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://infamous-freight-enterprises.vercel.app)
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
             if [ "$HTTP_CODE" = "200" ]; then
               echo "✅ Web app is healthy (HTTP $HTTP_CODE)"
               echo "health=ok" >> $GITHUB_OUTPUT
@@ -113,7 +120,7 @@ jobs:
           echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
           echo "| **Vercel Deployment** | ✅ Complete |" >> $GITHUB_STEP_SUMMARY
           echo "| **Health Check** | ${{ steps.health.outputs.health }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Web URL** | https://infamous-freight-enterprises.vercel.app |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Web URL** | ${{ steps.deploy.outputs.deploy_url }} |" >> $GITHUB_STEP_SUMMARY
           echo "| **Build Status** | ${{ job.status }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "[View Vercel Dashboard](https://vercel.com/dashboard)" >> $GITHUB_STEP_SUMMARY
