@@ -2,22 +2,28 @@
 // Displays MRR, ARR, churn, LTV, and customer metrics with live updates
 // ROI: 20-30% revenue increase through data-driven decisions
 
-import React, { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
+import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 
 // Lazy-load heavy recharts components with fallback
 const LineChart = dynamic(
-  () => import('recharts').then((mod) => mod.LineChart),
-  { loading: () => <div className="h-[300px] bg-gray-100 animate-pulse rounded" /> }
+  () => import("recharts").then((mod) => mod.LineChart),
+  {
+    loading: () => (
+      <div className="h-[300px] bg-gray-100 animate-pulse rounded" />
+    ),
+  },
 );
-const BarChart = dynamic(
-  () => import('recharts').then((mod) => mod.BarChart),
-  { loading: () => <div className="h-[300px] bg-gray-100 animate-pulse rounded" /> }
-);
-const PieChart = dynamic(
-  () => import('recharts').then((mod) => mod.PieChart),
-  { loading: () => <div className="h-[300px] bg-gray-100 animate-pulse rounded" /> }
-);
+const BarChart = dynamic(() => import("recharts").then((mod) => mod.BarChart), {
+  loading: () => (
+    <div className="h-[300px] bg-gray-100 animate-pulse rounded" />
+  ),
+});
+const PieChart = dynamic(() => import("recharts").then((mod) => mod.PieChart), {
+  loading: () => (
+    <div className="h-[300px] bg-gray-100 animate-pulse rounded" />
+  ),
+});
 
 // Import only required recharts components once dynamically
 const {
@@ -31,7 +37,7 @@ const {
   Legend,
   ResponsiveContainer,
   Pie,
-} = require('recharts');
+} = require("recharts");
 
 interface RevenueMetrics {
   mrr: number;
@@ -65,7 +71,7 @@ interface TierDistribution {
 
 interface RevenueAlert {
   id: string;
-  severity: 'critical' | 'warning' | 'info' | 'success';
+  severity: "critical" | "warning" | "info" | "success";
   title: string;
   message: string;
   timestamp: string;
@@ -74,7 +80,9 @@ interface RevenueAlert {
 export const RevenueMonitorDashboard: React.FC = () => {
   const [metrics, setMetrics] = useState<RevenueMetrics | null>(null);
   const [mrrHistory, setMrrHistory] = useState<MRRHistoryPoint[]>([]);
-  const [tierDistribution, setTierDistribution] = useState<TierDistribution[]>([]);
+  const [tierDistribution, setTierDistribution] = useState<TierDistribution[]>(
+    [],
+  );
   const [alerts, setAlerts] = useState<RevenueAlert[]>([]);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
@@ -82,9 +90,9 @@ export const RevenueMonitorDashboard: React.FC = () => {
   // Fetch metrics from API
   const fetchMetrics = async () => {
     try {
-      const response = await fetch('/api/metrics/revenue/live');
+      const response = await fetch("/api/metrics/revenue/live");
       const data = await response.json();
-      
+
       setMetrics(data.current);
       setMrrHistory(data.mrrHistory || []);
       setTierDistribution(data.tierDistribution || []);
@@ -92,7 +100,7 @@ export const RevenueMonitorDashboard: React.FC = () => {
       setLastUpdated(new Date());
       setLoading(false);
     } catch (error) {
-      console.error('Failed to fetch metrics:', error);
+      console.error("Failed to fetch metrics:", error);
       setLoading(false);
     }
   };
@@ -116,9 +124,9 @@ export const RevenueMonitorDashboard: React.FC = () => {
   }
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
       minimumFractionDigits: 0,
     }).format(value);
   };
@@ -128,11 +136,11 @@ export const RevenueMonitorDashboard: React.FC = () => {
   };
 
   const getTrendColor = (value: number) => {
-    return value >= 0 ? 'text-green-600' : 'text-red-600';
+    return value >= 0 ? "text-green-600" : "text-red-600";
   };
 
   const getTrendIcon = (value: number) => {
-    return value >= 0 ? '↑' : '↓';
+    return value >= 0 ? "↑" : "↓";
   };
 
   return (
@@ -234,7 +242,9 @@ export const RevenueMonitorDashboard: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* MRR Growth Chart */}
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-semibold mb-4">MRR Growth (Last 12 Months)</h3>
+          <h3 className="text-lg font-semibold mb-4">
+            MRR Growth (Last 12 Months)
+          </h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={mrrHistory}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -317,7 +327,10 @@ export const RevenueMonitorDashboard: React.FC = () => {
             />
             <StatRow
               label="Avg Deal Size"
-              value={formatCurrency(metrics.revenueThisWeek / Math.max(metrics.newCustomersThisWeek, 1))}
+              value={formatCurrency(
+                metrics.revenueThisWeek /
+                  Math.max(metrics.newCustomersThisWeek, 1),
+              )}
             />
           </div>
         </div>
@@ -333,10 +346,7 @@ export const RevenueMonitorDashboard: React.FC = () => {
               label="New Customers"
               value={metrics.newCustomersThisMonth.toString()}
             />
-            <StatRow
-              label="MRR Growth"
-              value="+$12,450"
-            />
+            <StatRow label="MRR Growth" value="+$12,450" />
           </div>
         </div>
       </div>
@@ -350,7 +360,7 @@ interface MetricCardProps {
   value: string;
   subtitle?: string;
   trend?: string;
-  trendDirection?: 'up' | 'down';
+  trendDirection?: "up" | "down";
   icon?: string;
   invertTrend?: boolean;
 }
@@ -365,12 +375,12 @@ const MetricCard: React.FC<MetricCardProps> = ({
   invertTrend = false,
 }) => {
   const trendColor = invertTrend
-    ? trendDirection === 'down'
-      ? 'text-green-600'
-      : 'text-red-600'
-    : trendDirection === 'up'
-    ? 'text-green-600'
-    : 'text-red-600';
+    ? trendDirection === "down"
+      ? "text-green-600"
+      : "text-red-600"
+    : trendDirection === "up"
+      ? "text-green-600"
+      : "text-red-600";
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
@@ -382,7 +392,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
       {subtitle && <p className="text-xs text-gray-500 mb-2">{subtitle}</p>}
       {trend && (
         <div className={`text-sm font-medium ${trendColor}`}>
-          {trendDirection === 'up' ? '↑' : '↓'} {trend}
+          {trendDirection === "up" ? "↑" : "↓"} {trend}
         </div>
       )}
     </div>
@@ -405,17 +415,17 @@ const StatRow: React.FC<StatRowProps> = ({ label, value }) => (
 // Alert Component
 const Alert: React.FC<RevenueAlert> = ({ severity, title, message }) => {
   const colors = {
-    critical: 'bg-red-50 border-red-200 text-red-800',
-    warning: 'bg-yellow-50 border-yellow-200 text-yellow-800',
-    info: 'bg-blue-50 border-blue-200 text-blue-800',
-    success: 'bg-green-50 border-green-200 text-green-800',
+    critical: "bg-red-50 border-red-200 text-red-800",
+    warning: "bg-yellow-50 border-yellow-200 text-yellow-800",
+    info: "bg-blue-50 border-blue-200 text-blue-800",
+    success: "bg-green-50 border-green-200 text-green-800",
   };
 
   const icons = {
-    critical: '🚨',
-    warning: '⚠️',
-    info: 'ℹ️',
-    success: '✅',
+    critical: "🚨",
+    warning: "⚠️",
+    info: "ℹ️",
+    success: "✅",
   };
 
   return (
