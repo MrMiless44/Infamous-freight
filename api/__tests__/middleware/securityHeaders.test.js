@@ -34,8 +34,10 @@ describe('Security Headers Middleware', () => {
             const req = {};
             const res = {
                 set: jest.fn().mockReturnThis(),
+                setHeader: jest.fn().mockReturnThis(),
+                removeHeader: jest.fn().mockReturnThis(),
+                getHeader: jest.fn(),
             };
-            const originalSet = res.set.getMockImplementation();
             const next = jest.fn();
 
             if (cookieMiddleware) {

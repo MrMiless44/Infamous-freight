@@ -29,4 +29,33 @@ function milesBetween(aLat, aLng, bLat, bLng) {
   return 2 * R * Math.asin(Math.sqrt(s));
 }
 
-module.exports = { milesBetween };
+/**
+ * Find drivers within a radius of given coordinates
+ * @param {number} lat - Reference latitude
+ * @param {number} lng - Reference longitude
+ * @param {Array} drivers - Array of driver objects with {id, lat, lng, isActive}
+ * @param {number} radiusMiles - Search radius in miles
+ * @returns {Array} Drivers sorted by distance, nearest first
+ */
+function findNearbyDrivers(lat, lng, drivers, radiusMiles) {
+  return drivers
+    .filter(d => d.isActive !== false) // Include active drivers
+    .map(d => ({
+      ...d,
+      distance: milesBetween(lat, lng, d.lat, d.lng)
+    }))
+    .filter(d => d.distance <= radiusMiles)
+    .sort((a, b) => a.distance - b.distance);
+}
+
+/**
+ * Create a location object from coordinates
+ * @param {number} lat - Latitude
+ * @param {number} lng - Longitude
+ * @returns {Object} Location object with {lat, lng}
+ */
+function getLocation(lat, lng) {
+  return { lat, lng };
+}
+
+module.exports = { milesBetween, findNearbyDrivers, getLocation };

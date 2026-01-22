@@ -1,28 +1,47 @@
-# 🚀 Production Readiness Checklist
+# 1. Install & build
 
-## Quick Commands (CI-ready)
+pnpm install
+pnpm --filter @infamous-freight/shared build
 
-1. Install & build shared
+# 2. Start locally
 
-```
+pnpm dev
 
-**Last Updated**: January 22, 2026
-```
+# 3. Test dispatch endpoint
 
-2. Local dev
+curl -H "Authorization: Bearer $JWT_TOKEN" \
+ http://localhost:3001/api/dispatch/drivers
 
-```
-**Status**: In Progress
+# 4. Deploy to production
+
+git push origin main
+
+# → Auto-deploys to Vercel (web) + Fly.io (API) in ~5 minutes!# 1. Install & build
+
+pnpm install
+pnpm --filter @infamous-freight/shared build
+
+# 2. Start locally
+
+pnpm dev
+
+# 3. Test dispatch endpoint
+
+curl -H "Authorization: Bearer $JWT_TOKEN" \
+ http://localhost:3001/api/dispatch/drivers
+
+# 4. Deploy to production
+
+git push origin main
+
+# → Auto-deploys to Vercel (web) + Fly.io (API) in ~5 minutes!# 🚀 Production Readiness Checklist
+
+**Last Updated**: January 22, 2026  
+**Status**: In Progress  
 **Target**: Production Deployment Q1 2026
-
-3) Smoke dispatch (needs valid JWT)
-```
 
 ---
 
-4. Deploy to prod
-
-```
 ## ✅ Completed
 
 ### Security Hardening
@@ -46,16 +65,6 @@
 - [x] Environment variable management
 - [x] Vercel deployment (Web)
 - [x] Fly.io deployment capability (API)
-
-**Prod DB connection template (Flycast host)**
-
-```
-
-DATABASE_URL=postgresql://USERNAME:PASSWORD@infamous-freight-db.flycast:5432/infamous_freight_prod
-
-```
-
-Keep password in secrets only (GitHub Actions / Fly secrets), not in repo.
 
 ### Code Quality
 
@@ -262,7 +271,6 @@ Keep password in secrets only (GitHub Actions / Fly secrets), not in repo.
 
 ---
 
-**Review Schedule**: Weekly
-**Owner**: Development Team
+**Review Schedule**: Weekly  
+**Owner**: Development Team  
 **Stakeholders**: Technical Leadership, Product, Operations
-```

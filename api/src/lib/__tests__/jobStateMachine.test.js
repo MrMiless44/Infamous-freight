@@ -105,7 +105,7 @@ describe('jobStateMachine', () => {
         it('should throw with descriptive message', () => {
             expect(() => {
                 jobStateMachine.validateTransition('DRAFT', 'COMPLETED');
-            }).toThrow(/Cannot transition from DRAFT to COMPLETED/);
+            }).toThrow(/Invalid status transition: DRAFT -> COMPLETED/);
         });
 
         it('should throw for invalid from status', () => {
