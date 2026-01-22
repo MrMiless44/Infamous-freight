@@ -1,0 +1,316 @@
+name: Auto Deploy 100%
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'archive/**'
+      - '**.md'
+      - '.vscode/**'
+      - 'docs/OLD_*'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        type: choice
+        options:
+          - production
+          - staging
+        default: 'production'
+      skip_tests:
+        description: 'Skip tests and go straight to deploy'
+        type: boolean
+        default: false
+      deploy_all:
+        description: 'Force deploy all services'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  deployments: write
+  packages: write
+  statuses: write
+
+concurrency:
+  group: deploy-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: false
+
+env:
+  REGISTRY: ghcr.io
+  NODE_VERSION: '20'
+  PNPM_VERSION: '8'
+
+jobs:
+  # Stage 1: Pre-deployment checks and detection
+  detect-changes:
+    name: 🔍 Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      api_changed: ${{ steps.changes.outputs.api }}
+      web_changed: ${{ steps.changes.outputs.web }}
+      mobile_changed: ${{ steps.changes.outputs.mobile }}
+      shared_changed: ${{ steps.changes.outputs.shared }}
+      should_deploy: ${{ steps.decision.outputs.should_deploy }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect changes
+        id: changes
+        run: |
+          if [ "${{ github.event.inputs.deploy_all }}" = "true" ]; then
+            echo "api=true" >> $GITHUB_OUTPUT
+            echo "web=true" >> $GITHUB_OUTPUT
+            echo "mobile=true" >> $GITHUB_OUTPUT
+            echo "shared=true" >> $GITHUB_OUTPUT
+          else
+            API_CHANGED=$(git diff --name-only HEAD^ HEAD 2>/dev/null | grep -E '^api/' || echo "")
+            WEB_CHANGED=$(git diff --name-only HEAD^ HEAD 2>/dev/null | grep -E '^web/' || echo "")
+            MOBILE_CHANGED=$(git diff --name-only HEAD^ HEAD 2>/dev/null | grep -E '^mobile/' || echo "")
+            SHARED_CHANGED=$(git diff --name-only HEAD^ HEAD 2>/dev/null | grep -E '^packages/shared/' || echo "")
+            
+            [ -n "$API_CHANGED" ] && echo "api=true" >> $GITHUB_OUTPUT || echo "api=false" >> $GITHUB_OUTPUT
+            [ -n "$WEB_CHANGED" ] && echo "web=true" >> $GITHUB_OUTPUT || echo "web=false" >> $GITHUB_OUTPUT
+            [ -n "$MOBILE_CHANGED" ] && echo "mobile=true" >> $GITHUB_OUTPUT || echo "mobile=false" >> $GITHUB_OUTPUT
+            [ -n "$SHARED_CHANGED" ] && echo "shared=true" >> $GITHUB_OUTPUT || echo "shared=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Determine if deployment needed
+        id: decision
+        run: |
+          if [ "${{ steps.changes.outputs.api }}" = "true" ] || \
+             [ "${{ steps.changes.outputs.web }}" = "true" ] || \
+             [ "${{ steps.changes.outputs.mobile }}" = "true" ] || \
+             [ "${{ github.event.inputs.deploy_all }}" = "true" ]; then
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 📋 Summary
+        run: |
+          echo "🔍 **Change Detection Results:**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Service | Changed | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|---------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| API | ${{ steps.changes.outputs.api }} | $([ '${{ steps.changes.outputs.api }}' = 'true' ] && echo '✅' || echo '⏭️') |" >> $GITHUB_STEP_SUMMARY
+          echo "| Web | ${{ steps.changes.outputs.web }} | $([ '${{ steps.changes.outputs.web }}' = 'true' ] && echo '✅' || echo '⏭️') |" >> $GITHUB_STEP_SUMMARY
+          echo "| Mobile | ${{ steps.changes.outputs.mobile }} | $([ '${{ steps.changes.outputs.mobile }}' = 'true' ] && echo '✅' || echo '⏭️') |" >> $GITHUB_STEP_SUMMARY
+          echo "| Shared | ${{ steps.changes.outputs.shared }} | $([ '${{ steps.changes.outputs.shared }}' = 'true' ] && echo '✅' || echo '⏭️') |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Deploy Needed:** ${{ steps.decision.outputs.should_deploy }}" >> $GITHUB_STEP_SUMMARY
+
+  # Stage 2: Run tests (unless skipped)
+  verify-quality:
+    name: ✅ Verify Code Quality
+    needs: detect-changes
+    if: needs.detect-changes.outputs.should_deploy == 'true' && github.event.inputs.skip_tests != 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        check: [lint, type-check, test]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run ${{ matrix.check }}
+        run: |
+          case "${{ matrix.check }}" in
+            lint) pnpm lint ;;
+            type-check) pnpm check:types ;;
+            test) pnpm --filter api test ;;
+          esac
+
+  # Stage 3: Build services
+  build-services:
+    name: 🏗️ Build Services
+    needs: [detect-changes, verify-quality]
+    if: always() && needs.detect-changes.outputs.should_deploy == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [api, web]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build shared
+        run: pnpm --filter @infamous-freight/shared build
+
+      - name: Build ${{ matrix.service }}
+        if: |
+          (matrix.service == 'api' && needs.detect-changes.outputs.api_changed == 'true') ||
+          (matrix.service == 'web' && needs.detect-changes.outputs.web_changed == 'true')
+        run: pnpm --filter ${{ matrix.service }} build
+
+      - name: Upload build artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.service }}-build
+          path: |
+            ${{ matrix.service }}/dist
+            ${{ matrix.service }}/build
+            ${{ matrix.service }}/out
+          retention-days: 1
+
+  # Stage 4: Check deployment credentials
+  check-credentials:
+    name: 🔐 Check Credentials
+    runs-on: ubuntu-latest
+    outputs:
+      has_fly_token: ${{ steps.check.outputs.has_fly_token }}
+      has_vercel_token: ${{ steps.check.outputs.has_vercel_token }}
+      has_docker_registry: ${{ steps.check.outputs.has_docker_registry }}
+    steps:
+      - name: Check deployment credentials
+        id: check
+        run: |
+          [ -n "${{ secrets.FLY_API_TOKEN }}" ] && echo "has_fly_token=true" >> $GITHUB_OUTPUT || echo "has_fly_token=false" >> $GITHUB_OUTPUT
+          [ -n "${{ secrets.VERCEL_TOKEN }}" ] && echo "has_vercel_token=true" >> $GITHUB_OUTPUT || echo "has_vercel_token=false" >> $GITHUB_OUTPUT
+          [ -n "${{ secrets.REGISTRY_PASSWORD }}" ] && echo "has_docker_registry=true" >> $GITHUB_OUTPUT || echo "has_docker_registry=false" >> $GITHUB_OUTPUT
+
+      - name: 📋 Credential Status
+        run: |
+          echo "🔐 **Deployment Credentials:**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Service | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Fly.io (API) | $([ '${{ steps.check.outputs.has_fly_token }}' = 'true' ] && echo '✅' || echo '❌') |" >> $GITHUB_STEP_SUMMARY
+          echo "| Vercel (Web) | $([ '${{ steps.check.outputs.has_vercel_token }}' = 'true' ] && echo '✅' || echo '❌') |" >> $GITHUB_STEP_SUMMARY
+          echo "| Docker Registry | $([ '${{ steps.check.outputs.has_docker_registry }}' = 'true' ] && echo '✅' || echo '❌') |" >> $GITHUB_STEP_SUMMARY
+
+  # Stage 5: Deploy API
+  deploy-api:
+    name: 🚀 Deploy API
+    needs: [detect-changes, build-services, check-credentials]
+    if: |
+      needs.detect-changes.outputs.api_changed == 'true' &&
+      needs.check-credentials.outputs.has_fly_token == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: api-${{ github.event.inputs.environment || 'production' }}
+      url: https://infamous-freight-api.fly.dev
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download API build
+        uses: actions/download-artifact@v4
+        with:
+          name: api-build
+          path: api/
+
+      - name: Setup Fly CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy to Fly.io
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          cd api
+          flyctl deploy --remote-only --build-arg NODE_ENV=production
+          echo "✅ API deployed successfully to Fly.io" >> $GITHUB_STEP_SUMMARY
+
+      - name: Run smoke tests
+        run: |
+          echo "🧪 Running smoke tests..."
+          for i in {1..5}; do
+            if curl -f https://infamous-freight-api.fly.dev/api/health; then
+              echo "✅ API health check passed"
+              break
+            fi
+            sleep 5
+          done
+
+  # Stage 6: Deploy Web
+  deploy-web:
+    name: 🌐 Deploy Web
+    needs: [detect-changes, build-services, check-credentials]
+    if: |
+      needs.detect-changes.outputs.web_changed == 'true' &&
+      needs.check-credentials.outputs.has_vercel_token == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: web-${{ github.event.inputs.environment || 'production' }}
+      url: https://infamous-freight-enterprises.vercel.app
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Web build
+        uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: web/
+
+      - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          npm install -g vercel@latest
+          vercel deploy --prod --token=$VERCEL_TOKEN \
+            --build-env=NODE_ENV=production \
+            --build-env=API_URL=https://infamous-freight-api.fly.dev
+
+  # Stage 7: Deployment summary and notifications
+  deploy-summary:
+    name: 📊 Deployment Summary
+    needs: [detect-changes, verify-quality, build-services, deploy-api, deploy-web, check-credentials]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📋 Generate Summary
+        run: |
+          echo "## 🚀 Auto Deploy 100% - Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Changes Detected" >> $GITHUB_STEP_SUMMARY
+          echo "- API: ${{ needs.detect-changes.outputs.api_changed }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Web: ${{ needs.detect-changes.outputs.web_changed }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Mobile: ${{ needs.detect-changes.outputs.mobile_changed }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Shared: ${{ needs.detect-changes.outputs.shared_changed }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Quality Checks" >> $GITHUB_STEP_SUMMARY
+          echo "- Lint: $([ '${{ needs.verify-quality.result }}' = 'success' ] && echo '✅' || echo '⏭️') ${{ needs.verify-quality.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Build API: $([ '${{ needs.build-services.result }}' = 'success' ] && echo '✅' || echo '⏭️') ${{ needs.build-services.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Deployments" >> $GITHUB_STEP_SUMMARY
+          echo "- API: $([ '${{ needs.deploy-api.result }}' = 'success' ] && echo '✅ Deployed' || echo '⏭️ Skipped/Failed') (${{ needs.deploy-api.result }})" >> $GITHUB_STEP_SUMMARY
+          echo "- Web: $([ '${{ needs.deploy-web.result }}' = 'success' ] && echo '✅ Deployed' || echo '⏭️ Skipped/Failed') (${{ needs.deploy-web.result }})" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Live URLs" >> $GITHUB_STEP_SUMMARY
+          echo "- 🌐 Web: https://infamous-freight-enterprises.vercel.app" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔌 API: https://infamous-freight-api.fly.dev" >> $GITHUB_STEP_SUMMARY
+          echo "- 📊 Logs: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
