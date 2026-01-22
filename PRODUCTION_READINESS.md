@@ -1,11 +1,28 @@
 # 🚀 Production Readiness Checklist
 
-**Last Updated**: January 22, 2026  
-**Status**: In Progress  
+## Quick Commands (CI-ready)
+
+1. Install & build shared
+
+```
+
+**Last Updated**: January 22, 2026
+```
+
+2. Local dev
+
+```
+**Status**: In Progress
 **Target**: Production Deployment Q1 2026
+
+3) Smoke dispatch (needs valid JWT)
+```
 
 ---
 
+4. Deploy to prod
+
+```
 ## ✅ Completed
 
 ### Security Hardening
@@ -29,6 +46,16 @@
 - [x] Environment variable management
 - [x] Vercel deployment (Web)
 - [x] Fly.io deployment capability (API)
+
+**Prod DB connection template (Flycast host)**
+
+```
+
+DATABASE_URL=postgresql://USERNAME:PASSWORD@infamous-freight-db.flycast:5432/infamous_freight_prod
+
+```
+
+Keep password in secrets only (GitHub Actions / Fly secrets), not in repo.
 
 ### Code Quality
 
@@ -235,6 +262,7 @@
 
 ---
 
-**Review Schedule**: Weekly  
-**Owner**: Development Team  
+**Review Schedule**: Weekly
+**Owner**: Development Team
 **Stakeholders**: Technical Leadership, Product, Operations
+```

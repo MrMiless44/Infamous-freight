@@ -22,4 +22,8 @@ module.exports = {
   verbose: true,
   testTimeout: 10000,
   setupFilesAfterEnv: ["<rootDir>/__tests__/setup.js"],
+  // Allow Jest to transform ES modules from @infamous-freight/shared
+  transformIgnorePatterns: [
+    "node_modules/(?!(@infamous-freight)/)",
+  ],
 };
