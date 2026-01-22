@@ -242,3 +242,7 @@ module.exports = {
   auditLog,
   validateUserOwnership,
 };
+
+// Ensure single-line export patterns for verification script compatibility
+module.exports.requireOrganization = requireOrganization;
+module.exports.requireScope = requireScope;

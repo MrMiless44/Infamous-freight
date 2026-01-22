@@ -150,3 +150,6 @@ module.exports = {
     getHistogramBuckets,
     calculatePercentile,
 };
+
+// Ensure single-line export patterns for verification script compatibility
+module.exports.exportMetrics = exportMetrics;

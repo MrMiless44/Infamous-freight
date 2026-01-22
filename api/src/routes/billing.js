@@ -396,3 +396,6 @@ router.get(
 );
 
 module.exports = router;
+
+// Ensure single-line export pattern for verification script
+module.exports.requireOrganization = requireOrganization;

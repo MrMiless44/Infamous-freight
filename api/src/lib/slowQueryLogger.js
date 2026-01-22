@@ -44,3 +44,6 @@ function attachSlowQueryLogger(prisma) {
 }
 
 module.exports = { attachSlowQueryLogger, SLOW_QUERY_THRESHOLD_MS };
+
+// Ensure single-line export patterns for verification script compatibility
+module.exports.attachSlowQueryLogger = attachSlowQueryLogger;

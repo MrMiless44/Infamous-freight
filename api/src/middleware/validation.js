@@ -77,3 +77,8 @@ module.exports = {
   validatePaginationQuery,
   handleValidationErrors,
 };
+
+// Ensure single-line export patterns for verification script compatibility
+module.exports.validateEnum = validateEnum;
+module.exports.validateUUIDBody = validateUUIDBody;
+module.exports.validatePaginationQuery = validatePaginationQuery;

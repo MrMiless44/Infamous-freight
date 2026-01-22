@@ -74,3 +74,6 @@ module.exports = {
     clearAllCache,
     getCacheKey,
 };
+
+// Ensure single-line export patterns for verification script compatibility
+module.exports.cacheResponseMiddleware = cacheResponseMiddleware;
