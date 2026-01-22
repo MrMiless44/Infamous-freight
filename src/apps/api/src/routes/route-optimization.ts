@@ -5,7 +5,7 @@
  */
 
 import { Router, Request, Response } from "express";
-import { authenticate, requireScope } from "../middleware/security";
+import { authenticate, requireScope, limiters } from "../middleware/security";
 import {
   Client,
   DirectionsRequest,
@@ -53,6 +53,7 @@ interface OptimizedRoute {
  */
 router.post(
   "/optimize",
+  limiters.general,
   authenticate,
   requireScope("routes:optimize"),
   async (req: Request, res: Response) => {

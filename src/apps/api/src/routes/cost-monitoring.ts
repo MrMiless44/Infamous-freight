@@ -5,7 +5,7 @@
  */
 
 import { Router, Request, Response } from "express";
-import { authenticate, requireScope } from "../middleware/security";
+import { authenticate, requireScope, limiters } from "../middleware/security";
 
 const router = Router();
 

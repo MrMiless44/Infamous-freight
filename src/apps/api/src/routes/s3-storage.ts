@@ -8,7 +8,7 @@ import AWS from "aws-sdk";
 import multer from "multer";
 import multerS3 from "multer-s3";
 import { Request, Response, Router } from "express";
-import { authenticate } from "./security";
+import { authenticate, limiters } from "../middleware/security";
 
 const router = Router();
 
@@ -72,6 +72,7 @@ const uploadToS3 = multer({
  */
 router.post(
   "/shipments/:shipmentId/photo",
+  limiters.general,
   authenticate,
   uploadToS3.single("photo"),
   async (req: Request, res: Response) => {
@@ -135,12 +136,22 @@ router.post(
  */
 router.get(
   "/media/:shipmentId/photo/presigned-url",
+  limiters.general,
   authenticate,
   async (req: Request, res: Response) => {
     const photoKey = req.query.key as string;
 
     if (!photoKey) {
       return res.status(400).json({ error: "Photo key required" });
+    }
+
+    // Prevent path traversal and directory escaping
+    if (
+      photoKey.includes("..") ||
+      photoKey.startsWith("/") ||
+      photoKey.includes("//")
+    ) {
+      return res.status(400).json({ error: "Invalid photo key" });
     }
 
     try {
@@ -168,12 +179,22 @@ router.get(
  */
 router.delete(
   "/media/:shipmentId/photo",
+  limiters.general,
   authenticate,
   async (req: Request, res: Response) => {
     const photoKey = req.query.key as string;
 
     if (!photoKey) {
       return res.status(400).json({ error: "Photo key required" });
+    }
+
+    // Prevent path traversal and directory escaping
+    if (
+      photoKey.includes("..") ||
+      photoKey.startsWith("/") ||
+      photoKey.includes("//")
+    ) {
+      return res.status(400).json({ error: "Invalid photo key" });
     }
 
     try {
@@ -205,6 +226,7 @@ router.delete(
  */
 router.get(
   "/admin/storage/stats",
+  limiters.general,
   authenticate,
   async (req: Request, res: Response) => {
     try {

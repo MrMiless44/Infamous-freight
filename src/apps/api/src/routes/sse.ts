@@ -5,7 +5,7 @@
  */
 
 import { Request, Response, Router } from "express";
-import { authenticate, requireScope } from "./security";
+import { authenticate, requireScope, limiters } from "../middleware/security";
 
 const router = Router();
 
@@ -75,6 +75,7 @@ export const subscriptionManager = new EventSubscriptionManager();
  */
 router.get(
   "/shipments/stream/:trackingNumber",
+  limiters.general,
   authenticate,
   requireScope("shipments:track"),
   (req: Request, res: Response) => {

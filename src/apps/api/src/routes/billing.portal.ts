@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import config from "../config";
 import { prisma } from "../db/prisma";
 import { requireAuth, requireScope } from "../middleware/auth";
+import { limiters } from "../middleware/security";
 
 const stripeApiVersion = "2024-06-20" as Stripe.LatestApiVersion;
 
@@ -29,7 +30,7 @@ const billingPortalRouter = Router();
 billingPortalRouter.use(requireAuth);
 billingPortalRouter.use(requireScope("billing:write"));
 
-billingPortalRouter.post("/portal", async (req, res) => {
+billingPortalRouter.post("/portal", limiters.billing, async (req, res) => {
   const stripeConfig = config.getStripeConfig();
   if (!stripeConfig.enabled) {
     return res.status(503).json({ error: "Stripe not configured" });

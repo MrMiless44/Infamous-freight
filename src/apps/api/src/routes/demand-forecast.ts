@@ -158,6 +158,7 @@ async function predict(
  */
 router.post(
   "/demand",
+  limiters.general,
   authenticate,
   requireScope("forecast:read"),
   async (req: Request, res: Response) => {

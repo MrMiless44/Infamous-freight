@@ -2,20 +2,79 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 // Proxies requests from /api/proxy/* to the backend API
 // Base URL is taken from NEXT_PUBLIC_API_URL (preferred) or API_BASE_URL
-const API_BASE = (
-  process.env.NEXT_PUBLIC_API_URL ||
-  process.env.API_BASE_URL ||
-  ""
-).replace(/\/$/, "");
+const RAW_API_BASE =
+  process.env.NEXT_PUBLIC_API_URL || process.env.API_BASE_URL || "";
 
-function buildTargetUrl(req: NextApiRequest, base: string) {
+const ALLOW_INTERNAL = process.env.API_PROXY_ALLOW_INTERNAL === "true";
+
+function parseBaseUrl(raw: string): URL | null {
+  if (!raw) return null;
+  try {
+    const parsed = new URL(raw);
+    if (!parsed.protocol || !["http:", "https:"].includes(parsed.protocol)) {
+      return null;
+    }
+    return parsed;
+  } catch (_err) {
+    return null;
+  }
+}
+
+function isPrivateHost(host: string): boolean {
+  const lowered = host.toLowerCase();
+  const secondOctet = lowered.startsWith("172.")
+    ? Number(lowered.split(".")[1])
+    : null;
+  return (
+    lowered === "localhost" ||
+    lowered === "127.0.0.1" ||
+    lowered === "::1" ||
+    lowered.startsWith("10.") ||
+    lowered.startsWith("192.168.") ||
+    (secondOctet !== null && secondOctet >= 16 && secondOctet <= 31) ||
+    lowered.startsWith("169.254.") ||
+    lowered.startsWith("fc") ||
+    lowered.startsWith("fd")
+  );
+}
+
+function ensureSafePath(segments: string | string[] | undefined) {
+  const parts = Array.isArray(segments) ? segments : segments ? [segments] : [];
+  const normalized = parts
+    .flatMap((part) => part.split("/").filter(Boolean))
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+  for (const part of normalized) {
+    if (part === "..") {
+      throw new Error("Path traversal is not allowed");
+    }
+    if (/^https?:/i.test(part) || part.startsWith("//")) {
+      throw new Error("Absolute URLs are not allowed in proxy path");
+    }
+  }
+
+  return normalized.join("/");
+}
+
+function buildTargetUrl(req: NextApiRequest, base: URL) {
   const rawQuery =
     req.url && req.url.includes("?")
       ? req.url.substring(req.url.indexOf("?"))
       : "";
-  const segments = req.query.path;
-  const path = Array.isArray(segments) ? segments.join("/") : segments || "";
-  return `${base}/${path}${rawQuery}`;
+
+  const safePath = ensureSafePath(req.query.path);
+
+  const target = new URL(base.href);
+  const basePath = base.pathname.replace(/\/$/, "");
+  target.pathname = [basePath, safePath].filter(Boolean).join("/");
+  target.search = rawQuery;
+
+  if (target.origin !== base.origin) {
+    throw new Error("Proxy target origin mismatch");
+  }
+
+  return target;
 }
 
 function forwardableHeaders(req: NextApiRequest) {
@@ -50,7 +109,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (!API_BASE) {
+  const base = parseBaseUrl(RAW_API_BASE);
+
+  if (!base) {
     res.status(500).json({
       ok: false,
       error:
@@ -59,7 +120,25 @@ export default async function handler(
     return;
   }
 
-  const url = buildTargetUrl(req, API_BASE);
+  if (!ALLOW_INTERNAL && isPrivateHost(base.hostname)) {
+    res.status(400).json({
+      ok: false,
+      error: "Proxy base host is not allowed",
+    });
+    return;
+  }
+
+  let url: URL;
+  try {
+    url = buildTargetUrl(req, base);
+  } catch (err: any) {
+    res.status(400).json({
+      ok: false,
+      error: "Invalid proxy path",
+      detail: err?.message || String(err),
+    });
+    return;
+  }
   const headers = forwardableHeaders(req);
 
   let body: BodyInit | undefined;

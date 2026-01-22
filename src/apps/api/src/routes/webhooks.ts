@@ -86,7 +86,12 @@ function isBlockedHost(hostname: string): boolean {
     }
 
     // IPv6: loopback, link-local, unique local
-    if (host.startsWith("fc") || host.startsWith("fd") || host.startsWith("fe80") || host === "::1") {
+    if (
+      host.startsWith("fc") ||
+      host.startsWith("fd") ||
+      host.startsWith("fe80") ||
+      host === "::1"
+    ) {
       return true;
     }
   }
@@ -359,7 +364,9 @@ async function deliverWebhook(webhook: Webhook, event: any): Promise<void> {
   } catch (err) {
     webhook.active = false;
     webhook.failureCount++;
-    console.error(`❌ Webhook disabled due to invalid/blocked URL: ${webhook.url}`);
+    console.error(
+      `❌ Webhook disabled due to invalid/blocked URL: ${webhook.url}`,
+    );
     throw err;
   }
 
