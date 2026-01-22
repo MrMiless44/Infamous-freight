@@ -9,8 +9,15 @@ jest.mock("../../src/db/prisma", () => ({
       findUnique: jest.fn(),
       findMany: jest.fn(),
       update: jest.fn(),
+      count: jest.fn(),
     },
   },
+}));
+
+// Mock middleware that are now in the routes
+jest.mock("../../src/middleware/cache", () => ({
+  cacheMiddleware: () => (req, res, next) => next(),
+  invalidateCache: () => (req, res, next) => next(),
 }));
 
 const { prisma } = require("../../src/db/prisma");
@@ -154,10 +161,13 @@ describe("Users Routes", () => {
 
   describe("GET /users", () => {
     it("should return users list for admin", async () => {
-      prisma.user.findMany.mockResolvedValue([
+      const mockUsers = [
         { id: "user-1", email: "user1@example.com", role: "user" },
         { id: "user-2", email: "user2@example.com", role: "user" },
-      ]);
+      ];
+
+      prisma.user.findMany.mockResolvedValue(mockUsers);
+      prisma.user.count.mockResolvedValue(2);
 
       const response = await request(app)
         .get("/api/users")
@@ -166,6 +176,7 @@ describe("Users Routes", () => {
       expect(response.status).toBe(200);
       expect(response.body.ok).toBe(true);
       expect(Array.isArray(response.body.users)).toBe(true);
+      expect(response.body.total).toBe(2);
     });
 
     it("should reject non-admin users", async () => {

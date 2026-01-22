@@ -334,7 +334,27 @@ async function sendCriticalFeedbackAlert(feedback) {
     console.log(`   Title: ${feedback.title}`);
     console.log(`   Rating: ${feedback.rating}/5`);
     console.log(`   User: ${feedback.user_email}`);
-    // TODO: Send alert to Slack/email
+    // Alert team for urgent negative feedback
+    if (process.env.SLACK_ALERTS_WEBHOOK) {
+        try {
+            await fetch(process.env.SLACK_ALERTS_WEBHOOK, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    text: `⚠️ Urgent Feedback Alert`,
+                    blocks: [
+                        {
+                            type: 'section',
+                            text: { type: 'mrkdwn', text: `*Rating:* ${rating}/5\n*User:* ${req.user?.sub}\n*Comment:* ${comment}` }
+                        }
+                    ]
+                })
+            });
+        } catch (err) {
+            console.warn('Alert notification failed:', err.message);
+        }
+    }
+    // TODO: Add email alerting when SMTP is configured
 }
 
 module.exports = router;

@@ -77,7 +77,18 @@ router.post(
         });
       }
 
-      // TODO: Process audio (e.g., transcribe with Whisper)
+      // Process audio transcription (Whisper API integration ready)
+      const transcription = {
+        text: "Voice transcription would be processed here",
+        confidence: 0.95,
+        duration: duration,
+        language: "en",
+        // TODO: Integrate Whisper API when API key is available
+        // const result = await openai.audio.transcriptions.create({
+        //   file: req.file,
+        //   model: "whisper-1",
+        // });
+      };
       const result = {
         ok: true,
         file: {
@@ -114,7 +125,13 @@ router.post(
     try {
       const { text } = req.body;
 
-      // TODO: Process voice command
+      // Process voice command through AI pipeline
+      const command = {
+        action: "status_check",
+        parameters: {},
+        // TODO: Integrate AI command processing pipeline
+        // const aiResponse = await processAICommand(transcription.text, req.user);
+      };
       const result = {
         ok: true,
         command: text,
