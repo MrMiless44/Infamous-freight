@@ -58,11 +58,13 @@ jobs:
 
       - name: Notify Vercel (web health)
         uses: vercel/repository-dispatch/actions/status@v1
+        continue-on-error: true
         with:
           name: Vercel - health: web ${{ steps.web.outputs.status }}
 
       - name: Notify Vercel (api health)
         uses: vercel/repository-dispatch/actions/status@v1
+        continue-on-error: true
         with:
           name: Vercel - health: api ${{ steps.api.outputs.status }}
 
