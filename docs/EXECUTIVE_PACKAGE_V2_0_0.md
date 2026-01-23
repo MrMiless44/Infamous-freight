@@ -243,8 +243,8 @@ Infæmous Freight is an AI-native freight management operating system providing 
 
 | Tier | Users | Price |
 | --- | --- | --- |
-| Pro | 1–10 | $49/user |
-| Business | 10–100 | $99/user |
+| Pro | 1–9 | $49/user |
+| Business | 10–99 | $99/user |
 | Enterprise | 100+ | Custom |
 | AI Premium | Usage | Variable |
 
