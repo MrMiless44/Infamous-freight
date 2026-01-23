@@ -37,7 +37,16 @@ ENV NODE_ENV=production
 ENV PORT=3000
 RUN corepack enable
 
-COPY --from=build /app ./
+# Copy only runtime essentials instead of the entire /app directory
+# Root workspace metadata for pnpm
+COPY --from=build /app/package.json /app/pnpm-lock.yaml /app/pnpm-workspace.yaml ./
+# Installed dependencies
+COPY --from=build /app/node_modules ./node_modules
+# Web application build output and configuration
+COPY --from=build /app/web/.next ./web/.next
+COPY --from=build /app/web/public ./web/public
+COPY --from=build /app/web/package.json ./web/package.json
+COPY --from=build /app/web/next.config.mjs ./web/next.config.mjs
 
 # Re-install only production dependencies to prune devDependencies
 RUN pnpm install --prod --frozen-lockfile
