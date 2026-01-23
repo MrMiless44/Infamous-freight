@@ -25,8 +25,9 @@ RUN corepack enable
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build the application (shared, api, then web)
+# Build the application (shared, generate Prisma client, api, then web)
 RUN pnpm --filter @infamous-freight/shared build \
+  && cd api && pnpm prisma:generate \
   && pnpm --filter api build \
   && pnpm --filter web build
 
