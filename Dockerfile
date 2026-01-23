@@ -22,8 +22,8 @@ FROM node:18-alpine AS build
 WORKDIR /app
 RUN corepack enable
 
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+COPY --from=deps /app/node_modules ./node_modules
 
 # Build the application (shared, generate Prisma client, api, then web)
 RUN pnpm --filter @infamous-freight/shared build \
