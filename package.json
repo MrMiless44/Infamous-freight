@@ -55,7 +55,7 @@
   ],
   "devDependencies": {
     "@21yunbox/netlify-plugin-21yunbox-deploy-to-china-cdn": "^1.0.0",
-    "@playwright/test": "^1.47.0",
+    "@playwright/test": "^1.58.0",
     "@typescript-eslint/eslint-plugin": "^8.53.0",
     "@typescript-eslint/parser": "^8.53.0",
     "eslint-plugin-import": "^2.32.0",
