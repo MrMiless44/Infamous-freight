@@ -20,6 +20,61 @@ All payments flow **100% directly to your Stripe account** with zero transaction
 
 ---
 
+## ✅ Live Pricing & Payment Links (InfÆmous AI Synthetic Intelligence)
+
+Use these live links directly in the web pricing page, mobile UI, SMS upgrade flows, and in-app upgrade prompts.
+
+### Starter (per seat)
+- Product: Infæmous Freight Starter
+- Product ID: `prod_Tqy1by3LhxpQY6`
+- Price: **$19/mo**
+- Price ID: `price_1StG5SJBKY4ohJDAyAXFDiwP`
+- Payment Link: https://buy.stripe.com/4gM8wQ7GI2Fs38i53FcV20Q
+
+### Pro
+- Price: **$49/mo**
+- Price ID: `price_1St40lJBKY4ohJDAGfM7XhLW`
+- Payment Link: https://buy.stripe.com/bJeaEYbWYcg210a9jVcV20S
+
+### Business
+- Price: **$99/mo**
+- Price ID: `price_1St41jJBKY4ohJDAeXIGERrN`
+- Payment Link: https://buy.stripe.com/fZucN60egeoa6ku8fRcV20U
+
+### Enterprise Minimum Monthly Spend
+- Price: **$2,500/mo**
+- Price ID: `price_1Sq3B2JBKY4ohJDAjt2se8ZR`
+- Payment Link: https://buy.stripe.com/28E5kE1ik7ZMcIS8fRcV20W
+
+---
+
+## ✅ Final Step for True Metered Billing
+
+Your product **Infamous AI Actions (metered)** (`prod_TqlbsmBT9Jw2Z0`) must have a **metered recurring price** to support true usage-based billing. The existing prices are licensed, which prevents usage records from billing properly.
+
+### Dashboard steps (fastest, guaranteed)
+1. Stripe Dashboard → Products
+2. Open **Infamous AI Actions (metered)** (`prod_TqlbsmBT9Jw2Z0`)
+3. Click **Add price**
+4. Select **Recurring**
+5. Billing period: **Monthly**
+6. Pricing model / Usage: **Metered (usage-based)**
+7. Unit price: set your preferred rate (e.g., `$0.01` per AI action or `$0.001` per token)
+8. Save
+
+### Server-side usage reporting
+
+Once you subscribe a customer to the metered price, report usage from Genesis AI:
+
+```javascript
+await stripe.subscriptionItems.createUsageRecord(
+  stripeSubscriptionItemId,
+  { quantity, timestamp: "now", action: "increment" }
+);
+```
+
+---
+
 ## 🚀 Quick Start - 3 Steps
 
 ### Step 1: Get Your Stripe Keys
