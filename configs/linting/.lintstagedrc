@@ -1,5 +1,18 @@
 {
-  "*.{js,jsx}": ["prettier --write"],
-  "*.{ts,tsx}": ["prettier --write"],
-  "*.{json,md}": ["prettier --write"]
+  "api/src/**/*.{js,ts}": [
+    "eslint --fix",
+    "prettier --write"
+  ],
+  "web/**/*.{js,jsx,ts,tsx}": [
+    "prettier --write"
+  ],
+  "mobile/**/*.{js,jsx,ts,tsx}": [
+    "prettier --write"
+  ],
+  "packages/shared/src/**/*.{js,ts}": [
+    "prettier --write"
+  ],
+  "*.{json,md,yml,yaml}": [
+    "prettier --write"
+  ]
 }
