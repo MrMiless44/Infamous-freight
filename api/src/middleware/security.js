@@ -115,7 +115,11 @@ function authenticate(req, res, next) {
         return res.status(400).json({ error: "Invalid x-user-id header" });
       }
       if (typeof xUserId === "string") {
-        req.user = { sub: xUserId, scopes: ["user:avatar"] };
+        const trimmedXUserId = xUserId.trim();
+        if (!trimmedXUserId) {
+          return res.status(400).json({ error: "Invalid x-user-id header" });
+        }
+        req.user = { sub: trimmedXUserId, scopes: ["user:avatar"] };
         req.auth = {
           userId: req.user.sub,
           role: req.user.role,
