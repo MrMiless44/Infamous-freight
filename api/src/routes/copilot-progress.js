@@ -313,7 +313,9 @@ router.get(
         averageEngagementScore: avgProgress._avg.engagementScore || 0,
         averageEffectivenessScore: avgProgress._avg.effectivenessScore || 0,
         totalGoalsCompleted: avgProgress._sum.goalsCompleted || 0,
-        totalGoalsActive: avgProgress._sum.goalsTotal || 0,
+        totalGoalsActive:
+          (avgProgress._sum.goalsTotal || 0) -
+          (avgProgress._sum.goalsCompleted || 0),
         totalActiveRecommendations: avgProgress._sum.activeRecommendations || 0,
         totalCompletedRecommendations: avgProgress._sum.completedRecommendations || 0,
       };
