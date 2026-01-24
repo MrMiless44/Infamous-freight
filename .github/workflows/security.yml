@@ -24,7 +24,7 @@ permissions:
 
 env:
   NODE_VERSION: '22.16.0'
-  PNPM_VERSION: '8.15.9'
+  PNPM_VERSION: '9.15.0'
 
 jobs:
   # Dependency Audit
