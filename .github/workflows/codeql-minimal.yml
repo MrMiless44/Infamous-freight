@@ -33,7 +33,7 @@ jobs:
         if: ${{ !inputs.skip_build }}
         uses: pnpm/action-setup@v2
         with:
-          version: 8.15.9
+          version: 9.15.0
 
       - name: Setup Node.js
         if: ${{ !inputs.skip_build }}
