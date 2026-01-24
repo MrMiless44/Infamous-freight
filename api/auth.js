@@ -56,7 +56,7 @@ function verifyToken(token) {
         if (payload.exp < now) return null; // Token expired
 
         return payload;
-    } catch (_err) {
+    } catch {
         return null;
     }
 }

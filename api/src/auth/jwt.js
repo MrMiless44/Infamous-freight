@@ -9,7 +9,7 @@ function signUserToken(userId) {
 function verifyToken(token) {
     try {
         return jwt.verify(token, env.jwtSecret);
-    } catch (err) {
+    } catch {
         return null;
     }
 }
