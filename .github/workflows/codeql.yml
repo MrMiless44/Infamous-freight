@@ -46,7 +46,7 @@ jobs:
           fetch-depth: 0  # Full history for better analysis
 
       - name: 🔧 Setup Node.js 18
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
           cache: "npm"
@@ -92,7 +92,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 🔧 Setup Node.js 18
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
 
@@ -140,7 +140,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 🔧 Setup Node.js 18
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
 
@@ -184,7 +184,7 @@ jobs:
           fetch-depth: 0
 
       - name: 🔧 Setup Node.js 18
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
 
