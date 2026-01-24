@@ -13,8 +13,8 @@ export async function upsertTenantBillingFromSubscription(
     planType: typeof plan,
   };
 
-  throw new Error(
-    "unimplemented: upsertTenantBillingFromSubscription " +
-      JSON.stringify(context),
-  );
+  const error = new Error("unimplemented: upsertTenantBillingFromSubscription");
+  // Attach detailed context for server-side logging/observability without leaking it to clients
+  (error as any).context = context;
+  throw error;
 }
