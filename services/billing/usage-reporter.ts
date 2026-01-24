@@ -9,9 +9,10 @@ import type { UsageTotals } from "./usage-aggregator";
  * @param params.stripeSubscriptionItems - Map from feature name to Stripe subscription item ID (e.g., `"si_..."`) used to identify where to record usage.
  * @param params.usage - Per-feature overage quantities; entries with non-positive values are ignored. Quantities are floored before being recorded.
  * @param params.timestamp - UNIX timestamp (seconds) to attach to created usage records; defaults to the current time when omitted.
- */
+import type { AiMeteredFeature } from "@infamous-freight/shared";
+
 export async function reportUsageForTenant(params: {
-  stripeSubscriptionItems: Record<string, string>; // feature -> si_...
+  stripeSubscriptionItems: Partial<Record<AiMeteredFeature, string>>; // feature -> si_...
   usage: UsageTotals; // overage only
   timestamp?: number;
 }) {
