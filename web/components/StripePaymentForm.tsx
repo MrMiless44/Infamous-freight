@@ -63,7 +63,7 @@ function PaymentFormContent({
   const [email, setEmail] = useState<string | null>(null);
 
   const returnUrl = useMemo(
-    () => `${window.location.origin}/billing/complete`,
+    () => window.location.href,
     [],
   );
 
