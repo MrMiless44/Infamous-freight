@@ -44,6 +44,10 @@
   ],
   "rewrites": [
     {
+      "source": "/about",
+      "destination": "/"
+    },
+    {
       "source": "/api/:path*",
       "destination": "https://infamous-freight-api.fly.dev/api/:path*"
     }

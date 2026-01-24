@@ -12,5 +12,5 @@
       "source": "/api/:path*",
       "destination": "https://:api_host/api/:path*"
     }
-  }
+  ]
 }
