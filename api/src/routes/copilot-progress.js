@@ -48,12 +48,24 @@ router.get(
           );
       }
 
-      // Parse JSON fields
-      const progressData = {
-        ...progress,
-        progressDetails: progress.progressDetails ? JSON.parse(progress.progressDetails) : null,
-        milestones: progress.milestones ? JSON.parse(progress.milestones) : null,
-      };
+      // Parse JSON fields with error handling
+      let progressData;
+      try {
+        progressData = {
+          ...progress,
+          progressDetails: progress.progressDetails ? JSON.parse(progress.progressDetails) : null,
+          milestones: progress.milestones ? JSON.parse(progress.milestones) : null,
+        };
+      } catch (parseError) {
+        return res
+          .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+          .json(
+            new ApiResponse({
+              success: false,
+              error: 'Failed to parse progress data',
+            })
+          );
+      }
 
       res
         .status(HTTP_STATUS.OK)
@@ -87,12 +99,24 @@ router.get(
         skip: Number(offset),
       });
 
-      // Parse JSON fields for each record
-      const historyData = history.map((record) => ({
-        ...record,
-        progressDetails: record.progressDetails ? JSON.parse(record.progressDetails) : null,
-        milestones: record.milestones ? JSON.parse(record.milestones) : null,
-      }));
+      // Parse JSON fields for each record with error handling
+      let historyData;
+      try {
+        historyData = history.map((record) => ({
+          ...record,
+          progressDetails: record.progressDetails ? JSON.parse(record.progressDetails) : null,
+          milestones: record.milestones ? JSON.parse(record.milestones) : null,
+        }));
+      } catch (parseError) {
+        return res
+          .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+          .json(
+            new ApiResponse({
+              success: false,
+              error: 'Failed to parse progress history data',
+            })
+          );
+      }
 
       res
         .status(HTTP_STATUS.OK)

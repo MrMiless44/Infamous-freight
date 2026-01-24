@@ -20,8 +20,19 @@ export interface Shipment {
 }
 
 // AI Copilot Progress Tracking Types
+
+// Category-specific progress data with consistent structure
+export interface CategoryProgress {
+  score: number;  // 0-100
+  trend: 'improving' | 'stable' | 'declining';
+  details?: string;
+}
+
 export interface CopilotProgressDetails {
-  [category: string]: any;
+  safety?: CategoryProgress;
+  efficiency?: CategoryProgress;
+  compliance?: CategoryProgress;
+  [category: string]: CategoryProgress | undefined;  // Allow additional categories but enforce structure
 }
 
 export interface CopilotMilestone {
