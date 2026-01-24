@@ -4,9 +4,9 @@
 
 [![Test Coverage](https://img.shields.io/badge/coverage-86.2%25-brightgreen.svg)](./api/coverage)
 [![Tests](https://img.shields.io/badge/tests-197%20passing-brightgreen.svg)](./api)
-[![Node.js](https://img.shields.io/badge/node-20.18.1-brightgreen.svg)](https://nodejs.org)
-[![pnpm](https://img.shields.io/badge/pnpm-8.15.9-orange.svg)](https://pnpm.io)
-[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)]()
+[![Node.js](https://img.shields.io/badge/node-20.0.0+-brightgreen.svg)](https://nodejs.org)
+[![pnpm](https://img.shields.io/badge/pnpm-9.15.0-orange.svg)](https://pnpm.io)
+[![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)]()
 [![License](https://img.shields.io/badge/license-Proprietary-red.svg)](./LICENSE)
 
 ## Deployment Status

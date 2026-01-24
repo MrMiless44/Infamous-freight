@@ -21,6 +21,13 @@ updates:
     open-pull-requests-limit: 5
     reviewers:
       - "MrMiless44"
+    labels:
+      - "dependencies"
+      - "automated"
+    versioning-strategy: increase
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
 
   # API service
   - package-ecosystem: "npm"
@@ -32,6 +39,10 @@ updates:
     open-pull-requests-limit: 5
     reviewers:
       - "MrMiless44"
+    labels:
+      - "dependencies"
+      - "api"
+    versioning-strategy: increase
 
   # Web application
   - package-ecosystem: "npm"
@@ -43,30 +54,65 @@ updates:
     open-pull-requests-limit: 5
     reviewers:
       - "MrMiless44"
+    labels:
+      - "dependencies"
+      - "web"
+    versioning-strategy: increase
 
-  # Infamous-freight-ai API
+  # Shared package
   - package-ecosystem: "npm"
-    directory: "/infamous-freight-ai/api"
+    directory: "packages/shared"
     schedule:
       interval: "weekly"
-      day: "tuesday"
-      time: "03:00"
-    open-pull-requests-limit: 3
+      day: "monday"
+      time: "04:30"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "MrMiless44"
+    labels:
+      - "dependencies"
+      - "shared"
+    versioning-strategy: increase
 
-  # Infamous-freight-ai Web
+  # E2E tests
   - package-ecosystem: "npm"
-    directory: "/infamous-freight-ai/web"
+    directory: "tests/e2e"
     schedule:
       interval: "weekly"
-      day: "tuesday"
-      time: "03:30"
-    open-pull-requests-limit: 3
+      day: "monday"
+      time: "05:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "MrMiless44"
+    labels:
+      - "dependencies"
+      - "e2e"
+    versioning-strategy: increase
 
-  # Infamous-freight-ai Mobile
-  - package-ecosystem: "npm"
-    directory: "/infamous-freight-ai/mobile"
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
       interval: "weekly"
-      day: "tuesday"
-      time: "04:00"
-    open-pull-requests-limit: 3
+      day: "monday"
+      time: "05:30"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "MrMiless44"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  # Docker
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "MrMiless44"
+    labels:
+      - "dependencies"
+      - "docker"

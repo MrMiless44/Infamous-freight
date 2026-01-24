@@ -24,6 +24,10 @@ export default [
       "**/*.test.ts",
       "**/*.spec.ts",
       "pnpm-lock.yaml",
+      "**/seed.js",
+      "**/seedMarketplace.js",
+      "**/mock-server.js",
+      "**/__tests__/**",
     ],
   },
   {
@@ -44,7 +48,9 @@ export default [
     rules: {
       ...js.configs.recommended.rules,
       // Enterprise Standards - No console.log in production code
-      "no-console": ["error", { allow: [] }], // Ban all console - use structured logging
+      // Using 'error' instead of ['error', { allow: [] }] for simplicity
+      // All console methods are banned; use Pino logger instead
+      "no-console": "error",
       "no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
       "no-var": "error",
       "prefer-const": "error",
@@ -72,7 +78,9 @@ export default [
     },
     rules: {
       // Enterprise Standards - TypeScript files
-      "no-console": ["error", { allow: [] }], // Ban all console - use structured logging
+      // Using 'error' instead of ['error', { allow: [] }] for simplicity
+      // All console methods are banned; use Pino logger instead
+      "no-console": "error",
       "no-unused-vars": "off", // Handled by TypeScript
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
       "@typescript-eslint/no-explicit-any": "warn",

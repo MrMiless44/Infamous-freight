@@ -15,9 +15,9 @@ Thank you for your interest in contributing! This guide will help you get starte
 
 ### Prerequisites
 
-- Node.js 20+
-- pnpm 7.5.1 (managed automatically via Corepack)
-- PostgreSQL 14+ (or Docker)
+- Node.js 20.0.0+
+- pnpm 9.15.0 (required - enforced by packageManager field)
+- PostgreSQL 15+ (or Docker)
 - Git
 
 ### Initial Setup

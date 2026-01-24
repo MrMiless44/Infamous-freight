@@ -67,7 +67,7 @@ importers:
         specifier: ^6.16.2
         version: 6.16.2
       '@infamous-freight/shared':
-        specifier: file:../packages/shared
+        specifier: workspace:*
         version: link:../packages/shared
       '@json2csv/node':
         specifier: ^7.0.6
