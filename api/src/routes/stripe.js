@@ -57,12 +57,23 @@ function resolvePlanPriceId(plan) {
   return process.env[entry.env] || null;
 }
 
+/**
+ * Resolve the Stripe price ID environment variable for a given add-on key.
+ * @param {string} addOnKey - Add-on key such as "voice", "white_label", or "analytics_export".
+ * @returns {string|null} The Stripe price ID from environment for the add-on, or `null` if the add-on or its price ID is not configured.
+ */
 function resolveAddOnPriceId(addOnKey) {
   const entry = addOnCatalog[addOnKey];
   if (!entry) return null;
   return process.env[entry.env] || null;
 }
 
+/**
+ * Verify that a provided usage key matches a stored usage key using a timing-safe comparison.
+ * @param {string|Buffer|number} usageKey - The expected/stored usage key.
+ * @param {string|Buffer|number} providedKey - The usage key supplied by the caller to validate.
+ * @returns {boolean} `true` if both keys are present, have the same length, and match in a timing-safe manner; `false` otherwise.
+ */
 function hasValidUsageKey(usageKey, providedKey) {
   if (!usageKey || !providedKey) return false;
   const usageBuffer = Buffer.from(String(usageKey));
@@ -71,6 +82,13 @@ function hasValidUsageKey(usageKey, providedKey) {
   return crypto.timingSafeEqual(usageBuffer, providedBuffer);
 }
 
+/**
+ * Establishes an authenticated user on the request when possible.
+ *
+ * Checks for an existing authenticated user, a Bearer token validated against the configured JWT secret, or an x-user-id header fallback; when authentication succeeds, attaches a `user` object with a `sub` property to `req`.
+ * @param {import('express').Request} req - Express request object to inspect and mutate.
+ * @returns {boolean} `true` if authentication was established and `req.user` was set or already present, `false` otherwise.
+ */
 function ensureAuthenticated(req) {
   if (req.user?.sub) {
     return true;
