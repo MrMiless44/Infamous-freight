@@ -52,7 +52,7 @@
     "sizes": [256, 640, 1080, 2048, 3840],
     "localPatterns": [
       {
-        "pathname": "^/assets/.*$",
+        "pathname": "^/avatars/.*$",
         "search": ""
       }
     ],
