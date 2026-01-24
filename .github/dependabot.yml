@@ -18,7 +18,7 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "03:00"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 5
     reviewers:
       - "MrMiless44"
     labels:
@@ -36,7 +36,7 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "03:30"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 5
     reviewers:
       - "MrMiless44"
     labels:
@@ -51,7 +51,7 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "04:00"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 5
     reviewers:
       - "MrMiless44"
     labels:
