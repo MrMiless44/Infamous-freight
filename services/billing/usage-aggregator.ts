@@ -17,7 +17,7 @@ export type UsageTotals = Record<AiMeteredFeature, number>;
  * Use the backend billing usage endpoints (backed by OrgUsage/OrgBilling in
  * api/src/billing/usage.ts) as the single source of truth instead.
  */
-export async function computeOverageForTenant(params: {
+export async function computeOverageForOrganization(params: {
   tenantId: string;
   periodStart: Date;
   periodEnd: Date;
