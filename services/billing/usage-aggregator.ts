@@ -18,7 +18,7 @@ export type UsageTotals = Record<AiMeteredFeature, number>;
  * api/src/billing/usage.ts) as the single source of truth instead.
  */
 export async function computeOverageForOrganization(params: {
-  tenantId: string;
+  organizationId: string;
   periodStart: Date;
   periodEnd: Date;
   includedTokenQuota: number;
