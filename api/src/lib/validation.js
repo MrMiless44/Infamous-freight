@@ -64,8 +64,10 @@ const shipmentStatusSchema = z.enum([
   SHIPMENT_STATUSES.FAILED,
 ]);
 
-const shipmentPrioritySchema = z.enum(SHIPMENT_PRIORITIES);
+/** @type {[string, ...string[]]} */
+const SHIPMENT_PRIORITY_VALUES = SHIPMENT_PRIORITIES;
 
+const shipmentPrioritySchema = z.enum(SHIPMENT_PRIORITY_VALUES);
 const createShipmentSchema = z.object({
   trackingNumber: z.string().min(1, 'Tracking number required'),
   origin: coordinatesSchema.optional(),
