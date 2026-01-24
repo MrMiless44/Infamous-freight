@@ -48,13 +48,13 @@ jobs:
       - name: 🔧 Setup Node.js 18
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "20"
           cache: "npm"
 
       - name: 📦 Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8.15.9
+          version: 9.15.0
 
       - name: 🗂️ Get pnpm store
         shell: bash
@@ -94,12 +94,12 @@ jobs:
       - name: 🔧 Setup Node.js 18
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "20"
 
       - name: 📦 Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8.15.9
+          version: 9.15.0
 
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
@@ -142,12 +142,12 @@ jobs:
       - name: 🔧 Setup Node.js 18
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "20"
 
       - name: 📦 Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8.15.9
+          version: 9.15.0
 
       - name: 🛡️ SBOM Generation (syft)
         uses: anchore/sbom-action@v0
@@ -186,12 +186,12 @@ jobs:
       - name: 🔧 Setup Node.js 18
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "20"
 
       - name: 📦 Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8.15.9
+          version: 9.15.0
 
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
