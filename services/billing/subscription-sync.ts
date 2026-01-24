@@ -5,20 +5,12 @@ import type { AiMeteredFeature } from "./pricing-map";
  * Map a Stripe price `lookup_key` to a known AiMeteredFeature, or return `null` if not recognized.
  *
  * @param lookupKey - The Stripe price `lookup_key` to translate (may be `null`)
- * @returns The matching `AiMeteredFeature` for `lookupKey`, or `null` if `lookupKey` is missing or unsupported
- */
+import { AI_LOOKUP_KEYS } from "./pricing-map";
+import type { AiMeteredFeature } from "./pricing-map";
+
 function featureKeyFromLookupKey(lookupKey: string | null): AiMeteredFeature | null {
   if (!lookupKey) return null;
-  const allowed = new Set([
-    "ai_chat_1k_tokens",
-    "ai_dispatch",
-    "ai_invoice_audit",
-    "ai_route_optimization",
-    "ai_predictive_eta",
-    "ai_fleet_health_scan",
-    "ai_fraud_detection",
-    "ai_load_match",
-  ]);
+  const allowed = new Set(Object.keys(AI_LOOKUP_KEYS));
   return allowed.has(lookupKey) ? (lookupKey as AiMeteredFeature) : null;
 }
 
