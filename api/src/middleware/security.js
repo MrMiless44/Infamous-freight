@@ -102,7 +102,11 @@ const limiters = {
 function authenticate(req, res, next) {
   try {
     const header = req.headers.authorization || req.headers.Authorization;
-    const allowXUserId = env?.nodeEnv !== "production";
+    // Only allow x-user-id fallback in explicitly safe envs or with explicit opt-in.
+    const nodeEnv = process.env.NODE_ENV;
+    const isExplicitDevLikeEnv = nodeEnv === "development" || nodeEnv === "test";
+    const allowXUserId =
+      isExplicitDevLikeEnv || process.env.ALLOW_X_USER_ID_FALLBACK === "true";
     const xUserId = req.headers["x-user-id"];
 
     // Reject malformed Authorization headers (arrays or non-strings)
