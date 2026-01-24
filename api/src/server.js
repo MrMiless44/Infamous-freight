@@ -43,6 +43,7 @@ const { compressionMiddleware } = require("./middleware/performance");
 const healthRoutes = require("./routes/health");
 const healthDetailedRoutes = require("./routes/health-detailed");
 const aiRoutes = require("./routes/ai.commands");
+const copilotProgressRoutes = require("./routes/copilot-progress");
 const billingRoutes = require("./routes/billing");
 const billingPaymentsRoutes = require("./routes/billing-payments");
 const { stripeRouter, stripeWebhookRouter } = require("./routes/stripe");
@@ -152,6 +153,7 @@ app.use(
 app.use("/api", healthRoutes);
 app.use("/api", healthDetailedRoutes);
 app.use("/api", aiRoutes);
+app.use("/api", copilotProgressRoutes);
 app.use("/api", billingRoutes);
 app.use("/api", billingPaymentsRoutes);
 app.use("/api", voiceRoutes);

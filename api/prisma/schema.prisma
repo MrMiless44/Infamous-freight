@@ -255,6 +255,7 @@ model User {
   aiEvents      AiEvent[]
   jobOffers     JobOffer[]
   driverPerformance DriverPerformance[]
+  copilotProgress CopilotProgress[]
 
   @@index([email])
   @@index([role])
@@ -1414,10 +1415,63 @@ model DriverPerformance {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   
+  // Relations
+  coachingProgress CopilotProgress[]
+  
   @@unique([driverId, periodStart])
   @@index([driverId])
   @@index([performanceScore])
   @@index([performanceTier])
   @@index([periodStart])
   @@map("driver_performance")
+}
+
+// AI Copilot Progress Tracking
+// Tracks the progress of AI coaching recommendations over time
+model CopilotProgress {
+  id                    String   @id @default(cuid())
+  
+  // Driver reference
+  driverId              String
+  driver                User     @relation(fields: [driverId], references: [id])
+  
+  // Performance period reference (optional - links to specific performance review)
+  performancePeriodId   String?
+  performancePeriod     DriverPerformance? @relation(fields: [performancePeriodId], references: [id])
+  
+  // Progress metrics
+  overallProgressScore  Decimal  @db.Decimal(5, 2)  // 0-100: How well driver is improving
+  goalsCompleted        Int      @default(0)         // Number of coaching goals achieved
+  goalsTotal            Int      @default(0)         // Total coaching goals assigned
+  
+  // Improvement tracking
+  improvementRate       Decimal  @db.Decimal(5, 2)  // Rate of improvement (percentage)
+  consistencyScore      Decimal  @db.Decimal(5, 2)  // 0-100: How consistent the improvements are
+  
+  // Active coaching
+  activeRecommendations Int      @default(0)         // Number of active recommendations being followed
+  completedRecommendations Int   @default(0)         // Number of completed recommendations
+  
+  // Detailed progress data (JSON)
+  progressDetails       String?  @db.Text           // JSON: detailed breakdown of progress by category
+  milestones            String?  @db.Text           // JSON: achieved milestones and dates
+  
+  // Engagement metrics
+  engagementScore       Decimal  @db.Decimal(5, 2)  // 0-100: How actively driver engages with coaching
+  lastInteraction       DateTime?                   // Last time driver interacted with coaching system
+  
+  // Confidence and effectiveness
+  confidenceLevel       Decimal  @db.Decimal(5, 2)  // 0-100: AI confidence in progress assessment
+  effectivenessScore    Decimal  @db.Decimal(5, 2)  // 0-100: How effective coaching has been
+  
+  // Notes
+  coachingNotes         String?  @db.Text           // Human or AI-generated notes about progress
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@index([driverId])
+  @@index([overallProgressScore])
+  @@index([updatedAt])
+  @@map("copilot_progress")
 }
