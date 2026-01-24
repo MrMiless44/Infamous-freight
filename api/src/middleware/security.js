@@ -102,8 +102,15 @@ const limiters = {
 function authenticate(req, res, next) {
   try {
     const header = req.headers.authorization || req.headers.Authorization;
+    const allowXUserId =
+      process.env.ALLOW_X_USER_ID === "true" ||
+      ["development", "test"].includes(process.env.NODE_ENV);
     // Dev fallback: allow x-user-id when bearer is absent
-    if ((!header || !header.startsWith("Bearer ")) && req.headers["x-user-id"]) {
+    if (
+      (!header || !header.startsWith("Bearer ")) &&
+      req.headers["x-user-id"] &&
+      allowXUserId
+    ) {
       req.user = { sub: String(req.headers["x-user-id"]), scopes: ["user:avatar"] };
       req.auth = {
         userId: req.user.sub,
