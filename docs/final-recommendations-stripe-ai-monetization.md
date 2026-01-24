@@ -126,14 +126,40 @@ Each AI action logs:
 Daily or hourly job:
 
 ```js
-stripe.subscriptionItems.createUsageRecord(
+async function reportAiUsage({
+  stripeClient,
   aiSubscriptionItemId,
-  {
-    quantity: usageCount,
-    timestamp: Math.floor(Date.now() / 1000),
-    action: "increment"
+  usageCount,
+  logger = console,
+}) {
+  try {
+    const usageRecord = await stripeClient.subscriptionItems.createUsageRecord(
+      aiSubscriptionItemId,
+      {
+        quantity: usageCount,
+        timestamp: Math.floor(Date.now() / 1000),
+        action: "increment",
+      },
+    );
+
+    // Audit log: successful usage report
+    logger.info?.("AI usage reported to Stripe", {
+      subscriptionItemId: aiSubscriptionItemId,
+      usageRecordId: usageRecord.id,
+      quantity: usageRecord.quantity,
+      timestamp: usageRecord.timestamp,
+    });
+
+    return usageRecord;
+  } catch (error) {
+    // Audit log: failed usage report
+    logger.error?.("Failed to report AI usage to Stripe", {
+      subscriptionItemId: aiSubscriptionItemId,
+      error: error.message,
+    });
+    throw error;
   }
-);
+}
 ```
 
 Stripe now:
