@@ -119,10 +119,10 @@ const BONUSES_SYSTEM = {
                 ],
                 rewardsDiscount: 0.05,
                 freeShipments: {
-                    50Points: 2.50,
-                    100Points: 5.00,
-                    250Points: 15.00,
-                    500Points: 50.00,
+                    '50Points': 2.50,
+                    '100Points': 5.00,
+                    '250Points': 15.00,
+                    '500Points': 50.00,
                 },
             },
 

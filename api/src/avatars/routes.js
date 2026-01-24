@@ -20,7 +20,7 @@ const {
     setSelection,
 } = require('./store');
 const { getUserId } = require('../auth/user');
-const { authenticate, requireScope, limiters, auditLog } = require('../middleware/security');
+const { authenticate, limiters, auditLog } = require('../middleware/security');
 const { handleValidationErrors } = require('../middleware/validation');
 
 const router = express.Router();

@@ -7,7 +7,7 @@
 let promClient;
 try {
     promClient = require('prom-client');
-} catch (_e) {
+} catch {
     // Fallback when prom-client not available
     console.warn('⚠ prom-client not installed. Install with: npm install prom-client');
     promClient = null;

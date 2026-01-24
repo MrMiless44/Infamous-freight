@@ -5,7 +5,6 @@
  */
 
 const fs = require('fs');
-const path = require('path');
 
 /**
  * Get secret from Docker secrets or environment variable
