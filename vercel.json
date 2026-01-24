@@ -45,7 +45,7 @@
   "rewrites": [
     {
       "source": "/about",
-      "destination": "/about-our-company.html"
+      "destination": "/"
     },
     {
       "source": "/api/:path*",
