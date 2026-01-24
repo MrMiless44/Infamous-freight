@@ -13,7 +13,7 @@
     "pnpm": ">=9.15.0"
   },
   "scripts": {
-    "dev": "bun run --bun next dev",
+    "dev": "cd web && bun run --bun next dev",
     "dev:api": "cd api && npm run dev",
     "build": "bun run --bun next build",
     "build:shared": "cd packages/shared && npm run build",
