@@ -1,0 +1,14 @@
+name: Daily Health Check
+on:
+  schedule:
+    - cron: "0 14 * * *"
+  workflow_dispatch:
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check API health
+        run: curl -fsS https://infamous-freight-api.fly.dev/health
+      - name: Check Web
+        run: curl -fsS https://infamous-freight-enterprises.vercel.app
