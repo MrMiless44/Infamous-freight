@@ -4,9 +4,12 @@
  * Module: Stripe Checkout + Billing Portal + Webhooks
  */
 
+const crypto = require("crypto");
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const { z } = require("zod");
 const { stripeClient, isStripeConfigured } = require("../billing/stripe");
+const { env } = require("../config/env");
 const { authenticate, limiters } = require("../middleware/security");
 const persist = require("../billing/persist");
 
@@ -58,6 +61,42 @@ function resolveAddOnPriceId(addOnKey) {
   const entry = addOnCatalog[addOnKey];
   if (!entry) return null;
   return process.env[entry.env] || null;
+}
+
+function hasValidUsageKey(usageKey, providedKey) {
+  if (!usageKey || !providedKey) return false;
+  const usageBuffer = Buffer.from(String(usageKey));
+  const providedBuffer = Buffer.from(String(providedKey));
+  if (usageBuffer.length !== providedBuffer.length) return false;
+  return crypto.timingSafeEqual(usageBuffer, providedBuffer);
+}
+
+function ensureAuthenticated(req) {
+  if (req.user?.sub) {
+    return true;
+  }
+
+  const header = req.headers.authorization || req.headers.Authorization;
+  if ((!header || !header.startsWith("Bearer ")) && req.headers["x-user-id"]) {
+    req.user = { sub: String(req.headers["x-user-id"]) };
+    return true;
+  }
+
+  if (header && header.startsWith("Bearer ")) {
+    const token = header.replace("Bearer ", "");
+    const secret = process.env.JWT_SECRET || env?.jwtSecret;
+    if (!secret) {
+      return false;
+    }
+    try {
+      req.user = jwt.verify(token, secret);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  return false;
 }
 
 // --------------------------------------------
@@ -214,11 +253,11 @@ stripeRouter.post(
 stripeRouter.post("/report-usage", limiters.billing, async (req, res) => {
   try {
     const usageKey = process.env.STRIPE_USAGE_REPORT_KEY;
-    if (usageKey) {
-      const providedKey = req.headers["x-usage-report-key"];
-      if (providedKey !== usageKey) {
-        return res.status(403).json({ ok: false, error: "Forbidden" });
-      }
+    const providedKey = req.headers["x-usage-report-key"];
+    const hasUsageKey = hasValidUsageKey(usageKey, providedKey);
+    const isAuthenticated = hasUsageKey ? true : ensureAuthenticated(req);
+    if (!hasUsageKey && !isAuthenticated) {
+      return res.status(403).json({ ok: false, error: "Forbidden" });
     }
 
     const Schema = z.object({
