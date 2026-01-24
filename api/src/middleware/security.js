@@ -104,7 +104,7 @@ function authenticate(req, res, next) {
     const header = req.headers.authorization || req.headers.Authorization;
     const allowXUserId =
       process.env.ALLOW_X_USER_ID === "true" ||
-      process.env.NODE_ENV !== "production";
+      ["development", "test"].includes(process.env.NODE_ENV);
     // Dev fallback: allow x-user-id when bearer is absent
     if (
       (!header || !header.startsWith("Bearer ")) &&
