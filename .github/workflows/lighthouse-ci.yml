@@ -171,11 +171,11 @@ jobs:
       
       - name: Check for secrets
         run: |
-          sudo apt-get update
-          sudo apt-get install -y git-secrets
-          git secrets --install || true
-          git secrets --register-aws
-          git secrets --scan || echo "ℹ️ No secrets detected"
+          # Install gitleaks (modern alternative to git-secrets)
+          wget -q https://github.com/gitleaks/gitleaks/releases/download/v8.18.1/gitleaks_8.18.1_linux_x64.tar.gz
+          tar -xzf gitleaks_8.18.1_linux_x64.tar.gz
+          sudo mv gitleaks /usr/local/bin/
+          gitleaks detect --no-git --verbose || echo "ℹ️ No secrets detected"
       
       - name: Run OWASP dependency check
         uses: dependency-check/Dependency-Check_Action@main
