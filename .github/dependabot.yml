@@ -61,7 +61,7 @@ updates:
 
   # Shared package
   - package-ecosystem: "npm"
-    directory: "/packages/shared"
+    directory: "packages/shared"
     schedule:
       interval: "weekly"
       day: "monday"
@@ -76,7 +76,7 @@ updates:
 
   # E2E tests
   - package-ecosystem: "npm"
-    directory: "/tests/e2e"
+    directory: "tests/e2e"
     schedule:
       interval: "weekly"
       day: "monday"
