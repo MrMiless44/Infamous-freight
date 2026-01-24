@@ -9,7 +9,7 @@
   "crons": [],
   "github": {
     "silent": false,
-    "enabled": true,
+    "enabled": false,
     "autoAlias": true
   },
   "git": {

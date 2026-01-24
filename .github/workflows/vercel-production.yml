@@ -1,0 +1,55 @@
+name: Vercel Production Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: vercel-production
+  cancel-in-progress: true
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  deploy-production:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: Pull Vercel env (Production)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ROOT: "."
+        run: |
+          cd "$VERCEL_PROJECT_ROOT"
+          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Build (Prod)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ROOT: "."
+        run: |
+          cd "$VERCEL_PROJECT_ROOT"
+          vercel build --prod --token="$VERCEL_TOKEN"
+
+      - name: Deploy (Prod)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ROOT: "."
+        run: |
+          cd "$VERCEL_PROJECT_ROOT"
+          vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
