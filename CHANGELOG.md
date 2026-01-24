@@ -22,6 +22,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tests not executed in this container due to missing Node.js; CI will validate on push/tag
 - Deployment via `deploy.sh` requires Node.js; tag pushes may trigger repository workflows
 
+## [2.1.0] - 2026-01-04
+
+### Added
+
+- Genesis AI Avatar phases 11–22 (Neural, Crimson, Infinity, etc.)
+- Genesis Chat public SaaS API scaffold (foundation for external access)
+- Referral funnel and watchdog pinger configuration
+- SOC2-lite narrative placeholder (non-attestation)
+
+### Changed
+
+- Deployment standardization across Web (Vercel), API (Fly.io), and Mobile (Expo/EAS)
+- CI/CD: auto-deploy on push to main and scheduled health checks
+
+### Monetization
+
+- Stripe billing pipeline configured (subscriptions/metering-ready)
+- Twilio notification pipeline configured (SMS-ready)
+
 ## [2.0.0] - 2025-12-30
 
 ### MAJOR RELEASE: Complete Rebranding & IP Protection
