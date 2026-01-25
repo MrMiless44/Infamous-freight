@@ -1,6 +1,8 @@
 import { defineConfig, env } from "prisma/config";
+const { defineConfig } = require("prisma/config");
 
-export default defineConfig({
-  // PRISMA_SCHEMA_PATH (optional): override the default Prisma schema location ("prisma/schema.prisma")
-  schema: env("PRISMA_SCHEMA_PATH", "prisma/schema.prisma"),
+const schemaPath = process.env.PRISMA_SCHEMA_PATH || "prisma/schema.prisma";
+
+module.exports = defineConfig({
+  schema: schemaPath,
 });
