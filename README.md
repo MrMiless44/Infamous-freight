@@ -2,7 +2,7 @@
 
 **Version: v2.0.0** | **Proprietary Software** | **© 2025 Infæmous Freight. All Rights Reserved.**
 
-[![Test Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](./api/coverage)
+[![Test Coverage](https://img.shields.io/badge/coverage-86.2%25-brightgreen.svg)](./api/coverage)
 [![Tests](https://img.shields.io/badge/tests-197%20passing-brightgreen.svg)](./api)
 [![Node.js](https://img.shields.io/badge/node-20.0.0+-brightgreen.svg)](https://nodejs.org)
 [![pnpm](https://img.shields.io/badge/pnpm-9.15.0-orange.svg)](https://pnpm.io)
