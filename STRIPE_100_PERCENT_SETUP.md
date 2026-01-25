@@ -50,11 +50,11 @@ Use these live links directly in the web pricing page, mobile UI, SMS upgrade fl
 
 ## ✅ Final Step for True Metered Billing
 
-Your product **Infamous AI Actions (metered)** (`prod_TqlbsmBT9Jw2Z0`) must have a **metered recurring price** to support true usage-based billing. The existing prices are licensed, which prevents usage records from billing properly.
+Your product **Infæmous AI Actions (metered)** (`prod_TqlbsmBT9Jw2Z0`) must have a **metered recurring price** to support true usage-based billing. The existing prices are licensed, which prevents usage records from billing properly.
 
 ### Dashboard steps (fastest, guaranteed)
 1. Stripe Dashboard → Products
-2. Open **Infamous AI Actions (metered)** (`prod_TqlbsmBT9Jw2Z0`)
+2. Open **Infæmous AI Actions (metered)** (`prod_TqlbsmBT9Jw2Z0`)
 3. Click **Add price**
 4. Select **Recurring**
 5. Billing period: **Monthly**
