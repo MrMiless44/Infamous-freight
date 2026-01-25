@@ -14,23 +14,23 @@ jobs:
     uses: ./.github/workflows/vercel-deploy.yml
     secrets: inherit
 
-  staging-validation:
+  production-validation:
     runs-on: ubuntu-latest
     needs: [deploy-api, deploy-web]
     steps:
-      - name: Validate staging endpoints
+      - name: Validate deployed endpoints
         env:
-          STAGING_API_URL: ${{ secrets.STAGING_API_URL }}
-          STAGING_WEB_URL: ${{ secrets.STAGING_WEB_URL }}
+          DEPLOYED_API_URL: ${{ secrets.STAGING_API_URL }}
+          DEPLOYED_WEB_URL: ${{ secrets.STAGING_WEB_URL }}
         run: |
-          if [ -n "$STAGING_API_URL" ]; then
-            curl -f "$STAGING_API_URL"
+          if [ -n "$DEPLOYED_API_URL" ]; then
+            curl -f "$DEPLOYED_API_URL"
           else
-            echo "STAGING_API_URL not set; skipping API validation"
+            echo "DEPLOYED_API_URL not set; skipping API validation"
           fi
 
-          if [ -n "$STAGING_WEB_URL" ]; then
-            curl -f "$STAGING_WEB_URL"
+          if [ -n "$DEPLOYED_WEB_URL" ]; then
+            curl -f "$DEPLOYED_WEB_URL"
           else
-            echo "STAGING_WEB_URL not set; skipping web validation"
+            echo "DEPLOYED_WEB_URL not set; skipping web validation"
           fi
