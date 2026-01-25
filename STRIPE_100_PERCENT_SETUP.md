@@ -20,7 +20,7 @@ All payments flow **100% directly to your Stripe account** with zero transaction
 
 ---
 
-## ✅ Live Pricing & Payment Links (InfÆmous AI Synthetic Intelligence)
+## ✅ Live Pricing & Payment Links (Infæmous AI Synthetic Intelligence)
 
 Use these live links directly in the web pricing page, mobile UI, SMS upgrade flows, and in-app upgrade prompts.
 
