@@ -47,15 +47,22 @@ function SubscriptionCheckoutForm({
     setError(null);
     setMessage(null);
 
+    // Determine the return URL. In environments where `window` is not available
+    // (e.g. SSR), we intentionally omit `confirmParams` so Stripe falls back to
+    // its default behavior. `confirmParams` is optional per Stripe's API.
     const resolvedReturnUrl =
-      returnUrl ||
+      returnUrl ??
       (typeof window !== "undefined"
         ? `${window.location.origin}/billing/return`
         : undefined);
 
+    const confirmParams = resolvedReturnUrl
+      ? { return_url: resolvedReturnUrl }
+      : undefined;
+
     const { error: confirmError, paymentIntent } = await stripe.confirmPayment({
       elements,
-      confirmParams: resolvedReturnUrl ? { return_url: resolvedReturnUrl } : {},
+      confirmParams,
       redirect: "if_required",
     });
 
