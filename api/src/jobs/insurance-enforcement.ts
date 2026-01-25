@@ -11,46 +11,55 @@ export async function runInsuranceEnforcementSweep() {
   });
 
   const results = [] as Array<{ orgId: string; name: string; evaluated: number }>;
+  const ORG_BATCH_SIZE = 10;
 
-  for (const org of organizations) {
-    try {
-      const evaluations = await evaluateOrgCompliance({ orgId: org.id });
+  for (let i = 0; i < organizations.length; i += ORG_BATCH_SIZE) {
+    const batch = organizations.slice(i, i + ORG_BATCH_SIZE);
 
-      for (const evaluation of evaluations) {
-        if (evaluation.result?.state === "SUSPENDED") {
-          await createEventLog({
-            orgId: org.id,
-            carrierId: evaluation.carrierId,
-            eventType: "SUSPEND",
-            payloadJson: {
-              reasons: evaluation.result?.reasonsJson,
-            },
+    await Promise.all(
+      batch.map(async (org) => {
+        try {
+          const evaluations = await evaluateOrgCompliance({ orgId: org.id });
+
+          const logPromises = evaluations.map(async (evaluation: any) => {
+            if (evaluation.result?.state === "SUSPENDED") {
+              await createEventLog({
+                orgId: org.id,
+                carrierId: evaluation.carrierId,
+                eventType: "SUSPEND",
+                payloadJson: {
+                  reasons: evaluation.result?.reasonsJson,
+                },
+              });
+            }
+
+            if (evaluation.result?.state === "NON_COMPLIANT") {
+              await createEventLog({
+                orgId: org.id,
+                carrierId: evaluation.carrierId,
+                eventType: "NON_COMPLIANT_SET",
+                payloadJson: {
+                  reasons: evaluation.result?.reasonsJson,
+                },
+              });
+            }
           });
-        }
 
-        if (evaluation.result?.state === "NON_COMPLIANT") {
-          await createEventLog({
+          await Promise.all(logPromises);
+
+          results.push({
             orgId: org.id,
-            carrierId: evaluation.carrierId,
-            eventType: "NON_COMPLIANT_SET",
-            payloadJson: {
-              reasons: evaluation.result?.reasonsJson,
-            },
+            name: org.name,
+            evaluated: evaluations.length,
           });
+        } catch (error) {
+          console.error(
+            `[InsuranceEnforcement] Failed for ${org.name}:`,
+            error instanceof Error ? error.message : String(error)
+          );
         }
-      }
-
-      results.push({
-        orgId: org.id,
-        name: org.name,
-        evaluated: evaluations.length,
-      });
-    } catch (error) {
-      console.error(
-        `[InsuranceEnforcement] Failed for ${org.name}:`,
-        error instanceof Error ? error.message : String(error)
-      );
-    }
+      })
+    );
   }
 
   return results;
