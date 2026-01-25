@@ -32,4 +32,5 @@ jobs:
           FLY_APP_NAME: ${{ secrets.FLY_APP_NAME }}
         run: |
           APP_NAME=${FLY_APP_NAME:-infamous-freight-api}
+          sleep 10
           curl -f "https://${APP_NAME}.fly.dev/api/health" || exit 1
