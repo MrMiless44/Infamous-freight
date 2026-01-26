@@ -15,7 +15,6 @@ All platforms operational. All pipelines green. All revenue paths live. All AI s
 - Node engine pinned & verified
 - Env validation enforced
 - Domain active & assigned
-- Live: `infamous-freight-enterprises.vercel.app`
 
 ### ✅ API (Fly.io)
 - Containerized build (Dockerfile validated)
