@@ -1,4 +1,5 @@
-export type EnforcementLevel = "notice" | "restriction" | "suspension" | "termination";
+import { PrismaClient } from "@prisma/client";
+import { EnforcementLevel } from "@infamous-freight/shared";
 
 export interface EnforcementAction {
   id: string;
@@ -8,28 +9,76 @@ export interface EnforcementAction {
   createdAt: string;
 }
 
-const actions = new Map<string, EnforcementAction>();
+const prisma = new PrismaClient();
+const enforcementLevelValues = new Set(Object.values(EnforcementLevel));
 
-export function createEnforcementAction(
+function assertValidInputs(userId: string, level: EnforcementLevel): void {
+  if (!userId || userId.trim().length === 0) {
+    throw new Error("userId is required");
+  }
+
+  if (!enforcementLevelValues.has(level)) {
+    throw new Error("Invalid enforcement level");
+  }
+}
+
+export async function enforce(
   id: string,
   userId: string,
   level: EnforcementLevel,
   reason: string,
-): EnforcementAction {
-  const action: EnforcementAction = {
-    id,
-    userId,
-    level,
-    reason,
-    createdAt: new Date().toISOString(),
-  };
+): Promise<EnforcementAction> {
+  assertValidInputs(userId, level);
 
-  actions.set(id, action);
-  return action;
+  try {
+    return await prisma.enforcementAction.create({
+      data: {
+        id,
+        userId,
+        level,
+        reason,
+      },
+    });
+  } catch (error) {
+    console.error("Failed to create enforcement action", {
+      userId,
+      level,
+      error,
+    });
+    throw new Error("Unable to create enforcement action");
+  }
 }
 
-export function getEnforcementActionsForUser(userId: string): EnforcementAction[] {
-  return Array.from(actions.values()).filter((action) => action.userId === userId);
+export async function createEnforcementAction(
+  id: string,
+  userId: string,
+  level: EnforcementLevel,
+  reason: string,
+): Promise<EnforcementAction> {
+  return enforce(id, userId, level, reason);
+}
+
+export async function getEnforcementActionsForUser(userId: string): Promise<EnforcementAction[]> {
+  if (!userId || userId.trim().length === 0) {
+    return [];
+  }
+
+  try {
+    return await prisma.enforcementAction.findMany({
+      where: {
+        userId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  } catch (error) {
+    console.error("Failed to fetch enforcement actions", {
+      userId,
+      error,
+    });
+    throw new Error("Unable to fetch enforcement actions");
+  }
 }
 
 export function triggerEnforcementWorkflow(
