@@ -128,8 +128,9 @@ export function recordAuditLog(entry: AuditLogInput): AuditLogEntry {
 
   logs.push(storedEntry);
 
-  while (logs.length > MAX_AUDIT_LOGS) {
-    logs.shift();
+  if (logs.length > MAX_AUDIT_LOGS) {
+    const overflow = logs.length - MAX_AUDIT_LOGS;
+    logs.splice(0, overflow);
   }
 
   // Return a cloned entry so callers cannot mutate internal log state
