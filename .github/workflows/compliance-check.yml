@@ -1,0 +1,49 @@
+name: Compliance Check
+
+on:
+  pull_request:
+    paths:
+      - 'compliance/policies/**'
+      - '.github/workflows/compliance-check.yml'
+  push:
+    branches: [main, develop]
+    paths:
+      - 'compliance/policies/**'
+      - '.github/workflows/compliance-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-compliance-policies:
+    name: Validate Compliance Policies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Validate Compliance Policies
+        run: |
+          required_policies=(
+            "dispute-policy.md"
+            "enforcement-policy.md"
+            "fraud-policy.md"
+            "payment-policy.md"
+            "refunds-policy.md"
+          )
+
+          missing_policies=()
+          for policy in "${required_policies[@]}"; do
+            if [[ ! -f "compliance/policies/${policy}" ]]; then
+              missing_policies+=("${policy}")
+            fi
+          done
+
+          if (( ${#missing_policies[@]} )); then
+            echo "❌ Validate Compliance Policies: missing required policy files:"
+            printf ' - %s\n' "${missing_policies[@]}"
+            exit 1
+          fi
+
+          echo "✅ Validate Compliance Policies: all required policy files are present."
