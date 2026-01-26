@@ -26,9 +26,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build API
-        run: pnpm --filter infamous-freight-api build
-
       - name: Deploy to Fly.io
         uses: superfly/flyctl-actions@1.5
         with:
