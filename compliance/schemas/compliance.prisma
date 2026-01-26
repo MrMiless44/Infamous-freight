@@ -12,13 +12,19 @@ model Dispute {
 }
 
 model EnforcementAction {
-  id        String   @id @default(uuid())
+  id        String           @id @default(uuid())
   userId    String
-  level     String
+  level     EnforcementLevel
   reason    String
-  createdAt DateTime @default(now())
+  createdAt DateTime         @default(now())
 }
 
+enum EnforcementLevel {
+  notice
+  restricted
+  suspended
+  terminated
+}
 model RiskScore {
   id        String   @id @default(uuid())
   userId    String
