@@ -1,7 +1,9 @@
 name: Deploy to Vercel (Web) + Fly (API)
 
 on:
-  workflow_dispatch:
+  # This workflow is intended to be used as a reusable workflow from cd.yml and
+  # other orchestrator workflows, not triggered directly.
+  workflow_call:
 
 env:
   REGISTRY: ghcr.io
