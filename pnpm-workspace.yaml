@@ -1,6 +1,8 @@
 packages:
+  - "apps/*"
   - "api"
   - "web"
+  - "mobile"
   - "packages/*"
   - "tests/e2e"
   - "!archive/**"
