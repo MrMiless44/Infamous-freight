@@ -1,4 +1,4 @@
-# INFÆMOUS FREIGHT + GENESIS AI
+# INFÆMOUS FREIGHT Enterprise Delivery Pack (with Genesis AI sales qualification system)
 # Enterprise Delivery Pack — 100% Real-World Ready
 
 This pack is structured as practical outputs you can immediately use, aligned to how real companies progress from advanced SaaS → enterprise → regulated scale. It is designed for responsible, real-world execution without overstating legal or financial status.
