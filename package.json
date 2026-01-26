@@ -10,7 +10,7 @@
   "packageManager": "pnpm@9.15.0",
   "engines": {
     "node": "20.x",
-    "pnpm": "9.x"
+    "pnpm": ">=9.15.0"
   },
   "scripts": {
     "dev": "cd web && bun run --bun next dev",
