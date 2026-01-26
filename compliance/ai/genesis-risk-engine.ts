@@ -5,7 +5,16 @@ const IP_MISMATCH_RISK_POINTS = 20;
 const HIGH_RISK_LEVEL_THRESHOLD = 70;
 const MEDIUM_RISK_LEVEL_THRESHOLD = 40;
 
-export function calculateRisk(transaction: any, user: any) {
+interface RiskTransaction {
+  amount: number;
+  ipMismatch: boolean;
+}
+
+interface RiskUser {
+  kycVerified: boolean;
+}
+
+export function calculateRisk(transaction: RiskTransaction, user: RiskUser) {
   let score = 0;
 
   if (transaction.amount > HIGH_VALUE_TRANSACTION_THRESHOLD) {
