@@ -2,6 +2,7 @@ name: Deploy ALL Platforms
 
 on:
   workflow_dispatch:
+  workflow_call:
 
 concurrency:
   group: deploy-all
