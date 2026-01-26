@@ -98,13 +98,13 @@ exit 1
 
 **If Next.js is at repo root:**
 - Root Directory: *(blank)*
-- Install Command: `pnpm install --frozen-lockfile`
-- Build Command: `pnpm build`
+- Install Command: `npm install` *(or leave blank to use Vercel's default)*
+- Build Command: `npm run build`
 
 **If Next.js is in a subfolder (example: `apps/web`):**
 - Root Directory: `apps/web`
-- Install Command: `pnpm install --frozen-lockfile`
-- Build Command: `pnpm build`
+- Install Command: `npm install` *(or leave blank to use Vercel's default)*
+- Build Command: `npm run build`
 
 ## Phase 7 — Verify environment variables
 
