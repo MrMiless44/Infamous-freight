@@ -1,8 +1,6 @@
 name: Auto Deploy (Change Detection)
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 jobs:

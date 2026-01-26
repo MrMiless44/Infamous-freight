@@ -1,0 +1,22 @@
+name: Deploy ALL Platforms
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy-all
+  cancel-in-progress: false
+
+jobs:
+  deploy-api:
+    uses: ./.github/workflows/deploy-api.yml
+    secrets: inherit
+
+  deploy-genesis-ai:
+    uses: ./.github/workflows/deploy-genesis-ai.yml
+    secrets: inherit
+
+  deploy-mobile:
+    uses: ./.github/workflows/deploy-mobile.yml
+    secrets: inherit
