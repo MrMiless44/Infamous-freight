@@ -1,118 +1,183 @@
-# Dependabot configuration for automated dependency updates and security scanning
-# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-
 version: 2
+
 updates:
-  # DevContainers configuration
-  - package-ecosystem: "devcontainers"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "02:00"
-
-  # Root-level dependencies
+  # Root JS/TS dependencies (Next.js / tooling)
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "03:00"
-    open-pull-requests-limit: 5
-    reviewers:
-      - "MrMiless44"
-    labels:
-      - "dependencies"
-      - "automated"
-    versioning-strategy: increase
-    commit-message:
-      prefix: "chore(deps)"
-      include: "scope"
-
-  # API service
-  - package-ecosystem: "npm"
-    directory: "/api"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "03:30"
-    open-pull-requests-limit: 5
-    reviewers:
-      - "MrMiless44"
-    labels:
-      - "dependencies"
-      - "api"
-    versioning-strategy: increase
-
-  # Web application
-  - package-ecosystem: "npm"
-    directory: "/web"
-    schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "daily"
       time: "04:00"
-    open-pull-requests-limit: 5
-    reviewers:
-      - "MrMiless44"
+      timezone: "America/Chicago"
+    open-pull-requests-limit: 10
     labels:
-      - "dependencies"
-      - "web"
-    versioning-strategy: increase
+      - automated
+      - dependencies
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
 
-  # Shared package
-  - package-ecosystem: "npm"
-    directory: "packages/shared"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "04:30"
-    open-pull-requests-limit: 5
-    reviewers:
-      - "MrMiless44"
-    labels:
-      - "dependencies"
-      - "shared"
-    versioning-strategy: increase
-
-  # E2E tests
-  - package-ecosystem: "npm"
-    directory: "tests/e2e"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "05:00"
-    open-pull-requests-limit: 5
-    reviewers:
-      - "MrMiless44"
-    labels:
-      - "dependencies"
-      - "e2e"
-    versioning-strategy: increase
-
-  # GitHub Actions
+  # GitHub Actions dependencies
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "monday"
-      time: "05:30"
+      time: "05:00"
+      timezone: "America/Chicago"
     open-pull-requests-limit: 5
-    reviewers:
-      - "MrMiless44"
     labels:
-      - "dependencies"
-      - "github-actions"
+      - automated
+      - ci
+      - dependencies
+    commit-message:
+      prefix: "chore"
+      include: "scope"
 
-  # Docker
+  # API dependencies
+  - package-ecosystem: "npm"
+    directory: "/api"
+    schedule:
+      interval: "daily"
+      time: "04:10"
+      timezone: "America/Chicago"
+    open-pull-requests-limit: 10
+    labels:
+      - automated
+      - dependencies
+      - infra
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Mobile dependencies
+  - package-ecosystem: "npm"
+    directory: "/mobile"
+    schedule:
+      interval: "daily"
+      time: "04:20"
+      timezone: "America/Chicago"
+    open-pull-requests-limit: 10
+    labels:
+      - automated
+      - dependencies
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Web (Next.js) dependencies
+  - package-ecosystem: "npm"
+    directory: "/web"
+    schedule:
+      interval: "daily"
+      time: "04:30"
+      timezone: "America/Chicago"
+    open-pull-requests-limit: 10
+    labels:
+      - automated
+      - dependencies
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Shared package dependencies
+  - package-ecosystem: "npm"
+    directory: "/packages/shared"
+    schedule:
+      interval: "daily"
+      time: "04:40"
+      timezone: "America/Chicago"
+    open-pull-requests-limit: 10
+    labels:
+      - automated
+      - dependencies
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Playwright E2E test dependencies
+  - package-ecosystem: "npm"
+    directory: "/tests/e2e"
+    schedule:
+      interval: "daily"
+      time: "04:50"
+      timezone: "America/Chicago"
+    open-pull-requests-limit: 10
+    labels:
+      - automated
+      - dependencies
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Devcontainer configuration (VS Code / devcontainers)
+  - package-ecosystem: "devcontainers"
+    directory: "/.devcontainer"
+    schedule:
+      interval: "weekly"
+      time: "05:10"
+      timezone: "America/Chicago"
+    open-pull-requests-limit: 5
+    labels:
+      - automated
+      - dependencies
+      - infra
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+
+  # Docker images (Dockerfiles)
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "monday"
-      time: "06:00"
+      time: "05:20"
+      timezone: "America/Chicago"
     open-pull-requests-limit: 5
-    reviewers:
-      - "MrMiless44"
     labels:
-      - "dependencies"
-      - "docker"
+      - automated
+      - dependencies
+      - infra
+    commit-message:
+      prefix: "chore"
+      include: "scope"
