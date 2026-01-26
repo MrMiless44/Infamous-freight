@@ -21,3 +21,11 @@ export function handlePaymentEvent(event: PaymentEvent): void {
 
   triggerEnforcementWorkflow(event.userId, chargebackReason);
 }
+
+/**
+ * Public adapter for routing payment webhooks into the chargeback handler.
+ * This is intended to be called by API webhook routes or other integration layers.
+ */
+export function processPaymentEvent(event: PaymentEvent): void {
+  handlePaymentEvent(event);
+}
