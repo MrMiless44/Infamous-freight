@@ -1,5 +1,30 @@
+enum DisputeStatus {
+  OPEN
+  UNDER_REVIEW
+  RESOLVED
+  REJECTED
+}
+
 model Dispute {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String         @id @default(cuid())
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  // Relationships to disputed entities (stored as IDs to avoid cross-schema coupling)
+  organizationId String?
+  jobId          String?
+  userId         String?
+
+  // Dispute details
+  reason         String
+  description    String?
+  status         DisputeStatus  @default(OPEN)
+
+  // Amount or value being disputed (in the smallest currency unit, e.g., cents)
+  amountCents    Int?
+
+  // Resolution metadata
+  resolvedAt     DateTime?
+  resolution     String?
+  resolvedById   String?
 }
