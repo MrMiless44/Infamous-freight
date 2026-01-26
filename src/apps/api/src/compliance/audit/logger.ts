@@ -119,21 +119,32 @@ const sanitizeMetadata = (
 
 export function recordAuditLog(entry: AuditLogInput): AuditLogEntry {
   const sanitizedMetadata = sanitizeMetadata(entry.metadata);
-  const logEntry: AuditLogEntry = {
+  const storedEntry: AuditLogEntry = {
     message: entry.message,
     metadata: sanitizedMetadata,
-    createdAt: entry.createdAt,
+    // Store an internal copy of the Date to prevent external mutation
+    createdAt: new Date(entry.createdAt.getTime()),
   };
 
-  logs.push(logEntry);
+  logs.push(storedEntry);
 
   while (logs.length > MAX_AUDIT_LOGS) {
     logs.shift();
   }
 
-  return logEntry;
+  // Return a cloned entry so callers cannot mutate internal log state
+  return {
+    message: storedEntry.message,
+    metadata: { ...storedEntry.metadata },
+    createdAt: new Date(storedEntry.createdAt.getTime()),
+  };
 }
 
 export function getAuditLogs(): AuditLogEntry[] {
-  return [...logs];
+  // Return cloned entries to prevent callers from mutating internal state
+  return logs.map((entry) => ({
+    message: entry.message,
+    metadata: { ...entry.metadata },
+    createdAt: new Date(entry.createdAt.getTime()),
+  }));
 }
