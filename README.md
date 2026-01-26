@@ -103,6 +103,10 @@ A modern full-stack freight management platform with AI-powered features, real-t
 
 **Company**: Infæmous Freight | **Owner**: Santorio Djuan Miles | **Jurisdiction**: Oklahoma, USA
 
+## 🏆 Conglomerate Mode
+
+Infæmous Freight + Genesis AI are operating as a unified global logistics + fintech + AI SaaS conglomerate. See the full activation brief and market-ready positioning in [CONGLOMERATE_MODE.md](CONGLOMERATE_MODE.md).
+
 ## 📋 Project Overview
 
 Infamous Freight Enterprises is a comprehensive logistics and fleet management solution built as a monorepo with:
