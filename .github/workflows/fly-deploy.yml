@@ -1,12 +1,6 @@
 name: Deploy API (Fly.io)
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "api/**"
-      - "packages/**"
-      - "pnpm-lock.yaml"
   workflow_dispatch:
   workflow_call:
 
