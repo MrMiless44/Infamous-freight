@@ -54,7 +54,7 @@ if [ -z "$VERCEL_GIT_COMMIT_SHA" ]; then
 fi
 
 if [ -z "$VERCEL_GIT_PREVIOUS_SHA" ]; then
-  CHANGED=$(git ls-files)
+  CHANGED=$(git ls-files || true)
 else
   CHANGED=$(git diff --name-only "$VERCEL_GIT_PREVIOUS_SHA" "$VERCEL_GIT_COMMIT_SHA" || true)
 fi
