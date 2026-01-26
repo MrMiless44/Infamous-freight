@@ -83,3 +83,101 @@ updates:
         update-types:
           - "minor"
           - "patch"
+
+  # Web (Next.js) dependencies
+  - package-ecosystem: "npm"
+    directory: "/web"
+    schedule:
+      interval: "daily"
+      time: "04:30"
+      timezone: "America/Chicago"
+    open-pull-requests-limit: 10
+    labels:
+      - automated
+      - dependencies
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Shared package dependencies
+  - package-ecosystem: "npm"
+    directory: "/packages/shared"
+    schedule:
+      interval: "daily"
+      time: "04:40"
+      timezone: "America/Chicago"
+    open-pull-requests-limit: 10
+    labels:
+      - automated
+      - dependencies
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Playwright E2E test dependencies
+  - package-ecosystem: "npm"
+    directory: "/tests/e2e"
+    schedule:
+      interval: "daily"
+      time: "04:50"
+      timezone: "America/Chicago"
+    open-pull-requests-limit: 10
+    labels:
+      - automated
+      - dependencies
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Devcontainer configuration (VS Code / devcontainers)
+  - package-ecosystem: "devcontainers"
+    directory: "/.devcontainer"
+    schedule:
+      interval: "weekly"
+      time: "05:10"
+      timezone: "America/Chicago"
+    open-pull-requests-limit: 5
+    labels:
+      - automated
+      - dependencies
+      - infra
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+
+  # Docker images (Dockerfiles)
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      time: "05:20"
+      timezone: "America/Chicago"
+    open-pull-requests-limit: 5
+    labels:
+      - automated
+      - dependencies
+      - infra
+    commit-message:
+      prefix: "chore"
+      include: "scope"
