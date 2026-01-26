@@ -4,6 +4,13 @@ export type ApiResponse<T> = {
   error?: string;
 };
 
+export enum EnforcementLevel {
+  Notice = "notice",
+  Restriction = "restriction",
+  Suspension = "suspension",
+  Termination = "termination",
+}
+
 export type ShipmentStatus =
   | 'CREATED'
   | 'IN_TRANSIT'

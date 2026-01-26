@@ -25,6 +25,13 @@ export type ShipmentStatus =
   | "delivered"
   | "cancelled";
 
+export enum EnforcementLevel {
+  Notice = "notice",
+  Restriction = "restriction",
+  Suspension = "suspension",
+  Termination = "termination",
+}
+
 export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
