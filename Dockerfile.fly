@@ -13,8 +13,8 @@ RUN apk update && \
         ca-certificates && \
     rm -rf /var/cache/apk/*
 
-# Install pnpm with specific version (Corepack unavailable in node:20-alpine)
-RUN npm install -g pnpm@9.15.0
+# Activate pnpm with specific version via Corepack (available in node:20-alpine)
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 
 # Stage 1: Install dependencies
 FROM base AS deps
