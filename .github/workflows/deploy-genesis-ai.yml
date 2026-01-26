@@ -1,0 +1,96 @@
+name: Deploy Genesis AI (Fly)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ai/**"
+      - "packages/**"
+      - "pnpm-lock.yaml"
+  workflow_call: {}
+
+concurrency:
+  group: deploy-genesis-ai
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      FLY_APP: genesis-ai
+      HEALTH_URL: https://genesis-ai.fly.dev/health
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect Genesis AI assets
+        id: genesis-assets
+        run: |
+          if [ -f "ai/fly.toml" ]; then
+            echo "fly_config=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "fly_config=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if [ -f "ai/package.json" ]; then
+            echo "package=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "package=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: pnpm/action-setup@v3
+        if: steps.genesis-assets.outputs.package == 'true'
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        if: steps.genesis-assets.outputs.package == 'true'
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+        if: steps.genesis-assets.outputs.package == 'true'
+
+      - run: pnpm --filter genesis-ai build
+        if: steps.genesis-assets.outputs.package == 'true'
+
+      - name: Deploy to Fly
+        if: steps.genesis-assets.outputs.fly_config == 'true'
+        uses: superfly/flyctl-actions@1.5
+        with:
+          args: "deploy --config ai/fly.toml --remote-only"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Wait for health
+        if: steps.genesis-assets.outputs.fly_config == 'true'
+        run: |
+          for i in {1..30}; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$HEALTH_URL" || true)
+            if [ "$code" = "200" ]; then
+              echo "Healthy ✅"
+              exit 0
+            fi
+            echo "Health check not ready (HTTP $code). Retrying..."
+            sleep 5
+          done
+          echo "Health check failed ❌"
+          exit 1
+
+      - name: Rollback if unhealthy
+        if: failure() && steps.genesis-assets.outputs.fly_config == 'true'
+        run: |
+          flyctl releases list -a "$FLY_APP"
+          prev=$(flyctl releases list -a "$FLY_APP" --json | node -e "const j=JSON.parse(require('fs').readFileSync(0,'utf8'));console.log(j[1]?.version||'')")
+          if [ -n "$prev" ]; then
+            flyctl releases revert "$prev" -a "$FLY_APP"
+          fi
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Publish skip notice
+        if: steps.genesis-assets.outputs.fly_config != 'true'
+        run: |
+          echo "Genesis AI deployment skipped (no ai/fly.toml present)." >> "$GITHUB_STEP_SUMMARY"

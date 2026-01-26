@@ -1,0 +1,85 @@
+name: Deploy API (Fly)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "api/**"
+      - "packages/**"
+      - "pnpm-lock.yaml"
+  workflow_call: {}
+
+concurrency:
+  group: deploy-api
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      FLY_APP: infamous-freight-api
+      HEALTH_URL: https://infamous-freight-api.fly.dev/health
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter api build
+
+      - name: Prisma migrate deploy (guarded)
+        run: |
+          if git diff --name-only "${{ github.sha }}^" "${{ github.sha }}" | grep -q "api/prisma/"; then
+            echo "Prisma changes detected -> migrating"
+            pnpm --filter api prisma migrate deploy
+          else
+            echo "No Prisma changes -> skip"
+          fi
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Deploy to Fly
+        uses: superfly/flyctl-actions@1.5
+        with:
+          args: "deploy --config api/fly.toml --remote-only"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Wait for health
+        run: |
+          for i in {1..30}; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$HEALTH_URL" || true)
+            if [ "$code" = "200" ]; then
+              echo "Healthy ✅"
+              exit 0
+            fi
+            echo "Health check not ready (HTTP $code). Retrying..."
+            sleep 5
+          done
+          echo "Health check failed ❌"
+          exit 1
+
+      - name: Rollback if unhealthy
+        if: failure()
+        run: |
+          flyctl releases list -a "$FLY_APP"
+          latest=$(flyctl releases list -a "$FLY_APP" --json | node -e "const r=require('fs').readFileSync(0,'utf8');const j=JSON.parse(r);console.log(j[0].version)")
+          prev=$(flyctl releases list -a "$FLY_APP" --json | node -e "const r=require('fs').readFileSync(0,'utf8');const j=JSON.parse(r);console.log(j[1]?.version||'')")
+
+          if [ -n "$prev" ]; then
+            echo "Reverting from $latest to $prev"
+            flyctl releases revert "$prev" -a "$FLY_APP"
+          else
+            echo "No previous release to revert to."
+          fi
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
