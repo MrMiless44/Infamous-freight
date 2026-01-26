@@ -1,0 +1,17 @@
+name: Validate Dependabot Config
+
+on:
+  pull_request:
+    paths:
+      - ".github/dependabot.yml"
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate YAML parses
+        run: |
+          python -c "import yaml; yaml.safe_load(open('.github/dependabot.yml')); print('dependabot.yml OK')"
