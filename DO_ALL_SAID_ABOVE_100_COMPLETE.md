@@ -103,7 +103,7 @@ Genesis AI™ — Synthetic Intelligence for Global Commerce
 | --- | --- |
 | Genesis Chat | AI SaaS |
 | Genesis RouteMind | Logistics AI |
-| Genesis InvoiceAI | Fintech AI |
+| Genesis InvoiceAI | FinTech AI |
 | Genesis FleetAI | Enterprise AI |
 | Genesis Custom Agents | Bespoke AI |
 
