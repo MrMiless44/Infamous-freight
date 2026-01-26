@@ -147,11 +147,18 @@ function sanitizeAction(action: string): string {
   return truncateString(action);
 }
 
+function isValidDate(date: unknown): date is Date {
+  return date instanceof Date && !Number.isNaN(date.getTime());
+}
+
 export function recordAuditLog(entry: AuditLogInput): AuditLogEntry {
   const sanitizedMetadata = sanitizeMetadata(entry.metadata);
+  const createdAt = isValidDate(entry.createdAt)
+    ? entry.createdAt
+    : new Date();
   const logEntry: AuditLogEntry = {
-    action: sanitizeAction(entry.action),
-    createdAt: entry.createdAt,
+    action: entry.action,
+    createdAt,
     metadata: sanitizedMetadata,
   };
 
