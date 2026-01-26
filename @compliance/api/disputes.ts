@@ -17,8 +17,8 @@ export const createDispute = (
   }
 
   const record: DisputeRecord = {
-    id,
     ...data,
+    id,
   };
 
   disputes.set(id, record);
