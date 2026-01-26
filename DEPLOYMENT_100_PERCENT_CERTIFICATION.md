@@ -111,7 +111,7 @@ All platforms operational. All pipelines green. All revenue paths live. All AI s
 ## Immediate Strategic Recommendations (Optional Enhancements)
 
 1. **Production Observability**
-   - Add Datadog or Sentry across Web/API/Mobile
+   - Extend existing API Sentry integration to Web/Mobile (and/or add Datadog)
    - AI anomaly detection on system logs
 2. **Global Scaling**
    - Add Fly.io multi-region replicas
