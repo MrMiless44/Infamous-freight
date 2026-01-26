@@ -55,11 +55,11 @@ fi
 
 CHANGED=$(git diff --name-only "$VERCEL_GIT_PREVIOUS_SHA" "$VERCEL_GIT_COMMIT_SHA" || true)
 
-if echo "$CHANGED" | grep -E '^(apps/web/|apps/api/|packages/|package\.json|pnpm-lock\.yaml|turbo\.json|tsconfig\.json|next\.config\.)' -q; then
+if echo "$CHANGED" | grep -E '^(web/|api/|packages/|package\.json|pnpm-lock\.yaml|turbo\.json|tsconfig\.json|next\.config\.)' -q; then
   exit 1
 fi
 
-if echo "$CHANGED" | grep -E '^(docs/|mobile/|apps/mobile/|README\.md|\.github/|\.vscode/)' -q; then
+if echo "$CHANGED" | grep -E '^(docs/|mobile/|README\.md|\.github/|\.vscode/)' -q; then
   exit 0
 fi
 
