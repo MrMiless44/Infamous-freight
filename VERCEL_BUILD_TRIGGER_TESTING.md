@@ -14,14 +14,15 @@ This document outlines how to test and verify that Vercel builds are triggered c
 
 ### What This Means
 
-- **Triggers Build**: Changes to `web/` directory, root config files, documentation
+- **Triggers Build**: Any changes outside the excluded paths (for example `web/`, root config files like `package.json`, `vercel.json`, and other infra/tooling files)
 - **Skips Build**: Changes only to `api/`, `packages/`, `archive/`, `mobile/`
 
 ## Test Scenarios
 
 ### ✅ Should Trigger Build
 
-1. **Web Directory Changes**
+1. **Any Non-Excluded Path Changes**
+   - Includes `web/`, root config files (for example `package.json`, `vercel.json`), and infra/tooling files outside the excluded directories.
    ```bash
    # Modify a web component
    echo "// test change" >> web/components/Header.tsx
