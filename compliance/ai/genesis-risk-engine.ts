@@ -32,39 +32,6 @@ export interface GenesisAssessment {
   recommendations: string[];
 }
 
-export function calculateRisk(
-  transaction: Transaction,
-  user: User,
-): { score: number; level: RiskLevel } {
-  let score = 0;
-
-  if (transaction.amount > 10000) {
-    score += 70;
-  } else if (transaction.amount > 5000) {
-    score += 50;
-  } else if (transaction.amount > 1000) {
-    score += 30;
-  } else {
-    score += 10;
-  }
-
-  if (transaction.ipMismatch) {
-    score += 15;
-  }
-
-  if (!user.kycVerified) {
-    score += 20;
-  }
-
-  const level =
-    score >= 80 ? RiskLevel.HIGH : score >= 50 ? RiskLevel.MEDIUM : RiskLevel.LOW;
-
-  return {
-    score,
-    level,
-  };
-}
-
 export function runGenesisAssessment(input: GenesisInput): GenesisAssessment {
   const risk = scoreRisk(input.userId, input.factors);
   const alerts = buildAlerts(risk.score, input.factors);
