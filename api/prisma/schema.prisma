@@ -233,6 +233,57 @@ model OrgAuditLog {
 }
 
 // ============================================
+// Compliance
+// ============================================
+
+model Dispute {
+  id            String   @id @default(uuid())
+  userId        String
+  transactionId String
+  processor     String
+  status        String
+  createdAt     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([transactionId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("disputes")
+}
+
+model EnforcementAction {
+  id        String   @id @default(uuid())
+  userId    String
+  level     String
+  reason    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([level])
+  @@index([createdAt])
+  @@map("enforcement_actions")
+}
+
+model RiskScore {
+  id        String   @id @default(uuid())
+  userId    String
+  score     Float
+  factors   Json
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([score])
+  @@index([createdAt])
+  @@map("risk_scores")
+}
+
+// ============================================
 
 model User {
   id    String   @id @default(uuid())
