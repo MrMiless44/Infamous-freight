@@ -1,4 +1,8 @@
-export function handlePaymentEvent(event: any) {
+interface PaymentEvent {
+  type: string;
+}
+
+export function handlePaymentEvent(event: PaymentEvent) {
   try {
     if (event.type === "chargeback") {
       console.log("Chargeback detected, flagging user");
