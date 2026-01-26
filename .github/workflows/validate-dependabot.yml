@@ -12,6 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install PyYAML
+        run: |
+          python -m pip install pyyaml
       - name: Validate YAML parses
         run: |
           python -c "import yaml; yaml.safe_load(open('.github/dependabot.yml')); print('dependabot.yml OK')"
