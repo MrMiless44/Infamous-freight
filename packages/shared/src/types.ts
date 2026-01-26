@@ -18,3 +18,14 @@ export interface Shipment {
   weightKg: number;
   createdAt: string;
 }
+
+export enum PaymentEventType {
+  CHARGEBACK = "CHARGEBACK",
+}
+
+export interface PaymentEvent {
+  id: string;
+  type: PaymentEventType;
+  userId: string;
+  payload: Record<string, unknown>;
+}
