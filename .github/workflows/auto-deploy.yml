@@ -1,8 +1,6 @@
 name: Auto Deploy (Change Detection)
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -13,7 +11,7 @@ jobs:
       web: ${{ steps.filter.outputs.web }}
       mobile: ${{ steps.filter.outputs.mobile }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Detect changes
         id: filter
@@ -27,7 +25,7 @@ jobs:
               - 'web/**'
               - 'packages/**'
             mobile:
-              - 'src/apps/mobile/**'
+              - 'mobile/**'
               - 'packages/**'
 
   deploy-api:
