@@ -140,10 +140,17 @@ function truncateString(value: string): string {
   return value.slice(0, MAX_STRING_LENGTH);
 }
 
+function sanitizeAction(action: string): string {
+  if (typeof action !== "string") {
+    return "";
+  }
+  return truncateString(action);
+}
+
 export function recordAuditLog(entry: AuditLogInput): AuditLogEntry {
   const sanitizedMetadata = sanitizeMetadata(entry.metadata);
   const logEntry: AuditLogEntry = {
-    action: entry.action,
+    action: sanitizeAction(entry.action),
     createdAt: entry.createdAt,
     metadata: sanitizedMetadata,
   };
