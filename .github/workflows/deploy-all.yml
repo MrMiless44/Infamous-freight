@@ -1,6 +1,16 @@
 name: Deploy ALL Platforms
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "api/**"
+      - "ai/**"
+      - "src/apps/mobile/**"
+      - "packages/**"
+      - "pnpm-lock.yaml"
+      - "infrastructure/**"
+      - "docs/**"
   workflow_dispatch:
   workflow_call:
 
