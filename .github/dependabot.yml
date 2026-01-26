@@ -23,7 +23,6 @@ updates:
       - "MrMiless44"
     labels:
       - "dependencies"
-      - "automated"
     versioning-strategy: increase
     commit-message:
       prefix: "chore(deps)"
