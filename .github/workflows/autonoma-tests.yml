@@ -22,6 +22,6 @@ jobs:
       - name: Show cmbi807au0172xv01dqu4drhi results
         if: always()
         run: |
-          echo "Test status: ${{ steps.step-1.outputs.final-status }}"
-          echo "Message: ${{ steps.step-1.outputs.message }}"
-          echo "View results at: ${{ steps.step-1.outputs.url }}"
+          echo "Test status: ${{ steps['step-1'].outputs['final-status'] }}"
+          echo "Message: ${{ steps['step-1'].outputs['message'] }}"
+          echo "View results at: ${{ steps['step-1'].outputs['url'] }}"
