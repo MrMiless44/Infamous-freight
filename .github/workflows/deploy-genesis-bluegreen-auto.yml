@@ -100,7 +100,7 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
             -H "Content-Type: application/json" \
             --data "{\"type\":\"CNAME\",\"name\":\"$PROD_DOMAIN\",\"content\":\"$cname\",\"ttl\":60,\"proxied\":true}" \
-            | jq -e '.success==true' >/dev/null
+            | jq -e '.success==true' >/dev/null && echo "Flipped prod to $cname ✅"
 
       - name: Verify production health after flip
         run: |
