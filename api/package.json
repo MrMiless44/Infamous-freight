@@ -1,5 +1,5 @@
 {
-  "name": "api",
+  "name": "infamous-freight-api",
   "version": "2.2.0",
   "description": "REST API for freight management platform with authentication, billing, AI integration, and voice features",
   "main": "src/server.js",
