@@ -21,22 +21,22 @@ const planCatalog = [
   {
     key: "starter",
     label: "Infæmous Freight Starter (monthly)",
-    env: "STRIPE_STARTER_PRICE_ID",
+    env: "STRIPE_PRICE_STARTER",
   },
   {
     key: "growth",
     label: "Infæmous Freight Growth (monthly)",
-    env: "STRIPE_GROWTH_PRICE_ID",
+    env: "STRIPE_PRICE_GROWTH",
   },
   {
     key: "pro",
     label: "Infæmous Freight Pro (monthly)",
-    env: "STRIPE_PRO_PRICE_ID",
+    env: "STRIPE_PRICE_PRO",
   },
   {
     key: "enterprise",
     label: "Infæmous Freight Enterprise (custom)",
-    env: "STRIPE_ENTERPRISE_PRICE_ID",
+    env: "STRIPE_PRICE_ENTERPRISE",
   },
 ];
 
