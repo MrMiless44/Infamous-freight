@@ -158,6 +158,10 @@ Infæmous Freight + Genesis AI are operating as a unified global logistics + fin
 
 Infamous Freight Enterprises is a comprehensive logistics and fleet management solution built as a monorepo with:
 
+## 🌍 Phase 11 — Global AI Economic Layer (100%)
+
+Phase 11 elevates Infæmous Freight from a logistics authority into a planetary-scale AI economic infrastructure, defining how value moves across global trade. For the complete vision and deliverables, see [PHASE_11_GLOBAL_AI_ECONOMIC_LAYER.md](PHASE_11_GLOBAL_AI_ECONOMIC_LAYER.md).
+
 ## 🚀 Enterprise Expansion Activation
 
 The enterprise expansion scope for Infæmous Freight + Genesis AI is documented in the activation brief below:
