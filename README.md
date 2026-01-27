@@ -51,6 +51,8 @@ Infamous Freight operates a multi-platform, enterprise-grade CI/CD pipeline desi
 [![Deploy Mobile (Expo)](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/mobile-deploy.yml/badge.svg)](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/mobile-deploy.yml)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/ea96723a-5981-4a9b-a2fc-9c5a367e0313/deploy-status)](https://app.netlify.com/projects/infamousfreight/deploys)
 
+**Recommendation:** Aim for 100% completion across deployment checks, monitoring, and validation before go-live to keep the release path predictable and auditable.
+
 **Live Deployments:**
 
 - 🌐 **Web**: [infamous-freight-enterprises.vercel.app](https://infamous-freight-enterprises.vercel.app) | Netlify Project: [infamousfreight](https://app.netlify.com/projects/infamousfreight/deploys)
