@@ -80,6 +80,17 @@ jobs:
           done
           exit 1
 
+      - name: Run smoke tests against target
+        run: |
+          cname="$GREEN_CNAME"
+          if [ "${{ steps.active.outputs.target }}" = "blue" ]; then cname="$BLUE_CNAME"; fi
+          url="https://$cname/"
+          for i in {1..10}; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$url" || true)
+            if [ "$code" = "200" ]; then exit 0; fi
+            sleep 5
+          done
+          exit 1
       - name: Flip production DNS to target
         run: |
           cname="$GREEN_CNAME"
