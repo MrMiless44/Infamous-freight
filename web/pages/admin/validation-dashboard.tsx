@@ -54,6 +54,8 @@ export default function ValidationDashboard() {
 
       return () => clearInterval(interval);
     }
+
+    return undefined;
   }, [autoRefresh]);
 
   const fetchValidationStatus = async () => {

@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 
 const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
-if (!publishableKey) {
-  throw new Error("Stripe publishable key is not configured");
-}
-
-const stripePromise = loadStripe(publishableKey);
+const stripePromise = publishableKey ? loadStripe(publishableKey) : null;
 
 export default function BillingReturnPage() {
   const [message, setMessage] = useState("Checking payment status...");
 
   useEffect(() => {
+    if (!publishableKey || !stripePromise) {
+      setMessage("Stripe is not configured for this environment.");
+      return;
+    }
+
     const clientSecret = new URLSearchParams(window.location.search).get(
       "payment_intent_client_secret"
     );

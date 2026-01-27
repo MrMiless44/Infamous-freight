@@ -5,7 +5,18 @@ import { NextRequest, NextResponse } from 'next/server';
  * Runs at the edge before page rendering for optimal performance
  */
 export function middleware(request: NextRequest) {
-  const { nextUrl, geo } = request;
+  const { nextUrl } = request;
+  const geo = (
+    request as NextRequest & {
+      geo?: {
+        country?: string;
+        city?: string;
+        region?: string;
+        latitude?: string;
+        longitude?: string;
+      };
+    }
+  ).geo;
   
   // Extract geolocation data from Vercel Edge
   const country = geo?.country || 'Unknown';

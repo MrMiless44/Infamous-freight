@@ -41,7 +41,7 @@ export function initDatadogRUM() {
       // Default privacy level for session replay
       defaultPrivacyLevel: "mask-user-input", // Mask sensitive inputs
       // Advanced options
-      beforeSend: (event, context) => {
+      beforeSend: (event, _context) => {
         // Sanitize sensitive data before sending to Datadog
         if (event.type === "error") {
           // Remove potential PII from error messages
