@@ -42,6 +42,8 @@ const config = require("./config");
 const { compressionMiddleware } = require("./middleware/performance");
 const healthRoutes = require("./routes/health");
 const healthDetailedRoutes = require("./routes/health-detailed");
+const { prisma } = require("./db/prisma");
+const cacheService = require("./services/cache");
 const aiRoutes = require("./routes/ai.commands");
 const billingRoutes = require("./routes/billing");
 const billingPaymentsRoutes = require("./routes/billing-payments");
@@ -195,6 +197,52 @@ if (
   app.use("/api/marketplace", marketplaceMetricsRouter);
 }
 app.get("/health", (_req, res) => res.status(200).send("ok"));
+app.get("/ready", async (_req, res) => {
+  const checks = {
+    database: { status: "unknown", message: "Not checked" },
+    cache: { status: "unknown", message: "Not checked" },
+  };
+
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    checks.database = { status: "healthy", message: "Database reachable" };
+  } catch (error) {
+    checks.database = {
+      status: "unhealthy",
+      message: `Database error: ${error.message}`,
+    };
+  }
+
+  const redisConfigured = Boolean(
+    process.env.REDIS_URL || process.env.REDIS_CONNECTION_STRING,
+  );
+  if (!redisConfigured) {
+    checks.cache = { status: "healthy", message: "Redis not configured" };
+  } else {
+    try {
+      const cacheStats = await cacheService.getStats();
+      checks.cache = {
+        status: cacheStats.connected ? "healthy" : "unhealthy",
+        message: cacheStats.connected ? "Redis connected" : "Redis unavailable",
+      };
+    } catch (error) {
+      checks.cache = {
+        status: "unhealthy",
+        message: `Redis error: ${error.message}`,
+      };
+    }
+  }
+
+  const isReady =
+    checks.database.status === "healthy" && checks.cache.status !== "unhealthy";
+
+  res.status(isReady ? 200 : 503).json({
+    ok: isReady,
+    status: isReady ? "ready" : "not-ready",
+    time: new Date().toISOString(),
+    checks,
+  });
+});
 
 // Mount Bull Board (ops dashboard)
 try {

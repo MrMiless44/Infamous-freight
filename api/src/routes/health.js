@@ -109,19 +109,42 @@ router.get("/health/detailed", auditLog, asyncHandler(async (_req, res) => {
 
 // Readiness check (for Kubernetes/orchestration)
 router.get("/health/ready", auditLog, asyncHandler(async (_req, res) => {
+  const checks = {
+    database: { status: "unknown", message: "Not checked" },
+    cache: { status: "unknown", message: "Not checked" },
+  };
+
   // Check database with timeout
   const timeoutPromise = new Promise((_, reject) =>
     setTimeout(() => reject(new Error('DB health check timeout')), 5000)
   );
-  
+
   await Promise.race([prisma.$queryRaw`SELECT 1`, timeoutPromise]);
-  
+  checks.database = { status: "healthy", message: "Database reachable" };
+
+  // Check cache if configured
+  const redisConfigured = Boolean(process.env.REDIS_URL || process.env.REDIS_CONNECTION_STRING);
+  if (!redisConfigured) {
+    checks.cache = { status: "healthy", message: "Redis not configured" };
+  } else {
+    const cacheStats = await getCacheStats();
+    checks.cache = {
+      status: cacheStats.connected ? "healthy" : "unhealthy",
+      message: cacheStats.connected ? "Redis connected" : "Redis unavailable",
+      stats: cacheStats,
+    };
+  }
+
+  const isReady = checks.database.status === "healthy" && checks.cache.status !== "unhealthy";
+  const statusCode = isReady ? HTTP_STATUS.OK : HTTP_STATUS.SERVICE_UNAVAILABLE;
+
   const readyData = {
-    status: "ready",
+    status: isReady ? "ready" : "not-ready",
     timestamp: new Date().toISOString(),
+    checks,
   };
-  
-  res.status(HTTP_STATUS.OK).json(createSuccessResponse(readyData));
+
+  res.status(statusCode).json(createSuccessResponse(readyData));
 }));
 
 // Liveness check (for Kubernetes/orchestration)

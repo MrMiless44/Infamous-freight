@@ -21,7 +21,10 @@ const createLimiter = (name, options) => {
     skip: (req) =>
       req.method === 'OPTIONS' ||
       req.path === '/api/health' ||
-      req.path === '/api/health/live',
+      req.path === '/api/health/live' ||
+      req.path === '/api/health/ready' ||
+      req.path === '/health' ||
+      req.path === '/ready',
   });
 
   return (req, res, next) => {
@@ -188,6 +191,7 @@ function auditLog(req, res, next) {
   res.on("finish", () => {
     const duration = Date.now() - start;
     const maskedAuthorization = req.headers.authorization ? "***" : undefined;
+    const userAgent = req.headers["user-agent"];
     logger.info({
       method: req.method,
       path: req.originalUrl || req.path,
@@ -197,6 +201,7 @@ function auditLog(req, res, next) {
       ip: req.ip,
       correlationId: req.correlationId,
       auth: maskedAuthorization,
+      userAgent,
     }, 'request');
 
     try {
@@ -210,6 +215,7 @@ function auditLog(req, res, next) {
         role: req.user?.role || req.auth?.role,
         ip: req.ip,
         correlationId: req.correlationId,
+        userAgent,
       });
     } catch (_) { }
   });

@@ -21,7 +21,10 @@ primary_region = "ord"
     timeout = "2s"
     grace_period = "20s"
     method = "GET"
-    path = "/health"
+    path = "/ready"
+
+[deploy]
+  release_command = "npx prisma migrate deploy"
 
 [[vm]]
   cpu_kind = "shared"
