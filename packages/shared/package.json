@@ -14,9 +14,9 @@
     "dist"
   ],
   "scripts": {
-    "lint": "eslint .",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
     "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint .",
     "test": "echo \"(shared) no tests\"",
     "clean": "rm -rf dist node_modules"
   },
