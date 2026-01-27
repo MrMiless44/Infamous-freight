@@ -8,6 +8,9 @@ primary_region = 'ord'
 
 [build]
 
+[env]
+  API_PORT = "3001"
+
 [http_service]
   internal_port = 3000
   force_https = true
