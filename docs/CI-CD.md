@@ -90,8 +90,8 @@ on:
 **Example: Fail the job on a failed curl test run:**
 ```yaml
 - name: Run Tests
-  run: curl https://example.test/run
-  # If curl returns non-zero (test failed), pipeline stops
+  run: curl -f https://example.test/run
+  # If curl returns non-zero (HTTP 4xx/5xx or network error), pipeline stops
 ```
 
 ## 🧩 GitLab CI Integration
