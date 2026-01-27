@@ -5,8 +5,6 @@
  */
 
 import { ApiResponse } from "@infamous-freight/shared";
-import dynamic from "next/dynamic";
-
 // Example: Lazy load heavy components (when you add them)
 // const DashboardChart = dynamic(() => import('../components/DashboardChart'), {
 //   loading: () => <p>Loading chart...</p>,

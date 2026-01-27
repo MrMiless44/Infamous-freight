@@ -10,11 +10,7 @@ import {
 } from "@stripe/react-stripe-js";
 
 const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
-if (!publishableKey) {
-  throw new Error("Stripe publishable key is not configured");
-}
-
-const stripePromise = loadStripe(publishableKey);
+const stripePromise = publishableKey ? loadStripe(publishableKey) : null;
 
 type SubscriptionCheckoutProps = {
   clientSecret: string;
@@ -139,6 +135,22 @@ export default function StripeSubscriptionCheckout({
   returnUrl,
   onSuccess,
 }: SubscriptionCheckoutProps) {
+  if (!stripePromise) {
+    return (
+      <div
+        style={{
+          padding: "12px 14px",
+          borderRadius: 12,
+          border: "1px solid rgba(180, 0, 0, 0.4)",
+          background: "rgba(180, 0, 0, 0.08)",
+          color: "rgb(180, 0, 0)",
+        }}
+      >
+        Stripe is not configured for this environment.
+      </div>
+    );
+  }
+
   return (
     <Elements stripe={stripePromise} options={{ clientSecret }}>
       <SubscriptionCheckoutForm returnUrl={returnUrl} onSuccess={onSuccess} />

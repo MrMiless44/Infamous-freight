@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { getLocaleFromRouter, t } from "../../lib/i18n/t";
 
 const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 export default function Billing() {
-  const router = useRouter();
-  const locale = getLocaleFromRouter(router.locale);
-
   const [ent, setEnt] = useState<any>(null);
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { getLocaleFromRouter, t } from "../lib/i18n/t";
 import { GetStaticProps } from "next";
 import StripeSubscriptionCheckout from "../components/StripeSubscriptionCheckout";
 
@@ -22,9 +20,6 @@ type PricingProps = {
 };
 
 export default function Pricing({ initialPlans, initialConfigured }: PricingProps) {
-  const router = useRouter();
-  const locale = getLocaleFromRouter(router.locale);
-
   const [plans, setPlans] = useState<Plan[]>(initialPlans || []);
   const [configured, setConfigured] = useState(initialConfigured || false);
   const [err, setErr] = useState<string | null>(null);

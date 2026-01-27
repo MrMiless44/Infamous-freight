@@ -3,7 +3,7 @@
  * Supports validation, accessibility, and all input types
  */
 
-import React, { useState } from "react";
+import React from "react";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -31,7 +31,6 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     },
     ref,
   ) => {
-    const [isFocused, setIsFocused] = useState(false);
     const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
     const errorId = `${inputId}-error`;
     const hintId = `${inputId}-hint`;
@@ -95,8 +94,6 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             required={required}
             aria-invalid={error ? "true" : "false"}
             aria-describedby={error ? errorId : hint ? hintId : undefined}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
             {...props}
           />
 

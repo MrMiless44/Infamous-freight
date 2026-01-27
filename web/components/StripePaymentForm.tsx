@@ -21,10 +21,7 @@ import {
 } from "@stripe/react-stripe-js";
 
 const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
-if (!publishableKey) {
-  throw new Error("Stripe publishable key is not configured");
-}
-const stripePromise = loadStripe(publishableKey);
+const stripePromise = publishableKey ? loadStripe(publishableKey) : null;
 const apiBase = (process.env.NEXT_PUBLIC_API_URL || "").replace(/\/api\/?$/, "");
 const billingBase = apiBase || "";
 
@@ -192,6 +189,14 @@ function PaymentFormContent({
 export function StripePaymentForm(props: PaymentFormProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [initError, setInitError] = useState<string | null>(null);
+
+  if (!stripePromise) {
+    return (
+      <div className="p-4 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+        Stripe is not configured for this environment.
+      </div>
+    );
+  }
 
   useEffect(() => {
     let mounted = true;

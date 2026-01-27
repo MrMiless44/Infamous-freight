@@ -24,6 +24,9 @@ const ReportGenerator = dynamic(() => import("../components/ReportGenerator"), {
     React.createElement("div", null, "Loading report generator..."),
 });
 
+void ShipmentChart;
+void ReportGenerator;
+
 // ✅ Tree-shaking: Export named exports instead of default
 // web/lib/utils.ts
 export const formatDate = (date: Date) => date.toLocaleDateString();
@@ -91,9 +94,8 @@ export function ShipmentCard({ shipment }: ShipmentCardProps) {
 
 // ✅ Lazy load expensive libraries
 // web/lib/chartLibrary.ts
-export async function loadChartLibrary() {
-  const recharts = await import("recharts");
-  return recharts;
+export async function loadChartLibrary(): Promise<typeof import("recharts")> {
+  return import("recharts");
 }
 
 // ✅ Preload critical resources in _app.tsx

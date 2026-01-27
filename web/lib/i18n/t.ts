@@ -1,4 +1,4 @@
-import type { Dict, Locale } from "./dict";
+import type { Locale } from "./dict";
 import { dict } from "./dict";
 
 export function getLocaleFromRouter(locale: string | undefined): Locale {
