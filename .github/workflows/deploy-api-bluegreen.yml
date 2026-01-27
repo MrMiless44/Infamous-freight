@@ -119,8 +119,40 @@ jobs:
           else
             base="https://api-green.infamousfreight.com"
           fi
-          curl -fsS "$base/health" >/dev/null
 
+          echo "Running smoke test against $base/health ..."
+
+          # Capture both response body and HTTP status code
+          response=$(curl -fsS -w "HTTPSTATUS:%{http_code}" "$base/health")
+          http_status=$(printf "%s" "$response" | sed -e 's/.*HTTPSTATUS://')
+          body=$(printf "%s" "$response" | sed -e 's/HTTPSTATUS:.*//')
+
+          if [ "$http_status" != "200" ]; then
+            echo "Smoke test failed: expected HTTP 200, got $http_status"
+            echo "Response body:"
+            echo "$body"
+            exit 1
+          fi
+
+          # Basic JSON payload validation to ensure application-level health
+          echo "$body" | grep -q '"status"[[:space:]]*:[[:space:]]*"ok"' || {
+            echo "Smoke test failed: health payload does not report status \"ok\""
+            echo "Response body:"
+            echo "$body"
+            exit 1
+          }
+
+          # If database field is present, ensure it is not reported as disconnected
+          if echo "$body" | grep -q '"database"'; then
+            echo "$body" | grep -q '"database"[[:space:]]*:[[:space:]]*"connected"' || {
+              echo "Smoke test failed: database is not reported as \"connected\""
+              echo "Response body:"
+              echo "$body"
+              exit 1
+            }
+          fi
+
+          echo "Smoke test passed ✅"
       - name: Switch production DNS to target (Cloudflare)
         run: |
           if [ "${{ steps.color.outputs.target }}" = "blue" ]; then
