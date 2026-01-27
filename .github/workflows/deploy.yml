@@ -51,7 +51,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm typecheck
-      - run: pnpm -r --topological run build
+      - run: pnpm -r --topological run build --if-present
 
   deploy_web:
     needs: [changes, verify]
