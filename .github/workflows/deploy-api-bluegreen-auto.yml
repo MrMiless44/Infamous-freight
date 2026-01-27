@@ -36,7 +36,7 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter api build
+      - run: pnpm --filter infamous-freight-api build
 
       - name: Detect active color from Cloudflare
         id: active
