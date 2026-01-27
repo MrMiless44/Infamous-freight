@@ -65,4 +65,4 @@
   command = "corepack enable && pnpm install --frozen-lockfile --prod && pnpm --filter @infamous-freight/shared build && pnpm --filter web build"
 
 [context.branch-deploy]
-  command = "corepack enable && pnpm install --frozen-lockfile --prod && pnpm --filter @infamous-freight/shared build && pnpm --filter web build"
+  command = "corepack enable && pnpm install --frozen-lockfile && pnpm --filter @infamous-freight/shared build && pnpm --filter web build"
