@@ -16,8 +16,15 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - uses: actions/checkout@v4
+
+      - name: Block deploy during freeze
+        if: vars.PROD_FREEZE == 'true'
+        run: |
+          echo "Production freeze is enabled. Blocking deploy."
+          exit 1
 
       - uses: pnpm/action-setup@v3
         with:
@@ -34,7 +41,7 @@ jobs:
       - name: Build API
         run: pnpm --filter infamous-freight-api build
 
-      - name: Prisma migrate deploy (guarded)
+      - name: Prisma migrate deploy (guarded + locked)
         run: |
           set -euo pipefail
           if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
@@ -44,10 +51,19 @@ jobs:
           fi
 
           if echo "$changed_files" | grep -q "^api/prisma/"; then
+            echo "api/prisma changes detected; running Prisma migrate deploy with lock."
+            # Acquire an exclusive file lock for up to 180 seconds (matching the previous 180000 ms timeout)
+            exec 200>/tmp/prisma-migrate.lock
+            if ! flock -w 180 200; then
+              echo "Failed to acquire Prisma migration lock within 180 seconds." >&2
+              exit 1
+            fi
             pnpm --filter infamous-freight-api prisma migrate deploy
           else
             echo "No api/prisma changes detected; skipping Prisma migrate deploy."
           fi
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Set up Fly.io CLI
         uses: superfly/flyctl-actions/setup-flyctl@master
