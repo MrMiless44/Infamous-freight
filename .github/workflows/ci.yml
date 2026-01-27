@@ -1,15 +1,10 @@
 name: CI - Enterprise Grade
 
 on:
-  push:
-    branches: [main, develop]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - '.vscode/**'
-      - 'archive/**'
   pull_request:
-    branches: [main, develop]
+    branches: [ main ]
+  push:
+    branches: [ main ]
 
 concurrency:
   group: ci-${{ github.ref }}
