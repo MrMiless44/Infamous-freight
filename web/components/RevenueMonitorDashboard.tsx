@@ -24,7 +24,6 @@ const BarChart = dynamic(() => import("recharts").then((mod) => mod.BarChart), {
 const {
   Line,
   Bar,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
