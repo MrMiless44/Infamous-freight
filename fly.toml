@@ -9,10 +9,10 @@ primary_region = 'ord'
 [build]
 
 [env]
-  API_PORT = "8080"
+  API_PORT = "4000"
 
 [http_service]
-  internal_port = 3000
+  internal_port = 4000
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true
