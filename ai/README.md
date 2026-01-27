@@ -198,6 +198,12 @@ AI roles are:
 
 ### Phase 3: Advanced Features
 
+## Phase 9: Autonomous AI Company
+
+Phase 9 expands the AI role scaffolding into a self-operating AI enterprise with an orchestrator, domain agents, and governed autonomy. See the Phase 9 blueprint for role mapping, orchestration, and auditability requirements.
+
+- **Phase 9 blueprint:** `docs/PHASE_9_AUTONOMOUS_AI_COMPANY.md`
+
 - Multi-role coordination
 - Learning from human overrides
 - Adaptive confidence thresholds
