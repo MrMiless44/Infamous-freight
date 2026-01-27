@@ -17,16 +17,16 @@
 
 ### Domain Configuration Status
 
-| Component | Status | Details |
-|-----------|--------|---------|
-| **Domain Registration** | ✅ Ready | infamousfreight.com registered |
-| **DNS Provider** | ✅ Ready | Configure with your registrar |
-| **SSL/TLS Certificate** | ✅ Ready | Auto-provisioned by Vercel |
-| **Web Application** | ✅ Live | Next.js on Vercel (www subdomain) |
-| **API Subdomain** | ✅ Ready | api.infamousfreight.com (Fly.io) |
-| **Email** | ✅ Ready | MX records configured |
-| **CDN** | ✅ Active | Vercel global edge network |
-| **Security Headers** | ✅ Enabled | A+ SSL rating, HSTS, CSP |
+| Component               | Status     | Details                           |
+| ----------------------- | ---------- | --------------------------------- |
+| **Domain Registration** | ✅ Ready   | infamousfreight.com registered    |
+| **DNS Provider**        | ✅ Ready   | Configure with your registrar     |
+| **SSL/TLS Certificate** | ✅ Ready   | Auto-provisioned by Vercel        |
+| **Web Application**     | ✅ Live    | Next.js on Vercel (www subdomain) |
+| **API Subdomain**       | ✅ Ready   | api.infamousfreight.com (Fly.io)  |
+| **Email**               | ✅ Ready   | MX records configured             |
+| **CDN**                 | ✅ Active  | Vercel global edge network        |
+| **Security Headers**    | ✅ Enabled | A+ SSL rating, HSTS, CSP          |
 
 ---
 
@@ -43,6 +43,7 @@
 5. Copy the DNS records provided
 
 **What Vercel gives you:**
+
 ```
 Type: CNAME
 Name: www
@@ -90,7 +91,7 @@ Value: mail.infamousfreight.com
 
 // Or use third-party email provider
 Type: MX
-Name: @ 
+Name: @
 Priority: 10
 Value: <your-email-provider-mx-record>
 ```
@@ -121,6 +122,7 @@ CORS_ORIGINS=https://www.infamousfreight.com,https://infamousfreight.com
 ### Step 5: Configure SSL/TLS
 
 **Vercel automatically:**
+
 - ✅ Provisions SSL certificate (free via Let's Encrypt)
 - ✅ Enables HTTPS redirect
 - ✅ Sets HSTS header (1 year)
@@ -131,32 +133,26 @@ CORS_ORIGINS=https://www.infamousfreight.com,https://infamousfreight.com
 ```yaml
 # vercel.json or Project Settings
 {
-  "env": {
-    "NODE_ENV": "production"
-  },
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Strict-Transport-Security",
-          "value": "max-age=63072000; includeSubDomains; preload"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        }
-      ]
-    }
-  ]
+  "env": { "NODE_ENV": "production" },
+  "headers":
+    [
+      {
+        "source": "/(.*)",
+        "headers":
+          [
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload",
+            },
+            { "key": "X-Frame-Options", "value": "DENY" },
+            { "key": "X-Content-Type-Options", "value": "nosniff" },
+            {
+              "key": "Referrer-Policy",
+              "value": "strict-origin-when-cross-origin",
+            },
+          ],
+      },
+    ],
 }
 ```
 
@@ -249,6 +245,7 @@ dig infamousfreight.com +trace
 - **Faster**: TTL value (lower = faster, but less efficient)
 
 **Check propagation status:**
+
 - https://www.whatsmydns.net
 - https://mxtoolbox.com
 - https://dnschecker.org
@@ -348,20 +345,20 @@ TTL:                       3600 seconds
 
 ### DNS Records Status
 
-| Record | Type | Current Status | Expected Value |
-|--------|------|---|---|
-| infamousfreight.com | A | ✅ Ready | 76.76.19.4 |
-| www | CNAME | ✅ Ready | cname.vercel.com |
-| api | CNAME | ✅ Ready | [Fly.io domain] |
-| @ | MX | ✅ Optional | [Email provider] |
+| Record              | Type  | Current Status | Expected Value   |
+| ------------------- | ----- | -------------- | ---------------- |
+| infamousfreight.com | A     | ✅ Ready       | 76.76.19.4       |
+| www                 | CNAME | ✅ Ready       | cname.vercel.com |
+| api                 | CNAME | ✅ Ready       | [Fly.io domain]  |
+| @                   | MX    | ✅ Optional    | [Email provider] |
 
 ### Endpoint Status
 
-| Endpoint | Type | Status | Response |
-|----------|------|--------|----------|
-| https://www.infamousfreight.com | Web | ✅ Live | 200 OK |
-| https://api.infamousfreight.com/api/health | API | ✅ Live | JSON Health |
-| https://infamousfreight.com | Root | ✅ Redirect | → www |
+| Endpoint                                   | Type | Status      | Response    |
+| ------------------------------------------ | ---- | ----------- | ----------- |
+| https://www.infamousfreight.com            | Web  | ✅ Live     | 200 OK      |
+| https://api.infamousfreight.com/api/health | API  | ✅ Live     | JSON Health |
+| https://infamousfreight.com                | Root | ✅ Redirect | → www       |
 
 ---
 
@@ -417,6 +414,7 @@ LOG_LEVEL=info
 ### Enable Analytics
 
 **Vercel Analytics:**
+
 - ✅ Real User Monitoring (RUM)
 - ✅ Core Web Vitals tracking
 - ✅ Performance metrics
@@ -424,11 +422,13 @@ LOG_LEVEL=info
 - ✅ Browser analytics
 
 **Google Analytics:**
+
 - Add to web application
 - Track user behavior
 - Monitor conversion funnel
 
 **Sentry Error Tracking:**
+
 - ✅ Already configured
 - ✅ Production environment enabled
 - ✅ Alerts configured
@@ -501,11 +501,10 @@ LOG_LEVEL=info
 **Domain**: www.infamousfreight.com  
 **Status**: ✅ CONFIGURED  
 **SSL**: ✅ AUTO-PROVISIONED  
-**Ready**: ✅ FOR PRODUCTION  
+**Ready**: ✅ FOR PRODUCTION
 
 ---
 
 **Last Updated**: January 27, 2026  
 **Status**: ✅ 100% COMPLETE  
 **Next**: Configure DNS records at your registrar
-

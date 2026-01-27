@@ -20,6 +20,7 @@ These are automatically identified and need resolution via dependency updates.
 ### Prerequisites
 
 Ensure you have:
+
 - [x] Git cloned locally (or accessible)
 - [x] Node.js 18+ installed
 - [x] pnpm 8.15.9+ installed
@@ -45,6 +46,7 @@ bash security-fixes.sh
 ```
 
 The script will:
+
 1. ✅ Check prerequisites
 2. ✅ Fix `packages/shared`
 3. ✅ Fix `apps/api`
@@ -64,6 +66,7 @@ The script will:
 If you prefer to handle each workspace individually:
 
 #### Step 1: Fix Shared Package
+
 ```bash
 cd packages/shared
 pnpm audit              # View vulnerabilities
@@ -73,6 +76,7 @@ cd ../..
 ```
 
 #### Step 2: Fix API
+
 ```bash
 cd apps/api
 pnpm audit              # View vulnerabilities
@@ -82,6 +86,7 @@ cd ../..
 ```
 
 #### Step 3: Fix Web
+
 ```bash
 cd apps/web
 pnpm audit              # View vulnerabilities
@@ -91,6 +96,7 @@ cd ../..
 ```
 
 #### Step 4: Fix Mobile
+
 ```bash
 cd apps/mobile
 pnpm audit              # View vulnerabilities
@@ -100,6 +106,7 @@ cd ../..
 ```
 
 #### Step 5: Monorepo-wide Fix
+
 ```bash
 # From repository root
 pnpm audit              # View vulnerabilities
@@ -191,6 +198,7 @@ security: Fix all 14 Dependabot alerts via audit fix
 **Cause**: Breaking changes in upgraded dependencies
 
 **Solution**:
+
 ```bash
 # Identify which package failed
 pnpm build --reporter=verbose
@@ -207,6 +215,7 @@ pnpm build --reporter=verbose
 **Cause**: Package A requires X@1, Package B requires X@2
 
 **Solution**:
+
 ```bash
 # View conflict details
 pnpm audit
@@ -221,6 +230,7 @@ pnpm install   # Reinstall with new versions
 **Cause**: Library maintainer hasn't released patched version
 
 **Solution**:
+
 ```bash
 # Document the issue
 echo "Package X has unfixed CVE-XXXX, waiting for maintainer release"
@@ -236,6 +246,7 @@ pnpm search [package-name]
 **Cause**: Multiple package managers installed
 
 **Solution**:
+
 ```bash
 # Use pnpm exclusively
 pnpm --version            # Verify pnpm works
@@ -263,15 +274,17 @@ After running security fixes:
 ## 📈 EXPECTED OUTCOME
 
 **Before Security Fixes**:
+
 ```
 14 vulnerabilities found (all moderate)
 - Shared: 3 vulnerabilities
-- API: 4 vulnerabilities  
+- API: 4 vulnerabilities
 - Web: 5 vulnerabilities
 - Mobile: 2 vulnerabilities
 ```
 
 **After Security Fixes**:
+
 ```
 0 vulnerabilities found
 or
@@ -284,11 +297,11 @@ N vulnerabilities found (significantly reduced)
 
 ## ⏱️ TIME ESTIMATE
 
-| Method | Time | Effort |
-|--------|------|--------|
-| Automated Script | 45 min - 1 hour | Minimal |
-| Manual Step-by-Step | 1-2 hours | High |
-| Selective Workspaces | 30-45 min | Medium |
+| Method               | Time            | Effort  |
+| -------------------- | --------------- | ------- |
+| Automated Script     | 45 min - 1 hour | Minimal |
+| Manual Step-by-Step  | 1-2 hours       | High    |
+| Selective Workspaces | 30-45 min       | Medium  |
 
 **Recommended**: Use automated script for best results.
 
@@ -322,6 +335,7 @@ Running security fixes is the **final step** to achieve 100% GREEN status.
 **After Security Fixes**: **100% GREEN** 🟢
 
 **Command to Execute**:
+
 ```bash
 bash security-fixes.sh
 ```
@@ -330,4 +344,5 @@ bash security-fixes.sh
 
 ---
 
-*Ready to complete the final 0.5%? Run the script and celebrate reaching 100% GREEN!* 🎉
+_Ready to complete the final 0.5%? Run the script and celebrate reaching 100%
+GREEN!_ 🎉
