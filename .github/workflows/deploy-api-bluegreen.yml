@@ -10,7 +10,7 @@ on:
   workflow_call: {}
 concurrency:
   group: deploy-api-bluegreen
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
