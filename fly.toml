@@ -9,7 +9,7 @@ primary_region = 'iad'
 [build]
 
 [env]
-  API_PORT = "8080"
+  API_PORT = "3001"
 
 [http_service]
   internal_port = 3001
