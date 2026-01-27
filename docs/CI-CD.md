@@ -90,6 +90,7 @@ on:
 ## 🧩 GitLab CI Integration
 
 1. Add credentials in GitLab: **Settings → CI/CD → Variables**
+   - `FOLDER_ID`
    - `CLIENT_ID`
    - `CLIENT_SECRET` (masked)
 2. Add this to `.gitlab-ci.yml`:
@@ -116,6 +117,7 @@ autonoma_tests:
 ## 🧩 Bitbucket Pipelines Integration
 
 1. Add repository variables in Bitbucket:
+   - `FOLDER_ID`
    - `CLIENT_ID`
    - `CLIENT_SECRET`
 2. Add to `bitbucket-pipelines.yml`:
