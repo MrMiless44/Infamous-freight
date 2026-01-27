@@ -9,10 +9,40 @@ const FEATURE_UNITS = {
   ocr_parsing: "doc",
 };
 
+// Heuristic parameters for estimating token usage from raw text length.
+// We assume ~4 characters per token on average (common OpenAI/Anthropic guidance),
+// and bill in units of 1,000 tokens.
+//
+// NOTE: This is an approximation used when we do not have provider-reported token
+// counts available. For accurate billing, prefer passing real token counts from the
+// AI provider into billing, and periodically validate this heuristic against actual
+// usage to tune ESTIMATED_CHARS_PER_TOKEN and TOKENS_PER_BILLING_UNIT as needed.
+const ESTIMATED_CHARS_PER_TOKEN = 4;
+const TOKENS_PER_BILLING_UNIT = 1000;
+
+/**
+ * Estimate billable 1k-token units for a given text payload.
+ *
+ * The estimation is:
+ *   - approximateTokens ≈ ceil(text.length / ESTIMATED_CHARS_PER_TOKEN)
+ *   - units = ceil(approximateTokens / TOKENS_PER_BILLING_UNIT)
+ *
+ * The result is always at least 1 to avoid recording zero usage.
+ *
+ * This is a heuristic and may deviate from true token usage. Callers that have
+ * access to actual token counts from the AI provider should prefer using those
+ * counts to derive billable units instead of relying solely on this function.
+ */
 function estimateTokenUnits(text) {
   if (!text) return 1;
-  const estimatedTokens = Math.max(1, Math.ceil(text.length / 4));
-  return Math.max(1, Math.ceil(estimatedTokens / 1000));
+  const estimatedTokens = Math.max(
+    1,
+    Math.ceil(text.length / ESTIMATED_CHARS_PER_TOKEN)
+  );
+  return Math.max(
+    1,
+    Math.ceil(estimatedTokens / TOKENS_PER_BILLING_UNIT)
+  );
 }
 
 async function recordUsage({
