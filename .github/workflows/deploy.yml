@@ -125,7 +125,7 @@ jobs:
 
       - name: Autonoma Smoke Tests - Authentication and Checkout
         id: autonoma-auth-checkout
-        uses: autonoma-ai/actions/test-runner@v1
+        uses: autonoma-ai/actions/test-runner@v1.0.0
         with:
           test-id: ${{ secrets.AUTONOMA_AUTH_CHECKOUT_TEST_ID }}
           client-id: ${{ secrets.AUTONOMA_CLIENT_ID }}
