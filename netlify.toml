@@ -1,6 +1,6 @@
 [build]
   command = "corepack enable && pnpm install --frozen-lockfile && pnpm build:shared && pnpm build:web"
-  publish = "web/.next"
+  publish = "web/.next/standalone/web"
 
 [build.environment]
   NODE_VERSION = "20"
