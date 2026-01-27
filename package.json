@@ -66,8 +66,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^16.2.7",
     "next": "^16.1.4",
-    "prettier": "^3.0.0",
-    "strapi-plugin-netlify-deployments": "^2.0.2"
+    "prettier": "^3.0.0"
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.19",
