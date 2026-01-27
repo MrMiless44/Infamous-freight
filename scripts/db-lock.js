@@ -16,16 +16,33 @@ if (!process.env.DATABASE_URL) {
 const client = new Client({ connectionString: process.env.DATABASE_URL });
 const start = Date.now();
 let lockAcquired = false;
+let clientClosed = false;
 
 const releaseLock = async () => {
-  if (!lockAcquired) {
-    await client.end();
+  // Make releaseLock idempotent: if we've already closed the client, do nothing.
+  if (clientClosed) {
     return;
   }
 
-  await client.query("DELETE FROM deploy_locks WHERE lock_name = $1", [lockName]);
-  await client.end();
-  console.log(`Lock released: ${lockName}`);
+  try {
+    if (lockAcquired) {
+      await client.query("DELETE FROM deploy_locks WHERE lock_name = $1", [lockName]);
+      console.log(`Lock released: ${lockName}`);
+    }
+  } catch (error) {
+    // If the connection is already closed or lost, releasing the lock may fail.
+    console.error("Error while releasing DB lock", error);
+  } finally {
+    if (!clientClosed) {
+      try {
+        await client.end();
+      } catch (endError) {
+        console.error("Error while closing DB client", endError);
+      } finally {
+        clientClosed = true;
+      }
+    }
+  }
 };
 
 const handleShutdown = async (signal) => {
