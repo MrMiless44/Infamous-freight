@@ -149,6 +149,11 @@ curl -X POST \
   --header 'Content-Type: application/json' || true
 ```
 
+You can also use the helper script in `scripts/autonoma-run.sh`:
+```bash
+scripts/autonoma-run.sh <folder-id> <client-id> <client-secret>
+```
+
 ## 🧠 Best Practices
 
 1. **Run different tests at different stages**
