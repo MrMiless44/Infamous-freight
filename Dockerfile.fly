@@ -23,11 +23,15 @@ WORKDIR /app
 # Copy workspace files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY api/package.json ./api/package.json
+COPY ai/package.json ./ai/package.json
+COPY mobile/package.json ./mobile/package.json
+COPY web/package.json ./web/package.json
 COPY packages/shared/package.json ./packages/shared/package.json
+COPY tests/e2e/package.json ./tests/e2e/package.json
 
 # Install dependencies with frozen lockfile
 ENV HUSKY=0
-RUN pnpm install --filter api... --frozen-lockfile --prod=false
+RUN pnpm install:ci --prod=false
 
 # Stage 2: Build shared packages
 FROM base AS shared-builder
@@ -39,7 +43,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY packages/shared ./packages/shared
 
 WORKDIR /app/packages/shared
-RUN pnpm run build
+RUN pnpm build:shared
 
 # Stage 3: Build application
 FROM base AS builder
@@ -60,6 +64,7 @@ COPY api ./api
 # Generate Prisma client and build
 WORKDIR /app/api
 RUN pnpm run prisma:generate
+RUN pnpm build:api
 
 # Stage 4: Production runtime
 FROM node:20-alpine AS runner

@@ -14,14 +14,15 @@
     "dist"
   ],
   "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json --noEmit --pretty false",
-    "lint": "echo \"(shared) lint not configured\"",
     "test": "echo \"(shared) no tests\"",
     "clean": "rm -rf dist node_modules"
   },
   "devDependencies": {
-    "typescript": "^5.5.4",
-    "@types/node": "^25.0.10"
+    "@types/node": "^25.0.10",
+    "eslint": "^9.39.2",
+    "typescript": "^5.5.4"
   }
 }
