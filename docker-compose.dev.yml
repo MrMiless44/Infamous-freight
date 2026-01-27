@@ -24,7 +24,7 @@ services:
       context: .
       dockerfile: src/apps/api/Dockerfile
       target: builder # Use builder stage for development
-    command: pnpm --filter infamous-freight-api dev
+    command: pnpm --filter api dev
     environment:
       NODE_ENV: development
       DATABASE_URL: postgresql://infamous:infamouspass@postgres:5432/infamous_freight

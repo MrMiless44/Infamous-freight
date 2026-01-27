@@ -23,11 +23,14 @@ WORKDIR /app
 # Copy workspace files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY api/package.json ./api/package.json
+COPY web/package.json ./web/package.json
+COPY mobile/package.json ./mobile/package.json
+COPY ai/package.json ./ai/package.json
 COPY packages/shared/package.json ./packages/shared/package.json
 
 # Install dependencies with frozen lockfile
 ENV HUSKY=0
-RUN pnpm install --filter api... --frozen-lockfile --prod=false
+RUN pnpm install:ci
 
 # Stage 2: Build shared packages
 FROM base AS shared-builder
@@ -38,8 +41,7 @@ COPY --from=deps /app/packages/shared/node_modules ./packages/shared/node_module
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY packages/shared ./packages/shared
 
-WORKDIR /app/packages/shared
-RUN pnpm run build
+RUN pnpm build:shared
 
 # Stage 3: Build application
 FROM base AS builder
@@ -58,12 +60,12 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY api ./api
 
 # Generate Prisma client and build
-WORKDIR /app/api
-RUN pnpm run prisma:generate
+RUN pnpm --filter api prisma:generate
+RUN pnpm build:api
 
 # Stage 4: Production runtime
 FROM node:20-alpine AS runner
-WORKDIR /app
+WORKDIR /app/api
 
 # Install security updates and required tools
 RUN apk update && \
@@ -87,8 +89,9 @@ RUN addgroup -g 1001 -S nodejs && \
     chown -R nodejs:nodejs /app
 
 # Copy only necessary files for production
-COPY --from=builder --chown=nodejs:nodejs /app/api/src ./src
+COPY --from=builder --chown=nodejs:nodejs /app/api/dist ./dist
 COPY --from=builder --chown=nodejs:nodejs /app/api/prisma ./prisma
+COPY --from=builder --chown=nodejs:nodejs /app/api/data ./data
 COPY --from=builder --chown=nodejs:nodejs /app/api/package.json ./package.json
 
 # Copy built shared package
@@ -96,7 +99,7 @@ COPY --from=shared-builder --chown=nodejs:nodejs /app/packages/shared/dist ./nod
 COPY --from=shared-builder --chown=nodejs:nodejs /app/packages/shared/package.json ./node_modules/@infamous-freight/shared/package.json
 
 # Copy production node_modules
-COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nodejs:nodejs /app/node_modules /app/node_modules
 
 # Switch to non-root user
 USER nodejs
@@ -110,4 +113,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=5 \
 
 # Use dumb-init to handle signals properly
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD ["node", "src/server.js"]
+CMD ["node", "dist/index.js"]

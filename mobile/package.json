@@ -4,6 +4,9 @@
   "private": true,
   "description": "Placeholder for React Native/Expo app",
   "scripts": {
-    "dev": "echo 'Mobile app scaffold pending'"
+    "dev": "echo 'Mobile app scaffold pending'",
+    "lint": "echo \"(mobile) lint not configured\"",
+    "typecheck": "echo \"(mobile) typecheck not configured\"",
+    "build": "echo \"(mobile) build not configured\""
   }
 }

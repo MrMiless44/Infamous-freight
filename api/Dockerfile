@@ -19,8 +19,8 @@ COPY --from=deps /app/packages ./packages
 COPY --from=deps /app/api ./api
 COPY . .
 RUN pnpm --filter @infamous-freight/shared build
-RUN pnpm --filter infamous-freight-api build
-RUN pnpm --filter infamous-freight-api prisma:generate
+RUN pnpm --filter api build
+RUN pnpm --filter api prisma:generate
 
 FROM node:20-slim AS runner
 ENV NODE_ENV=production
@@ -33,4 +33,4 @@ COPY --from=build /app/packages ./packages
 COPY --from=build /app/node_modules ./node_modules
 
 EXPOSE 3001
-CMD ["node", "api/src/server.js"]
+CMD ["node", "api/dist/index.js"]

@@ -3,7 +3,7 @@ services:
     volumes:
       - ./:/app
       - ./src/apps/api:/app/src/apps/api
-    command: sh -c "cd /app && HUSKY=0 pnpm install && pnpm --filter infamous-freight-api dev"
+    command: sh -c "cd /app && HUSKY=0 pnpm install && pnpm --filter api dev"
 
   web:
     volumes:

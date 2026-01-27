@@ -4,6 +4,9 @@
   "private": true,
   "description": "Playwright end-to-end tests for Infamous Freight Enterprise",
   "scripts": {
+    "lint": "echo \"(e2e) lint not configured\"",
+    "typecheck": "echo \"(e2e) typecheck not configured\"",
+    "build": "echo \"(e2e) build not configured\"",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:report": "playwright show-report"

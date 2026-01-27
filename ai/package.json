@@ -1,0 +1,11 @@
+{
+  "name": "ai",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Placeholder for AI services workspace",
+  "scripts": {
+    "lint": "echo \"(ai) lint not configured\"",
+    "typecheck": "echo \"(ai) typecheck not configured\"",
+    "build": "echo \"(ai) build not configured\""
+  }
+}
