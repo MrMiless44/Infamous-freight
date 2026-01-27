@@ -33,4 +33,4 @@ COPY --from=build /app/packages ./packages
 COPY --from=build /app/node_modules ./node_modules
 
 EXPOSE 3001
-CMD ["node", "api/dist/index.js"]
+CMD ["node", "api/dist/server.js"]
