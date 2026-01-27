@@ -64,7 +64,7 @@ COPY api ./api
 # Generate Prisma client and build
 WORKDIR /app/api
 RUN pnpm run prisma:generate
-RUN pnpm build:api
+RUN pnpm run build
 
 # Stage 4: Production runtime
 FROM node:20-alpine AS runner
