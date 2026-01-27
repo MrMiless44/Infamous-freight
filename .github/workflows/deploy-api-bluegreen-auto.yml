@@ -1,0 +1,163 @@
+name: Deploy API (Blue/Green Auto)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/api/**"
+      - "packages/**"
+      - "pnpm-lock.yaml"
+
+concurrency:
+  group: deploy-api-bluegreen-auto
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      PROD_DOMAIN: api.infamousfreight.com
+      BLUE_CNAME: api-blue.infamousfreight.com
+      GREEN_CNAME: api-green.infamousfreight.com
+      BLUE_HEALTH: https://api-blue.infamousfreight.com/health
+      GREEN_HEALTH: https://api-green.infamousfreight.com/health
+      PROD_HEALTH: https://api.infamousfreight.com/health
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter api build
+
+      - name: Detect active color from Cloudflare
+        id: active
+        run: |
+          resp=$(curl -sS -X GET \
+            "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/dns_records/${{ secrets.CLOUDFLARE_RECORD_ID_API }}" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json")
+
+          content=$(echo "$resp" | jq -r '.result.content')
+          echo "Current prod CNAME content: $content"
+
+          if [ "$content" = "${BLUE_CNAME}" ]; then
+            echo "active=blue" >> $GITHUB_OUTPUT
+            echo "target=green" >> $GITHUB_OUTPUT
+          elif [ "$content" = "${GREEN_CNAME}" ]; then
+            echo "active=green" >> $GITHUB_OUTPUT
+            echo "target=blue" >> $GITHUB_OUTPUT
+          else
+            echo "Unknown prod CNAME content: $content"
+            exit 1
+          fi
+
+      - name: Deploy to target color (Fly rolling)
+        uses: superfly/flyctl-actions@1.5
+        with:
+          args: >
+            deploy
+            --config apps/api/fly.${{ steps.active.outputs.target }}.toml
+            --remote-only
+            --strategy rolling
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Wait for target health
+        id: target_health
+        run: |
+          if [ "${{ steps.active.outputs.target }}" = "blue" ]; then
+            url="$BLUE_HEALTH"
+          else
+            url="$GREEN_HEALTH"
+          fi
+
+          for i in {1..40}; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$url" || true)
+            if [ "$code" = "200" ]; then
+              echo "Target healthy ✅ ($url)"
+              exit 0
+            fi
+            echo "Waiting for target health (HTTP $code)..."
+            sleep 5
+          done
+          echo "Target failed health ❌"
+          exit 1
+
+      - name: Smoke test target
+        run: |
+          if [ "${{ steps.active.outputs.target }}" = "blue" ]; then
+            base="https://api-blue.infamousfreight.com"
+          else
+            base="https://api-green.infamousfreight.com"
+          fi
+          curl -fsS "$base/health" >/dev/null
+
+      - name: Flip production DNS to target
+        id: flip
+        run: |
+          if [ "${{ steps.active.outputs.target }}" = "blue" ]; then
+            cname="$BLUE_CNAME"
+          else
+            cname="$GREEN_CNAME"
+          fi
+
+          curl -sS -X PUT \
+            "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/dns_records/${{ secrets.CLOUDFLARE_RECORD_ID_API }}" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data "{\"type\":\"CNAME\",\"name\":\"$PROD_DOMAIN\",\"content\":\"$cname\",\"ttl\":60,\"proxied\":true}" \
+            | jq -e '.success==true' >/dev/null
+
+          echo "Flipped prod to ${{ steps.active.outputs.target }} ✅"
+
+      - name: Verify production health after flip
+        run: |
+          for i in {1..30}; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$PROD_HEALTH" || true)
+            if [ "$code" = "200" ]; then
+              echo "Production healthy ✅"
+              exit 0
+            fi
+            echo "Waiting for production health (HTTP $code)..."
+            sleep 5
+          done
+          echo "Production failed after flip ❌"
+          exit 1
+
+      - name: Revert DNS back to active color (if needed)
+        if: failure()
+        run: |
+          if [ "${{ steps.active.outputs.active }}" = "blue" ]; then
+            cname="$BLUE_CNAME"
+          else
+            cname="$GREEN_CNAME"
+          fi
+
+          echo "Reverting DNS back to prior active: ${{ steps.active.outputs.active }}"
+          curl -sS -X PUT \
+            "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/dns_records/${{ secrets.CLOUDFLARE_RECORD_ID_API }}" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data "{\"type\":\"CNAME\",\"name\":\"$PROD_DOMAIN\",\"content\":\"$cname\",\"ttl\":60,\"proxied\":true}" \
+            | jq -e '.success==true' >/dev/null
+
+      - name: Slack notify (success)
+        if: success() && secrets.SLACK_WEBHOOK_URL != ''
+        run: |
+          payload=$(jq -n --arg text "✅ API Blue/Green deploy successful. Active is now '${{ steps.active.outputs.target }}' (commit ${{ github.sha }})" '{text:$text}')
+          curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.SLACK_WEBHOOK_URL }}"
+
+      - name: Slack notify (failure)
+        if: failure() && secrets.SLACK_WEBHOOK_URL != ''
+        run: |
+          payload=$(jq -n --arg text "❌ API Blue/Green deploy failed. DNS reverted to '${{ steps.active.outputs.active }}' (commit ${{ github.sha }})" '{text:$text}')
+          curl -X POST -H 'Content-type: application/json' --data "$payload" "${{ secrets.SLACK_WEBHOOK_URL }}"
