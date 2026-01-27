@@ -87,6 +87,13 @@ on:
     branches: [ main ]
 ```
 
+**Example: Fail the job on a failed curl test run:**
+```yaml
+- name: Run Tests
+  run: curl -f https://example.test/run
+  # If curl returns non-zero (HTTP 4xx/5xx or network error), pipeline stops
+```
+
 ## 🧩 GitLab CI Integration
 
 1. Add credentials in GitLab: **Settings → CI/CD → Variables**
