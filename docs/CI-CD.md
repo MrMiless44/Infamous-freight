@@ -149,9 +149,17 @@ curl -X POST \
   --header 'Content-Type: application/json' || true
 ```
 
-You can also use the helper script in `scripts/autonoma-run.sh`:
+You can also use the helper script in `scripts/autonoma-run.sh`.  
+For security, avoid passing the client secret as a command-line argument. Instead, read it from
+protected environment variables or your CI secrets store:
 ```bash
-scripts/autonoma-run.sh <folder-id> <client-id> <client-secret>
+# Example: configure these via your CI/CD secret mechanism or a local .env file (not committed)
+export AUTONOMA_FOLDER_ID="<folder-id>"
+export AUTONOMA_CLIENT_ID="<client-id>"
+export AUTONOMA_CLIENT_SECRET="<client-secret>"
+
+# The script should read values from the environment instead of positional arguments
+scripts/autonoma-run.sh
 ```
 
 ## 🧠 Best Practices
