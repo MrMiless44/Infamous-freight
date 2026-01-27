@@ -1,0 +1,42 @@
+headers = []
+redirects = []
+
+[functions]
+
+[functions."*"]
+
+[[plugins]]
+origin = "config"
+package = "@netlify/plugin-nextjs"
+
+[plugins.inputs]
+
+[[plugins]]
+origin = "ui"
+package = "@netlify/plugin-lighthouse"
+pinned_version = "6"
+
+[plugins.inputs]
+
+[build]
+publish = "/opt/build/repo/web/.next"
+publishOrigin = "config"
+commandOrigin = "config"
+command = "pnpm -r --filter @infamous-freight/shared build && pnpm --filter web build"
+
+[build.environment]
+NODE_VERSION = "20"
+NEXT_PUBLIC_API_URL = "https://api.example.com"
+NEXT_PUBLIC_API_BASE = "https://api.example.com"
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
