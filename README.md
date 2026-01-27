@@ -157,6 +157,11 @@ Infæmous Freight + Genesis AI are operating as a unified global logistics + fin
 ## 📋 Project Overview
 
 Infamous Freight Enterprises is a comprehensive logistics and fleet management solution built as a monorepo with:
+- `api/` – Express.js backend (Fly.io, Docker, PostgreSQL via Prisma)
+- `web/` – Next.js 14 frontend (Netlify/Vercel, TypeScript, ESM)
+- `mobile/` – React Native / Expo mobile app
+- `packages/shared/` – Shared TypeScript types, constants, and utilities
+- `e2e/` – Playwright end-to-end test suite
 
 ## 🌍 Phase 11 — Global AI Economic Layer (100%)
 
