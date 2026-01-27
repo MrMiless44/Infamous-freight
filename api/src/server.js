@@ -195,13 +195,16 @@ if (
 ) {
   app.use("/api/marketplace", marketplaceMetricsRouter);
 }
+
+const getGitSha = () =>
+  process.env.GIT_SHA ||
+  process.env.RELEASE_SHA ||
+  process.env.COMMIT_SHA ||
+  process.env.VERCEL_GIT_COMMIT_SHA ||
+  "unknown";
+
 app.get("/health", (_req, res) => {
-  const gitSha =
-    process.env.GIT_SHA ||
-    process.env.RELEASE_SHA ||
-    process.env.COMMIT_SHA ||
-    process.env.VERCEL_GIT_COMMIT_SHA ||
-    "unknown";
+  const gitSha = getGitSha();
 
   res.status(200).json({
     status: "ok",
