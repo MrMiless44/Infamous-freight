@@ -128,10 +128,6 @@ export const RevenueMonitorDashboard: React.FC = () => {
     return `${(value * 100).toFixed(1)}%`;
   };
 
-  const getTrendColor = (value: number) => {
-    return value >= 0 ? "text-green-600" : "text-red-600";
-  };
-
   const getTrendIcon = (value: number) => {
     return value >= 0 ? "↑" : "↓";
   };
