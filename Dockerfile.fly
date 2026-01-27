@@ -43,7 +43,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY packages/shared ./packages/shared
 
 WORKDIR /app/packages/shared
-RUN pnpm build:shared
+RUN pnpm run build
 
 # Stage 3: Build application
 FROM base AS builder
