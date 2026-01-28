@@ -1,13 +1,17 @@
-import path from 'path';
+import crypto from "crypto";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     turbopack: {
-        root: path.join(__dirname, '..', '..'),
-        rootDirectory: path.join(__dirname, '..', '..'),
+        root: path.join(__dirname, "..", ".."),
+        rootDirectory: path.join(__dirname, "..", ".."),
     },
     turbo: {
-        rootDirectory: path.join(__dirname, '..', '..'),
+        rootDirectory: path.join(__dirname, "..", ".."),
     },
     reactStrictMode: true,
     swcMinify: true,
@@ -27,16 +31,16 @@ const nextConfig = {
 
     // Image optimization
     images: {
-        formats: ['image/avif', 'image/webp'],
+        formats: ["image/avif", "image/webp"],
         deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
         imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
         minimumCacheTTL: 60,
         // Remote patterns for optimized external images
         remotePatterns: [
             {
-                protocol: 'https',
-                hostname: 'infamous-freight-api.fly.dev',
-                pathname: '/api/uploads/**',
+                protocol: "https",
+                hostname: "infamous-freight-api.fly.dev",
+                pathname: "/api/uploads/**",
             },
         ],
     },
@@ -48,14 +52,14 @@ const nextConfig = {
             config.optimization = {
                 ...config.optimization,
                 splitChunks: {
-                    chunks: 'all',
+                    chunks: "all",
                     cacheGroups: {
                         default: false,
                         vendors: false,
                         // Core vendor chunk (React, Next.js essentials)
                         core: {
                             test: /[\\/]node_modules[\\/](react|react-dom|next)[\\/]/,
-                            name: 'core-vendors',
+                            name: "core-vendors",
                             priority: 20,
                             reuseExistingChunk: true,
                             enforce: true,
@@ -63,21 +67,21 @@ const nextConfig = {
                         // Stripe and payment vendors
                         payments: {
                             test: /[\\/]node_modules[\\/](@stripe|stripe)[\\/]/,
-                            name: 'payment-vendors',
+                            name: "payment-vendors",
                             priority: 15,
                             reuseExistingChunk: true,
                         },
                         // Chart libraries (recharts)
                         charts: {
                             test: /[\\/]node_modules[\\/](recharts)[\\/]/,
-                            name: 'chart-vendors',
+                            name: "chart-vendors",
                             priority: 10,
                             reuseExistingChunk: true,
                         },
                         // All other vendors
                         commons: {
                             test: /[\\/]node_modules[\\/]/,
-                            name: 'common-vendors',
+                            name: "common-vendors",
                             priority: 5,
                             minChunks: 2,
                             reuseExistingChunk: true,
@@ -88,10 +92,10 @@ const nextConfig = {
                             priority: 3,
                             reuseExistingChunk: true,
                             name(module, chunks) {
-                                const hash = require('crypto')
-                                    .createHash('sha1')
-                                    .update(chunks.map((c) => c.name).join('_'))
-                                    .digest('hex');
+                                const hash = crypto
+                                    .createHash("sha1")
+                                    .update(chunks.map((c) => c.name).join("_"))
+                                    .digest("hex");
                                 return `shared-${hash.substring(0, 8)}`;
                             },
                         },

@@ -15,5 +15,5 @@ export type { CardProps } from "./Card";
 export { Modal } from "./Modal";
 export type { ModalProps } from "./Modal";
 
-export { Toast, ToastContainer, useToast } from "./Toast";
-export type { ToastProps, ToastType } from "./Toast";
+export { Toast } from "./Toast";
+export type { ToastProps } from "./Toast";
