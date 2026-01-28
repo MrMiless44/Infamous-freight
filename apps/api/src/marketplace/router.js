@@ -34,6 +34,29 @@ const router = express.Router();
 // Phase 14: Central state machine
 const { transitionJob } = require("./state/transition");
 
+function centsFromPrice(priceUsd) {
+    const n = Number(priceUsd);
+    if (!Number.isFinite(n)) return null;
+    return Math.max(0, Math.round(n * 100));
+}
+
+async function ensureDriverPayoutForJob({ job, driverId }) {
+    if (!job || !driverId) return null;
+    const amountCents = centsFromPrice(job.priceUsd);
+    if (!amountCents || amountCents <= 0) return null;
+
+    return prisma.driverPayout.upsert({
+        where: { jobId: job.id },
+        update: {},
+        create: {
+            jobId: job.id,
+            driverId,
+            amountCents,
+            currency: "usd",
+        },
+    });
+}
+
 // Apply authentication to all routes except health check
 router.get("/health", (_req, res) => {
     res.json({ ok: true, service: "marketplace" });
@@ -62,10 +85,15 @@ router.post("/drivers/location",
                 return res.status(400).json({ error: parsed.error.flatten() });
             }
 
-            const { userId, lat, lng } = parsed.data;
+            const userId = parsed.data.userId || req.user?.sub;
+            const { lat, lng } = parsed.data;
 
-            // Verify user matches authenticated user
-            if (req.user?.sub !== userId) {
+            if (!userId) {
+                return res.status(400).json({ error: "Missing userId" });
+            }
+
+            // Verify user matches authenticated user when provided
+            if (req.user?.sub && req.user.sub !== userId) {
                 return res.status(403).json({ error: "Cannot update location for another user" });
             }
 
@@ -82,6 +110,89 @@ router.post("/drivers/location",
             });
 
             res.json({ ok: true, profile });
+        } catch (err) {
+            next(err);
+        }
+    });
+
+/**
+ * DRIVER: Stripe Connect onboarding (Express)
+ */
+router.post("/connect/create",
+    limiters.general,
+    requireScope("driver:view"),
+    async (req, res, next) => {
+        try {
+            const userId = req.user?.sub;
+            if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
+            const user = await prisma.user.findUnique({
+                where: { id: userId },
+                include: { driverProfile: true },
+            });
+            if (!user) return res.status(404).json({ error: "User not found" });
+            if (user.role !== "DRIVER") {
+                return res.status(403).json({ error: "User is not a driver" });
+            }
+
+            let accountId = user.driverProfile?.stripeAccountId;
+            if (!accountId) {
+                const acct = await stripe.accounts.create({
+                    type: "express",
+                    capabilities: { transfers: { requested: true } },
+                });
+                accountId = acct.id;
+
+                await prisma.driverProfile.upsert({
+                    where: { userId },
+                    create: { userId, stripeAccountId: accountId },
+                    update: { stripeAccountId: accountId },
+                });
+            }
+
+            const link = await stripe.accountLinks.create({
+                account: accountId,
+                refresh_url: process.env.STRIPE_CONNECT_REFRESH_URL,
+                return_url: process.env.STRIPE_CONNECT_RETURN_URL,
+                type: "account_onboarding",
+            });
+
+            res.json({ ok: true, url: link.url, stripeAccountId: accountId });
+        } catch (err) {
+            next(err);
+        }
+    });
+
+router.get("/connect/status",
+    limiters.general,
+    requireScope("driver:view"),
+    async (req, res, next) => {
+        try {
+            const userId = req.user?.sub;
+            if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
+            const user = await prisma.user.findUnique({
+                where: { id: userId },
+                include: { driverProfile: true },
+            });
+            if (!user?.driverProfile?.stripeAccountId) {
+                return res.status(404).json({ error: "No Stripe account" });
+            }
+
+            const acct = await stripe.accounts.retrieve(user.driverProfile.stripeAccountId);
+            const onboarded = !!acct.details_submitted && acct.charges_enabled && acct.payouts_enabled;
+
+            await prisma.driverProfile.update({
+                where: { userId },
+                data: { stripeOnboarded: onboarded },
+            });
+
+            res.json({
+                ok: true,
+                onboarded,
+                details_submitted: acct.details_submitted,
+                payouts_enabled: acct.payouts_enabled,
+            });
         } catch (err) {
             next(err);
         }
@@ -812,6 +923,8 @@ router.post("/jobs/:jobId/pod",
                 data: { deliveredAt },
             });
 
+            const payout = await ensureDriverPayoutForJob({ job, driverId: driverUserId });
+
             // Add policy enforcement note
             const podNoteParts = [
                 job.podRequireOtp ? "OTP validated" : "OTP not required",
@@ -832,7 +945,7 @@ router.post("/jobs/:jobId/pod",
 
             const result = await prisma.job.findUnique({ where: { id: jobId } });
 
-            res.json({ ok: true, job: result });
+            res.json({ ok: true, job: result, payout });
         } catch (err) {
             next(err);
         }
@@ -864,7 +977,58 @@ router.post("/jobs/:jobId/deliver",
             await transitionJob({ jobId, to: "DELIVERED", actor: { userId: req.user?.sub || null, role: "DRIVER" }, reason: "Driver marked delivered" });
 
             const updated = await prisma.job.findUnique({ where: { id: jobId } });
-            res.json({ ok: true, job: updated });
+            const payout = await ensureDriverPayoutForJob({ job: updated, driverId: req.user?.sub });
+            res.json({ ok: true, job: updated, payout });
+        } catch (err) {
+            next(err);
+        }
+    });
+
+/**
+ * DRIVER: Pay out a pending driver payout via Stripe Connect transfer
+ */
+router.post("/payouts/:payoutId/pay",
+    limiters.billing,
+    requireScope("driver:view"),
+    async (req, res, next) => {
+        try {
+            const payoutId = req.params.payoutId;
+            const userId = req.user?.sub;
+            if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
+            const user = await prisma.user.findUnique({
+                where: { id: userId },
+                include: { driverProfile: true },
+            });
+            if (!user?.driverProfile?.stripeAccountId) {
+                return res.status(400).json({ error: "Stripe Connect not set up" });
+            }
+
+            const payout = await prisma.driverPayout.findUnique({ where: { id: payoutId } });
+            if (!payout || payout.driverId !== userId) {
+                return res.status(403).json({ error: "Not your payout" });
+            }
+            if (payout.status !== "PENDING") {
+                return res.status(409).json({ error: "Payout not pending" });
+            }
+
+            const transfer = await stripe.transfers.create({
+                amount: payout.amountCents,
+                currency: payout.currency || "usd",
+                destination: user.driverProfile.stripeAccountId,
+                metadata: { payoutId },
+            });
+
+            const updated = await prisma.driverPayout.update({
+                where: { id: payoutId },
+                data: {
+                    status: "PAID",
+                    stripeTransferId: transfer.id,
+                    paidAt: new Date(),
+                },
+            });
+
+            res.json({ ok: true, payout: updated, transferId: transfer.id });
         } catch (err) {
             next(err);
         }
