@@ -1,4 +1,5 @@
 import type { AppProps } from "next/app";
+import Head from "next/head";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { useEffect } from "react";
@@ -28,6 +29,11 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <GlobalLayout>
+      <Head>
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <meta name="theme-color" content="#0b0f19" />
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+      </Head>
       <Component {...pageProps} />
       <Analytics />
       {isProduction ? <SpeedInsights /> : null}

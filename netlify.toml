@@ -1,6 +1,7 @@
 [build]
-  command = "pnpm -r --filter @infamous-freight/shared build && pnpm --filter web build"
-  publish = "apps/web/.next"
+  base = "apps/web"
+  command = "pnpm install --frozen-lockfile && pnpm build"
+  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20"
