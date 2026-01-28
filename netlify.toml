@@ -6,8 +6,9 @@
   NODE_VERSION = "20"
   # Public API endpoint configuration for the web app.
   # Update these to point at the correct production API base URL for this environment.
-  NEXT_PUBLIC_API_URL = "https://api.example.com"
-  NEXT_PUBLIC_API_BASE = "https://api.example.com"
+  NEXT_PUBLIC_API_URL = "https://infamous-freight-api.fly.dev"
+  NEXT_PUBLIC_API_BASE = "https://infamous-freight-api.fly.dev"
+  NEXT_PUBLIC_API_BASE_URL = "https://infamous-freight-api.fly.dev"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
