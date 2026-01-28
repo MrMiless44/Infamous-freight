@@ -1,4 +1,4 @@
-type ToastProps = {
+export type ToastProps = {
   title: string;
   message: string;
   variant?: "success" | "info" | "warning" | "danger";
