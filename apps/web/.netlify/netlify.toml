@@ -22,10 +22,12 @@ pinned_version = "6"
 publish = "/opt/build/repo/apps/web/.next"
 publishOrigin = "config"
 commandOrigin = "config"
-command = "corepack enable && pnpm install --frozen-lockfile && pnpm --filter web build"
-base = "/opt/build/repo/apps/web"
+command = "pnpm -r --filter @infamous-freight/shared build && pnpm --filter web build"
 
 [build.environment]
+NODE_VERSION = "20"
+NEXT_PUBLIC_API_URL = "https://api.example.com"
+NEXT_PUBLIC_API_BASE = "https://api.example.com"
 
 [build.processing]
 

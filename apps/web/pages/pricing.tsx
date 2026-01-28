@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { GetStaticProps } from "next";
 import StripeSubscriptionCheckout from "../components/StripeSubscriptionCheckout";
+import { trackEvent } from "../src/lib/analytics";
 
 const apiBase = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001").replace(
   /\/api\/?$/,
@@ -18,6 +19,52 @@ type PricingProps = {
   initialPlans: Plan[];
   initialConfigured: boolean;
 };
+
+const planCopy = [
+  {
+    key: "starter",
+    name: "Starter",
+    price: "$499",
+    cadence: "per month",
+    description: "Basics + limited AI for lean teams.",
+    features: [
+      "Dispatch workspace",
+      "Basic analytics",
+      "Up to 10 loads/day",
+      "Standard support",
+    ],
+    metered: "AI calls (limited), tracking events, invoices",
+  },
+  {
+    key: "pro",
+    name: "Pro",
+    price: "$1,499",
+    cadence: "per month",
+    description: "Full ops + metered AI + automations.",
+    features: [
+      "Genesis chat + command",
+      "Automated billing + insurance",
+      "RBAC + audit logs",
+      "Dispatch + fleet intelligence",
+    ],
+    metered: "AI calls, tracking events, invoices",
+    featured: true,
+  },
+  {
+    key: "enterprise",
+    name: "Enterprise",
+    price: "Custom",
+    cadence: "annual",
+    description: "SSO/SAML, SLA, custom RBAC, dedicated support.",
+    features: [
+      "Dedicated success + onboarding",
+      "Custom SLAs",
+      "Advanced security review",
+      "Enterprise integrations",
+    ],
+    metered: "AI calls, tracking events, invoices",
+  },
+];
 
 export default function Pricing({ initialPlans, initialConfigured }: PricingProps) {
   const [plans, setPlans] = useState<Plan[]>(initialPlans || []);
@@ -41,7 +88,14 @@ export default function Pricing({ initialPlans, initialConfigured }: PricingProp
       .catch(() => setErr("Failed to load plans"));
   }, []);
 
+  useEffect(() => {
+    trackEvent("pricing_view");
+  }, []);
+
+  const availablePlanKeys = new Set(plans.map((plan) => plan.key));
+
   async function checkout(planKey: string) {
+    trackEvent("pricing_checkout", { plan: planKey });
     setBusy(planKey);
     setErr(null);
     setClientSecret(null);
@@ -77,174 +131,211 @@ export default function Pricing({ initialPlans, initialConfigured }: PricingProp
     }
   }
 
-  const card: React.CSSProperties = {
-    borderRadius: 18,
-    border: "1px solid rgba(255,0,0,0.25)",
-    background: "rgba(255,0,0,0.02)",
-    padding: 16,
-  };
-
   return (
-    <main style={{ maxWidth: 1100, margin: "0 auto", padding: 24 }}>
-      <h1 style={{ margin: 0, color: "rgb(180,0,0)" }}>Pricing</h1>
-      <p style={{ opacity: 0.85 }}>
-        Choose a plan, seat count, and optional add-ons. If Stripe is not
-        configured yet, checkout will show a clear setup message.
-      </p>
-
-      {err ? (
-        <div
-          style={{
-            ...card,
-            border: "1px solid rgba(255,0,0,0.45)",
-            background: "rgba(255,0,0,0.06)",
-          }}
-        >
-          <strong style={{ color: "rgb(180,0,0)" }}>Error:</strong> {err}
-        </div>
-      ) : null}
-
-      <div style={{ ...card, marginTop: 14 }}>
-        <label style={{ display: "block", fontWeight: 600 }}>
-          Seat count
-        </label>
-        <input
-          type="number"
-          min={1}
-          max={500}
-          value={seats}
-          onChange={(event) => setSeats(Number(event.target.value))}
-          style={{
-            marginTop: 6,
-            padding: "8px 12px",
-            borderRadius: 10,
-            border: "1px solid rgba(255,0,0,0.25)",
-            width: 140,
-          }}
-        />
-        <div style={{ marginTop: 12, fontWeight: 600 }}>Add-ons</div>
-        <label style={{ display: "flex", gap: 8, marginTop: 6 }}>
-          <input
-            type="checkbox"
-            checked={addOns.includes("voice")}
-            onChange={(event) => {
-              setAddOns((prev) =>
-                event.target.checked
-                  ? [...prev, "voice"]
-                  : prev.filter((item) => item !== "voice")
-              );
-            }}
-          />
-          Voice commands (per seat)
-        </label>
-        <label style={{ display: "flex", gap: 8, marginTop: 6 }}>
-          <input
-            type="checkbox"
-            checked={addOns.includes("white_label")}
-            onChange={(event) => {
-              setAddOns((prev) =>
-                event.target.checked
-                  ? [...prev, "white_label"]
-                  : prev.filter((item) => item !== "white_label")
-              );
-            }}
-          />
-          White-label (flat)
-        </label>
-        <label style={{ display: "flex", gap: 8, marginTop: 6 }}>
-          <input
-            type="checkbox"
-            checked={addOns.includes("analytics_export")}
-            onChange={(event) => {
-              setAddOns((prev) =>
-                event.target.checked
-                  ? [...prev, "analytics_export"]
-                  : prev.filter((item) => item !== "analytics_export")
-              );
-            }}
-          />
-          Analytics export (flat)
-        </label>
-        <div style={{ marginTop: 8, fontSize: 12, opacity: 0.7 }}>
-          AI actions are metered and billed monthly when enabled.
-        </div>
-        <div style={{ marginTop: 16 }}>
-          <label style={{ display: "block", fontWeight: 600 }}>
-            Billing email
-          </label>
-          <input
-            type="email"
-            placeholder="billing@yourcompany.com"
-            value={customerEmail}
-            onChange={(event) => setCustomerEmail(event.target.value)}
-            style={{
-              marginTop: 6,
-              padding: "8px 12px",
-              borderRadius: 10,
-              border: "1px solid rgba(255,0,0,0.25)",
-              width: "100%",
-              maxWidth: 340,
-            }}
-          />
-        </div>
-      </div>
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-          gap: 12,
-          marginTop: 14,
-        }}
-      >
-        {plans.map((p) => (
-          <section key={p.key} style={card}>
-            <h2 style={{ marginTop: 0 }}>{p.label}</h2>
-            <div style={{ opacity: 0.8, fontSize: 12 }}>
-              planKey: <code>{p.key}</code>
+    <div className="page">
+      <section className="hero">
+        <div className="container hero-inner">
+          <div>
+            <p className="section-subtitle">Pricing</p>
+            <h1 className="hero-title">Three tiers. One operating system.</h1>
+            <p className="hero-copy">
+              Pro is built for scale. Enterprise brings SSO, SLA, and dedicated
+              support. Starter keeps teams lean.
+            </p>
+          </div>
+          <div className="hero-card">
+            <h3>Metered transparency</h3>
+            <p>
+              AI calls, tracking events, and invoices are metered and visible in
+              every billing summary.
+            </p>
+            <div className="metric-grid">
+              <div className="metric-card">
+                <div className="metric-label">AI calls</div>
+                <div className="metric-value">Metered</div>
+              </div>
+              <div className="metric-card">
+                <div className="metric-label">Tracking events</div>
+                <div className="metric-value">Metered</div>
+              </div>
+              <div className="metric-card">
+                <div className="metric-label">Invoices</div>
+                <div className="metric-value">Metered</div>
+              </div>
             </div>
-            <div style={{ marginTop: 8, opacity: 0.8, fontSize: 12 }}>
-              Stripe priceId: <code>{p.priceId ?? "not set"}</code>
-            </div>
-            <div style={{ marginTop: 8, opacity: 0.8, fontSize: 12 }}>
-              Seats: <strong>{seats}</strong>
-            </div>
+          </div>
+        </div>
+      </section>
 
-            <button
-              onClick={() => checkout(p.key)}
-              disabled={busy === p.key}
-              style={{
-                marginTop: 12,
-                width: "100%",
-                padding: "12px 12px",
-                borderRadius: 14,
-                border: "1px solid rgba(255,0,0,0.45)",
-                background: "rgba(255,0,0,0.10)",
-                cursor: busy === p.key ? "not-allowed" : "pointer",
-              }}
-            >
-              {busy === p.key ? "Preparing..." : "Checkout"}
-            </button>
-          </section>
-        ))}
-      </div>
+      <section className="section">
+        <div className="container">
+          <h2 className="section-title">Plans</h2>
+          <p className="section-subtitle">
+            Choose a plan, seat count, and optional add-ons. Stripe checkout is
+            enabled when billing is configured.
+          </p>
+          {err ? (
+            <div className="status-message error" style={{ marginTop: "16px" }}>
+              <strong>Error:</strong> {err}
+            </div>
+          ) : null}
+
+          <div className="pricing-grid" style={{ marginTop: "24px" }}>
+            {planCopy.map((tier) => (
+              <section
+                key={tier.key}
+                className={`card pricing-card${
+                  tier.featured ? " is-featured" : ""
+                }`}
+              >
+                {tier.featured ? (
+                  <span className="pricing-badge">Most chosen</span>
+                ) : null}
+                <h3>{tier.name}</h3>
+                <p className="pricing-meta">{tier.description}</p>
+                <div className="metric-value" style={{ fontSize: "2rem" }}>
+                  {tier.price}
+                </div>
+                <div className="pricing-meta">{tier.cadence}</div>
+                <div className="pricing-list">
+                  {tier.features.map((feature) => (
+                    <div key={feature}>• {feature}</div>
+                  ))}
+                </div>
+                <div className="metered">Metered: {tier.metered}</div>
+                <button
+                  onClick={() => checkout(tier.key)}
+                  disabled={busy === tier.key || (availablePlanKeys.size > 0 && !availablePlanKeys.has(tier.key))}
+                  className={`btn ${
+                    tier.featured ? "btn-primary" : "btn-secondary"
+                  }`}
+                  aria-disabled={
+                    busy === tier.key ||
+                    (availablePlanKeys.size > 0 && !availablePlanKeys.has(tier.key))
+                  }
+                >
+                  {busy === tier.key ? "Preparing..." : "Start Free"}
+                </button>
+                {busy === tier.key ? (
+                  <div className="helper-text">Creating checkout session…</div>
+                ) : null}
+                {availablePlanKeys.size > 0 && !availablePlanKeys.has(tier.key) ? (
+                  <div className="helper-text">Unavailable in current billing setup.</div>
+                ) : null}
+              </section>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <h2 className="section-title">Billing setup</h2>
+          <p className="section-subtitle">
+            Use the configuration panel to match seats, add-ons, and billing
+            email before checkout.
+          </p>
+          <div className="card" style={{ marginTop: "24px" }}>
+            <div className="form-grid">
+              <div className="form-control">
+                <label htmlFor="seat-count">Seat count</label>
+                <input
+                  id="seat-count"
+                  type="number"
+                  min={1}
+                  max={500}
+                  value={seats}
+                  onChange={(event) => setSeats(Number(event.target.value))}
+                />
+              </div>
+              <div>
+                <div style={{ fontWeight: 600 }}>Add-ons</div>
+                <label className="form-control" style={{ marginTop: "8px" }}>
+                  <span>
+                    <input
+                      type="checkbox"
+                      checked={addOns.includes("voice")}
+                      onChange={(event) => {
+                        setAddOns((prev) =>
+                          event.target.checked
+                            ? [...prev, "voice"]
+                            : prev.filter((item) => item !== "voice")
+                        );
+                      }}
+                    />{" "}
+                    Voice commands (per seat)
+                  </span>
+                </label>
+                <label className="form-control">
+                  <span>
+                    <input
+                      type="checkbox"
+                      checked={addOns.includes("white_label")}
+                      onChange={(event) => {
+                        setAddOns((prev) =>
+                          event.target.checked
+                            ? [...prev, "white_label"]
+                            : prev.filter((item) => item !== "white_label")
+                        );
+                      }}
+                    />{" "}
+                    White-label (flat)
+                  </span>
+                </label>
+                <label className="form-control">
+                  <span>
+                    <input
+                      type="checkbox"
+                      checked={addOns.includes("analytics_export")}
+                      onChange={(event) => {
+                        setAddOns((prev) =>
+                          event.target.checked
+                            ? [...prev, "analytics_export"]
+                            : prev.filter((item) => item !== "analytics_export")
+                        );
+                      }}
+                    />{" "}
+                    Analytics export (flat)
+                  </span>
+                </label>
+                <div className="helper-text">
+                  AI actions are metered and billed monthly when enabled.
+                </div>
+              </div>
+              <div className="form-control">
+                <label htmlFor="billing-email">Billing email</label>
+                <input
+                  id="billing-email"
+                  type="email"
+                  placeholder="billing@yourcompany.com"
+                  value={customerEmail}
+                  onChange={(event) => setCustomerEmail(event.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="helper-text" style={{ marginTop: "12px" }}>
+            Stripe configured: <strong>{configured ? "YES" : "NO"}</strong> •{" "}
+            <Link href="/account/billing">Manage Billing</Link>
+          </div>
+        </div>
+      </section>
 
       {clientSecret ? (
-        <section style={{ ...card, marginTop: 16 }}>
-          <h2 style={{ marginTop: 0 }}>Complete your subscription</h2>
-          <p style={{ opacity: 0.8, fontSize: 14 }}>
-            Selected plan:{" "}
-            <strong>{activePlan ? activePlan : "custom"}</strong>
-          </p>
-          <StripeSubscriptionCheckout clientSecret={clientSecret} />
+        <section className="section">
+          <div className="container">
+            <div className="card">
+              <h2 className="section-title">Complete your subscription</h2>
+              <p className="section-subtitle">
+                Selected plan:{" "}
+                <strong>{activePlan ? activePlan : "custom"}</strong>
+              </p>
+              <StripeSubscriptionCheckout clientSecret={clientSecret} />
+            </div>
+          </div>
         </section>
       ) : null}
-
-      <div style={{ marginTop: 14, opacity: 0.8, fontSize: 12 }}>
-        Stripe configured: <strong>{configured ? "YES" : "NO"}</strong> •{" "}
-        <Link href="/account/billing">Manage Billing</Link>
-      </div>
-    </main>
+    </div>
   );
 }
 
