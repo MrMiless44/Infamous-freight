@@ -11,9 +11,9 @@ RUN npm install -g pnpm@9.15.0
 
 # Copy workspace and package files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY api/package.json ./api/
+COPY apps/api/package.json ./apps/api/
 COPY packages/shared/package.json ./packages/shared/
-COPY web/package.json ./web/
+COPY apps/web/package.json ./apps/web/
 
 # Install ALL dependencies (including dev dependencies needed for build)
 RUN --mount=type=cache,id=pnpm,target=/root/.local/share/pnpm/store pnpm install --frozen-lockfile
@@ -25,12 +25,12 @@ RUN npm install -g pnpm@9.15.0
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/packages/shared/node_modules ./packages/shared/node_modules
-COPY --from=deps /app/api/node_modules ./api/node_modules
-COPY --from=deps /app/web/node_modules ./web/node_modules
+COPY --from=deps /app/apps/api/node_modules ./apps/api/node_modules
+COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
 
 # Build the application (shared, generate Prisma client, api, then web)
 RUN pnpm --filter @infamous-freight/shared build \
-  && pnpm --filter api exec prisma generate --schema=./api/prisma/schema.prisma \
+  && pnpm --filter api exec prisma generate --schema=./apps/api/prisma/schema.prisma \
   && pnpm --filter api build \
   && pnpm --filter web build
 
@@ -46,10 +46,10 @@ COPY --from=build /app/package.json /app/pnpm-lock.yaml /app/pnpm-workspace.yaml
 # Installed dependencies
 COPY --from=build /app/node_modules ./node_modules
 # Web application build output and configuration
-COPY --from=build /app/web/.next ./web/.next
-COPY --from=build /app/web/public ./web/public
-COPY --from=build /app/web/package.json ./web/package.json
-COPY --from=build /app/web/next.config.mjs ./web/next.config.mjs
+COPY --from=build /app/apps/web/.next ./apps/web/.next
+COPY --from=build /app/apps/web/public ./apps/web/public
+COPY --from=build /app/apps/web/package.json ./apps/web/package.json
+COPY --from=build /app/apps/web/next.config.mjs ./apps/web/next.config.mjs
 
 # Re-install only production dependencies to prune devDependencies
 RUN pnpm install --prod --frozen-lockfile
