@@ -10,13 +10,13 @@
     "composite": false,
     "incremental": true,
     "paths": {
-      "@infamous-freight/shared": ["../packages/shared/src"],
+      "@infamous-freight/shared": ["../../packages/shared/src"],
       "@/*": ["./src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", ".next", "out"],
   "references": [
-    { "path": "../packages/shared" }
+    { "path": "../../packages/shared" }
   ]
 }
