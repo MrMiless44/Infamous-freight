@@ -40,7 +40,7 @@ const createJobSchema = z.object({
 });
 
 const updateDriverLocationSchema = z.object({
-    userId: z.string().min(1),
+    userId: z.string().min(1).optional(),
     lat: z.number().min(-90).max(90),
     lng: z.number().min(-180).max(180),
 });

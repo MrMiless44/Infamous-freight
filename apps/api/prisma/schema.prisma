@@ -84,6 +84,12 @@ enum JobOfferStatus {
   EXPIRED
 }
 
+enum PayoutStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
 // ============================================
 // Multi-tenancy (Phase 19)
 // ============================================
@@ -475,6 +481,9 @@ model DriverProfile {
 
   isActive Boolean @default(true)
 
+  stripeAccountId String? @unique
+  stripeOnboarded Boolean @default(false)
+
   lastLat        Float?
   lastLng        Float?
   lastLocationAt DateTime?
@@ -647,6 +656,29 @@ model JobPayment {
   @@index([stripeCheckoutId])
   @@index([stripeChargeId])
   @@map("job_payments")
+}
+
+model DriverPayout {
+  id       String @id @default(cuid())
+  jobId    String @unique
+  job      Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  driverId String
+  driver   User   @relation(fields: [driverId], references: [id], onDelete: Cascade)
+
+  amountCents Int
+  currency    String      @default("usd")
+  status      PayoutStatus @default(PENDING)
+
+  stripeTransferId String?
+  paidAt           DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([driverId, status])
+  @@index([createdAt])
+  @@map("driver_payouts")
 }
 
 model WebhookEvent {
