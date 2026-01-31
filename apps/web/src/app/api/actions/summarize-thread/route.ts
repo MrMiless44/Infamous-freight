@@ -19,7 +19,10 @@ export async function POST(req: Request) {
       throw new Error("Missing access token");
     }
 
-    const projectRef = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_REF!;
+    const projectRef = process.env.NEXT_PUBLIC_SUPABASE_PROJECT_REF;
+    if (!projectRef) {
+      throw new Error("NEXT_PUBLIC_SUPABASE_PROJECT_REF environment variable is not set");
+    }
     const url = `https://${projectRef}.functions.supabase.co/summarize-thread`;
 
     const resp = await fetch(url, {
