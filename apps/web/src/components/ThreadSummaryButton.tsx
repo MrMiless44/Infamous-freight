@@ -11,13 +11,29 @@ export default function ThreadSummaryButton({ threadId }: { threadId: string }) 
     }
 
     setBusy(true);
-    await fetch("/api/actions/summarize-thread", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ thread_id: threadId }),
-    });
-    setBusy(false);
-    window.location.reload();
+    try {
+      const response = await fetch("/api/actions/summarize-thread", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ thread_id: threadId }),
+      });
+
+      if (!response.ok) {
+        console.error("Failed to summarize thread", {
+          status: response.status,
+          statusText: response.statusText,
+        });
+        window.alert("Failed to summarize thread. Please try again.");
+        return;
+      }
+
+      window.location.reload();
+    } catch (error) {
+      console.error("Error while summarizing thread", error);
+      window.alert("An error occurred while summarizing the thread. Please try again.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
