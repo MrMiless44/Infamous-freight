@@ -12,11 +12,14 @@ export const supabaseServer = () => {
         get(name) {
           return cookieStore.get(name)?.value;
         },
-        set(name, value, options) {
-          cookieStore.set({ name, value, ...options });
+        // In Server Components, `cookies()` is read-only. We expose no-op
+        // setters here to avoid runtime errors when Supabase tries to
+        // refresh the session and write cookies.
+        set(_name, _value, _options) {
+          // no-op: cookie mutation is not supported in this context
         },
-        remove(name, options) {
-          cookieStore.set({ name, value: "", ...options, maxAge: 0 });
+        remove(_name, _options) {
+          // no-op: cookie mutation is not supported in this context
         },
       },
     }
