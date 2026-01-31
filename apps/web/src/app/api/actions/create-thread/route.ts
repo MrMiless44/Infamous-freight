@@ -33,6 +33,8 @@ export async function POST(req: Request) {
         { thread_id: thread.id, user_id: otherUserId },
       ]);
     if (participantError) {
+      // Best-effort cleanup to avoid orphan threads if participant insertion fails
+      await supabase.from("threads").delete().eq("id", thread.id);
       throw participantError;
     }
 
