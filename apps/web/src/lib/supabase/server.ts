@@ -7,21 +7,32 @@ export const supabaseServer = () => {
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "",
-    {
-      cookies: {
-        get(name) {
-          return cookieStore.get(name)?.value;
-        },
-        // In Server Components, `cookies()` is read-only. We expose no-op
-        // setters here to avoid runtime errors when Supabase tries to
-        // refresh the session and write cookies.
-        set(_name, _value, _options) {
-          // no-op: cookie mutation is not supported in this context
-        },
-        remove(_name, _options) {
-          // no-op: cookie mutation is not supported in this context
-        },
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl) {
+    throw new Error(
+      "Missing NEXT_PUBLIC_SUPABASE_URL environment variable. This is required to initialize the Supabase server client."
+    );
+  }
+
+  if (!supabaseAnonKey) {
+    throw new Error(
+      "Missing NEXT_PUBLIC_SUPABASE_ANON_KEY environment variable. This is required to initialize the Supabase server client."
+    );
+  }
+
+  return createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      get(name) {
+        return cookieStore.get(name)?.value;
       },
-    }
-  );
+      set(name, value, options) {
+        cookieStore.set({ name, value, ...options });
+      },
+      remove(name, options) {
+        cookieStore.set({ name, value: "", ...options, maxAge: 0 });
+      },
+    },
+  });
 };
