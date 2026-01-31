@@ -1,0 +1,215 @@
+.marketplace-body {
+  background: var(--bg-950);
+  color: var(--text-50);
+}
+
+.marketplace-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(11, 11, 14, 0.85);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(12px);
+}
+
+.marketplace-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) 0;
+  gap: var(--space-4);
+}
+
+.marketplace-brand {
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.02em;
+}
+
+.marketplace-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.marketplace-main {
+  padding: var(--space-8) 0 var(--space-12);
+}
+
+.marketplace-hero {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.marketplace-hero-content {
+  max-width: 640px;
+}
+
+.marketplace-title {
+  font-size: var(--font-size-h2);
+  font-family: var(--font-display);
+  margin-bottom: var(--space-3);
+}
+
+.marketplace-subtitle {
+  color: var(--muted-400);
+  margin-bottom: var(--space-5);
+}
+
+.marketplace-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.marketplace-stack {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.marketplace-grid {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.marketplace-card {
+  transition: transform var(--duration-fast) var(--ease-standard);
+  display: block;
+}
+
+.marketplace-card:hover {
+  transform: translateY(-1px);
+}
+
+.marketplace-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.marketplace-card-title {
+  font-weight: var(--font-weight-semibold);
+}
+
+.marketplace-card-subtitle {
+  margin-top: var(--space-2);
+  color: var(--muted-400);
+}
+
+.marketplace-card-meta {
+  margin-top: var(--space-3);
+}
+
+.marketplace-chip {
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.marketplace-amount {
+  font-weight: var(--font-weight-semibold);
+}
+
+.marketplace-form {
+  max-width: 560px;
+}
+
+.marketplace-form-row {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.marketplace-form select,
+.marketplace-input {
+  background: rgba(20, 20, 23, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-2) var(--space-3);
+  color: var(--text-50);
+}
+
+.marketplace-auth {
+  max-width: 420px;
+  display: grid;
+  gap: var(--space-4);
+}
+
+.marketplace-muted {
+  color: var(--muted-400);
+  font-size: 0.9rem;
+}
+
+.marketplace-highlight {
+  color: var(--text-50);
+}
+
+.marketplace-bid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-2xl);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(20, 20, 23, 0.6);
+}
+
+.marketplace-bid-info {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.marketplace-bid-amount {
+  font-weight: var(--font-weight-medium);
+}
+
+.marketplace-chat-window {
+  background: rgba(20, 20, 23, 0.6);
+  border-radius: var(--radius-2xl);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: var(--space-4);
+  max-height: 300px;
+  overflow: auto;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.marketplace-chat-message {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.marketplace-chat-inputs {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.marketplace-chat-inputs .marketplace-input {
+  flex: 1;
+}
+
+.marketplace-thread-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.marketplace-summary {
+  white-space: pre-wrap;
+  margin-top: var(--space-3);
+  color: var(--text-50);
+  font-family: var(--font-mono);
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-4);
+}
+
+.marketplace-mono {
+  font-family: var(--font-mono);
+}
