@@ -39,7 +39,22 @@ export default function DocumentUpload({
     }
 
     const bucket = "documents";
-    const safeName = file.name.replace(/[^\w.\-]+/g, "_");
+    // Sanitize filename: remove path separators, allow only alphanumerics and hyphens in the base,
+    // and keep at most a single, alphanumeric-only extension.
+    const originalName = file.name.replace(/[/\\]+/g, "_");
+    const lastDotIndex = originalName.lastIndexOf(".");
+    const rawBase =
+      lastDotIndex > 0 ? originalName.slice(0, lastDotIndex) : originalName;
+    const rawExt =
+      lastDotIndex > 0 && lastDotIndex < originalName.length - 1
+        ? originalName.slice(lastDotIndex + 1)
+        : "";
+    const sanitizedBase = rawBase
+      .replace(/[^a-zA-Z0-9-]+/g, "_")
+      .replace(/^_+|_+$/g, "");
+    const sanitizedExt = rawExt.replace(/[^a-zA-Z0-9]+/g, "");
+    const safeName =
+      (sanitizedBase || "file") + (sanitizedExt ? `.${sanitizedExt}` : "");
     const objectPath = `${u.user.id}/${docType}/${Date.now()}_${safeName}`;
 
     const { error: upErr } = await supabase.storage.from(bucket).upload(objectPath, file, {
