@@ -40,9 +40,8 @@ export default function BidList({
         throw new Error(data?.error || "Failed to accept bid");
       }
 
-      if (data.thread_id) {
-        router.push(`/threads/${data.thread_id}`);
-      }
+      // Refresh current data instead of redirecting to a non-existent /threads/[id] route
+      router.refresh();
     } catch (err: any) {
       setError(err?.message ?? "Failed to accept bid");
     } finally {
