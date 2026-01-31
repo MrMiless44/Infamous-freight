@@ -26,8 +26,13 @@ export default function CreateLoadForm() {
       return;
     }
 
-    const rateCents = Math.max(0, Math.round(Number.parseFloat(rate || "0") * 100));
+    const parsedRate = Number.parseFloat(rate);
+    if (!Number.isFinite(parsedRate) || Number.isNaN(parsedRate) || parsedRate < 0) {
+      setErr("Rate must be a non-negative number");
+      return;
+    }
 
+    const rateCents = Math.round(parsedRate * 100);
     const { data, error } = await supabase
       .from("loads")
       .insert({
