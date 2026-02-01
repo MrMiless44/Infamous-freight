@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
   "buildCommand": "pnpm build",
-  "devCommand": "pnpm dev",
+  "devCommand": "pnpm --filter ./web dev",
   "installCommand": "pnpm install --frozen-lockfile",
   "outputDirectory": ".next",
   "ignoreCommand": "git diff --quiet HEAD^ HEAD ./",
