@@ -79,14 +79,14 @@ jobs:
       - name: Check for secrets in code (Fallback)
         run: |
           echo "Scanning for potential secrets..."
-          # Check for common secret patterns
-          if git grep -E "(?i)(password|secret|key|token|api_key)\s*=\s*['\"][^'\"]{8,}" -- '*.js' '*.ts' '*.env*' || true; then
+          # Check for common secret patterns (case-insensitive)
+          if git grep -iE "(password|secret|key|token|api_key)[[:space:]]*=[[:space:]]*['\"][^'\"]{8,}" -- '*.js' '*.ts' '*.env*'; then
             echo "⚠️ Potential secrets found - please review"
           fi
 
       - name: Verify .env files are not committed
         run: |
-          if git ls-files | grep -E "\.env$" | grep -v ".env.example"; then
+          if git ls-files | grep -E "(^|/)\.env$"; then
             echo "❌ ERROR: .env file committed to repository"
             exit 1
           fi
