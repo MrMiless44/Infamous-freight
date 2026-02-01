@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
+  "nodeVersion": "20.x",
   "outputDirectory": ".next",
-  "regions": ["iad1"],
   "functions": {
     "pages/api/**/*.{js,ts}": {
       "memory": 1024,

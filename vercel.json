@@ -1,10 +1,18 @@
 {
+  "$schema": "https://vercel.com/schemas/vercel.json",
+  "framework": "nextjs",
   "buildCommand": "pnpm install && pnpm --filter web build",
   "installCommand": "pnpm install --frozen-lockfile",
-  "outputDirectory": "apps/web/.next",
-  "framework": "nextjs",
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- . ':(exclude)node_modules' ':(exclude).next' ':(exclude)apps/api' ':(exclude)apps/mobile' ':(exclude)apps/ai'",
-  "env": {
-    "NODE_ENV": "production"
-  }
+  "functions": {
+    "apps/web/pages/api/**/*.{js,ts}": {
+      "memory": 1024,
+      "maxDuration": 60
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "http://localhost:3000/api/:path*"
+    }
+  ]
 }
