@@ -15,5 +15,8 @@
     "build:api": "pnpm --filter api build",
     "build:mobile": "pnpm --filter mobile build",
     "build:ai": "pnpm --filter ai build"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^1.6.1"
   }
 }
