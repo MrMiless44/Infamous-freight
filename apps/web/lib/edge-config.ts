@@ -10,7 +10,7 @@
  * @see https://vercel.com/docs/storage/edge-config
  */
 
-import { getAll } from '@vercel/edge-config';
+import { getAll } from "@vercel/edge-config";
 
 /**
  * Feature flags configuration structure

@@ -13,7 +13,7 @@
  * @see https://vercel.com/marketplace?category=storage&search=redis
  */
 
-import { kv } from '@vercel/kv';
+import { kv } from "@vercel/kv";
 
 /**
  * Cache configuration

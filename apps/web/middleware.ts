@@ -109,7 +109,7 @@ export function middleware(request: NextRequest) {
   }
 
   // Feature flags status (Edge Config integration ready)
-  response.headers.set('X-Feature-Flags-Status', 'ready');
+  response.headers.set("X-Feature-Flags-Status", "ready");
 
   // Add custom analytics headers
   response.headers.set("X-Country-Code", country);
