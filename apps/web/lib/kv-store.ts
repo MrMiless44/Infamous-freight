@@ -4,16 +4,16 @@
  * Fast, globally distributed Redis-compatible key-value store
  *
  * Setup:
- * 1. Install: pnpm add @vercel/kv
- * 2. Create KV store in Vercel Dashboard (Storage → KV)
+ * 1. ✅ Install: pnpm add @vercel/kv
+ * 2. Create KV store in Vercel Dashboard (Storage → KV/Redis)
  * 3. Link to project: vercel link
  * 4. Pull env vars: vercel env pull
  *
- * @see https://vercel.com/docs/storage/vercel-kv
+ * Note: KV is deprecated, use Redis integration from Vercel Marketplace
+ * @see https://vercel.com/marketplace?category=storage&search=redis
  */
 
-// Uncomment when @vercel/kv is installed
-// import { kv } from '@vercel/kv';
+import { kv } from '@vercel/kv';
 
 /**
  * Cache configuration
@@ -89,10 +89,11 @@ const memoryCache = new MemoryCache();
  */
 export async function cacheGet<T>(key: string): Promise<T | null> {
   try {
-    // Uncomment when KV is set up
-    // return await kv.get<T>(key);
+    // Try KV first
+    const value = await kv.get<T>(key);
+    if (value !== null) return value;
 
-    // Fallback to memory cache
+    // Fallback to memory cache if KV not configured
     return await memoryCache.get<T>(key);
   } catch (error) {
     console.error("Cache get error:", error);
@@ -113,10 +114,9 @@ export async function cacheSet(
   ttl: number = CACHE_CONFIG.MEDIUM_TTL,
 ): Promise<void> {
   try {
-    // Uncomment when KV is set up
-    // await kv.set(key, value, { ex: ttl });
-
-    // Fallback to memory cache
+    // Try KV first
+    await kv.set(key, value, { ex: ttl });
+    // Also cache in memory as backup
     await memoryCache.set(key, value, ttl);
   } catch (error) {
     console.error("Cache set error:", error);
@@ -130,10 +130,8 @@ export async function cacheSet(
  */
 export async function cacheDel(key: string): Promise<void> {
   try {
-    // Uncomment when KV is set up
-    // await kv.del(key);
-
-    // Fallback to memory cache
+    // Delete from KV and memory
+    await kv.del(key);
     await memoryCache.del(key);
   } catch (error) {
     console.error("Cache delete error:", error);
@@ -148,8 +146,9 @@ export async function cacheDel(key: string): Promise<void> {
  */
 export async function cacheExists(key: string): Promise<boolean> {
   try {
-    // Uncomment when KV is set up
-    // return (await kv.exists(key)) === 1;
+    // Check KV first
+    const exists = await kv.exists(key);
+    if (exists === 1) return true;
 
     // Fallback to memory cache
     return await memoryCache.exists(key);
@@ -195,14 +194,8 @@ export async function cacheGetOrSet<T>(
  */
 export async function cacheIncr(key: string): Promise<number> {
   try {
-    // Uncomment when KV is set up
-    // return await kv.incr(key);
-
-    // Fallback: increment in memory cache
-    const current = (await memoryCache.get<number>(key)) || 0;
-    const newValue = current + 1;
-    await memoryCache.set(key, newValue, CACHE_CONFIG.SHORT_TTL);
-    return newValue;
+    // Use KV for distributed counters
+    return await kv.incr(key);
   } catch (error) {
     console.error("Cache increment error:", error);
     return 0;
@@ -217,10 +210,10 @@ export async function cacheIncr(key: string): Promise<number> {
  */
 export async function cacheExpire(key: string, seconds: number): Promise<void> {
   try {
-    // Uncomment when KV is set up
-    // await kv.expire(key, seconds);
+    // Use KV expire
+    await kv.expire(key, seconds);
 
-    // Fallback: re-set with new TTL
+    // Also update memory cache as backup
     const value = await memoryCache.get(key);
     if (value !== null) {
       await memoryCache.set(key, value, seconds);

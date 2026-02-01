@@ -5,7 +5,12 @@
   "buildCommand": "cd apps/web && pnpm build",
   "outputDirectory": "apps/web/.next",
   "regions": [
-    "sfo1"
+    "sfo1",
+    "iad1",
+    "cdg1",
+    "hnd1",
+    "syd1",
+    "gru1"
   ],
   "git": {
     "deploymentEnabled": {

@@ -12,7 +12,12 @@
     "NEXT_TELEMETRY_DISABLED": "1"
   },
   "regions": [
-    "sfo1"
+    "sfo1",
+    "iad1",
+    "cdg1",
+    "hnd1",
+    "syd1",
+    "gru1"
   ],
   "functions": {
     "pages/api/**/*.{js,ts}": {

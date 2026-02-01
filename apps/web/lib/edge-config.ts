@@ -2,16 +2,15 @@
  * Edge Config Setup for Vercel
  *
  * Usage:
- * 1. Install: pnpm add @vercel/edge-config
- * 2. Create Edge Config in Vercel Dashboard
+ * 1. ✅ Install: pnpm add @vercel/edge-config
+ * 2. Create Edge Config in Vercel Dashboard (Storage → Edge Config)
  * 3. Add EDGE_CONFIG env variable to Vercel
  * 4. Use this utility to read config values
  *
  * @see https://vercel.com/docs/storage/edge-config
  */
 
-// Uncomment when @vercel/edge-config is installed
-// import { get, getAll } from '@vercel/edge-config';
+import { getAll } from '@vercel/edge-config';
 
 /**
  * Feature flags configuration structure
@@ -101,11 +100,13 @@ export const DEFAULT_FEATURE_FLAGS: FeatureFlags = {
  */
 export async function getFeatureFlags(): Promise<FeatureFlags> {
   try {
-    // Uncomment when Edge Config is set up
-    // const flags = await get<FeatureFlags>('feature-flags');
-    // return flags || DEFAULT_FEATURE_FLAGS;
+    // Try Edge Config first
+    const flags = await getAll<FeatureFlags>();
+    if (flags) {
+      return { ...DEFAULT_FEATURE_FLAGS, ...flags };
+    }
 
-    // For now, return defaults
+    // Fallback to defaults if not configured
     return DEFAULT_FEATURE_FLAGS;
   } catch (error) {
     console.error("Failed to fetch feature flags:", error);

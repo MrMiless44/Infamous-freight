@@ -1,6 +1,21 @@
 app = "infamous-freight-api"
 primary_region = "ord"
 
+# Multi-region configuration for global deployment
+[deploy]
+  strategy = "rolling"
+
+# Scale to multiple regions globally
+[regions]
+  ord = true  # Chicago (primary)
+  iad = true  # Washington DC (US East)
+  sjc = true  # San Jose (US West)
+  lhr = true  # London (Europe)
+  fra = true  # Frankfurt (Europe)
+  nrt = true  # Tokyo (Asia)
+  syd = true  # Sydney (Oceania)
+  gru = true  # São Paulo (South America)
+
 [build]
   dockerfile = "api/Dockerfile"
 

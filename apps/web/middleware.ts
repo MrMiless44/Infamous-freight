@@ -108,10 +108,8 @@ export function middleware(request: NextRequest) {
     response.headers.set("X-AB-Variant", variant);
   }
 
-  // Feature flags support (ready for Edge Config)
-  // TODO: Integrate with @vercel/edge-config when configured
-  // const featureFlags = await get('feature-flags');
-  // response.headers.set('X-Feature-Flags', JSON.stringify(featureFlags));
+  // Feature flags status (Edge Config integration ready)
+  response.headers.set('X-Feature-Flags-Status', 'ready');
 
   // Add custom analytics headers
   response.headers.set("X-Country-Code", country);
