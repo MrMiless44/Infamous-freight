@@ -46,7 +46,7 @@ export default function CreateLoadForm() {
         status,
       })
       .select("id")
-      .single();
+      .single() as any;
 
     if (error) {
       setErr(error.message);

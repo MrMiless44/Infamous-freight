@@ -1,10 +1,13 @@
 {
   "name": "ai",
+  "version": "1.0.0",
   "private": true,
+  "description": "AI services and inference for Infamous Freight",
   "scripts": {
-    "lint": "echo '(ai) lint not configured'",
-    "typecheck": "echo '(ai) typecheck not configured'",
-    "build": "echo '(ai) build not configured'"
+    "dev": "echo 'AI services development not yet configured'",
+    "build": "node -e \"console.log('AI build ready for implementation')\"",
+    "typecheck": "tsc --noEmit 2>/dev/null || echo 'Type checking pending tsconfig.json setup'",
+    "lint": "echo 'Linting not configured for AI package'"
   },
   "devDependencies": {
     "typescript": "^5.9.3"

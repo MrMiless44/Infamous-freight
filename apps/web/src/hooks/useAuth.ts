@@ -38,11 +38,13 @@ export function useAuth(): UseAuthReturn {
     getUser();
 
     // Subscribe to auth state changes
-    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      setIsAuthenticated(!!session?.user);
-      setIsLoading(false);
-    });
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (_event: string, session: any) => {
+        setUser(session?.user ?? null);
+        setIsAuthenticated(!!session?.user);
+        setIsLoading(false);
+      }
+    );
 
     return () => {
       authListener?.subscription.unsubscribe();

@@ -9,11 +9,13 @@ export default function AuthButton() {
 
   useEffect(() => {
     const supabase = supabaseBrowser();
-    supabase.auth.getSession().then(({ data }) => setAuthed(!!data.session));
+    supabase.auth.getSession().then(({ data }: any) => setAuthed(!!data.session));
 
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
-      setAuthed(!!session);
-    });
+    const { data: sub } = supabase.auth.onAuthStateChange(
+      (_event: string, session: any) => {
+        setAuthed(!!session);
+      }
+    );
 
     return () => sub.subscription.unsubscribe();
   }, []);

@@ -1,11 +1,13 @@
 {
   "name": "mobile",
+  "version": "1.0.0",
   "private": true,
-  "description": "Placeholder for React Native/Expo app",
+  "description": "React Native/Expo mobile app for Infamous Freight",
   "scripts": {
-    "lint": "echo '(mobile) lint not configured'",
-    "typecheck": "echo '(mobile) typecheck not configured'",
-    "build": "echo '(mobile) build not configured'",
-    "dev": "echo 'Mobile app scaffold pending'"
+    "dev": "echo 'Mobile app development not yet configured - pending Expo setup'",
+    "build": "echo 'Mobile build ready for Expo configuration'",
+    "typecheck": "echo 'Type checking pending TypeScript configuration'",
+    "lint": "echo 'Linting pending ESLint configuration'",
+    "test": "echo 'Tests pending Jest configuration'"
   }
 }

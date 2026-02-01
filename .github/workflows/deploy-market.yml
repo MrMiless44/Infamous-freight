@@ -23,7 +23,7 @@ jobs:
         if: steps.igfx-assets.outputs.igfx_present == 'true'
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "24"
           cache: pnpm
           cache-dependency-path: igfx/pnpm-lock.yaml
 

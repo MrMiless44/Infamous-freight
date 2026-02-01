@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
-import { createServerClient } from "@supabase/ssr";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import type { Database } from "@/types/supabase";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -16,18 +17,26 @@ if (!supabaseAnonKey) {
   );
 }
 
-export function supabaseServer() {
-  const cookieStore = cookies();
+// Type-asserted validated env vars
+const validatedUrl: string = supabaseUrl;
+const validatedKey: string = supabaseAnonKey;
 
-  return createServerClient(supabaseUrl, supabaseAnonKey, {
+export async function supabaseServer() {
+  const cookieStore = await cookies();
+
+  return createServerClient<Database>(validatedUrl, validatedKey, {
     cookies: {
       getAll() {
         return cookieStore.getAll();
       },
-      setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value, options }) => {
-          cookieStore.set(name, value, options);
-        });
+      setAll(cookiesToSet: Array<{ name: string; value: string; options: CookieOptions }>) {
+        try {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            cookieStore.set(name, value, options);
+          });
+        } catch {
+          // Server components are read-only; ignore cookie setting errors
+        }
       },
     },
   });

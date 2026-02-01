@@ -9,7 +9,7 @@
   "features": {
     // Core development tools
     "ghcr.io/devcontainers/features/node:1": {
-      "version": "22",
+      "version": "24",
       "nodeGypDependencies": true
     },
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
@@ -37,7 +37,7 @@
     "ghcr.io/jsburckhardt/devcontainer-features/codex:1": {},
     // Development utilities
     "ghcr.io/devcontainers-extra/features/pnpm:2": {
-      "version": "latest"
+      "version": "10.28.2"
     }
   },
   "customizations": {

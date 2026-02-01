@@ -3,20 +3,39 @@
   "compilerOptions": {
     // Next.js requires ES2020 target and broader lib for DOM APIs
     "target": "ES2020",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "jsx": "preserve",
     "noEmit": true,
     // Next.js doesn't support composite mode
     "composite": false,
     "incremental": true,
+    "baseUrl": ".",
     "paths": {
-      "@infamous-freight/shared": ["../../packages/shared/src"],
-      "@/*": ["./src/*"]
+      "@infamous-freight/shared": [
+        "../../packages/shared/src"
+      ],
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", ".next", "out"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "out"
+  ],
   "references": [
-    { "path": "../../packages/shared" }
+    {
+      "path": "../../packages/shared"
+    }
   ]
 }

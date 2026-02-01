@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.6
 
-FROM node:20-slim AS base
+FROM node:24-slim AS base
 ENV NODE_ENV=production
 WORKDIR /app
 RUN corepack enable
@@ -22,7 +22,7 @@ RUN pnpm --filter @infamous-freight/shared build
 RUN pnpm --filter infamous-freight-api build
 RUN pnpm --filter infamous-freight-api prisma:generate
 
-FROM node:20-slim AS runner
+FROM node:24-slim AS runner
 ENV NODE_ENV=production
 WORKDIR /app
 RUN useradd -m nodeuser

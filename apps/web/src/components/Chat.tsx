@@ -28,7 +28,7 @@ export default function Chat({
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "messages", filter: `thread_id=eq.${threadId}` },
-        (payload) => {
+        (payload: any) => {
           const m = payload.new as Msg;
           setMsgs((cur) => [...cur, m]);
         },

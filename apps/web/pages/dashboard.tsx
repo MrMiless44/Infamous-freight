@@ -11,7 +11,7 @@ function DashboardContent() {
   const router = useRouter();
 
   useEffect(() => {
-    trackEvent("dashboard_view", { userId: user?.id });
+    trackEvent("dashboard_view", user?.id ? { userId: user.id } : {});
   }, [user?.id]);
 
   const handleSignOut = async () => {
