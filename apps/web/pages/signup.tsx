@@ -15,7 +15,14 @@ export default function SignupPage() {
       <Head>
         <title>Sign Up - Infamous Freight</title>
       </Head>
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
         <p>Redirecting to sign up...</p>
       </div>
     </>

@@ -2,9 +2,9 @@ name: API Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test-api:
@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: "20.20.0"
+          node-version: "22"
 
       - name: Enable Corepack
         run: corepack enable

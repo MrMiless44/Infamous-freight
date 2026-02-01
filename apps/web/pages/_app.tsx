@@ -4,6 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { useEffect } from "react";
 import GlobalLayout from "../components/GlobalLayout";
 import { initDatadogRUM } from "../src/lib/datadog";
+import { AuthProvider } from "../src/context/AuthContext";
 import "../src/styles/design-system.css";
 import "../src/styles/tokens.css";
 import "../src/styles/god-mode.css";
@@ -22,18 +23,18 @@ export default function App({ Component, pageProps }: AppProps) {
         initDatadogRUM();
       } else {
         // Avoid client-side errors when env is missing; log once in dev tools
-        console.warn(
-          "Datadog RUM not initialized: missing NEXT_PUBLIC_DD_* configuration",
-        );
+        console.warn("Datadog RUM not initialized: missing NEXT_PUBLIC_DD_* configuration");
       }
     }
   }, [isProduction]);
 
   return (
-    <GlobalLayout>
-      <Component {...pageProps} />
-      <Analytics />
-      {isProduction ? <SpeedInsights /> : null}
-    </GlobalLayout>
+    <AuthProvider>
+      <GlobalLayout>
+        <Component {...pageProps} />
+        <Analytics />
+        {isProduction ? <SpeedInsights /> : null}
+      </GlobalLayout>
+    </AuthProvider>
   );
 }

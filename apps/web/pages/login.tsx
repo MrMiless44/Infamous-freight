@@ -15,7 +15,14 @@ export default function LoginPage() {
       <Head>
         <title>Sign In - Infamous Freight</title>
       </Head>
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
         <p>Redirecting to sign in...</p>
       </div>
     </>

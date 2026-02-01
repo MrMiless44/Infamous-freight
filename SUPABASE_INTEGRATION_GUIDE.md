@@ -2,7 +2,10 @@
 
 ## Overview
 
-This guide covers the complete Supabase authentication integration for the Infamous Freight application. Supabase handles user authentication with support for email/password sign-up, social OAuth (GitHub, Google), and password reset flows.
+This guide covers the complete Supabase authentication integration for the
+Infamous Freight application. Supabase handles user authentication with support
+for email/password sign-up, social OAuth (GitHub, Google), and password reset
+flows.
 
 ## Architecture
 
@@ -183,6 +186,7 @@ export async function getServerSideProps(context) {
 ### Sign In (`/auth/sign-in`)
 
 Features:
+
 - Email/password login
 - GitHub OAuth
 - Google OAuth
@@ -192,6 +196,7 @@ Features:
 ### Sign Up (`/auth/sign-up`)
 
 Features:
+
 - User registration with email/password
 - Full name & company fields
 - Email confirmation required
@@ -202,6 +207,7 @@ Features:
 ### Password Reset (`/auth/reset-password`)
 
 Features:
+
 - Email-based password reset
 - Reset link sent via email
 - New password confirmation
@@ -272,6 +278,7 @@ echo $NEXT_PUBLIC_SUPABASE_ANON_KEY  # Should print key
 ### "Invalid redirect URI" Error (OAuth)
 
 **Solution**: Verify callback URL matches exactly:
+
 - Local dev: `http://localhost:3000/auth/callback`
 - Production: `https://your-domain.com/auth/callback`
 
@@ -280,6 +287,7 @@ Add to Supabase → Settings → Auth → Redirect URLs
 ### "Email not confirmed" Error
 
 **Solution**: Check inbox for confirmation email. For development:
+
 1. Go to Supabase dashboard
 2. Auth → Users
 3. Click user → Edit → Confirm account
@@ -296,6 +304,7 @@ Add to Supabase → Settings → Auth → Redirect URLs
 ## Security Best Practices
 
 ✅ **DO:**
+
 - Store `SUPABASE_SERVICE_ROLE_KEY` securely (never expose in browser)
 - Use HTTPS in production
 - Keep Supabase credentials in `.env.local` (not in git)
@@ -304,6 +313,7 @@ Add to Supabase → Settings → Auth → Redirect URLs
 - Validate user input server-side
 
 ❌ **DON'T:**
+
 - Expose `SUPABASE_SERVICE_ROLE_KEY` in frontend code
 - Commit `.env.local` file
 - Use weak JWT secrets
@@ -338,11 +348,13 @@ async function getUserById(userId) {
 ## Cost Estimation
 
 Supabase free tier includes:
+
 - Up to 50,000 monthly active users
 - 500 MB database storage
 - Basic auth
 
 For production:
+
 - Usage-based pricing ($0.32 per additional 1M users)
 - Storage $0.024 per GB
 - See https://supabase.com/pricing
