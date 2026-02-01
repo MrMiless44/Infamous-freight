@@ -158,10 +158,35 @@ export default function OpsAuditPage() {
               value={entity}
               onChange={(event) => setEntity(event.target.value)}
             />
-            <button type="submit" style={button} disabled={loading}>
+            <button
+              type="submit"
+              style={{
+                ...button,
+                opacity: loading ? 0.5 : 1,
+                cursor: loading ? "not-allowed" : "pointer",
+              }}
+              disabled={loading}
+            >
               {loading ? "Loading..." : "Apply"}
             </button>
           </form>
+          <div
+            aria-live="polite"
+            aria-atomic="true"
+            style={{
+              position: "absolute",
+              width: 1,
+              height: 1,
+              padding: 0,
+              margin: -1,
+              overflow: "hidden",
+              clip: "rect(0, 0, 0, 0)",
+              whiteSpace: "nowrap",
+              border: 0,
+            }}
+          >
+            {loading ? "Loading audit log results" : ""}
+          </div>
           <label style={{ display: "flex", gap: 8, marginTop: 12 }}>
             <input
               type="checkbox"
