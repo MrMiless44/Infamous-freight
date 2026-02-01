@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import Stripe from "stripe";
-import paypal from "@paypal/checkout-server-sdk";
+import { Client as PayPalClient, OrdersController, Environment } from "@paypal/paypal-server-sdk";
 import config from "../config";
 import { prisma } from "../db/prisma";
 import { requireAuth, requireScope } from "../middleware/auth";
@@ -14,11 +14,13 @@ function createStripeClient() {
 
 function createPayPalClient() {
   const paypalConfig = config.getPayPalConfig();
-  const environment = new paypal.core.SandboxEnvironment(
-    paypalConfig.clientId,
-    paypalConfig.clientSecret,
-  );
-  return new paypal.core.PayPalHttpClient(environment);
+  return new PayPalClient({
+    clientCredentialsAuthCredentials: {
+      oAuthClientId: paypalConfig.clientId,
+      oAuthClientSecret: paypalConfig.clientSecret,
+    },
+    environment: paypalConfig.sandbox ? Environment.Sandbox : Environment.Production,
+  });
 }
 
 const DEFAULT_PLAN = {
@@ -85,9 +87,7 @@ function featuresForPrice(priceId: string) {
 }
 
 function planName(priceId: string) {
-  if (
-    [PRICE.DISPATCH_MONTHLY, PRICE.DISPATCH_ANNUAL].includes(priceId as any)
-  ) {
+  if ([PRICE.DISPATCH_MONTHLY, PRICE.DISPATCH_ANNUAL].includes(priceId as any)) {
     return "AI Dispatch Operator";
   }
   if ([PRICE.FLEET_MONTHLY, PRICE.FLEET_ANNUAL].includes(priceId as any)) {
@@ -96,9 +96,7 @@ function planName(priceId: string) {
   if ([PRICE.OPS_MONTHLY, PRICE.OPS_ANNUAL].includes(priceId as any)) {
     return "Autonomous Ops Suite";
   }
-  if (
-    [PRICE.ENTERPRISE_MONTHLY, PRICE.ENTERPRISE_ANNUAL].includes(priceId as any)
-  ) {
+  if ([PRICE.ENTERPRISE_MONTHLY, PRICE.ENTERPRISE_ANNUAL].includes(priceId as any)) {
     return "Enterprise";
   }
   return "Unknown";
@@ -185,9 +183,7 @@ const stripeCheckoutHandler: express.RequestHandler = async (req, res) => {
     (process.env.APP_URL ? `${process.env.APP_URL}/billing/cancel` : undefined);
 
   if (!successUrl || !cancelUrl) {
-    return res
-      .status(503)
-      .json({ error: "Stripe success/cancel URLs not configured" });
+    return res.status(503).json({ error: "Stripe success/cancel URLs not configured" });
   }
 
   try {
@@ -238,9 +234,7 @@ billing.post("/portal", express.json(), async (req, res) => {
     ? `${process.env.APP_URL}/billing`
     : stripeConfig.successUrl;
   if (!returnUrl) {
-    return res
-      .status(503)
-      .json({ error: "Stripe portal return URL not configured" });
+    return res.status(503).json({ error: "Stripe portal return URL not configured" });
   }
 
   try {
@@ -272,16 +266,13 @@ billing.post("/stripe/session", async (req, res, next) => {
   }
 
   if (!stripeConfig.successUrl || !stripeConfig.cancelUrl) {
-    return res
-      .status(503)
-      .json({ error: "Stripe success/cancel URLs not configured" });
+    return res.status(503).json({ error: "Stripe success/cancel URLs not configured" });
   }
 
   // This endpoint uses a fixed default plan and does not accept any request body.
   if (req.body && Object.keys(req.body).length > 0) {
     return res.status(400).json({
-      error:
-        "This endpoint does not accept a request body; the default plan is used.",
+      error: "This endpoint does not accept a request body; the default plan is used.",
     });
   }
   try {
@@ -338,9 +329,7 @@ billingWebhook.post(
     } catch (err: any) {
       return res
         .status(400)
-        .send(
-          `Webhook signature verification failed: ${err?.message ?? "Unknown error"}`,
-        );
+        .send(`Webhook signature verification failed: ${err?.message ?? "Unknown error"}`);
     }
 
     const existing = await prisma.stripeEvent.findUnique({
@@ -365,12 +354,9 @@ billingWebhook.post(
           if (!subscriptionId) break;
 
           const stripeClient = createStripeClient();
-          const subscription = await stripeClient.subscriptions.retrieve(
-            subscriptionId,
-            {
-              expand: ["items.data.price"],
-            },
-          );
+          const subscription = await stripeClient.subscriptions.retrieve(subscriptionId, {
+            expand: ["items.data.price"],
+          });
 
           const userId = subscription.metadata?.userId;
           if (!userId) break;
@@ -415,8 +401,7 @@ billingWebhook.post(
               : invoice.subscription?.id;
           if (!subscriptionId) break;
 
-          const subscription =
-            await createStripeClient().subscriptions.retrieve(subscriptionId);
+          const subscription = await createStripeClient().subscriptions.retrieve(subscriptionId);
           const userId = subscription.metadata?.userId;
           if (!userId) break;
 
@@ -485,9 +470,7 @@ billingWebhook.post(
 
       return res.status(200).json({ received: true });
     } catch (err: any) {
-      return res
-        .status(500)
-        .json({ error: err?.message ?? "Webhook handler error" });
+      return res.status(500).json({ error: err?.message ?? "Webhook handler error" });
     }
   },
 );
@@ -499,49 +482,39 @@ billing.post("/paypal/order", async (req, res, next) => {
   }
 
   if (!paypalConfig.returnUrl || !paypalConfig.cancelUrl) {
-    return res
-      .status(503)
-      .json({ error: "PayPal return/cancel URLs not configured" });
+    return res.status(503).json({ error: "PayPal return/cancel URLs not configured" });
   }
 
   const returnUrl = paypalConfig.returnUrl;
   const cancelUrl = paypalConfig.cancelUrl;
   try {
     const client = createPayPalClient();
-    const request = new paypal.orders.OrdersCreateRequest();
-    request.prefer("return=representation");
-    request.requestBody({
-      intent: "CAPTURE",
-      purchase_units: [
-        {
-          amount: {
-            currency_code: "USD",
-            value: (DEFAULT_PLAN.price / 100).toFixed(2),
+    const ordersController = new OrdersController(client);
+
+    const response = await ordersController.ordersCreate({
+      prefer: "return=representation",
+      body: {
+        intent: "CAPTURE",
+        purchase_units: [
+          {
+            amount: {
+              currency_code: "USD",
+              value: (DEFAULT_PLAN.price / 100).toFixed(2),
+            },
           },
+        ],
+        application_context: {
+          return_url: returnUrl,
+          cancel_url: cancelUrl,
         },
-      ],
-      application_context: {
-        return_url: returnUrl,
-        cancel_url: cancelUrl,
       },
     });
 
-    const order = await client.execute(request);
-    const links = order?.result?.links;
-    const approvalUrl = Array.isArray(links)
-      ? (() => {
-          const approveLink = links.find(
-            (link: { rel: string; href?: unknown }) => link.rel === "approve",
-          );
-          return typeof approveLink?.href === "string"
-            ? approveLink.href
-            : null;
-        })()
-      : null;
+    const approvalUrl = response.result?.links?.find((link) => link.rel === "approve")?.href;
 
     return res.status(200).json({
       ok: true,
-      orderId: order?.result?.id,
+      orderId: response.result?.id,
       approvalUrl,
     });
   } catch (err) {
@@ -569,13 +542,16 @@ billing.post("/paypal/capture", async (req, res, next) => {
 
   try {
     const client = createPayPalClient();
-    const captureRequest = new paypal.orders.OrdersCaptureRequest(orderId);
-    captureRequest.requestBody({});
-    const capture = await client.execute(captureRequest);
+    const ordersController = new OrdersController(client);
+
+    const response = await ordersController.ordersCapture({
+      id: orderId,
+      prefer: "return=representation",
+    });
 
     return res.status(200).json({
       ok: true,
-      capture: capture.result,
+      capture: response.result,
     });
   } catch (err) {
     return next(err);
