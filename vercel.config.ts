@@ -3,6 +3,6 @@ export const vercelConfig = {
   installCommand: "corepack enable && pnpm install --frozen-lockfile",
   buildCommand: "pnpm -r --filter @infamous-freight/shared build && pnpm --filter web build",
   outputDirectory: ".next",
-  nodeVersion: "20.x",
+  nodeVersion: "24.x",
   region: "iad1"
 };

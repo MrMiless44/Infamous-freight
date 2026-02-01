@@ -1,7 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "nodeVersion": "20.x",
+  "nodeVersion": "24.x",
+  "installCommand": "corepack enable && cd .. && pnpm install --frozen-lockfile",
+  "buildCommand": "cd .. && pnpm -r --filter @infamous-freight/shared build && pnpm --filter web build",
   "outputDirectory": ".next",
   "functions": {
     "pages/api/**/*.{js,ts}": {

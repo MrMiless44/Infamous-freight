@@ -1,18 +1,3 @@
 {
-  "$schema": "https://vercel.com/schemas/vercel.json",
-  "framework": "nextjs",
-  "buildCommand": "pnpm install && pnpm --filter web build",
-  "installCommand": "pnpm install --frozen-lockfile",
-  "functions": {
-    "apps/web/pages/api/**/*.{js,ts}": {
-      "memory": 1024,
-      "maxDuration": 60
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "http://localhost:3000/api/:path*"
-    }
-  ]
+  "$schema": "https://vercel.com/schemas/vercel.json"
 }
