@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import Nav from "@/components/Nav";
 import "../styles/design-system.css";
 import "../styles/tokens.css";
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body className="marketplace-body">
         <Nav />
         <main className="container marketplace-main">{children}</main>
+        <Analytics />
       </body>
     </html>
   );
