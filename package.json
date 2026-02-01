@@ -36,7 +36,8 @@
     "test:coverage": "pnpm --filter api test:coverage"
   },
   "dependencies": {
-    "@vercel/analytics": "^1.6.1"
+    "@vercel/analytics": "^1.6.1",
+    "next": "^16.1.6"
   },
   "pnpm": {
     "overrides": {
