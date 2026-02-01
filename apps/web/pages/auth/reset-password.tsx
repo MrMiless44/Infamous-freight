@@ -125,12 +125,8 @@ export default function ResetPasswordPage() {
                 <h1>Reset Password</h1>
                 <p>Enter your email to receive a reset link</p>
 
-                {state.error && (
-                  <div className="alert alert-error">{state.error}</div>
-                )}
-                {state.message && (
-                  <div className="alert alert-success">{state.message}</div>
-                )}
+                {state.error && <div className="alert alert-error">{state.error}</div>}
+                {state.message && <div className="alert alert-success">{state.message}</div>}
 
                 <form onSubmit={handleRequestReset} className="auth-form">
                   <div className="form-group">
@@ -139,9 +135,7 @@ export default function ResetPasswordPage() {
                       id="email"
                       type="email"
                       value={state.email}
-                      onChange={(e) =>
-                        setState({ ...state, email: e.target.value })
-                      }
+                      onChange={(e) => setState({ ...state, email: e.target.value })}
                       placeholder="you@example.com"
                       required
                       disabled={state.loading}
@@ -163,12 +157,8 @@ export default function ResetPasswordPage() {
                 <h1>Set New Password</h1>
                 <p>Enter your new password below</p>
 
-                {state.error && (
-                  <div className="alert alert-error">{state.error}</div>
-                )}
-                {state.message && (
-                  <div className="alert alert-success">{state.message}</div>
-                )}
+                {state.error && <div className="alert alert-error">{state.error}</div>}
+                {state.message && <div className="alert alert-success">{state.message}</div>}
 
                 <form onSubmit={handleResetPassword} className="auth-form">
                   <div className="form-group">
@@ -177,9 +167,7 @@ export default function ResetPasswordPage() {
                       id="newPassword"
                       type="password"
                       value={state.newPassword}
-                      onChange={(e) =>
-                        setState({ ...state, newPassword: e.target.value })
-                      }
+                      onChange={(e) => setState({ ...state, newPassword: e.target.value })}
                       placeholder="••••••••"
                       required
                       disabled={state.loading}
@@ -193,9 +181,7 @@ export default function ResetPasswordPage() {
                       id="confirmPassword"
                       type="password"
                       value={state.confirmPassword}
-                      onChange={(e) =>
-                        setState({ ...state, confirmPassword: e.target.value })
-                      }
+                      onChange={(e) => setState({ ...state, confirmPassword: e.target.value })}
                       placeholder="••••••••"
                       required
                       disabled={state.loading}

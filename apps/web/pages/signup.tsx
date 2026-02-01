@@ -1,46 +1,23 @@
-import Link from "next/link";
 import { useEffect } from "react";
-import { trackEvent } from "../src/lib/analytics";
+import { useRouter } from "next/router";
+import Head from "next/head";
 
 export default function SignupPage() {
+  const router = useRouter();
+
   useEffect(() => {
-    trackEvent("signup_view");
-  }, []);
+    // Redirect to actual sign-up page
+    router.replace("/auth/sign-up");
+  }, [router]);
 
   return (
-    <div className="page">
-      <section className="hero">
-        <div className="container hero-inner">
-          <div>
-            <p className="section-subtitle">Start Free</p>
-            <h1 className="hero-title">Launch operations in 15 minutes.</h1>
-            <p className="hero-copy">
-              Activate Genesis AI, configure dispatch, and start billing without
-              a heavy setup cycle.
-            </p>
-            <div className="hero-actions">
-              <Link
-                href="/pricing"
-                className="btn btn-primary"
-                onClick={() => trackEvent("signup_view_pricing")}
-              >
-                Choose a plan
-              </Link>
-              <Link href="/security" className="btn btn-secondary">
-                Security posture
-              </Link>
-            </div>
-          </div>
-          <div className="hero-card">
-            <h3>Onboarding steps</h3>
-            <div className="pricing-list">
-              <div>• Connect dispatch workflows</div>
-              <div>• Import fleet + driver roster</div>
-              <div>• Configure billing + insurance</div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+    <>
+      <Head>
+        <title>Sign Up - Infamous Freight</title>
+      </Head>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
+        <p>Redirecting to sign up...</p>
+      </div>
+    </>
   );
 }

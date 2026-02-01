@@ -25,11 +25,10 @@ export default function SignInPage() {
     setLoading(true);
 
     try {
-      const { data, error: signInError } =
-        await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
       if (signInError) {
         setError(signInError.message);
@@ -156,11 +155,7 @@ export default function SignInPage() {
                 </Link>
               </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="btn btn-primary btn-block"
-              >
+              <button type="submit" disabled={loading} className="btn btn-primary btn-block">
                 {loading ? "Signing in..." : "Sign In"}
               </button>
             </form>
@@ -168,18 +163,10 @@ export default function SignInPage() {
             <div className="divider">Or continue with</div>
 
             <div className="social-buttons">
-              <button
-                onClick={handleGitHubSignIn}
-                disabled={loading}
-                className="btn btn-social"
-              >
+              <button onClick={handleGitHubSignIn} disabled={loading} className="btn btn-social">
                 GitHub
               </button>
-              <button
-                onClick={handleGoogleSignIn}
-                disabled={loading}
-                className="btn btn-social"
-              >
+              <button onClick={handleGoogleSignIn} disabled={loading} className="btn btn-social">
                 Google
               </button>
             </div>

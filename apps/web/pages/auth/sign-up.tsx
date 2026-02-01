@@ -34,10 +34,8 @@ export default function SignUpPage() {
   const validateForm = (): string | null => {
     if (!formData.email) return "Email is required";
     if (!formData.password) return "Password is required";
-    if (formData.password.length < 8)
-      return "Password must be at least 8 characters";
-    if (formData.password !== formData.confirmPassword)
-      return "Passwords do not match";
+    if (formData.password.length < 8) return "Password must be at least 8 characters";
+    if (formData.password !== formData.confirmPassword) return "Passwords do not match";
     if (!formData.fullName) return "Full name is required";
     if (!formData.company) return "Company name is required";
     return null;
@@ -75,9 +73,7 @@ export default function SignUpPage() {
       }
 
       if (data.user) {
-        setMessage(
-          "Sign up successful! Check your email to confirm your account.",
-        );
+        setMessage("Sign up successful! Check your email to confirm your account.");
         trackEvent("auth_sign_up_success");
         setTimeout(() => {
           router.push("/auth/sign-in");
@@ -169,9 +165,7 @@ export default function SignUpPage() {
                   id="fullName"
                   type="text"
                   value={formData.fullName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, fullName: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                   placeholder="John Doe"
                   required
                   disabled={loading}
@@ -185,9 +179,7 @@ export default function SignUpPage() {
                   id="company"
                   type="text"
                   value={formData.company}
-                  onChange={(e) =>
-                    setFormData({ ...formData, company: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                   placeholder="Your Company"
                   required
                   disabled={loading}
@@ -201,9 +193,7 @@ export default function SignUpPage() {
                   id="email"
                   type="email"
                   value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   placeholder="you@example.com"
                   required
                   disabled={loading}
@@ -217,9 +207,7 @@ export default function SignUpPage() {
                   id="password"
                   type="password"
                   value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   placeholder="••••••••"
                   required
                   disabled={loading}
@@ -246,11 +234,7 @@ export default function SignUpPage() {
                 />
               </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="btn btn-primary btn-block"
-              >
+              <button type="submit" disabled={loading} className="btn btn-primary btn-block">
                 {loading ? "Creating account..." : "Create Account"}
               </button>
             </form>
@@ -258,18 +242,10 @@ export default function SignUpPage() {
             <div className="divider">Or continue with</div>
 
             <div className="social-buttons">
-              <button
-                onClick={handleGitHubSignUp}
-                disabled={loading}
-                className="btn btn-social"
-              >
+              <button onClick={handleGitHubSignUp} disabled={loading} className="btn btn-social">
                 GitHub
               </button>
-              <button
-                onClick={handleGoogleSignUp}
-                disabled={loading}
-                className="btn btn-social"
-              >
+              <button onClick={handleGoogleSignUp} disabled={loading} className="btn btn-social">
                 Google
               </button>
             </div>
