@@ -42,15 +42,35 @@ router.get(
         where.actorUserId = req.auth.userId;
       }
 
-      if (action) where.action = action;
-      if (entity) where.entity = entity;
+      // Build OR conditions only when a search query is present.
+      const orConditions = [];
 
-      if (q) {
-        where.OR = [
+      if (!q) {
+        // No search term: apply exact filters directly (AND semantics).
+        if (action) {
+          where.action = action;
+        }
+        if (entity) {
+          where.entity = entity;
+        }
+      } else {
+        // Search term present: include exact filters as part of the OR search.
+        if (action) {
+          orConditions.push({ action });
+        }
+        if (entity) {
+          orConditions.push({ entity });
+        }
+
+        orConditions.push(
           { action: { contains: q, mode: "insensitive" } },
           { entity: { contains: q, mode: "insensitive" } },
           { entityId: { contains: q, mode: "insensitive" } },
-        ];
+        );
+
+        if (orConditions.length > 0) {
+          where.OR = orConditions;
+        }
       }
 
       const [logs, total] = await Promise.all([
