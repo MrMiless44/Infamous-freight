@@ -38,6 +38,11 @@ router.get(
         organizationId: req.auth.organizationId,
       };
 
+      // NOTE: Non-admin users are intentionally limited to audit events
+      // where they are the actor, even though they share an organizationId.
+      // This is stricter than some Supabase policies (which allow visibility
+      // based on related_ids such as shipper_id/carrier_id) and is chosen to
+      // keep non-admin visibility scoped to "my own actions" only.
       if (!isAdmin && req.auth?.userId) {
         where.actorUserId = req.auth.userId;
       }
