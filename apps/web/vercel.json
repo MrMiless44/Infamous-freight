@@ -1,8 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd ../.. && pnpm install && pnpm --filter web build",
-  "devCommand": "pnpm dev",
-  "installCommand": "pnpm install",
   "framework": "nextjs",
   "outputDirectory": ".next",
   "regions": ["iad1"],
@@ -63,11 +60,6 @@
       "destination": "https://supabase.com/:path*"
     }
   ],
-  "env": {
-    "NEXT_PUBLIC_SUPABASE_URL": "@supabase-url",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@supabase-anon-key",
-    "SUPABASE_SERVICE_ROLE_KEY": "@supabase-service-key"
-  },
   "build": {
     "env": {
       "NEXT_TELEMETRY_DISABLED": "1",
