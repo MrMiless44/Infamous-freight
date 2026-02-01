@@ -35,7 +35,26 @@ export default function OpsAuditPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${apiBase}/api/admin/audit-logs?${queryString}`);
+      const url = `${apiBase}/api/admin/audit-logs?${queryString}`;
+      const headers: HeadersInit = {};
+
+      if (typeof window !== "undefined") {
+        const token = window.localStorage.getItem("authToken");
+        const userId = window.localStorage.getItem("userId");
+
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+
+        if (userId) {
+          headers["x-user-id"] = userId;
+        }
+      }
+
+      const res = await fetch(url, {
+        headers,
+        credentials: "include",
+      });
       const data = await res.json();
       if (!res.ok || !data.ok) {
         throw new Error(data?.error || "Unable to load audit logs");
