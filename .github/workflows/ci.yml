@@ -20,8 +20,13 @@ jobs:
           node-version: 20
           cache: pnpm
 
-      - run: corepack enable
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+          run_install: false
+
       - run: pnpm install --frozen-lockfile
+      - run: pnpm -r rebuild
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm -r --topological --if-present run build
