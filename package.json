@@ -9,18 +9,18 @@
   "scripts": {
     "install:ci": "pnpm install --frozen-lockfile",
     "dev": "pnpm -r --parallel run dev",
-      "supabase:start": "supabase start",
-      "supabase:stop": "supabase stop",
-      "supabase:restart": "supabase stop && supabase start",
-      "supabase:reset": "supabase db reset",
-      "supabase:migrate": "supabase migration up",
-      "supabase:migrate:new": "supabase migration new",
-      "supabase:studio": "supabase studio",
-      "supabase:types": "supabase gen types typescript --local > apps/web/types/supabase.ts",
-      "supabase:functions:serve": "supabase functions serve",
-      "supabase:functions:deploy": "supabase functions deploy",
-      "supabase:status": "supabase status",
-      "supabase:logs": "supabase logs",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:restart": "supabase stop && supabase start",
+    "supabase:reset": "supabase db reset",
+    "supabase:migrate": "supabase migration up",
+    "supabase:migrate:new": "supabase migration new",
+    "supabase:studio": "supabase studio",
+    "supabase:types": "supabase gen types typescript --local > apps/web/types/supabase.ts",
+    "supabase:functions:serve": "supabase functions serve",
+    "supabase:functions:deploy": "supabase functions deploy",
+    "supabase:status": "supabase status",
+    "supabase:logs": "supabase logs",
     "lint": "pnpm -r run lint",
     "lint:web": "pnpm --filter web lint",
     "typecheck": "pnpm -r run typecheck",
@@ -45,5 +45,11 @@
       "hono": ">=4.11.7",
       "fast-xml-parser": ">=5.3.4"
     }
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
+    "eslint-config-prettier": "^10.1.8"
   }
 }

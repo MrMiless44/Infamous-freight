@@ -12,7 +12,7 @@ pnpm typecheck || {
 
 # Lint staged files
 echo "🧹 Linting..."
-pnpm lint || {
+pnpm lint --max-warnings 100 || {
   echo "❌ Linting failed. Fix errors before committing."
   exit 1
 }

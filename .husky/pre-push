@@ -22,7 +22,7 @@ fi
 
 # Lint
 echo "🔍 Linting..."
-pnpm lint || {
+pnpm lint --max-warnings 100 || {
   echo "❌ Lint failed. Run 'pnpm lint --fix' to auto-fix."
   exit 1
 }
