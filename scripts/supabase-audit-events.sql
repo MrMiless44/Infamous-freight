@@ -117,4 +117,4 @@ begin
 end $$;
 
 revoke all on function public.write_audit_event(text, text, uuid, jsonb, jsonb, jsonb, uuid, jsonb) from public;
-grant execute on function public.write_audit_event(text, text, uuid, jsonb, jsonb, jsonb, uuid, jsonb) to authenticated;
+grant execute on function public.write_audit_event(text, text, uuid, jsonb, jsonb, jsonb, uuid, jsonb) to service_role;
