@@ -5,12 +5,11 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-  
   // Essential features only - removed 300+ unnecessary features
   "features": {
     // Core development tools
     "ghcr.io/devcontainers/features/node:1": {
-      "version": "20",
+      "version": "22",
       "nodeGypDependencies": true
     },
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
@@ -28,24 +27,19 @@
       "installOhMyZsh": true,
       "upgradePackages": true
     },
-    
     // Database and infrastructure
     "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
-    
     // Cloud deployment tools
     "ghcr.io/dhoeric/features/flyctl:1": {},
     "ghcr.io/devcontainers/features/azure-cli:1": {},
     "ghcr.io/devcontainers/features/aws-cli:1": {},
-    
     // AI/ML coding assistant
     "ghcr.io/jsburckhardt/devcontainer-features/codex:1": {},
-    
     // Development utilities
     "ghcr.io/devcontainers-extra/features/pnpm:2": {
-      "version": "10.2.1"
+      "version": "latest"
     }
   },
-  
   "customizations": {
     "vscode": {
       "settings": {
@@ -67,7 +61,6 @@
           "source.fixAll.eslint": "explicit"
         }
       },
-      
       // Essential extensions for Node.js/TypeScript development
       "extensions": [
         "GitHub.copilot",
@@ -85,12 +78,17 @@
       ]
     }
   },
-  
   "postCreateCommand": "bash .devcontainer/postCreateCommand.sh",
   "postStartCommand": "bash .devcontainer/postStartCommand.sh",
-  
   // Forward ports for API, Web, and common services
-  "forwardPorts": [3000, 3001, 4000, 5432, 6379, 8080],
+  "forwardPorts": [
+    3000,
+    3001,
+    4000,
+    5432,
+    6379,
+    8080
+  ],
   "portsAttributes": {
     "3000": {
       "label": "Web (Next.js)",
@@ -113,6 +111,5 @@
       "onAutoForward": "silent"
     }
   },
-  
   "remoteUser": "vscode"
 }
