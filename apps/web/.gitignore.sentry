@@ -1,5 +1,3 @@
-.vercel
-.env*.local
 
 # Sentry Config Files (contains auth tokens)
 .sentryclirc

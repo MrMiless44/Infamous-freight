@@ -70,7 +70,7 @@ export function trackEvent(eventName: CustomEventName, properties?: EventPropert
   try {
     // Only track in production
     if (process.env.NEXT_PUBLIC_ENV !== "production") {
-      console.log("📊 Analytics (dev):", eventName, properties);
+      console.debug("📊 Analytics (dev):", eventName, properties);
       return;
     }
 

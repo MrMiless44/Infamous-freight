@@ -7,7 +7,7 @@ interface HealthResponse {
   supabaseAnonPresent: boolean;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<HealthResponse>) {
+export default async function handler(_req: NextApiRequest, res: NextApiResponse<HealthResponse>) {
   const supabaseUrlPresent = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL);
   const supabaseAnonPresent = Boolean(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 

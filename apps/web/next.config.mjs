@@ -1,4 +1,5 @@
 import path from 'path';
+import { withSentryConfig } from '@sentry/nextjs';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -13,8 +14,9 @@ const nextConfig = {
     compress: true,
     poweredByHeader: false,
 
-    // Experimental: Edge runtime for geolocation
+    // Enable instrumentation hook for Sentry
     experimental: {
+        instrumentationHook: true,
         serverActions: {
             bodySizeLimit: '2mb'
         }
@@ -103,4 +105,40 @@ const nextConfig = {
     },
 };
 
-export default nextConfig;
+export default withSentryConfig(nextConfig, {
+    // For an instrumentation hook to work, you must enable the `instrumentationHook` setting
+    org: 'infamous-freight-enterprise',
+    project: 'javascript-nextjs',
+
+    // An auth token is required for uploading source maps.
+    authToken: process.env.SENTRY_AUTH_TOKEN,
+
+    // Automatically tree-shake Sentry logger statements to reduce bundle size
+    silent: false, // Changed to false for better debugging during build
+
+    // Enable tunnel route to bypass ad blockers (CRITICAL for production)
+    // This creates a /monitoring route that proxies Sentry events
+    tunnelRoute: '/monitoring',
+
+    // Uploads source maps to Sentry for native debugging
+    sourceMaps: {
+        disable: false,
+        deleteSourcemapsAfterUpload: true,
+        rewriteSourcesContent: process.env.NODE_ENV === 'development' ? true : false,
+    },
+
+    // Widens the URL prefix the rewrite rule matches on, preventing consecutive slashes in the tunneled request URL. Defaults to false.
+    widenClientFileUpload: false,
+
+    // Routes browser requests to Sentry through a Next.js rewrite instead of directing to Sentry's servers directly. Prevents ad blockers from blocking Sentry requests. Defaults to true.
+    hideSourceMaps: true,
+
+    // Release tracking configuration
+    release: {
+        name: process.env.SENTRY_RELEASE || process.env.VERCEL_GIT_COMMIT_SHA || 'unknown',
+        dist: process.env.VERCEL_ENV || 'development',
+    },
+
+    // Additional Sentry CLI options
+    url: 'https://sentry.io/',
+});

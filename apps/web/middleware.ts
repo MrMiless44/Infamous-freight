@@ -14,7 +14,15 @@ import type { NextRequest } from "next/server";
  */
 
 // Paths that should skip middleware
-const SKIP_PATHS = ["/_next", "/api/health", "/favicon.ico", "/robots.txt", "/sitemap.xml"];
+// CRITICAL: Include /monitoring for Sentry tunnel route (prevents 401/403 errors)
+const SKIP_PATHS = [
+  "/_next",
+  "/api/health",
+  "/favicon.ico",
+  "/robots.txt",
+  "/sitemap.xml",
+  "/monitoring", // Sentry tunnel route - must not be intercepted
+];
 
 // API routes that need extra protection
 const PROTECTED_API_ROUTES = ["/api/admin", "/api/internal"];
@@ -133,7 +141,8 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - public folder
+     * - monitoring (Sentry tunnel route - CRITICAL)
      */
-    "/((?!_next/static|_next/image|favicon.ico|public).*)",
+    "/((?!_next/static|_next/image|favicon.ico|public|monitoring).*)",
   ],
 };
