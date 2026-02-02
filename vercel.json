@@ -1,8 +1,8 @@
 {
   "$schema": "https://vercel.com/schemas/vercel.json",
   "framework": "nextjs",
-  "nodeVersion": "24.x",
-  "buildCommand": "cd apps/web && pnpm build",
+  "nodeVersion": "20.x",
+  "buildCommand": "cd ../.. && pnpm -w --filter web build",
   "outputDirectory": "apps/web/.next",
   "regions": [
     "sfo1",

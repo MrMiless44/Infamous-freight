@@ -1,9 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "nodeVersion": "24.x",
-  "installCommand": "corepack enable && cd .. && pnpm install --frozen-lockfile",
-  "buildCommand": "cd .. && pnpm -r --filter @infamous-freight/shared build && pnpm --filter web build",
+  "nodeVersion": "20.x",
+  "installCommand": "cd ../.. && corepack enable && pnpm -w install --frozen-lockfile",
+  "buildCommand": "cd ../.. && pnpm -w --filter web build",
   "outputDirectory": ".next",
   "cleanUrls": true,
   "trailingSlash": false,
