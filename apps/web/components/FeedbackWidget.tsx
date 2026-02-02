@@ -55,7 +55,7 @@ export default function FeedbackWidget() {
           });
         }, 2000);
       }
-    } catch (err) {
+    } catch (_err) {
       alert("Failed to submit feedback. Please try again.");
     }
   };

@@ -19,6 +19,7 @@ export function initDatadogRUM() {
 
   // Only initialize in production with valid credentials
   if (!isProduction || !appId || !clientToken) {
+    // eslint-disable-next-line no-console
     console.info(
       "[Datadog RUM] Skipping initialization (not production or credentials missing)",
     );
@@ -58,13 +59,13 @@ export function initDatadogRUM() {
     // Start tracking views automatically
     datadogRum.startSessionReplayRecording();
 
+    // eslint-disable-next-line no-console
     console.info("[Datadog RUM] Initialized successfully", {
       service,
       env,
       site,
     });
   } catch (error) {
-    // eslint-disable-next-line no-console
     // eslint-disable-next-line no-console
     console.error("[Datadog RUM] Failed to initialize:", error);
   }

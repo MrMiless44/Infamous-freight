@@ -12,7 +12,7 @@ export function t(locale: Locale, key: string): string {
 
   for (const p of parts) {
     cur = cur?.[p];
-    if (cur == null) return key;
+    if (cur === null || cur === undefined) return key;
   }
   return typeof cur === "string" ? cur : key;
 }
