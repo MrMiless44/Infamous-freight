@@ -49,7 +49,7 @@ class AISyntheticClient {
       const client = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
       });
-      const model = process.env.AI_MODEL || "gpt-4";
+      const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
 
       const response = await client.chat.completions.create({
         model,

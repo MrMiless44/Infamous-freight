@@ -59,7 +59,7 @@ const envSchema = z.object({
   // AI Providers
   AI_PROVIDER: z.enum(["stub", "openai", "anthropic"]).default("stub"),
   OPENAI_API_KEY: z.string().optional(),
-  OPENAI_MODEL: z.string().default("gpt-4.1-mini"),
+  OPENAI_MODEL: z.string().default("gpt-4o-mini"),
   ANTHROPIC_API_KEY: z.string().optional(),
   ANTHROPIC_MODEL: z.string().default("claude-3-5-sonnet-latest"),
 

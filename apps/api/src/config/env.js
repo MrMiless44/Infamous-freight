@@ -23,7 +23,7 @@ const env = {
     s3PublicBaseUrl: process.env.S3_PUBLIC_BASE_URL,
     aiProvider: process.env.AI_PROVIDER || "stub",
     openaiApiKey: process.env.OPENAI_API_KEY,
-    openaiModel: process.env.OPENAI_MODEL || "gpt-4.1-mini",
+    openaiModel: process.env.OPENAI_MODEL || "gpt-4o-mini",
     anthropicApiKey: process.env.ANTHROPIC_API_KEY,
     anthropicModel: process.env.ANTHROPIC_MODEL || "claude-3-5-sonnet-latest",
     corsOrigins: (process.env.CORS_ORIGINS || "http://localhost:3000,http://localhost:3001").split(","),
