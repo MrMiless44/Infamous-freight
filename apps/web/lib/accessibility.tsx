@@ -13,8 +13,13 @@ export function SkipLink() {
   );
 }
 
+type LiveRegionProps = {
+  message: string;
+  priority?: "polite" | "assertive";
+};
+
 // Live region announcer for screen readers
-export function LiveRegion({ message, priority = "polite" }: { message: string; priority?: "polite" | "assertive" }) {
+export function LiveRegion({ message, priority = "polite" }: LiveRegionProps) {
   return (
     <div
       role="status"

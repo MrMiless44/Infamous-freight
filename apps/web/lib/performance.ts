@@ -18,7 +18,7 @@ class PerformanceMonitor {
   end(name: string, metadata?: Record<string, unknown>): PerformanceMetric | null {
     const startTime = this.metrics.get(name);
     if (!startTime) {
-      console.warn(`Performance metric "${name}" was never started`);
+      Sentry.captureMessage(`Performance metric "${name}" was never started`, "warning");
       return null;
     }
 
@@ -42,7 +42,10 @@ class PerformanceMonitor {
 
     // Log slow operations
     if (duration > 1000) {
-      console.warn(`Slow operation detected: ${name} took ${duration.toFixed(2)}ms`, metadata);
+      Sentry.captureMessage(`Slow operation detected: ${name} took ${duration.toFixed(2)}ms`, {
+        level: "warning",
+        extra: metadata,
+      });
     }
 
     return metric;
@@ -137,7 +140,10 @@ export function trackPageLoad(pageName: string): void {
 
       // Log slow pages
       if (metrics.loadComplete > 3000) {
-        console.warn(`Slow page load detected for ${pageName}:`, metrics);
+        Sentry.captureMessage(`Slow page load detected for ${pageName}`, {
+          level: "warning",
+          extra: metrics,
+        });
       }
     }
   });

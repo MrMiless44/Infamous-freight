@@ -34,13 +34,13 @@ export class TestHelpers {
   // Performance testing
   static async measurePerformance<T>(
     name: string,
-    fn: () => Promise<T>
+    fn: () => Promise<T>,
   ): Promise<{ result: T; duration: number }> {
     const start = performance.now();
     const result = await fn();
     const duration = performance.now() - start;
 
-    console.log(`[Performance] ${name}: ${duration.toFixed(2)}ms`);
+    // Performance measurement result available via return value
     return { result, duration };
   }
 
@@ -78,7 +78,7 @@ export class TestHelpers {
 export class IntegrationTestHelpers {
   // Setup test environment
   static async setupTestEnvironment(): Promise<void> {
-    TestHelpers.clear TestData();
+    TestHelpers.clearTestData();
     // Initialize any necessary test state
   }
 
@@ -106,10 +106,7 @@ export class IntegrationTestHelpers {
 export class A11yTestHelpers {
   // Check for ARIA labels
   static hasAriaLabel(element: HTMLElement): boolean {
-    return !!(
-      element.getAttribute("aria-label") ||
-      element.getAttribute("aria-labelledby")
-    );
+    return !!(element.getAttribute("aria-label") || element.getAttribute("aria-labelledby"));
   }
 
   // Check for alt text on images
@@ -139,17 +136,18 @@ export class A11yTestHelpers {
 export class VisualTestHelpers {
   // Capture screenshot (requires external tool)
   static async captureScreenshot(name: string): Promise<void> {
-    console.log(`Screenshot captured: ${name}`);
-    // Implementation depends on testing framework
+    // Screenshot captured - implementation depends on testing framework
+    void name; // Suppress unused variable warning
   }
 
   // Compare screenshots
   static async compareScreenshots(
     baseline: string,
-    current: string
+    current: string,
   ): Promise<{ match: boolean; difference: number }> {
-    console.log(`Comparing ${baseline} with ${current}`);
-    // Implementation depends on testing framework
+    // Comparison logic - implementation depends on testing framework
+    void baseline;
+    void current;
     return { match: true, difference: 0 };
   }
 }

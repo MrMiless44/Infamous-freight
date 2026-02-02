@@ -86,7 +86,7 @@ export function setDatadogUser(user: { id: string; email?: string; name?: string
       role: user.role,
     });
   } catch (error) {
-    // eslint-disable-next-line no-console
+     
     // eslint-disable-next-line no-console
     console.error("[Datadog RUM] Failed to set user:", error);
   }

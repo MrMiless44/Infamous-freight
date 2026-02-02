@@ -63,7 +63,8 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
 
     const status = health.status === "healthy" ? 200 : 503;
     return res.status(status).json(health);
-  } catch (error) {
+  } catch {
+    // Health check failed - return unhealthy status
     const health: HealthResponse = {
       status: "unhealthy",
       timestamp: new Date().toISOString(),
