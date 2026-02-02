@@ -93,6 +93,7 @@ export const RevenueMonitorDashboard: React.FC = () => {
       setLastUpdated(new Date());
       setLoading(false);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error("Failed to fetch metrics:", error);
       setLoading(false);
     }

@@ -26,6 +26,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(user);
         setIsAuthenticated(!!user);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error("Error fetching user:", error);
       } finally {
         setIsLoading(false);
@@ -54,6 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       setIsAuthenticated(false);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error("Error signing out:", error);
       throw error;
     }

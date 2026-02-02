@@ -10,6 +10,7 @@ export const initSentryServer = (): void => {
   const dsn = process.env.SENTRY_DSN;
 
   if (!dsn) {
+    // eslint-disable-next-line no-console
     console.warn("⚠️  Sentry DSN not configured (server). Error tracking disabled.");
     return;
   }
@@ -88,9 +89,11 @@ export const initSentryServer = (): void => {
     });
 
     if (!isDevelopment) {
+      // eslint-disable-next-line no-console
       console.log("✅ Sentry server initialized for", process.env.NEXT_PUBLIC_ENV);
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("❌ Failed to initialize Sentry (server):", error);
   }
 };

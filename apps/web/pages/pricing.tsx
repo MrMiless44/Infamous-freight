@@ -398,6 +398,7 @@ export const getStaticProps: GetStaticProps = async () => {
       revalidate: 60,
     };
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.warn('ISR: Failed to fetch plans, using fallback', error);
     
     // Fallback to empty state on error

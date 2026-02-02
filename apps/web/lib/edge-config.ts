@@ -109,6 +109,7 @@ export async function getFeatureFlags(): Promise<FeatureFlags> {
     // Fallback to defaults if not configured
     return DEFAULT_FEATURE_FLAGS;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Failed to fetch feature flags:", error);
     return DEFAULT_FEATURE_FLAGS;
   }
@@ -207,6 +208,7 @@ export async function getAllConfig(): Promise<Record<string, unknown>> {
       "feature-flags": DEFAULT_FEATURE_FLAGS,
     };
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Failed to fetch config:", error);
     return {};
   }

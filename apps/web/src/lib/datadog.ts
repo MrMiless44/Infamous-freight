@@ -64,6 +64,7 @@ export function initDatadogRUM() {
       site,
     });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("[Datadog RUM] Failed to initialize:", error);
   }
 }
@@ -90,6 +91,7 @@ export function setDatadogUser(user: {
       role: user.role,
     });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("[Datadog RUM] Failed to set user:", error);
   }
 }
@@ -105,6 +107,7 @@ export function clearDatadogUser() {
   try {
     datadogRum.clearUser();
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("[Datadog RUM] Failed to clear user:", error);
   }
 }
@@ -120,6 +123,7 @@ export function addDatadogContext(key: string, value: any) {
   try {
     datadogRum.setGlobalContextProperty(key, value);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("[Datadog RUM] Failed to add context:", error);
   }
 }
@@ -138,6 +142,7 @@ export function trackDatadogAction(
   try {
     datadogRum.addAction(name, context);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("[Datadog RUM] Failed to track action:", error);
   }
 }

@@ -65,6 +65,7 @@ export default function SignOffDashboard() {
       const data = await res.json();
       setSignoffs(data.data || []);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error("Failed to fetch sign-offs:", err);
     } finally {
       setLoading(false);
@@ -99,6 +100,7 @@ export default function SignOffDashboard() {
       }
     } catch (err) {
       alert("Failed to sign off");
+      // eslint-disable-next-line no-console
       console.error(err);
     }
   };
@@ -132,6 +134,7 @@ export default function SignOffDashboard() {
       }
     } catch (err) {
       alert("Failed to reject sign-off");
+      // eslint-disable-next-line no-console
       console.error(err);
     }
   };
@@ -142,6 +145,7 @@ export default function SignOffDashboard() {
       const data = await res.json();
       setSelectedSignoff(data.data);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error("Failed to fetch sign-off details:", err);
     }
   };

@@ -20,6 +20,7 @@ function DashboardContent() {
       trackEvent("user_signed_out");
       router.push("/");
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error("Error signing out:", error);
       trackEvent("sign_out_error", { error: String(error) });
     }

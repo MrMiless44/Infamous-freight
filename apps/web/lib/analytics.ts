@@ -70,12 +70,14 @@ export function trackEvent(eventName: CustomEventName, properties?: EventPropert
   try {
     // Only track in production
     if (process.env.NEXT_PUBLIC_ENV !== "production") {
+      // eslint-disable-next-line no-console
       console.debug("📊 Analytics (dev):", eventName, properties);
       return;
     }
 
     track(eventName, properties);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Failed to track event:", error);
   }
 }

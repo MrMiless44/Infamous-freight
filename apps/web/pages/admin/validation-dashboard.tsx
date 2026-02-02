@@ -64,6 +64,7 @@ export default function ValidationDashboard() {
       const data = await res.json();
       setStatus(data);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error("Failed to fetch validation status:", err);
     }
   };
@@ -74,6 +75,7 @@ export default function ValidationDashboard() {
       const data = await res.json();
       setMetrics(data);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error("Failed to fetch metrics:", err);
     }
   };
@@ -83,6 +85,7 @@ export default function ValidationDashboard() {
       await fetch("/api/validation/start", { method: "POST" });
       fetchValidationStatus();
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error("Failed to start validation:", err);
     }
   };

@@ -96,6 +96,7 @@ export async function cacheGet<T>(key: string): Promise<T | null> {
     // Fallback to memory cache if KV not configured
     return await memoryCache.get<T>(key);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Cache get error:", error);
     return null;
   }
@@ -119,6 +120,7 @@ export async function cacheSet(
     // Also cache in memory as backup
     await memoryCache.set(key, value, ttl);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Cache set error:", error);
   }
 }
@@ -134,6 +136,7 @@ export async function cacheDel(key: string): Promise<void> {
     await kv.del(key);
     await memoryCache.del(key);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Cache delete error:", error);
   }
 }
@@ -153,6 +156,7 @@ export async function cacheExists(key: string): Promise<boolean> {
     // Fallback to memory cache
     return await memoryCache.exists(key);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Cache exists error:", error);
     return false;
   }
@@ -197,6 +201,7 @@ export async function cacheIncr(key: string): Promise<number> {
     // Use KV for distributed counters
     return await kv.incr(key);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Cache increment error:", error);
     return 0;
   }
@@ -219,6 +224,7 @@ export async function cacheExpire(key: string, seconds: number): Promise<void> {
       await memoryCache.set(key, value, seconds);
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Cache expire error:", error);
   }
 }
@@ -286,8 +292,10 @@ export async function cacheInvalidatePattern(pattern: string): Promise<void> {
     // const keys = await kv.keys(pattern);
     // await Promise.all(keys.map(key => kv.del(key)));
 
+    // eslint-disable-next-line no-console
     console.log(`Cache invalidation for pattern: ${pattern}`);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Cache invalidate error:", error);
   }
 }
@@ -320,6 +328,7 @@ export async function checkRateLimit(
       remaining: Math.max(0, limit - current),
     };
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Rate limit check error:", error);
     // Allow request on error
     return { allowed: true, remaining: limit };

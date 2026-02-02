@@ -117,6 +117,7 @@ function PaymentFormContent({
         setSuccess(true);
         onSuccess?.(result.paymentIntent.id);
         // Payment successful - 100% to your account
+        // eslint-disable-next-line no-console
         console.log("✅ Payment succeeded! 100% to your Stripe account");
       } else {
         setError("Payment processing failed. Please try again.");
@@ -357,6 +358,7 @@ export function StripeSubscriptionForm({
             if (subscriptionId) {
               onSuccess?.(subscriptionId);
             }
+            // eslint-disable-next-line no-console
             console.log(
               "✅ Subscription active! 100% of recurring payments to your account",
             );
@@ -535,6 +537,7 @@ export function RevenueStats() {
         setLoading(false);
       })
       .catch((err) => {
+        // eslint-disable-next-line no-console
         console.error("Failed to load revenue:", err);
         setLoading(false);
       });

@@ -228,19 +228,25 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, HOST, () => {
+    // eslint-disable-next-line no-console
     console.log('🌐 Infamous Freight Web running on http://%s:%d', HOST, PORT);
+    // eslint-disable-next-line no-console
     console.log('✅ Open in browser: http://localhost:%d', PORT);
+    // eslint-disable-next-line no-console
     console.log('📝 Mode: Development (Mock frontend)');
 });
 
 server.on('error', (err) => {
+    // eslint-disable-next-line no-console
     console.error('Server error:', err);
     process.exit(1);
 });
 
 process.on('SIGINT', () => {
+    // eslint-disable-next-line no-console
     console.log('\n👋 Shutting down gracefully...');
     server.close(() => {
+        // eslint-disable-next-line no-console
         console.log('✅ Server closed');
         process.exit(0);
     });

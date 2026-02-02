@@ -80,6 +80,7 @@ export function AvatarSelector({
         }
       } catch (err) {
         setError(`Failed to load avatars: ${(err as Error).message}`);
+        // eslint-disable-next-line no-console
         console.error(err);
       } finally {
         setLoading(false);
@@ -119,6 +120,7 @@ export function AvatarSelector({
       }
     } catch (err) {
       setError(`Error selecting avatar: ${(err as Error).message}`);
+      // eslint-disable-next-line no-console
       console.error(err);
     }
   };
@@ -157,6 +159,7 @@ export function AvatarSelector({
       }
     } catch (err) {
       setError(`Upload error: ${(err as Error).message}`);
+      // eslint-disable-next-line no-console
       console.error(err);
     } finally {
       setUploading(false);
@@ -181,6 +184,7 @@ export function AvatarSelector({
       }
     } catch (err) {
       setError(`Delete error: ${(err as Error).message}`);
+      // eslint-disable-next-line no-console
       console.error(err);
     }
   };

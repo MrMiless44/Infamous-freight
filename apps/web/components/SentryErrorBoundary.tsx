@@ -46,6 +46,7 @@ class SentryErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBound
 
     // Log to console in development
     if (process.env.NODE_ENV === "development") {
+      // eslint-disable-next-line no-console
       console.error("Error caught by Sentry Error Boundary:", error, errorInfo);
     }
   }
