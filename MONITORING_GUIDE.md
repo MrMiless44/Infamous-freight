@@ -332,11 +332,15 @@ Sentry.captureException(new Error("Infamous Freight test error"));
 
 1. **Client config missing**: confirm `apps/web/src/lib/sentry.client.config.ts` exists and that `apps/web/pages/_app.tsx` imports and initializes Sentry via `initSentry()`.
 2. **Public DSN missing**: ensure `NEXT_PUBLIC_SENTRY_DSN` is set in Vercel and matches the project.
-3. **Tunnel route blocked**: if using a tunnel (for example `/monitoring`), ensure middleware excludes it:
+3. **Tunnel route blocked**: if using a tunnel (for example `/monitoring`), ensure middleware excludes it (merge with your existing matcher, do not replace it):
 
    ```ts
+   // apps/web/middleware.ts
+   // Add `monitoring` to your existing negative lookahead while keeping other exclusions.
    export const config = {
-     matcher: ["/((?!monitoring).*)"],
+     matcher: [
+       "/((?!monitoring|_next/static|_next/image|favicon.ico).*)",
+     ],
    };
    ```
 
