@@ -6,7 +6,8 @@
  * Manage Edge Config feature flags via CLI
  */
 
-const https = require('https');
+// eslint-disable-next-line no-undef
+const { URL } = require('url');
 
 const COLORS = {
   reset: '\x1b[0m',
@@ -17,6 +18,7 @@ const COLORS = {
 };
 
 function log(message, color = 'reset') {
+  // eslint-disable-next-line no-console
   console.log(`${COLORS[color]}${message}${COLORS.reset}`);
 }
 
