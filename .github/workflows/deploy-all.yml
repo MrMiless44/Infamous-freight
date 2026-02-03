@@ -126,56 +126,52 @@ jobs:
   notify:
     name: Send Notifications
     runs-on: ubuntu-latest
-    needs:
-      [deploy-fly-api, deploy-vercel-web, deploy-railway-db, deploy-supabase, smoke-test, summary]
+    needs: [deploy-fly-api, deploy-vercel-web, deploy-railway-db, deploy-supabase, smoke-test, summary]
     if: always()
     steps:
       - name: Determine overall status
         id: status
         run: |
-          if [ "${{ needs.deploy-fly-api.result }}" = "success" ] && \
-             [ "${{ needs.deploy-vercel-web.result }}" = "success" ] && \
-             [ "${{ needs.deploy-railway-db.result }}" = "success" ] && \
-             [ "${{ needs.deploy-supabase.result }}" = "success" ] && \
-             [ "${{ needs.smoke-test.result }}" = "success" ]; then
+          if [ "${{ needs.deploy-fly-api.result }}" == "success" ] && \
+             [ "${{ needs.deploy-vercel-web.result }}" == "success" ] && \
+             [ "${{ needs.deploy-railway-db.result }}" == "success" ] && \
+             [ "${{ needs.deploy-supabase.result }}" == "success" ] && \
+             [ "${{ needs.smoke-test.result }}" == "success" ]; then
             echo "status=success" >> $GITHUB_OUTPUT
             echo "emoji=🎉" >> $GITHUB_OUTPUT
-            echo "color=good" >> $GITHUB_OUTPUT
           else
             echo "status=failure" >> $GITHUB_OUTPUT
             echo "emoji=❌" >> $GITHUB_OUTPUT
-            echo "color=danger" >> $GITHUB_OUTPUT
           fi
 
-      - name: Slack notification
-        if: success()
+      - name: Send Slack notification
+        if: always()
         continue-on-error: true
         uses: slackapi/slack-github-action@v1
         with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
           payload: |
             {
-              "text": "${{ steps.status.outputs.emoji }} Multi-Platform Deployment ${{ steps.status.outputs.status }}",
+              "text": "Deployment ${{ steps.status.outputs.status }}",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "${{ steps.status.outputs.emoji }} *Multi-Platform Deployment ${{ steps.status.outputs.status }}*\n\n*Platforms:*\n• Fly.io: ${{ needs.deploy-fly-api.result }}\n• Vercel: ${{ needs.deploy-vercel-web.result }}\n• Railway: ${{ needs.deploy-railway-db.result }}\n• Supabase: ${{ needs.deploy-supabase.result }}\n• Smoke Tests: ${{ needs.smoke-test.result }}\n\n*Branch:* ${{ github.ref_name }}\n*Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>\n*Workflow:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Details>"
+                    "text": "${{ steps.status.outputs.emoji }} *Multi-Platform Deployment ${{ steps.status.outputs.status }}*"
                   }
                 }
               ]
             }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
-      - name: Discord notification
-        if: success()
+      - name: Send Discord notification
+        if: always()
         continue-on-error: true
         run: |
-          STATUS_EMOJI="${{ steps.status.outputs.emoji }}"
-          STATUS="${{ steps.status.outputs.status }}"
+          WEBHOOK="${{ secrets.DISCORD_WEBHOOK_URL }}"
+          if [ -n "$WEBHOOK" ]; then
+            curl -X POST "$WEBHOOK" \
+              -H "Content-Type: application/json" \
+              -d "{\"content\": \"${{ steps.status.outputs.emoji }} **Deployment ${{ steps.status.outputs.status }}**\"}"
+          fi
 
-          curl -H "Content-Type: application/json" \
-            -d "{\"content\": \"${STATUS_EMOJI} **Multi-Platform Deployment ${STATUS}**\n\n**Platforms:**\n• Fly.io: ${{ needs.deploy-fly-api.result }}\n• Vercel: ${{ needs.deploy-vercel-web.result }}\n• Railway: ${{ needs.deploy-railway-db.result }}\n• Supabase: ${{ needs.deploy-supabase.result }}\n• Smoke Tests: ${{ needs.smoke-test.result }}\n\n**Branch:** ${{ github.ref_name }}\n**Commit:** ${{ github.sha }}\n**Workflow:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}" \
-            "${{ secrets.DISCORD_WEBHOOK_URL }}"
