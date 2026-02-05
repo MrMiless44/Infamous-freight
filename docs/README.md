@@ -192,5 +192,4 @@ root:
 
 ## Contributing
 
-See the [Contributing Guidelines](../CONTRIBUTING.md) for information on how to
-contribute to this project.
+See the [Contributing Guidelines](../CONTRIBUTING.md) for information on how to contribute to this project.
