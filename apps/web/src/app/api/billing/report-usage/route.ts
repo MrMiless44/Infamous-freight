@@ -39,17 +39,31 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Hard cap reached" }, { status: 403 });
   }
 
-  const nextUsage = Store.incrementUsage(body.userId, allowedQty);
-  const hardCapReached = hardCap > 0 && nextUsage.actionsUsed >= hardCap;
+  let nextUsage = usage;
 
   if (sub.stripeMeteredItemId) {
-    await stripe.subscriptionItems.createUsageRecord(sub.stripeMeteredItemId, {
-      quantity: allowedQty,
-      timestamp: Math.floor(Date.now() / 1000),
-      action: "increment",
-    });
+    try {
+      await stripe.subscriptionItems.createUsageRecord(sub.stripeMeteredItemId, {
+        quantity: allowedQty,
+        timestamp: Math.floor(Date.now() / 1000),
+        action: "increment",
+      });
+    } catch (error) {
+      // Avoid incrementing local usage if Stripe billing fails to keep states consistent.
+      console.error("Failed to create Stripe usage record", {
+        userId: body.userId,
+        stripeMeteredItemId: sub.stripeMeteredItemId,
+        error,
+      });
+      return NextResponse.json(
+        { error: "Failed to report usage to billing provider" },
+        { status: 502 },
+      );
+    }
   }
 
+  nextUsage = Store.incrementUsage(body.userId, allowedQty);
+  const hardCapReached = hardCap > 0 && nextUsage.actionsUsed >= hardCap;
   if (hardCapReached) {
     Store.updateSub(body.userId, { aiHardCapped: true });
   }
