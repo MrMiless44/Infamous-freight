@@ -142,6 +142,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           .eq("company_id", billing.company_id);
         await audit(billing.company_id, null, "billing.invoice_payment_failed", {});
       }
+    } else {
+      console.warn(
+        "[stripe-webhook] Invoice event for unknown Stripe customer",
+        {
+          stripeCustomerId: customerId,
+          eventType: event.type,
+        },
+      );
     }
 
     return res.status(200).json({ received: true });
