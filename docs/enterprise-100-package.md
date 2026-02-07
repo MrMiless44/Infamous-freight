@@ -82,12 +82,27 @@ create table if not exists public.company_memberships (
   user_id uuid not null references auth.users(id) on delete cascade,
   role public.membership_role not null default 'viewer',
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   unique(company_id, user_id)
 );
 
 create index if not exists idx_memberships_company on public.company_memberships(company_id);
 create index if not exists idx_memberships_user on public.company_memberships(user_id);
 
+create or replace function public.set_company_memberships_updated_at()
+returns trigger
+language plpgsql
+as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$;
+
+create trigger trg_company_memberships_set_updated_at
+before update on public.company_memberships
+for each row
+execute procedure public.set_company_memberships_updated_at();
 -- ----------------------------
 -- 3) Feature Flags / Kill Switches (Company-level)
 -- ----------------------------
