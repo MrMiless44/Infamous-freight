@@ -59,12 +59,17 @@ export async function POST(req: Request) {
 
   const { data: exists } = await supabaseAdmin
     .from("stripe_webhook_events")
-    .select("event_id")
+    .select("event_id, processed_at")
     .eq("event_id", event.id)
     .maybeSingle();
 
-  if (exists?.event_id) return jsonWithRequestId(req, { received: true });
+  if (exists?.event_id) {
+    if (!exists.processed_at) {
+      return jsonWithRequestId(req, { received: true, status: "processing" });
+    }
 
+    return jsonWithRequestId(req, { received: true, status: "processed" });
+  }
   await supabaseAdmin.from("stripe_webhook_events").insert({ event_id: event.id });
 
   if (event.type.startsWith("customer.subscription.")) {
