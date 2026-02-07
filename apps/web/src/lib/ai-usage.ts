@@ -6,6 +6,17 @@ const monthKey = () => {
 };
 
 export async function recordAiAction(companyId: string, qty = 1) {
+  const MAX_QTY_PER_CALL = 1000;
+
+  if (
+    typeof qty !== "number" ||
+    !Number.isFinite(qty) ||
+    !Number.isInteger(qty) ||
+    qty <= 0 ||
+    qty > MAX_QTY_PER_CALL
+  ) {
+    throw new Error("Invalid qty for AI usage recording");
+  }
   const { data: bill } = await supabaseAdmin
     .from("company_billing")
     .select("*")
