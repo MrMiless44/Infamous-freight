@@ -81,7 +81,7 @@ Rules:
 - **suspended** → no AI, no dispatch
 - **canceled** → no access
 
-Stripe webhooks must control this state machine.
+This lifecycle uses Stripe’s native subscription statuses, which are updated via Stripe webhooks (`customer.subscription.updated`, `customer.subscription.deleted`) in `api/src/services/stripe.service.js`. The above rules define how the application **must** enforce access based on the current Stripe subscription status.
 
 ### B. Enterprise Billing (Final Rule)
 
