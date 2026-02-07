@@ -72,9 +72,12 @@ create table if not exists public.ai_usage_aggregates (
   actions_used int not null default 0,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
+  constraint ai_usage_aggregates_month_key_format_chk
+    check (month_key ~ '^[0-9]{4}-(0[1-9]|1[0-2])$'),
   primary key (company_id, month_key)
 );
 
+comment on column public.ai_usage_aggregates.month_key is 'Billing month in format YYYY-MM (e.g., 2026-01)';
 -- extend existing audit_logs table with company-specific fields
 alter table if exists public.audit_logs
   add column if not exists company_id uuid references public.companies(id) on delete cascade,
