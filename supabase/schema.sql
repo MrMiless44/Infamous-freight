@@ -2,9 +2,21 @@
 create extension if not exists "pgcrypto";
 
 -- Enums
-create type if not exists membership_role as enum ('owner','admin','dispatcher','driver','viewer');
-create type if not exists billing_status as enum ('trial','active','past_due','suspended','canceled');
+do $$
+begin
+  if not exists (select 1 from pg_type where typname = 'membership_role') then
+    create type membership_role as enum ('owner','admin','dispatcher','driver','viewer');
+  end if;
+end
+$$;
 
+do $$
+begin
+  if not exists (select 1 from pg_type where typname = 'billing_status') then
+    create type billing_status as enum ('trial','active','past_due','suspended','canceled');
+  end if;
+end
+$$;
 -- Companies
 create table if not exists companies (
   id uuid primary key default gen_random_uuid(),
