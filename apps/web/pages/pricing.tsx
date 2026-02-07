@@ -139,8 +139,8 @@ export default function Pricing({ initialPlans, initialConfigured }: PricingProp
             <p className="section-subtitle">Pricing</p>
             <h1 className="hero-title">Three tiers. One enterprise stack.</h1>
             <p className="hero-copy">
-              Company-level billing, RBAC, audit logs, and AI governance with metered usage, alerts,
-              and hard caps.
+              Company-level billing with metered usage, alerts, and hard caps across all tiers, with
+              advanced controls like RBAC, audit logs, and AI governance available on selected plans.
             </p>
           </div>
           <div className="hero-card">
