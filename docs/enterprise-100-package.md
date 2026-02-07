@@ -289,13 +289,13 @@ $$;
 create or replace function public.is_member(p_company_id uuid)
 returns boolean
 language sql stable as $$
-  exists(select 1 from public.company_memberships where company_id = p_company_id and user_id = auth.uid())
+  select exists(select 1 from public.company_memberships where company_id = p_company_id and user_id = auth.uid())
 $$;
 
 create or replace function public.is_adminish(p_company_id uuid)
 returns boolean
 language sql stable as $$
-  exists(
+  select exists(
     select 1 from public.company_memberships
     where company_id = p_company_id
       and user_id = auth.uid()
