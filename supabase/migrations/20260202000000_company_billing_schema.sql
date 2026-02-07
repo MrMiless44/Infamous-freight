@@ -146,6 +146,8 @@ create table if not exists public.stripe_subscription_items (
   primary key (company_id, price_id)
 );
 
+create index if not exists idx_stripe_subscription_items_subscription_item_id
+  on public.stripe_subscription_items (subscription_item_id);
 -- ops
 create table if not exists public.loads (
   id uuid primary key default gen_random_uuid(),
