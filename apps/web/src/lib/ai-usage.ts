@@ -21,13 +21,21 @@ export async function recordAiAction(companyId: string, qty = 1) {
   }
 
   const key = monthKey();
+
+  // Ensure an aggregate row exists for this company/month without
+  // overwriting existing usage if the row is already present.
+  await supabaseAdmin
+    .from("ai_usage_aggregates")
+    .insert(
+      { company_id: companyId, month_key: key, actions_used: 0 },
+      { onConflict: "company_id,month_key", ignoreDuplicates: true },
+    );
+
   const { data: agg } = await supabaseAdmin
     .from("ai_usage_aggregates")
-    .upsert(
-      { company_id: companyId, month_key: key, actions_used: 0 },
-      { onConflict: "company_id,month_key" },
-    )
     .select("*")
+    .eq("company_id", companyId)
+    .eq("month_key", key)
     .single();
 
   const used = (agg?.actions_used ?? 0) + qty;
