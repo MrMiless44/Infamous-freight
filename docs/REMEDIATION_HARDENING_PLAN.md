@@ -1,7 +1,7 @@
-# Infæmous Freight Enterprise — Remediation & Hardening Plan (100%)
+# Infæmous Freight — Remediation & Hardening Plan (100%)
 
 This document is the authoritative, CTO-level remediation and hardening plan for
-**Infæmous Freight Enterprises**. All missing items are identified, corrected,
+**Infæmous Freight**. All missing items are identified, corrected,
 and locked so execution can proceed without rework.
 
 ---
