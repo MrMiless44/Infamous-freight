@@ -170,7 +170,9 @@ create table if not exists public.documents (
   storage_path text not null,
   doc_type text not null default 'pod',
   uploaded_by uuid references auth.users(id) on delete set null,
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  constraint documents_storage_path_company_prefix_chk
+    check (storage_path like company_id::text || '/%')
 );
 
 create table if not exists public.status_events (
