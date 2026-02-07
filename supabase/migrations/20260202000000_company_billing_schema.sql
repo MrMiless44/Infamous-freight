@@ -379,12 +379,36 @@ create policy messages_admin_delete on public.messages
 -- storage policies (requires bucket named 'documents')
 drop policy if exists "documents_read_company" on storage.objects;
 create policy "documents_read_company" on storage.objects for select
-using (bucket_id='documents' and public.is_member((split_part(name,'/',1))::uuid));
+using (
+  bucket_id = 'documents'
+  and exists (
+    select 1
+    from public.documents d
+    where d.storage_path = name
+      and public.is_member(d.company_id)
+  )
+);
 
 drop policy if exists "documents_insert_company" on storage.objects;
 create policy "documents_insert_company" on storage.objects for insert
-with check (bucket_id='documents' and public.is_member((split_part(name,'/',1))::uuid));
+with check (
+  bucket_id = 'documents'
+  and exists (
+    select 1
+    from public.documents d
+    where d.storage_path = name
+      and public.is_member(d.company_id)
+  )
+);
 
 drop policy if exists "documents_delete_admin" on storage.objects;
 create policy "documents_delete_admin" on storage.objects for delete
-using (bucket_id='documents' and public.is_adminish((split_part(name,'/',1))::uuid));
+using (
+  bucket_id = 'documents'
+  and exists (
+    select 1
+    from public.documents d
+    where d.storage_path = name
+      and public.is_adminish(d.company_id)
+  )
+);
