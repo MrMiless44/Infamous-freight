@@ -1,0 +1,413 @@
+{
+  "timestamp": "2026-02-07T13:27:20.072292",
+  "base_url": "https://truck-marketplace-6.preview.emergentagent.com",
+  "summary": {
+    "tests_run": 26,
+    "tests_passed": 26,
+    "success_rate": 100.0
+  },
+  "detailed_results": [
+    {
+      "name": "Root endpoint (/api/)",
+      "success": true,
+      "details": "{\"message\":\"Inf\u00e6mous Freight API\",\"status\":\"running\"}",
+      "response_data": {
+        "message": "Inf\u00e6mous Freight API",
+        "status": "running"
+      }
+    },
+    {
+      "name": "Health check (/api/health)",
+      "success": true,
+      "details": "{\"ok\":true,\"time\":\"2026-02-07T13:27:15.819742+00:00\"}",
+      "response_data": {
+        "ok": true,
+        "time": "2026-02-07T13:27:15.819742+00:00"
+      }
+    },
+    {
+      "name": "Shipper registration",
+      "success": true,
+      "details": "",
+      "response_data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYThjMWJjMjAtYTQ2OC00ZWU3LWEzMjEtN2VmMzM0YTU4ZDZjIiwiZW1haWwiOiJzaGlwcGVyXzE3NzA0NzA4MzVAdGVzdC5jb20iLCJleHAiOjE3NzA3MzAwMzZ9.3U0F14NEn1B09ZlCn3EpXvbUyhpaX3vpWDwp69edwWM",
+        "user": {
+          "id": "a8c1bc20-a468-4ee7-a321-7ef334a58d6c",
+          "email": "shipper_1770470835@test.com",
+          "display_name": "Test Shipper Co",
+          "role": "shipper"
+        }
+      }
+    },
+    {
+      "name": "Carrier registration",
+      "success": true,
+      "details": "",
+      "response_data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMGVkZjMyZTUtN2FiZC00OTkzLTgyMTAtMmFkYmVhOTk4M2U2IiwiZW1haWwiOiJjYXJyaWVyXzE3NzA0NzA4MzVAdGVzdC5jb20iLCJleHAiOjE3NzA3MzAwMzZ9.oycTi8IDaExV3gSdjHiUULgA5GpNEnBrPyh5ZR9KGoA",
+        "user": {
+          "id": "0edf32e5-7abd-4993-8210-2adbea9983e6",
+          "email": "carrier_1770470835@test.com",
+          "display_name": "Test Carrier LLC",
+          "role": "carrier"
+        }
+      }
+    },
+    {
+      "name": "Shipper login",
+      "success": true,
+      "details": "",
+      "response_data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYThjMWJjMjAtYTQ2OC00ZWU3LWEzMjEtN2VmMzM0YTU4ZDZjIiwiZW1haWwiOiJzaGlwcGVyXzE3NzA0NzA4MzVAdGVzdC5jb20iLCJleHAiOjE3NzA3MzAwMzZ9.3U0F14NEn1B09ZlCn3EpXvbUyhpaX3vpWDwp69edwWM",
+        "user": {
+          "id": "a8c1bc20-a468-4ee7-a321-7ef334a58d6c",
+          "email": "shipper_1770470835@test.com",
+          "display_name": "Test Shipper Co",
+          "role": "shipper"
+        }
+      }
+    },
+    {
+      "name": "Carrier login",
+      "success": true,
+      "details": "",
+      "response_data": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMGVkZjMyZTUtN2FiZC00OTkzLTgyMTAtMmFkYmVhOTk4M2U2IiwiZW1haWwiOiJjYXJyaWVyXzE3NzA0NzA4MzVAdGVzdC5jb20iLCJleHAiOjE3NzA3MzAwMzZ9.oycTi8IDaExV3gSdjHiUULgA5GpNEnBrPyh5ZR9KGoA",
+        "user": {
+          "id": "0edf32e5-7abd-4993-8210-2adbea9983e6",
+          "email": "carrier_1770470835@test.com",
+          "display_name": "Test Carrier LLC",
+          "role": "carrier"
+        }
+      }
+    },
+    {
+      "name": "Shipper /auth/me",
+      "success": true,
+      "details": "{\"id\":\"a8c1bc20-a468-4ee7-a321-7ef334a58d6c\",\"email\":\"shipper_1770470835@test.com\",\"display_name\":\"Test Shipper Co\",\"role\":\"shipper\",\"company_name\":null,\"phone\":null,\"dot_number\":null,\"mc_number\":null,\"home_city\":null,\"home_state\":null,\"created_at\":\"2026-02-07T13:27:15.863594+00:00\"}",
+      "response_data": {
+        "id": "a8c1bc20-a468-4ee7-a321-7ef334a58d6c",
+        "email": "shipper_1770470835@test.com",
+        "display_name": "Test Shipper Co",
+        "role": "shipper",
+        "company_name": null,
+        "phone": null,
+        "dot_number": null,
+        "mc_number": null,
+        "home_city": null,
+        "home_state": null,
+        "created_at": "2026-02-07T13:27:15.863594+00:00"
+      }
+    },
+    {
+      "name": "Carrier /auth/me",
+      "success": true,
+      "details": "{\"id\":\"0edf32e5-7abd-4993-8210-2adbea9983e6\",\"email\":\"carrier_1770470835@test.com\",\"display_name\":\"Test Carrier LLC\",\"role\":\"carrier\",\"company_name\":null,\"phone\":null,\"dot_number\":null,\"mc_number\":null,\"home_city\":null,\"home_state\":null,\"created_at\":\"2026-02-07T13:27:16.182684+00:00\"}",
+      "response_data": {
+        "id": "0edf32e5-7abd-4993-8210-2adbea9983e6",
+        "email": "carrier_1770470835@test.com",
+        "display_name": "Test Carrier LLC",
+        "role": "carrier",
+        "company_name": null,
+        "phone": null,
+        "dot_number": null,
+        "mc_number": null,
+        "home_city": null,
+        "home_state": null,
+        "created_at": "2026-02-07T13:27:16.182684+00:00"
+      }
+    },
+    {
+      "name": "Create load",
+      "success": true,
+      "details": "",
+      "response_data": {
+        "id": "3d851aa0-016a-4460-b384-cc2bd50080b5",
+        "created_by": "a8c1bc20-a468-4ee7-a321-7ef334a58d6c",
+        "created_by_name": "Test Shipper Co",
+        "status": "posted",
+        "pickup_city": "Los Angeles",
+        "pickup_state": "CA",
+        "pickup_date": "2026-02-10",
+        "dropoff_city": "Phoenix",
+        "dropoff_state": "AZ",
+        "dropoff_date": "2026-02-12",
+        "commodity": "Electronics",
+        "weight_lbs": 25000,
+        "equipment": "van",
+        "target_rate_cents": 250000,
+        "notes": "Fragile cargo, handle with care",
+        "created_at": "2026-02-07T13:27:17.037857+00:00",
+        "updated_at": "2026-02-07T13:27:17.037857+00:00"
+      }
+    },
+    {
+      "name": "List all loads",
+      "success": true,
+      "details": "[{\"id\":\"3d851aa0-016a-4460-b384-cc2bd50080b5\",\"created_by\":\"a8c1bc20-a468-4ee7-a321-7ef334a58d6c\",\"created_by_name\":\"Test Shipper Co\",\"status\":\"posted\",\"pickup_city\":\"Los Angeles\",\"pickup_state\":\"CA\",\"pickup_date\":\"2026-02-10\",\"dropoff_city\":\"Phoenix\",\"dropoff_state\":\"AZ\",\"dropoff_date\":\"2026-02-12\",\"commodity\":\"Electronics\",\"weight_lbs\":25000,\"equipment\":\"van\",\"target_rate_cents\":250000,\"notes\":\"Fragile cargo, handle with care\",\"created_at\":\"2026-02-07T13:27:17.037857+00:00\",\"updated_at\":\"2026-02-07T13:27:17.037857+00:00\"}]",
+      "response_data": [
+        {
+          "id": "3d851aa0-016a-4460-b384-cc2bd50080b5",
+          "created_by": "a8c1bc20-a468-4ee7-a321-7ef334a58d6c",
+          "created_by_name": "Test Shipper Co",
+          "status": "posted",
+          "pickup_city": "Los Angeles",
+          "pickup_state": "CA",
+          "pickup_date": "2026-02-10",
+          "dropoff_city": "Phoenix",
+          "dropoff_state": "AZ",
+          "dropoff_date": "2026-02-12",
+          "commodity": "Electronics",
+          "weight_lbs": 25000,
+          "equipment": "van",
+          "target_rate_cents": 250000,
+          "notes": "Fragile cargo, handle with care",
+          "created_at": "2026-02-07T13:27:17.037857+00:00",
+          "updated_at": "2026-02-07T13:27:17.037857+00:00"
+        }
+      ]
+    },
+    {
+      "name": "Get specific load",
+      "success": true,
+      "details": "{\"id\":\"3d851aa0-016a-4460-b384-cc2bd50080b5\",\"created_by\":\"a8c1bc20-a468-4ee7-a321-7ef334a58d6c\",\"created_by_name\":\"Test Shipper Co\",\"status\":\"posted\",\"pickup_city\":\"Los Angeles\",\"pickup_state\":\"CA\",\"pickup_date\":\"2026-02-10\",\"dropoff_city\":\"Phoenix\",\"dropoff_state\":\"AZ\",\"dropoff_date\":\"2026-02-12\",\"commodity\":\"Electronics\",\"weight_lbs\":25000,\"equipment\":\"van\",\"target_rate_cents\":250000,\"notes\":\"Fragile cargo, handle with care\",\"created_at\":\"2026-02-07T13:27:17.037857+00:00\",\"updated_at\":\"2026-02-07T13:27:17.037857+00:00\"}",
+      "response_data": {
+        "id": "3d851aa0-016a-4460-b384-cc2bd50080b5",
+        "created_by": "a8c1bc20-a468-4ee7-a321-7ef334a58d6c",
+        "created_by_name": "Test Shipper Co",
+        "status": "posted",
+        "pickup_city": "Los Angeles",
+        "pickup_state": "CA",
+        "pickup_date": "2026-02-10",
+        "dropoff_city": "Phoenix",
+        "dropoff_state": "AZ",
+        "dropoff_date": "2026-02-12",
+        "commodity": "Electronics",
+        "weight_lbs": 25000,
+        "equipment": "van",
+        "target_rate_cents": 250000,
+        "notes": "Fragile cargo, handle with care",
+        "created_at": "2026-02-07T13:27:17.037857+00:00",
+        "updated_at": "2026-02-07T13:27:17.037857+00:00"
+      }
+    },
+    {
+      "name": "Get shipper's loads",
+      "success": true,
+      "details": "[{\"id\":\"3d851aa0-016a-4460-b384-cc2bd50080b5\",\"created_by\":\"a8c1bc20-a468-4ee7-a321-7ef334a58d6c\",\"created_by_name\":\"Test Shipper Co\",\"status\":\"posted\",\"pickup_city\":\"Los Angeles\",\"pickup_state\":\"CA\",\"pickup_date\":\"2026-02-10\",\"dropoff_city\":\"Phoenix\",\"dropoff_state\":\"AZ\",\"dropoff_date\":\"2026-02-12\",\"commodity\":\"Electronics\",\"weight_lbs\":25000,\"equipment\":\"van\",\"target_rate_cents\":250000,\"notes\":\"Fragile cargo, handle with care\",\"created_at\":\"2026-02-07T13:27:17.037857+00:00\",\"updated_at\":\"2026-02-07T13:27:17.037857+00:00\"}]",
+      "response_data": [
+        {
+          "id": "3d851aa0-016a-4460-b384-cc2bd50080b5",
+          "created_by": "a8c1bc20-a468-4ee7-a321-7ef334a58d6c",
+          "created_by_name": "Test Shipper Co",
+          "status": "posted",
+          "pickup_city": "Los Angeles",
+          "pickup_state": "CA",
+          "pickup_date": "2026-02-10",
+          "dropoff_city": "Phoenix",
+          "dropoff_state": "AZ",
+          "dropoff_date": "2026-02-12",
+          "commodity": "Electronics",
+          "weight_lbs": 25000,
+          "equipment": "van",
+          "target_rate_cents": 250000,
+          "notes": "Fragile cargo, handle with care",
+          "created_at": "2026-02-07T13:27:17.037857+00:00",
+          "updated_at": "2026-02-07T13:27:17.037857+00:00"
+        }
+      ]
+    },
+    {
+      "name": "Create bid",
+      "success": true,
+      "details": "",
+      "response_data": {
+        "id": "3bbfbc17-f868-4d0c-afe0-90dfbeca3343",
+        "load_id": "3d851aa0-016a-4460-b384-cc2bd50080b5",
+        "carrier_id": "0edf32e5-7abd-4993-8210-2adbea9983e6",
+        "carrier_name": "Test Carrier LLC",
+        "status": "submitted",
+        "offer_rate_cents": 240000,
+        "message": "Experienced carrier, can handle this route efficiently",
+        "created_at": "2026-02-07T13:27:17.194473+00:00"
+      }
+    },
+    {
+      "name": "Get load bids (shipper)",
+      "success": true,
+      "details": "[{\"id\":\"3bbfbc17-f868-4d0c-afe0-90dfbeca3343\",\"load_id\":\"3d851aa0-016a-4460-b384-cc2bd50080b5\",\"carrier_id\":\"0edf32e5-7abd-4993-8210-2adbea9983e6\",\"carrier_name\":\"Test Carrier LLC\",\"status\":\"submitted\",\"offer_rate_cents\":240000,\"message\":\"Experienced carrier, can handle this route efficiently\",\"created_at\":\"2026-02-07T13:27:17.194473+00:00\"}]",
+      "response_data": [
+        {
+          "id": "3bbfbc17-f868-4d0c-afe0-90dfbeca3343",
+          "load_id": "3d851aa0-016a-4460-b384-cc2bd50080b5",
+          "carrier_id": "0edf32e5-7abd-4993-8210-2adbea9983e6",
+          "carrier_name": "Test Carrier LLC",
+          "status": "submitted",
+          "offer_rate_cents": 240000,
+          "message": "Experienced carrier, can handle this route efficiently",
+          "created_at": "2026-02-07T13:27:17.194473+00:00"
+        }
+      ]
+    },
+    {
+      "name": "Get carrier's bids",
+      "success": true,
+      "details": "[{\"id\":\"3bbfbc17-f868-4d0c-afe0-90dfbeca3343\",\"load_id\":\"3d851aa0-016a-4460-b384-cc2bd50080b5\",\"carrier_id\":\"0edf32e5-7abd-4993-8210-2adbea9983e6\",\"carrier_name\":\"Test Carrier LLC\",\"status\":\"submitted\",\"offer_rate_cents\":240000,\"message\":\"Experienced carrier, can handle this route efficiently\",\"created_at\":\"2026-02-07T13:27:17.194473+00:00\"}]",
+      "response_data": [
+        {
+          "id": "3bbfbc17-f868-4d0c-afe0-90dfbeca3343",
+          "load_id": "3d851aa0-016a-4460-b384-cc2bd50080b5",
+          "carrier_id": "0edf32e5-7abd-4993-8210-2adbea9983e6",
+          "carrier_name": "Test Carrier LLC",
+          "status": "submitted",
+          "offer_rate_cents": 240000,
+          "message": "Experienced carrier, can handle this route efficiently",
+          "created_at": "2026-02-07T13:27:17.194473+00:00"
+        }
+      ]
+    },
+    {
+      "name": "Book load (accept bid)",
+      "success": true,
+      "details": "",
+      "response_data": {
+        "id": "2f6bffe4-903a-4e76-97ac-b295ce65980b",
+        "load_id": "3d851aa0-016a-4460-b384-cc2bd50080b5",
+        "shipper_id": "a8c1bc20-a468-4ee7-a321-7ef334a58d6c",
+        "carrier_id": "0edf32e5-7abd-4993-8210-2adbea9983e6",
+        "driver_id": null,
+        "status": "active",
+        "booked_rate_cents": 240000,
+        "created_at": "2026-02-07T13:27:17.312464+00:00"
+      }
+    },
+    {
+      "name": "Get shipper assignments",
+      "success": true,
+      "details": "[{\"id\":\"2f6bffe4-903a-4e76-97ac-b295ce65980b\",\"load_id\":\"3d851aa0-016a-4460-b384-cc2bd50080b5\",\"shipper_id\":\"a8c1bc20-a468-4ee7-a321-7ef334a58d6c\",\"carrier_id\":\"0edf32e5-7abd-4993-8210-2adbea9983e6\",\"driver_id\":null,\"status\":\"active\",\"booked_rate_cents\":240000,\"created_at\":\"2026-02-07T13:27:17.312464+00:00\"}]",
+      "response_data": [
+        {
+          "id": "2f6bffe4-903a-4e76-97ac-b295ce65980b",
+          "load_id": "3d851aa0-016a-4460-b384-cc2bd50080b5",
+          "shipper_id": "a8c1bc20-a468-4ee7-a321-7ef334a58d6c",
+          "carrier_id": "0edf32e5-7abd-4993-8210-2adbea9983e6",
+          "driver_id": null,
+          "status": "active",
+          "booked_rate_cents": 240000,
+          "created_at": "2026-02-07T13:27:17.312464+00:00"
+        }
+      ]
+    },
+    {
+      "name": "Get carrier assignments",
+      "success": true,
+      "details": "[{\"id\":\"2f6bffe4-903a-4e76-97ac-b295ce65980b\",\"load_id\":\"3d851aa0-016a-4460-b384-cc2bd50080b5\",\"shipper_id\":\"a8c1bc20-a468-4ee7-a321-7ef334a58d6c\",\"carrier_id\":\"0edf32e5-7abd-4993-8210-2adbea9983e6\",\"driver_id\":null,\"status\":\"active\",\"booked_rate_cents\":240000,\"created_at\":\"2026-02-07T13:27:17.312464+00:00\"}]",
+      "response_data": [
+        {
+          "id": "2f6bffe4-903a-4e76-97ac-b295ce65980b",
+          "load_id": "3d851aa0-016a-4460-b384-cc2bd50080b5",
+          "shipper_id": "a8c1bc20-a468-4ee7-a321-7ef334a58d6c",
+          "carrier_id": "0edf32e5-7abd-4993-8210-2adbea9983e6",
+          "driver_id": null,
+          "status": "active",
+          "booked_rate_cents": 240000,
+          "created_at": "2026-02-07T13:27:17.312464+00:00"
+        }
+      ]
+    },
+    {
+      "name": "Get thread by load",
+      "success": true,
+      "details": "",
+      "response_data": {
+        "id": "ed353fef-b0bf-410c-b901-dd09f0a34070",
+        "load_id": "3d851aa0-016a-4460-b384-cc2bd50080b5",
+        "created_at": "2026-02-07T13:27:17.312464+00:00",
+        "summary": null
+      }
+    },
+    {
+      "name": "Send message (shipper)",
+      "success": true,
+      "details": "{\"id\":\"fac0fe80-dd01-4217-be3e-00ceb07852de\",\"thread_id\":\"ed353fef-b0bf-410c-b901-dd09f0a34070\",\"sender_id\":\"a8c1bc20-a468-4ee7-a321-7ef334a58d6c\",\"sender_name\":\"Test Shipper Co\",\"body\":\"Hi, when can you pick up the load?\",\"created_at\":\"2026-02-07T13:27:17.488164+00:00\"}",
+      "response_data": {
+        "id": "fac0fe80-dd01-4217-be3e-00ceb07852de",
+        "thread_id": "ed353fef-b0bf-410c-b901-dd09f0a34070",
+        "sender_id": "a8c1bc20-a468-4ee7-a321-7ef334a58d6c",
+        "sender_name": "Test Shipper Co",
+        "body": "Hi, when can you pick up the load?",
+        "created_at": "2026-02-07T13:27:17.488164+00:00"
+      }
+    },
+    {
+      "name": "Send message (carrier)",
+      "success": true,
+      "details": "{\"id\":\"ff20f9f9-4aa7-404f-aec3-6c0ed1d9580d\",\"thread_id\":\"ed353fef-b0bf-410c-b901-dd09f0a34070\",\"sender_id\":\"0edf32e5-7abd-4993-8210-2adbea9983e6\",\"sender_name\":\"Test Carrier LLC\",\"body\":\"I can pick it up tomorrow morning at 8 AM.\",\"created_at\":\"2026-02-07T13:27:17.530508+00:00\"}",
+      "response_data": {
+        "id": "ff20f9f9-4aa7-404f-aec3-6c0ed1d9580d",
+        "thread_id": "ed353fef-b0bf-410c-b901-dd09f0a34070",
+        "sender_id": "0edf32e5-7abd-4993-8210-2adbea9983e6",
+        "sender_name": "Test Carrier LLC",
+        "body": "I can pick it up tomorrow morning at 8 AM.",
+        "created_at": "2026-02-07T13:27:17.530508+00:00"
+      }
+    },
+    {
+      "name": "Get thread messages",
+      "success": true,
+      "details": "[{\"id\":\"fac0fe80-dd01-4217-be3e-00ceb07852de\",\"thread_id\":\"ed353fef-b0bf-410c-b901-dd09f0a34070\",\"sender_id\":\"a8c1bc20-a468-4ee7-a321-7ef334a58d6c\",\"sender_name\":\"Test Shipper Co\",\"body\":\"Hi, when can you pick up the load?\",\"created_at\":\"2026-02-07T13:27:17.488164+00:00\"},{\"id\":\"ff20f9f9-4aa7-404f-aec3-6c0ed1d9580d\",\"thread_id\":\"ed353fef-b0bf-410c-b901-dd09f0a34070\",\"sender_id\":\"0edf32e5-7abd-4993-8210-2adbea9983e6\",\"sender_name\":\"Test Carrier LLC\",\"body\":\"I can pick it up tomorrow morning at 8 AM.\",\"created_at\":\"2026-02-07T13:27:17.530508+00:00\"}]",
+      "response_data": [
+        {
+          "id": "fac0fe80-dd01-4217-be3e-00ceb07852de",
+          "thread_id": "ed353fef-b0bf-410c-b901-dd09f0a34070",
+          "sender_id": "a8c1bc20-a468-4ee7-a321-7ef334a58d6c",
+          "sender_name": "Test Shipper Co",
+          "body": "Hi, when can you pick up the load?",
+          "created_at": "2026-02-07T13:27:17.488164+00:00"
+        },
+        {
+          "id": "ff20f9f9-4aa7-404f-aec3-6c0ed1d9580d",
+          "thread_id": "ed353fef-b0bf-410c-b901-dd09f0a34070",
+          "sender_id": "0edf32e5-7abd-4993-8210-2adbea9983e6",
+          "sender_name": "Test Carrier LLC",
+          "body": "I can pick it up tomorrow morning at 8 AM.",
+          "created_at": "2026-02-07T13:27:17.530508+00:00"
+        }
+      ]
+    },
+    {
+      "name": "AI thread summarization",
+      "success": true,
+      "details": "",
+      "response_data": {
+        "ok": true,
+        "thread_id": "ed353fef-b0bf-410c-b901-dd09f0a34070",
+        "summary": "- **Key decisions:** Scheduled pick-up for tomorrow morning at 8 AM.\n- **Rates/terms:** Not discussed in the thread.\n- **Next actions:** Carrier to pick up the load on the agreed date and time.\n- **Risks/issues:** None identified in the conversation."
+      }
+    },
+    {
+      "name": "Invalid login (should fail)",
+      "success": true,
+      "details": "{\"detail\":\"Invalid credentials\"}",
+      "response_data": {
+        "detail": "Invalid credentials"
+      }
+    },
+    {
+      "name": "Unauthorized access (should fail)",
+      "success": true,
+      "details": "{\"detail\":\"Not authenticated\"}",
+      "response_data": {
+        "detail": "Not authenticated"
+      }
+    },
+    {
+      "name": "Nonexistent load (should fail)",
+      "success": true,
+      "details": "{\"detail\":\"Load not found\"}",
+      "response_data": {
+        "detail": "Load not found"
+      }
+    }
+  ]
+}
