@@ -61,6 +61,11 @@ create table if not exists audit_logs (
   created_at timestamptz default now()
 );
 
+-- Indexes on frequently queried / foreign key columns
+create index if not exists idx_company_memberships_user_id on company_memberships(user_id);
+create index if not exists idx_company_billing_stripe_customer_id on company_billing(stripe_customer_id);
+create index if not exists idx_ai_usage_aggregates_company_id on ai_usage_aggregates(company_id);
+create index if not exists idx_audit_logs_company_id on audit_logs(company_id);
 -- Enable RLS
 alter table companies enable row level security;
 alter table company_memberships enable row level security;
