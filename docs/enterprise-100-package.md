@@ -478,12 +478,16 @@ export async function stripeWebhook(rawBody: string, sig: string) {
       .update({
         status,
         stripe_subscription_id: sub.id,
-        current_period_start: sub.current_period_start
-          ? new Date(sub.current_period_start * 1000).toISOString()
-          : null,
-        current_period_end: sub.current_period_end
-          ? new Date(sub.current_period_end * 1000).toISOString()
-          : null,
+        current_period_start:
+          typeof sub.current_period_start === "number" &&
+          sub.current_period_start > 0
+            ? new Date(sub.current_period_start * 1000).toISOString()
+            : null,
+        current_period_end:
+          typeof sub.current_period_end === "number" &&
+          sub.current_period_end > 0
+            ? new Date(sub.current_period_end * 1000).toISOString()
+            : null,
       })
       .eq("company_id", billing.company_id);
 
