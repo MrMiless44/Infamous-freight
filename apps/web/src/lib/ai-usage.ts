@@ -42,7 +42,11 @@ export async function recordAiActionsAndReport(
 
   const included = billing.ai_included;
   const pct = included > 0 ? used / included : 0;
-  const hardCap = included * billing.ai_hard_cap_multiplier;
+  const multiplier = billing.ai_hard_cap_multiplier;
+  if (typeof multiplier !== "number" || !Number.isFinite(multiplier) || multiplier <= 0) {
+    throw new Error("Invalid AI hard cap multiplier in billing config");
+  }
+  const hardCap = included * multiplier;
   const pct = included > 0 ? used / included : 0;
   const hardCap = included * billing.ai_hard_cap_multiplier;
 
