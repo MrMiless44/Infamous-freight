@@ -205,8 +205,8 @@ No duplicate pages. No hidden features.
 
 ### A. Single Source of Truth
 
-- **Production Web**: Netlify **or** Vercel (pick one)
-- **Preview**: the other
+- **Production Web**: Netlify (primary)
+- **Preview / Secondary Web**: Vercel
 - **API**: Fly.io only
 - **DB/Auth**: Supabase only
 
