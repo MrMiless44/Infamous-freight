@@ -49,10 +49,22 @@ export async function audit(
   action: string,
   meta: Record<string, unknown> = {},
 ) {
-  await supabaseAdmin.from("audit_logs").insert({
+  const { error } = await supabaseAdmin.from("audit_logs").insert({
     company_id: companyId,
     actor_user_id: actorUserId,
     action,
     meta,
   });
+
+  if (error) {
+    // Do not throw to avoid impacting primary flows, but ensure failures are visible.
+    // eslint-disable-next-line no-console
+    console.error("Failed to write audit log", {
+      error,
+      companyId,
+      actorUserId,
+      action,
+      meta,
+    });
+  }
 }
