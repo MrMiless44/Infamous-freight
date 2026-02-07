@@ -13,19 +13,22 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 function mapStripeStatus(
   status: string,
 ): "trial" | "active" | "past_due" | "suspended" | "canceled" {
-  if (status === "active") {
-    return "active";
+  switch (status) {
+    case "active":
+      return "active";
+    case "trialing":
+      return "trial";
+    case "past_due":
+    case "unpaid":
+      return "past_due";
+    case "canceled":
+      return "canceled";
+    case "incomplete":
+    case "incomplete_expired":
+      return "suspended";
+    default:
+      throw new Error(`Unhandled Stripe subscription status: ${status}`);
   }
-
-  if (status === "past_due") {
-    return "past_due";
-  }
-
-  if (status === "canceled") {
-    return "canceled";
-  }
-
-  return "trial";
 }
 
 export const config = {
