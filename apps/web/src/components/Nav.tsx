@@ -24,7 +24,7 @@ export function Nav() {
     <nav style={navStyle}>
       <div style={innerStyle}>
         <Link href="/" style={{ fontWeight: 700 }}>
-          Infæmous Freight
+          Infamous Freight
         </Link>
         <div style={linksStyle}>
           <Link href="/pricing">Pricing</Link>
