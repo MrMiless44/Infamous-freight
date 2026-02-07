@@ -23,9 +23,22 @@ create table if not exists public.company_memberships (
   user_id uuid not null references auth.users(id) on delete cascade,
   role public.membership_role not null default 'viewer',
   created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
   primary key (company_id, user_id)
 );
 
+create or replace function public.set_company_memberships_updated_at()
+returns trigger as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$ language plpgsql;
+
+create trigger set_company_memberships_updated_at
+before update on public.company_memberships
+for each row
+execute function public.set_company_memberships_updated_at();
 create table if not exists public.company_features (
   company_id uuid primary key references public.companies(id) on delete cascade,
   enable_ai boolean not null default true,
