@@ -461,12 +461,19 @@ const supabase = createClient(
 );
 
 export async function stripeWebhook(rawBody: string, sig: string) {
-  const event = stripe.webhooks.constructEvent(
-    rawBody,
-    sig,
-    process.env.STRIPE_WEBHOOK_SECRET!,
-  );
+  let event: Stripe.Event;
 
+  try {
+    event = stripe.webhooks.constructEvent(
+      rawBody,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET!,
+    );
+  } catch (err) {
+    // In a real HTTP handler, respond with 400 for invalid signature
+    console.error("Stripe webhook signature verification failed", err);
+    return;
+  }
   if (event.type.startsWith("customer.subscription.")) {
     const sub = event.data.object as Stripe.Subscription;
 
