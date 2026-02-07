@@ -9,7 +9,7 @@ create extension if not exists "pgcrypto";
 -- 1) Profiles (active company selection)
 create table if not exists public.profiles (
   user_id uuid primary key references auth.users(id) on delete cascade,
-  active_company_id uuid references public.companies(id) on delete set null,
+  active_company_id uuid references public.organizations(id) on delete set null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
