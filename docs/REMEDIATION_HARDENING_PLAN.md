@@ -148,30 +148,30 @@ Anything else is optional.
 
 ### A. Roles (Do Not Add More Yet)
 
-- owner
-- admin
-- dispatcher
-- driver
-- viewer
+- `OWNER`
+- `ADMIN`
+- `DISPATCH`
+- `DRIVER`
+- `BILLING`
+- `VIEWER`
 
 ### B. Permission Examples
 
-**Only owner/admin can:**
+**Only `OWNER`/`ADMIN`/`BILLING` can:**
 
 - change billing
 - approve overages
 - add users
 
-**dispatcher:**
+**`DISPATCH`:**
 
 - manage loads
 - message drivers
 
-**driver:**
+**`DRIVER`:**
 
 - view assignments
 - upload documents
-
 ### C. Audit Log (Required)
 
 Log:
