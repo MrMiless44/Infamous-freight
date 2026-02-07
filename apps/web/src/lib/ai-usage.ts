@@ -72,7 +72,9 @@ export async function recordAiActionsAndReport(
       meta: { used, included, hardCap },
     });
 
-    throw new Error("AI hard cap reached (200%). Upgrade or admin unlock required.");
+    throw new Error(
+      `AI hard cap reached (${billing.ai_hard_cap_multiplier * 100}%). Upgrade or admin unlock required.`,
+    );
   }
 
   const priceId = process.env.AI_METERED_PRICE_ID!;
