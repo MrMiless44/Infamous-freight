@@ -486,12 +486,19 @@ export async function stripeWebhook(rawBody: string, sig: string) {
     const sub = event.data.object as Stripe.Subscription;
 
     // Find company by stripe_customer_id
-    const { data: billing } = await supabase
+    const { data: billing, error: billingError } = await supabase
       .from("company_billing")
       .select("company_id")
       .eq("stripe_customer_id", String(sub.customer))
       .maybeSingle();
 
+    if (billingError) {
+      console.error("Failed to fetch company_billing record", {
+        error: billingError.message,
+        code: billingError.code,
+      });
+      throw billingError;
+    }
     if (!billing?.company_id) return;
 
     const status =
