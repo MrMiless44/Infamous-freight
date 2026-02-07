@@ -93,6 +93,10 @@ export async function recordAiActionsAndReport(
       action: "stripe.usage.not_reported_missing_sub_item",
       meta: { priceId },
     });
+
+    throw new Error(
+      `Stripe subscription item missing for AI metered price; usage was not billed (priceId=${priceId})`,
+    );
   }
 
   await supabaseAdmin.from("audit_logs").insert({
