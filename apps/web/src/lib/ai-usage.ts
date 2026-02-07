@@ -23,22 +23,21 @@ export async function recordAiActionsAndReport(
   if (billing.ai_hard_capped) throw new Error("AI hard cap reached");
 
   const month_key = utcMonthKey();
-  const { data: agg } = await supabaseAdmin
-    .from("ai_usage_aggregates")
-    .upsert(
-      { company_id: companyId, month_key, actions_used: 0 },
-      { onConflict: "company_id,month_key" },
-    )
-    .select("*")
+
+  // Atomically increment AI usage in the database and get the updated value.
+  const { data: usage, error: usageError } = await supabaseAdmin
+    .rpc("increment_ai_usage", {
+      company_id: companyId,
+      month_key,
+      qty,
+    })
     .single();
 
-  const used = (agg?.actions_used ?? 0) + qty;
+  if (usageError) {
+    throw usageError;
+  }
 
-  await supabaseAdmin
-    .from("ai_usage_aggregates")
-    .update({ actions_used: used })
-    .eq("company_id", companyId)
-    .eq("month_key", month_key);
+  const used = usage.actions_used;
 
   const included = billing.ai_included;
   const pct = included > 0 ? used / included : 0;
