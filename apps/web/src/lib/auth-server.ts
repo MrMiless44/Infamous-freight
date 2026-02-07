@@ -12,12 +12,22 @@ export async function requireUser(req: Request) {
 
 export async function getUserCompanies(userId: string) {
   const { data, error } = await supabaseAdmin
-    .from("company_memberships")
-    .select("company_id, role")
-    .eq("user_id", userId);
+    .from("users")
+    .select("organization_id")
+    .eq("id", userId)
+    .maybeSingle();
 
   if (error) throw new Error(error.message);
-  return data ?? [];
+  if (!data || !data.organization_id) return [];
+
+  return [
+    {
+      company_id: data.organization_id,
+      // Role information is not stored on the users table; keep it nullable
+      // to preserve the original return shape.
+      role: null as any,
+    },
+  ];
 }
 
 export async function getActiveCompanyId(userId: string) {
