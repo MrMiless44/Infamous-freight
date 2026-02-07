@@ -146,18 +146,10 @@ export async function POST(req: Request) {
           .from("company_billing")
           .update({ status: "active" })
           .eq("company_id", billing.company_id);
-        await supabaseAdmin
-          .from("company_features")
-          .update({ enable_ai_automation: true })
-          .eq("company_id", billing.company_id);
       } else {
         await supabaseAdmin
           .from("company_billing")
           .update({ status: "past_due" })
-          .eq("company_id", billing.company_id);
-        await supabaseAdmin
-          .from("company_features")
-          .update({ enable_ai_automation: false })
           .eq("company_id", billing.company_id);
       }
     }
