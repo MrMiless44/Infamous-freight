@@ -91,12 +91,12 @@ for each row execute function public.set_updated_at();
 
 -- tenant helpers
 create or replace function public.is_member(cid uuid)
-returns boolean language sql stable as $$
+returns boolean language sql security definer volatile as $$
   exists(select 1 from public.company_memberships where company_id = cid and user_id = auth.uid())
 $$;
 
 create or replace function public.is_adminish(cid uuid)
-returns boolean language sql stable as $$
+returns boolean language sql security definer volatile as $$
   exists(select 1 from public.company_memberships where company_id = cid and user_id = auth.uid() and role in ('owner','admin'))
 $$;
 
