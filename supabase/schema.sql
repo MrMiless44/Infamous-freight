@@ -1,5 +1,5 @@
 -- ============================================
--- Infæmous Freight Enterprise Core (100%)
+-- Infamous Freight Enterprise Core (100%)
 -- Company-level billing + RBAC + feature flags + AI usage + audit logs
 -- ============================================
 
