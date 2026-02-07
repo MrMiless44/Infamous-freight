@@ -219,6 +219,8 @@ create table if not exists public.documents (
     check (storage_path like company_id::text || '/%')
 );
 
+create index if not exists idx_documents_load_id
+  on public.documents (load_id);
 create table if not exists public.status_events (
   id uuid primary key default gen_random_uuid(),
   company_id uuid not null references public.companies(id) on delete cascade,
