@@ -1,34 +1,19 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+/* Global styles for Infæmous Freight */
+
+/* Remove any centering from previous template */
+.App {
+  min-height: 100vh;
+  background-color: #0b0b10;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
-}
-
+/* Remove default App-header styles */
 .App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+  background-color: transparent;
+  min-height: auto;
+  display: block;
 }
 
-.App-link {
-    color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+/* Ensure proper dark theme */
+html {
+  color-scheme: dark;
 }
