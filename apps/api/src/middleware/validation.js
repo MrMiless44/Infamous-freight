@@ -42,6 +42,13 @@ function validateEnum(field, allowed) {
     .withMessage(`${field} must be one of: ${Array.isArray(allowed) ? allowed.join(", ") : allowed}`);
 }
 
+// Validate enum values in query parameters
+function validateEnumQuery(field, allowed) {
+  return query(field)
+    .custom((value) => allowed.includes(value))
+    .withMessage(`${field} must be one of: ${Array.isArray(allowed) ? allowed.join(", ") : allowed}`);
+}
+
 // Common pagination query validators
 function validatePaginationQuery({ page = "page", pageSize = "pageSize", maxPageSize = 100 } = {}) {
   return [
@@ -74,11 +81,13 @@ module.exports = {
   validateUUID,
   validateUUIDBody,
   validateEnum,
+  validateEnumQuery,
   validatePaginationQuery,
   handleValidationErrors,
 };
 
 // Ensure single-line export patterns for verification script compatibility
 module.exports.validateEnum = validateEnum;
+module.exports.validateEnumQuery = validateEnumQuery;
 module.exports.validateUUIDBody = validateUUIDBody;
 module.exports.validatePaginationQuery = validatePaginationQuery;

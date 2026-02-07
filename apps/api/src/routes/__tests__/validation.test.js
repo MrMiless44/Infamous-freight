@@ -10,8 +10,11 @@ const {
   validateEmail,
   validatePhone,
   validateUUID,
+  validateEnum,
+  validateEnumQuery,
   handleValidationErrors,
 } = require('../../middleware/validation');
+const { SHIPMENT_STATUSES } = require('@infamous-freight/shared');
 
 describe('Validation Middleware', () => {
   let app;
@@ -364,6 +367,118 @@ describe('Validation Middleware', () => {
         .send({ email: 'invalid' });
 
       expect(res.body.details[0].field).toBe('email');
+    });
+  });
+
+  describe('validateEnum', () => {
+    beforeEach(() => {
+      app.post(
+        '/api/shipment',
+        validateEnum('status', SHIPMENT_STATUSES),
+        handleValidationErrors,
+        (_req, res) => {
+          res.json({ ok: true });
+        }
+      );
+    });
+
+    test('should accept valid enum value', async () => {
+      const res = await request(app)
+        .post('/api/shipment')
+        .send({ status: 'CREATED' });
+
+      expect(res.status).toBe(200);
+    });
+
+    test('should reject invalid enum value', async () => {
+      const res = await request(app)
+        .post('/api/shipment')
+        .send({ status: 'INVALID_STATUS' });
+
+      expect(res.status).toBe(400);
+      expect(res.body.details).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            msg: expect.stringContaining('must be one of'),
+          }),
+        ])
+      );
+    });
+
+    test('should list allowed enum values in error', async () => {
+      const res = await request(app)
+        .post('/api/shipment')
+        .send({ status: 'INVALID' });
+
+      expect(res.status).toBe(400);
+      const errorMsg = res.body.details[0].msg;
+      expect(errorMsg).toContain('CREATED');
+      expect(errorMsg).toContain('IN_TRANSIT');
+      expect(errorMsg).toContain('DELIVERED');
+      expect(errorMsg).toContain('CANCELLED');
+    });
+  });
+
+  describe('validateEnumQuery', () => {
+    beforeEach(() => {
+      app.get(
+        '/api/shipments',
+        validateEnumQuery('status', SHIPMENT_STATUSES).optional(),
+        handleValidationErrors,
+        (req, res) => {
+          res.json({ ok: true, status: req.query.status });
+        }
+      );
+    });
+
+    test('should accept valid enum value in query param', async () => {
+      const res = await request(app)
+        .get('/api/shipments?status=IN_TRANSIT');
+
+      expect(res.status).toBe(200);
+      expect(res.body.status).toBe('IN_TRANSIT');
+    });
+
+    test('should reject invalid enum value in query param', async () => {
+      const res = await request(app)
+        .get('/api/shipments?status=INVALID_STATUS');
+
+      expect(res.status).toBe(400);
+      expect(res.body.details).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            msg: expect.stringContaining('must be one of'),
+          }),
+        ])
+      );
+    });
+
+    test('should allow missing query param when optional', async () => {
+      const res = await request(app)
+        .get('/api/shipments');
+
+      expect(res.status).toBe(200);
+    });
+
+    test('should list all allowed values in error message', async () => {
+      const res = await request(app)
+        .get('/api/shipments?status=WRONG');
+
+      expect(res.status).toBe(400);
+      const errorMsg = res.body.details[0].msg;
+      SHIPMENT_STATUSES.forEach(status => {
+        expect(errorMsg).toContain(status);
+      });
+    });
+
+    test('should accept all valid enum values', async () => {
+      for (const status of SHIPMENT_STATUSES) {
+        const res = await request(app)
+          .get(`/api/shipments?status=${status}`);
+
+        expect(res.status).toBe(200);
+        expect(res.body.status).toBe(status);
+      }
     });
   });
 });

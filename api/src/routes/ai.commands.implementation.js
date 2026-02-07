@@ -30,7 +30,7 @@ router.post(
     requireScope("ai:command"),
     auditLog,
     [
-        validateString("prompt"),
+        validateString("prompt", { maxLength: 5000 }),
         handleValidationErrors,
     ],
     async (req, res, next) => {
@@ -176,7 +176,7 @@ router.post(
     requireScope("ai:command"),
     auditLog,
     [
-        validateString("text"),
+        validateString("text", { maxLength: 2000 }),
         handleValidationErrors,
     ],
     async (req, res, next) => {
@@ -231,7 +231,7 @@ router.post(
     requireScope("ai:command"),
     auditLog,
     [
-        validateString("text"),
+        validateString("text", { maxLength: 2000 }),
         handleValidationErrors,
     ],
     async (req, res, next) => {
@@ -272,7 +272,7 @@ router.post(
     requireScope("ai:command"),
     auditLog,
     [
-        validateString("transcription"),
+        validateString("transcription", { maxLength: 5000 }),
         handleValidationErrors,
     ],
     async (req, res, next) => {

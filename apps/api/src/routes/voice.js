@@ -81,7 +81,7 @@ router.post(
       const transcription = {
         text: "Voice transcription would be processed here",
         confidence: 0.95,
-        duration: duration,
+        duration: null,
         language: "en",
         // TODO: Integrate Whisper API when API key is available
         // const result = await openai.audio.transcriptions.create({
@@ -96,7 +96,7 @@ router.post(
           size: req.file.size,
           mimetype: req.file.mimetype,
         },
-        transcription: "Audio transcription not yet implemented",
+        transcription,
         timestamp: new Date().toISOString(),
         processingTime: Date.now() - startTime,
       };

@@ -94,7 +94,8 @@ jobs:
   notify:
     name: Send Notifications
     runs-on: ubuntu-latest
-    needs: [deploy-fly-api, deploy-vercel-web, deploy-railway-db, deploy-supabase, smoke-test, summary]
+    needs:
+      [deploy-fly-api, deploy-vercel-web, deploy-railway-db, deploy-supabase, smoke-test, summary]
     if: always()
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

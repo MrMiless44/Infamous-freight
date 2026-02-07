@@ -16,6 +16,7 @@ const stripeService = require("../services/stripe.service");
 const logger = require("../middleware/logger");
 const Sentry = require("@sentry/node");
 const { ApiResponse, HTTP_STATUS } = require("@infamous-freight/shared");
+const prisma = require("../db");
 
 // Rate limiter for billing operations (stricter due to payment sensitivity)
 const billingLimiter = limiters.billing;
@@ -60,6 +61,11 @@ router.post(
                     userId,
                 });
                 stripeCustomerId = customer.id;
+
+                await prisma.user.update({
+                    where: { id: userId },
+                    data: { stripeCustomerId },
+                });
             }
 
             // Create payment intent
@@ -126,6 +132,11 @@ router.post(
                     userId,
                 });
                 stripeCustomerId = customer.id;
+
+                await prisma.user.update({
+                    where: { id: userId },
+                    data: { stripeCustomerId },
+                });
             }
 
             // Create subscription

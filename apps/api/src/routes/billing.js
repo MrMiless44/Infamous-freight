@@ -205,21 +205,20 @@ router.post(
                             price: priceId,
                         },
                     ],
-                    payment_behavior: 'default_incomplete',
-                    expand: ['latest_invoice.payment_intent'],
+                    payment_behavior: "default_incomplete",
+                    expand: ["latest_invoice.payment_intent"],
                     metadata: {
                         userId: req.user.sub,
                         ...metadata,
                     },
                     automatic_tax: { enabled: true },
-                    payment_behavior: "default_incomplete",
                     payment_settings: { save_default_payment_method: "on_subscription" },
-                    expand: ["latest_invoice.payment_intent"],
                 },
                 STRIPE_CONNECT_ACCOUNT ? { stripeAccount: STRIPE_CONNECT_ACCOUNT } : {}
             );
 
-            const paymentIntent = subscription.latest_invoice?.payment_intent;
+            const latestInvoice = subscription.latest_invoice;
+            const paymentIntent = latestInvoice?.payment_intent;
             const clientSecret = paymentIntent?.client_secret || null;
 
             // Store subscription in database
@@ -235,16 +234,12 @@ router.post(
                 },
             }).catch(() => { }); // Non-blocking
 
-            const latestInvoice = subscription.latest_invoice;
-            const paymentIntent = latestInvoice?.payment_intent;
-
             res.status(201).json({
                 success: true,
                 subscriptionId: subscription.id,
                 status: subscription.status,
                 clientSecret,
                 nextBillingDate: new Date(subscription.current_period_end * 1000).toISOString(),
-                clientSecret: paymentIntent?.client_secret,
             });
         } catch (err) {
             next(err);

@@ -39,6 +39,13 @@ enum VehicleType {
   SEMI
 }
 
+enum ShipmentStatus {
+  CREATED
+  IN_TRANSIT
+  DELIVERED
+  CANCELLED
+}
+
 enum JobStatus {
   DRAFT
   REQUIRES_PAYMENT
@@ -315,17 +322,21 @@ model User {
   planRenewsAt         DateTime?
 
   // Relations
-  driverProfile     DriverProfile?
-  jobsAsShipper     Job[]               @relation("jobsAsShipper")
-  jobsAsDriver      Job[]               @relation("jobsAsDriver")
-  shipments         Shipment[]
-  payments          OldPayment[]        @relation("userPayments")
-  jobPayments       JobPayment[]        @relation("userJobPayments")
-  subscriptions     Subscription[]
-  entitlements      Entitlement[]
-  aiEvents          AiEvent[]
-  jobOffers         JobOffer[]
-  driverPerformance DriverPerformance[]
+  driverProfile        DriverProfile?
+  jobsAsShipper        Job[]                  @relation("jobsAsShipper")
+  jobsAsDriver         Job[]                  @relation("jobsAsDriver")
+  shipments            Shipment[]
+  payments             OldPayment[]           @relation("userPayments")
+  jobPayments          JobPayment[]           @relation("userJobPayments")
+  subscriptions        Subscription[]
+  entitlements         Entitlement[]
+  aiEvents             AiEvent[]
+  jobOffers            JobOffer[]
+  driverPerformance    DriverPerformance[]
+  disputes             Dispute[]
+  enforcementActions   EnforcementAction[]
+  riskScores           RiskScore[]
+  driverPayouts        DriverPayout[]
 
   @@index([email])
   @@index([role])
@@ -354,16 +365,16 @@ model Driver {
 }
 
 model Shipment {
-  id          String   @id @default(uuid())
-  trackingId  String   @unique
+  id          String         @id @default(uuid())
+  trackingId  String         @unique
   userId      String
   driverId    String?
   origin      String
   destination String
-  status      String   @default("pending")
+  status      ShipmentStatus @default(CREATED)
   reference   String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
 
   // Relations
   user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -571,6 +582,7 @@ model Job {
   podAssets         PodAsset[]
   jobOffers         JobOffer[]
   dispatchDecisions DispatchDecision[]
+  driverPayout      DriverPayout?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

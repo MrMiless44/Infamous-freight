@@ -36,6 +36,15 @@ const createLimiter = (name, options) => {
     res.on("finish", () => {
       if (res.statusCode === 429) {
         rateLimitMetrics.recordBlocked(name, key);
+        // Log rate limit breaches to analytics
+        logger.warn({
+          event: 'rate_limit_exceeded',
+          limiter: name,
+          key,
+          ip: req.ip,
+          user: req.user?.sub,
+          path: req.path,
+        });
       } else {
         rateLimitMetrics.recordSuccess(name);
       }

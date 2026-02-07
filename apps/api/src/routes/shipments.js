@@ -8,7 +8,7 @@ const {
   requireScope,
   auditLog,
 } = require("../middleware/security");
-const { validateEnum, validatePaginationQuery } = require("../middleware/validation");
+const { validateEnum, validateEnumQuery, validatePaginationQuery } = require("../middleware/validation");
 const { SHIPMENT_STATUSES } = require("@infamous-freight/shared");
 const {
   validateString,
@@ -34,7 +34,7 @@ router.get(
   requireScope("shipments:read"),
   cacheMiddleware(60),
   auditLog,
-  [...validatePaginationQuery(), validateEnum("status", SHIPMENT_STATUSES).optional(), handleValidationErrors],
+  [...validatePaginationQuery(), validateEnumQuery("status", SHIPMENT_STATUSES).optional(), handleValidationErrors],
   async (req, res, next) => {
     try {
       const { status, driverId } = req.query;
@@ -144,6 +144,14 @@ router.post(
         trackingId || reference || `TRK-${uuid().replace(/-/g, "").slice(0, 12)}`;
 
       // Use transaction to ensure atomic operation
+      const Sentry = require('@sentry/node');
+      Sentry.addBreadcrumb({
+        category: 'database',
+        message: 'Creating shipment with transaction',
+        level: 'info',
+        data: { userId, origin, destination },
+      });
+
       const result = await prisma.$transaction(
         async (tx) => {
           const shipment = await tx.shipment.create({
@@ -154,7 +162,7 @@ router.post(
               origin,
               destination,
               driverId: driverId || null,
-              status: "pending",
+              status: "CREATED",
             },
             include: {
               driver: {
@@ -242,6 +250,14 @@ router.patch(
 
       if (status !== undefined) updates.status = status;
       if (driverId !== undefined) updates.driverId = driverId;
+
+      const Sentry = require('@sentry/node');
+      Sentry.addBreadcrumb({
+        category: 'database',
+        message: 'Updating shipment with transaction',
+        level: 'info',
+        data: { shipmentId: req.params.id, updates },
+      });
 
       const result = await prisma.$transaction(
         async (tx) => {
@@ -345,10 +361,12 @@ router.delete(
 // Export shipments
 router.get(
   "/shipments/export/:format",
-  limiters.general,
+  limiters.export,
   authenticate,
+  requireOrganization,
   requireScope("shipments:read"),
   auditLog,
+  [validateEnumQuery("status", SHIPMENT_STATUSES).optional(), handleValidationErrors],
   async (req, res, next) => {
     try {
       const { format } = req.params;
