@@ -7,7 +7,7 @@ export async function requireActiveBilling(companyId: string) {
     .eq("company_id", companyId)
     .single();
 
-  if (!data || data.status !== "active") {
+  if (!data || (data.status !== "active" && data.status !== "trial")) {
     throw new Error("Billing not active");
   }
 
