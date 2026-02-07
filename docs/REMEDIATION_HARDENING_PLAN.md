@@ -214,11 +214,16 @@ No duplicates.
 
 ### B. Required Kill Switches
 
+The following kill switches are **design requirements** and **must be implemented**
+as environment- or configuration-driven feature flags in the codebase:
+
 - Disable AI automation globally
 - Disable billing checkout
 - Disable marketplace posting
 
-Safety valves are mandatory.
+These safety valves are mandatory for production readiness but are **not yet
+implemented in the current codebase** and must be tracked as explicit
+engineering work items.
 
 ---
 
