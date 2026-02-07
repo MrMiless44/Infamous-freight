@@ -153,7 +153,17 @@ create table if not exists public.loads (
   status text not null default 'posted',
   created_by uuid references auth.users(id) on delete set null,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  constraint loads_created_by_company_member_chk
+    check (
+      created_by is null
+      or exists (
+        select 1
+        from public.company_memberships m
+        where m.company_id = company_id
+          and m.user_id = created_by
+      )
+    )
 );
 
 drop trigger if exists trg_loads_updated on public.loads;
