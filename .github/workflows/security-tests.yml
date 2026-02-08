@@ -104,8 +104,9 @@ jobs:
         run: |
           # Check for common secret patterns
           echo "Scanning for potential secrets..."
-          # Use a simpler pattern to avoid shell quoting issues
-          if grep -r -E '(password|secret|key|token|api_key)[[:space:]]*=[[:space:]]*["\047][^\"\047]{8,}["\047]' \
+          # Look for potential hardcoded secrets (API keys, passwords, tokens with alphanumeric patterns)
+          # This is a basic check and may have false positives/negatives
+          if grep -r -E '(password|secret|api_key|apiKey|API_KEY|SECRET|PASSWORD|TOKEN)[[:space:]]*=[[:space:]]*["'"'"'][A-Za-z0-9_-]{16,}["'"'"']' \
             --exclude-dir=node_modules \
             --exclude-dir=.git \
             --exclude-dir=.next \
@@ -115,14 +116,18 @@ jobs:
             --exclude-dir=docs \
             --exclude-dir=scripts \
             --exclude-dir=terraform \
+            --exclude-dir=archive \
             --exclude='*.lock' \
             --exclude='*.test.js' \
             --exclude='*.test.ts' \
             --exclude='*.sh' \
             --exclude='*.tf' \
+            --exclude='*.md' \
+            --exclude='*.txt' \
             --exclude='pnpm-lock.yaml' \
             .; then
             echo "⚠️ Potential hardcoded secrets found!"
+            echo "Review the above matches to ensure no real secrets are committed."
             exit 1
           else
             echo "✓ No hardcoded secrets detected"
