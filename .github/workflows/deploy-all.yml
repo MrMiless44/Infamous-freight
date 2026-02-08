@@ -118,9 +118,10 @@ jobs:
 
       - name: Slack notification
         if: env.SLACK_WEBHOOK_URL != ''
-        uses: slackapi/slack-github-action@v1
+        uses: slackapi/slack-github-action@v2
         with:
           webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
           payload: |
             {
               "text": "${{ steps.status.outputs.emoji }} Multi-Platform Deployment ${{ steps.status.outputs.status }}",

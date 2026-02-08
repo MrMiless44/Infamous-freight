@@ -41,9 +41,10 @@ jobs:
 
       - name: Alert on failure - Slack
         if: failure()
-        uses: slackapi/slack-github-action@v1
+        uses: slackapi/slack-github-action@v2
         with:
           webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
           payload: |
             {
               "text": "🔴 UPTIME ALERT",
