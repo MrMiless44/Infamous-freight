@@ -41,6 +41,23 @@ export function getStatusColor(status) {
     withdrawn: 'bg-zinc-800 text-zinc-400 border-zinc-700',
     active: 'bg-emerald-950/50 text-emerald-400 border-emerald-800',
     completed: 'bg-blue-950/50 text-blue-400 border-blue-800',
+    open: 'bg-amber-950/50 text-amber-400 border-amber-800',
+    in_review: 'bg-blue-950/50 text-blue-400 border-blue-800',
+    resolved: 'bg-green-950/50 text-green-400 border-green-800',
+    escalated: 'bg-red-950/50 text-red-400 border-red-800',
+    pending: 'bg-amber-950/50 text-amber-400 border-amber-800',
+    held: 'bg-blue-950/50 text-blue-400 border-blue-800',
+    released: 'bg-green-950/50 text-green-400 border-green-800',
+    refunded: 'bg-zinc-800 text-zinc-400 border-zinc-700',
+    failed: 'bg-red-950/50 text-red-400 border-red-800',
+    paid: 'bg-green-950/50 text-green-400 border-green-800',
   };
   return colors[status] || colors.draft;
+}
+
+export function getRatingStars(rating) {
+  if (!rating) return '—';
+  const fullStars = Math.floor(rating);
+  const hasHalf = rating % 1 >= 0.5;
+  return '★'.repeat(fullStars) + (hasHalf ? '½' : '') + '☆'.repeat(5 - fullStars - (hasHalf ? 1 : 0));
 }

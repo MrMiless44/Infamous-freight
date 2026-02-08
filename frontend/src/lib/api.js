@@ -41,7 +41,7 @@ export const authApi = {
 };
 
 export const loadsApi = {
-  list: (status) => api.get('/loads', { params: { status } }),
+  list: (params) => api.get('/loads', { params }),
   myLoads: () => api.get('/loads/my'),
   get: (id) => api.get(`/loads/${id}`),
   create: (data) => api.post('/loads', data),
@@ -64,6 +64,58 @@ export const messagesApi = {
   getMessages: (threadId) => api.get(`/threads/${threadId}/messages`),
   send: (data) => api.post('/messages', data),
   summarize: (threadId) => api.post('/threads/summarize', { thread_id: threadId }),
+};
+
+export const ratingsApi = {
+  create: (data) => api.post('/ratings', data),
+  getUserRatings: (userId) => api.get(`/ratings/user/${userId}`),
+};
+
+export const disputesApi = {
+  create: (data) => api.post('/disputes', data),
+  myDisputes: () => api.get('/disputes/my'),
+  resolve: (id, resolution) => api.put(`/disputes/${id}/resolve`, null, { params: { resolution } }),
+};
+
+export const trackingApi = {
+  ping: (data) => api.post('/tracking/ping', data),
+  getHistory: (assignmentId) => api.get(`/tracking/${assignmentId}`),
+  getLatest: (assignmentId) => api.get(`/tracking/${assignmentId}/latest`),
+};
+
+export const documentsApi = {
+  upload: (assignmentId, docType, file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post(`/documents/upload?assignment_id=${assignmentId}&doc_type=${docType}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+  list: (assignmentId) => api.get(`/documents/${assignmentId}`),
+  get: (assignmentId, docId) => api.get(`/documents/${assignmentId}/${docId}`),
+};
+
+export const preferencesApi = {
+  getLanes: () => api.get('/preferences/lanes'),
+  addLane: (data) => api.post('/preferences/lanes', data),
+  deleteLane: (id) => api.delete(`/preferences/lanes/${id}`),
+  getMatchedLoads: () => api.get('/preferences/matched-loads'),
+};
+
+export const calculatorApi = {
+  calculateRate: (data) => api.post('/calculator/rate', data),
+};
+
+export const paymentsApi = {
+  getPackages: () => api.get('/packages'),
+  createCheckout: (data) => api.post('/payments/checkout', data),
+  getStatus: (sessionId) => api.get(`/payments/status/${sessionId}`),
+  myPayments: () => api.get('/payments/my'),
+};
+
+export const analyticsApi = {
+  getDashboard: () => api.get('/analytics/dashboard'),
+  getMarket: () => api.get('/analytics/market'),
 };
 
 export default api;
