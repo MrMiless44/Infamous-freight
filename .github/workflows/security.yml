@@ -39,7 +39,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
       
       - name: Enable Corepack
         run: corepack enable
@@ -48,6 +47,14 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           run_install: false
+
+      - name: Restore pnpm cache
+        uses: actions/cache@v5
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
 
       - name: Run pnpm audit
         run: pnpm audit --audit-level=high
