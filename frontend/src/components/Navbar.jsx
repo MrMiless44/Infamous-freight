@@ -8,7 +8,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Truck, Menu, User, LogOut, LayoutDashboard, Package, MessageSquare, Gavel } from 'lucide-react';
+import { 
+  Truck, Menu, User, LogOut, LayoutDashboard, Package, MessageSquare, 
+  Gavel, Calculator, Route, BarChart3, CreditCard, Shield
+} from 'lucide-react';
 
 export const Navbar = () => {
   const { user, logout } = useAuth();
@@ -56,6 +59,38 @@ export const Navbar = () => {
                 Loads
               </Button>
             </Link>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="gap-2" data-testid="nav-tools">
+                  <Calculator className="h-4 w-4" />
+                  Tools
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 bg-zinc-950 border-zinc-800">
+                <DropdownMenuItem asChild>
+                  <Link to="/calculator" className="cursor-pointer">
+                    <Calculator className="h-4 w-4 mr-2" />
+                    Rate Calculator
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/analytics" className="cursor-pointer">
+                    <BarChart3 className="h-4 w-4 mr-2" />
+                    Analytics
+                  </Link>
+                </DropdownMenuItem>
+                {user && (
+                  <DropdownMenuItem asChild>
+                    <Link to="/preferences" className="cursor-pointer">
+                      <Route className="h-4 w-4 mr-2" />
+                      Lane Preferences
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             {user && (
               <>
                 <Link to="/messages" data-testid="nav-messages">
@@ -90,6 +125,7 @@ export const Navbar = () => {
                     className="gap-2"
                     data-testid="user-menu-trigger"
                   >
+                    {user.is_verified && <Shield className="h-3 w-3 text-emerald-500" />}
                     <User className="h-4 w-4" />
                     <span className="hidden sm:inline font-mono text-sm">
                       {user.display_name || user.email}
@@ -100,15 +136,26 @@ export const Navbar = () => {
                   <div className="px-2 py-1.5">
                     <p className="text-sm font-medium">{user.display_name}</p>
                     <p className="text-xs text-zinc-500 font-mono">{user.email}</p>
-                    <p className="text-xs text-amber-500 mt-1 uppercase tracking-wider">
-                      {user.role}
-                    </p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs text-amber-500 uppercase tracking-wider">
+                        {user.role}
+                      </span>
+                      {user.rating && (
+                        <span className="text-xs text-zinc-500">⭐ {user.rating.toFixed(1)}</span>
+                      )}
+                    </div>
                   </div>
                   <DropdownMenuSeparator className="bg-zinc-800" />
                   <DropdownMenuItem asChild>
                     <Link to="/dashboard" className="cursor-pointer">
                       <LayoutDashboard className="h-4 w-4 mr-2" />
                       Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile" className="cursor-pointer">
+                      <User className="h-4 w-4 mr-2" />
+                      Profile
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
@@ -121,6 +168,19 @@ export const Navbar = () => {
                     <Link to="/bids/my" className="cursor-pointer">
                       <Gavel className="h-4 w-4 mr-2" />
                       My Bids
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/preferences" className="cursor-pointer">
+                      <Route className="h-4 w-4 mr-2" />
+                      Lane Preferences
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="bg-zinc-800" />
+                  <DropdownMenuItem asChild>
+                    <Link to="/payments" className="cursor-pointer">
+                      <CreditCard className="h-4 w-4 mr-2" />
+                      Premium Services
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-zinc-800" />
@@ -154,6 +214,12 @@ export const Navbar = () => {
                 <DropdownMenuItem asChild>
                   <Link to="/loads">Loads</Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/calculator">Rate Calculator</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/analytics">Analytics</Link>
+                </DropdownMenuItem>
                 {user && (
                   <>
                     <DropdownMenuItem asChild>
@@ -161,6 +227,12 @@ export const Navbar = () => {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <Link to="/dashboard">Dashboard</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/preferences">Lane Preferences</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/payments">Premium</Link>
                     </DropdownMenuItem>
                   </>
                 )}
