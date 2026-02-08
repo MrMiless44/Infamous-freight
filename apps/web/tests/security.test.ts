@@ -25,80 +25,68 @@ async function isDeploymentAccessible(url: string): Promise<boolean> {
   }
 }
 
+// Check deployment availability before running test suite
+let vercelAccessible = false;
+let flyAccessible = false;
+
+beforeAll(async () => {
+  vercelAccessible = await isDeploymentAccessible(VERCEL_URL);
+  flyAccessible = await isDeploymentAccessible(`${FLY_URL}/api/health`);
+
+  if (!vercelAccessible) {
+    console.warn(
+      `⚠️  Vercel deployment at ${VERCEL_URL} is not accessible - skipping related tests`,
+    );
+  }
+  if (!flyAccessible) {
+    console.warn(`⚠️  Fly.io deployment at ${FLY_URL} is not accessible - skipping related tests`);
+  }
+});
+
 describe("Security Headers - Vercel Deployment", () => {
-  let response: Response;
-  let deploymentAccessible: boolean;
+  let response: Response | undefined;
 
   beforeAll(async () => {
-    deploymentAccessible = await isDeploymentAccessible(VERCEL_URL);
-    if (deploymentAccessible) {
+    if (vercelAccessible) {
       response = await fetch(VERCEL_URL, { method: "HEAD" });
     }
   });
 
-  it("should return successful status", () => {
-    if (!deploymentAccessible) {
-      console.warn(`⚠️  Skipping test: Vercel deployment at ${VERCEL_URL} is not accessible`);
-      return;
-    }
-    expect(response.status).toBe(200);
+  it.skipIf(!vercelAccessible)("should return successful status", () => {
+    expect(response?.status).toBe(200);
   });
 
-  it("should have Content-Security-Policy header", () => {
-    if (!deploymentAccessible) {
-      console.warn(`⚠️  Skipping test: Vercel deployment at ${VERCEL_URL} is not accessible`);
-      return;
-    }
-    const csp = response.headers.get("content-security-policy");
+  it.skipIf(!vercelAccessible)("should have Content-Security-Policy header", () => {
+    const csp = response?.headers.get("content-security-policy");
     expect(csp).toBeDefined();
     expect(csp).toContain("default-src 'self'");
     expect(csp).toContain("frame-ancestors");
     expect(csp).toContain("upgrade-insecure-requests");
   });
 
-  it("should have Strict-Transport-Security header", () => {
-    if (!deploymentAccessible) {
-      console.warn(`⚠️  Skipping test: Vercel deployment at ${VERCEL_URL} is not accessible`);
-      return;
-    }
-    const hsts = response.headers.get("strict-transport-security");
+  it.skipIf(!vercelAccessible)("should have Strict-Transport-Security header", () => {
+    const hsts = response?.headers.get("strict-transport-security");
     expect(hsts).toBeDefined();
     // Vercel adds HSTS automatically
   });
 
-  it("should prevent clickjacking with X-Frame-Options", () => {
-    if (!deploymentAccessible) {
-      console.warn(`⚠️  Skipping test: Vercel deployment at ${VERCEL_URL} is not accessible`);
-      return;
-    }
-    const xfo = response.headers.get("x-frame-options");
+  it.skipIf(!vercelAccessible)("should prevent clickjacking with X-Frame-Options", () => {
+    const xfo = response?.headers.get("x-frame-options");
     expect(xfo).toBe("SAMEORIGIN");
   });
 
-  it("should have X-Content-Type-Options header", () => {
-    if (!deploymentAccessible) {
-      console.warn(`⚠️  Skipping test: Vercel deployment at ${VERCEL_URL} is not accessible`);
-      return;
-    }
-    const xcto = response.headers.get("x-content-type-options");
+  it.skipIf(!vercelAccessible)("should have X-Content-Type-Options header", () => {
+    const xcto = response?.headers.get("x-content-type-options");
     expect(xcto).toBe("nosniff");
   });
 
-  it("should have Referrer-Policy header", () => {
-    if (!deploymentAccessible) {
-      console.warn(`⚠️  Skipping test: Vercel deployment at ${VERCEL_URL} is not accessible`);
-      return;
-    }
-    const rp = response.headers.get("referrer-policy");
+  it.skipIf(!vercelAccessible)("should have Referrer-Policy header", () => {
+    const rp = response?.headers.get("referrer-policy");
     expect(rp).toBe("strict-origin-when-cross-origin");
   });
 
-  it("should have Permissions-Policy header", () => {
-    if (!deploymentAccessible) {
-      console.warn(`⚠️  Skipping test: Vercel deployment at ${VERCEL_URL} is not accessible`);
-      return;
-    }
-    const pp = response.headers.get("permissions-policy");
+  it.skipIf(!vercelAccessible)("should have Permissions-Policy header", () => {
+    const pp = response?.headers.get("permissions-policy");
     expect(pp).toBeDefined();
     expect(pp).toContain("camera=()");
     expect(pp).toContain("microphone=()");
@@ -106,13 +94,9 @@ describe("Security Headers - Vercel Deployment", () => {
     expect(pp).toContain("payment=()");
   });
 
-  it("should not expose sensitive server information", () => {
-    if (!deploymentAccessible) {
-      console.warn(`⚠️  Skipping test: Vercel deployment at ${VERCEL_URL} is not accessible`);
-      return;
-    }
-    const server = response.headers.get("server");
-    const xPoweredBy = response.headers.get("x-powered-by");
+  it.skipIf(!vercelAccessible)("should not expose sensitive server information", () => {
+    const server = response?.headers.get("server");
+    const xPoweredBy = response?.headers.get("x-powered-by");
 
     // Server header is OK if generic (e.g., "Vercel")
     // But should not expose version numbers
@@ -122,74 +106,45 @@ describe("Security Headers - Vercel Deployment", () => {
     }
   });
 
-  it("should have custom security headers from Edge Proxy", () => {
-    if (!deploymentAccessible) {
-      console.warn(`⚠️  Skipping test: Vercel deployment at ${VERCEL_URL} is not accessible`);
-      return;
-    }
+  it.skipIf(!vercelAccessible)("should have custom security headers from Edge Proxy", () => {
     // These are added by our proxy.ts middleware
-    const featureFlags = response.headers.get("x-feature-flags-status");
+    const featureFlags = response?.headers.get("x-feature-flags-status");
     expect(featureFlags).toBe("ready");
   });
 });
 
 describe("Security Headers - Fly.io API Backend", () => {
-  let response: Response;
-  let deploymentAccessible: boolean;
+  let response: Response | undefined;
 
   beforeAll(async () => {
-    deploymentAccessible = await isDeploymentAccessible(`${FLY_URL}/api/health`);
-    if (deploymentAccessible) {
+    if (flyAccessible) {
       response = await fetch(`${FLY_URL}/api/health`, { method: "HEAD" });
     }
   });
 
-  it("should return successful status", () => {
-    if (!deploymentAccessible) {
-      console.warn(`⚠️  Skipping test: Fly.io deployment at ${FLY_URL} is not accessible`);
-      return;
-    }
-    expect(response.status).toBe(200);
+  it.skipIf(!flyAccessible)("should return successful status", () => {
+    expect(response?.status).toBe(200);
   });
 
-  it("should have X-Frame-Options header", () => {
-    if (!deploymentAccessible) {
-      console.warn(`⚠️  Skipping test: Fly.io deployment at ${FLY_URL} is not accessible`);
-      return;
-    }
-    const xfo = response.headers.get("x-frame-options");
+  it.skipIf(!flyAccessible)("should have X-Frame-Options header", () => {
+    const xfo = response?.headers.get("x-frame-options");
     expect(xfo).toBeTruthy();
   });
 
-  it("should have X-Content-Type-Options header", () => {
-    if (!deploymentAccessible) {
-      console.warn(`⚠️  Skipping test: Fly.io deployment at ${FLY_URL} is not accessible`);
-      return;
-    }
-    const xcto = response.headers.get("x-content-type-options");
+  it.skipIf(!flyAccessible)("should have X-Content-Type-Options header", () => {
+    const xcto = response?.headers.get("x-content-type-options");
     expect(xcto).toBe("nosniff");
   });
 
-  it("should not expose sensitive information", () => {
-    if (!deploymentAccessible) {
-      console.warn(`⚠️  Skipping test: Fly.io deployment at ${FLY_URL} is not accessible`);
-      return;
-    }
-    const xPoweredBy = response.headers.get("x-powered-by");
+  it.skipIf(!flyAccessible)("should not expose sensitive information", () => {
+    const xPoweredBy = response?.headers.get("x-powered-by");
     expect(xPoweredBy).toBeNull();
   });
 });
 
 describe("API Endpoint Security", () => {
-  it("should enforce authentication on protected routes", async () => {
+  it.skipIf(!vercelAccessible)("should enforce authentication on protected routes", async () => {
     const protectedRoute = `${VERCEL_URL}/api/admin`;
-
-    // Check if deployment is accessible
-    const accessible = await isDeploymentAccessible(VERCEL_URL);
-    if (!accessible) {
-      console.warn(`⚠️  Skipping test: Vercel deployment at ${VERCEL_URL} is not accessible`);
-      return;
-    }
 
     // Request without auth
     const unauthResponse = await fetch(protectedRoute);
@@ -199,16 +154,8 @@ describe("API Endpoint Security", () => {
     expect(body.error).toBe("Unauthorized");
   });
 
-  it("should handle OPTIONS preflight correctly", async () => {
+  it.skipIf(!vercelAccessible)("should handle OPTIONS preflight correctly", async () => {
     const apiUrl = `${VERCEL_URL}/api/health`;
-
-    // Check if deployment is accessible
-    const accessible = await isDeploymentAccessible(VERCEL_URL);
-    if (!accessible) {
-      console.warn(`⚠️  Skipping test: Vercel deployment at ${VERCEL_URL} is not accessible`);
-      return;
-    }
-
     const response = await fetch(apiUrl, {
       method: "OPTIONS",
       headers: {
@@ -225,29 +172,25 @@ describe("API Endpoint Security", () => {
     expect(allowMethods).toContain("GET");
   });
 
-  it("should have rate limiting headers on repeated requests", async () => {
-    // Check if deployment is accessible
-    const accessible = await isDeploymentAccessible(VERCEL_URL);
-    if (!accessible) {
-      console.warn(`⚠️  Skipping test: Vercel deployment at ${VERCEL_URL} is not accessible`);
-      return;
-    }
+  it.skipIf(!vercelAccessible)(
+    "should have rate limiting headers on repeated requests",
+    async () => {
+      // Make 5 quick requests to test rate limiting
+      const requests = Array(5)
+        .fill(null)
+        .map(() => fetch(`${VERCEL_URL}/api/health`));
 
-    // Make 5 quick requests to test rate limiting
-    const requests = Array(5)
-      .fill(null)
-      .map(() => fetch(`${VERCEL_URL}/api/health`));
+      const responses = await Promise.all(requests);
 
-    const responses = await Promise.all(requests);
+      // Check if any response has rate limit headers
+      const hasRateLimitHeaders = responses.some(
+        (r) => r.headers.has("x-ratelimit-limit") || r.headers.has("ratelimit-limit"),
+      );
 
-    // Check if any response has rate limit headers
-    const hasRateLimitHeaders = responses.some(
-      (r) => r.headers.has("x-ratelimit-limit") || r.headers.has("ratelimit-limit"),
-    );
-
-    // This might not be implemented yet, so just log for now
-    console.log("Rate limiting headers present:", hasRateLimitHeaders);
-  });
+      // This might not be implemented yet, so just log for now
+      console.log("Rate limiting headers present:", hasRateLimitHeaders);
+    },
+  );
 });
 
 describe("HTTPS and Certificate Validation", () => {
@@ -259,57 +202,34 @@ describe("HTTPS and Certificate Validation", () => {
     expect(FLY_URL).toMatch(/^https:\/\//);
   });
 
-  it("should have valid SSL certificate (Vercel)", async () => {
-    // Check if deployment is accessible
-    const accessible = await isDeploymentAccessible(VERCEL_URL);
-    if (!accessible) {
-      console.warn(`⚠️  Skipping test: Vercel deployment at ${VERCEL_URL} is not accessible`);
-      return;
-    }
+  it.skipIf(!vercelAccessible)("should have valid SSL certificate (Vercel)", async () => {
     // Fetch will fail if cert is invalid
     const response = await fetch(VERCEL_URL);
     expect(response.ok).toBe(true);
   });
 
-  it("should have valid SSL certificate (Fly.io)", async () => {
-    // Check if deployment is accessible
-    const accessible = await isDeploymentAccessible(`${FLY_URL}/api/health`);
-    if (!accessible) {
-      console.warn(`⚠️  Skipping test: Fly.io deployment at ${FLY_URL} is not accessible`);
-      return;
-    }
+  it.skipIf(!flyAccessible)("should have valid SSL certificate (Fly.io)", async () => {
     const response = await fetch(`${FLY_URL}/api/health`);
     expect(response.ok).toBe(true);
   });
 });
 
 describe("Information Disclosure Prevention", () => {
-  it("should not expose detailed error messages in production", async () => {
-    // Check if deployment is accessible
-    const accessible = await isDeploymentAccessible(VERCEL_URL);
-    if (!accessible) {
-      console.warn(`⚠️  Skipping test: Vercel deployment at ${VERCEL_URL} is not accessible`);
-      return;
-    }
+  it.skipIf(!vercelAccessible)(
+    "should not expose detailed error messages in production",
+    async () => {
+      const response = await fetch(`${VERCEL_URL}/api/nonexistent-endpoint`);
+      expect(response.status).toBe(404);
 
-    const response = await fetch(`${VERCEL_URL}/api/nonexistent-endpoint`);
-    expect(response.status).toBe(404);
+      const body = await response.text();
+      // Should not contain stack traces or internal paths
+      expect(body).not.toContain("/home/");
+      expect(body).not.toContain("at Object.");
+      expect(body).not.toContain("node_modules");
+    },
+  );
 
-    const body = await response.text();
-    // Should not contain stack traces or internal paths
-    expect(body).not.toContain("/home/");
-    expect(body).not.toContain("at Object.");
-    expect(body).not.toContain("node_modules");
-  });
-
-  it("should not expose package versions", async () => {
-    // Check if deployment is accessible
-    const accessible = await isDeploymentAccessible(VERCEL_URL);
-    if (!accessible) {
-      console.warn(`⚠️  Skipping test: Vercel deployment at ${VERCEL_URL} is not accessible`);
-      return;
-    }
-
+  it.skipIf(!vercelAccessible)("should not expose package versions", async () => {
     const response = await fetch(VERCEL_URL);
     const html = await response.text();
 
@@ -320,28 +240,14 @@ describe("Information Disclosure Prevention", () => {
 });
 
 describe("Content Type Validation", () => {
-  it("should return correct content type for JSON API", async () => {
-    // Check if deployment is accessible
-    const accessible = await isDeploymentAccessible(VERCEL_URL);
-    if (!accessible) {
-      console.warn(`⚠️  Skipping test: Vercel deployment at ${VERCEL_URL} is not accessible`);
-      return;
-    }
-
+  it.skipIf(!vercelAccessible)("should return correct content type for JSON API", async () => {
     const response = await fetch(`${VERCEL_URL}/api/health`);
     const contentType = response.headers.get("content-type");
 
     expect(contentType).toContain("application/json");
   });
 
-  it("should return correct content type for HTML pages", async () => {
-    // Check if deployment is accessible
-    const accessible = await isDeploymentAccessible(VERCEL_URL);
-    if (!accessible) {
-      console.warn(`⚠️  Skipping test: Vercel deployment at ${VERCEL_URL} is not accessible`);
-      return;
-    }
-
+  it.skipIf(!vercelAccessible)("should return correct content type for HTML pages", async () => {
     const response = await fetch(VERCEL_URL);
     const contentType = response.headers.get("content-type");
 
