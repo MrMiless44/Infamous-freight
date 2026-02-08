@@ -69,7 +69,7 @@ export default function LanePreferencesPage() {
       await preferencesApi.addLane({
         pickup_state: newPref.pickup_state,
         dropoff_state: newPref.dropoff_state,
-        equipment: newPref.equipment || null,
+        equipment: newPref.equipment === 'any' ? null : newPref.equipment,
         min_rate_cents: newPref.min_rate_cents ? parseInt(newPref.min_rate_cents) * 100 : null,
       });
       setNewPref({ pickup_state: '', dropoff_state: '', equipment: '', min_rate_cents: '' });
