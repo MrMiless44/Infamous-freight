@@ -1,13 +1,12 @@
 // Prisma schema for Infamous Freight Enterprises
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-3.0.x", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum UserRole {
@@ -315,17 +314,21 @@ model User {
   planRenewsAt         DateTime?
 
   // Relations
-  driverProfile     DriverProfile?
-  jobsAsShipper     Job[]               @relation("jobsAsShipper")
-  jobsAsDriver      Job[]               @relation("jobsAsDriver")
-  shipments         Shipment[]
-  payments          OldPayment[]        @relation("userPayments")
-  jobPayments       JobPayment[]        @relation("userJobPayments")
-  subscriptions     Subscription[]
-  entitlements      Entitlement[]
-  aiEvents          AiEvent[]
-  jobOffers         JobOffer[]
-  driverPerformance DriverPerformance[]
+  driverProfile      DriverProfile?
+  jobsAsShipper      Job[]               @relation("jobsAsShipper")
+  jobsAsDriver       Job[]               @relation("jobsAsDriver")
+  shipments          Shipment[]
+  payments           OldPayment[]        @relation("userPayments")
+  jobPayments        JobPayment[]        @relation("userJobPayments")
+  subscriptions      Subscription[]
+  entitlements       Entitlement[]
+  aiEvents           AiEvent[]
+  jobOffers          JobOffer[]
+  driverPerformance  DriverPerformance[]
+  disputes           Dispute[]
+  enforcementActions EnforcementAction[]
+  riskScores         RiskScore[]
+  driverPayouts      DriverPayout[]
 
   @@index([email])
   @@index([role])
@@ -572,8 +575,9 @@ model Job {
   jobOffers         JobOffer[]
   dispatchDecisions DispatchDecision[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  driverPayout DriverPayout?
 
   @@index([organizationId])
   @@index([shipperId])
@@ -659,15 +663,15 @@ model JobPayment {
 }
 
 model DriverPayout {
-  id       String @id @default(cuid())
-  jobId    String @unique
-  job      Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  id    String @id @default(cuid())
+  jobId String @unique
+  job   Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
 
   driverId String
   driver   User   @relation(fields: [driverId], references: [id], onDelete: Cascade)
 
   amountCents Int
-  currency    String      @default("usd")
+  currency    String       @default("usd")
   status      PayoutStatus @default(PENDING)
 
   stripeTransferId String?

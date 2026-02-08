@@ -40,5 +40,8 @@ jobs:
       - name: Build shared package
         run: pnpm --filter @infamous-freight/shared build
 
+      - name: Generate Prisma Client
+        run: pnpm --filter api prisma:generate
+
       - name: Run API tests
         run: pnpm --filter api test
