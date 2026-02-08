@@ -601,9 +601,13 @@ async def list_loads(
         ("pickup_date", 1)
     ]).limit(limit).to_list(limit)
     
-    for load in loads:
-        creator = await db.users.find_one({"id": load["created_by"]}, {"_id": 0, "display_name": 1})
-        load["created_by_name"] = creator.get("display_name") if creator else None
+    # Batch fetch creator names (avoid N+1 queries)
+    creator_ids = list(set(load["created_by"] for load in loads))
+    if creator_ids:
+        creators = await db.users.find({"id": {"$in": creator_ids}}, {"_id": 0, "id": 1, "display_name": 1}).to_list(len(creator_ids))
+        creator_map = {c["id"]: c.get("display_name") for c in creators}
+        for load in loads:
+            load["created_by_name"] = creator_map.get(load["created_by"])
     
     return [LoadResponse(**load) for load in loads]
 
