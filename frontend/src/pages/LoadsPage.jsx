@@ -24,7 +24,7 @@ export default function LoadsPage() {
       setError(null);
       try {
         const status = statusFilter === 'all' ? undefined : statusFilter;
-        const res = await loadsApi.list(status);
+        const res = await loadsApi.list(status ? { status } : undefined);
         setLoads(res.data || []);
       } catch (err) {
         setError(err.response?.data?.detail || 'Failed to load loads');
