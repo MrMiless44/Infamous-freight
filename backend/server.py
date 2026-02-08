@@ -1315,8 +1315,8 @@ async def get_analytics(user: dict = Depends(get_current_user)):
         "total_revenue_cents": total_revenue,
         "avg_rate_cents": avg_rate,
         "loads_by_status": status_counts,
-        "top_lanes": [{"lane": l, "count": c} for l, c in top_lanes],
-        "monthly_trends": [{"month": m, **d} for m, d in sorted(monthly.items())]
+        "top_lanes": [{"lane": lane, "count": cnt} for lane, cnt in top_lanes],
+        "monthly_trends": [{"month": month, **data} for month, data in sorted(monthly.items())]
     }
 
 @api_router.get("/analytics/market")
