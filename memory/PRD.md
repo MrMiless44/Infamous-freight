@@ -1,4 +1,4 @@
-# Infæmous Freight / Get Truck'N - Product Requirements Document
+# IMFÆMOUS FREIGHT / Get Truck'N - Product Requirements Document
 
 ## Overview
 AI-powered freight marketplace MVP connecting shippers with carriers. Built with React, FastAPI, MongoDB, Stripe, and OpenAI integrations.
