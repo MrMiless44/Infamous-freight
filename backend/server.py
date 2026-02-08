@@ -629,7 +629,7 @@ async def get_load(load_id: str):
     return LoadResponse(**load)
 
 @api_router.put("/loads/{load_id}/status")
-async def update_load_status(load_id: str, status: LoadStatus, user: dict = Depends(get_current_user)):
+async def update_load_status(load_id: str, new_status: LoadStatus, user: dict = Depends(get_current_user)):
     load = await db.loads.find_one({"id": load_id}, {"_id": 0})
     if not load:
         raise HTTPException(status_code=404, detail="Load not found")
@@ -642,10 +642,10 @@ async def update_load_status(load_id: str, status: LoadStatus, user: dict = Depe
     if not allowed:
         raise HTTPException(status_code=403, detail="Not authorized")
     
-    await db.loads.update_one({"id": load_id}, {"$set": {"status": status.value, "updated_at": datetime.now(timezone.utc).isoformat()}})
+    await db.loads.update_one({"id": load_id}, {"$set": {"status": new_status.value, "updated_at": datetime.now(timezone.utc).isoformat()}})
     
     # If delivered, trigger escrow release
-    if status == LoadStatus.DELIVERED and assignment:
+    if new_status == LoadStatus.DELIVERED and assignment:
         await db.assignments.update_one(
             {"id": assignment["id"]},
             {"$set": {"escrow_status": PaymentStatus.RELEASED.value}}
