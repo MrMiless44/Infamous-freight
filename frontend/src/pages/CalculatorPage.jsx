@@ -23,8 +23,8 @@ const US_STATES = [
 
 export default function CalculatorPage() {
   const [form, setForm] = useState({
-    pickup_state: '',
-    dropoff_state: '',
+    pickup_state: undefined,
+    dropoff_state: undefined,
     equipment: 'van',
     weight_lbs: '',
   });
