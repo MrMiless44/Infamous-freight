@@ -9,6 +9,13 @@ export const LoadCard = ({ load, showActions = true }) => {
       className="bg-[#121217] border border-zinc-800 rounded-sm p-6 hover:border-zinc-600 transition-colors duration-300 animate-fade-in"
       data-testid={`load-card-${load.id}`}
     >
+      {/* Premium Badge */}
+      {load.is_premium && (
+        <div className="flex items-center gap-2 mb-3 text-amber-500">
+          <Sparkles className="h-4 w-4" />
+          <span className="text-xs font-mono uppercase tracking-wider">Featured Listing</span>
+        </div>
+      )}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         {/* Route Info */}
         <div className="flex-1">
