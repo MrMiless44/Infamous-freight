@@ -43,12 +43,26 @@ jobs:
     needs: [changes]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup pnpm cache
+        uses: actions/setup-node@v4
         with:
           node-version: "24"
           cache: pnpm
-      - run: corepack enable
-      - run: corepack install
+
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm typecheck
@@ -83,13 +97,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup pnpm cache
+        uses: actions/setup-node@v4
         with:
           node-version: "24"
           cache: pnpm
 
-      - run: corepack enable
-      - run: corepack install
       - run: pnpm install --frozen-lockfile
 
       - uses: expo/expo-github-action@v8
