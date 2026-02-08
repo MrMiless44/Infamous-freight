@@ -13,6 +13,12 @@ import LoadsPage from "@/pages/LoadsPage";
 import NewLoadPage from "@/pages/NewLoadPage";
 import LoadDetailPage from "@/pages/LoadDetailPage";
 import MessagesPage from "@/pages/MessagesPage";
+import AnalyticsPage from "@/pages/AnalyticsPage";
+import CalculatorPage from "@/pages/CalculatorPage";
+import LanePreferencesPage from "@/pages/LanePreferencesPage";
+import PaymentsPage from "@/pages/PaymentsPage";
+import AssignmentDetailPage from "@/pages/AssignmentDetailPage";
+import ProfilePage from "@/pages/ProfilePage";
 
 function App() {
   return (
@@ -22,17 +28,35 @@ function App() {
           <Navbar />
           <main>
             <Routes>
+              {/* Public Routes */}
               <Route path="/" element={<HomePage />} />
               <Route path="/sign-in" element={<SignInPage />} />
               <Route path="/sign-up" element={<SignUpPage />} />
-              <Route path="/dashboard" element={<DashboardPage />} />
+              
+              {/* Load Routes */}
               <Route path="/loads" element={<LoadsPage />} />
               <Route path="/loads/new" element={<NewLoadPage />} />
               <Route path="/loads/my" element={<LoadsPage />} />
               <Route path="/loads/:id" element={<LoadDetailPage />} />
+              
+              {/* User Routes */}
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
               <Route path="/messages" element={<MessagesPage />} />
               <Route path="/bids/my" element={<DashboardPage />} />
-              <Route path="/profile" element={<DashboardPage />} />
+              
+              {/* Assignment Routes */}
+              <Route path="/assignments/:id" element={<AssignmentDetailPage />} />
+              
+              {/* Tools & Features */}
+              <Route path="/calculator" element={<CalculatorPage />} />
+              <Route path="/preferences" element={<LanePreferencesPage />} />
+              <Route path="/analytics" element={<AnalyticsPage />} />
+              
+              {/* Payments */}
+              <Route path="/payments" element={<PaymentsPage />} />
+              <Route path="/payments/success" element={<PaymentsPage />} />
+              <Route path="/payments/cancel" element={<PaymentsPage />} />
             </Routes>
           </main>
           <Toaster />
