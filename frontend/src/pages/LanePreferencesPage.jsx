@@ -152,7 +152,7 @@ export default function LanePreferencesPage() {
                   <SelectValue placeholder="Any" />
                 </SelectTrigger>
                 <SelectContent className="bg-zinc-950 border-zinc-800">
-                  <SelectItem value="">Any</SelectItem>
+                  <SelectItem value="any">Any</SelectItem>
                   <SelectItem value="van">Van</SelectItem>
                   <SelectItem value="reefer">Reefer</SelectItem>
                   <SelectItem value="flatbed">Flatbed</SelectItem>
