@@ -651,7 +651,7 @@ async def update_load_status(load_id: str, new_status: LoadStatus, user: dict = 
             {"$set": {"escrow_status": PaymentStatus.RELEASED.value}}
         )
     
-    return {"ok": True, "status": status.value}
+    return {"ok": True, "status": new_status.value}
 
 # ============= RATE CALCULATOR =============
 @api_router.post("/calculator/rate")
