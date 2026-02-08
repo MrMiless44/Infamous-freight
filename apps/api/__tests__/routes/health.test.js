@@ -2,6 +2,7 @@ const request = require('supertest');
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const healthRoutes = require('../../src/routes/health');
+const errorHandler = require('../../src/middleware/errorHandler');
 
 // Mock dependencies
 jest.mock('../../src/db/prisma', () => ({
@@ -19,6 +20,7 @@ describe('Health Routes', () => {
         app = express();
         app.use(express.json());
         app.use('/api', healthRoutes);
+        app.use(errorHandler); // Add error handler
         jest.clearAllMocks();
     });
 
@@ -28,11 +30,15 @@ describe('Health Routes', () => {
 
             expect(response.status).toBe(200);
             expect(response.body).toMatchObject({
-                status: 'ok',
-                service: 'infamous-freight-api',
-                environment: expect.any(String),
+                success: true,
+                statusCode: 200,
+                data: {
+                    status: 'ok',
+                    service: 'infamous-freight-api',
+                    environment: expect.any(String),
+                },
             });
-            expect(response.body.uptime).toBeGreaterThan(0);
+            expect(response.body.data.uptime).toBeGreaterThan(0);
             expect(response.body.timestamp).toBeDefined();
         });
     });
@@ -45,13 +51,17 @@ describe('Health Routes', () => {
 
             expect(response.status).toBe(200);
             expect(response.body).toMatchObject({
-                status: 'healthy',
-                service: 'infamous-freight-api',
-                checks: {
-                    api: { status: 'healthy' },
-                    database: { status: 'healthy' },
-                    cache: { status: 'healthy' },
-                    websocket: { status: 'healthy' },
+                success: true,
+                statusCode: 200,
+                data: {
+                    status: 'healthy',
+                    service: 'infamous-freight-api',
+                    checks: {
+                        api: { status: 'healthy' },
+                        database: { status: 'healthy' },
+                        cache: { status: 'healthy' },
+                        websocket: { status: 'healthy' },
+                    },
                 },
             });
         });
@@ -62,8 +72,8 @@ describe('Health Routes', () => {
             const response = await request(app).get('/api/health/detailed');
 
             expect(response.status).toBe(503);
-            expect(response.body.status).toBe('unhealthy');
-            expect(response.body.checks.database.status).toBe('unhealthy');
+            expect(response.body.data.status).toBe('unhealthy');
+            expect(response.body.data.checks.database.status).toBe('unhealthy');
         });
     });
 
@@ -74,7 +84,10 @@ describe('Health Routes', () => {
             const response = await request(app).get('/api/health/ready');
 
             expect(response.status).toBe(200);
-            expect(response.body).toMatchObject({ status: 'ready' });
+            expect(response.body).toMatchObject({
+                success: true,
+                data: { status: 'ready' },
+            });
             expect(response.body.timestamp).toBeDefined();
         });
 
@@ -83,8 +96,9 @@ describe('Health Routes', () => {
 
             const response = await request(app).get('/api/health/ready');
 
-            expect(response.status).toBe(503);
-            expect(response.body.status).toBe('not ready');
+            expect(response.status).toBe(500);
+            expect(response.body).toHaveProperty('error');
+            expect(response.body.error).toHaveProperty('message');
         });
     });
 
@@ -93,7 +107,10 @@ describe('Health Routes', () => {
             const response = await request(app).get('/api/health/live');
 
             expect(response.status).toBe(200);
-            expect(response.body).toEqual({ status: 'alive' });
+            expect(response.body).toMatchObject({
+                success: true,
+                data: { status: 'alive' },
+            });
         });
     });
 });

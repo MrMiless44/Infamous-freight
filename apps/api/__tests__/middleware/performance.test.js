@@ -15,7 +15,8 @@ describe('Performance Middleware', () => {
     let req, res, next;
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        // Don't clear compression mock as it's called once at module load time
+        // jest.clearAllMocks();
         req = {
             headers: {},
             method: 'GET',
@@ -71,6 +72,7 @@ describe('Performance Middleware', () => {
 
     describe('compression configuration', () => {
         it('should be instance of compression middleware', () => {
+            // compression() is called when the module is loaded, so we check if the mock was called
             expect(compression).toHaveBeenCalled();
         });
 
