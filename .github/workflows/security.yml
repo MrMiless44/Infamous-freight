@@ -39,15 +39,18 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
       
       - name: Enable Corepack
         run: corepack enable
 
-      - name: Setup pnpm (use packageManager)
-        uses: pnpm/action-setup@v4
+      - name: Setup pnpm
+        run: corepack prepare pnpm@9.15.0 --activate
+
+      - name: Setup Node.js with pnpm cache
+        uses: actions/setup-node@v6
         with:
-          run_install: false
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
 
       - name: Run pnpm audit
         run: pnpm audit --audit-level=high
