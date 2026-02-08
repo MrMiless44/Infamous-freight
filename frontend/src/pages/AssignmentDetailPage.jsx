@@ -52,7 +52,7 @@ export default function AssignmentDetailPage() {
 
   // Forms
   const [rating, setRating] = useState({ rating: 5, comment: '' });
-  const [dispute, setDispute] = useState({ reason: '', description: '' });
+  const [dispute, setDispute] = useState({ reason: undefined, description: '' });
   const [docType, setDocType] = useState('bol');
   const [file, setFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
