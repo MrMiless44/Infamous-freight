@@ -28,7 +28,7 @@ jobs:
 
       # Step 4: Install Dependencies
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm run install:ci
 
       # Step 5: Run Tests or Build
       - name: Run Tests
