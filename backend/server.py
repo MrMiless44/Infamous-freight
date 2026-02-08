@@ -1351,9 +1351,9 @@ async def get_market_analytics():
     hot_lanes = sorted(lane_counts.items(), key=lambda x: x[1], reverse=True)[:10]
     
     return {
-        "total_available": len([l for l in loads if l.get("status") == "posted"]),
+        "total_available": len([ld for ld in loads if ld.get("status") == "posted"]),
         "avg_rate_by_equipment": avg_by_equipment,
-        "hot_lanes": [{"lane": l, "count": c} for l, c in hot_lanes]
+        "hot_lanes": [{"lane": lane, "count": cnt} for lane, cnt in hot_lanes]
     }
 
 # ============= WEBSOCKET ENDPOINTS =============
