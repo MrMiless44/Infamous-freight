@@ -1231,10 +1231,10 @@ async def get_payment_status(session_id: str, user: dict = Depends(get_current_u
                 )
     
     return {
-        "status": status.status,
-        "payment_status": status.payment_status,
-        "amount_total": status.amount_total,
-        "currency": status.currency
+        "status": payment_status.status,
+        "payment_status": payment_status.payment_status,
+        "amount_total": payment_status.amount_total,
+        "currency": payment_status.currency
     }
 
 @api_router.post("/webhook/stripe")
