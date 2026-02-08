@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { formatMoney, formatDate, getStatusColor } from '@/lib/utils';
-import { MapPin, Calendar, Truck, Weight, ArrowRight } from 'lucide-react';
+import { MapPin, Calendar, Truck, Weight, ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export const LoadCard = ({ load, showActions = true }) => {
