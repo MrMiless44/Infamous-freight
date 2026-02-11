@@ -61,7 +61,7 @@ function computePriceUsd(input) {
   const volumeFee = Math.max(0, safeVolumeCuFt - 50) * 0.1; // $0.10 per cu ft over 50
 
   // Base subtotal before discounts
-  const subtotal = clamp(base + distanceFee + weightFee + volumeFee, base, 50000);
+  const subtotal = clamp(base + distanceFee + weightFee + volumeFee, 0, 50000);
 
   // Apply plan-based discount
   const discountsByPlan = {
