@@ -33,12 +33,14 @@ function parseRateLimitEnv(
 }
 
 const WINDOW_MS = parseRateLimitEnv(
-  process.env.SALES_LEAD_CAPTURE_WINDOW_MS,
+  process.env.API_RATE_LIMIT_WINDOW_MS ??
+    process.env.SALES_LEAD_CAPTURE_WINDOW_MS,
   DEFAULT_WINDOW_MS,
   MIN_WINDOW_MS,
 );
 const MAX_REQUESTS = parseRateLimitEnv(
-  process.env.SALES_LEAD_CAPTURE_MAX_REQUESTS,
+  process.env.API_RATE_LIMIT_MAX_REQUESTS ??
+    process.env.SALES_LEAD_CAPTURE_MAX_REQUESTS,
   DEFAULT_MAX_REQUESTS,
   MIN_MAX_REQUESTS,
 );
