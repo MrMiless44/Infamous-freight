@@ -1,29 +1,10 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
+// DEPRECATED: This `backend/` entrypoint has been superseded by the canonical
+// Express API service in the `api/` workspace. All new backend work should
+// target `api/` and this file is kept only to avoid breaking existing imports.
+//
+// No server is started here to prevent architectural duplication and confusion
+// about which API service is authoritative.
 
-dotenv.config();
-const app = express();
+const deprecatedBackendStub = {};
 
-app.use(cors());
-app.use(express.json());
-
-app.get("/", (_, res) => {
-  res.json({ status: "Infæmous Freight API LIVE" });
-});
-
-app.post("/load/quote", (req, res) => {
-  const { miles, weight } = req.body;
-  const rate = miles * 2.5;
-  const profit = rate - weight * 0.6;
-
-  res.json({
-    rate,
-    estimated_profit: profit
-  });
-});
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () =>
-  console.log(`🚚 Backend running on port ${PORT}`)
-);
+export default deprecatedBackendStub;
