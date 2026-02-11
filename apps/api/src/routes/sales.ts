@@ -72,7 +72,7 @@ const router = Router();
  */
 router.post(
   "/leads",
-  limiters.general,
+  limiters.publicLeadCapture,
   [
     body("name").isString().notEmpty().withMessage("Name is required"),
     body("email").isEmail().withMessage("Valid email is required"),

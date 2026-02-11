@@ -118,6 +118,15 @@ const limiters = {
     keyGenerator: (req) => req.ip,
     message: { error: 'Webhook rate limit exceeded.' },
   }),
+  publicLeadCapture: createLimiter('publicLeadCapture', {
+    windowMs: parseInt(process.env.RATE_LIMIT_PUBLIC_LEAD_CAPTURE_WINDOW_MS || '60') * 60 * 1000,
+    max: parseInt(process.env.RATE_LIMIT_PUBLIC_LEAD_CAPTURE_MAX || '10'),
+    keyGenerator: (req) => {
+      const email = typeof req.body?.email === 'string' ? req.body.email.trim().toLowerCase() : null;
+      return email || req.ip;
+    },
+    message: { error: 'Lead capture rate limit exceeded. Please try again later.' },
+  }),
 };
 
 // Authentication via JWT
