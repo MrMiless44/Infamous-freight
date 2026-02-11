@@ -109,7 +109,7 @@ describe("Dispatch loads routes", () => {
     );
   });
 
-  it("creates a load for ADMIN and DISPATCHER roles", async () => {
+  it("creates a load for ADMIN role", async () => {
     const app = buildApp();
     mockLoadCreate.mockImplementation(({ data }: any) =>
       Promise.resolve({
