@@ -9,7 +9,7 @@ This document consolidates investor-facing, product, website, fundraising, IP, a
 ### Slide 1 — Title
 **Infæmous Freight**  
 AI-Powered Freight Optimization for Independent Drivers  
-Founder & CEO: Santorio Miles
+Founder & CEO: Santorio Djuan Miles
 
 ### Slide 2 — The Problem
 - Independent drivers face inefficient load matching.
