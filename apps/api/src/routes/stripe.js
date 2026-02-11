@@ -196,12 +196,17 @@ function hasValidUsageKey(usageKey, providedKey) {
 
 /**
  * Coerce an Express header value into a single string.
+ * For security-sensitive headers, multiple values are treated as invalid/ambiguous.
  * @param {string|string[]|undefined} headerValue - Header value from Express request headers.
- * @returns {string|undefined} First header value when multiple are supplied; otherwise the original string.
+ * @returns {string|undefined} The single header value when exactly one is supplied; otherwise `undefined` for arrays, or the original string/undefined.
  */
 function toSingleHeaderValue(headerValue) {
   if (Array.isArray(headerValue)) {
-    return headerValue[0];
+    // Reject ambiguous multi-valued headers by returning undefined
+    if (headerValue.length === 1) {
+      return headerValue[0];
+    }
+    return undefined;
   }
   return headerValue;
 }
