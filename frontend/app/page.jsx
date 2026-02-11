@@ -2,23 +2,28 @@
 import { useState } from "react";
 
 export default function Home() {
-  const [result, setResult] = useState(null);
-
-  async function getQuote() {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
-    const res = await fetch(`${apiBaseUrl}/load/quote`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ miles: 800, weight: 30000 })
-    });
-    setResult(await res.json());
-  }
-
   return (
-    <main style={{ padding: 40 }}>
-      <h1>🚛 Infæmous Freight</h1>
-      <button onClick={getQuote}>Run Load Optimization</button>
-      {result && <pre>{JSON.stringify(result, null, 2)}</pre>}
+    <main style={{ padding: 40, fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif" }}>
+      <h1>Infæmous Freight – Deprecated Frontend</h1>
+      <p style={{ maxWidth: 600, marginTop: 16, lineHeight: 1.5 }}>
+        This <code>frontend/</code> app is deprecated and no longer used as the primary UI.
+        The canonical production frontend lives in the <code>web/</code> workspace
+        (Next.js 14 with full monitoring, auth, and styling) and is the only implementation
+        that should be modified or deployed.
+      </p>
+      <p style={{ maxWidth: 600, marginTop: 16, lineHeight: 1.5 }}>
+        Please open the <code>web/</code> app for all development and testing, or visit the
+        deployed site at:
+      </p>
+      <p style={{ marginTop: 8 }}>
+        <a
+          href="https://infamous-freight-enterprises-git-f34b9b-santorio-miles-projects.vercel.app"
+          target="_blank"
+          rel="noreferrer"
+        >
+          https://infamous-freight-enterprises-git-f34b9b-santorio-miles-projects.vercel.app
+        </a>
+      </p>
     </main>
   );
 }
