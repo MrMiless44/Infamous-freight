@@ -62,7 +62,9 @@ import {
 } from "../sales/metrics";
 
 const router = Router();
-const protectLeadCapture = createSalesLeadProtection();
+const protectLeadCapture = (req, res, next) => {
+  return createSalesLeadProtection()(req, res, next);
+};
 
 // ============================================
 // Lead Capture (21.2)
