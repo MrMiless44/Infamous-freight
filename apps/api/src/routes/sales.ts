@@ -68,12 +68,20 @@ const publicLeadCaptureAttempts = new Map<
 >();
 
 function getRequesterIp(req: any): string {
-  const forwardedFor = req.headers["x-forwarded-for"];
-  if (typeof forwardedFor === "string" && forwardedFor.trim()) {
-    return forwardedFor.split(",")[0].trim();
+  // With `trust proxy` enabled, Express's `req.ip` / `req.ips` already
+  // take `x-forwarded-for` into account according to trusted proxies.
+  if (req.ip) {
+    return req.ip;
   }
 
-  return req.ip || req.socket?.remoteAddress || "unknown";
+  if (Array.isArray(req.ips) && req.ips.length > 0) {
+    return req.ips[0];
+  }
+
+  const remoteAddress =
+    req.socket?.remoteAddress || req.connection?.remoteAddress;
+
+  return remoteAddress || "unknown";
 }
 
 function enforcePublicLeadCaptureProtection(req: any, res: any, next: any): void {
