@@ -15,7 +15,7 @@ const FLY_URL = "https://infamous-freight-as-3gw.fly.dev";
 const isEndpointAccessible = async (url: string): Promise<boolean> => {
   try {
     const response = await fetch(url, { method: "HEAD" });
-    return response.ok;
+    return true;
   } catch {
     return false;
   }
