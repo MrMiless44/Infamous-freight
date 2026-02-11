@@ -73,16 +73,26 @@ describe('AI Routes', () => {
         });
 
         it('should return 503 when AI commands feature flag is disabled', async () => {
-            process.env.ENABLE_AI_COMMANDS = 'false';
+            const previousEnableAiCommands = process.env.ENABLE_AI_COMMANDS;
 
-            const response = await request(app)
-                .post('/api/ai/command')
-                .set('Authorization', `Bearer ${validToken}`)
-                .send({ command: 'Test command' });
+            try {
+                process.env.ENABLE_AI_COMMANDS = 'false';
 
-            expect(response.status).toBe(503);
-            expect(response.body.ok).toBe(false);
-            expect(response.body.error).toBe('AI commands are currently disabled');
+                const response = await request(app)
+                    .post('/api/ai/command')
+                    .set('Authorization', `Bearer ${validToken}`)
+                    .send({ command: 'Test command' });
+
+                expect(response.status).toBe(503);
+                expect(response.body.ok).toBe(false);
+                expect(response.body.error).toBe('AI commands are currently disabled');
+            } finally {
+                if (previousEnableAiCommands === undefined) {
+                    delete process.env.ENABLE_AI_COMMANDS;
+                } else {
+                    process.env.ENABLE_AI_COMMANDS = previousEnableAiCommands;
+                }
+            }
         });
     });
 
