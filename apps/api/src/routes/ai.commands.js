@@ -78,7 +78,7 @@ router.post(
         body('destination.lng').optional().isFloat({ min: -180, max: 180 }),
         body('distanceMiles').optional().isFloat({ min: 1 }),
         body('weight').optional().isFloat({ min: 0 }),
-        body('ratePerMile').optional().isFloat({ min: 0 }),
+        body('ratePerMile').optional().isFloat({ min: 1.25 }),
         body('fuelPricePerGallon').optional().isFloat({ min: 0 }),
         body('mpg').optional().isFloat({ min: 1 }),
         body('maintenancePerMile').optional().isFloat({ min: 0 }),
