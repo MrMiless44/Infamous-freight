@@ -19,11 +19,16 @@ function parseRateLimitEnv(
     return fallback;
   }
 
-  const parsed = Number.parseInt(value, 10);
-  if (Number.isNaN(parsed)) {
+  const trimmed = value.trim();
+  // Only accept fully-numeric, non-negative integer strings; otherwise, fall back.
+  if (!/^\d+$/.test(trimmed)) {
     return fallback;
   }
 
+  const parsed = Number(trimmed);
+  if (!Number.isFinite(parsed)) {
+    return fallback;
+  }
   return Math.max(minimum, parsed);
 }
 
