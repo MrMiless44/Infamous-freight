@@ -6,6 +6,17 @@ const { validateString, handleValidationErrors } = require('../middleware/valida
 
 const router = express.Router();
 
+function enforceAiCommandsEnabled(_req, res, next) {
+    if (process.env.ENABLE_AI_COMMANDS === 'false') {
+        return res.status(503).json({
+            ok: false,
+            error: 'AI commands are currently disabled',
+        });
+    }
+
+    return next();
+}
+
 /**
  * POST /api/ai/command
  * Process AI command with scope-based auth and rate limiting
@@ -17,19 +28,12 @@ router.post(
     limiters.ai,
     authenticate,
     requireScope('ai:command'),
+    enforceAiCommandsEnabled,
     auditLog,
     validateString('command', { maxLength: 500 }),
     handleValidationErrors,
     async (req, res, next) => {
         try {
-            // Feature flag check
-            if (process.env.ENABLE_AI_COMMANDS === 'false') {
-                return res.status(503).json({
-                    ok: false,
-                    error: 'AI commands are currently disabled',
-                });
-            }
-
             const { command } = req.body;
             const startTime = Date.now();
 
