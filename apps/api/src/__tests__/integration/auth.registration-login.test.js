@@ -72,6 +72,8 @@ describe("Auth Registration/Login", () => {
 
     expect(loginResponse.status).toBe(401);
     expect(loginResponse.body.success ?? false).toBe(false);
-    expect(JSON.stringify(loginResponse.body).toLowerCase()).toMatch(/invalid|credential|unauthorized|error/);
+    expect(
+      loginResponse.body.error ?? loginResponse.body.message,
+    ).toEqual(expect.any(String));
   });
 });
