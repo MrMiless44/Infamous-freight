@@ -195,6 +195,18 @@ function hasValidUsageKey(usageKey, providedKey) {
 }
 
 /**
+ * Coerce an Express header value into a single string.
+ * @param {string|string[]|undefined} headerValue - Header value from Express request headers.
+ * @returns {string|undefined} First header value when multiple are supplied; otherwise the original string.
+ */
+function toSingleHeaderValue(headerValue) {
+  if (Array.isArray(headerValue)) {
+    return headerValue[0];
+  }
+  return headerValue;
+}
+
+/**
  * Establishes an authenticated user on the request when possible.
  *
  * Checks for an existing authenticated user, a Bearer token validated against the configured JWT secret, or an x-user-id header fallback; when authentication succeeds, attaches a `user` object with a `sub` property to `req`.
@@ -597,7 +609,7 @@ stripeRouter.post(
 stripeRouter.post("/report-usage", limiters.billing, async (req, res) => {
   try {
     const usageKey = process.env.STRIPE_USAGE_REPORT_KEY;
-    const providedKey = req.headers["x-usage-report-key"];
+    const providedKey = toSingleHeaderValue(req.headers["x-usage-report-key"]);
     const hasUsageKey = hasValidUsageKey(usageKey, providedKey);
     const isAuthenticated = hasUsageKey || ensureAuthenticated(req);
     if (!hasUsageKey && !isAuthenticated) {
