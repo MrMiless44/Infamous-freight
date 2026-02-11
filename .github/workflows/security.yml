@@ -84,7 +84,7 @@ jobs:
           # Check for common hardcoded-secret patterns in source files.
           if git grep -nE "(?i)(password|secret|key|token|api_key)\s*=\s*['\"][^'\"]{8,}" -- '*.js' '*.jsx' '*.ts' '*.tsx' '*.env*'; then
             echo "⚠️ Potential hardcoded secrets found - please review"
-          fi
+          fi || true
 
       - name: Verify .env files are not committed
         run: |
