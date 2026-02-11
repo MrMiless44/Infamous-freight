@@ -57,7 +57,7 @@ Infæmous Freight is a driver-first, AI-powered freight platform that:
 - AI optimization and prediction models.
 - Real-time data ingestion.
 - Hybrid AI + rule-based systems.
-- Scalable microservices architecture.
+- Scalable monorepo architecture (Express API, Next.js web, React Native mobile).
 
 ### Slide 9 — Traction (Early)
 - Platform architecture defined.
