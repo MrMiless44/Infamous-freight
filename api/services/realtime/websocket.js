@@ -70,7 +70,9 @@ class NotificationManager {
                 const decoded = jwt.verify(token, this.jwtSecret);
                 socket.userId = decoded.sub;
                 socket.email = decoded.email;
-                socket.scope = decoded.scope || [];
+                const scopes = decoded.scopes || decoded.scope || [];
+                socket.scopes = scopes;
+                socket.scope = scopes; // backward compatibility if existing code reads `socket.scope`
                 next();
             } catch (error) {
                 logger.warn("WebSocket authentication failed", {
