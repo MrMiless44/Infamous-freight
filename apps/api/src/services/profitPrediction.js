@@ -22,15 +22,21 @@ function predictProfit(input = {}) {
 
     const totalCost = variableCost + fixedCost;
     const grossProfit = revenue - totalCost;
-    const margin = revenue > 0 ? grossProfit / revenue : 0;
+
+    const roundedRevenue = roundCurrency(revenue);
+    const roundedTotalCost = roundCurrency(totalCost);
+    const roundedGrossProfit = roundCurrency(grossProfit);
+    const margin = roundedRevenue > 0 ? roundedGrossProfit / roundedRevenue : 0;
+    const roundedMargin = roundCurrency(margin);
+    const roundedConfidenceScore = roundCurrency(confidenceScore);
 
     return {
-        revenue: roundCurrency(revenue),
-        totalCost: roundCurrency(totalCost),
-        grossProfit: roundCurrency(grossProfit),
-        margin: roundCurrency(margin),
-        profitable: grossProfit >= 0,
-        confidenceScore: roundCurrency(confidenceScore),
+        revenue: roundedRevenue,
+        totalCost: roundedTotalCost,
+        grossProfit: roundedGrossProfit,
+        margin: roundedMargin,
+        profitable: roundedGrossProfit >= 0,
+        confidenceScore: roundedConfidenceScore,
     };
 }
 
