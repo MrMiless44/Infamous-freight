@@ -75,6 +75,7 @@ const protectLeadCapture = createSalesLeadProtection();
 router.post(
   "/leads",
   limiters.general,
+  // Anti-abuse protection: validates shared secret header, origin allowlist, and per-IP throttling
   protectLeadCapture,
   [
     body("name").isString().notEmpty().withMessage("Name is required"),
