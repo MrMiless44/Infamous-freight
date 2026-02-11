@@ -5,7 +5,8 @@ export default function Home() {
   const [result, setResult] = useState(null);
 
   async function getQuote() {
-    const res = await fetch("http://localhost:5000/load/quote", {
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
+    const res = await fetch(`${apiBaseUrl}/load/quote`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ miles: 800, weight: 30000 })
