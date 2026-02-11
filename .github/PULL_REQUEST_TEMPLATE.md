@@ -19,6 +19,11 @@ Closes #(issue number)
 - Change 2
 - Change 3
 
+## Scope Check
+
+- [ ] PR description reflects only the changes included in this PR.
+- [ ] Unrelated auto-generated summaries have been removed.
+
 ## Testing
 
 - [ ] Unit tests added/updated
