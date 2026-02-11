@@ -1,12 +1,22 @@
 import { supabaseAnon, supabaseAdmin } from "@/lib/supabase";
 
+export class HttpError extends Error {
+  status: number;
+
+  constructor(status: number, message: string) {
+    super(message);
+    this.name = "HttpError";
+    this.status = status;
+  }
+}
+
 export async function requireUser(req: Request) {
   const auth = req.headers.get("authorization") || "";
   const token = auth.startsWith("Bearer ") ? auth.slice(7) : null;
-  if (!token) throw new Error("Missing Authorization bearer token");
+  if (!token) throw new HttpError(401, "Unauthorized");
 
   const { data, error } = await supabaseAnon.auth.getUser(token);
-  if (error || !data?.user) throw new Error("Invalid token");
+  if (error || !data?.user) throw new HttpError(401, "Unauthorized");
   return data.user;
 }
 
@@ -50,6 +60,31 @@ export async function getActiveCompanyId(userId: string) {
 export async function requireActiveCompany(req: Request) {
   const user = await requireUser(req);
   const activeCompanyId = await getActiveCompanyId(user.id);
-  if (!activeCompanyId) throw new Error("No company membership");
+  if (!activeCompanyId) throw new HttpError(403, "No company membership");
   return { user, activeCompanyId };
+}
+
+export async function requireCompanyMember(companyId: string, userId: string) {
+  const { data: membership } = await supabaseAdmin
+    .from("company_memberships")
+    .select("role")
+    .eq("company_id", companyId)
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  if (!membership) throw new HttpError(403, "Forbidden");
+  return membership;
+}
+
+export async function requireCompanyRole(
+  companyId: string,
+  userId: string,
+  allowedRoles: string[],
+) {
+  const membership = await requireCompanyMember(companyId, userId);
+  if (!allowedRoles.includes(membership.role)) {
+    throw new HttpError(403, "Forbidden");
+  }
+
+  return membership;
 }

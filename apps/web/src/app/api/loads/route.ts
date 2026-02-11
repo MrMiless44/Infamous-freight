@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { requireActiveCompany } from "@/lib/auth-server";
+import {
+  requireActiveCompany,
+  requireCompanyMember,
+  requireCompanyRole,
+} from "@/lib/auth-server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { jsonWithRequestId } from "@/lib/request-id";
 
@@ -41,7 +45,9 @@ function mapErrorToResponse(
 
 export async function GET(req: Request) {
   try {
-    const { activeCompanyId } = await requireActiveCompany(req);
+    const { user, activeCompanyId } = await requireActiveCompany(req);
+    await requireCompanyMember(activeCompanyId, user.id);
+
     const { data } = await supabaseAdmin
       .from("loads")
       .select("*")
@@ -61,6 +67,12 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const { user, activeCompanyId } = await requireActiveCompany(req);
+    await requireCompanyRole(activeCompanyId, user.id, [
+      "owner",
+      "admin",
+      "dispatcher",
+    ]);
+
     const body = Create.parse(await req.json());
 
     const { data, error } = await supabaseAdmin
