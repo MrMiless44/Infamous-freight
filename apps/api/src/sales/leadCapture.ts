@@ -14,7 +14,7 @@ async function parseResponseBody(response: any): Promise<unknown> {
   const rawBody = await response.text();
 
   if (!rawBody) {
-    return null;
+    return undefined;
   }
 
   const contentType = response.headers.get("content-type") || "";
