@@ -29,7 +29,7 @@ describe("Auth Registration/Login", () => {
       .post("/api/auth/register")
       .send(payload);
 
-    expect([400, 409]).toContain(duplicateResponse.status);
+    expect(duplicateResponse.status).toBe(409);
     expect(duplicateResponse.body.success ?? false).toBe(false);
     expect(JSON.stringify(duplicateResponse.body).toLowerCase()).toMatch(/exist|duplicate|already|taken|error/);
   });
