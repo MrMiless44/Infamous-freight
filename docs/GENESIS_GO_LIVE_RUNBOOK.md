@@ -73,10 +73,20 @@ On each push to `main`, enforce:
 ### B1. AI provider wiring
 
 ```bash
-AI_PROVIDER=openai
+# Required: select provider
+AI_PROVIDER=openai # or "anthropic" or "synthetic"
+
+# If using OpenAI
 OPENAI_API_KEY=sk-****
-AI_DETERMINISTIC=true
-AI_LOG_LEVEL=full
+AI_MODEL=gpt-4.1-mini
+
+# If using Anthropic
+# AI_PROVIDER=anthropic
+# ANTHROPIC_API_KEY=sk-ant-****
+# ANTHROPIC_MODEL=claude-3-5-sonnet-20241022
+
+# If using synthetic (for local/testing)
+# AI_PROVIDER=synthetic
 ```
 
 Enforcement requirements:
