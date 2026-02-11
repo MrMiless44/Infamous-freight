@@ -28,11 +28,36 @@ export interface CreateLeadInput {
   metadata?: Record<string, any>;
 }
 
+function normalizeLeadMetadata(
+  metadata: Record<string, any> | undefined,
+  serverCreatedAtIso: string
+): Record<string, any> {
+  const source = metadata && typeof metadata === "object" ? { ...metadata } : {};
+
+  // CreatedAt must be generated server-side to avoid spoofed or malformed
+  // client timestamps breaking downstream consumers (e.g. date parsers).
+  const clientCreatedAt = source.CreatedAt ?? source.createdAt;
+  if (typeof clientCreatedAt === "string" && clientCreatedAt.trim().length > 0) {
+    source.clientProvidedCreatedAt = clientCreatedAt;
+  }
+
+  delete source.CreatedAt;
+  delete source.createdAt;
+
+  return {
+    ...source,
+    CreatedAt: serverCreatedAtIso,
+  };
+}
+
 /**
  * Create a new lead and sync to CRM systems
  */
 export async function createLead(input: CreateLeadInput): Promise<any> {
   try {
+    const serverCreatedAtIso = new Date().toISOString();
+    const normalizedMetadata = normalizeLeadMetadata(input.metadata, serverCreatedAtIso);
+
     // Check if lead already exists
     const existingLead = await prisma.lead.findUnique({
       where: { email: input.email },
@@ -56,7 +81,9 @@ export async function createLead(input: CreateLeadInput): Promise<any> {
         estimatedMonthlyBudget: input.estimatedMonthlyBudget,
         currentProvider: input.currentProvider,
         painPoints: input.painPoints,
-        metadata: input.metadata ? JSON.stringify(input.metadata) : null,
+        metadata: Object.keys(normalizedMetadata).length > 0
+          ? JSON.stringify(normalizedMetadata)
+          : null,
         status: "new",
       },
     });
