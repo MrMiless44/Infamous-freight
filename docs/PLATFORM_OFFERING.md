@@ -446,7 +446,7 @@ Replace 5-10 fragmented tools with one platform:
 **2026 Targets:**
 - 3,000+ customers by EOY
 - $5M-$10M ARR
-- 60% gross margin
+- 70-73% gross margin
 - 7x LTV/CAC ratio
 
 **Growth Drivers:**

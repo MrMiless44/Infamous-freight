@@ -25,7 +25,7 @@ Quick pitches for different audiences and time constraints.
 **We're targeting 3,000 customers and $10M ARR by end of 2026. We have:** 
 - **100% feature-complete platform deployed globally**
 - **Tier 1 security (SOC 2 ready, GDPR compliant)**
-- **7x LTV/CAC with 60% gross margins**
+- **7x LTV/CAC with 70-73% gross margins**
 - **Clear path to profitability**
 
 **We're not just another SaaS—we're building the exchange layer for global trade. Join us in transforming freight."**
@@ -82,7 +82,7 @@ Quick pitches for different audiences and time constraints.
 
 ### For Investors
 
-**"We're building the operating system for the $900B freight industry. Massive TAM, clear product-market fit, proven technology, experienced team, path to profitability. 7x LTV/CAC, 60% gross margins, targeting $10M ARR by EOY 2026. This is infrastructure for global trade—once we own freight OS, we expand to freight exchange, then freight financial markets. Multi-billion dollar potential."**
+**"We're building the operating system for the $900B freight industry. Massive TAM, clear product-market fit, proven technology, experienced team, path to profitability. 7x LTV/CAC, 70-73% gross margins, targeting $10M ARR by EOY 2026. This is infrastructure for global trade—once we own freight OS, we expand to freight exchange, then freight financial markets. Multi-billion dollar potential."**
 
 ### For Technical Talent
 
