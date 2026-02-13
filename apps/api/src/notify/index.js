@@ -3,7 +3,7 @@ const fetchImpl = globalThis.fetch
     : (...args) => import("node-fetch").then(({ default: f }) => f(...args));
 
 function envBool(v, def = false) {
-    if (v == null) return def;
+    if (v === null || v === undefined) return def;
     return ["1", "true", "yes", "on"].includes(String(v).toLowerCase());
 }
 

@@ -49,6 +49,28 @@ Infamous Freight operates a multi-platform, enterprise-grade CI/CD pipeline desi
 
 **Version: v2.0.0** | **Proprietary Software** | **© 2025 Infæmous Freight. All Rights Reserved.**
 
+---
+
+## 🌍 What We Offer
+
+INFÆMOUS FREIGHT is the **AI-Native Freight Intelligence Platform** transforming the $900B+ global logistics industry.
+
+**Core Capabilities:**
+- 🤖 **AI-Powered Optimization**: Smart dispatch, route intelligence, and predictive analytics
+- 💼 **Unified Freight OS**: Replace 5-10 tools with one platform (dispatch, finance, tracking, compliance)
+- 💰 **Financial Intelligence**: Automated billing, invoice audits, real-time profitability
+- 🎤 **Genesis AI Avatars**: Voice-driven operations and autonomous decision intelligence
+- 🔒 **Enterprise-Grade**: SOC 2 ready, GDPR/HIPAA compliant, globally deployed
+
+**Quick Links:**
+- 📖 **[Complete Platform Offering](docs/PLATFORM_OFFERING.md)** - Comprehensive feature overview
+- 🚀 **[Elevator Pitches](docs/ELEVATOR_PITCH.md)** - Quick pitches for any audience
+- 🎯 **[Strategic Vision](PHASE_11_GLOBAL_AI_ECONOMIC_LAYER.md)** - Long-term roadmap
+
+**Status**: ✅ 100% Production Ready | 827 Tests Passing | Zero Lint Errors
+
+---
+
 [![Test Coverage](https://img.shields.io/badge/coverage-86.2%25-brightgreen.svg)](./apps/api/coverage)
 [![Tests](https://img.shields.io/badge/tests-197%20passing-brightgreen.svg)](./apps/api)
 [![Node.js](https://img.shields.io/badge/node-20.0.0+-brightgreen.svg)](https://nodejs.org)

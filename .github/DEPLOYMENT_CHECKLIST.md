@@ -33,7 +33,8 @@
 
 ### Build Verification
 
-- [ ] Shared package built successfully (`pnpm --filter @infamous-freight/shared build`)
+- [ ] Shared package built successfully
+      (`pnpm --filter @infamous-freight/shared build`)
 - [ ] API builds without errors (`pnpm --filter infamous-freight-api build`)
 - [ ] Web builds without errors (`pnpm --filter infamous-freight-web build`)
 - [ ] Bundle size within budget (< 500KB for Web)
@@ -239,5 +240,4 @@ Post-mortem to follow.
 
 ---
 
-**Last Updated:** December 31, 2025
-**Maintained By:** DevOps Team
+**Last Updated:** December 31, 2025 **Maintained By:** DevOps Team

@@ -16,6 +16,7 @@ export async function POST(req: Request) {
       .single();
 
     if (billingError) {
+      // eslint-disable-next-line no-console
       console.error("Error fetching company billing record", billingError);
       return jsonWithRequestId(
         req,
@@ -40,6 +41,7 @@ export async function POST(req: Request) {
 
     return jsonWithRequestId(req, { ok: true, url: session.url });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Failed to create billing portal session", error);
     return jsonWithRequestId(
       req,

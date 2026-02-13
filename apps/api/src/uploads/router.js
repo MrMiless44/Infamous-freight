@@ -1,11 +1,18 @@
 const express = require("express");
-const { PrismaClient } = require("@prisma/client");
 const { presignPodUpload } = require("../storage/presign");
 const { publicUrlForKey } = require("../storage/s3");
 const { authenticate, limiters } = require("../middleware/security");
+const { prisma } = require("../db/prisma");
 
-const prisma = new PrismaClient();
 const uploadsRouter = express.Router();
+
+function requirePrisma(res) {
+    if (!prisma) {
+        res.status(503).json({ error: "Database not configured" });
+        return false;
+    }
+    return true;
+}
 
 uploadsRouter.use(authenticate);
 
@@ -18,6 +25,7 @@ uploadsRouter.post(
     limiters.general,
     async (req, res, next) => {
         try {
+            if (!requirePrisma(res)) return;
             const { jobId, kind, mimeType } = req.body || {};
             const userId = req.user?.sub;
 
@@ -50,6 +58,7 @@ uploadsRouter.post(
     limiters.general,
     async (req, res, next) => {
         try {
+            if (!requirePrisma(res)) return;
             const { jobId, kind, key, mimeType, sizeBytes } = req.body || {};
             const userId = req.user?.sub;
 

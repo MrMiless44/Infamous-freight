@@ -232,7 +232,9 @@ function auditLog(req, res, next) {
         ip: req.ip,
         correlationId: req.correlationId,
       });
-    } catch (_) { }
+    } catch (_) {
+      /* Audit log write failure - continue without logging */
+    }
   });
   next();
 }

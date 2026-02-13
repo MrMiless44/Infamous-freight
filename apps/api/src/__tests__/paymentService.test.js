@@ -3,6 +3,24 @@
  * Comprehensive test suite for instant payouts and payment processing
  */
 
+jest.mock('stripe', () => {
+    return () => ({
+        payouts: {
+            create: jest.fn().mockResolvedValue({
+                id: 'po_test',
+                status: 'processing',
+                arrival_date: Math.floor(Date.now() / 1000),
+            }),
+            retrieve: jest.fn().mockResolvedValue({
+                status: 'processing',
+                arrival_date: Math.floor(Date.now() / 1000),
+                amount: 10000,
+                currency: 'usd',
+            }),
+        },
+    });
+});
+
 const paymentService = require('../services/paymentService');
 
 describe('Payment Service - Instant Payouts', () => {

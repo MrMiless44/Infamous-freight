@@ -6,11 +6,14 @@
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
 const app = require('../../app');
-const { prisma } = require('../../database');
+const { prisma } = require('../../db/prisma');
+
+const hasDatabase = Boolean(process.env.DATABASE_URL);
+const describeIfDb = hasDatabase ? describe : describe.skip;
 
 const JWT_SECRET = process.env.JWT_SECRET || 'test-secret';
 
-describe('Job Lifecycle Integration Tests', () => {
+describeIfDb('Job Lifecycle Integration Tests', () => {
     let shipperToken;
     let driverToken;
     let shipperId = 'shipper-test-123';

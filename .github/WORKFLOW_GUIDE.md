@@ -2,14 +2,15 @@
 
 ## Overview
 
-This document describes all GitHub Actions workflows in the Infamous Freight Enterprises repository, their purposes, triggers, and troubleshooting steps.
+This document describes all GitHub Actions workflows in the Infamous Freight
+Enterprises repository, their purposes, triggers, and troubleshooting steps.
 
 ---
 
 ## Workflow Directory
 
-| Workflow                | File                     | Purpose                                      | Trigger                          | Status   |
-| ----------------------- | ------------------------ | -------------------------------------------- | -------------------------------- | -------- |
+| Workflow                | File                     | Purpose                                      | Trigger                          | Status    |
+| ----------------------- | ------------------------ | -------------------------------------------- | -------------------------------- | --------- |
 | **CI/CD Pipeline**      | `ci-cd.yml`              | Main pipeline: lint, test, build, security   | Push to main/develop, PR to main | ✅ Active |
 | **CI**                  | `ci.yml`                 | Lightweight CI checks                        | Push to main, PR                 | ✅ Active |
 | **E2E Tests**           | `e2e.yml`                | End-to-end Playwright tests                  | Scheduled nightly, manual        | ✅ Active |
@@ -62,7 +63,8 @@ AI_PROVIDER: synthetic
 - **Lint fails**: Run `pnpm lint --fix` locally
 - **Type errors**: Run `pnpm typecheck` locally
 - **Test failures**: Check `apps/api/coverage/` reports, run `pnpm test` locally
-- **Build fails**: Ensure `pnpm --filter @infamous-freight/shared build` runs first
+- **Build fails**: Ensure `pnpm --filter @infamous-freight/shared build` runs
+  first
 
 **Performance:**
 
@@ -129,7 +131,8 @@ AI_PROVIDER: synthetic
 
 **Troubleshooting:**
 
-- **Database connection failed**: Check `DATABASE_URL` format and PostgreSQL service health
+- **Database connection failed**: Check `DATABASE_URL` format and PostgreSQL
+  service health
 - **Web server not starting**: Check port 3000 is available
 - **Test timeouts**: Increase `PLAYWRIGHT_TIMEOUT` or check server logs
 - **Browser download fails**: Re-run with `playwright install`
@@ -156,7 +159,8 @@ AI_PROVIDER: synthetic
 
 **Troubleshooting:**
 
-- **Deploy hook fails**: Verify `RENDER_DEPLOY_HOOK_URL` is correct in GitHub Secrets
+- **Deploy hook fails**: Verify `RENDER_DEPLOY_HOOK_URL` is correct in GitHub
+  Secrets
 - **Build fails on Render**: Check API logs on Render dashboard
 - **ENV variables missing**: Ensure all vars set in Render environment
 
@@ -384,8 +388,8 @@ https://MrMiless44.github.io/Infamous-freight-enterprises/
 
 ### ❌ "pnpm: command not found"
 
-**Cause:** pnpm not installed before first use
-**Solution:** Ensure `pnpm/action-setup@v2` runs before other pnpm commands
+**Cause:** pnpm not installed before first use **Solution:** Ensure
+`pnpm/action-setup@v2` runs before other pnpm commands
 
 ```yaml
 - uses: pnpm/action-setup@v2
@@ -397,8 +401,8 @@ https://MrMiless44.github.io/Infamous-freight-enterprises/
 
 ### ❌ "Port 3000 already in use"
 
-**Cause:** Multiple services competing for same port
-**Solution:** Set different ports in environment
+**Cause:** Multiple services competing for same port **Solution:** Set different
+ports in environment
 
 ```env
 API_PORT=4000
@@ -409,8 +413,8 @@ WEB_PORT=3000
 
 ### ❌ "Insufficient coverage"
 
-**Cause:** Code changes don't meet coverage threshold
-**Solution:** Add tests for new code, or update threshold
+**Cause:** Code changes don't meet coverage threshold **Solution:** Add tests
+for new code, or update threshold
 
 **Current Thresholds:**
 
@@ -422,8 +426,8 @@ WEB_PORT=3000
 
 ### ❌ "Invalid secret conditional"
 
-**Cause:** Using `if: ${{ secrets.X != '' }}` (invalid syntax)
-**Solution:** Remove conditional, use fallback values instead
+**Cause:** Using `if: ${{ secrets.X != '' }}` (invalid syntax) **Solution:**
+Remove conditional, use fallback values instead
 
 ```yaml
 # ❌ Wrong
@@ -438,8 +442,8 @@ env:
 
 ### ❌ "Workflow not triggering"
 
-**Cause:** Event filter not matching push/PR conditions
-**Solution:** Check `on:` conditions match your branch/path
+**Cause:** Event filter not matching push/PR conditions **Solution:** Check
+`on:` conditions match your branch/path
 
 ```yaml
 on:
@@ -525,5 +529,4 @@ When modifying workflows:
 
 ---
 
-**Last Updated:** December 31, 2025
-**Maintained By:** DevOps Team
+**Last Updated:** December 31, 2025 **Maintained By:** DevOps Team

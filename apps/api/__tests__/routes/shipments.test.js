@@ -42,8 +42,14 @@ describe('Shipments Routes', () => {
         app.use(express.json());
         app.use('/api', shipmentsRoutes);
 
+        process.env.JWT_SECRET = TEST_SECRET;
         validToken = jwt.sign(
-            { sub: 'user-123', email: 'test@example.com', scopes: ['shipments:read', 'shipments:write'] },
+            {
+                sub: 'user-123',
+                email: 'test@example.com',
+                scopes: ['shipments:read', 'shipments:write'],
+                org_id: 'org-123',
+            },
             TEST_SECRET
         );
 
@@ -82,8 +88,8 @@ describe('Shipments Routes', () => {
 
         it('should reject request without shipments:read scope', async () => {
             const noScopeToken = jwt.sign(
-                { sub: 'user-123', scopes: [] },
-                process.env.JWT_SECRET
+                { sub: 'user-123', scopes: [], org_id: 'org-123' },
+                TEST_SECRET
             );
 
             const response = await request(app)
@@ -98,12 +104,12 @@ describe('Shipments Routes', () => {
             prisma.shipment.findMany.mockResolvedValue([]);
 
             await request(app)
-                .get('/api/shipments?status=delivered')
+                .get('/api/shipments?status=DELIVERED')
                 .set('Authorization', `Bearer ${validToken}`);
 
             expect(prisma.shipment.findMany).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    where: { status: 'delivered', userId: 'user-123' },
+                    where: { status: 'DELIVERED', userId: 'user-123' },
                 })
             );
         });
@@ -171,7 +177,7 @@ describe('Shipments Routes', () => {
 
         it('should require shipments:write scope', async () => {
             const readOnlyToken = jwt.sign(
-                { sub: 'user-123', scopes: ['shipments:read'] },
+                { sub: 'user-123', scopes: ['shipments:read'], org_id: 'org-123' },
                 process.env.JWT_SECRET
             );
 
@@ -231,7 +237,7 @@ describe('Shipments Routes', () => {
             const response = await request(app)
                 .patch(`/api/shipments/${VALID_UUID}`)
                 .set('Authorization', `Bearer ${validToken}`)
-                .send({ status: 'delivered' });
+                .send({ status: 'DELIVERED' });
 
             expect(response.status).toBe(200);
             expect(response.body.ok).toBe(true);
@@ -244,7 +250,7 @@ describe('Shipments Routes', () => {
             const response = await request(app)
                 .patch(`/api/shipments/${VALID_UUID}`)
                 .set('Authorization', `Bearer ${validToken}`)
-                .send({ status: 'delivered' });
+                .send({ status: 'DELIVERED' });
 
             expect(response.status).toBe(404);
         });

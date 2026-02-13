@@ -404,10 +404,10 @@ describe("TrackingService - Analytics", () => {
     test("should calculate analytics from location data", async () => {
         const mockLocations = [
             {
-                latitude: 40.7589,
+                latitude: 40.7389,
                 longitude: -73.9851,
-                speed: 60,
-                timestamp: new Date("2026-01-14T12:00:00Z"),
+                speed: 65,
+                timestamp: new Date("2026-01-14T11:00:00Z"),
             },
             {
                 latitude: 40.7489,
@@ -416,10 +416,10 @@ describe("TrackingService - Analytics", () => {
                 timestamp: new Date("2026-01-14T11:30:00Z"),
             },
             {
-                latitude: 40.7389,
+                latitude: 40.7589,
                 longitude: -73.9851,
-                speed: 65,
-                timestamp: new Date("2026-01-14T11:00:00Z"),
+                speed: 60,
+                timestamp: new Date("2026-01-14T12:00:00Z"),
             },
         ];
 
@@ -443,10 +443,16 @@ describe("TrackingService - Analytics", () => {
     test("should detect stops in location data", async () => {
         const mockLocations = [
             {
+                latitude: 40.7489,
+                longitude: -73.9851,
+                speed: 65,
+                timestamp: new Date("2026-01-14T11:30:00Z"),
+            },
+            {
                 latitude: 40.7589,
                 longitude: -73.9851,
-                speed: 60,
-                timestamp: new Date("2026-01-14T12:00:00Z"),
+                speed: 2, // Still stopped
+                timestamp: new Date("2026-01-14T11:40:00Z"),
             },
             {
                 latitude: 40.7589,
@@ -457,14 +463,8 @@ describe("TrackingService - Analytics", () => {
             {
                 latitude: 40.7589,
                 longitude: -73.9851,
-                speed: 2, // Still stopped
-                timestamp: new Date("2026-01-14T11:40:00Z"),
-            },
-            {
-                latitude: 40.7489,
-                longitude: -73.9851,
-                speed: 65,
-                timestamp: new Date("2026-01-14T11:30:00Z"),
+                speed: 60,
+                timestamp: new Date("2026-01-14T12:00:00Z"),
             },
         ];
 

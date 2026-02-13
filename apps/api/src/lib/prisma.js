@@ -1,6 +1,16 @@
-const { PrismaClient } = require("@prisma/client");
+const { getPrisma } = require("../db/prisma");
 
-// Shared Prisma client instance for services
-const prisma = new PrismaClient();
+const prisma = getPrisma();
 
-module.exports = prisma;
+if (prisma) {
+	module.exports = prisma;
+} else {
+	module.exports = {
+		$queryRaw: async () => {
+			throw new Error("Database not configured");
+		},
+		$transaction: async () => {
+			throw new Error("Database not configured");
+		},
+	};
+}

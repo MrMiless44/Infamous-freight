@@ -30,15 +30,15 @@ async function getWeather(lat, lon) {
 
     const tempC = toNumber(cur.temperature_2m);
     const windMs = toNumber(cur.wind_speed_10m);
-    const windKph = windMs != null ? Math.round(toKph(windMs) * 10) / 10 : undefined;
+    const windKph = windMs !== undefined ? Math.round(toKph(windMs) * 10) / 10 : undefined;
     const precipMm = toNumber(cur.precipitation);
     const visibilityM = toNumber(cur.visibility);
 
     const summaryParts = [];
-    if (tempC != null) summaryParts.push(`${tempC}°C`);
-    if (windKph != null) summaryParts.push(`wind ${windKph} km/h`);
-    if (precipMm != null) summaryParts.push(`precip ${precipMm} mm`);
-    if (visibilityM != null) summaryParts.push(`vis ${visibilityM} m`);
+    if (tempC !== undefined) summaryParts.push(`${tempC}°C`);
+    if (windKph !== undefined) summaryParts.push(`wind ${windKph} km/h`);
+    if (precipMm !== undefined) summaryParts.push(`precip ${precipMm} mm`);
+    if (visibilityM !== undefined) summaryParts.push(`vis ${visibilityM} m`);
 
     return {
         lat,

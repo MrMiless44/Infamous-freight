@@ -47,6 +47,7 @@ export async function POST(req: Request) {
 
     return jsonWithRequestId(req, { ok: true, url: session.url });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Error creating billing checkout session", error);
     return new Response(
       JSON.stringify({ ok: false, error: "Internal Server Error" }),

@@ -40,6 +40,7 @@ describe("Shipments route validation", () => {
                 sub: "user-1",
                 scopes: ["shipments:read", "shipments:write"],
                 role: "user",
+                org_id: "org-123",
                 ...overrides,
             },
             secret,
@@ -56,6 +57,7 @@ describe("Shipments route validation", () => {
     };
 
     beforeEach(() => {
+        process.env.JWT_SECRET = secret;
         jest.clearAllMocks();
     });
 
@@ -129,7 +131,7 @@ describe("Shipments route validation", () => {
         const res = await request(app)
             .patch("/api/shipments/not-a-uuid")
             .set("Authorization", `Bearer ${token}`)
-            .send({ status: "in-transit" });
+            .send({ status: "IN_TRANSIT" });
 
         expect(res.status).toBe(400);
         expect(res.body.error).toBe("Validation failed");
@@ -152,7 +154,7 @@ describe("Shipments route validation", () => {
         const res = await request(app)
             .patch("/api/shipments/550e8400-e29b-41d4-a716-446655440000")
             .set("Authorization", `Bearer ${token}`)
-            .send({ status: "in-transit" });
+            .send({ status: "IN_TRANSIT" });
 
         expect(res.status).toBe(200);
         expect(prisma.shipment.update).toHaveBeenCalled();

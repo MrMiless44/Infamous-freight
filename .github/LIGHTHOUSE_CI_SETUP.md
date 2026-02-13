@@ -45,14 +45,14 @@ Main configuration file for Lighthouse CI:
     "assert": {
       "preset": "lighthouse:recommended",
       "assertions": {
-        "categories:performance": ["error", {"minScore": 0.80}],
-        "categories:accessibility": ["error", {"minScore": 0.90}],
-        "categories:best-practices": ["error", {"minScore": 0.90}],
-        "categories:seo": ["error", {"minScore": 0.90}],
-        "first-contentful-paint": ["error", {"maxNumericValue": 2000}],
-        "largest-contentful-paint": ["error", {"maxNumericValue": 2500}],
-        "cumulative-layout-shift": ["error", {"maxNumericValue": 0.1}],
-        "total-blocking-time": ["error", {"maxNumericValue": 300}]
+        "categories:performance": ["error", { "minScore": 0.8 }],
+        "categories:accessibility": ["error", { "minScore": 0.9 }],
+        "categories:best-practices": ["error", { "minScore": 0.9 }],
+        "categories:seo": ["error", { "minScore": 0.9 }],
+        "first-contentful-paint": ["error", { "maxNumericValue": 2000 }],
+        "largest-contentful-paint": ["error", { "maxNumericValue": 2500 }],
+        "cumulative-layout-shift": ["error", { "maxNumericValue": 0.1 }],
+        "total-blocking-time": ["error", { "maxNumericValue": 300 }]
       }
     },
     "collect": {
@@ -88,14 +88,14 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - 'apps/web/**'
-      - '.github/workflows/lighthouse-ci.yml'
-      - '.lighthouserc*.json'
+      - "apps/web/**"
+      - ".github/workflows/lighthouse-ci.yml"
+      - ".lighthouserc*.json"
   pull_request:
     branches: [main, develop]
   schedule:
-    - cron: '0 2 * * *'        # Daily at 2 AM UTC
-    - cron: '0 3 * * 1'        # Weekly at 3 AM UTC Mondays
+    - cron: "0 2 * * *" # Daily at 2 AM UTC
+    - cron: "0 3 * * 1" # Weekly at 3 AM UTC Mondays
 
 concurrency:
   group: lighthouse-${{ github.ref }}
@@ -114,23 +114,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-      
+          node-version: "18"
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8.15.9
-      
+
       - name: Install dependencies
         run: pnpm install
-      
+
       - name: Build web application
         run: pnpm --filter web build
-      
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -144,29 +144,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-      
+          node-version: "18"
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8.15.9
-      
+
       - name: Install dependencies
         run: pnpm install
-      
+
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
           name: web-build
           path: apps/web/.next
-      
+
       - name: Install LHCI
         run: npm install -g @lhci/cli@0.9.x
-      
+
       - name: Run Lighthouse CI
         run: |
           cd apps/web
@@ -174,7 +174,7 @@ jobs:
           sleep 5
           cd ..
           lhci autorun --config=.lighthouserc.json
-      
+
       - name: Upload results
         if: always()
         uses: actions/upload-artifact@v4
@@ -281,8 +281,8 @@ Create `.lighthouserc.mobile.json` for mobile-only config:
     },
     "assert": {
       "assertions": {
-        "categories:performance": ["error", {"minScore": 0.80}],
-        "largest-contentful-paint": ["error", {"maxNumericValue": 4000}]
+        "categories:performance": ["error", { "minScore": 0.8 }],
+        "largest-contentful-paint": ["error", { "maxNumericValue": 4000 }]
       }
     }
   }
@@ -436,7 +436,7 @@ curl -X POST https://api.datadoghq.com/api/v2/series \
   uses: 8398a7/action-slack@v3
   with:
     status: ${{ job.status }}
-    text: 'Lighthouse CI: ${{ job.status }}'
+    text: "Lighthouse CI: ${{ job.status }}"
     webhook_url: ${{ secrets.SLACK_WEBHOOK }}
   if: always()
 ```

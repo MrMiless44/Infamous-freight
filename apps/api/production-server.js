@@ -1,6 +1,6 @@
 // apps/api/production-server.js - Production-Ready API with Database Persistence
 /* eslint-env node */
-/* global global, URLSearchParams */
+/* global URLSearchParams */
 const http = require('http');
 const { generateToken, authenticate } = require('./auth');
 const { validateShipment, sanitize, validateEmail } = require('./validation');
@@ -13,7 +13,7 @@ const { metricsMiddleware, metricsHandler, trackCache } = require('./metrics');
 // Polyfill URLSearchParams for older Node versions
 if (typeof URLSearchParams === 'undefined') {
     const { URLSearchParams: USP } = require('url');
-    global.URLSearchParams = USP;
+    globalThis.URLSearchParams = USP;
 }
 
 const PORT = process.env.API_PORT || 4000;

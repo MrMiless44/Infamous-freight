@@ -1,1 +1,175 @@
-/**\n * DocuSign Document Signing Integration\n * Handles contract signing workflows and signature tracking\n */\n\nimport logger from \"../utils/logger\";\n\ninterface DocuSignConfig {\n  clientId: string;\n  clientSecret: string; \n  accountId: string;\n  baseUrl: string;\n}\n\ninterface SigningRequest {\n  documentUrl: string;\n  signerName: string;\n  signerEmail: string;\n  subject: string;\n  message?: string;\n  carbonCopyEmails?: string[];\n}\n\ninterface EnvelopeStatus {\n  envelopeId: string;\n  status: string;  // sent | delivered | signed | declined | voided\n  signers: Array<{\n    email: string;\n    status: string;\n    signedAt?: Date;\n  }>;\n  createdAt: Date;\n  completedAt?: Date;\n}\n\nclass DocuSignService {\n  private clientId: string;\n  private clientSecret: string;\n  private accountId: string;\n  private baseUrl: string;\n\n  constructor() {\n    this.clientId = process.env.DOCUSIGN_CLIENT_ID || \"\";\n    this.clientSecret = process.env.DOCUSIGN_CLIENT_SECRET || \"\";\n    this.accountId = process.env.DOCUSIGN_ACCOUNT_ID || \"\";\n    this.baseUrl = process.env.DOCUSIGN_BASE_URL || \"https://demo.docusign.net/restapi\";\n\n    if (!this.clientId || !this.clientSecret) {\n      logger.warn(\"DocuSign credentials not configured - signing service disabled\");\n    }\n  }\n\n  /**\n   * Send document for signing\n   * @param request - Signing request with document and signer details\n   * @returns Envelope ID for tracking\n   */\n  async sendForSigning(request: SigningRequest): Promise<string> {\n    if (!this.clientId || !this.clientSecret) {\n      logger.warn(\"DocuSign not configured - signing request not processed\");\n      return `mock-envelope-${Date.now()}`;\n    }\n\n    try {\n      // TODO: Implement actual DocuSign integration\n      // 1. Authenticate with OAuth2\n      // 2. Create envelope with document\n      // 3. Add recipients (signers and CCs)\n      // 4. Send for signing\n      // 5. Return envelope ID for tracking\n\n      logger.info(\"DocuSign signing request created\", {\n        signerEmail: request.signerEmail,\n        subject: request.subject,\n        status: \"pending\",\n      });\n\n      return `envelope-${Date.now()}`;\n    } catch (error) {\n      logger.error(\"Failed to send document for signing\", {\n        error: error instanceof Error ? error.message : String(error),\n        signerEmail: request.signerEmail,\n      });\n      throw error;\n    }\n  }\n\n  /**\n   * Get envelope status and signer information\n   */\n  async getEnvelopeStatus(envelopeId: string): Promise<EnvelopeStatus | null> {\n    if (!this.clientId || !this.clientSecret) {\n      logger.warn(\"DocuSign not configured - cannot get envelope status\");\n      return null;\n    }\n\n    try {\n      // TODO: Implement envelope status retrieval\n      // 1. Call DocuSign API to get envelope status\n      // 2. Parse signer statuses\n      // 3. Return structured status\n\n      return {\n        envelopeId,\n        status: \"sent\",\n        signers: [],\n        createdAt: new Date(),\n      };\n    } catch (error) {\n      logger.error(\"Failed to get envelope status\", {\n        error: error instanceof Error ? error.message : String(error),\n        envelopeId,\n      });\n      return null;\n    }\n  }\n\n  /**\n   * Download signed document\n   */\n  async getSignedDocument(envelopeId: string): Promise<Buffer | null> {\n    if (!this.clientId || !this.clientSecret) {\n      logger.warn(\"DocuSign not configured - cannot download signed document\");\n      return null;\n    }\n\n    try {\n      // TODO: Implement signed document retrieval\n      // 1. Retrieve combined PDF from DocuSign\n      // 2. Stream to buffer\n      // 3. Return for download/storage\n\n      logger.info(\"Signed document retrieved\", { envelopeId });\n\n      return Buffer.from(\"Mock PDF content\");\n    } catch (error) {\n      logger.error(\"Failed to get signed document\", {\n        error: error instanceof Error ? error.message : String(error),\n        envelopeId,\n      });\n      return null;\n    }\n  }\n\n  /**\n   * Register webhook for envelope events\n   */\n  async registerWebhook(webhookUrl: string): Promise<boolean> {\n    if (!this.clientId || !this.clientSecret) {\n      logger.warn(\"DocuSign not configured - cannot register webhook\");\n      return false;\n    }\n\n    try {\n      // TODO: Implement webhook registration\n      // 1. Register webhook endpoint with DocuSign\n      // 2. Subscribe to envelope events (sent, delivered, signed, declined)\n      // 3. Return success\n\n      logger.info(\"DocuSign webhook registered\", { webhookUrl });\n\n      return true;\n    } catch (error) {\n      logger.error(\"Failed to register webhook\", {\n        error: error instanceof Error ? error.message : String(error),\n        webhookUrl,\n      });\n      return false;\n    }\n  }\n}\n\nexport const docusignService = new DocuSignService();\nexport default docusignService;\n
+/**
+ * DocuSign Document Signing Integration
+ * Handles contract signing workflows and signature tracking
+ */
+
+import logger from "../utils/logger";
+
+interface DocuSignConfig {
+  clientId: string;
+  clientSecret: string;
+  accountId: string;
+  baseUrl: string;
+}
+
+interface SigningRequest {
+  documentUrl: string;
+  signerName: string;
+  signerEmail: string;
+  subject: string;
+  message?: string;
+  carbonCopyEmails?: string[];
+}
+
+interface EnvelopeStatus {
+  envelopeId: string;
+  status: string; // sent | delivered | signed | declined | voided
+  signers: Array<{
+    email: string;
+    status: string;
+    signedAt?: Date;
+  }>;
+  createdAt: Date;
+  completedAt?: Date;
+}
+
+class DocuSignService {
+  private clientId: string;
+  private clientSecret: string;
+  private accountId: string;
+  private baseUrl: string;
+
+  constructor() {
+    this.clientId = process.env.DOCUSIGN_CLIENT_ID || "";
+    this.clientSecret = process.env.DOCUSIGN_CLIENT_SECRET || "";
+    this.accountId = process.env.DOCUSIGN_ACCOUNT_ID || "";
+    this.baseUrl =
+      process.env.DOCUSIGN_BASE_URL || "https://demo.docusign.net/restapi";
+
+    if (!this.clientId || !this.clientSecret) {
+      logger.warn("DocuSign credentials not configured - signing service disabled");
+    }
+  }
+
+  /**
+   * Send document for signing
+   * @param request - Signing request with document and signer details
+   * @returns Envelope ID for tracking
+   */
+  async sendForSigning(request: SigningRequest): Promise<string> {
+    if (!this.clientId || !this.clientSecret) {
+      logger.warn("DocuSign not configured - signing request not processed");
+      return `mock-envelope-${Date.now()}`;
+    }
+
+    try {
+      // TODO: Implement actual DocuSign integration
+      // 1. Authenticate with OAuth2
+      // 2. Create envelope with document
+      // 3. Add recipients (signers and CCs)
+      // 4. Send for signing
+      // 5. Return envelope ID for tracking
+
+      logger.info("DocuSign signing request created", {
+        signerEmail: request.signerEmail,
+        subject: request.subject,
+        status: "pending",
+      });
+
+      return `envelope-${Date.now()}`;
+    } catch (error) {
+      logger.error("Failed to send document for signing", {
+        error: error instanceof Error ? error.message : String(error),
+        signerEmail: request.signerEmail,
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Get envelope status and signer information
+   */
+  async getEnvelopeStatus(envelopeId: string): Promise<EnvelopeStatus | null> {
+    if (!this.clientId || !this.clientSecret) {
+      logger.warn("DocuSign not configured - cannot get envelope status");
+      return null;
+    }
+
+    try {
+      // TODO: Implement envelope status retrieval
+      // 1. Call DocuSign API to get envelope status
+      // 2. Parse signer statuses
+      // 3. Return structured status
+
+      return {
+        envelopeId,
+        status: "sent",
+        signers: [],
+        createdAt: new Date(),
+      };
+    } catch (error) {
+      logger.error("Failed to get envelope status", {
+        error: error instanceof Error ? error.message : String(error),
+        envelopeId,
+      });
+      return null;
+    }
+  }
+
+  /**
+   * Download signed document
+   */
+  async getSignedDocument(envelopeId: string): Promise<Buffer | null> {
+    if (!this.clientId || !this.clientSecret) {
+      logger.warn("DocuSign not configured - cannot download signed document");
+      return null;
+    }
+
+    try {
+      // TODO: Implement signed document retrieval
+      // 1. Retrieve combined PDF from DocuSign
+      // 2. Stream to buffer
+      // 3. Return for download/storage
+
+      logger.info("Signed document retrieved", { envelopeId });
+
+      return Buffer.from("Mock PDF content");
+    } catch (error) {
+      logger.error("Failed to get signed document", {
+        error: error instanceof Error ? error.message : String(error),
+        envelopeId,
+      });
+      return null;
+    }
+  }
+
+  /**
+   * Register webhook for envelope events
+   */
+  async registerWebhook(webhookUrl: string): Promise<boolean> {
+    if (!this.clientId || !this.clientSecret) {
+      logger.warn("DocuSign not configured - cannot register webhook");
+      return false;
+    }
+
+    try {
+      // TODO: Implement webhook registration
+      // 1. Register webhook endpoint with DocuSign
+      // 2. Subscribe to envelope events (sent, delivered, signed, declined)
+      // 3. Return success
+
+      logger.info("DocuSign webhook registered", { webhookUrl });
+
+      return true;
+    } catch (error) {
+      logger.error("Failed to register webhook", {
+        error: error instanceof Error ? error.message : String(error),
+        webhookUrl,
+      });
+      return false;
+    }
+  }
+}
+
+export const docusignService = new DocuSignService();
+export default docusignService;

@@ -14,6 +14,7 @@ jest.mock('@sentry/node', () => ({
     init: jest.fn(),
     captureException: jest.fn(),
     captureMessage: jest.fn(),
+    addBreadcrumb: jest.fn(),
     setContext: jest.fn(),
     setUser: jest.fn(),
     Handlers: {

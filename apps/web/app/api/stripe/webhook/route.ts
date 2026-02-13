@@ -117,6 +117,7 @@ export async function POST(req: Request) {
         }
       }
     } else {
+      // eslint-disable-next-line no-console
       console.warn(
         "[stripe:webhook] Unable to resolve company_id for subscription event",
         {

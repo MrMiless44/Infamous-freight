@@ -6,7 +6,6 @@
  * Phase 13 upgrade: ETA-to-pickup ranking via Mapbox Matrix API
  */
 
-const { PrismaClient } = require("@prisma/client");
 const { milesBetween } = require("../lib/geo");
 const { etaToPickupSeconds } = require("../mapbox/eta");
 let redis;
@@ -18,7 +17,7 @@ try {
     redis = null;
 }
 
-const prisma = new PrismaClient();
+const { prisma } = require("../db/prisma");
 
 function envNum(name, def) {
     const n = Number(process.env[name]);
@@ -27,11 +26,14 @@ function envNum(name, def) {
 
 function envBool(name, def = false) {
     const v = process.env[name];
-    if (v == null) return def;
+    if (v === null || v === undefined) return def;
     return ["1", "true", "yes", "on"].includes(String(v).toLowerCase());
 }
 
 async function getEligibleDriversForJob(params) {
+    if (!prisma) {
+        throw new Error("Database not configured");
+    }
     const { jobId, radiusMiles, limit, excludeDriverIds = [] } = params;
     const job = await prisma.job.findUnique({ where: { id: jobId } });
     if (!job) throw new Error("Job not found");
@@ -55,7 +57,7 @@ async function getEligibleDriversForJob(params) {
     const preFiltered = drivers
         .map((d) => {
             const dp = d.driverProfile;
-            if (!dp || dp.lastLat == null || dp.lastLng == null) return null;
+            if (!dp || dp.lastLat === null || dp.lastLat === undefined || dp.lastLng === null || dp.lastLng === undefined) return null;
             if (exclude.has(d.id)) return null;
 
             const dist = milesBetween(dp.lastLat, dp.lastLng, job.pickupLat, job.pickupLng);
@@ -93,7 +95,9 @@ async function getEligibleDriversForJob(params) {
                 try {
                     const raw = await redis.get(`eta:job:${jobId}`);
                     if (raw) etaMap = JSON.parse(raw);
-                } catch (_) { }
+                } catch (_) {
+                    /* Redis read failure - continue without eta cache */
+                }
             }
 
             // Batch call to Mapbox Matrix
@@ -101,7 +105,7 @@ async function getEligibleDriversForJob(params) {
             if (etaMap) {
                 etas = candidates.map((c) => etaMap[c.driver.id] ?? null);
             }
-            if (!etas || etas.some((v) => v == null)) {
+            if (!etas || etas.some((v) => v === null || v === undefined)) {
                 etas = await etaToPickupSeconds({
                     pickup: { lat: job.pickupLat, lng: job.pickupLng },
                     drivers: candidates.map((c) => ({
@@ -144,6 +148,9 @@ async function getEligibleDriversForJob(params) {
 }
 
 async function expireOffersForJob(jobId) {
+    if (!prisma) {
+        throw new Error("Database not configured");
+    }
     const now = new Date();
     return prisma.jobOffer.updateMany({
         where: { jobId, status: "OFFERED", expiresAt: { lt: now } },

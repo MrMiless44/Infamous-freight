@@ -1,5 +1,5 @@
 const express = require("express");
-const { v4: uuid } = require("uuid");
+const { randomUUID } = require("crypto");
 const { prisma } = require("../db/prisma");
 const {
   limiters,
@@ -141,7 +141,9 @@ router.post(
 
       const userId = req.user?.sub;
       const newTrackingId =
-        trackingId || reference || `TRK-${uuid().replace(/-/g, "").slice(0, 12)}`;
+        trackingId ||
+        reference ||
+        `TRK-${randomUUID().replace(/-/g, "").slice(0, 12)}`;
 
       // Use transaction to ensure atomic operation
       const Sentry = require('@sentry/node');
@@ -397,7 +399,7 @@ router.get(
 
       // Export based on format
       switch (format.toLowerCase()) {
-        case "csv":
+        case "csv": {
           const csv = exportToCSV(shipments);
           res.setHeader("Content-Type", "text/csv");
           res.setHeader(
@@ -406,8 +408,9 @@ router.get(
           );
           res.send(csv);
           break;
+        }
 
-        case "pdf":
+        case "pdf": {
           const pdf = await exportToPDF(shipments);
           res.setHeader("Content-Type", "application/pdf");
           res.setHeader(
@@ -416,8 +419,9 @@ router.get(
           );
           res.send(pdf);
           break;
+        }
 
-        case "json":
+        case "json": {
           const json = exportToJSON(shipments);
           res.setHeader("Content-Type", "application/json");
           res.setHeader(
@@ -426,6 +430,7 @@ router.get(
           );
           res.send(json);
           break;
+        }
 
         default:
           return res.status(400).json({

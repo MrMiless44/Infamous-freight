@@ -209,8 +209,7 @@ graph TD
 
 #### 9. **Security Scans** (Various)
 
-**CodeQL** - Runs on push and PR
-**Trivy** - Runs as part of CI/CD
+**CodeQL** - Runs on push and PR **Trivy** - Runs as part of CI/CD
 
 ---
 
@@ -438,5 +437,5 @@ actionlint .github/workflows/ci-cd.yml
 
 ---
 
-**Last Updated:** December 31, 2025
-**For Questions:** See [WORKFLOW_GUIDE.md](./.github/WORKFLOW_GUIDE.md)
+**Last Updated:** December 31, 2025 **For Questions:** See
+[WORKFLOW_GUIDE.md](./.github/WORKFLOW_GUIDE.md)

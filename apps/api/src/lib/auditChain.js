@@ -12,7 +12,9 @@ let prevHash = null;
 function ensureDir() {
     try {
         fs.mkdirSync(LOG_DIR, { recursive: true });
-    } catch (_) { }
+    } catch (_) {
+        /* Directory creation failure - fail gracefully */
+    }
 }
 
 function computeHash(prev, payload) {

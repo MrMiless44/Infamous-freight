@@ -10,8 +10,8 @@
  * Uses collaborative filtering, content-based filtering, and hybrid approaches
  */
 
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const { prisma: defaultPrisma } = require("../db/prisma");
+let prisma = defaultPrisma;
 
 /**
  * Calculate similarity between two items using cosine similarity
@@ -60,6 +60,11 @@ function calculateWeightedScore(factors) {
 }
 
 class RecommendationService {
+    constructor(prismaClient) {
+        if (prismaClient) {
+            prisma = prismaClient;
+        }
+    }
     /**
      * Get service recommendations for a shipment
      * @param {Object} params - Shipment parameters
@@ -1072,4 +1077,7 @@ class RecommendationService {
     }
 }
 
-module.exports = new RecommendationService();
+const recommendationService = new RecommendationService();
+
+module.exports = recommendationService;
+module.exports.RecommendationService = RecommendationService;

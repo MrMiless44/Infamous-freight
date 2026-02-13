@@ -48,8 +48,7 @@ Date        Lint  Test  Build  Deploy  Total
 2025-12-29  1.9m  4m    3.4m   2m      11.3m
 ```
 
-**Trend:** Stable (~12 min average)
-**Target:** < 15 min ✅
+**Trend:** Stable (~12 min average) **Target:** < 15 min ✅
 
 ---
 
@@ -307,6 +306,5 @@ echo "Total minutes: $(jq '[.[].duration] | add' metrics.json)"
 
 ---
 
-**Last Updated:** December 31, 2025
-**Next Monthly Review:** January 31, 2026
+**Last Updated:** December 31, 2025 **Next Monthly Review:** January 31, 2026
 **Maintained By:** DevOps Team

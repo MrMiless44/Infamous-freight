@@ -84,7 +84,7 @@ describe('Voice Routes', () => {
                 .send({});
 
             expect(response.status).toBe(400);
-            expect(response.body.error).toContain('Text command is required');
+            expect(response.body.error).toContain('Validation failed');
         });
 
         it('should reject without authentication', async () => {

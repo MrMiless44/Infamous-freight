@@ -5,7 +5,8 @@ This guide explains how to publish the custom actions to the GitHub Marketplace.
 ## Actions Available for Publishing
 
 1. **Health Check with Retries** (`.github/actions/health-check/`)
-2. **Performance Regression Detection** (`.github/actions/performance-baseline/`)
+2. **Performance Regression Detection**
+   (`.github/actions/performance-baseline/`)
 
 ---
 
@@ -39,7 +40,8 @@ git push origin performance-baseline-v1.0.0
 ```
 
 1. **Create GitHub Release**
-   - Go to <https://github.com/MrMiless44/Infamous-freight-enterprises/releases/new>
+   - Go to
+     <https://github.com/MrMiless44/Infamous-freight-enterprises/releases/new>
    - Select the tag you just created
    - Add release notes
    - Check "Publish this Action to the GitHub Marketplace"
@@ -158,13 +160,11 @@ git push origin performance-baseline-v1.0.0
 
 ### Health Check Action
 
-**Primary:** Deployment
-**Secondary:** Continuous integration, Monitoring
+**Primary:** Deployment **Secondary:** Continuous integration, Monitoring
 
 ### Performance Baseline Action
 
-**Primary:** Code quality
-**Secondary:** Continuous integration, Monitoring
+**Primary:** Code quality **Secondary:** Continuous integration, Monitoring
 
 ---
 
@@ -237,7 +237,9 @@ git push origin v1 --force
 
 **Description:**
 
-> Perform reliable health checks with configurable retries, timeout, and JSON validation. Perfect for deployment verification, ensuring your services are ready before proceeding with dependent steps.
+> Perform reliable health checks with configurable retries, timeout, and JSON
+> validation. Perfect for deployment verification, ensuring your services are
+> ready before proceeding with dependent steps.
 
 **Why Use This Action:**
 
@@ -269,18 +271,25 @@ git push origin v1 --force
 
 ### Your Published Actions URL
 
-- Health Check: `https://github.com/marketplace/actions/health-check-with-retries`
-- Performance Baseline: `https://github.com/marketplace/actions/performance-regression-detection`
+- Health Check:
+  `https://github.com/marketplace/actions/health-check-with-retries`
+- Performance Baseline:
+  `https://github.com/marketplace/actions/performance-regression-detection`
 
 ---
 
 ## Resources
 
-- **Marketplace Docs:** <https://docs.github.com/en/actions/creating-actions/publishing-actions-in-github-marketplace>
-- **Action Metadata:** <https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions>
-- **Best Practices:** <https://docs.github.com/en/actions/creating-actions/creating-a-composite-action>
-- **Security:** <https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions>
+- **Marketplace Docs:**
+  <https://docs.github.com/en/actions/creating-actions/publishing-actions-in-github-marketplace>
+- **Action Metadata:**
+  <https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions>
+- **Best Practices:**
+  <https://docs.github.com/en/actions/creating-actions/creating-a-composite-action>
+- **Security:**
+  <https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions>
 
 ---
 
-**Ready to Publish?** Follow the steps above and share your actions with the community! 🚀
+**Ready to Publish?** Follow the steps above and share your actions with the
+community! 🚀

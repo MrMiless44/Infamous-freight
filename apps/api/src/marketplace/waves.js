@@ -1,7 +1,5 @@
-const { PrismaClient } = require("@prisma/client");
 const { getEligibleDriversForJob, expireOffersForJob } = require("./offers");
-
-const prisma = new PrismaClient();
+const { prisma } = require("../db/prisma");
 
 function envNum(name, def) {
     const n = Number(process.env[name]);
@@ -10,7 +8,7 @@ function envNum(name, def) {
 
 function envBool(name, def) {
     const v = process.env[name];
-    if (v == null) return def;
+    if (v === null || v === undefined) return def;
     return ["1", "true", "yes", "on"].includes(String(v).toLowerCase());
 }
 
@@ -36,6 +34,9 @@ function nextWaveFrom(currentWave) {
 }
 
 async function runWave(params) {
+    if (!prisma) {
+        throw new Error("Database not configured");
+    }
     const cfg = waveConfig();
     const waveDef = params.wave === 1 ? cfg.wave1 : params.wave === 2 ? cfg.wave2 : cfg.wave3;
 

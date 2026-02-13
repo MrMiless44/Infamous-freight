@@ -14,7 +14,8 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4SMMA68UAAJNIkuMHNFeyTwwGf7ZMNDAkyU5ZFHMw
 
 Add this key to your GitHub repository:
 
-1. Go to: <https://github.com/MrMiless44/Infamous-freight-enterprises/settings/keys>
+1. Go to:
+   <https://github.com/MrMiless44/Infamous-freight-enterprises/settings/keys>
 2. Click "Add deploy key"
 3. Title: `Production Deploy Key`
 4. Paste the key above
@@ -34,7 +35,8 @@ chmod 600 ~/.ssh/authorized_keys
 
 For CI/CD deployments using SSH:
 
-1. Go to: <https://github.com/MrMiless44/Infamous-freight-enterprises/settings/secrets/actions>
+1. Go to:
+   <https://github.com/MrMiless44/Infamous-freight-enterprises/settings/secrets/actions>
 2. Click "New repository secret"
 3. Name: `SSH_PUBLIC_KEY`
 4. Value: Paste the key above

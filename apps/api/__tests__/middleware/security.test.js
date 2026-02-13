@@ -167,6 +167,8 @@ describe('Security Middleware', () => {
 
     describe('auditLog', () => {
         it('should log request metadata on response finish', () => {
+            const { logger } = require('../../src/middleware/logger');
+            const loggerSpy = jest.spyOn(logger, 'info').mockImplementation();
             const finishCallback = jest.fn();
             res.on = jest.fn((event, callback) => {
                 if (event === 'finish') finishCallback.mockImplementation(callback);
@@ -181,17 +183,21 @@ describe('Security Middleware', () => {
             res.statusCode = 200;
             finishCallback();
 
-            expect(console.info).toHaveBeenCalledWith(
-                'request',
+            expect(loggerSpy).toHaveBeenCalledWith(
                 expect.objectContaining({
                     method: 'GET',
                     path: '/test',
                     status: 200,
-                })
+                }),
+                'request'
             );
+
+            loggerSpy.mockRestore();
         });
 
         it('should include user info when authenticated', () => {
+            const { logger } = require('../../src/middleware/logger');
+            const loggerSpy = jest.spyOn(logger, 'info').mockImplementation();
             req.user = { sub: 'user-123' };
             const finishCallback = jest.fn();
             res.on = jest.fn((event, callback) => {
@@ -201,15 +207,19 @@ describe('Security Middleware', () => {
             auditLog(req, res, next);
             finishCallback();
 
-            expect(console.info).toHaveBeenCalledWith(
-                'request',
+            expect(loggerSpy).toHaveBeenCalledWith(
                 expect.objectContaining({
                     user: 'user-123',
-                })
+                }),
+                'request'
             );
+
+            loggerSpy.mockRestore();
         });
 
         it('should mask authorization header', () => {
+            const { logger } = require('../../src/middleware/logger');
+            const loggerSpy = jest.spyOn(logger, 'info').mockImplementation();
             req.headers.authorization = 'Bearer secret-token';
             const finishCallback = jest.fn();
             res.on = jest.fn((event, callback) => {
@@ -219,15 +229,19 @@ describe('Security Middleware', () => {
             auditLog(req, res, next);
             finishCallback();
 
-            expect(console.info).toHaveBeenCalledWith(
-                'request',
+            expect(loggerSpy).toHaveBeenCalledWith(
                 expect.objectContaining({
                     auth: '***',
-                })
+                }),
+                'request'
             );
+
+            loggerSpy.mockRestore();
         });
 
         it('should use path when originalUrl is missing', () => {
+            const { logger } = require('../../src/middleware/logger');
+            const loggerSpy = jest.spyOn(logger, 'info').mockImplementation();
             delete req.originalUrl;
             req.path = '/fallback-path';
             const finishCallback = jest.fn();
@@ -238,15 +252,19 @@ describe('Security Middleware', () => {
             auditLog(req, res, next);
             finishCallback();
 
-            expect(console.info).toHaveBeenCalledWith(
-                'request',
+            expect(loggerSpy).toHaveBeenCalledWith(
                 expect.objectContaining({
                     path: '/fallback-path',
-                })
+                }),
+                'request'
             );
+
+            loggerSpy.mockRestore();
         });
 
         it('should not include auth field when no authorization header', () => {
+            const { logger } = require('../../src/middleware/logger');
+            const loggerSpy = jest.spyOn(logger, 'info').mockImplementation();
             const finishCallback = jest.fn();
             res.on = jest.fn((event, callback) => {
                 if (event === 'finish') finishCallback.mockImplementation(callback);
@@ -255,13 +273,15 @@ describe('Security Middleware', () => {
             auditLog(req, res, next);
             finishCallback();
 
-            expect(console.info).toHaveBeenCalledWith(
-                'request',
+            expect(loggerSpy).toHaveBeenCalledWith(
                 expect.objectContaining({
                     method: 'GET',
                     auth: undefined,
-                })
+                }),
+                'request'
             );
+
+            loggerSpy.mockRestore();
         });
     });
 });

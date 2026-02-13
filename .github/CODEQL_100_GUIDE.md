@@ -25,7 +25,8 @@
 
 ### What is CodeQL?
 
-CodeQL is GitHub's **semantic code analysis engine** that finds vulnerabilities in your code before deployment.
+CodeQL is GitHub's **semantic code analysis engine** that finds vulnerabilities
+in your code before deployment.
 
 **Key Features:**
 
@@ -83,42 +84,28 @@ LAYER 7: Reporting
 **File**: [.github/workflows/codeql.yml](.github/workflows/codeql.yml)
 
 ```yaml
-┌─────────────────────────────────────────┐
-│     EVENT TRIGGERS                      │
-│  (push, pull_request, schedule)         │
-└────────────────┬────────────────────────┘
-                 │
-    ┌────────────┼────────────┐
-    │            │            │
-    ▼            ▼            ▼
-┌───────────┐ ┌─────────┐ ┌──────────┐
-│ CodeQL    │ │Depend.  │ │Supply    │
-│Analysis   │ │Scanning │ │Chain     │
-└─────┬─────┘ └────┬────┘ └────┬─────┘
-      │            │           │
-      └────────┬───┴─────┬─────┘
-               │         │
-               ▼         ▼
-            Results   Artifacts
-               │         │
-      ┌────────┴───┬─────┘
-      │            │
-      ▼            ▼
-   SARIF        Report
-   Upload       Summary
+┌─────────────────────────────────────────┐ │     EVENT
+TRIGGERS                      │ │  (push, pull_request, schedule)         │
+└────────────────┬────────────────────────┘ │ ┌────────────┼────────────┐
+│            │            │ ▼            ▼            ▼ ┌───────────┐
+┌─────────┐ ┌──────────┐ │ CodeQL    │ │Depend.  │ │Supply    │ │Analysis   │
+│Scanning │ │Chain     │ └─────┬─────┘ └────┬────┘ └────┬─────┘
+│            │           │ └────────┬───┴─────┬─────┘ │         │ ▼         ▼
+Results   Artifacts │         │ ┌────────┴───┬─────┘ │            │
+▼            ▼ SARIF        Report Upload       Summary
 ```
 
 ### Job Flow
 
-| Job | Purpose | Duration | Runs On |
-|-----|---------|----------|---------|
-| `analyze` | Core CodeQL analysis | 5-10 min | Every push/PR |
-| `dependency-scan` | npm audit + outdated check | 2-5 min | Every push |
-| `supply-chain-security` | SBOM + secrets | 3-7 min | Every push |
-| `code-quality` | Linting + type checks | 3-5 min | Every push |
-| `security-audit` | Config review | 1-2 min | Every push |
-| `results` | Report aggregation | <1 min | Always |
-| `notify` | Alerts + emails | <1 min | On failure |
+| Job                     | Purpose                    | Duration | Runs On       |
+| ----------------------- | -------------------------- | -------- | ------------- |
+| `analyze`               | Core CodeQL analysis       | 5-10 min | Every push/PR |
+| `dependency-scan`       | npm audit + outdated check | 2-5 min  | Every push    |
+| `supply-chain-security` | SBOM + secrets             | 3-7 min  | Every push    |
+| `code-quality`          | Linting + type checks      | 3-5 min  | Every push    |
+| `security-audit`        | Config review              | 1-2 min  | Every push    |
+| `results`               | Report aggregation         | <1 min   | Always        |
+| `notify`                | Alerts + emails            | <1 min   | On failure    |
 
 ### Configuration Files
 
@@ -196,9 +183,8 @@ Repository → Actions → CodeQL Security Analysis
 
 ### Automated Scans (GitHub Actions)
 
-**Trigger:** Push to main or develop
-**Time:** ~15-20 minutes
-**Output:** Security alerts + artifacts
+**Trigger:** Push to main or develop **Time:** ~15-20 minutes **Output:**
+Security alerts + artifacts
 
 **View workflow run:**
 
@@ -536,7 +522,7 @@ env:
   CODEQL_MEMORY: 8g
 
 # Timeout configuration
-timeout-minutes: 360  # 6 hours max
+timeout-minutes: 360 # 6 hours max
 ```
 
 ---
@@ -551,7 +537,7 @@ timeout-minutes: 360  # 6 hours max
 
 ```yaml
 # Increase timeout
-timeout-minutes: 360  # was 60
+timeout-minutes: 360 # was 60
 
 # Or reduce scope
 # Add path filters to skip unnecessary scans
@@ -584,7 +570,7 @@ ls -la ./codeql-db/
 ```yaml
 # Reduce workers
 env:
-  CODEQL_THREADS: 2  # was 4
+  CODEQL_THREADS: 2 # was 4
 
 # Or increase runner memory
 runs-on: ubuntu-latest-x2
@@ -599,8 +585,7 @@ runs-on: ubuntu-latest-x2
 # In GitHub UI: Security → Code scanning alerts → Dismiss
 
 # Or suppress in code
-// lgtm [SECURITY] - Reviewed and safe
-const result = dangerousFunction();
+// lgtm [SECURITY] - Reviewed and safe const result = dangerousFunction();
 ```
 
 ### Debugging
@@ -693,12 +678,12 @@ git push origin v1.0.0
 
 ### Regular Reviews
 
-| Frequency | Task | Owner |
-|-----------|------|-------|
-| Daily | Review new alerts | Security team |
-| Weekly | Triage issues | Dev lead |
-| Monthly | Update queries | Security architect |
-| Quarterly | Audit configuration | Security review |
+| Frequency | Task                | Owner              |
+| --------- | ------------------- | ------------------ |
+| Daily     | Review new alerts   | Security team      |
+| Weekly    | Triage issues       | Dev lead           |
+| Monthly   | Update queries      | Security architect |
+| Quarterly | Audit configuration | Security review    |
 
 ### Updates
 

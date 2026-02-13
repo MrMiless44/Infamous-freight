@@ -7,7 +7,7 @@ function validateShipment(data) {
         errors.push('Tracking number is required and must be a string');
     } else if (data.trackingNumber.length < 5 || data.trackingNumber.length > 50) {
         errors.push('Tracking number must be between 5 and 50 characters');
-    } else if (!/^[A-Z0-9\-]+$/.test(data.trackingNumber)) {
+    } else if (!/^[A-Z0-9-]+$/.test(data.trackingNumber)) {
         errors.push('Tracking number can only contain uppercase letters, numbers, and hyphens');
     }
 

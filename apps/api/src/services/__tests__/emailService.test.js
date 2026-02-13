@@ -8,7 +8,7 @@ jest.mock('@sendgrid/mail', () => ({
   send: jest.fn()
 }));
 
-const sgMail = require('@sendgrid/mail');
+let sgMail;
 
 describe('Email Service', () => {
   let emailService;
@@ -29,9 +29,10 @@ describe('Email Service', () => {
 
     // Require module after setting env vars
     emailService = require('../emailService');
+    sgMail = require('@sendgrid/mail');
     
     // Setup default mock behavior
-    sgMail.send.mockResolvedValue([{ 
+    sgMail.send.mockResolvedValue([{
       statusCode: 202, 
       headers: { 'x-message-id': 'msg-123' } 
     }]);
@@ -159,6 +160,7 @@ describe('Email Service', () => {
       // Reload module to pick up new env var
       jest.resetModules();
       emailService = require('../emailService');
+      sgMail = require('@sendgrid/mail');
       sgMail.send.mockResolvedValue([{ statusCode: 202 }]);
 
       const shipment = {

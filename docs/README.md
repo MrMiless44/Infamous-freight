@@ -3,6 +3,20 @@
 Welcome to the Infamous Freight Enterprise documentation! This index will help
 you find the information you need.
 
+## 🌍 Platform Overview (NEW!)
+
+### What We Offer
+- **[Platform Offering](PLATFORM_OFFERING.md)** - Complete value proposition: features, benefits, roadmap, and market opportunity
+- **[Elevator Pitches](ELEVATOR_PITCH.md)** - Quick pitches for investors, customers, press, and talent (10s to 90s versions)
+- **[Strategic Vision](../PHASE_11_GLOBAL_AI_ECONOMIC_LAYER.md)** - Long-term vision for global AI economic infrastructure
+
+### Business & Market
+- **[Pitch Deck Content](pitch-deck-content.md)** - Product pitch materials
+- **[Investor Technical Appendix](investor-technical-appendix.md)** - Technical details for investors
+- **[Pricing Architecture Blueprint](revenue-operations/PRICING_ARCHITECTURE_BLUEPRINT.md)** - Production-ready pricing and revenue governance
+
+---
+
 ## 🚀 Getting Started (IMPORTANT!)
 
 ### ⭐ For Deployment RIGHT NOW
@@ -140,15 +154,6 @@ you find the information you need.
 - **[GitHub Settings](GITHUB_SETTINGS.md)** - Repository settings
 - **[Branch Protection](BRANCH_PROTECTION.md)** - Branch protection rules
 - **[Dependabot Setup](DEPENDABOT_SETUP.md)** - Automated dependency updates
-
-## Business Documentation
-
-- **[Pitch Deck Content](pitch-deck-content.md)** - Product pitch materials
-- **[Investor Technical Appendix](investor-technical-appendix.md)** - Technical
-  details for investors
-- **[Pilot Case Study](pilot-case-study.md)** - Case study documentation
-- **[Pricing Architecture Blueprint](revenue-operations/PRICING_ARCHITECTURE_BLUEPRINT.md)** -
-  Production-ready pricing, AI usage, and revenue governance
 
 ## Governance & Legacy
 

@@ -19,11 +19,23 @@ function validateString(field, opts = {}) {
 }
 
 function validateEmail(field = "email") {
-  return body(field).isEmail().withMessage("Invalid email").normalizeEmail();
+  return body(field)
+    .trim()
+    .isEmail()
+    .withMessage("Invalid email")
+    .normalizeEmail();
 }
 
 function validatePhone(field = "phone") {
-  return body(field).isMobilePhone("any").withMessage("Invalid phone number");
+  return body(field)
+    .trim()
+    .custom((value) => {
+      const normalized = String(value || "").replace(/[^\d]/g, "");
+      if (normalized.length < 7 || normalized.length > 15) {
+        throw new Error("Invalid phone number");
+      }
+      return true;
+    });
 }
 
 function validateUUID(field = "id") {

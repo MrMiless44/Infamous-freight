@@ -130,9 +130,6 @@ function initializeSentry() {
                 "CORS Policy",
                 "SecurityError",
             ],
-
-            // Capture breadcrumbs for context
-            maxBreadcrumbs: isDevelopment ? 100 : 30,
         });
 
         logger.info(`Sentry initialized - environment: ${environment}, DSN: ${dsn.substring(0, 20)}...`);

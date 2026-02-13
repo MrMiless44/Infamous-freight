@@ -5,16 +5,23 @@
  */
 
 const express = require("express");
-const { PrismaClient } = require("@prisma/client");
 const { stripe } = require("../lib/stripe");
 const { authenticate, requireScope, limiters } = require("../middleware/security");
 const { subscribeSchema } = require("./validators");
 
-const prisma = new PrismaClient();
+const { prisma } = require("../db/prisma");
 const router = express.Router();
 
 // Apply authentication to all routes
 router.use(authenticate);
+
+function requirePrisma(res) {
+    if (!prisma) {
+        res.status(503).json({ error: "Database not configured" });
+        return false;
+    }
+    return true;
+}
 
 /**
  * Get Stripe price ID for subscription tier
@@ -53,6 +60,7 @@ router.post("/subscribe",
                 return res.status(403).json({ error: "Cannot subscribe for another user" });
             }
 
+            if (!requirePrisma(res)) return;
             const user = await prisma.user.findUnique({ where: { id: userId } });
             if (!user) return res.status(404).json({ error: "User not found" });
             if (user.role !== "SHIPPER" && user.role !== "ADMIN") {
@@ -114,6 +122,7 @@ router.post("/portal",
                 return res.status(403).json({ error: "Cannot access portal for another user" });
             }
 
+            if (!requirePrisma(res)) return;
             const user = await prisma.user.findUnique({ where: { id: userId } });
             if (!user) return res.status(404).json({ error: "User not found" });
 

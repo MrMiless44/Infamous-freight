@@ -17,12 +17,16 @@ process.on("unhandledRejection", (reason) => {
   try {
     const Sentry = require("@sentry/node");
     Sentry.captureException(reason);
-  } catch (_) {}
+  } catch (_) {
+    /* Fail gracefully if Sentry unavailable */
+  }
 });
 
 process.on("uncaughtException", (err) => {
   try {
     const Sentry = require("@sentry/node");
     Sentry.captureException(err);
-  } catch (_) {}
+  } catch (_) {
+    /* Fail gracefully if Sentry unavailable */
+  }
 });

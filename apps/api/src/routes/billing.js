@@ -7,15 +7,30 @@
 const express = require('express');
 const { limiters, authenticate, requireOrganization, requireScope, auditLog } = require('../middleware/security');
 const { validateString, handleValidationErrors } = require('../middleware/validation');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
+const stripe = process.env.STRIPE_SECRET_KEY
+    ? require('stripe')(process.env.STRIPE_SECRET_KEY)
+    : null;
+const { prisma } = require('../db/prisma');
 const router = express.Router();
 
 // Stripe configuration - 100% to merchant account
 const STRIPE_CONNECT_ACCOUNT = process.env.STRIPE_CONNECT_ACCOUNT_ID || null;
 const APPLICATION_FEE_PERCENT = 0; // 100% goes to you, 0% application fee
+
+function requireStripe(req, res, next) {
+    if (!stripe) {
+        return res.status(503).json({ error: 'Stripe not configured' });
+    }
+    return next();
+}
+
+function requirePrisma(res) {
+    if (!prisma) {
+        res.status(503).json({ error: 'Database not configured' });
+        return false;
+    }
+    return true;
+}
 
 /**
  * POST /api/billing/create-payment-intent
@@ -28,12 +43,14 @@ router.post(
     authenticate,
     requireOrganization,
     requireScope('billing:write'),
+    requireStripe,
     auditLog,
     validateString('amount'),
     validateString('currency'),
     handleValidationErrors,
     async (req, res, next) => {
         try {
+            if (!requirePrisma(res)) return;
             const { amount, currency = 'usd', description, metadata = {} } = req.body;
             const amountInCents = Math.round(parseFloat(amount) * 100);
 
@@ -90,10 +107,12 @@ router.post(
     authenticate,
     requireOrganization,
     requireScope('billing:write'),
+    requireStripe,
     auditLog,
     handleValidationErrors,
     async (req, res, next) => {
         try {
+            if (!requirePrisma(res)) return;
             const { email = req.user.email, name } = req.body;
             if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
                 return res.status(400).json({ error: 'Invalid email' });
@@ -153,11 +172,13 @@ router.post(
     authenticate,
     requireOrganization,
     requireScope('billing:write'),
+    requireStripe,
     auditLog,
     validateString('priceId'),
     handleValidationErrors,
     async (req, res, next) => {
         try {
+            if (!requirePrisma(res)) return;
             const { priceId, email = req.user.email, metadata = {} } = req.body;
 
             // Get or create Stripe customer - 100% of payments to your account
@@ -261,6 +282,7 @@ router.get(
     auditLog,
     async (req, res, next) => {
         try {
+            if (!requirePrisma(res)) return;
             const subscriptions = await prisma.subscription.findMany({
                 where: { userId: req.user.sub },
                 select: {
@@ -296,9 +318,11 @@ router.post(
     authenticate,
     requireOrganization,
     requireScope('billing:write'),
+    requireStripe,
     auditLog,
     async (req, res, next) => {
         try {
+            if (!requirePrisma(res)) return;
             const { id } = req.params;
 
             // Get subscription from database
@@ -346,9 +370,11 @@ router.post(
 router.post(
     '/webhook',
     limiters.webhook,
+    requireStripe,
     express.raw({ type: 'application/json' }),
     async (req, res, next) => {
         try {
+            if (!requirePrisma(res)) return;
             const sig = req.headers['stripe-signature'];
             const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -365,26 +391,28 @@ router.post(
 
             // Handle events - all revenue flows to your Stripe account
             switch (event.type) {
-                case 'payment_intent.succeeded':
+                case 'payment_intent.succeeded': {
                     const paymentIntent = event.data.object;
                     await prisma.payment.update({
                         where: { stripePaymentIntentId: paymentIntent.id },
                         data: { status: 'succeeded' },
                     }).catch(() => { });
                     break;
+                }
 
-                case 'payment_intent.payment_failed':
+                case 'payment_intent.payment_failed': {
                     const failedPayment = event.data.object;
                     await prisma.payment.update({
                         where: { stripePaymentIntentId: failedPayment.id },
                         data: { status: 'failed' },
                     }).catch(() => { });
                     break;
+                }
 
                 case 'customer.subscription.created':
-                case 'customer.subscription.updated':
+                case 'customer.subscription.updated': {
                     const updatedSubscription = event.data.object;
-                    await prisma.subscription.update({
+                    await prisma.payment.update({
                         where: { stripeSubscriptionId: updatedSubscription.id },
                         data: {
                             status: updatedSubscription.status,
@@ -393,16 +421,18 @@ router.post(
                         },
                     }).catch(() => { });
                     break;
+                }
 
-                case 'customer.subscription.deleted':
+                case 'customer.subscription.deleted': {
                     const deletedSubscription = event.data.object;
                     await prisma.subscription.update({
                         where: { stripeSubscriptionId: deletedSubscription.id },
                         data: { status: 'cancelled' },
                     }).catch(() => { });
                     break;
+                }
 
-                case 'invoice.paid':
+                case 'invoice.paid': {
                     const paidInvoice = event.data.object;
                     if (paidInvoice.subscription) {
                         await prisma.subscription.update({
@@ -411,8 +441,9 @@ router.post(
                         }).catch(() => { });
                     }
                     break;
+                }
 
-                case 'invoice.payment_failed':
+                case 'invoice.payment_failed': {
                     const failedInvoice = event.data.object;
                     if (failedInvoice.subscription) {
                         await prisma.subscription.update({
@@ -421,12 +452,14 @@ router.post(
                         }).catch(() => { });
                     }
                     break;
+                }
 
-                case 'charge.refunded':
+                case 'charge.refunded': {
                     const refundedCharge = event.data.object;
                     // Log refund - flows back to customer, revenue to you remains
                     console.log(`Refund processed: ${refundedCharge.id}, Amount: ${refundedCharge.refunded}`);
                     break;
+                }
 
                 default:
                     // Unhandled event type
@@ -453,6 +486,7 @@ router.get(
     auditLog,
     async (req, res, next) => {
         try {
+            if (!requirePrisma(res)) return;
             const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 
             const stats = await prisma.payment.aggregate({

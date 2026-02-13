@@ -35,6 +35,8 @@ async function initRedis() {
 // Cache middleware factory
 function cacheMiddleware(ttl = 300) {
     return async (req, res, next) => {
+        if (process.env.NODE_ENV === 'test') return next();
+
         // Only cache GET requests
         if (req.method !== 'GET') return next();
 

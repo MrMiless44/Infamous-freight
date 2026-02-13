@@ -142,13 +142,13 @@ Push to main/develop
 
 ### Test Coverage
 
-| Audit Type | Coverage | Runs |
-|-----------|----------|------|
-| Performance | Desktop + Mobile | 3 each |
-| Accessibility | Full page | 3 |
-| Best Practices | Full page | 3 |
-| SEO | Full page | 3 |
-| **Total** | **4 URL pages** | **36+ runs** |
+| Audit Type     | Coverage         | Runs         |
+| -------------- | ---------------- | ------------ |
+| Performance    | Desktop + Mobile | 3 each       |
+| Accessibility  | Full page        | 3            |
+| Best Practices | Full page        | 3            |
+| SEO            | Full page        | 3            |
+| **Total**      | **4 URL pages**  | **36+ runs** |
 
 ---
 
@@ -215,8 +215,8 @@ Edit `.lighthouserc.json`:
   "ci": {
     "assert": {
       "assertions": {
-        "categories:performance": ["error", {"minScore": 0.85}],
-        "largest-contentful-paint": ["error", {"maxNumericValue": 2200}]
+        "categories:performance": ["error", { "minScore": 0.85 }],
+        "largest-contentful-paint": ["error", { "maxNumericValue": 2200 }]
       }
     }
   }
@@ -340,12 +340,12 @@ Artifacts:
 
 Shows potential improvements ranked by impact:
 
-| Opportunity | Impact | Effort |
-|-------------|--------|--------|
-| Eliminate render-blocking resources | High | Medium |
-| Defer offscreen images | Medium | Low |
-| Minify CSS | Low | Low |
-| Enable compression | High | Low |
+| Opportunity                         | Impact | Effort |
+| ----------------------------------- | ------ | ------ |
+| Eliminate render-blocking resources | High   | Medium |
+| Defer offscreen images              | Medium | Low    |
+| Minify CSS                          | Low    | Low    |
+| Enable compression                  | High   | Low    |
 
 ### Diagnostics Section
 

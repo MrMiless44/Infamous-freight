@@ -81,14 +81,7 @@
   "postCreateCommand": "bash .devcontainer/postCreateCommand.sh",
   "postStartCommand": "bash .devcontainer/postStartCommand.sh",
   // Forward ports for API, Web, and common services
-  "forwardPorts": [
-    3000,
-    3001,
-    4000,
-    5432,
-    6379,
-    8080
-  ],
+  "forwardPorts": [3000, 3001, 4000, 5432, 6379, 8080],
   "portsAttributes": {
     "3000": {
       "label": "Web (Next.js)",

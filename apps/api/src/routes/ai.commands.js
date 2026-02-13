@@ -39,15 +39,16 @@ router.post(
             const { command } = req.body;
             const startTime = Date.now();
 
-            // Persist request placeholder
-            await prisma.aiEvent.create({
-                data: {
-                    userId: req.user.sub,
-                    command,
-                    response: 'pending',
-                    provider: process.env.AI_PROVIDER || 'synthetic',
-                },
-            });
+            if (prisma?.aiEvent?.create) {
+                await prisma.aiEvent.create({
+                    data: {
+                        userId: req.user.sub,
+                        command,
+                        response: 'pending',
+                        provider: process.env.AI_PROVIDER || 'synthetic',
+                    },
+                });
+            }
 
             res.json({
                 ok: true,
@@ -122,12 +123,14 @@ router.get(
             const limit = Math.min(Number(take) || 20, 100);
             const offset = Number(skip) || 0;
 
-            const history = await prisma.aiEvent.findMany({
-                where: { userId: req.user.sub },
-                take: limit,
-                skip: offset,
-                orderBy: { createdAt: 'desc' },
-            });
+            const history = prisma?.aiEvent?.findMany
+                ? await prisma.aiEvent.findMany({
+                      where: { userId: req.user.sub },
+                      take: limit,
+                      skip: offset,
+                      orderBy: { createdAt: 'desc' },
+                  })
+                : [];
 
             res.json({
                 ok: true,

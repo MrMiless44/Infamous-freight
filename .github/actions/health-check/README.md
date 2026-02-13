@@ -3,7 +3,8 @@
 [![GitHub Release](https://img.shields.io/github/v/release/MrMiless44/Infamous-freight-enterprises?filter=health-check-*)](https://github.com/MrMiless44/Infamous-freight-enterprises/releases)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](../../../LICENSE)
 
-Performs health checks with configurable retries and validation for deployment pipelines.
+Performs health checks with configurable retries and validation for deployment
+pipelines.
 
 ## Features
 

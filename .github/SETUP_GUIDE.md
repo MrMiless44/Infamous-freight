@@ -1,6 +1,7 @@
 # Branch Protection & GitHub Environment Setup Guide
 
-This guide provides step-by-step instructions for configuring branch protection rules and GitHub environments that cannot be set via code.
+This guide provides step-by-step instructions for configuring branch protection
+rules and GitHub environments that cannot be set via code.
 
 ---
 
@@ -8,7 +9,8 @@ This guide provides step-by-step instructions for configuring branch protection 
 
 ### Step 1: Navigate to Branch Protection Settings
 
-1. Go to repository on GitHub: <https://github.com/MrMiless44/Infamous-freight-enterprises>
+1. Go to repository on GitHub:
+   <https://github.com/MrMiless44/Infamous-freight-enterprises>
 2. Click **Settings** tab
 3. Click **Branches** in left sidebar
 4. Under "Branch protection rules", click **Add rule**
@@ -240,6 +242,5 @@ After setup, verify:
 
 ---
 
-**Setup Time:** ~30 minutes
-**Last Updated:** December 31, 2025
-**Maintained By:** DevOps Team
+**Setup Time:** ~30 minutes **Last Updated:** December 31, 2025 **Maintained
+By:** DevOps Team

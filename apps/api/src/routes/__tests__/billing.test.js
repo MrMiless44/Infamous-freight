@@ -6,10 +6,9 @@
  */
 
 const request = require("supertest");
-const { PrismaClient } = require("@prisma/client");
 const jwt = require("jsonwebtoken");
 
-const prisma = new PrismaClient();
+const { prisma } = require("../../db/prisma");
 
 // Mock Stripe
 jest.mock("stripe", () => {
@@ -73,7 +72,7 @@ describe.skip("Billing Routes - 100% Payment Processing", () => {
   });
 
   afterAll(async () => {
-    await prisma.$disconnect();
+    await prisma?.$disconnect?.();
   });
 
   describe("POST /create-payment-intent", () => {

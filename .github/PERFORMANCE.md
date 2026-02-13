@@ -104,7 +104,8 @@
 
 - **Vercel**: <https://vercel.com/dashboard>
 - **Render**: <https://dashboard.render.com>
-- **GitHub Actions**: <https://github.com/MrMiless44/Infamous-freight-enterprises/actions>
+- **GitHub Actions**:
+  <https://github.com/MrMiless44/Infamous-freight-enterprises/actions>
 - **Datadog RUM** (if configured): Monitor real user interactions
 
 ### Alert Thresholds
@@ -180,5 +181,4 @@ pnpm audit:performance
 
 ---
 
-**Last Updated:** December 31, 2025
-**Maintained By:** DevOps & Performance Team
+**Last Updated:** December 31, 2025 **Maintained By:** DevOps & Performance Team

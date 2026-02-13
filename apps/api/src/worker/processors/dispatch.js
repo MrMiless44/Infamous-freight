@@ -33,7 +33,9 @@ async function processDispatch(job /** @type {BullJob} */) {
               data: { jobId, offerId: offer.offerId, rank: offer.rank, wave },
             });
           }
-        } catch (_) {}
+        } catch (_err) {
+          // Ignore notification errors for individual offers.
+        }
       }),
     );
   }

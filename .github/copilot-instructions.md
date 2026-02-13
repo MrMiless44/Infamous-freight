@@ -4,17 +4,25 @@
 
 **Monorepo Structure** (pnpm workspaces @ 8.15.9):
 
-- `apps/api/` - Express.js backend (port 4000 default via `API_PORT`), **CommonJS** via `require()`
-- `apps/web/` - Next.js 14 frontend (port 3000 default via `WEB_PORT`), **TypeScript/ESM** via `import`
+- `apps/api/` - Express.js backend (port 4000 default via `API_PORT`),
+  **CommonJS** via `require()`
+- `apps/web/` - Next.js 14 frontend (port 3000 default via `WEB_PORT`),
+  **TypeScript/ESM** via `import`
 - `apps/mobile/` - React Native/Expo app (TypeScript)
-- `packages/shared/` - TypeScript package with shared types, constants, utilities (`@infamous-freight/shared`)
+- `packages/shared/` - TypeScript package with shared types, constants,
+  utilities (`@infamous-freight/shared`)
 - `e2e/` - Playwright end-to-end tests
 
-**Note**: Docker Compose maps API internally to port 3001 by default (override with `API_PORT` env var)
+**Note**: Docker Compose maps API internally to port 3001 by default (override
+with `API_PORT` env var)
 
-**Data Flow**: API ↔ PostgreSQL (Prisma ORM) | Web/Mobile ↔ API (REST + scope-based auth)
+**Data Flow**: API ↔ PostgreSQL (Prisma ORM) | Web/Mobile ↔ API (REST +
+scope-based auth)
 
-**Critical**: Shared package exports domain types, constants, and utils that **MUST be imported from `@infamous-freight/shared`** everywhere — never redefine. The shared package must be **built before API startup** when types change: `pnpm --filter @infamous-freight/shared build`
+**Critical**: Shared package exports domain types, constants, and utils that
+**MUST be imported from `@infamous-freight/shared`** everywhere — never
+redefine. The shared package must be **built before API startup** when types
+change: `pnpm --filter @infamous-freight/shared build`
 
 ## 🔌 Service Communication Patterns
 
@@ -30,22 +38,29 @@
 
 **Middleware Stack** (`apps/api/src/middleware/`):
 
-- **security.js** - JWT auth, `authenticate()` + `requireScope()`, per-endpoint rate limiters
-  - Exports: `limiters` (general, auth, billing, ai), `authenticate`, `requireScope`, `auditLog`
+- **security.js** - JWT auth, `authenticate()` + `requireScope()`, per-endpoint
+  rate limiters
+  - Exports: `limiters` (general, auth, billing, ai), `authenticate`,
+    `requireScope`, `auditLog`
   - Rate limits: general 100/15min, auth 5/15min, ai 20/1min, billing 30/15min
   - Maintains set of allowed JWT scopes per route
-- **validation.js** - `validateString()` + `handleValidationErrors()` via express-validator
+- **validation.js** - `validateString()` + `handleValidationErrors()` via
+  express-validator
   - Reusable validators: `validateEmail()`, `validatePhone()`, `validateUUID()`
   - Always pair with `handleValidationErrors` to catch and format violations
-- **errorHandler.js** - Global error catch-all, converts errors to HTTP status codes
+- **errorHandler.js** - Global error catch-all, converts errors to HTTP status
+  codes
 
   # GitHub Copilot Instructions (Infamous Freight Enterprises)
 
   ## Overview
-
-  - Monorepo with pnpm workspaces: `apps/api` (Express/CommonJS), `apps/web` (Next.js 14/TypeScript ESM), `apps/mobile` (Expo RN), `packages/shared` (TypeScript shared lib), `e2e` (Playwright).
+  - Monorepo with pnpm workspaces: `apps/api` (Express/CommonJS), `apps/web`
+    (Next.js 14/TypeScript ESM), `apps/mobile` (Expo RN), `packages/shared`
+    (TypeScript shared lib), `e2e` (Playwright).
   - Data flow: Web/Mobile → API (REST, JWT scopes) → PostgreSQL via Prisma.
-  - Critical rule: Import domain types/constants/utils from `@infamous-freight/shared` everywhere. Never redefine. Rebuild shared after changes.
+  - Critical rule: Import domain types/constants/utils from
+    `@infamous-freight/shared` everywhere. Never redefine. Rebuild shared after
+    changes.
 
 - Quick checklist when editing shared:
   - Update `packages/shared/src/*.ts`
@@ -54,26 +69,43 @@
 
 ## Must-Know Patterns
 
-- API route order: `limiters → authenticate → requireScope → auditLog → validators → handleValidationErrors → handler → next(err)`.
-- Responses: Use `ApiResponse` and `HTTP_STATUS` from shared; delegate errors with `next(err)` to global `errorHandler`.
-- Auth: Scopes enforced per-route (e.g., `requireScope("ai:command")`). Rate limits: general 100/15m, auth 5/15m, ai 20/1m, billing 30/15m.
-- Shared build required when `packages/shared/src/{types.ts,constants.ts,utils.ts,env.ts}` change.
+- API route order:
+  `limiters → authenticate → requireScope → auditLog → validators → handleValidationErrors → handler → next(err)`.
+- Responses: Use `ApiResponse` and `HTTP_STATUS` from shared; delegate errors
+  with `next(err)` to global `errorHandler`.
+- Auth: Scopes enforced per-route (e.g., `requireScope("ai:command")`). Rate
+  limits: general 100/15m, auth 5/15m, ai 20/1m, billing 30/15m.
+- Shared build required when
+  `packages/shared/src/{types.ts,constants.ts,utils.ts,env.ts}` change.
 
 ## Developer Workflow
 
-- Start dev: `pnpm dev` (all), `pnpm api:dev` (API on 3001 in Docker), `pnpm web:dev` (Web 3000).
-- Tests: `pnpm test`, coverage HTML in `apps/api/coverage/`. API coverage thresholds enforced in CI (≈75–84%).
+- Start dev: `pnpm dev` (all), `pnpm api:dev` (API on 3001 in Docker),
+  `pnpm web:dev` (Web 3000).
+- Tests: `pnpm test`, coverage HTML in `apps/api/coverage/`. API coverage
+  thresholds enforced in CI (≈75–84%).
 - Lint/format: `pnpm lint && pnpm format`. Type check: `pnpm check:types`.
-- Prisma: edit `apps/api/prisma/schema.prisma` → `cd apps/api && pnpm prisma:migrate:dev --name <change>` → optional `pnpm prisma:studio` → `pnpm prisma:generate`.
-- Codex CLI: AI coding agent available in devcontainer. Run `codex` for interactive mode, or use keyboard shortcut `Ctrl+Shift+C` in VS Code. See [QUICK_REFERENCE.md](QUICK_REFERENCE.md#codex-cli).
+- Prisma: edit `apps/api/prisma/schema.prisma` →
+  `cd apps/api && pnpm prisma:migrate:dev --name <change>` → optional
+  `pnpm prisma:studio` → `pnpm prisma:generate`.
+- Codex CLI: AI coding agent available in devcontainer. Run `codex` for
+  interactive mode, or use keyboard shortcut `Ctrl+Shift+C` in VS Code. See
+  [QUICK_REFERENCE.md](QUICK_REFERENCE.md#codex-cli).
 
 ## File/Dir References
 
-- API routes: `apps/api/src/routes/` (e.g., `health.js`, `shipments.js`, `ai.commands.js`, `voice.js`, `billing.js`).
-- Middleware: `apps/api/src/middleware/` ([security.js](../apps/api/src/middleware/security.js), [validation.js](../apps/api/src/middleware/validation.js), `errorHandler.js`, `logger.js`, `securityHeaders.js`).
-- Services: `apps/api/src/services/` (e.g., `aiSyntheticClient.js` with OpenAI/Anthropic/synthetic modes).
-- Shared: `packages/shared/src/` (`types.ts`, `constants.ts`, `utils.ts`, `env.ts`). Build outputs to `packages/shared/dist/`.
-- Web: `apps/web/pages/`, `apps/web/components/`. Use `ApiResponse<T>` and `SHIPMENT_STATUSES` from shared.
+- API routes: `apps/api/src/routes/` (e.g., `health.js`, `shipments.js`,
+  `ai.commands.js`, `voice.js`, `billing.js`).
+- Middleware: `apps/api/src/middleware/`
+  ([security.js](../apps/api/src/middleware/security.js),
+  [validation.js](../apps/api/src/middleware/validation.js), `errorHandler.js`,
+  `logger.js`, `securityHeaders.js`).
+- Services: `apps/api/src/services/` (e.g., `aiSyntheticClient.js` with
+  OpenAI/Anthropic/synthetic modes).
+- Shared: `packages/shared/src/` (`types.ts`, `constants.ts`, `utils.ts`,
+  `env.ts`). Build outputs to `packages/shared/dist/`.
+- Web: `apps/web/pages/`, `apps/web/components/`. Use `ApiResponse<T>` and
+  `SHIPMENT_STATUSES` from shared.
 
 ## Examples
 
@@ -114,43 +146,76 @@
   - `authenticate()`: [security.js](../apps/api/src/middleware/security.js#L69)
   - `requireScope()`: [security.js](../apps/api/src/middleware/security.js#L89)
   - `auditLog`: [security.js](../apps/api/src/middleware/security.js#L104)
-  - `handleValidationErrors`: [validation.js](../apps/api/src/middleware/validation.js#L6)
-  - Real route demonstrating order: [ai.commands.js](../apps/api/src/routes/ai.commands.js#L17-L38)
-  - Logger performance levels: [logger.js](../apps/api/src/middleware/logger.js#L90-L94)
-  - Billing route rate-limited: [billing.js](../apps/api/src/routes/billing.js#L38-L68)
+  - `handleValidationErrors`:
+    [validation.js](../apps/api/src/middleware/validation.js#L6)
+  - Real route demonstrating order:
+    [ai.commands.js](../apps/api/src/routes/ai.commands.js#L17-L38)
+  - Logger performance levels:
+    [logger.js](../apps/api/src/middleware/logger.js#L90-L94)
+  - Billing route rate-limited:
+    [billing.js](../apps/api/src/routes/billing.js#L38-L68)
 
 ## Integration & Config
 
-- AI: `apps/api/src/services/aiSyntheticClient.js` selected via `AI_PROVIDER` (`openai|anthropic|synthetic`); uses retry; synthetic fallback when keys missing.
-- Billing: Stripe/PayPal under `apps/api/src/routes/billing.js` with dedicated rate limits.
-- Voice: `apps/api/src/routes/voice.js` using Multer (size via `VOICE_MAX_FILE_SIZE_MB`), scopes `voice:ingest`/`voice:command`.
-- Security: JWT via [security.js](../apps/api/src/middleware/security.js), CORS via `CORS_ORIGINS` (see [.env.example](../.env.example#L24)), Helmet headers via `securityHeaders.js`, Sentry in server and `errorHandler.js`. Error responses handled centrally in [errorHandler.js](../apps/api/src/middleware/errorHandler.js#L22).
-- Web performance: Vercel Analytics and Speed Insights wired in [apps/web/pages/_app.tsx](../apps/web/pages/_app.tsx). `SpeedInsights` renders in production. Datadog RUM initialized when `NEXT_PUBLIC_ENV=production` with `NEXT_PUBLIC_DD_APP_ID`, `NEXT_PUBLIC_DD_CLIENT_TOKEN`, `NEXT_PUBLIC_DD_SITE` (see [.env.example](../.env.example#L36-L40)).
+- AI: `apps/api/src/services/aiSyntheticClient.js` selected via `AI_PROVIDER`
+  (`openai|anthropic|synthetic`); uses retry; synthetic fallback when keys
+  missing.
+- Billing: Stripe/PayPal under `apps/api/src/routes/billing.js` with dedicated
+  rate limits.
+- Voice: `apps/api/src/routes/voice.js` using Multer (size via
+  `VOICE_MAX_FILE_SIZE_MB`), scopes `voice:ingest`/`voice:command`.
+- Security: JWT via [security.js](../apps/api/src/middleware/security.js), CORS
+  via `CORS_ORIGINS` (see [.env.example](../.env.example#L24)), Helmet headers
+  via `securityHeaders.js`, Sentry in server and `errorHandler.js`. Error
+  responses handled centrally in
+  [errorHandler.js](../apps/api/src/middleware/errorHandler.js#L22).
+- Web performance: Vercel Analytics and Speed Insights wired in
+  [apps/web/pages/\_app.tsx](../apps/web/pages/_app.tsx). `SpeedInsights`
+  renders in production. Datadog RUM initialized when
+  `NEXT_PUBLIC_ENV=production` with `NEXT_PUBLIC_DD_APP_ID`,
+  `NEXT_PUBLIC_DD_CLIENT_TOKEN`, `NEXT_PUBLIC_DD_SITE` (see
+  [.env.example](../.env.example#L36-L40)).
   - JWT: [security.js](../apps/api/src/middleware/security.js)
   - CORS: configure `CORS_ORIGINS` (see [.env.example](../.env.example#L24))
-  - Voice upload size: `VOICE_MAX_FILE_SIZE_MB` default `10` (see [.env.example](../.env.example#L42) and [voice.js](../apps/api/src/routes/voice.js#L14))
+  - Voice upload size: `VOICE_MAX_FILE_SIZE_MB` default `10` (see
+    [.env.example](../.env.example#L42) and
+    [voice.js](../apps/api/src/routes/voice.js#L14))
 
 ## Gotchas
 
-- Shared changes require: `pnpm --filter @infamous-freight/shared build` then restart services.
-- API in Docker maps to 3001; standalone defaults to 4000 (`API_PORT`, see [.env.example](../.env.example#L5)); Web defaults to 3000 (see [.env.example](../.env.example#L10)).
-  - Defaults: `API_PORT=4000` (see [.env.example](../.env.example#L5)), `WEB_PORT=3000` (see [.env.example](../.env.example#L10)).
-- Always use shared enums (e.g., `SHIPMENT_STATUSES`) instead of string literals.
-- Jest tests assume `process.env.JWT_SECRET = "test-secret"` and mock external services.
+- Shared changes require: `pnpm --filter @infamous-freight/shared build` then
+  restart services.
+- API in Docker maps to 3001; standalone defaults to 4000 (`API_PORT`, see
+  [.env.example](../.env.example#L5)); Web defaults to 3000 (see
+  [.env.example](../.env.example#L10)).
+  - Defaults: `API_PORT=4000` (see [.env.example](../.env.example#L5)),
+    `WEB_PORT=3000` (see [.env.example](../.env.example#L10)).
+- Always use shared enums (e.g., `SHIPMENT_STATUSES`) instead of string
+  literals.
+- Jest tests assume `process.env.JWT_SECRET = "test-secret"` and mock external
+  services.
 
 ## Quick Commands
 
 - Build shared: `pnpm --filter @infamous-freight/shared build`
 - Run API tests only: `pnpm --filter api test`
 - Prisma generate: `cd apps/api && pnpm prisma:generate`
-- Kill ports: `lsof -ti:3001 | xargs kill -9` (API), `lsof -ti:3000 | xargs kill -9` (Web)
-- Env defaults: `AI_PROVIDER=synthetic` (see [.env.example](../.env.example#L27)), `VOICE_MAX_FILE_SIZE_MB=10` (see [.env.example](../.env.example#L42))
-- Env defaults: `AI_PROVIDER=synthetic` (see [.env.example](../.env.example#L27))
-- Production: Web deployed to <https://infamous-freight-enterprises-git-f34b9b-santorio-miles-projects.vercel.app> (Vercel)
+- Kill ports: `lsof -ti:3001 | xargs kill -9` (API),
+  `lsof -ti:3000 | xargs kill -9` (Web)
+- Env defaults: `AI_PROVIDER=synthetic` (see
+  [.env.example](../.env.example#L27)), `VOICE_MAX_FILE_SIZE_MB=10` (see
+  [.env.example](../.env.example#L42))
+- Env defaults: `AI_PROVIDER=synthetic` (see
+  [.env.example](../.env.example#L27))
+- Production: Web deployed to
+  <https://infamous-freight-enterprises-git-f34b9b-santorio-miles-projects.vercel.app>
+  (Vercel)
 
 ---
 
-Feedback welcome: Are any middleware names, rate limits, or env defaults unclear or out of date? I can refine sections with exact file links or add missing examples.
+Feedback welcome: Are any middleware names, rate limits, or env defaults unclear
+or out of date? I can refine sections with exact file links or add missing
+examples.
 
 ```javascript
 // apps/api/src/middleware/errorHandler.js

@@ -15,7 +15,7 @@ branch-protection-rules:
         dismiss_stale_pull_request_approvals: true
         require_code_owner_reviews: true
         require_last_push_approval: true
-      
+
       # Require status checks
       required_status_checks:
         strict: true
@@ -27,26 +27,26 @@ branch-protection-rules:
           - "e2e-tests"
           - "security-audit"
           - "dependency-check"
-      
+
       # Restrict force pushes
       allow_force_pushes: false
       allow_deletions: false
-      
+
       # Require branches up to date
       require_branches_up_to_date: true
-      
+
       # Require conversation resolution
       require_conversation_resolution: true
-      
+
       # Require linear history
       require_linear_history: true
-      
+
       # Require signed commits
       require_signed_commits: true
-      
+
       # Dismiss auto-approved reviews
       dismiss_auto_stale_reviews: true
-      
+
       # Restrict who can push
       restrictions:
         teams:
@@ -61,7 +61,7 @@ branch-protection-rules:
       require_pull_request_reviews:
         required_approving_review_count: 1
         dismiss_stale_pull_request_approvals: false
-      
+
       required_status_checks:
         strict: false
         contexts:
@@ -149,14 +149,14 @@ Repository:
 
 ## Enforcement Matrix
 
-| Rule | Main | Develop | Staging | Other |
-|------|------|---------|---------|-------|
-| Require PRs | ✅ | ✅ | ✅ | ❌ |
-| Require Reviews | ✅ | ✅ | ✅ | ❌ |
-| Require Status | ✅ | ✅ | ✅ | ❌ |
-| Require Signed | ✅ | ✅ | ❌ | ❌ |
-| Block Force Push | ✅ | ✅ | ✅ | ❌ |
-| Require Branches Up | ✅ | ❌ | ❌ | ❌ |
+| Rule                | Main | Develop | Staging | Other |
+| ------------------- | ---- | ------- | ------- | ----- |
+| Require PRs         | ✅   | ✅      | ✅      | ❌    |
+| Require Reviews     | ✅   | ✅      | ✅      | ❌    |
+| Require Status      | ✅   | ✅      | ✅      | ❌    |
+| Require Signed      | ✅   | ✅      | ❌      | ❌    |
+| Block Force Push    | ✅   | ✅      | ✅      | ❌    |
+| Require Branches Up | ✅   | ❌      | ❌      | ❌    |
 
 ## Implementation Steps
 

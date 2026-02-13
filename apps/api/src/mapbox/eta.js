@@ -92,7 +92,7 @@ async function etaToPickupSeconds(params) {
     const { pickup, drivers } = params;
 
     if (!drivers.length) return [];
-    if (!pickup || pickup.lat == null || pickup.lng == null) {
+    if (!pickup || pickup.lat === null || pickup.lng === null) {
         throw new Error("Invalid pickup coordinates");
     }
 
@@ -128,7 +128,9 @@ async function etaToPickupSeconds(params) {
     // Cache result in Redis (shared) and local fallback
     try {
         await cacheSetJson(cacheKey, allEtas, ttlSeconds);
-    } catch (_) { }
+    } catch (_) {
+        /* Cache write failure - continue without caching */
+    }
     cache.set(cacheKey, allEtas);
 
     return allEtas;

@@ -12,9 +12,19 @@ import { describe, it, expect, beforeAll } from "vitest";
 const VERCEL_URL = process.env.NEXT_PUBLIC_VERCEL_URL || "https://infamous.vercel.app";
 const FLY_URL = "https://infamous-freight-as-3gw.fly.dev";
 
-const isEndpointAccessible = async (url: string): Promise<boolean> => {
+const isEndpointAccessible = async (
+  url: string,
+  expectedContentType?: string,
+): Promise<boolean> => {
   try {
     const response = await fetch(url, { method: "HEAD" });
+    if (!response.ok) return false;
+
+    if (expectedContentType) {
+      const contentType = response.headers.get("content-type") || "";
+      return contentType.includes(expectedContentType);
+    }
+
     return true;
   } catch {
     return false;
@@ -22,8 +32,8 @@ const isEndpointAccessible = async (url: string): Promise<boolean> => {
 };
 
 const [vercelAccessible, flyAccessible] = await Promise.all([
-  isEndpointAccessible(VERCEL_URL),
-  isEndpointAccessible(`${FLY_URL}/api/health`),
+  isEndpointAccessible(VERCEL_URL, "text/html"),
+  isEndpointAccessible(`${FLY_URL}/api/health`, "application/json"),
 ]);
 
 describe.skipIf(!vercelAccessible)("Security Headers - Vercel Deployment", () => {

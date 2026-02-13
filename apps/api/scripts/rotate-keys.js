@@ -239,25 +239,28 @@ function main() {
     console.log('╚═══════════════════════════════════════╝\n');
 
     switch (command) {
-        case 'jwt':
+        case 'jwt': {
             const jwtSecret = rotateJWTSecret();
             logRotation('jwt_secret', jwtSecret);
             break;
+        }
 
-        case 'api':
+        case 'api': {
             const env = args[1] || 'live';
             const apiKey = rotateAPIKey(env);
             logRotation('api_key', apiKey);
             break;
+        }
 
-        case 'webhook':
+        case 'webhook': {
             const webhookSecret = generateWebhookSecret();
             console.log('=== WEBHOOK SECRET ===\n');
             console.log('New secret:', webhookSecret.secret);
             logRotation('webhook_secret', webhookSecret);
             break;
+        }
 
-        case 'encryption':
+        case 'encryption': {
             const encKey = generateEncryptionKey();
             console.log('=== ENCRYPTION KEY ===\n');
             console.log('New key:', encKey.key);
@@ -265,13 +268,15 @@ function main() {
             console.log('\n⚠️  Store in Key Management Service (KMS, Vault, etc.)');
             logRotation('encryption_key', encKey);
             break;
+        }
 
-        case 'revalidate':
+        case 'revalidate': {
             const revalidateSecret = generateRevalidateSecret();
             logRotation('revalidate_secret', revalidateSecret);
             break;
+        }
 
-        case 'all':
+        case 'all': {
             console.log('Rotating all secrets...\n');
             const all = {
                 jwt: rotateJWTSecret(),
@@ -283,6 +288,7 @@ function main() {
             };
             logRotation('full_rotation', { timestamp: new Date().toISOString() });
             break;
+        }
 
         default:
             console.log('Usage: node rotate-keys.js <command>\n');

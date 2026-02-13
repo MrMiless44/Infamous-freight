@@ -1,6 +1,7 @@
 # Codex CLI Configuration
 
-This directory contains configuration for the [Codex CLI](https://github.com/openai/codex) AI coding assistant.
+This directory contains configuration for the
+[Codex CLI](https://github.com/openai/codex) AI coding assistant.
 
 ## Setup
 
@@ -25,10 +26,13 @@ This directory contains configuration for the [Codex CLI](https://github.com/ope
 
 ## Project Context
 
-The template includes workspace-specific settings that help Codex understand this project:
+The template includes workspace-specific settings that help Codex understand
+this project:
 
-- **Tech Stack**: Node.js, Next.js, TypeScript, PostgreSQL, Prisma, Express, React Native
-- **Architecture**: pnpm monorepo with `apps/api/`, `apps/web/`, `apps/mobile/`, `packages/shared/`
+- **Tech Stack**: Node.js, Next.js, TypeScript, PostgreSQL, Prisma, Express,
+  React Native
+- **Architecture**: pnpm monorepo with `apps/api/`, `apps/web/`, `apps/mobile/`,
+  `packages/shared/`
 - **Ignore Patterns**: Excludes build artifacts, node_modules, logs
 
 ## Usage
@@ -62,5 +66,6 @@ codex exec --help
 ## Notes
 
 - `config.toml` is gitignored to keep personal settings local
-- The devcontainer auto-installs Codex CLI via `.devcontainer/postStartCommand.sh`
+- The devcontainer auto-installs Codex CLI via
+  `.devcontainer/postStartCommand.sh`
 - Keyboard shortcuts are defined in `.vscode/keybindings.json`

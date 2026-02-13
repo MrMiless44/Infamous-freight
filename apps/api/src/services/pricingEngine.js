@@ -28,7 +28,7 @@ class PricingEngine {
 
         try {
             let basePrice = WORLDWIDE_PRICING.perShipment.base.domestic;
-            let breakdown = {};
+            const breakdown = {};
 
             // 1. Calculate base rate
             const serviceConfig = WORLDWIDE_PRICING.serviceLevels[serviceLevel] ||

@@ -10,7 +10,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
-const { v4: uuidv4 } = require('uuid');
+const { randomUUID } = require('crypto');
 const { body, param } = require('express-validator');
 const {
     listUserAvatars,
@@ -153,7 +153,7 @@ router.post(
         const imageUrl = `/uploads/avatars/${req.file.filename}`;
 
         const avatar = createUserAvatar({
-            id: uuidv4(),
+            id: randomUUID(),
             ownerUserId: userId,
             name: name || 'Untitled Avatar',
             imageUrl,

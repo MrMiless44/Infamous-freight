@@ -19,15 +19,15 @@ open "https://github.com/MrMiless44/Infamous-freight-enterprises/security/code-s
 
 ## 📊 7 Security Layers
 
-| Layer | Purpose | Scan Frequency | Status |
-|-------|---------|----------------|--------|
-| 1️⃣ CodeQL Analysis | 50+ security queries | Every push | ✅ Active |
-| 2️⃣ Dependencies | npm audit + outdated | Every push | ✅ Active |
-| 3️⃣ Supply Chain | SBOM + secrets | Every push | ✅ Active |
-| 4️⃣ Code Quality | ESLint + TypeScript | Every push | ✅ Active |
-| 5️⃣ Security Config | Headers + CORS + rate limits | Daily | ✅ Active |
-| 6️⃣ Performance | Bundle size + load time | Weekly | ✅ Active |
-| 7️⃣ Reporting | GitHub dashboard + Slack | Continuous | ✅ Active |
+| Layer              | Purpose                      | Scan Frequency | Status    |
+| ------------------ | ---------------------------- | -------------- | --------- |
+| 1️⃣ CodeQL Analysis | 50+ security queries         | Every push     | ✅ Active |
+| 2️⃣ Dependencies    | npm audit + outdated         | Every push     | ✅ Active |
+| 3️⃣ Supply Chain    | SBOM + secrets               | Every push     | ✅ Active |
+| 4️⃣ Code Quality    | ESLint + TypeScript          | Every push     | ✅ Active |
+| 5️⃣ Security Config | Headers + CORS + rate limits | Daily          | ✅ Active |
+| 6️⃣ Performance     | Bundle size + load time      | Weekly         | ✅ Active |
+| 7️⃣ Reporting       | GitHub dashboard + Slack     | Continuous     | ✅ Active |
 
 ## 🚀 Getting Started (5 minutes)
 
@@ -57,13 +57,13 @@ Settings → Notifications → Enable security alerts
 
 ## 📁 Key Files
 
-| File | Purpose | Lines |
-|------|---------|-------|
-| `.github/workflows/codeql.yml` | Main security workflow | 250+ |
-| `.github/codeql/codeql-config.yml` | CodeQL configuration | 50+ |
-| `SECURITY.md` | Security policy | 350+ |
-| `.github/CODEQL_100_GUIDE.md` | Implementation guide | 600+ |
-| `scripts/security-scan.sh` | Local scanner | 400+ |
+| File                               | Purpose                | Lines |
+| ---------------------------------- | ---------------------- | ----- |
+| `.github/workflows/codeql.yml`     | Main security workflow | 250+  |
+| `.github/codeql/codeql-config.yml` | CodeQL configuration   | 50+   |
+| `SECURITY.md`                      | Security policy        | 350+  |
+| `.github/CODEQL_100_GUIDE.md`      | Implementation guide   | 600+  |
+| `scripts/security-scan.sh`         | Local scanner          | 400+  |
 
 ## 🎯 Severity Levels & Actions
 

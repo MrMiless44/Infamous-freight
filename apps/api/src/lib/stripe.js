@@ -7,12 +7,18 @@
 const Stripe = require("stripe");
 
 const key = process.env.STRIPE_SECRET_KEY;
-if (!key) {
-  throw new Error("Missing STRIPE_SECRET_KEY environment variable");
-}
 
-const stripe = new Stripe(key, {
-  apiVersion: "2024-06-20",
-});
+const stripe = key
+  ? new Stripe(key, {
+      apiVersion: "2024-06-20",
+    })
+  : new Proxy(
+      {},
+      {
+        get() {
+          throw new Error("Stripe not configured");
+        },
+      },
+    );
 
-module.exports = { stripe };
+module.exports = { stripe, stripeConfigured: !!key };

@@ -1163,7 +1163,8 @@ class LogisticsService {
 
     async sendShipmentNotification(shipment, status) {
         // Implement notification logic (email, SMS, push)
-        console.log(`Notification: Shipment ${shipment.trackingNumber} is now ${status}`);
+        const trackingRef = shipment?.trackingNumber || shipment?.id || 'unknown';
+        console.log(`Notification: Shipment ${trackingRef} is now ${status}`);
     }
 
     async updateWarehouseOnDelivery(shipment) {
@@ -1193,7 +1194,7 @@ class LogisticsService {
                     { destinationWarehouseId: warehouseId },
                 ],
             },
-        });
+        }) || [];
 
         return {
             incoming: shipments.filter(

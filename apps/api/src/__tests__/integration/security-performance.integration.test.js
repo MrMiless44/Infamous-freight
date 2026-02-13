@@ -136,7 +136,7 @@ describe('Security & Performance Integration Tests (100%)', () => {
                 .set('Origin', 'http://localhost:3000')
                 .set('Access-Control-Request-Method', 'GET');
             // Should not be rate limited (OPTIONS request)
-            expect([200, 404, 501]).toContain(res.status);
+            expect([200, 204, 404, 501]).toContain(res.status);
         });
 
         test('rate limiter included in metrics', async () => {

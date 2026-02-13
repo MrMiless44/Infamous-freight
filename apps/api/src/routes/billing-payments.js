@@ -3,7 +3,7 @@ const router = express.Router();
 const { authenticate, requireScope, limiters, auditLog } = require('../middleware/security');
 const { handleValidationErrors } = require('../middleware/validation');
 const { body } = require('express-validator');
-const logger = require('../middleware/logger');
+const { logger } = require('../middleware/logger');
 
 /**
  * POST /api/billing/payment-intent

@@ -39,8 +39,10 @@ describe('Error Handler Middleware', () => {
         expect(res.status).toHaveBeenCalledWith(500);
         expect(res.json).toHaveBeenCalledWith(
             expect.objectContaining({
-                error: 'Internal Server Error',
-                errorId: 'test-correlation-123',
+                error: expect.objectContaining({
+                    message: 'Internal Server Error',
+                    errorId: 'test-correlation-123',
+                }),
             })
         );
     });
@@ -54,8 +56,10 @@ describe('Error Handler Middleware', () => {
         expect(res.status).toHaveBeenCalledWith(404);
         expect(res.json).toHaveBeenCalledWith(
             expect.objectContaining({
-                error: 'Not found',
-                errorId: 'test-correlation-123',
+                error: expect.objectContaining({
+                    message: 'Not found',
+                    errorId: 'test-correlation-123',
+                }),
             })
         );
     });
@@ -144,8 +148,10 @@ describe('Error Handler Middleware', () => {
 
         expect(res.json).toHaveBeenCalledWith(
             expect.objectContaining({
-                error: 'Internal Server Error',
-                errorId: 'test-correlation-123',
+                error: expect.objectContaining({
+                    message: 'Internal Server Error',
+                    errorId: 'test-correlation-123',
+                }),
             })
         );
     });
@@ -158,7 +164,9 @@ describe('Error Handler Middleware', () => {
 
         expect(res.json).toHaveBeenCalledWith(
             expect.objectContaining({
-                errorId: expect.stringMatching(/^\d+-0\.\d+$/),
+                error: expect.objectContaining({
+                    errorId: expect.stringMatching(/^\d+-0\.\d+$/),
+                }),
             })
         );
     });
@@ -200,7 +208,9 @@ describe('Error Handler Middleware', () => {
 
         expect(res.json).toHaveBeenCalledWith(
             expect.objectContaining({
-                error: 'Internal Server Error',
+                error: expect.objectContaining({
+                    message: 'Internal Server Error',
+                }),
             })
         );
     });
@@ -213,7 +223,9 @@ describe('Error Handler Middleware', () => {
 
         expect(res.json).toHaveBeenCalledWith(
             expect.objectContaining({
-                error: 'Bad request details',
+                error: expect.objectContaining({
+                    message: 'Bad request details',
+                }),
             })
         );
     });
@@ -227,8 +239,10 @@ describe('Error Handler Middleware', () => {
 
         expect(res.json).toHaveBeenCalledWith(
             expect.objectContaining({
-                details: 'Dev error',
-                stack: 'Stack trace',
+                error: expect.objectContaining({
+                    details: 'Dev error',
+                    stack: 'Stack trace',
+                }),
             })
         );
     });
@@ -240,9 +254,11 @@ describe('Error Handler Middleware', () => {
         errorHandler(error, req, res, next);
 
         expect(res.json).toHaveBeenCalledWith(
-            expect.not.objectContaining({
-                details: expect.anything(),
-                stack: expect.anything(),
+            expect.objectContaining({
+                error: expect.not.objectContaining({
+                    details: expect.anything(),
+                    stack: expect.anything(),
+                }),
             })
         );
     });

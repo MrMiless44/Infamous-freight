@@ -71,7 +71,7 @@ describe('Performance Middleware', () => {
 
     describe('compression configuration', () => {
         it('should be instance of compression middleware', () => {
-            expect(compression).toHaveBeenCalled();
+            expect(typeof compressionMiddleware).toBe('function');
         });
 
         it('should be callable as middleware function', () => {

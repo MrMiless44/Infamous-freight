@@ -298,7 +298,8 @@ describe('Security Middleware', () => {
 
   describe('auditLog middleware', () => {
     test('should log request info on response finish', async () => {
-      const consoleSpy = jest.spyOn(console, 'info').mockImplementation();
+      const { logger } = require('../../middleware/logger');
+      const loggerSpy = jest.spyOn(logger, 'info').mockImplementation();
       const reqMock = {
         method: 'GET',
         path: '/api/protected',
@@ -320,20 +321,21 @@ describe('Security Middleware', () => {
       auditLog(reqMock, resMock, nextSpy);
 
       expect(nextSpy).toHaveBeenCalled();
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'request',
+      expect(loggerSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           method: 'GET',
           status: 200,
           user: 'user123',
-        })
+        }),
+        'request'
       );
 
-      consoleSpy.mockRestore();
+      loggerSpy.mockRestore();
     });
 
     test('should mask authorization header in logs', async () => {
-      const consoleSpy = jest.spyOn(console, 'info').mockImplementation();
+      const { logger } = require('../../middleware/logger');
+      const loggerSpy = jest.spyOn(logger, 'info').mockImplementation();
 
       const token = jwt.sign(
         { sub: 'user123' },
@@ -346,16 +348,17 @@ describe('Security Middleware', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 100));
 
-      const call = consoleSpy.mock.calls.find((c) => c[0] === 'request');
+      const call = loggerSpy.mock.calls.find((c) => c[1] === 'request');
       if (call) {
-        expect(call[1].auth).toBe('***');
+        expect(call[0].auth).toBe('***');
       }
 
-      consoleSpy.mockRestore();
+      loggerSpy.mockRestore();
     });
 
     test('should include request path and duration', async () => {
-      const consoleSpy = jest.spyOn(console, 'info').mockImplementation();
+      const { logger } = require('../../middleware/logger');
+      const loggerSpy = jest.spyOn(logger, 'info').mockImplementation();
 
       const token = jwt.sign(
         { sub: 'user123' },
@@ -368,13 +371,13 @@ describe('Security Middleware', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 100));
 
-      const call = consoleSpy.mock.calls.find((c) => c[0] === 'request');
+      const call = loggerSpy.mock.calls.find((c) => c[1] === 'request');
       if (call) {
-        expect(call[1].path).toContain('/api/protected');
-        expect(typeof call[1].duration).toBe('number');
+        expect(call[0].path).toContain('/api/protected');
+        expect(typeof call[0].duration).toBe('number');
       }
 
-      consoleSpy.mockRestore();
+      loggerSpy.mockRestore();
     });
   });
 

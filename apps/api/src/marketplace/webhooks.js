@@ -5,16 +5,15 @@
  */
 
 const express = require("express");
-const { PrismaClient } = require("@prisma/client");
 const { stripe } = require("../lib/stripe");
 const { logger } = require("../middleware/logger");
-const { v4: uuidv4 } = require("uuid");
+const { randomUUID } = require("crypto");
 const { validateTransition } = require("../lib/jobStateMachine");
 const { logJobEvent } = require("./audit");
 const { generateOtp, hashOtp } = require("../lib/otp");
 const { computePodPolicy } = require("./podPolicy");
+const { prisma } = require("../db/prisma");
 
-const prisma = new PrismaClient();
 const router = express.Router();
 
 // In-memory deduplication cache (use Redis in production)
@@ -28,6 +27,14 @@ setInterval(() => {
     }
 }, 60 * 60 * 1000);
 
+function requirePrisma(res) {
+    if (!prisma) {
+        res.status(503).json({ error: "Database not configured" });
+        return false;
+    }
+    return true;
+}
+
 /**
  * Stripe webhook endpoint
  * Handles payment confirmations and subscription events
@@ -37,10 +44,11 @@ router.post(
     express.raw({ type: "application/json" }),
     async (req, res, next) => {
         // Generate correlation ID for tracking
-        const correlationId = req.headers['x-correlation-id'] || uuidv4();
+        const correlationId = req.headers['x-correlation-id'] || randomUUID();
         req.correlationId = correlationId;
 
         try {
+            if (!requirePrisma(res)) return;
             const sig = req.headers["stripe-signature"];
             const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 

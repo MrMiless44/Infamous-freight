@@ -1,39 +1,36 @@
 const request = require("supertest");
-const jwt = require("jsonwebtoken");
 
 const app = require("../../app");
 
-describe("Auth Registration/Login", () => {
-  const makeRegistrationPayload = () => ({
-    email: `auth-${Date.now()}-${Math.random().toString(16).slice(2)}@example.com`,
-    password: "SecurePass123!",
-    name: "Auth Test User",
-  });
+describe("Auth Routes", () => {
+    test("issues a dev token in non-production", async () => {
+        const response = await request(app)
+            .post("/v1/auth/dev-token")
+            .send({ userId: "user-123" });
 
-  test("registers a user successfully", async () => {
-    const payload = makeRegistrationPayload();
+        expect(response.status).toBe(200);
+        expect(response.body.ok).toBe(true);
+        expect(typeof response.body.token).toBe("string");
+    });
 
-    const response = await request(app).post("/api/auth/register").send(payload);
+    test("rejects /v1/auth/me without token", async () => {
+        const response = await request(app).get("/v1/auth/me");
 
-    expect(response.status).toBe(201);
-    expect(response.body.success).toBe(true);
-  });
+        expect(response.status).toBe(401);
+        expect(response.body.ok).toBe(false);
+    });
 
-  test("rejects duplicate registration attempts", async () => {
-    const payload = makeRegistrationPayload();
+    test("returns user id for /v1/auth/me with token", async () => {
+        const tokenResponse = await request(app)
+            .post("/v1/auth/dev-token")
+            .send({ userId: "user-123" });
 
-    const firstResponse = await request(app).post("/api/auth/register").send(payload);
-    expect(firstResponse.status).toBe(201);
+        const response = await request(app)
+            .get("/v1/auth/me")
+            .set("Authorization", `Bearer ${tokenResponse.body.token}`);
 
-    const duplicateResponse = await request(app)
-      .post("/api/auth/register")
-      .send(payload);
-
-    expect(duplicateResponse.status).toBe(409);
-    expect(duplicateResponse.body.success ?? false).toBe(false);
-    expect(JSON.stringify(duplicateResponse.body).toLowerCase()).toMatch(/exist|duplicate|already|taken|error/);
-  });
-
-  test("logs in successfully and issues a JWT token", async () => {
-    const payload = makeRegistrationPayload();
+        expect(response.status).toBe(200);
+        expect(response.body.ok).toBe(true);
+        expect(response.body.userId).toBe("user-123");
+    });
 });

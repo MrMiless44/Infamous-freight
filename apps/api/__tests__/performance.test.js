@@ -3,9 +3,11 @@
  * Ensure critical operations meet performance SLAs
  */
 
-const { prisma } = require('../../db/prisma');
+const { prisma } = require('../src/db/prisma');
 
-describe('Performance Tests - SLA Verification', () => {
+const describeIfDb = prisma ? describe : describe.skip;
+
+describeIfDb('Performance Tests - SLA Verification', () => {
   const SLA_TARGETS = {
     shipmentList: 50, // ms
     shipmentDetail: 30,
@@ -35,7 +37,7 @@ describe('Performance Tests - SLA Verification', () => {
           trackingId: `test-${Date.now()}`,
           origin: 'Test',
           destination: 'Test',
-          status: 'pending',
+          status: 'CREATED',
         },
       });
 
@@ -57,7 +59,7 @@ describe('Performance Tests - SLA Verification', () => {
     test('should filter shipments by status in <50ms', async () => {
       const start = Date.now();
       const shipments = await prisma.shipment.findMany({
-        where: { status: 'pending' },
+        where: { status: 'CREATED' },
         take: 100,
         orderBy: { createdAt: 'desc' },
       });
@@ -132,7 +134,7 @@ describe('Performance Tests - SLA Verification', () => {
 
       // Query that should use index: shipments_status_createdAt_idx
       await prisma.shipment.findMany({
-        where: { status: 'pending' },
+        where: { status: 'CREATED' },
         orderBy: { createdAt: 'desc' },
         take: 100,
       });
@@ -175,7 +177,7 @@ describe('Performance Tests - SLA Verification', () => {
                 trackingId: `bulk-test-${Date.now()}-${i}`,
                 origin: `Origin ${i}`,
                 destination: `Dest ${i}`,
-                status: 'pending',
+                status: 'CREATED',
               },
             })
           )

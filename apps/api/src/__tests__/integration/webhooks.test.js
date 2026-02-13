@@ -5,9 +5,12 @@
 
 const request = require('supertest');
 const app = require('../../app');
-const { prisma } = require('../../database');
+const { prisma } = require('../../db/prisma');
 
-describe('Webhook Integration Tests', () => {
+const hasDatabase = Boolean(process.env.DATABASE_URL);
+const describeIfDb = hasDatabase ? describe : describe.skip;
+
+describeIfDb('Webhook Integration Tests', () => {
     const STRIPE_SECRET = process.env.STRIPE_WEBHOOK_SECRET || 'whsec_test_secret';
 
     function generateStripeSignature(timestamp, body) {
@@ -43,7 +46,7 @@ describe('Webhook Integration Tests', () => {
             const signature = generateStripeSignature(timestamp, eventBody);
 
             const response = await request(app)
-                .post('/webhooks/stripe')
+                .post('/api/webhooks/stripe')
                 .set('Stripe-Signature', signature)
                 .send(JSON.parse(eventBody))
                 .expect(200);
@@ -71,7 +74,7 @@ describe('Webhook Integration Tests', () => {
 
             // First request should process
             const response1 = await request(app)
-                .post('/webhooks/stripe')
+                .post('/api/webhooks/stripe')
                 .set('Stripe-Signature', signature)
                 .send(JSON.parse(eventBody))
                 .expect(200);
@@ -80,7 +83,7 @@ describe('Webhook Integration Tests', () => {
 
             // Second identical request should be rejected as duplicate
             const response2 = await request(app)
-                .post('/webhooks/stripe')
+                .post('/api/webhooks/stripe')
                 .set('Stripe-Signature', signature)
                 .send(JSON.parse(eventBody))
                 .expect(409);
@@ -97,7 +100,7 @@ describe('Webhook Integration Tests', () => {
             const invalidSignature = 't=invalid,v1=invalidsignature';
 
             const response = await request(app)
-                .post('/webhooks/stripe')
+                .post('/api/webhooks/stripe')
                 .set('Stripe-Signature', invalidSignature)
                 .send(JSON.parse(invalidBody))
                 .expect(401);

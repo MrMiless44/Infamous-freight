@@ -5,7 +5,6 @@
  */
 
 const express = require("express");
-const { PrismaClient } = require("@prisma/client");
 const { stripe } = require("../lib/stripe");
 const { computePriceUsd } = require("../lib/pricing");
 const { milesBetween } = require("../lib/geo");
@@ -29,7 +28,7 @@ const { runWave, waveConfig } = require("./waves");
 const { enqueueWave } = require("../queue/schedule");
 const { notifier } = require("../notify/index");
 
-const prisma = new PrismaClient();
+const { prisma } = require("../db/prisma");
 const router = express.Router();
 // Phase 14: Central state machine
 const { transitionJob } = require("./state/transition");
@@ -478,7 +477,7 @@ router.get("/jobs",
                 prisma.job.count({ where: { status: status } })
             ]);
 
-            if (lat == null || lng == null) {
+            if (lat === null || lat === undefined || lng === null || lng === undefined) {
                 return res.json({
                     ok: true,
                     jobs,
@@ -592,7 +591,7 @@ router.post("/jobs/:jobId/hold",
             if (!driver) throw new Error("Driver not found");
             if (driver.role !== "DRIVER") throw new Error("User is not a driver");
             if (!driver.driverProfile?.isActive) throw new Error("Driver not active");
-            if (driver.driverProfile.lastLat == null || driver.driverProfile.lastLng == null) {
+            if (driver.driverProfile.lastLat === null || driver.driverProfile.lastLat === undefined || driver.driverProfile.lastLng === null || driver.driverProfile.lastLng === undefined) {
                 throw new Error("Driver location missing");
             }
 
@@ -808,7 +807,7 @@ router.post("/offers/:offerId/accept",
                 throw new Error("Offer expired");
             }
 
-            const job = offer.job;
+            let job = offer.job;
 
             // Expire stale holds
             if (job.status === "HELD" && job.heldUntil && job.heldUntil < now) {
@@ -827,6 +826,7 @@ router.post("/offers/:offerId/accept",
                 });
 
                 job = { ...job, status: "OPEN", heldByDriverId: null, heldUntil: null };
+                jobs.set(jobId, job);
             }
 
             if (job.status !== "OPEN" && job.status !== "HELD") {

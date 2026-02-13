@@ -36,7 +36,7 @@ router.post("/route-risk", limiters.general, auditLog, async (req, res) => {
     let body;
     try {
         body = Schema.parse(req.body);
-    } catch (err) {
+    } catch (_err) {
         return res.status(400).json({ ok: false, error: "invalid route input" });
     }
 

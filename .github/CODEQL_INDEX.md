@@ -33,7 +33,8 @@
   - Best practices
   - Contact information
 
-- **[Branch Protection Configuration](.github/BRANCH_PROTECTION.md)** - 15 min read
+- **[Branch Protection Configuration](.github/BRANCH_PROTECTION.md)** - 15 min
+  read
   - GitHub branch protection rules
   - Organization security settings
   - Implementation steps
@@ -41,7 +42,8 @@
 
 ### 📊 Status & Reports
 
-- **[Implementation Status Report](CODEQL_100_IMPLEMENTATION_STATUS.md)** - 20 min read
+- **[Implementation Status Report](CODEQL_100_IMPLEMENTATION_STATUS.md)** - 20
+  min read
   - Executive summary
   - File deliverables
   - Security coverage matrix
@@ -54,23 +56,23 @@
 
 ### Workflows (.github/workflows/)
 
-| File | Type | Purpose | Lines | Status |
-|------|------|---------|-------|--------|
-| `codeql.yml` | Enhanced | Main security analysis workflow with 7 layers | 250+ | ✅ Active |
-| `org-security-hardening.yml` | New | GitHub org security verification & hardening | 200+ | ✅ Active |
+| File                         | Type     | Purpose                                       | Lines | Status    |
+| ---------------------------- | -------- | --------------------------------------------- | ----- | --------- |
+| `codeql.yml`                 | Enhanced | Main security analysis workflow with 7 layers | 250+  | ✅ Active |
+| `org-security-hardening.yml` | New      | GitHub org security verification & hardening  | 200+  | ✅ Active |
 
 ### Configuration (.github/codeql/)
 
-| File | Purpose | Lines |
-|------|---------|-------|
-| `codeql-config.yml` | CodeQL query configuration | 50+ |
-| `dependabot.yml` | Dependency automation (enhanced) | 100+ |
+| File                | Purpose                          | Lines |
+| ------------------- | -------------------------------- | ----- |
+| `codeql-config.yml` | CodeQL query configuration       | 50+   |
+| `dependabot.yml`    | Dependency automation (enhanced) | 100+  |
 
 ### Tools (scripts/)
 
-| File | Purpose | Lines |
-|------|---------|-------|
-| `security-scan.sh` | Local security scanning tool | 400+ |
+| File               | Purpose                      | Lines |
+| ------------------ | ---------------------------- | ----- |
+| `security-scan.sh` | Local security scanning tool | 400+  |
 
 ---
 
@@ -189,13 +191,13 @@ open "https://github.com/MrMiless44/Infamous-freight-enterprises/security"
 
 ## 📅 Automation Schedule
 
-| Trigger | Action | Frequency | Time |
-|---------|--------|-----------|------|
-| Push (main/develop) | Full scan | Immediate | N/A |
-| Pull Request | Security review | Immediate | N/A |
-| Schedule | Daily audit | Daily | 3 AM UTC |
-| Schedule | Weekly deep | Weekly | Sun 00:00 UTC |
-| Dependabot | Update check | Daily | 02:00 UTC |
+| Trigger             | Action          | Frequency | Time          |
+| ------------------- | --------------- | --------- | ------------- |
+| Push (main/develop) | Full scan       | Immediate | N/A           |
+| Pull Request        | Security review | Immediate | N/A           |
+| Schedule            | Daily audit     | Daily     | 3 AM UTC      |
+| Schedule            | Weekly deep     | Weekly    | Sun 00:00 UTC |
+| Dependabot          | Update check    | Daily     | 02:00 UTC     |
 
 ---
 
@@ -290,9 +292,9 @@ open "https://github.com/MrMiless44/Infamous-freight-enterprises/security"
 
 ## 📝 Version History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | Jan 11, 2026 | Initial 100% implementation |
+| Version | Date         | Changes                     |
+| ------- | ------------ | --------------------------- |
+| 1.0     | Jan 11, 2026 | Initial 100% implementation |
 
 ---
 

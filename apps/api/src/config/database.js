@@ -1,6 +1,12 @@
-const { PrismaClient } = require("@prisma/client");
+const { getPrisma } = require("../db/prisma");
 
-// Centralized Prisma client for reuse across routes
-const prisma = new PrismaClient();
+const prisma =
+	getPrisma() ||
+	{
+		$queryRaw: async () => {
+			throw new Error("Database not configured");
+		},
+		$disconnect: async () => undefined,
+	};
 
 module.exports = { prisma };

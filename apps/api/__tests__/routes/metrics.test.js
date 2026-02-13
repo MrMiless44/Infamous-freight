@@ -6,6 +6,8 @@ const metricsRoutes = require("../../src/routes/metrics");
 // Mock Prisma
 jest.mock("@prisma/client", () => ({
   PrismaClient: jest.fn().mockImplementation(() => ({
+    $on: jest.fn(),
+    $use: jest.fn(),
     subscription: {
       findMany: jest.fn().mockResolvedValue([
         { monthlyValue: 100, tier: "basic", createdAt: new Date() },
@@ -34,9 +36,12 @@ describe("Metrics Routes", () => {
     // Clear the metrics cache before each test
     jest.resetModules();
 
+    process.env.JWT_SECRET = process.env.JWT_SECRET || "test-secret";
+    process.env.DATABASE_URL = process.env.DATABASE_URL || "postgres://test";
+
     app = express();
     app.use(express.json());
-    app.use("/api/metrics/revenue", require("../../src/routes/metrics"));
+    app.use("/api", require("../../src/routes/metrics"));
 
     validToken = jwt.sign(
       { sub: "user-123", scopes: ["metrics:read"] },

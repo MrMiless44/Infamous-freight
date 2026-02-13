@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const getUserMock = vi.fn();
-const profileMaybeSingleMock = vi.fn();
-const usersMaybeSingleMock = vi.fn();
-const profilesUpsertMock = vi.fn();
+const getUserMock = vi.hoisted(() => vi.fn());
+const profileMaybeSingleMock = vi.hoisted(() => vi.fn());
+const usersMaybeSingleMock = vi.hoisted(() => vi.fn());
+const profilesUpsertMock = vi.hoisted(() => vi.fn());
 
 vi.mock("@/lib/supabase", () => ({
   supabaseAnon: {

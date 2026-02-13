@@ -182,7 +182,7 @@ app.use("/api", billingPaymentsRoutes);
 app.use("/api", voiceRoutes);
 app.use("/api", usersRoutes);
 app.use("/api", shipmentsRoutes);
-app.use("/api", analyticsRoutes);
+app.use("/api/analytics", analyticsRoutes);
 app.use("/api", metricsRoutes);
 app.use("/api", adminFeatureFlagsRoutes);
 app.use("/api", adminOpsRoutes);

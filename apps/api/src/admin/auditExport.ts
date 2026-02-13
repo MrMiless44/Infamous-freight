@@ -87,7 +87,7 @@ export async function exportOrgAudit(
 
   // Export based on format
   let content: string;
-  let sizeBytes: number;
+  let sizeBytes = 0;
 
   if (format === "json") {
     content = JSON.stringify(
@@ -163,7 +163,7 @@ export async function streamOrgAudit(
   };
 
   // Create readable stream
-  let isFirstBatch = true;
+  const isFirstBatch = true;
   let offset = 0;
 
   return Readable.from(

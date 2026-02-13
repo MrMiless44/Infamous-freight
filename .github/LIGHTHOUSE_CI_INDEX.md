@@ -10,10 +10,14 @@
 
 ### 🚀 Start Here
 
-- **Need to get started?** → [LIGHTHOUSE_CI_100_GUIDE.md](.github/LIGHTHOUSE_CI_100_GUIDE.md)
-- **Setting up locally?** → [LIGHTHOUSE_CI_SETUP.md](.github/LIGHTHOUSE_CI_SETUP.md)
-- **Check status?** → [LIGHTHOUSE_CI_100_STATUS.md](.github/LIGHTHOUSE_CI_100_STATUS.md)
-- **View implementation?** → [LIGHTHOUSE_CI_100_COMPLETE.md](.github/LIGHTHOUSE_CI_100_COMPLETE.md)
+- **Need to get started?** →
+  [LIGHTHOUSE_CI_100_GUIDE.md](.github/LIGHTHOUSE_CI_100_GUIDE.md)
+- **Setting up locally?** →
+  [LIGHTHOUSE_CI_SETUP.md](.github/LIGHTHOUSE_CI_SETUP.md)
+- **Check status?** →
+  [LIGHTHOUSE_CI_100_STATUS.md](.github/LIGHTHOUSE_CI_100_STATUS.md)
+- **View implementation?** →
+  [LIGHTHOUSE_CI_100_COMPLETE.md](.github/LIGHTHOUSE_CI_100_COMPLETE.md)
 
 ---
 
@@ -137,11 +141,9 @@
   - numberOfRuns: 3
   - Assertions: 80/90/90/90
   - Web Vitals budgets
-  
 - Mobile Profile (iPhone 4G)
   - Network throttling
   - Mobile-specific budgets
-  
 - Desktop Profile (Broadband)
   - Fast network
   - Stricter performance
@@ -164,14 +166,14 @@
 {
   "ci": {
     "assert": {
-      "categories:performance": ["error", {"minScore": 0.80}],
-      "categories:accessibility": ["error", {"minScore": 0.90}],
-      "categories:best-practices": ["error", {"minScore": 0.90}],
-      "categories:seo": ["error", {"minScore": 0.90}],
-      "first-contentful-paint": ["error", {"maxNumericValue": 2000}],
-      "largest-contentful-paint": ["error", {"maxNumericValue": 2500}],
-      "cumulative-layout-shift": ["error", {"maxNumericValue": 0.1}],
-      "total-blocking-time": ["error", {"maxNumericValue": 300}]
+      "categories:performance": ["error", { "minScore": 0.8 }],
+      "categories:accessibility": ["error", { "minScore": 0.9 }],
+      "categories:best-practices": ["error", { "minScore": 0.9 }],
+      "categories:seo": ["error", { "minScore": 0.9 }],
+      "first-contentful-paint": ["error", { "maxNumericValue": 2000 }],
+      "largest-contentful-paint": ["error", { "maxNumericValue": 2500 }],
+      "cumulative-layout-shift": ["error", { "maxNumericValue": 0.1 }],
+      "total-blocking-time": ["error", { "maxNumericValue": 300 }]
     },
     "collect": {
       "numberOfRuns": 3,
@@ -195,16 +197,16 @@
 name: 🚀 Lighthouse CI - Performance 100%
 
 jobs:
-  build:                          # Build Next.js
-  lighthouse-ci:                  # Run audits
-  performance-budgets:            # Verify scores
-  accessibility-audit:            # WCAG 2.1 AA
-  web-vitals-analysis:           # LCP/FID/CLS
-  seo-audit:                     # Technical SEO
-  best-practices-audit:          # Security & code
-  performance-trends:            # Historical analysis
+  build: # Build Next.js
+  lighthouse-ci: # Run audits
+  performance-budgets: # Verify scores
+  accessibility-audit: # WCAG 2.1 AA
+  web-vitals-analysis: # LCP/FID/CLS
+  seo-audit: # Technical SEO
+  best-practices-audit: # Security & code
+  performance-trends: # Historical analysis
   generate-comprehensive-report: # Final report
-  store-results:                 # Archive (90 days)
+  store-results: # Archive (90 days)
 ```
 
 ---
@@ -400,20 +402,20 @@ Allow merge if passing
 
 ## Metrics Dashboard
 
-| Metric | Type | Target | Status |
-|--------|------|--------|--------|
-| Performance | Score | ≥80% | ✅ |
-| Accessibility | Score | ≥90% | ✅ |
-| Best Practices | Score | ≥90% | ✅ |
-| SEO | Score | ≥90% | ✅ |
-| LCP | Web Vital | ≤2.5s | ✅ |
-| FCP | Web Vital | ≤2.0s | ✅ |
-| CLS | Web Vital | ≤0.1 | ✅ |
-| TBT | Web Vital | ≤300ms | ✅ |
-| Test URLs | Coverage | 3+ | ✅ |
-| Runs per URL | Coverage | 3 | ✅ |
-| Daily Audits | Automation | 1 | ✅ |
-| Weekly Audits | Automation | 1 | ✅ |
+| Metric         | Type       | Target | Status |
+| -------------- | ---------- | ------ | ------ |
+| Performance    | Score      | ≥80%   | ✅     |
+| Accessibility  | Score      | ≥90%   | ✅     |
+| Best Practices | Score      | ≥90%   | ✅     |
+| SEO            | Score      | ≥90%   | ✅     |
+| LCP            | Web Vital  | ≤2.5s  | ✅     |
+| FCP            | Web Vital  | ≤2.0s  | ✅     |
+| CLS            | Web Vital  | ≤0.1   | ✅     |
+| TBT            | Web Vital  | ≤300ms | ✅     |
+| Test URLs      | Coverage   | 3+     | ✅     |
+| Runs per URL   | Coverage   | 3      | ✅     |
+| Daily Audits   | Automation | 1      | ✅     |
+| Weekly Audits  | Automation | 1      | ✅     |
 
 ---
 
@@ -553,13 +555,13 @@ GitHub → Actions → 🚀 Lighthouse CI
 
 ## Troubleshooting Matrix
 
-| Problem | Solution | Doc |
-|---------|----------|-----|
-| Server won't start | Kill process on port 3000 | SETUP |
-| Out of memory | Increase Node heap size | GUIDE |
-| Scores fluctuate | Increase runs or check environment | GUIDE |
-| Can't connect | Start server manually | SETUP |
-| Chrome issues | Install dependencies | SETUP |
+| Problem            | Solution                           | Doc   |
+| ------------------ | ---------------------------------- | ----- |
+| Server won't start | Kill process on port 3000          | SETUP |
+| Out of memory      | Increase Node heap size            | GUIDE |
+| Scores fluctuate   | Increase runs or check environment | GUIDE |
+| Can't connect      | Start server manually              | SETUP |
+| Chrome issues      | Install dependencies               | SETUP |
 
 ---
 
@@ -620,7 +622,8 @@ GitHub → Actions → 🚀 Lighthouse CI
 
 **✅ LIGHTHOUSE CI 100% - COMPLETE & PRODUCTION READY**
 
-All documentation, configuration, and tools are in place for comprehensive performance and quality monitoring.
+All documentation, configuration, and tools are in place for comprehensive
+performance and quality monitoring.
 
 ---
 

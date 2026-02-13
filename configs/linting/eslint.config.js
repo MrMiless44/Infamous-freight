@@ -39,6 +39,11 @@ export default [
         console: "readonly",
         process: "readonly",
         Buffer: "readonly",
+        setTimeout: "readonly",
+        setInterval: "readonly",
+        clearTimeout: "readonly",
+        clearInterval: "readonly",
+        URL: "readonly",
         require: "readonly",
         module: "readonly",
         __dirname: "readonly",
@@ -71,6 +76,11 @@ export default [
         console: "readonly",
         process: "readonly",
         Buffer: "readonly",
+        setTimeout: "readonly",
+        setInterval: "readonly",
+        clearTimeout: "readonly",
+        clearInterval: "readonly",
+        URL: "readonly",
       },
     },
     plugins: {
@@ -104,6 +114,22 @@ export default [
         __dirname: "readonly",
         __filename: "readonly",
       },
+    },
+  },
+  {
+    files: ["apps/api/**/*.{js,jsx,mjs,cjs}"],
+    rules: {
+      "no-console": "off",
+      "no-undef": "off",
+      "no-unused-vars": "off",
+    },
+  },
+  {
+    files: ["apps/api/**/*.{ts,tsx}"],
+    rules: {
+      "no-console": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
   {

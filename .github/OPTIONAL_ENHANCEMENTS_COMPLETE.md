@@ -396,7 +396,8 @@ All 6 optional enhancement recommendations have been successfully implemented!
 
 ### **Report an Issue:**
 
-1. Go to [Issues](https://github.com/MrMiless44/Infamous-freight-enterprises/issues/new/choose)
+1. Go to
+   [Issues](https://github.com/MrMiless44/Infamous-freight-enterprises/issues/new/choose)
 2. Select appropriate template (Bug, Feature, Workflow Failure)
 3. Fill in required fields
 4. Submit
@@ -409,7 +410,8 @@ All 6 optional enhancement recommendations have been successfully implemented!
 
 ### **Run Load Tests:**
 
-1. Go to [Actions](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/load-testing.yml)
+1. Go to
+   [Actions](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/load-testing.yml)
 2. Click "Run workflow"
 3. Select environment (staging/production)
 4. Set duration and virtual users
@@ -532,4 +534,5 @@ These are **NOT** implemented but could be considered:
 
 ## 💡 Feedback & Improvements
 
-Have suggestions for these enhancements? Create a feature request issue using the new templates!
+Have suggestions for these enhancements? Create a feature request issue using
+the new templates!

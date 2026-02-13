@@ -1,8 +1,8 @@
-const { PrismaClient, JobEventType } = require("@prisma/client");
-
-const prisma = new PrismaClient();
+const { JobEventType } = require("@prisma/client");
+const { prisma } = require("../db/prisma");
 
 async function logJobEvent(input) {
+  if (!prisma) return null;
   return prisma.jobEvent.create({
     data: {
       jobId: input.jobId,
@@ -14,6 +14,7 @@ async function logJobEvent(input) {
 }
 
 async function getJobTimeline(jobId) {
+  if (!prisma) return [];
   return prisma.jobEvent.findMany({
     where: { jobId },
     orderBy: { createdAt: "asc" },
@@ -21,6 +22,7 @@ async function getJobTimeline(jobId) {
 }
 
 async function getLatestJobEvent(jobId) {
+  if (!prisma) return null;
   return prisma.jobEvent.findFirst({
     where: { jobId },
     orderBy: { createdAt: "desc" },

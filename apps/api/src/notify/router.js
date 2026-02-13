@@ -1,5 +1,4 @@
 const express = require("express");
-const { PrismaClient } = require("@prisma/client");
 const { notifier } = require("./index");
 const { authenticate, limiters } = require("../middleware/security");
 const {
@@ -9,9 +8,17 @@ const {
 } = require("../middleware/validation");
 const { logger } = require("../middleware/logger");
 const { recordTwilioStatus } = require("../services/notificationTelemetry");
+const { prisma } = require("../db/prisma");
 
-const prisma = new PrismaClient();
 const notifyRouter = express.Router();
+
+function requirePrisma(res) {
+    if (!prisma) {
+        res.status(503).json({ error: "Database not configured" });
+        return false;
+    }
+    return true;
+}
 
 // Twilio status callbacks (no auth, webhook limiter)
 notifyRouter.post(
@@ -42,6 +49,7 @@ notifyRouter.post(
     [validateString("expoPushToken", { maxLength: 512 }), handleValidationErrors],
     async (req, res, next) => {
         try {
+            if (!requirePrisma(res)) return;
             const userId = req.user?.sub;
             if (!userId) return res.status(401).json({ error: "Unauthorized" });
 
@@ -67,6 +75,7 @@ notifyRouter.post(
     [validatePhone("phone"), handleValidationErrors],
     async (req, res, next) => {
         try {
+            if (!requirePrisma(res)) return;
             const userId = req.user?.sub;
             if (!userId) return res.status(401).json({ error: "Unauthorized" });
 
@@ -93,6 +102,7 @@ notifyRouter.post(
     limiters.general,
     async (req, res, next) => {
         try {
+            if (!requirePrisma(res)) return;
             const userId = req.body.userId || req.user?.sub;
             const title = req.body.title || "Test notification";
             const body = req.body.body || "Hello from Infamous Freight";

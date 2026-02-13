@@ -5,9 +5,44 @@
  */
 
 const prismaModule = require("@prisma/client");
-const { JobTransitionError, JOB_TRANSITION_CODES } = require("./errors");
+const prismaExports = require("../../db/prisma") || {};
+const prisma = prismaExports.prisma;
 
-const PrismaClient = prismaModule?.PrismaClient;
+const errorExports = require("./errors.js") || {};
+const JobTransitionError = errorExports.JobTransitionError ||
+  class JobTransitionErrorFallback extends Error {
+    constructor(code, message, status = 400) {
+      super(message);
+      this.code = code;
+      this.status = status;
+      this.name = "JobTransitionError";
+    }
+  };
+const JOB_TRANSITION_CODES = errorExports.JOB_TRANSITION_CODES || {
+  JOB_NOT_FOUND: "JOB_NOT_FOUND",
+  DRIVER_NOT_FOUND: "DRIVER_NOT_FOUND",
+  SHIPPER_NOT_FOUND: "SHIPPER_NOT_FOUND",
+  ILLEGAL_TRANSITION: "ILLEGAL_TRANSITION",
+  ALREADY_ASSIGNED: "ALREADY_ASSIGNED",
+  NOT_ASSIGNED: "NOT_ASSIGNED",
+  HOLD_EXPIRED: "HOLD_EXPIRED",
+  HOLD_ACTOR_MISMATCH: "HOLD_ACTOR_MISMATCH",
+  PAYMENT_REQUIRED: "PAYMENT_REQUIRED",
+  POD_INCOMPLETE: "POD_INCOMPLETE",
+  POD_PHOTO_REQUIRED: "POD_PHOTO_REQUIRED",
+  POD_SIGNATURE_REQUIRED: "POD_SIGNATURE_REQUIRED",
+  POD_OTP_REQUIRED: "POD_OTP_REQUIRED",
+  NOT_ALLOWED: "NOT_ALLOWED",
+  INSUFFICIENT_SCOPE: "INSUFFICIENT_SCOPE",
+  CANCEL_NOT_ALLOWED: "CANCEL_NOT_ALLOWED",
+  MISSING_REQUIRED_DATA: "MISSING_REQUIRED_DATA",
+  MISSING_HELD_UNTIL: "MISSING_HELD_UNTIL",
+  MISSING_HELD_BY_DRIVER_ID: "MISSING_HELD_BY_DRIVER_ID",
+  TRANSACTION_FAILED: "TRANSACTION_FAILED",
+  VERSION_CONFLICT: "VERSION_CONFLICT",
+  INTERNAL_ERROR: "INTERNAL_ERROR",
+};
+
 const UserRole = prismaModule?.Prisma?.UserRole ||
   prismaModule?.UserRole || {
     DRIVER: "DRIVER",
@@ -16,15 +51,11 @@ const UserRole = prismaModule?.Prisma?.UserRole ||
     SYSTEM: "SYSTEM",
   };
 
-const prisma =
-  require("../../config/database").prisma ||
-  (PrismaClient ? new PrismaClient() : null);
-
-if (!prisma || !PrismaClient) {
-  throw new Error(
-    "Prisma client unavailable; ensure @prisma/client is installed and prisma generate has been run.",
-  );
-}
+const prismaClient = prisma || {
+  $transaction() {
+    throw new Error("Database not configured");
+  },
+};
 
 function requireActor(condition, code, message) {
   if (!condition) throw new JobTransitionError(code, message, 403);
@@ -240,8 +271,8 @@ function buildStatusUpdatePayload(job, to, actor, data) {
 async function transitionJob(input) {
   const { jobId, to, actor, reason = "", data = {} } = input;
 
-  const result = await prisma.$transaction(async (tx) => {
-    let job = await tx.job.findUnique({
+  const result = await prismaClient.$transaction(async (tx) => {
+    const job = await tx.job.findUnique({
       where: { id: jobId },
       include: {
         payment: true,

@@ -25,7 +25,8 @@
 
 1. Generate new secret: `openssl rand -base64 32`
 2. Update in GitHub Secrets
-3. Deploy code that supports both old and new secret (validate signature with both)
+3. Deploy code that supports both old and new secret (validate signature with
+   both)
 4. Monitor logs for invalid signature errors
 5. Remove old secret after grace period (1 week)
 
@@ -206,7 +207,8 @@ For maximum security, use GitHub Environments:
 
 - **Low Risk** (test secret): Rotate immediately
 - **Medium Risk** (staging secret): Rotate within 2 hours
-- **High Risk** (production secret): Notify security lead, executive decision on rotation
+- **High Risk** (production secret): Notify security lead, executive decision on
+  rotation
 
 ---
 
@@ -286,5 +288,5 @@ gh secret view SECRET_NAME
 
 ---
 
-**Last Updated:** December 31, 2025
-**Next Rotation Due:** [CALCULATED FROM TABLE ABOVE]
+**Last Updated:** December 31, 2025 **Next Rotation Due:** [CALCULATED FROM
+TABLE ABOVE]

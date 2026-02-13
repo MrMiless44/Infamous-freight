@@ -37,7 +37,9 @@ function withIdempotency(opts = {}) {
                             if (typeof v !== "undefined") res.setHeader(h, v);
                         }
                     }
-                } catch (_) { }
+                } catch (_) {
+                    /* Header setting failure - continue gracefully */
+                }
                 res.status(cached.status || 200).json(cached.body);
                 return;
             }
@@ -50,7 +52,9 @@ function withIdempotency(opts = {}) {
                 const c = redisConnection();
                 const setRes = await c.set(lockKey, "1", "NX", "EX", Math.max(ttlSeconds, 60));
                 gotLock = setRes === "OK";
-            } catch (_) { }
+            } catch (_) {
+                /* Lock acquisition failure - continue without locking */
+            }
 
             // Wrap response methods to capture output once
             const originalJson = res.json.bind(res);
@@ -64,13 +68,17 @@ function withIdempotency(opts = {}) {
                         },
                     };
                     await cacheSetJson(redisKey, payload, ttlSeconds);
-                } catch (_) { }
+                } catch (_) {
+                    /* Cache write failure - continue without caching */
+                }
                 try {
                     // Release lock
                     const { redisConnection } = require("../queue/redis");
                     const c = redisConnection();
                     await c.del(lockKey);
-                } catch (_) { }
+                } catch (_) {
+                    /* Lock release failure - will expire automatically */
+                }
                 return originalJson(data);
             };
 
