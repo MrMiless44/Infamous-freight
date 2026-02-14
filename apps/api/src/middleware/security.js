@@ -10,33 +10,43 @@ const { authenticateWithRotation } = require("./advancedSecurity");
 const { env } = require("../config/env");
 const rateLimitMetrics = require("../lib/rateLimitMetrics");
 const { logger } = require("./logger");
+const { validateScope, hasScope } = require("@infamous-freight/shared");
 
-// Rate limiters with enhanced configuration
-const createLimiter = (name, options) => {
+/**
+ * Factory for creating rate limiters with enhanced configuration
+ * Supports per-route customization and Redis backend for distributed limiting
+ */
+const createLimiter = (name, options = {}) => {
+  // Determine window in milliseconds (parse from minutes)
+  const windowMinutes = parseInt(options.windowMs || '15');
+  const windowMs = windowMinutes * 60 * 1000;
+
   const limiter = rateLimit({
     ...options,
+    windowMs,
     standardHeaders: true,
     legacyHeaders: false,
-    // Skip health checks and CORS preflight
-    skip: (req) =>
-      req.method === 'OPTIONS' ||
-      req.path === '/api/health' ||
-      req.path === '/api/health/live',
+    // Skip health checks and CORS preflight by default
+    skip: (req) => {
+      if (req.method === 'OPTIONS') return true;
+      if (req.path === '/api/health' || req.path === '/api/health/live') return true;
+      // Allow custom skip function
+      return options.skip && options.skip(req);
+    },
   });
 
   return (req, res, next) => {
-    // Allow custom skip hooks and preflight bypass
-    if (req.method === 'OPTIONS' || (options.skip && options.skip(req, res))) {
+    // Final skip check
+    if (req.method === 'OPTIONS') {
       return next();
     }
 
-    const key = options.keyGenerator ? options.keyGenerator(req, res) : req.ip;
+    const key = options.keyGenerator ? options.keyGenerator(req) : req.ip;
     rateLimitMetrics.recordHit(name, key);
 
     res.on("finish", () => {
       if (res.statusCode === 429) {
         rateLimitMetrics.recordBlocked(name, key);
-        // Log rate limit breaches to analytics
         logger.warn({
           event: 'rate_limit_exceeded',
           limiter: name,
@@ -44,6 +54,8 @@ const createLimiter = (name, options) => {
           ip: req.ip,
           user: req.user?.sub,
           path: req.path,
+          windowMinutes,
+          maxRequests: options.max || 100,
         });
       } else {
         rateLimitMetrics.recordSuccess(name);
@@ -54,66 +66,77 @@ const createLimiter = (name, options) => {
   };
 };
 
+/**
+ * Create a tuned limiter for specific operations
+ * Use for high-cost endpoints
+ */
+const createTunedLimiter = (name, config) => {
+  return createLimiter(name, {
+    windowMs: config.windowMinutes || 60,
+    max: config.maxRequests || 10,
+    keyGenerator: config.keyGenerator || ((req) => req.user?.sub || req.ip),
+    message: config.message || { error: `Rate limit exceeded for ${name}` },
+    skip: config.skip,
+  });
+};
+
 const limiters = {
   general: createLimiter('general', {
-    windowMs: parseInt(process.env.RATE_LIMIT_GENERAL_WINDOW_MS || '15') * 60 * 1000,
+    windowMs: '15', // In minutes, converted to ms above
     max: parseInt(process.env.RATE_LIMIT_GENERAL_MAX || '100'),
     keyGenerator: (req) => req.user?.sub || req.ip,
     message: { error: 'Too many requests. Please try again later.' },
   }),
   auth: createLimiter('auth', {
-    windowMs: parseInt(process.env.RATE_LIMIT_AUTH_WINDOW_MS || '15') * 60 * 1000,
+    windowMs: '15',
     max: parseInt(process.env.RATE_LIMIT_AUTH_MAX || '5'),
     keyGenerator: (req) => req.ip,
     message: { error: "Too many authentication attempts. Try again later." },
   }),
   ai: createLimiter('ai', {
-    windowMs: parseInt(process.env.RATE_LIMIT_AI_WINDOW_MS || '1') * 60 * 1000,
+    windowMs: '1',
     max: parseInt(process.env.RATE_LIMIT_AI_MAX || '20'),
     keyGenerator: (req) => req.user?.sub || req.ip,
     message: { error: 'AI service rate limit exceeded.' },
   }),
   billing: createLimiter('billing', {
-    windowMs: parseInt(process.env.RATE_LIMIT_BILLING_WINDOW_MS || '15') * 60 * 1000,
+    windowMs: '15',
     max: parseInt(process.env.RATE_LIMIT_BILLING_MAX || '30'),
     keyGenerator: (req) => req.user?.sub || req.ip,
     message: { error: 'Billing rate limit exceeded.' },
   }),
   smsUser: createLimiter('smsUser', {
-    windowMs: parseInt(process.env.RATE_LIMIT_SMS_USER_WINDOW_MS || '60') * 60 * 1000,
+    windowMs: '60',
     max: parseInt(process.env.RATE_LIMIT_SMS_USER_MAX || '20'),
     keyGenerator: (req) => req.user?.sub || req.ip,
     message: { error: 'SMS rate limit exceeded for user.' },
   }),
   smsOrg: createLimiter('smsOrg', {
-    windowMs: parseInt(process.env.RATE_LIMIT_SMS_ORG_WINDOW_MS || '1440') * 60 * 1000,
+    windowMs: '1440', // 24 hours
     max: parseInt(process.env.RATE_LIMIT_SMS_ORG_MAX || '200'),
     keyGenerator: (req) => req.auth?.organizationId || req.headers['x-org-id'] || req.ip,
     message: { error: 'SMS rate limit exceeded for organization.' },
   }),
   voice: createLimiter('voice', {
-    windowMs: parseInt(process.env.RATE_LIMIT_VOICE_WINDOW_MS || '1') * 60 * 1000,
+    windowMs: '1',
     max: parseInt(process.env.RATE_LIMIT_VOICE_MAX || '10'),
     keyGenerator: (req) => req.user?.sub || req.ip,
     message: { error: 'Voice processing rate limit exceeded.' },
   }),
-  // High-cost operations (exports, reports)
   export: createLimiter('export', {
-    windowMs: parseInt(process.env.RATE_LIMIT_EXPORT_WINDOW_MS || '60') * 60 * 1000,
+    windowMs: '60',
     max: parseInt(process.env.RATE_LIMIT_EXPORT_MAX || '5'),
     keyGenerator: (req) => req.user?.sub || req.ip,
     message: { error: 'Export rate limit exceeded. Maximum 5 exports per hour.' },
   }),
-  // Password/account operations
   passwordReset: createLimiter('passwordReset', {
-    windowMs: parseInt(process.env.RATE_LIMIT_PASSWORD_RESET_WINDOW_MS || '24') * 60 * 60 * 1000,
+    windowMs: '1440',
     max: parseInt(process.env.RATE_LIMIT_PASSWORD_RESET_MAX || '3'),
     keyGenerator: (req) => req.body?.email || req.ip,
     message: { error: 'Too many password reset attempts. Try again in 24 hours.' },
   }),
-  // Webhook validation (allow bursts but track)
   webhook: createLimiter('webhook', {
-    windowMs: parseInt(process.env.RATE_LIMIT_WEBHOOK_WINDOW_MS || '1') * 60 * 1000,
+    windowMs: '1',
     max: parseInt(process.env.RATE_LIMIT_WEBHOOK_MAX || '100'),
     keyGenerator: (req) => req.ip,
     message: { error: 'Webhook rate limit exceeded.' },
@@ -188,17 +211,40 @@ function authenticateFlexible(req, res, next) {
   return authenticate(req, res, next);
 }
 
-// Scope enforcement
+// Enhanced scope enforcement with validation
 function requireScope(required) {
   const requiredScopes = Array.isArray(required) ? required : [required];
+
+  // Validate all required scopes are in the registry
+  const invalidScopes = requiredScopes.filter(scope => !validateScope(scope));
+  if (invalidScopes.length > 0) {
+    logger.error('Invalid scopes in requireScope():', {
+      invalidScopes,
+      hint: 'Ensure scopes are defined in @infamous-freight/shared/src/scopes.ts',
+    });
+  }
+
   return (req, res, next) => {
-    const scopes = req.user?.scopes || [];
-    const hasAll = requiredScopes.every((s) => scopes.includes(s));
-    if (!hasAll) {
-      return res
-        .status(403)
-        .json({ error: "Insufficient scope", required: requiredScopes });
+    const userScopes = req.user?.scopes || [];
+
+    // Check if user has any of the required scopes
+    if (!hasScope(userScopes, requiredScopes)) {
+      logger.warn('Scope check failed', {
+        requiredScopes,
+        userScopes,
+        userId: req.user?.sub,
+        path: req.path,
+        correlationId: req.correlationId,
+      });
+
+      return res.status(403).json({
+        error: 'Insufficient scope',
+        code: 'INSUFFICIENT_PERMISSIONS',
+        required: requiredScopes,
+        correlationId: req.correlationId,
+      });
     }
+
     next();
   };
 }
@@ -265,6 +311,8 @@ function validateUserOwnership(paramName = 'userId') {
 module.exports = {
   limiters,
   rateLimit: limiters.general,
+  createLimiter,
+  createTunedLimiter,
   rateLimitMetrics,
   authenticate,
   authenticateFlexible,

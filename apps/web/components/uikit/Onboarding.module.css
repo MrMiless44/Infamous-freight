@@ -1,0 +1,266 @@
+/**
+ * Copyright © 2025 Infæmous Freight. All Rights Reserved.
+ * Onboarding Styles
+ */
+
+.container {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  pointer-events: none;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  animation: fadeIn 0.3s ease;
+  pointer-events: auto;
+}
+
+.highlight {
+  position: fixed;
+  border: 3px solid #2563eb;
+  border-radius: 0.75rem;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+  animation: pulse 2s ease-in-out infinite;
+  pointer-events: auto;
+  z-index: 2001;
+}
+
+.card {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+  max-width: 24rem;
+  animation: slideUp 0.3s ease;
+  pointer-events: auto;
+  z-index: 2002;
+}
+
+.imageContainer {
+  width: 100%;
+  height: 12rem;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border-radius: 1rem 1rem 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.content {
+  padding: 1.5rem;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: #1f2937;
+}
+
+.description {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.actionButton {
+  padding: 0.5rem;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #1d4ed8;
+  }
+  
+  &:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+  }
+}
+
+.progressContainer {
+  height: 2px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.progressBar {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%);
+  transition: width 0.3s ease;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.counter {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+}
+
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.primaryButton,
+.secondaryButton {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.primaryButton {
+  background: #2563eb;
+  color: white;
+  
+  &:hover:not(:disabled) {
+    background: #1d4ed8;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  &:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+  }
+}
+
+.secondaryButton {
+  background: #f3f4f6;
+  color: #1f2937;
+  border: 1px solid #d1d5db;
+  
+  &:hover:not(:disabled) {
+    background: #e5e7eb;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.skip {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 0.75rem;
+  text-decoration: underline;
+  padding: 0;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: #1f2937;
+  }
+  
+  &:focus-visible {
+    outline: 2px solid #6b7280;
+    outline-offset: 2px;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(1rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4), 0 0 0 9999px rgba(0, 0, 0, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(37, 99, 235, 0.2), 0 0 0 9999px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .card {
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+    max-width: none;
+  }
+  
+  .content {
+    padding: 1rem;
+  }
+  
+  .title {
+    font-size: 1.125rem;
+  }
+  
+  .description {
+    font-size: 0.8125rem;
+  }
+  
+  .controls {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+  }
+}

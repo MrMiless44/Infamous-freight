@@ -3,6 +3,31 @@ import prettier from "eslint-config-prettier";
 import tsParser from "@typescript-eslint/parser";
 import tsPlugin from "@typescript-eslint/eslint-plugin";
 
+// Custom rule: prevent direct imports from @infamous-freight/shared/src
+const noDirectSharedImportsRule = {
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Prevent direct imports from @infamous-freight/shared/src, use @infamous-freight/shared instead',
+      category: 'Best Practices',
+      recommended: true,
+    },
+  },
+  create(context) {
+    return {
+      ImportDeclaration(node) {
+        const importSource = node.source.value;
+        if (importSource && importSource.includes('@infamous-freight/shared/src')) {
+          context.report({
+            node,
+            message: `Import from '@infamous-freight/shared' instead of '@infamous-freight/shared/src'. This bypasses the build process.`,
+          });
+        }
+      },
+    };
+  },
+};
+
 export default [
   {
     ignores: [
@@ -61,6 +86,18 @@ export default [
       "prefer-const": "error",
       "eqeqeq": ["error", "always"],
       "no-implicit-globals": "error",
+      // Custom rule for shared package imports
+      "no-direct-shared-imports": "error",
+    },
+  },
+  // Apply custom rule globally
+  {
+    plugins: {
+      "local": {
+        rules: {
+          "no-direct-shared-imports": noDirectSharedImportsRule,
+        },
+      },
     },
   },
   {

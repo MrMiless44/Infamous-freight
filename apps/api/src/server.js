@@ -107,6 +107,9 @@ if (marketplaceEnabled) {
 const { notifyRouter } = require("./notify/router");
 const { uploadsRouter } = require("./uploads/router");
 const { validateRuntimeEnv } = require("./config/validate");
+const bodyLoggingMiddleware = require("./middleware/bodyLogging");
+const { auditContextMiddleware, initializeAuditLogging } = require("./middleware/auditLogging");
+const { idempotencyMiddleware } = require("./middleware/idempotency");
 
 const app = express();
 const DEFAULT_REQUEST_TIMEOUT_MS = Number(
@@ -143,6 +146,7 @@ securityHeaders(app);
 app.use(corsMiddleware());
 app.use(correlationMiddleware);
 app.use(performanceMiddleware);
+app.use(bodyLoggingMiddleware); // Log request/response bodies with sensitive data redacted
 app.use(metricsRecorderMiddleware);
 app.use(cacheResponseMiddleware);
 app.use(httpLogger);
@@ -151,6 +155,12 @@ app.use(rateLimit);
 
 // Optional JWT rotation-ready validator (populates req.auth if configured)
 app.use(jwtRotationAuth());
+
+// Set audit context (user ID, organization ID) for mutation tracking
+app.use(auditContextMiddleware);
+
+// Idempotency middleware - Prevent duplicate operations via Idempotency-Key header
+app.use(idempotencyMiddleware);
 
 // Stripe webhooks need raw body - must be before express.json()
 if (marketplaceEnabled && marketplaceWebhooks) {
@@ -330,6 +340,15 @@ let httpServer;
 if (require.main === module) {
   httpServer = app.listen(port, host, async () => {
     logger.info(`Infamous Freight API listening on ${host}:${port}`);
+
+    // Initialize Prisma audit logging
+    try {
+      const { prisma } = require('./db/prisma');
+      initializeAuditLogging(prisma);
+      logger.info('Prisma audit logging initialized');
+    } catch (error) {
+      logger.warn('Audit logging initialization failed', { error: error.message });
+    }
 
     // Initialize Real-Time WebSocket server
     try {

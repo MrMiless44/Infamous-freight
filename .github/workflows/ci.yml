@@ -45,27 +45,14 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-<<<<<<< Updated upstream
-          node-version: "20"
-=======
-          version: 8
->>>>>>> Stashed changes
+          version: 9.15.0
 
       - name: Setup Node + pnpm cache
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
 
-<<<<<<< Updated upstream
-      - name: Restore pnpm Cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-=======
       - name: Guard: no package-lock.json anywhere
         run: |
           if git ls-files '**/package-lock.json' | grep -q .; then
@@ -81,7 +68,6 @@ jobs:
             git ls-files '**/node_modules/**' | head
             exit 1
           fi
->>>>>>> Stashed changes
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

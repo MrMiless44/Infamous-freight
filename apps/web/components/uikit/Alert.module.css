@@ -1,0 +1,128 @@
+/**
+ * Copyright © 2025 Infæmous Freight. All Rights Reserved.
+ * Alert Styles
+ */
+
+.alert {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 0.625rem;
+  border-left: 4px solid;
+  animation: slideIn 0.3s ease-out;
+}
+
+.success {
+  background-color: #ecfdf5;
+  border-left-color: #10b981;
+  color: #047857;
+}
+
+.error {
+  background-color: #fef2f2;
+  border-left-color: #ef4444;
+  color: #991b1b;
+}
+
+.warning {
+  background-color: #fffbeb;
+  border-left-color: #f59e0b;
+  color: #92400e;
+}
+
+.info {
+  background-color: #eff6ff;
+  border-left-color: #3b82f6;
+  color: #1e40af;
+}
+
+.iconWrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 0.125rem;
+}
+
+.icon {
+  font-size: 1.25rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.title {
+  font-weight: 600;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.message {
+  margin: 0;
+  font-size: 0.875rem;
+  opacity: 0.9;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  align-items: flex-start;
+}
+
+.actionButton,
+.closeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: inherit;
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+  
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
+
+.closeButton {
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .alert {
+    flex-direction: column;
+    padding: 0.75rem;
+  }
+  
+  .actions {
+    width: 100%;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
