@@ -8,7 +8,7 @@ you find the information you need.
 ### What We Offer
 - **[Platform Offering](PLATFORM_OFFERING.md)** - Complete value proposition: features, benefits, roadmap, and market opportunity
 - **[Elevator Pitches](ELEVATOR_PITCH.md)** - Quick pitches for investors, customers, press, and talent (10s to 90s versions)
-- **[Strategic Vision](../PHASE_11_GLOBAL_AI_ECONOMIC_LAYER.md)** - Long-term vision for global AI economic infrastructure
+- **[Launch Strategy](../SOFT_LAUNCH_STRATEGY_10_TO_100.md)** - 4-week production rollout plan
 
 ### Business & Market
 - **[Pitch Deck Content](pitch-deck-content.md)** - Product pitch materials
