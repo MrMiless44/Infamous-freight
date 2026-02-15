@@ -1,0 +1,118 @@
+# Dockerfile - Production Optimized 100%
+# Multi-stage build for minimal image size and maximum performance
+
+# ============================================
+# Stage 1: Base Dependencies
+# ============================================
+FROM node:20-alpine AS base
+
+# Install system dependencies
+RUN apk add --no-cache \
+    libc6-compat \
+    python3 \
+    make \
+    g++ \
+    postgresql-client \
+    redis \
+    curl
+
+# Enable pnpm
+RUN corepack enable && corepack prepare pnpm@8.15.9 --activate
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/api/package.json ./apps/api/
+COPY apps/web/package.json ./apps/web/
+COPY packages/shared/package.json ./packages/shared/
+
+# ============================================
+# Stage 2: Dependencies Installation
+# ============================================
+FROM base AS deps
+
+# Install production dependencies only
+RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile --prod
+
+# Install all dependencies (for build)
+RUN --mount=type=cache,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile
+
+# ============================================
+# Stage 3: Build Shared Package
+# ============================================
+FROM base AS build-shared
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY packages/ ./packages/
+
+RUN pnpm --filter @infamous-freight/shared build
+
+# ============================================
+# Stage 4: Build API
+# ============================================
+FROM base AS build-api
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=build-shared /app/packages/shared/dist ./packages/shared/dist
+COPY apps/api ./apps/api
+COPY prisma ./prisma
+
+# Generate Prisma client
+WORKDIR /app/apps/api
+RUN npx prisma generate
+
+# ============================================
+# Stage 5: Build Web
+# ============================================
+FROM base AS build-web
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=build-shared /app/packages/shared/dist ./packages/shared/dist
+COPY apps/web ./apps/web
+
+WORKDIR /app/apps/web
+
+# Build Next.js (optimized for production)
+ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV production
+
+RUN pnpm build
+
+# ============================================
+# Stage 6: API Production Runner
+# ============================================
+FROM node:20-alpine AS api-runner
+
+# Install only runtime dependencies
+RUN apk add --no-cache \
+    libc6-compat \
+    postgresql-client \
+    redis \
+    curl \
+    ca-certificates \
+    tini
+
+# Create non-root user
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nodejs
+
+USER nodejs
+
+WORKDIR /app
+
+# Copy production dependencies
+COPY --from=deps --chown=nodejs:nodejs /app/node_modules ./node_modules
+COPY --from=deps --chown=nodejs:nodejs /app/apps/api/node_modules ./apps/api/node_modules
+
+# Copy built application
+COPY --from=build-api --chown=nodejs:nodejs /app/apps/api ./apps/api
+COPY --from=build-shared --chown=nodejs:nodejs /app/packages/shared/dist ./packages/shared/dist
+
+WORKDIR /app/apps/api
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD node -e \"require('http').get('http://localhost:4000/api/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))\"\n\n# Expose port\nEXPOSE 4000\n\n# Use tini for proper signal handling\nENTRYPOINT [\"/sbin/tini\", \"--\"]\n\n# Start application\nCMD [\"node\", \"src/server.js\"]\n\n# ============================================\n# Stage 7: Web Production Runner\n# ============================================\nFROM node:20-alpine AS web-runner\n\n# Install only runtime dependencies\nRUN apk add --no-cache \\\n    libc6-compat \\\n    tini\n\n# Create non-root user\nRUN addgroup --system --gid 1001 nodejs && \\\n    adduser --system --uid 1001 nextjs\n\nUSER nextjs\n\nWORKDIR /app\n\n# Copy production dependencies\nCOPY --from=deps --chown=nextjs:nodejs /app/node_modules ./node_modules\nCOPY --from=deps --chown=nextjs:nodejs /app/apps/web/node_modules ./apps/web/node_modules\n\n# Copy built Next.js application\nCOPY --from=build-web --chown=nextjs:nodejs /app/apps/web/.next ./apps/web/.next\nCOPY --from=build-web --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public\nCOPY --from=build-web --chown=nextjs:nodejs /app/apps/web/package.json ./apps/web/\nCOPY --from=build-shared --chown=nextjs:nodejs /app/packages/shared/dist ./packages/shared/dist\n\nWORKDIR /app/apps/web\n\n# Environment\nENV NODE_ENV production\nENV NEXT_TELEMETRY_DISABLED 1\nENV PORT 3000\n\n# Health check\nHEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \\\n    CMD node -e \"require('http').get('http://localhost:3000/api/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))\"\n\n# Expose port\nEXPOSE 3000\n\n# Use tini for proper signal handling\nENTRYPOINT [\"/sbin/tini\", \"--\"]\n\n# Start Next.js\nCMD [\"node_modules/.bin/next\", \"start\"]\n\n# ============================================\n# Development Image (optional)\n# ============================================\nFROM base AS development\n\nRUN apk add --no-cache \\\n    git \\\n    vim \\\n    bash\n\nWORKDIR /app\n\nCOPY --from=deps /app/node_modules ./node_modules\nCOPY . .\n\n# Install dev dependencies\nRUN pnpm install\n\nCMD [\"pnpm\", \"dev\"]\n\n# ============================================\n# Build Instructions\n# ============================================\n\n# Build API:\n# docker build --target api-runner -t infamous-freight-api:latest .\n\n# Build Web:\n# docker build --target web-runner -t infamous-freight-web:latest .\n\n# Build Development:\n# docker build --target development -t infamous-freight-dev:latest .\n\n# Run with BuildKit for faster builds:\n# DOCKER_BUILDKIT=1 docker build --target api-runner -t infamous-freight-api:latest .\n

@@ -10,6 +10,8 @@ const {
   validateString,
   handleValidationErrors,
 } = require("../middleware/validation");
+const aiVoiceService = require("../services/aiVoiceService");
+const { logger } = require("../middleware/logger");
 
 const router = express.Router();
 
@@ -77,18 +79,41 @@ router.post(
         });
       }
 
-      // Process audio transcription (Whisper API integration ready)
-      const transcription = {
-        text: "Voice transcription would be processed here",
-        confidence: 0.95,
-        duration: null,
-        language: "en",
-        // TODO: Integrate Whisper API when API key is available
-        // const result = await openai.audio.transcriptions.create({
-        //   file: req.file,
-        //   model: "whisper-1",
-        // });
+      // Speech-to-text processing
+      const language = req.body.language || 'en';
+      const transcription = await aiVoiceService.speechToText(req.file.buffer, language);
+
+      logger.info('Voice transcribed', {
+        userId: req.user.sub,
+        text: transcription.text.substring(0, 50),
+        confidence: transcription.confidence
+      });
+
+      // Analyze command
+      const context = {
+        userId: req.user.sub,
+        timestamp: new Date().toISOString()
       };
+      const command = await aiVoiceService.analyzeCommand(
+        transcription.text,
+        req.user.sub,
+        context
+      );
+
+      // Execute command
+      const executionResult = await aiVoiceService.executeCommand(command);
+
+      // Generate voice response (optional)
+      let audioResponse = null;
+      if (req.body.generateVoiceResponse === 'true' && executionResult.message) {
+        logger.info('Generating voice response', { userId: req.user.sub });
+        audioResponse = await aiVoiceService.textToSpeech(
+          executionResult.message,
+          req.body.voiceType || 'alloy',
+          language
+        );
+      }
+
       const result = {
         ok: true,
         file: {
@@ -96,10 +121,34 @@ router.post(
           size: req.file.size,
           mimetype: req.file.mimetype,
         },
-        transcription,
+        transcription: {
+          text: transcription.text,
+          confidence: transcription.confidence,
+          language: transcription.language
+        },
+        command: {
+          intent: command.intent,
+          confidence: command.confidence,
+          entities: command.entities
+        },
+        execution: executionResult,
+        audioResponse: audioResponse ? {
+          available: true,
+          format: 'mp3',
+          size: audioResponse.length
+        } : null,
         timestamp: new Date().toISOString(),
         processingTime: Date.now() - startTime,
       };
+
+      // If audio response generated, send as attachment
+      if (audioResponse) {
+        res.set({
+          'Content-Type': 'application/json',
+          'X-Audio-Response': 'true'
+        });
+        result.audioResponseBase64 = audioResponse.toString('base64');
+      }
 
       res.json(result);
     } catch (err) {
@@ -125,17 +174,50 @@ router.post(
     try {
       const { text } = req.body;
 
-      // Process voice command through AI pipeline
-      const command = {
-        action: "status_check",
-        parameters: {},
-        // TODO: Integrate AI command processing pipeline
-        // const aiResponse = await processAICommand(transcription.text, req.user);
+      logger.info('Processing voice command', {
+        userId: req.user.sub,
+        command: text.substring(0, 50)
+      });
+
+      // Analyze command intent and entities
+      const context = {
+        userId: req.user.sub,
+        timestamp: new Date().toISOString()
       };
+      const command = await aiVoiceService.analyzeCommand(text, req.user.sub, context);
+
+      // Execute the command
+      const executionResult = await aiVoiceService.executeCommand(command);
+
+      logger.info('Voice command executed', {
+        userId: req.user.sub,
+        intent: command.intent,
+        success: executionResult.success
+      });
+
+      // Generate voice response if requested
+      let audioResponse = null;
+      if (req.body.generateVoiceResponse === 'true' && executionResult.message) {
+        const language = req.body.language || 'en';
+        const voice = req.body.voiceType || 'alloy';
+        audioResponse = await aiVoiceService.textToSpeech(executionResult.message, voice, language);
+      }
+
       const result = {
         ok: true,
-        command: text,
-        result: "Voice command processing not yet implemented",
+        command: {
+          originalText: text,
+          intent: command.intent,
+          confidence: command.confidence,
+          entities: command.entities
+        },
+        execution: executionResult,
+        audioResponse: audioResponse ? {
+          available: true,
+          format: 'mp3',
+          size: audioResponse.length,
+          base64: audioResponse.toString('base64')
+        } : null,
         timestamp: new Date().toISOString(),
       };
 

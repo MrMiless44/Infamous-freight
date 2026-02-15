@@ -1,0 +1,265 @@
+# Monitoring Alerts for 100% Unlocked Configuration
+# Deploy to your monitoring system (Datadog, Prometheus, Grafana, etc.)
+# Copyright © 2025 Infæmous Freight. All Rights Reserved.
+
+alerts:
+  # ==================== DATABASE ALERTS ====================
+  - name: high_db_connection_usage
+    condition: db_pool_active > 180  # 90% of 200
+    severity: warning
+    message: "Database connection pool usage high (90%+)"
+    threshold: 180
+    window: 5m
+    action: "Consider scaling DB or optimizing queries"
+    
+  - name: critical_db_connection_usage
+    condition: db_pool_active > 190  # 95% of 200
+    severity: critical
+    message: "Database connection pool near max capacity"
+    threshold: 190
+    window: 1m
+    action: "URGENT: Scale database or reduce load immediately"
+    
+  - name: db_query_slow
+    condition: db_query_duration_p95 > 5000  # 5 seconds
+    severity: warning
+    message: "Database queries running slow (P95 > 5s)"
+    action: "Review slow query log and add indexes"
+    
+  # ==================== RATE LIMIT ALERTS ====================
+  - name: rate_limit_ai_hitting_max
+    condition: rate_limit_hits{limiter="ai"} > 900  # 90% of 1000/min
+    severity: warning
+    message: "AI rate limit hitting 90% of capacity (900/1000 per min)"
+    threshold: 900
+    window: 1m
+    action: "Consider increasing limits or implementing queuing"
+    
+  - name: rate_limit_general_hitting_max
+    condition: rate_limit_hits{limiter="general"} > 9000  # 90% of 10000/min
+    severity: warning
+    message: "General rate limit hitting 90% of capacity (9000/10000 per min)"
+    threshold: 9000
+    window: 1m
+    action: "High traffic detected - prepare to scale"
+    
+  - name: rate_limit_auth_excessive
+    condition: rate_limit_blocks{limiter="auth"} > 10
+    severity: critical
+    message: "Excessive authentication rate limit blocks detected"
+    action: "Possible brute force attack - review security logs"
+    
+  # ==================== WORKER QUEUE ALERTS ====================
+  - name: dispatch_queue_backlog
+    condition: queue_depth{queue="dispatch"} > 1000
+    severity: warning
+    message: "Dispatch queue has >1000 pending jobs"
+    threshold: 1000
+    action: "Scale up dispatch workers or investigate slow processing"
+    
+  - name: worker_stalled_jobs
+    condition: queue_stalled{queue="*"} > 10
+    severity: critical
+    message: "Multiple stalled jobs detected - workers may be overloaded"
+    threshold: 10
+    action: "URGENT: Check worker health and restart if necessary"
+    
+  - name: worker_job_failure_rate_high
+    condition: queue_failed_rate > 0.1  # 10% failure rate
+    severity: warning
+    message: "Worker job failure rate >10%"
+    action: "Review worker logs for errors"
+    
+  # ==================== API PERFORMANCE ALERTS ====================
+  - name: api_response_time_degraded
+    condition: p95_response_time > 5000  # 5 seconds
+    severity: warning
+    message: "API P95 response time >5s - system under stress"
+    threshold: 5000
+    window: 5m
+    action: "Check database, worker queues, and system resources"
+    
+  - name: api_response_time_critical
+    condition: p99_response_time > 10000  # 10 seconds
+    severity: critical
+    message: "API P99 response time >10s - severe degradation"
+    threshold: 10000
+    window: 1m
+    action: "URGENT: Investigate bottlenecks immediately"
+    
+  - name: api_error_rate_high
+    condition: error_rate_5xx > 0.05  # 5% error rate
+    severity: critical
+    message: "API 5xx error rate >5%"
+    threshold: 0.05
+    window: 5m
+    action: "URGENT: Check logs and system health"
+    
+  - name: api_error_rate_elevated
+    condition: error_rate_4xx > 0.10  # 10% client errors
+    severity: warning
+    message: "API 4xx error rate >10% - possible client issues"
+    action: "Review API validation and documentation"
+    
+  # ==================== REDIS ALERTS ====================
+  - name: redis_memory_high
+    condition: redis_used_memory > 1800000000  # 1.8GB (90% of 2GB)
+    severity: warning
+    message: "Redis memory usage >90% (1.8GB/2GB)"
+    threshold: 1800000000
+    action: "Review eviction policy or increase memory"
+    
+  - name: redis_memory_critical
+    condition: redis_used_memory > 1900000000  # 1.9GB (95% of 2GB)
+    severity: critical
+    message: "Redis memory usage >95% - eviction imminent"
+    threshold: 1900000000
+    action: "URGENT: Increase Redis memory or clear cache"
+    
+  - name: redis_connection_pool_exhausted
+    condition: redis_blocked_clients > 0
+    severity: critical
+    message: "Redis clients being blocked - connection pool exhausted"
+    action: "URGENT: Increase max_clients or optimize queries"
+    
+  - name: redis_evictions_high
+    condition: redis_evicted_keys_rate > 100  # per second
+    severity: warning
+    message: "Redis evicting >100 keys/sec"
+    action: "Increase memory or review cache strategy"
+    
+  # ==================== SYSTEM RESOURCES ====================
+  - name: cpu_usage_high
+    condition: cpu_usage > 80
+    severity: warning
+    message: "CPU usage >80%"
+    threshold: 80
+    window: 10m
+    action: "Scale up or optimize workload"
+    
+  - name: cpu_usage_critical
+    condition: cpu_usage > 95
+    severity: critical
+    message: "CPU usage >95% - system may become unresponsive"
+    threshold: 95
+    window: 2m
+    action: "URGENT: Scale up immediately"
+    
+  - name: memory_usage_high
+    condition: memory_usage_percent > 85
+    severity: warning
+    message: "Memory usage >85%"
+    threshold: 85
+    action: "Review memory leaks or scale up"
+    
+  - name: memory_usage_critical
+    condition: memory_usage_percent > 95
+    severity: critical
+    message: "Memory usage >95% - OOM risk"
+    threshold: 95
+    action: "URGENT: Scale up or restart services"
+    
+  # ==================== STORAGE ALERTS ====================
+  - name: storage_space_low
+    condition: disk_usage_percent > 85
+    severity: warning
+    message: "Disk usage >85% - large file uploads enabled"
+    threshold: 85
+    action: "Clean up old files or increase storage"
+    
+  - name: storage_space_critical
+    condition: disk_usage_percent > 95
+    severity: critical
+    message: "Disk usage >95% - system may fail"
+    threshold: 95
+    action: "URGENT: Free up space or increase storage immediately"
+    
+  # ==================== AI PROVIDER ALERTS ====================
+  - name: ai_provider_throttling
+    condition: ai_requests_throttled > 10
+    severity: warning
+    message: "AI provider is throttling requests"
+    threshold: 10
+    window: 5m
+    action: "Review rate limits with provider or implement backoff"
+    
+  - name: ai_cost_spike
+    condition: ai_cost_hourly > 500  # $500/hour
+    severity: critical
+    message: "AI costs exceeding $500/hour!"
+    threshold: 500
+    action: "URGENT: Review usage and implement quotas"
+    
+  - name: ai_error_rate_high
+    condition: ai_error_rate > 0.1  # 10% errors
+    severity: warning
+    message: "AI provider error rate >10%"
+    action: "Check provider status and logs"
+    
+  # ==================== FILE UPLOAD ALERTS ====================
+  - name: large_file_uploads_high
+    condition: file_upload_size_avg > 50000000  # 50MB average
+    severity: warning
+    message: "Average file upload size >50MB"
+    action: "Monitor storage growth and bandwidth costs"
+    
+  - name: upload_failures_high
+    condition: file_upload_failure_rate > 0.1
+    severity: warning
+    message: "File upload failure rate >10%"
+    action: "Check file size limits and storage availability"
+
+# ==================== NOTIFICATION CHANNELS ====================
+notification_channels:
+  - type: slack
+    name: alerts-production
+    webhook_url: "${SLACK_WEBHOOK_URL}"
+    severity: [warning, critical]
+    
+  - type: email
+    name: devops-team
+    addresses: ["devops@infamousfreight.com", "oncall@infamousfreight.com"]
+    severity: [critical]
+    
+  - type: pagerduty
+    name: high-priority
+    integration_key: "${PAGERDUTY_KEY}"
+    severity: [critical]
+    
+  - type: datadog
+    name: datadog-default
+    api_key: "${DD_API_KEY}"
+    severity: [warning, critical]
+
+# ==================== ALERT RULES ====================
+alert_rules:
+  # Don't alert during maintenance windows
+  maintenance_window:
+    enabled: true
+    schedule: "0 2 * * 0"  # Sundays at 2 AM
+    duration: 2h
+    
+  # Aggregate similar alerts
+  aggregation:
+    enabled: true
+    window: 5m
+    max_alerts: 5
+    
+  # Auto-resolve after threshold returns to normal
+  auto_resolve:
+    enabled: true
+    stable_duration: 10m
+
+# ==================== DASHBOARD LINKS ====================
+dashboards:
+  - name: "System Overview"
+    url: "https://app.datadoghq.com/dashboard/infamous-freight-overview"
+    
+  - name: "Database Performance"
+    url: "https://app.datadoghq.com/dashboard/infamous-freight-database"
+    
+  - name: "API Metrics"
+    url: "https://app.datadoghq.com/dashboard/infamous-freight-api"
+    
+  - name: "Cost Tracking"
+    url: "https://app.datadoghq.com/dashboard/infamous-freight-costs"

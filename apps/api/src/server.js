@@ -70,6 +70,18 @@ const genesisRouter = require("./genesis/routes");
 const satelliteRouter = require("./satellite/routes");
 const billingRouter = require("./billing/routes");
 const authRouter = require("./auth/routes");
+const marketplaceRoutes = require("./routes/marketplace");
+const complianceRoutes = require("./routes/compliance");
+const documentsRoutes = require("./routes/documents");
+const loadboardRoutes = require("./routes/loadboard");
+const webhookRoutes = require("./routes/webhooks");
+const analyticsRoutesPhase2 = require("./routes/analytics.routes");
+const mlRoutes = require("./routes/ml.routes");
+const geofencingRoutes = require("./routes/geofencing.routes");
+const notificationsRoutes = require("./routes/notifications.routes");
+// Phase 3 Routes
+const b2bShipperRoutes = require("./routes/b2b-shipper-api");
+const fintechRoutes = require("./routes/fintech");
 const marketplaceEnabled =
   String(
     process.env.FEATURE_GET_TRUCKN ?? process.env.MARKETPLACE_ENABLED ?? "true"
@@ -192,7 +204,16 @@ app.use("/api", billingPaymentsRoutes);
 app.use("/api", voiceRoutes);
 app.use("/api", usersRoutes);
 app.use("/api", shipmentsRoutes);
+app.use("/api/loads", loadboardRoutes);
+app.use("/api/webhooks", webhookRoutes);
+app.use("/api/analytics", analyticsRoutesPhase2);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/ml", mlRoutes);
+app.use("/api/geofencing", geofencingRoutes);
+app.use("/api/notifications", notificationsRoutes);
+// Phase 3 Routes
+app.use("/api/b2b", b2bShipperRoutes);
+app.use("/api/fintech", fintechRoutes);
 app.use("/api", metricsRoutes);
 app.use("/api", adminFeatureFlagsRoutes);
 app.use("/api", adminOpsRoutes);
@@ -216,6 +237,9 @@ app.use("/v1/satellite", satelliteRouter);
 app.use("/v1/billing", billingRouter);
 app.use("/api/notify", notifyRouter);
 app.use("/api/uploads", uploadsRouter);
+app.use("/api", marketplaceRoutes);
+app.use("/api", complianceRoutes);
+app.use("/api", documentsRoutes);
 if (marketplaceEnabled && marketplaceRouter) {
   app.use("/api/marketplace", marketplaceRouter);
 }
@@ -357,6 +381,22 @@ if (require.main === module) {
       logger.info("Real-Time WebSocket server initialized");
     } catch (error) {
       logger.warn("Real-Time WebSocket initialization failed", {
+        error: error.message,
+      });
+    }
+
+    // Initialize Load Board Services (DAT, TruckStop, Convoy)
+    try {
+      const datLoadboard = require("./services/datLoadboard");
+      const truckstopService = require("./services/truckstopLoadboard");
+      const convoyService = require("./services/convoyLoadboard");
+
+      await datLoadboard.initialize();
+      await truckstopService.initialize();
+      await convoyService.initialize();
+      logger.info("Load board services initialized");
+    } catch (error) {
+      logger.warn("Load board services initialization failed", {
         error: error.message,
       });
     }
