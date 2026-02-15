@@ -82,6 +82,13 @@ const notificationsRoutes = require("./routes/notifications.routes");
 // Phase 3 Routes
 const b2bShipperRoutes = require("./routes/b2b-shipper-api");
 const fintechRoutes = require("./routes/fintech");
+// Phase 4 Routes
+const neuralNetworksRoutes = require("./routes/neural-networks");
+const realtimeNotificationsRoutes = require("./routes/realtime-notifications");
+const blockchainAuditRoutes = require("./routes/blockchain-audit");
+const advancedGeofencingRoutes = require("./routes/advanced-geofencing");
+const analyticsBIRoutes = require("./routes/analytics-bi");
+const complianceInsuranceRoutes = require("./routes/compliance-insurance");
 const marketplaceEnabled =
   String(
     process.env.FEATURE_GET_TRUCKN ?? process.env.MARKETPLACE_ENABLED ?? "true"
@@ -214,6 +221,13 @@ app.use("/api/notifications", notificationsRoutes);
 // Phase 3 Routes
 app.use("/api/b2b", b2bShipperRoutes);
 app.use("/api/fintech", fintechRoutes);
+// Phase 4 Routes
+app.use("/api/v4/ml", neuralNetworksRoutes);
+app.use("/api/v4/notifications", realtimeNotificationsRoutes);
+app.use("/api/v4/blockchain", blockchainAuditRoutes);
+app.use("/api/v4/geofencing", advancedGeofencingRoutes);
+app.use("/api/v4/analytics", analyticsBIRoutes);
+app.use("/api/v4/compliance", complianceInsuranceRoutes);
 app.use("/api", metricsRoutes);
 app.use("/api", adminFeatureFlagsRoutes);
 app.use("/api", adminOpsRoutes);
