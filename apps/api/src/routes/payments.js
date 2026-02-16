@@ -6,11 +6,196 @@
 const express = require("express");
 const router = express.Router();
 const paymentService = require("../services/paymentService");
+const bankTransferService = require("../services/bankTransfer");
 const { authenticate, requireScope, limiters, auditLog } = require("../middleware/security");
 const { withIdempotency } = require("../middleware/idempotency");
 const { requirePerm } = require("../auth/authorize");
 const { validateString, handleValidationErrors } = require("../middleware/validation");
 const { body, param } = require("express-validator");
+
+// ============================================================================
+// BANK TRANSFER ENDPOINTS (Cost Optimization - $0 fees!)
+// ============================================================================
+
+/**
+ * POST /api/payments/bank-transfer/link-token
+ * Create Plaid Link token for bank verification
+ * Scope: payment:setup
+ */
+router.post(
+  "/bank-transfer/link-token",
+  limiters.general,
+  authenticate,
+  requireScope("payment:setup"),
+  auditLog,
+  async (req, res, next) => {
+    try {
+      const userId = req.user.sub;
+      const linkToken = await bankTransferService.createLinkToken(userId);
+
+      res.status(200).json({
+        success: true,
+        data: { linkToken },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/**
+ * POST /api/payments/bank-transfer/exchange-token
+ * Exchange public token for access token
+ * Scope: payment:setup
+ */
+router.post(
+  "/bank-transfer/exchange-token",
+  limiters.general,
+  authenticate,
+  requireScope("payment:setup"),
+  auditLog,
+  [
+    body("publicToken").notEmpty().withMessage("Public token is required"),
+    handleValidationErrors,
+  ],
+  async (req, res, next) => {
+    try {
+      const { publicToken } = req.body;
+      const result = await bankTransferService.exchangePublicToken(publicToken);
+
+      res.status(200).json({
+        success: true,
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/**
+ * POST /api/payments/bank-transfer/initiate
+ * Initiate bank transfer (0% fees!)
+ * Scope: payment:transfer
+ */
+router.post(
+  "/bank-transfer/initiate",
+  limiters.billing,
+  authenticate,
+  requireScope("payment:transfer"),
+  requirePerm("payment:send"),
+  auditLog,
+  withIdempotency({ scope: "payments:bank-transfer" }),
+  [
+    body("amount")
+      .isFloat({ min: 1, max: 100000 })
+      .withMessage("Amount must be between $1 and $100,000"),
+    body("accountId").notEmpty().withMessage("Account ID is required"),
+    body("accessToken").notEmpty().withMessage("Access token is required"),
+    body("description").optional().isString().withMessage("Description must be a string"),
+    handleValidationErrors,
+  ],
+  async (req, res, next) => {
+    try {
+      const { amount, accountId, accessToken, description } = req.body;
+      const userId = req.user.sub;
+
+      const result = await bankTransferService.initiateBankTransfer({
+        userId,
+        amount: parseFloat(amount),
+        accountId,
+        accessToken,
+        description,
+      });
+
+      if (!result.success) {
+        return res.status(400).json({
+          success: false,
+          error: result.error,
+          code: result.code,
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        data: result.transfer,
+        message: result.message,
+        savings: {
+          stripeFee: (parseFloat(amount) * 0.029 + 0.30).toFixed(2),
+          bankTransferFee: 0,
+          saved: (parseFloat(amount) * 0.029 + 0.30).toFixed(2),
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/**
+ * GET /api/payments/bank-transfer/fees
+ * Calculate bank transfer fees (always $0!)
+ * Scope: payment:view
+ */
+router.get(
+  "/bank-transfer/fees",
+  limiters.general,
+  authenticate,
+  requireScope("payment:view"),
+  auditLog,
+  async (req, res, next) => {
+    try {
+      const { amount } = req.query;
+
+      if (!amount || isNaN(amount)) {
+        return res.status(400).json({
+          success: false,
+          error: "Valid amount is required",
+        });
+      }
+
+      const fees = bankTransferService.calculateBankTransferFee(parseFloat(amount));
+
+      res.status(200).json({
+        success: true,
+        data: fees,
+        message: "Bank transfers have NO fees! Save money vs credit cards.",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+/**
+ * GET /api/payments/bank-transfer/:transferId/status
+ * Get bank transfer status
+ * Scope: payment:view
+ */
+router.get(
+  "/bank-transfer/:transferId/status",
+  limiters.general,
+  authenticate,
+  requireScope("payment:view"),
+  auditLog,
+  [
+    param("transferId").notEmpty().withMessage("Transfer ID is required"),
+    handleValidationErrors,
+  ],
+  async (req, res, next) => {
+    try {
+      const { transferId } = req.params;
+      const status = await bankTransferService.getBankTransferStatus(transferId);
+
+      res.status(200).json({
+        success: true,
+        data: status,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 // ============================================================================
 // INSTANT PAYOUT ENDPOINTS
