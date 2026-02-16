@@ -485,7 +485,7 @@ class NeuralNetworkService {
   layerForward(layer, inputs) {
     const weights = layer.weights;
     const bias = layer.bias;
-    let output = [];
+    const output = [];
 
     for (let i = 0; i < weights[0].length; i++) {
       let sum = bias[i];

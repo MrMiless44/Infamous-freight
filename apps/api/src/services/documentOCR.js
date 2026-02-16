@@ -370,7 +370,7 @@ Return a JSON object with the extracted fields. Use null for fields that cannot 
     const patterns = {
       bolNumber: /BOL\s*#?\s*:?\s*([A-Z0-9-]+)/i,
       invoiceNumber: /INVOICE\s*#?\s*:?\s*([A-Z0-9-]+)/i,
-      date: /DATE\s*:?\s*(\d{1,2}[-\/]\d{1,2}[-\/]\d{2,4})/i,
+      date: /DATE\s*:?\s*(\d{1,2}[-/]\d{1,2}[-/]\d{2,4})/i,
       weight: /WEIGHT\s*:?\s*([\d,]+)\s*(lbs?|kg)/i,
       amount: /TOTAL\s*:?\s*\$?([\d,]+\.?\d*)/i,
       phone: /(\d{3}[-.]?\d{3}[-.]?\d{4})/,

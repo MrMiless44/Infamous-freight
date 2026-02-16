@@ -457,11 +457,6 @@ class PricingOptimizationService {
     return 1.5 * shipment.miles;
   }
 
-  getCorridorBaseline(corridor) {
-    // Mock: fetch from market data
-    return 1200;
-  }
-
   generatePricingReasoning(marketData, shipment) {
     const reasons = [];
 

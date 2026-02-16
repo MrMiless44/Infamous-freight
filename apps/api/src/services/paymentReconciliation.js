@@ -200,7 +200,7 @@ class PaymentReconciliation {
           logger.error("Payment missing in Stripe", { paymentId: localPayment.id });
           break;
 
-        case "MISSING_IN_LOCAL_DB":
+        case "MISSING_IN_LOCAL_DB": {
           // Create local record from Stripe
           const userId = await findUserByStripePaymentIntent(stripePayment.id);
           if (userId) {
@@ -218,6 +218,7 @@ class PaymentReconciliation {
             });
           }
           break;
+        }
       }
 
       return { fixed: true, type };

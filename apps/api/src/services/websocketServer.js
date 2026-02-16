@@ -19,26 +19,28 @@ class WebSocketService {
   initialize(server) {
     this.wss = new WebSocket.Server({
       server,
-      path: '/ws',
+      path: "/ws",
       verifyClient: (info, callback) => {
         // Optional: Verify origin
         const origin = info.origin || info.req.headers.origin;
-        const allowedOrigins = process.env.CORS_ORIGINS?.split(',') || [];
+        const allowedOrigins = process.env.CORS_ORIGINS?.split(",") || [];
 
-        if (process.env.NODE_ENV === 'production' && !allowedOrigins.includes(origin)) {
-          callback(false, 403, 'Origin not allowed');
+        if (process.env.NODE_ENV === "production" && !allowedOrigins.includes(origin)) {
+          callback(false, 403, "Origin not allowed");
         } else {
           callback(true);
         }
-      }
+      },
     });
 
     this.wss.on("connection", (ws, req) => {
-      logger.info('New WebSocket connection', { ip: req.socket.remoteAddress });
+      logger.info("New WebSocket connection", { ip: req.socket.remoteAddress });
 
       // Set up ping/pong for connection keep-alive
       ws.isAlive = true;
-      ws.on('pong', () => { ws.isAlive = true; });
+      ws.on("pong", () => {
+        ws.isAlive = true;
+      });
 
       // Handle incoming messages
       ws.on("message", async (message) => {
@@ -62,20 +64,20 @@ class WebSocketService {
               ws.send(JSON.stringify({ type: "pong", timestamp: Date.now() }));
               break;
             default:
-              logger.warn('Unknown WebSocket message type', { type: data.type });
+              logger.warn("Unknown WebSocket message type", { type: data.type });
           }
         } catch (error) {
-          logger.error({ error }, 'WebSocket message error');
+          logger.error({ error }, "WebSocket message error");
           ws.send(JSON.stringify({ type: "error", message: "Invalid message format" }));
         }
       });
 
-      ws.on('close', () => {
+      ws.on("close", () => {
         this.handleDisconnect(ws);
       });
 
-      ws.on('error', (error) => {
-        logger.error({ error }, 'WebSocket error');
+      ws.on("error", (error) => {
+        logger.error({ error }, "WebSocket error");
       });
     });
 
@@ -90,7 +92,7 @@ class WebSocketService {
       });
     }, 30000); // 30 seconds
 
-    logger.info('WebSocket server initialized', { path: '/ws' });
+    logger.info("WebSocket server initialized", { path: "/ws" });
   }
 
   async handleAuth(ws, data) {
@@ -116,15 +118,17 @@ class WebSocketService {
         this.userSubscriptions.set(ws.userId, new Set());
       }
 
-      ws.send(JSON.stringify({
-        type: "auth_success",
-        userId: ws.userId,
-        timestamp: Date.now()
-      }));
+      ws.send(
+        JSON.stringify({
+          type: "auth_success",
+          userId: ws.userId,
+          timestamp: Date.now(),
+        }),
+      );
 
-      logger.info('WebSocket authenticated', { userId: ws.userId });
+      logger.info("WebSocket authenticated", { userId: ws.userId });
     } catch (error) {
-      logger.error({ error }, 'WebSocket auth error');
+      logger.error({ error }, "WebSocket auth error");
       ws.send(JSON.stringify({ type: "auth_error", message: "Invalid token" }));
       ws.close(1008, "Authentication failed");
     }
@@ -140,23 +144,27 @@ class WebSocketService {
 
     if (shipmentId) {
       subscriptions.add(`shipment:${shipmentId}`);
-      ws.send(JSON.stringify({
-        type: "subscribed",
-        resource: "shipment",
-        id: shipmentId
-      }));
+      ws.send(
+        JSON.stringify({
+          type: "subscribed",
+          resource: "shipment",
+          id: shipmentId,
+        }),
+      );
     }
 
     if (vehicleId) {
       subscriptions.add(`vehicle:${vehicleId}`);
-      ws.send(JSON.stringify({
-        type: "subscribed",
-        resource: "vehicle",
-        id: vehicleId
-      }));
+      ws.send(
+        JSON.stringify({
+          type: "subscribed",
+          resource: "vehicle",
+          id: vehicleId,
+        }),
+      );
     }
 
-    logger.info('WebSocket subscription added', { userId: ws.userId, shipmentId, vehicleId });
+    logger.info("WebSocket subscription added", { userId: ws.userId, shipmentId, vehicleId });
   }
 
   async handleUnsubscribe(ws, data) {
@@ -184,7 +192,7 @@ class WebSocketService {
     }
 
     // Check scope permission
-    if (!ws.scopes.includes('tracking:update')) {
+    if (!ws.scopes.includes("tracking:update")) {
       return ws.send(JSON.stringify({ type: "error", message: "Insufficient permissions" }));
     }
 
@@ -198,7 +206,7 @@ class WebSocketService {
       heading: heading || 0,
       altitude: altitude || 0,
       timestamp: timestamp || Date.now(),
-      userId: ws.userId
+      userId: ws.userId,
     });
 
     // Broadcast to subscribed users
@@ -208,17 +216,17 @@ class WebSocketService {
       speed,
       heading,
       altitude,
-      timestamp: timestamp || Date.now()
+      timestamp: timestamp || Date.now(),
     });
 
-    logger.debug('GPS update received', { vehicleId, latitude, longitude });
+    logger.debug("GPS update received", { vehicleId, latitude, longitude });
   }
 
   handleDisconnect(ws) {
     if (ws.userId) {
       this.connections.delete(ws.userId);
       this.userSubscriptions.delete(ws.userId);
-      logger.info('WebSocket disconnected', { userId: ws.userId });
+      logger.info("WebSocket disconnected", { userId: ws.userId });
     }
   }
 
@@ -227,18 +235,20 @@ class WebSocketService {
       type: "shipment_update",
       shipmentId,
       data: update,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
 
     this.wss?.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN &&
+      if (
+        client.readyState === WebSocket.OPEN &&
         client.authenticated &&
-        this.userSubscriptions.get(client.userId)?.has(`shipment:${shipmentId}`)) {
+        this.userSubscriptions.get(client.userId)?.has(`shipment:${shipmentId}`)
+      ) {
         client.send(message);
       }
     });
 
-    logger.debug('Shipment update broadcast', { shipmentId });
+    logger.debug("Shipment update broadcast", { shipmentId });
   }
 
   broadcastVehicleUpdate(vehicleId, update) {
@@ -246,13 +256,15 @@ class WebSocketService {
       type: "vehicle_update",
       vehicleId,
       data: update,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
 
     this.wss?.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN &&
+      if (
+        client.readyState === WebSocket.OPEN &&
         client.authenticated &&
-        this.userSubscriptions.get(client.userId)?.has(`vehicle:${vehicleId}`)) {
+        this.userSubscriptions.get(client.userId)?.has(`vehicle:${vehicleId}`)
+      ) {
         client.send(message);
       }
     });
@@ -261,11 +273,13 @@ class WebSocketService {
   broadcastNotification(userId, notification) {
     const client = this.connections.get(userId);
     if (client && client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify({
-        type: "notification",
-        data: notification,
-        timestamp: Date.now()
-      }));
+      client.send(
+        JSON.stringify({
+          type: "notification",
+          data: notification,
+          timestamp: Date.now(),
+        }),
+      );
     }
   }
 
@@ -284,34 +298,27 @@ class WebSocketService {
     if (this.wss) {
       this.wss.close();
     }
-    logger.info('WebSocket server shut down');
+    logger.info("WebSocket server shut down");
+  }
 
-    shipmentId,
-      data: update,
-          }),
-        );
-}
+  sendToUser(userId, message) {
+    const userConnection = this.clients.get(userId);
+    if (userConnection) {
+      userConnection.send(JSON.stringify(message));
+    }
+  }
+
+  broadcast(message) {
+    this.wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify(message));
+      }
     });
   }
 
-sendToUser(userId, message) {
-  const userConnection = this.clients.get(userId);
-  if (userConnection) {
-    userConnection.send(JSON.stringify(message));
+  close() {
+    this.wss.close();
   }
-}
-
-broadcast(message) {
-  this.wss.clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(message));
-    }
-  });
-}
-
-close() {
-  this.wss.close();
-}
 }
 
 module.exports = {
