@@ -2,7 +2,9 @@
 
 ## Overview
 
-This directory contains the scaffolding for AI agent roles in Infamous Freight Enterprise. Each role is designed as a modular, auditable component with clear boundaries and contracts.
+This directory contains the scaffolding for AI agent roles in Infamous Freight
+Enterprise. Each role is designed as a modular, auditable component with clear
+boundaries and contracts.
 
 ## Directory Structure
 

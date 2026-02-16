@@ -1,11 +1,6 @@
-export const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
-export async function api(
-  path: string,
-  opts: RequestInit = {},
-  token?: string,
-) {
+export async function api(path: string, opts: RequestInit = {}, token?: string) {
   const res = await fetch(`${API_URL}${path}`, {
     ...opts,
     headers: {

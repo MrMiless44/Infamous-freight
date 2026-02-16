@@ -9,7 +9,8 @@ const prismaExports = require("../../db/prisma") || {};
 const prisma = prismaExports.prisma;
 
 const errorExports = require("./errors.js") || {};
-const JobTransitionError = errorExports.JobTransitionError ||
+const JobTransitionError =
+  errorExports.JobTransitionError ||
   class JobTransitionErrorFallback extends Error {
     constructor(code, message, status = 400) {
       super(message);
@@ -284,11 +285,7 @@ async function transitionJob(input) {
     });
 
     if (!job)
-      throw new JobTransitionError(
-        JOB_TRANSITION_CODES.JOB_NOT_FOUND,
-        "Job not found",
-        404,
-      );
+      throw new JobTransitionError(JOB_TRANSITION_CODES.JOB_NOT_FOUND, "Job not found", 404);
 
     const from = job.status;
     if (!ALLOWED_TRANSITIONS[from] || !ALLOWED_TRANSITIONS[from].includes(to)) {

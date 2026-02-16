@@ -2,7 +2,8 @@
 
 ## Summary
 
-Fixed 16 failing test assertions to improve test suite stability and updated coverage thresholds to match current coverage levels.
+Fixed 16 failing test assertions to improve test suite stability and updated
+coverage thresholds to match current coverage levels.
 
 ## Changes Made
 
@@ -10,12 +11,17 @@ Fixed 16 failing test assertions to improve test suite stability and updated cov
 
 **File**: `apps/api/__tests__/routes.billing.test.js`
 
-**Issue**: Tests expecting 503 errors when env vars missing were getting 200 responses. The problem was that the `stripe` and `paypalClient` instances were initialized at module load time, so deleting env vars in tests didn't affect already-initialized instances.
+**Issue**: Tests expecting 503 errors when env vars missing were getting 200
+responses. The problem was that the `stripe` and `paypalClient` instances were
+initialized at module load time, so deleting env vars in tests didn't affect
+already-initialized instances.
 
 **Solution**:
 
-- For the "Stripe not configured" test: Clear all module caches and reload billing route with env var deleted, using a fresh Express app instance
-- For URL configuration tests: Simply delete the env var (these are checked at request time, not module load time)
+- For the "Stripe not configured" test: Clear all module caches and reload
+  billing route with env var deleted, using a fresh Express app instance
+- For URL configuration tests: Simply delete the env var (these are checked at
+  request time, not module load time)
 
 **Tests Fixed**:
 
@@ -27,14 +33,20 @@ Fixed 16 failing test assertions to improve test suite stability and updated cov
 
 **File**: `apps/api/__tests__/securityHeaders.test.js`
 
-**Issue**: Tests were trying to call `middleware.handle(req, res, next)` directly, which doesn't work properly with Express middleware. These tests were getting `TypeError: Cannot read properties of undefined (reading 'query')`.
+**Issue**: Tests were trying to call `middleware.handle(req, res, next)`
+directly, which doesn't work properly with Express middleware. These tests were
+getting `TypeError: Cannot read properties of undefined (reading 'query')`.
 
-**Solution**: Replaced the problematic tests with a simpler test that verifies cache control middleware is registered in the Express app's middleware stack, without trying to invoke it directly.
+**Solution**: Replaced the problematic tests with a simpler test that verifies
+cache control middleware is registered in the Express app's middleware stack,
+without trying to invoke it directly.
 
 **Tests Removed**:
 
-- ❌ "should add cache control for billing routes" (tested via integration tests instead)
-- ❌ "should not add cache control for other routes" (tested via integration tests instead)
+- ❌ "should add cache control for billing routes" (tested via integration tests
+  instead)
+- ❌ "should not add cache control for other routes" (tested via integration
+  tests instead)
 
 **Test Added**:
 
@@ -86,7 +98,8 @@ Comprehensive guide covering:
 - Alternative solutions
 - Related GitHub issues
 
-This documents the critical fix that allows Prisma to work on Alpine Linux 3.22+ with OpenSSL 3.x.
+This documents the critical fix that allows Prisma to work on Alpine Linux 3.22+
+with OpenSSL 3.x.
 
 ## Expected Results
 
@@ -107,7 +120,8 @@ This documents the critical fix that allows Prisma to work on Alpine Linux 3.22+
 ### Files Affected
 
 1. `apps/api/__tests__/routes.billing.test.js` - 3 tests fixed
-2. `apps/api/__tests__/securityHeaders.test.js` - 2 problematic tests replaced with 1 simple test
+2. `apps/api/__tests__/securityHeaders.test.js` - 2 problematic tests replaced
+   with 1 simple test
 3. `apps/api/jest.config.js` - Coverage thresholds updated
 4. `docs/ALPINE_PRISMA_SETUP.md` - New documentation created
 
@@ -149,9 +163,11 @@ Coverage:    84.31%+ (all thresholds met)
 
 **Billing Tests**:
 
-- Module-level initialization means `stripe` variable is set when the file is first required
+- Module-level initialization means `stripe` variable is set when the file is
+  first required
 - Simply deleting env vars doesn't affect already-created instances
-- Solution: Force module reload after env var deletion for initialization-time checks
+- Solution: Force module reload after env var deletion for initialization-time
+  checks
 - For runtime checks (URL validation), env var deletion alone is sufficient
 
 **Security Headers Tests**:
@@ -159,7 +175,8 @@ Coverage:    84.31%+ (all thresholds met)
 - Express middleware requires full request/response cycle
 - Direct invocation of `middleware.handle()` bypasses Express internals
 - Causes undefined errors when middleware expects Express-populated properties
-- Solution: Test registration rather than execution (execution tested in integration tests)
+- Solution: Test registration rather than execution (execution tested in
+  integration tests)
 
 **Coverage Thresholds**:
 
@@ -170,7 +187,8 @@ Coverage:    84.31%+ (all thresholds met)
 
 ## Related Documentation
 
-- [Jest Configuration](../apps/api/jest.config.js) - Coverage thresholds and setup
+- [Jest Configuration](../apps/api/jest.config.js) - Coverage thresholds and
+  setup
 - [Alpine Prisma Setup](./ALPINE_PRISMA_SETUP.md) - OpenSSL 3.x compatibility
 - [Testing Guide](../CONTRIBUTING.md#testing) - How to write and run tests
 

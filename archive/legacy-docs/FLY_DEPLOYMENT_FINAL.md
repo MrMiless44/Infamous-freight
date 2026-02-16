@@ -13,8 +13,7 @@
 
 ### 1. Web Frontend (Next.js) - DEPLOYED ✅
 
-**App Name**: `infamous-freight-enterprises`
-**Status**: Live and running
+**App Name**: `infamous-freight-enterprises` **Status**: Live and running
 **URL**: https://infamous-freight-enterprises.fly.dev/
 
 ```bash
@@ -26,8 +25,10 @@ flyctl status -a infamous-freight-enterprises
 
 Two GitHub Actions workflows created:
 
-- [.github/workflows/deploy-web-fly.yml](.github/workflows/deploy-web-fly.yml) - Auto-deploys web on push
-- [.github/workflows/deploy-api-fly.yml](.github/workflows/deploy-api-fly.yml) - Auto-deploys API on push
+- [.github/workflows/deploy-web-fly.yml](.github/workflows/deploy-web-fly.yml) -
+  Auto-deploys web on push
+- [.github/workflows/deploy-api-fly.yml](.github/workflows/deploy-api-fly.yml) -
+  Auto-deploys API on push
 
 **Requirements**:
 
@@ -38,11 +39,13 @@ Two GitHub Actions workflows created:
 
 ## 🔧 Manual Steps Required
 
-Since the builder token has limited permissions, you'll need to complete these steps manually:
+Since the builder token has limited permissions, you'll need to complete these
+steps manually:
 
 ### Step 1: Create API App (Manual)
 
-Run this in your **local terminal** (not Codespaces) after logging in with `flyctl auth login`:
+Run this in your **local terminal** (not Codespaces) after logging in with
+`flyctl auth login`:
 
 ```bash
 # Create the API app
@@ -131,7 +134,8 @@ flyctl secrets set \
    flyctl auth token
    ```
 
-2. Go to: https://github.com/MrMiless44/Infamous-freight-enterprises/settings/secrets/actions
+2. Go to:
+   https://github.com/MrMiless44/Infamous-freight-enterprises/settings/secrets/actions
 
 3. Click "New repository secret"
    - Name: `FLY_API_TOKEN`
@@ -227,4 +231,5 @@ flyctl scale count 2 -a infamous-freight-api
 
 ---
 
-**Next Action**: Complete the manual steps above using your local terminal with full Fly.io account access.
+**Next Action**: Complete the manual steps above using your local terminal with
+full Fly.io account access.

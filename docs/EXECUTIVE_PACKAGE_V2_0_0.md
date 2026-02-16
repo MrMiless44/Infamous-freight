@@ -74,11 +74,11 @@ Infæmous Freight:
 
 ### Slide 10 — Financials
 
-| Year | ARR |
-| --- | ---: |
-| 1 | $1.2M |
-| 2 | $4.8M |
-| 3 | $12.7M |
+| Year |    ARR |
+| ---- | -----: |
+| 1    |  $1.2M |
+| 2    |  $4.8M |
+| 3    | $12.7M |
 
 **Gross margin:** 82%
 
@@ -91,11 +91,11 @@ Infæmous Freight:
 
 ### Slide 12 — Competition
 
-| Company | Difference |
-| --- | --- |
-| Convoy | No AI OS |
-| Flexport | Not AI-native |
-| Samsara | Hardware-centric |
+| Company  | Difference       |
+| -------- | ---------------- |
+| Convoy   | No AI OS         |
+| Flexport | Not AI-native    |
+| Samsara  | Hardware-centric |
 
 ### Slide 13 — Roadmap
 
@@ -124,7 +124,11 @@ Founder, Architect, AI Systems Engineer
 
 ### Executive Summary
 
-Infæmous Freight is an AI-native freight management operating system providing end-to-end logistics automation, AI decisioning, real-time voice control, and integrated billing. Built as an enterprise-grade SaaS platform with SOC2-ready compliance, Infæmous Freight targets mid-market and enterprise logistics operators globally.
+Infæmous Freight is an AI-native freight management operating system providing
+end-to-end logistics automation, AI decisioning, real-time voice control, and
+integrated billing. Built as an enterprise-grade SaaS platform with SOC2-ready
+compliance, Infæmous Freight targets mid-market and enterprise logistics
+operators globally.
 
 ### Market Analysis
 
@@ -143,21 +147,21 @@ Infæmous Freight is an AI-native freight management operating system providing 
 
 ### Revenue Model
 
-| Tier | Price |
-| --- | --- |
-| Free | $0 |
-| Pro | $49/user/mo |
-| Business | $99/user/mo |
-| Enterprise | Custom |
+| Tier       | Price       |
+| ---------- | ----------- |
+| Free       | $0          |
+| Pro        | $49/user/mo |
+| Business   | $99/user/mo |
+| Enterprise | Custom      |
 | AI Premium | Usage-based |
 
 ### Financial Projections
 
-| Year | ARR | EBITDA |
-| --- | ---: | ---: |
-| 1 | $1.2M | -$150K |
-| 2 | $4.8M | $1.3M |
-| 3 | $12.7M | $5.2M |
+| Year |    ARR | EBITDA |
+| ---- | -----: | -----: |
+| 1    |  $1.2M | -$150K |
+| 2    |  $4.8M |  $1.3M |
+| 3    | $12.7M |  $5.2M |
 
 ### Risk Management
 
@@ -218,13 +222,13 @@ Infæmous Freight is an AI-native freight management operating system providing 
 
 ### Compliance Controls
 
-| Control | Status |
-| --- | --- |
-| RBAC | Implemented |
-| Audit Logs | Implemented |
-| Incident Response | Documented |
-| Data Retention | Enforced |
-| Vendor Risk | Assessed |
+| Control           | Status      |
+| ----------------- | ----------- |
+| RBAC              | Implemented |
+| Audit Logs        | Implemented |
+| Incident Response | Documented  |
+| Data Retention    | Enforced    |
+| Vendor Risk       | Assessed    |
 
 ### AI Controls
 
@@ -259,19 +263,19 @@ Infæmous Freight is an AI-native freight management operating system providing 
 
 ### Objection Handling
 
-| Objection | Response |
-| --- | --- |
-| Too complex | AI automates complexity |
-| Too new | SOC2-ready enterprise platform |
-| Cost | AI reduces operational costs |
+| Objection   | Response                       |
+| ----------- | ------------------------------ |
+| Too complex | AI automates complexity        |
+| Too new     | SOC2-ready enterprise platform |
+| Cost        | AI reduces operational costs   |
 
 ### Pricing Matrix
 
-| Tier | Users | Price |
-| --- | --- | --- |
-| Pro | 1–9 | $49/user |
-| Business | 10–99 | $99/user |
-| Enterprise | 100+ | Custom |
+| Tier       | Users | Price    |
+| ---------- | ----- | -------- |
+| Pro        | 1–9   | $49/user |
+| Business   | 10–99 | $99/user |
+| Enterprise | 100+  | Custom   |
 | AI Premium | Usage | Variable |
 
 ---

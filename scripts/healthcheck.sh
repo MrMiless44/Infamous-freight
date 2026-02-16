@@ -5,11 +5,17 @@
 # Performs comprehensive health checks on all services
 # Usage: ./healthcheck.sh [--interval 60] [--alert email@example.com]
 
-set -e
+set -euo pipefail
 
 INTERVAL="${INTERVAL:-30}"
 ALERT_EMAIL="${ALERT_EMAIL:-}"
-HEALTH_ENDPOINT="http://api:4000/api/health/details"
+API_URL="${API_URL:-http://api:4000}"
+WEB_URL="${WEB_URL:-http://web:3000}"
+HEALTH_ENDPOINT="${HEALTH_ENDPOINT:-${API_URL}/api/health/details}"
+API_HEALTH_URL="${API_HEALTH_URL:-${API_URL}/api/health}"
+WEB_HEALTH_URL="${WEB_HEALTH_URL:-${WEB_URL}}"
+DB_CONTAINER="${DB_CONTAINER:-infamous-postgres-prod}"
+REDIS_CONTAINER="${REDIS_CONTAINER:-infamous-redis-prod}"
 MAX_RETRIES=3
 RETRY_DELAY=5
 
@@ -20,8 +26,12 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Log file
-LOG_FILE="/var/log/infamous/health-check.log"
-mkdir -p /var/log/infamous
+LOG_DIR="${LOG_DIR:-/var/log/infamous}"
+if ! mkdir -p "$LOG_DIR" 2>/dev/null; then
+  LOG_DIR="/tmp/infamous"
+  mkdir -p "$LOG_DIR"
+fi
+LOG_FILE="${LOG_DIR}/health-check.log"
 
 log() {
   echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG_FILE"
@@ -49,7 +59,11 @@ check_service() {
 
 check_database() {
   log "Checking PostgreSQL..."
-  if docker exec infamous-postgres-prod pg_isready -U postgres > /dev/null 2>&1; then
+  if ! command -v docker >/dev/null 2>&1; then
+    echo -e "${YELLOW}⚠️${NC} Docker not found, skipping database check"
+    return 0
+  fi
+  if docker exec "$DB_CONTAINER" pg_isready -U postgres > /dev/null 2>&1; then
     echo -e "${GREEN}✓${NC} PostgreSQL is healthy"
     return 0
   else
@@ -60,7 +74,11 @@ check_database() {
 
 check_redis() {
   log "Checking Redis..."
-  if docker exec infamous-redis-prod redis-cli ping > /dev/null 2>&1; then
+  if ! command -v docker >/dev/null 2>&1; then
+    echo -e "${YELLOW}⚠️${NC} Docker not found, skipping Redis check"
+    return 0
+  fi
+  if docker exec "$REDIS_CONTAINER" redis-cli ping > /dev/null 2>&1; then
     echo -e "${GREEN}✓${NC} Redis is healthy"
     return 0
   else
@@ -71,12 +89,12 @@ check_redis() {
 
 check_api() {
   log "Checking API..."
-  check_service "API" "http://api:4000/api/health"
+  check_service "API" "$API_HEALTH_URL"
 }
 
 check_web() {
   log "Checking Web..."
-  check_service "Web" "http://web:3000"
+  check_service "Web" "$WEB_HEALTH_URL"
 }
 
 get_metrics() {

@@ -2,18 +2,21 @@
 
 ## Issue Summary
 
-The security fuzzing tests revealed several issues with input validation in the API routes. This document summarizes the problems found and the fixes applied.
+The security fuzzing tests revealed several issues with input validation in the
+API routes. This document summarizes the problems found and the fixes applied.
 
 ## Problems Identified
 
 ### 1. SQL Injection Tests Failing (6 tests)
 
 **Error**: `TypeError: Cannot read properties of undefined (reading 'user')`
-**Location**: `apps/api/src/routes/users.js:85`
-**Status**: 500 (Internal Server Error)
-**Expected**: 400 (Bad Request)
+**Location**: `apps/api/src/routes/users.js:85` **Status**: 500 (Internal Server
+Error) **Expected**: 400 (Bad Request)
 
-**Root Cause**: The POST `/api/users` route lacked input validation middleware. When malicious SQL injection payloads were sent as email addresses (e.g., `'; DROP TABLE users; --`), they bypassed validation and caused the route handler to fail.
+**Root Cause**: The POST `/api/users` route lacked input validation middleware.
+When malicious SQL injection payloads were sent as email addresses (e.g.,
+`'; DROP TABLE users; --`), they bypassed validation and caused the route
+handler to fail.
 
 **Test Payloads That Were Failing**:
 
@@ -27,18 +30,21 @@ The security fuzzing tests revealed several issues with input validation in the 
 ### 2. Header Injection Test Failing
 
 **Error**: `TypeError: Invalid character in header content ["X-Custom-Header"]`
-**Test**: CRLF injection prevention
-**Payload**: `value\r\nX-Injected: true`
+**Test**: CRLF injection prevention **Payload**: `value\r\nX-Injected: true`
 
-**Root Cause**: Node.js/Express automatically prevents CRLF injection at the HTTP layer by throwing an error when invalid characters are detected in headers. The test expected the request to succeed but the header to be sanitized, but instead Node.js threw an error (which is actually better security).
+**Root Cause**: Node.js/Express automatically prevents CRLF injection at the
+HTTP layer by throwing an error when invalid characters are detected in headers.
+The test expected the request to succeed but the header to be sanitized, but
+instead Node.js threw an error (which is actually better security).
 
 ### 3. NoSQL Injection Test Failing
 
-**Error**: Expected status 403, but got 200
-**Test**: Query parameter injection prevention
-**Payload**: `{ status: { $ne: null } }`
+**Error**: Expected status 403, but got 200 **Test**: Query parameter injection
+prevention **Payload**: `{ status: { $ne: null } }`
 
-**Root Cause**: The test was too strict in expecting only 200 or 400, but the API correctly returned 403 (Forbidden) when the query parameter didn't match expected validation.
+**Root Cause**: The test was too strict in expecting only 200 or 400, but the
+API correctly returned 403 (Forbidden) when the query parameter didn't match
+expected validation.
 
 ## Fixes Applied
 
@@ -86,7 +92,8 @@ The security fuzzing tests revealed several issues with input validation in the 
 
 **Impact**:
 
-- ✅ SQL injection payloads are now rejected with 400 status before reaching the handler
+- ✅ SQL injection payloads are now rejected with 400 status before reaching the
+  handler
 - ✅ Invalid email formats are caught and return proper error messages
 - ✅ Additional validation for name and role fields
 - ✅ Consistent error response format with validation details
@@ -95,8 +102,8 @@ The security fuzzing tests revealed several issues with input validation in the 
 
 **File**: `apps/api/__tests__/security/input-fuzzing.test.js`
 
-**Changes**:
-Changed test to expect Node.js to throw an error for invalid headers:
+**Changes**: Changed test to expect Node.js to throw an error for invalid
+headers:
 
 ```javascript
 // Before:
@@ -126,8 +133,7 @@ await expect(
 
 **File**: `apps/api/__tests__/security/input-fuzzing.test.js`
 
-**Changes**:
-Updated expected status codes to include 403:
+**Changes**: Updated expected status codes to include 403:
 
 ```javascript
 // Before:
@@ -159,7 +165,8 @@ After these fixes:
 - **SQL Injection Prevention**: All 6 tests passing
 - **Header Injection Prevention**: Both tests passing
 - **NoSQL Injection Prevention**: Test passing
-- **Other fuzzing tests**: Already passing (XSS, path traversal, buffer overflow, edge cases)
+- **Other fuzzing tests**: Already passing (XSS, path traversal, buffer
+  overflow, edge cases)
 
 ## Security Improvements
 
@@ -185,12 +192,14 @@ These fixes enhance the API's security posture:
 
 ## Recommendations for Future Development
 
-1. **Apply Similar Validation**: Add express-validator middleware to other POST/PUT/PATCH routes:
+1. **Apply Similar Validation**: Add express-validator middleware to other
+   POST/PUT/PATCH routes:
    - `/api/shipments` - Validate origin, destination, weight
    - `/api/drivers` - Validate name, license, contact info
    - `/api/voice` - Validate file uploads
 
-2. **Centralize Validators**: Create reusable validator functions in `validation.js`:
+2. **Centralize Validators**: Create reusable validator functions in
+   `validation.js`:
 
    ```javascript
    const validateEmail = () => body("email").isEmail();
@@ -252,10 +261,13 @@ These fixes enhance the API's security posture:
 
 ## Conclusion
 
-The security fuzzing tests successfully identified gaps in input validation. The fixes applied provide robust protection against common injection attacks while maintaining code quality and test coverage. The validation middleware follows Express.js best practices and integrates seamlessly with the existing authentication and authorization layers.
+The security fuzzing tests successfully identified gaps in input validation. The
+fixes applied provide robust protection against common injection attacks while
+maintaining code quality and test coverage. The validation middleware follows
+Express.js best practices and integrates seamlessly with the existing
+authentication and authorization layers.
 
 ---
 
-**Date**: December 16, 2025
-**Status**: Fixes Applied ✅
-**Test Status**: Pending Verification
+**Date**: December 16, 2025 **Status**: Fixes Applied ✅ **Test Status**:
+Pending Verification

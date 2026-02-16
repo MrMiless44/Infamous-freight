@@ -29,7 +29,7 @@ export function useAuth(): UseAuthReturn {
         setUser(user);
         setIsAuthenticated(!!user);
       } catch (error) {
-        // eslint-disable-next-line no-console
+         
         console.error("Error fetching user:", error);
       } finally {
         setIsLoading(false);
@@ -44,7 +44,7 @@ export function useAuth(): UseAuthReturn {
         setUser(session?.user ?? null);
         setIsAuthenticated(!!session?.user);
         setIsLoading(false);
-      }
+      },
     );
 
     return () => {
@@ -58,7 +58,7 @@ export function useAuth(): UseAuthReturn {
       setUser(null);
       setIsAuthenticated(false);
     } catch (error) {
-      // eslint-disable-next-line no-console
+       
       console.error("Error signing out:", error);
       throw error;
     }

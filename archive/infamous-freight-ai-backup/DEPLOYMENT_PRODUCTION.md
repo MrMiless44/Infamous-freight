@@ -390,8 +390,7 @@ const prisma = new PrismaClient({
 5. Wait for deployment
 6. **You're live!** 🎉
 
-**Your site will be at:**
-`https://infamous-freight-web.onrender.com`
+**Your site will be at:** `https://infamous-freight-web.onrender.com`
 
 ---
 

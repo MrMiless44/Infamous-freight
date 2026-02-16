@@ -352,9 +352,9 @@ crontab -e
 - [ ] 24-hour monitoring in place
 - [ ] Incident contacts configured
 
-**By**: ********\_******** (Name)  
-**Date**: ********\_******** (YYYY-MM-DD)  
-**Time**: ********\_******** (HH:MM UTC)
+**By**: **\*\*\*\***\_**\*\*\*\*** (Name)  
+**Date**: **\*\*\*\***\_**\*\*\*\*** (YYYY-MM-DD)  
+**Time**: **\*\*\*\***\_**\*\*\*\*** (HH:MM UTC)
 
 ---
 

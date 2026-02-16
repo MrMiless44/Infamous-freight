@@ -230,7 +230,8 @@ redis-cli -h localhost -p 6379 -a redispass ping
 
 ### 🔄 WebSocket Server - Port 4000 (Same as API)
 
-**Configuration File**: [apps/api/src/services/websocket.js](apps/api/src/services/websocket.js)
+**Configuration File**:
+[apps/api/src/services/websocket.js](apps/api/src/services/websocket.js)
 
 **Implementation**:
 
@@ -391,7 +392,8 @@ PORT=3001 pnpm web:dev
 
 - ✅ [.env.example](.env.example) - Environment template
 - ✅ [apps/api/src/server.js](apps/api/src/server.js) - API port configuration
-- ✅ [apps/web/next.config.mjs](apps/web/next.config.mjs) - Web port configuration
+- ✅ [apps/web/next.config.mjs](apps/web/next.config.mjs) - Web port
+  configuration
 - ✅ [docker-compose.yml](docker-compose.yml) - Container ports
 - ✅ [fly.toml](fly.toml) - Production port configuration
 - ✅ [package.json](package.json) - Start scripts
@@ -620,7 +622,8 @@ docker-compose logs api
 
 ## 📚 RELATED DOCUMENTATION
 
-- [DEPLOYMENT_100_PERCENT_COMPLETE.md](DEPLOYMENT_100_PERCENT_COMPLETE.md) - Deployment status
+- [DEPLOYMENT_100_PERCENT_COMPLETE.md](DEPLOYMENT_100_PERCENT_COMPLETE.md) -
+  Deployment status
 - [QUICK_REFERENCE.md](QUICK_REFERENCE.md) - Command reference
 - [.env.example](.env.example) - Environment template
 - [docker-compose.yml](docker-compose.yml) - Container configuration
@@ -641,7 +644,8 @@ All application ports are properly configured, documented, and ready to use:
 - ✅ **WebSocket (4000)** - Real-time communication configured
 - ✅ **Metrics (9091)** - Monitoring configured (production)
 
-**Current Status**: 🟡 Services configured but not running (normal in dev container)
+**Current Status**: 🟡 Services configured but not running (normal in dev
+container)
 
 **To Start Services**:
 

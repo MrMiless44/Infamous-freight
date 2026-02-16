@@ -1,6 +1,7 @@
 # Observability Guide - Infamous Freight Enterprises
 
-Comprehensive guide for monitoring, logging, tracing, and observing the Infamous Freight system in production and development.
+Comprehensive guide for monitoring, logging, tracing, and observing the Infamous
+Freight system in production and development.
 
 ## Table of Contents
 
@@ -47,16 +48,16 @@ API logger is configured in `apps/api/src/middleware/logger.js`:
 
 ```javascript
 const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'info',
+  level: process.env.LOG_LEVEL || "info",
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.errors({ stack: true }),
     winston.format.json(),
   ),
   transports: [
-    new winston.transports.File({ filename: 'error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'combined.log' }),
-    process.env.NODE_ENV === 'production' 
+    new winston.transports.File({ filename: "error.log", level: "error" }),
+    new winston.transports.File({ filename: "combined.log" }),
+    process.env.NODE_ENV === "production"
       ? new winston.transports.Stream({ stream: process.stdout })
       : new winston.transports.Console(),
   ],
@@ -65,12 +66,12 @@ const logger = winston.createLogger({
 
 ### Log Levels (Priority)
 
-| Level | Severity | Use Case |
-|-------|----------|----------|
-| `error` | 🔴 Critical | Application errors, exceptions, failed operations |
-| `warn` | 🟠 Important | Rate limits hit, deprecated API usage, partial failures |
-| `info` | 🔵 Normal | Business events (user login, shipment created, payment processed) |
-| `debug` | 🟢 Detailed | Diagnostic info (only in development) |
+| Level   | Severity     | Use Case                                                          |
+| ------- | ------------ | ----------------------------------------------------------------- |
+| `error` | 🔴 Critical  | Application errors, exceptions, failed operations                 |
+| `warn`  | 🟠 Important | Rate limits hit, deprecated API usage, partial failures           |
+| `info`  | 🔵 Normal    | Business events (user login, shipment created, payment processed) |
+| `debug` | 🟢 Detailed  | Diagnostic info (only in development)                             |
 
 ### Structured Logging
 
@@ -78,7 +79,7 @@ Always log with structured context:
 
 ```javascript
 // ✅ GOOD: Structured logging with context
-logger.info('Shipment created', {
+logger.info("Shipment created", {
   shipmentId: shipment.id,
   userId: req.user.sub,
   organizationId: req.auth.organizationId,
@@ -94,11 +95,13 @@ logger.info(`Shipment ${shipment.id} created by user ${req.user.sub}`);
 ### Log Aggregation
 
 **Production**:
+
 - Railway: Logs viewable via `railway logs --follow`
 - Cloudflare: Logs accessible via Workers dashboard
 - Datadog: Logs forwarded automatically
 
 **Local Development**:
+
 - Winston outputs to console + files
 - View logs: `tail -f combined.log`
 
@@ -147,7 +150,7 @@ Sentry.init({
 **API Route Handler** (Express.js):
 
 ```javascript
-router.post('/action', authenticate, async (req, res, next) => {
+router.post("/action", authenticate, async (req, res, next) => {
   try {
     const result = await service.doAction(req.body);
     res.json(new ApiResponse({ success: true, data: result }));
@@ -160,7 +163,7 @@ router.post('/action', authenticate, async (req, res, next) => {
         userId: req.user?.sub,
         organizationId: req.auth?.organizationId,
       },
-      level: 'error',
+      level: "error",
     });
     next(err); // Delegate to error handler
   }
@@ -171,10 +174,10 @@ router.post('/action', authenticate, async (req, res, next) => {
 
 ```javascript
 Sentry.addBreadcrumb({
-  message: 'Database query',
-  level: 'debug',
+  message: "Database query",
+  level: "debug",
   data: {
-    query: 'SELECT * FROM shipments WHERE id = ?',
+    query: "SELECT * FROM shipments WHERE id = ?",
     durationMs: 45,
   },
 });
@@ -223,8 +226,8 @@ if (process.env.NEXT_PUBLIC_DD_APP_ID) {
   window.DD_RUM?.init({
     applicationId: process.env.NEXT_PUBLIC_DD_APP_ID,
     clientToken: process.env.NEXT_PUBLIC_DD_CLIENT_TOKEN,
-    site: process.env.NEXT_PUBLIC_DD_SITE || 'datadoghq.com',
-    service: 'infamous-freight-web',
+    site: process.env.NEXT_PUBLIC_DD_SITE || "datadoghq.com",
+    service: "infamous-freight-web",
     env: process.env.NEXT_PUBLIC_ENV,
   });
 }
@@ -248,12 +251,12 @@ POST /api/shipments (100ms total)
 **Custom Spans** (for long operations):
 
 ```javascript
-const span = tracer.startSpan('export_to_csv');
+const span = tracer.startSpan("export_to_csv");
 try {
   const csv = await exportToCSV(shipments);
   span.finish();
 } catch (err) {
-  span.setTag('error', true);
+  span.setTag("error", true);
   span.finish();
 }
 ```
@@ -262,26 +265,26 @@ try {
 
 **Key Metrics Tracked**:
 
-| Metric | Target | Alert |
-|--------|--------|-------|
-| API Response P95 | < 500ms | > 1s |
-| API Response P99 | < 2s | > 5s |
-| Error Rate | < 0.1% | > 1% |
-| Database Query Time P95 | < 100ms | > 500ms |
-| Cache Hit Rate | > 70% | < 50% |
-| Redis Connection Pool | < 80% utilized | > 90% |
+| Metric                  | Target         | Alert   |
+| ----------------------- | -------------- | ------- |
+| API Response P95        | < 500ms        | > 1s    |
+| API Response P99        | < 2s           | > 5s    |
+| Error Rate              | < 0.1%         | > 1%    |
+| Database Query Time P95 | < 100ms        | > 500ms |
+| Cache Hit Rate          | > 70%          | < 50%   |
+| Redis Connection Pool   | < 80% utilized | > 90%   |
 
 **Custom Metrics**:
 
 ```javascript
 // Example: Track shipment creation rate
-statsd.increment('shipment.created', 1, {
+statsd.increment("shipment.created", 1, {
   organization_id: req.auth.organizationId,
   status: shipment.status,
 });
 
 // Track expensive operations
-statsd.timing('export.csv_generation', durationMs, {
+statsd.timing("export.csv_generation", durationMs, {
   rows: shipments.length,
 });
 ```
@@ -353,13 +356,13 @@ Create a dashboard for operational visibility:
 
 Configure alerts in Datadog for operational issues:
 
-| Alert | Condition | Action |
-|-------|-----------|--------|
-| High Error Rate | Error rate > 1% for 5 min | Trigger incident, notify #incidents |
-| Slow API | P95 latency > 1s for 10 min | Page on-call engineer |
-| DB Connection Pool Full | Connection utilization > 95% | Alert + recommend restart |
-| Memory Leak | Memory growth > 20% in 1 hour | Capture dump, create incident |
-| Certificate Expiry | < 7 days to expiration | Notify ops team |
+| Alert                   | Condition                     | Action                              |
+| ----------------------- | ----------------------------- | ----------------------------------- |
+| High Error Rate         | Error rate > 1% for 5 min     | Trigger incident, notify #incidents |
+| Slow API                | P95 latency > 1s for 10 min   | Page on-call engineer               |
+| DB Connection Pool Full | Connection utilization > 95%  | Alert + recommend restart           |
+| Memory Leak             | Memory growth > 20% in 1 hour | Capture dump, create incident       |
+| Certificate Expiry      | < 7 days to expiration        | Notify ops team                     |
 
 **Setup Alert**:
 
@@ -453,8 +456,8 @@ synthetic_tests:
         operator: "contains"
         target: "ok"
     options:
-      tick_every: 60  # Check every 60s
-      min_failure_duration: 300  # Alert after 5 min of failures
+      tick_every: 60 # Check every 60s
+      min_failure_duration: 300 # Alert after 5 min of failures
 ```
 
 ## Debugging Production Issues
@@ -462,16 +465,19 @@ synthetic_tests:
 ### Finding Root Cause
 
 **1. Check Health**:
+
 ```bash
 curl https://api.example.com/api/health
 ```
 
 **2. Review Sentry Errors**:
+
 - Go to https://sentry.io → Issues
 - Filter by release & time range
 - Look for patterns
 
 **3. Check Datadog Traces**:
+
 - Go to https://datadoghq.com → APM → Traces
 - Filter by error status, slow responses
 - Click trace to view full details
@@ -498,12 +504,14 @@ fly logs --app infamous-freight-api --follow
 #### High API Latency (P95 > 1s)
 
 1. Check database slow queries:
+
    ```sql
-   SELECT query, mean_time FROM pg_stat_statements 
+   SELECT query, mean_time FROM pg_stat_statements
    ORDER BY mean_time DESC LIMIT 10;
    ```
 
 2. Check cache hit rate:
+
    ```bash
    # Via Datadog
    avg:cache.hit_rate{service:api} < 0.5 (50%)
@@ -518,8 +526,9 @@ fly logs --app infamous-freight-api --follow
 #### High Memory Usage (> 80% heap)
 
 1. Check for memory leaks:
+
    ```javascript
-   logger.info('Memory usage', {
+   logger.info("Memory usage", {
      heapUsed: process.memoryUsage().heapUsed,
      heapTotal: process.memoryUsage().heapTotal,
      external: process.memoryUsage().external,
@@ -527,6 +536,7 @@ fly logs --app infamous-freight-api --follow
    ```
 
 2. Restart instance:
+
    ```bash
    railway restart
    ```
@@ -536,11 +546,13 @@ fly logs --app infamous-freight-api --follow
 #### Database Connection Pool Exhausted
 
 1. Check pool size (default: 10-20 connections)
+
    ```bash
    # In connection string: ?max_pool_size=30
    ```
 
 2. Monitor active connections:
+
    ```sql
    SELECT count(*) FROM pg_stat_activity;
    ```
@@ -558,18 +570,20 @@ fly logs --app infamous-freight-api --follow
 
 ### Scenario: API Out of Memory
 
-1. **Alert triggered**:  Memory > 80% for 10 min
+1. **Alert triggered**: Memory > 80% for 10 min
 
 2. **Investigate**:
+
    ```bash
    # View process memory
    ps aux | grep node
-   
+
    # Check Datadog for trend
    # Is memory growing all the time? Leak suspected.
    ```
 
 3. **Short-term fix**:
+
    ```bash
    # Restart API instance
    railway restart
@@ -586,11 +600,12 @@ fly logs --app infamous-freight-api --follow
 1. **Alert triggered**: P95 query time > 500ms
 
 2. **Investigate**:
+
    ```sql
    -- Slow query log
-   SELECT query, mean_time, calls 
-   FROM pg_stat_statements 
-   WHERE mean_time > 500 
+   SELECT query, mean_time, calls
+   FROM pg_stat_statements
+   WHERE mean_time > 500
    ORDER BY mean_time DESC;
    ```
 
@@ -607,15 +622,17 @@ fly logs --app infamous-freight-api --follow
 1. **Alert triggered**: 429 responses spiking
 
 2. **Investigate**:
+
    ```bash
    # Check which endpoints being hit
    logs: "status:429"
-   
+
    # Check which IPs/users
    # Look for pattern (bot, script, mistake)
    ```
 
 3. **Immediate action**:
+
    ```bash
    # Temporarily tighten rate limits
    # Or block IP via WAF (Cloudflare)
@@ -629,6 +646,7 @@ fly logs --app infamous-freight-api --follow
 ---
 
 **Support**:
+
 - Sentry Docs: https://docs.sentry.io
 - Datadog Docs: https://docs.datadoghq.com
 - On-call: See incident runbooks

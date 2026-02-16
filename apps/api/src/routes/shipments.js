@@ -8,7 +8,11 @@ const {
   requireScope,
   auditLog,
 } = require("../middleware/security");
-const { validateEnum, validateEnumQuery, validatePaginationQuery } = require("../middleware/validation");
+const {
+  validateEnum,
+  validateEnumQuery,
+  validatePaginationQuery,
+} = require("../middleware/validation");
 const { SHIPMENT_STATUSES } = require("@infamous-freight/shared");
 const {
   validateString,
@@ -16,11 +20,7 @@ const {
   handleValidationErrors,
 } = require("../middleware/validation");
 const { cacheMiddleware, invalidateCache } = require("../middleware/cache");
-const {
-  exportToCSV,
-  exportToPDF,
-  exportToJSON,
-} = require("../services/export");
+const { exportToCSV, exportToPDF, exportToJSON } = require("../services/export");
 const { emitShipmentUpdate } = require("../services/websocket");
 
 const router = express.Router();
@@ -34,7 +34,11 @@ router.get(
   requireScope("shipments:read"),
   cacheMiddleware(60),
   auditLog,
-  [...validatePaginationQuery(), validateEnumQuery("status", SHIPMENT_STATUSES).optional(), handleValidationErrors],
+  [
+    ...validatePaginationQuery(),
+    validateEnumQuery("status", SHIPMENT_STATUSES).optional(),
+    handleValidationErrors,
+  ],
   async (req, res, next) => {
     try {
       const { status, driverId } = req.query;
@@ -141,16 +145,14 @@ router.post(
 
       const userId = req.user?.sub;
       const newTrackingId =
-        trackingId ||
-        reference ||
-        `TRK-${randomUUID().replace(/-/g, "").slice(0, 12)}`;
+        trackingId || reference || `TRK-${randomUUID().replace(/-/g, "").slice(0, 12)}`;
 
       // Use transaction to ensure atomic operation
-      const Sentry = require('@sentry/node');
+      const Sentry = require("@sentry/node");
       Sentry.addBreadcrumb({
-        category: 'database',
-        message: 'Creating shipment with transaction',
-        level: 'info',
+        category: "database",
+        message: "Creating shipment with transaction",
+        level: "info",
         data: { userId, origin, destination },
       });
 
@@ -209,9 +211,7 @@ router.post(
       });
     } catch (err) {
       if (err.code === "P2002") {
-        return res
-          .status(409)
-          .json({ ok: false, error: "Reference already exists" });
+        return res.status(409).json({ ok: false, error: "Reference already exists" });
       }
       next(err);
     }
@@ -253,11 +253,11 @@ router.patch(
       if (status !== undefined) updates.status = status;
       if (driverId !== undefined) updates.driverId = driverId;
 
-      const Sentry = require('@sentry/node');
+      const Sentry = require("@sentry/node");
       Sentry.addBreadcrumb({
-        category: 'database',
-        message: 'Updating shipment with transaction',
-        level: 'info',
+        category: "database",
+        message: "Updating shipment with transaction",
+        level: "info",
         data: { shipmentId: req.params.id, updates },
       });
 

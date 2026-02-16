@@ -26,38 +26,38 @@ curl https://infamous-freight-enterprises.fly.dev/health
 
 ## API Endpoints (Live)
 
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| POST | `/api/billing/payment-intent` | Create payment intent |
-| POST | `/api/billing/confirm-payment` | Confirm payment |
-| POST | `/api/billing/subscribe` | Create subscription |
-| GET | `/api/billing/revenue` | Revenue metrics |
-| GET | `/api/billing/transactions` | Payment history |
-| POST | `/api/billing/webhook` | Stripe webhook |
-| GET | `/health` | Health check |
+| Method | Endpoint                       | Purpose               |
+| ------ | ------------------------------ | --------------------- |
+| POST   | `/api/billing/payment-intent`  | Create payment intent |
+| POST   | `/api/billing/confirm-payment` | Confirm payment       |
+| POST   | `/api/billing/subscribe`       | Create subscription   |
+| GET    | `/api/billing/revenue`         | Revenue metrics       |
+| GET    | `/api/billing/transactions`    | Payment history       |
+| POST   | `/api/billing/webhook`         | Stripe webhook        |
+| GET    | `/health`                      | Health check          |
 
 ---
 
 ## Required API Keys
 
-| Key | Format | Where to Find |
-|-----|--------|---------------|
-| STRIPE_SECRET_KEY | `sk_live_...` | https://dashboard.stripe.com/apikeys |
-| STRIPE_PUBLISHABLE_KEY | `pk_live_...` | https://dashboard.stripe.com/apikeys |
-| STRIPE_WEBHOOK_SECRET | `whsec_...` | https://dashboard.stripe.com/webhooks |
-| PAYPAL_CLIENT_ID | UUID format | https://developer.paypal.com/dashboard/ |
-| PAYPAL_CLIENT_SECRET | Long string | https://developer.paypal.com/dashboard/ |
-| DATABASE_URL | `postgresql://...` | Your database provider |
-| JWT_SECRET | 32+ char random | Generate with: `openssl rand -base64 32` |
+| Key                    | Format             | Where to Find                            |
+| ---------------------- | ------------------ | ---------------------------------------- |
+| STRIPE_SECRET_KEY      | `sk_live_...`      | https://dashboard.stripe.com/apikeys     |
+| STRIPE_PUBLISHABLE_KEY | `pk_live_...`      | https://dashboard.stripe.com/apikeys     |
+| STRIPE_WEBHOOK_SECRET  | `whsec_...`        | https://dashboard.stripe.com/webhooks    |
+| PAYPAL_CLIENT_ID       | UUID format        | https://developer.paypal.com/dashboard/  |
+| PAYPAL_CLIENT_SECRET   | Long string        | https://developer.paypal.com/dashboard/  |
+| DATABASE_URL           | `postgresql://...` | Your database provider                   |
+| JWT_SECRET             | 32+ char random    | Generate with: `openssl rand -base64 32` |
 
 ---
 
 ## Webhook URLs to Register
 
-| Provider | URL |
-|----------|-----|
-| Stripe | `https://infamous-freight-enterprises.fly.dev/api/billing/webhook` |
-| PayPal | `https://infamous-freight-enterprises.fly.dev/api/billing/paypal-webhook` |
+| Provider | URL                                                                       |
+| -------- | ------------------------------------------------------------------------- |
+| Stripe   | `https://infamous-freight-enterprises.fly.dev/api/billing/webhook`        |
+| PayPal   | `https://infamous-freight-enterprises.fly.dev/api/billing/paypal-webhook` |
 
 ---
 
@@ -75,11 +75,13 @@ Name: Any name (e.g., Test User)
 ## Common Issues & Fixes
 
 ### flyctl: command not found
+
 ```bash
 export PATH="$HOME/.fly/bin:$PATH"
 ```
 
 ### Not authenticated
+
 ```bash
 flyctl auth login
 # Or use token:
@@ -87,6 +89,7 @@ export FLY_API_TOKEN="your-token-here"
 ```
 
 ### Build fails
+
 ```bash
 # Check Dockerfile.api exists
 ls -la Dockerfile.api
@@ -96,6 +99,7 @@ flyctl logs --recent
 ```
 
 ### Health checks failing
+
 ```bash
 # SSH into machine
 flyctl ssh console
@@ -105,6 +109,7 @@ curl http://localhost:3001/health
 ```
 
 ### Database connection error
+
 ```bash
 # Verify DATABASE_URL
 flyctl secrets list
@@ -186,25 +191,25 @@ curl "https://infamous-freight-enterprises.fly.dev/api/billing/transactions" \
 
 ## URLs
 
-| Service | URL |
-|---------|-----|
-| **API** | `https://infamous-freight-enterprises.fly.dev` |
-| **API Docs** | `https://infamous-freight-enterprises.fly.dev/api/docs` |
-| **Web App** | `https://infamous-freight-enterprises-git-*.vercel.app` |
+| Service              | URL                                                                   |
+| -------------------- | --------------------------------------------------------------------- |
+| **API**              | `https://infamous-freight-enterprises.fly.dev`                        |
+| **API Docs**         | `https://infamous-freight-enterprises.fly.dev/api/docs`               |
+| **Web App**          | `https://infamous-freight-enterprises-git-*.vercel.app`               |
 | **Fly.io Dashboard** | `https://fly.io/dashboard/personal/apps/infamous-freight-enterprises` |
-| **Stripe Dashboard** | `https://dashboard.stripe.com` |
-| **PayPal Dashboard** | `https://developer.paypal.com/dashboard/` |
+| **Stripe Dashboard** | `https://dashboard.stripe.com`                                        |
+| **PayPal Dashboard** | `https://developer.paypal.com/dashboard/`                             |
 
 ---
 
 ## Revenue Model
 
-| Plan | Price | Shipments | Users | Storage | Support |
-|------|-------|-----------|-------|---------|---------|
-| FREE | $0 | 5 | 1 | 1GB | Community |
-| STARTER | $29/mo | 100 | 3 | 50GB | Email |
-| PROFESSIONAL | $99/mo | 1,000 | 10 | 500GB | Priority |
-| ENTERPRISE | $499/mo | Unlimited | Unlimited | 10TB | 24/7 Phone |
+| Plan         | Price   | Shipments | Users     | Storage | Support    |
+| ------------ | ------- | --------- | --------- | ------- | ---------- |
+| FREE         | $0      | 5         | 1         | 1GB     | Community  |
+| STARTER      | $29/mo  | 100       | 3         | 50GB    | Email      |
+| PROFESSIONAL | $99/mo  | 1,000     | 10        | 500GB   | Priority   |
+| ENTERPRISE   | $499/mo | Unlimited | Unlimited | 10TB    | 24/7 Phone |
 
 ---
 

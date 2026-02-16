@@ -9,9 +9,15 @@
 
 ## 🎯 Executive Summary
 
-Phase 22 transforms Infæmous Freight from a revenue-ready platform into a **self-scaling revenue machine** powered by AI. Genesis Sales AI now autonomously qualifies leads, dynamic pricing optimizes every job like Uber, outbound campaigns run on autopilot, enterprise contracts generate and sign themselves, and a RevOps dashboard provides real-time business intelligence with AI-powered recommendations.
+Phase 22 transforms Infæmous Freight from a revenue-ready platform into a
+**self-scaling revenue machine** powered by AI. Genesis Sales AI now
+autonomously qualifies leads, dynamic pricing optimizes every job like Uber,
+outbound campaigns run on autopilot, enterprise contracts generate and sign
+themselves, and a RevOps dashboard provides real-time business intelligence with
+AI-powered recommendations.
 
-**You now have the same revenue infrastructure as Uber Freight, Flexport, and Convoy.**
+**You now have the same revenue infrastructure as Uber Freight, Flexport, and
+Convoy.**
 
 ---
 
@@ -20,9 +26,10 @@ Phase 22 transforms Infæmous Freight from a revenue-ready platform into a **sel
 ### 6 Core Systems
 
 1. **Genesis Sales AI** — Autonomous lead qualification & deal scoring
-2. **Dynamic Pricing Engine** — Surge pricing & revenue optimization  
+2. **Dynamic Pricing Engine** — Surge pricing & revenue optimization
 3. **Outbound Campaign Engine** — AI-generated cold outreach at scale
-4. **Enterprise Contract Workflow** — Auto-generated MSAs, DPAs, SOC2 + e-signature
+4. **Enterprise Contract Workflow** — Auto-generated MSAs, DPAs, SOC2 +
+   e-signature
 5. **RevOps Dashboard** — Real-time metrics + AI recommendations
 6. **Complete API** — 25+ endpoints for all RevOps operations
 
@@ -30,16 +37,16 @@ Phase 22 transforms Infæmous Freight from a revenue-ready platform into a **sel
 
 ## 🗂️ File Manifest
 
-| File | Type | Lines | Purpose |
-|---|---|---|---|
-| `apps/api/prisma/schema.prisma` | Prisma | +420 | 7 new models + 4 enums |
-| `apps/api/src/revops/genesisSalesAI.ts` | TypeScript | 520+ | AI sales agent |
-| `apps/api/src/revops/dynamicPricing.ts` | TypeScript | 480+ | Surge pricing engine |
-| `apps/api/src/revops/outboundEngine.ts` | TypeScript | 520+ | Automated campaigns |
-| `apps/api/src/revops/contractWorkflow.ts` | TypeScript | 540+ | Contract generation |
-| `apps/api/src/revops/dashboard.ts` | TypeScript | 580+ | RevOps BI dashboard |
-| `apps/api/src/routes/revops.js` | CommonJS | 480+ | 25+ API endpoints |
-| **TOTAL** | **Mixed** | **3,540+** | **Phase 22 Complete** |
+| File                                      | Type       | Lines      | Purpose                |
+| ----------------------------------------- | ---------- | ---------- | ---------------------- |
+| `apps/api/prisma/schema.prisma`           | Prisma     | +420       | 7 new models + 4 enums |
+| `apps/api/src/revops/genesisSalesAI.ts`   | TypeScript | 520+       | AI sales agent         |
+| `apps/api/src/revops/dynamicPricing.ts`   | TypeScript | 480+       | Surge pricing engine   |
+| `apps/api/src/revops/outboundEngine.ts`   | TypeScript | 520+       | Automated campaigns    |
+| `apps/api/src/revops/contractWorkflow.ts` | TypeScript | 540+       | Contract generation    |
+| `apps/api/src/revops/dashboard.ts`        | TypeScript | 580+       | RevOps BI dashboard    |
+| `apps/api/src/routes/revops.js`           | CommonJS   | 480+       | 25+ API endpoints      |
+| **TOTAL**                                 | **Mixed**  | **3,540+** | **Phase 22 Complete**  |
 
 ---
 
@@ -93,6 +100,7 @@ Phase 22 transforms Infæmous Freight from a revenue-ready platform into a **sel
 ```
 
 **Dynamic Pricing Flow**:
+
 ```
 Job Request → Calculate Demand → Check Driver Availability
      ↓              ↓                      ↓
@@ -102,6 +110,7 @@ Job Request → Calculate Demand → Check Driver Availability
 ```
 
 **Outbound Campaign Flow**:
+
 ```
 Lead List → AI Personalization → Send Email
      ↓              ↓                   ↓
@@ -115,6 +124,7 @@ Lead List → AI Personalization → Send Email
 ### New Models
 
 #### 1. `SalesOpportunity`
+
 Tracks AI-scored deals with recommended actions.
 
 ```prisma
@@ -135,9 +145,11 @@ model SalesOpportunity {
 }
 ```
 
-**Use Case**: Genesis AI creates these automatically when qualifying leads. Sales team sees priority list sorted by `dealScore` and `urgency`.
+**Use Case**: Genesis AI creates these automatically when qualifying leads.
+Sales team sees priority list sorted by `dealScore` and `urgency`.
 
 #### 2. `DynamicPricing`
+
 Stores every pricing decision for analytics.
 
 ```prisma
@@ -159,9 +171,11 @@ model DynamicPricing {
 }
 ```
 
-**Use Case**: Every job request calculates dynamic price. Track surge frequency, revenue impact, optimize base pricing.
+**Use Case**: Every job request calculates dynamic price. Track surge frequency,
+revenue impact, optimize base pricing.
 
 #### 3. `OutboundCampaign`
+
 Mass outreach campaigns with AI-generated copy.
 
 ```prisma
@@ -181,9 +195,11 @@ model OutboundCampaign {
 }
 ```
 
-**Use Case**: Create campaign → Add recipients → AI personalizes copy per recipient → Send batch → Track opens/clicks/replies.
+**Use Case**: Create campaign → Add recipients → AI personalizes copy per
+recipient → Send batch → Track opens/clicks/replies.
 
 #### 4. `OutboundMessage`
+
 Individual outreach messages with tracking.
 
 ```prisma
@@ -204,6 +220,7 @@ model OutboundMessage {
 **Use Case**: Track every message. Replies auto-create leads.
 
 #### 5. `EnterpriseContract`
+
 Auto-generated contracts with e-signature tracking.
 
 ```prisma
@@ -224,9 +241,11 @@ model EnterpriseContract {
 }
 ```
 
-**Use Case**: Deal closes → Genesis generates MSA + DPA + SOC2 → Sends to DocuSign → On signature → Auto-provision org.
+**Use Case**: Deal closes → Genesis generates MSA + DPA + SOC2 → Sends to
+DocuSign → On signature → Auto-provision org.
 
 #### 6. `RevenueOptimization`
+
 AI recommendations for revenue growth.
 
 ```prisma
@@ -244,7 +263,8 @@ model RevenueOptimization {
 }
 ```
 
-**Use Case**: Dashboard shows AI recommendations. Admin approves → Tracks actual vs predicted impact.
+**Use Case**: Dashboard shows AI recommendations. Admin approves → Tracks actual
+vs predicted impact.
 
 ### New Enums
 
@@ -274,6 +294,7 @@ enum PricingStrategy {
 ### How It Works
 
 **Input**: Lead captured from landing page
+
 ```json
 {
   "name": "Alice Johnson",
@@ -285,6 +306,7 @@ enum PricingStrategy {
 ```
 
 **Genesis AI Analysis**:
+
 1. **Company Intel**:
    - Domain: `acmelogistics.com` (custom domain → trust score: 70)
    - Company size: "large" (based on "Inc" in name)
@@ -308,9 +330,13 @@ enum PricingStrategy {
    - **Probability**: 50% (score 70-79 range)
 
 4. **AI Summary** (LLM-generated):
-   > "Large logistics company with ~500 monthly loads. High-value enterprise prospect. Recommend immediate demo scheduling with emphasis on fleet management features. Strong fit for Growth plan with potential Enterprise upsell."
+   > "Large logistics company with ~500 monthly loads. High-value enterprise
+   > prospect. Recommend immediate demo scheduling with emphasis on fleet
+   > management features. Strong fit for Growth plan with potential Enterprise
+   > upsell."
 
 **Output**: `SalesOpportunity` created
+
 ```json
 {
   "id": "opportunity-lead123",
@@ -328,7 +354,9 @@ enum PricingStrategy {
 ```
 
 **Sales Team Action**:
-- Slack notification: "🔥 High-value lead: Alice Johnson @ Acme Logistics (Score: 77)"
+
+- Slack notification: "🔥 High-value lead: Alice Johnson @ Acme Logistics
+  (Score: 77)"
 - Auto-scheduled demo via Calendly
 - CRM synced (HubSpot/Salesforce)
 
@@ -352,16 +380,17 @@ markOpportunityLost(id, reason)
 ```
 Base Price = vehicleBaseFee + (distance × perMileRate)
 
-Final Price = Base Price 
-              × demandMultiplier 
-              × urgencyMultiplier 
-              × distanceMultiplier 
+Final Price = Base Price
+              × demandMultiplier
+              × urgencyMultiplier
+              × distanceMultiplier
               × timeMultiplier
 ```
 
 ### Example Calculation
 
 **Job Request**:
+
 - Vehicle: `BOX_TRUCK`
 - Distance: 50 miles
 - Pickup: Downtown SF (high demand area)
@@ -369,32 +398,39 @@ Final Price = Base Price
 - Urgency: `urgent`
 
 **Step 1: Base Price**
+
 ```
 $15 (base) + (50 miles × $3.50/mile) = $190
 ```
 
 **Step 2: Demand Multiplier**
+
 - Available drivers: 4 (low supply)
 - **Multiplier: 1.5x** (high demand)
 
 **Step 3: Urgency Multiplier**
+
 - Urgency: `urgent`
 - **Multiplier: 1.4x**
 
 **Step 4: Distance Multiplier**
+
 - Distance: 50 miles (medium)
 - **Multiplier: 1.0x** (standard)
 
 **Step 5: Time Multiplier**
+
 - Friday 5pm (rush hour)
 - **Multiplier: 1.2x** (peak hours)
 
 **Final Price**:
+
 ```
 $190 × 1.5 × 1.4 × 1.0 × 1.2 = $479.04
 ```
 
 **Breakdown**:
+
 - Base: $190
 - Demand premium: +$95 (1.5x)
 - Urgency premium: +$76 (1.4x)
@@ -434,17 +470,19 @@ recommendPriceAdjustments(): Promise<Recommendation[]>
 ### How It Works
 
 **1. Create Campaign**
+
 ```typescript
 const campaign = await createCampaign({
   name: "Enterprise Logistics Q1 2026",
   type: "email",
   targetIndustry: "Logistics",
   targetCompanySize: "enterprise",
-  callToAction: "Book a demo to see 30% cost savings"
+  callToAction: "Book a demo to see 30% cost savings",
 });
 ```
 
 **2. Add Recipients**
+
 ```typescript
 const recipients = [
   {
@@ -452,7 +490,7 @@ const recipients = [
     name: "Sarah Chen",
     company: "BigFreight Corp",
     industry: "Logistics",
-    estimatedVolume: 2000
+    estimatedVolume: 2000,
   },
   // ... 500 more
 ];
@@ -467,6 +505,7 @@ For each recipient, Genesis AI writes:
 **Recipient**: Sarah Chen @ BigFreight Corp (Logistics, 2000 loads/month)
 
 **AI Prompt**:
+
 ```
 Write a cold email for Infæmous Freight targeting:
 - Sarah Chen at BigFreight Corp
@@ -476,13 +515,14 @@ Write a cold email for Infæmous Freight targeting:
 ```
 
 **AI Output**:
+
 ```
 Subject: Sarah, 30% savings on BigFreight's logistics costs?
 
 Hi Sarah,
 
-I noticed BigFreight handles significant freight volume. 
-Companies like yours typically save 30-40% by switching 
+I noticed BigFreight handles significant freight volume.
+Companies like yours typically save 30-40% by switching
 to our automated dispatch platform.
 
 Would you be open to a 15-minute demo? I can show you:
@@ -498,20 +538,22 @@ Infæmous Freight
 ```
 
 **4. Send Campaign**
+
 ```typescript
 await sendCampaignMessages(campaign.id, batchSize: 50);
 // Sends 50 emails, tracks opens/clicks/replies
 ```
 
 **5. Track Performance**
+
 ```json
 {
   "name": "Enterprise Logistics Q1 2026",
   "total": 500,
   "sent": 500,
-  "opened": 185,      // 37% open rate
-  "clicked": 42,      // 8.4% click rate
-  "replied": 12,      // 2.4% reply rate
+  "opened": 185, // 37% open rate
+  "clicked": 42, // 8.4% click rate
+  "replied": 12, // 2.4% reply rate
   "openRate": 37,
   "clickRate": 8.4,
   "replyRate": 2.4
@@ -519,6 +561,7 @@ await sendCampaignMessages(campaign.id, batchSize: 50);
 ```
 
 **6. Auto-Convert Replies to Leads**
+
 - Reply detected → Create `Lead` record
 - Assign to sales rep
 - Trigger Genesis AI qualification
@@ -526,6 +569,7 @@ await sendCampaignMessages(campaign.id, batchSize: 50);
 ### Nurture Campaigns
 
 **Auto-trigger** for:
+
 - Leads > 7 days old with no activity
 - Deal score < 50 (low-priority)
 - Lost deals (follow-up in 90 days)
@@ -553,7 +597,9 @@ createNurtureCampaign()
 ## 📄 Enterprise Contract Workflow — Auto-Legal
 
 ### The Problem
+
 Closing $50k-$500k enterprise deals requires:
+
 - Custom contracts (MSA, DPA, SOC2 reports)
 - Legal review (slow, expensive)
 - E-signature coordination (weeks of back-and-forth)
@@ -562,11 +608,13 @@ Closing $50k-$500k enterprise deals requires:
 **Traditional Timeline**: 4-6 weeks to close after "verbal yes"
 
 ### The Solution
+
 Genesis AI generates, sends, and provisions **in 24 hours**.
 
 ### Workflow
 
 **1. Deal Marked "Won"**
+
 ```typescript
 await markOpportunityWon(opportunityId, orgId);
 ```
@@ -576,6 +624,7 @@ await markOpportunityWon(opportunityId, orgId);
 Genesis AI creates:
 
 **a) Master Service Agreement (MSA)**
+
 ```
 MASTER SERVICE AGREEMENT
 
@@ -604,6 +653,7 @@ And: Acme Logistics Inc
 ```
 
 **b) Data Processing Agreement (DPA)**
+
 ```
 DPA
 
@@ -616,6 +666,7 @@ GDPR/CCPA compliant
 ```
 
 **c) SOC 2 Summary Report**
+
 ```
 SOC 2 TYPE II CERTIFICATION SUMMARY
 
@@ -625,6 +676,7 @@ Audit: Zero material weaknesses
 ```
 
 **3. Store Documents**
+
 ```typescript
 // Upload to S3/CDN
 const docs = await storeContractDocuments(orgId, msa, dpa, soc2);
@@ -635,16 +687,18 @@ const docs = await storeContractDocuments(orgId, msa, dpa, soc2);
 ```
 
 **4. Send for E-Signature (DocuSign)**
+
 ```typescript
 const signatureRequestId = await sendForSignature(
   docs,
   "sarah@acmelogistics.com",
-  "Sarah Chen"
+  "Sarah Chen",
 );
 // DocuSign sends email with embedded signature fields
 ```
 
 **5. Signature Webhook**
+
 ```
 POST /api/webhooks/contract-signed
 {
@@ -655,6 +709,7 @@ POST /api/webhooks/contract-signed
 ```
 
 **6. Auto-Provision**
+
 ```typescript
 await handleSignatureCompleted(signatureRequestId);
 // 1. Mark contract as SIGNED
@@ -670,10 +725,10 @@ await handleSignatureCompleted(signatureRequestId);
 ### Functions
 
 ```typescript
-generateEnterpriseContract(opportunityId, terms)
-handleSignatureCompleted(signatureRequestId, signerEmail, signerName)
-getPendingContracts()
-getContract(contractId)
+generateEnterpriseContract(opportunityId, terms);
+handleSignatureCompleted(signatureRequestId, signerEmail, signerName);
+getPendingContracts();
+getContract(contractId);
 ```
 
 ---
@@ -683,6 +738,7 @@ getContract(contractId)
 ### What It Shows
 
 **Sales Metrics**:
+
 - Pipeline value (weighted by probability)
 - Deals in progress by stage
 - Average deal size
@@ -691,6 +747,7 @@ getContract(contractId)
 - Top 5 deals
 
 **Revenue Metrics**:
+
 - MRR (Monthly Recurring Revenue)
 - ARR (Annual Recurring Revenue)
 - GMV (Gross Merchandise Value)
@@ -698,6 +755,7 @@ getContract(contractId)
 - Revenue growth % (MoM)
 
 **Customer Metrics**:
+
 - Total organizations
 - Active organizations
 - New this month
@@ -708,18 +766,21 @@ getContract(contractId)
 - LTV:CAC ratio (should be 3x+)
 
 **Pricing Metrics**:
+
 - Average job price
 - Surge frequency (% of jobs)
 - Average surge multiplier
 - Revenue from surge pricing
 
 **Operational Metrics**:
+
 - Active drivers
 - Active shippers
 - Jobs today/week/month
 - Average jobs per driver
 
 **AI Recommendations**:
+
 - High churn → "Implement health scoring"
 - Low LTV:CAC → "Increase prices 10%"
 - High surge → "Recruit more drivers"
@@ -774,10 +835,7 @@ getContract(contractId)
       "title": "Frequent surge pricing",
       "description": "28% of jobs surge-priced",
       "impact": "Increase base prices 5-7%",
-      "actions": [
-        "Increase base prices 10%",
-        "Recruit 20 more drivers"
-      ]
+      "actions": ["Increase base prices 10%", "Recruit 20 more drivers"]
     }
   ]
 }
@@ -859,6 +917,7 @@ PATCH  /api/revops/recommendations/:id/implement
 ### Audit Logging
 
 All mutations logged:
+
 - Lead qualification (who, when, score)
 - Opportunity stage changes
 - Contract generation & signatures
@@ -877,6 +936,7 @@ npx prisma generate
 ```
 
 **Adds**:
+
 - 7 new tables
 - 4 new enums
 - Indexes on scoring/urgency/status
@@ -910,32 +970,34 @@ CDN_URL=https://cdn.infamous-freight.com
 Register routes in `apps/api/src/server.js`:
 
 ```javascript
-const revopsRoutes = require('./routes/revops');
-app.use('/api/revops', revopsRoutes);
+const revopsRoutes = require("./routes/revops");
+app.use("/api/revops", revopsRoutes);
 ```
 
 ### 4. Scheduled Jobs
 
 **Auto-qualify new leads** (every hour):
+
 ```javascript
 // apps/api/src/jobs/autoQualifyLeads.js
-cron.schedule('0 * * * *', async () => {
+cron.schedule("0 * * * *", async () => {
   const qualified = await genesisSalesAI.autoQualifyNewLeads();
   console.log(`[Cron] Auto-qualified ${qualified} leads`);
 });
 ```
 
 **Send scheduled campaigns** (every 15 min):
+
 ```javascript
 // apps/api/src/jobs/sendCampaigns.js
-cron.schedule('*/15 * * * *', async () => {
+cron.schedule("*/15 * * * *", async () => {
   const campaigns = await prisma.outboundCampaign.findMany({
     where: {
-      status: 'SCHEDULED',
-      scheduledFor: { lte: new Date() }
-    }
+      status: "SCHEDULED",
+      scheduledFor: { lte: new Date() },
+    },
   });
-  
+
   for (const campaign of campaigns) {
     await outboundEngine.sendCampaignMessages(campaign.id);
   }
@@ -975,6 +1037,7 @@ curl http://localhost:4000/api/revops/dashboard \
 ## 📈 Business Impact
 
 ### Before Phase 22
+
 - Manual lead qualification (30 min per lead)
 - Fixed pricing (leaving money on table)
 - No outbound = slow growth
@@ -982,6 +1045,7 @@ curl http://localhost:4000/api/revops/dashboard \
 - No visibility into pipeline health
 
 ### After Phase 22
+
 - **Lead Qualification**: Automated (< 1 second per lead)
 - **Pricing**: Dynamic (capture 20-30% more revenue from surge)
 - **Outbound**: 500 emails/day with 37% open rate
@@ -991,16 +1055,19 @@ curl http://localhost:4000/api/revops/dashboard \
 ### Projected Impact
 
 **Revenue**:
+
 - +20% from dynamic pricing (surge capture)
 - +30% from outbound campaigns (new pipeline)
 - +50% from faster contract closes (less deal slippage)
 
 **Efficiency**:
+
 - 95% reduction in sales ops time (Genesis AI)
 - 80% reduction in legal costs (auto-contracts)
 - 100% visibility into revenue levers
 
 **Growth**:
+
 - 3x lead volume (outbound engine)
 - 2x conversion rate (better qualification)
 - 1.5x deal velocity (auto-contracts)
@@ -1014,12 +1081,14 @@ curl http://localhost:4000/api/revops/dashboard \
 **Scenario**: 50 new leads came in overnight from landing page.
 
 **Action**:
+
 ```bash
 curl -X POST http://localhost:4000/api/revops/leads/auto-qualify \
   -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
 **Result**:
+
 ```json
 {
   "success": true,
@@ -1028,6 +1097,7 @@ curl -X POST http://localhost:4000/api/revops/leads/auto-qualify \
 ```
 
 Genesis AI:
+
 - Scored all 50 leads (0-100)
 - Created 50 `SalesOpportunity` records
 - Sent Slack notifications for 8 high-score leads (70+)
@@ -1040,6 +1110,7 @@ Genesis AI:
 **Scenario**: Shipper requests quote for urgent box truck delivery.
 
 **Request**:
+
 ```bash
 curl -X POST http://localhost:4000/api/revops/pricing/calculate \
   -H "Authorization: Bearer $USER_TOKEN" \
@@ -1054,22 +1125,23 @@ curl -X POST http://localhost:4000/api/revops/pricing/calculate \
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
   "data": {
-    "basePrice": 277.50,
+    "basePrice": 277.5,
     "demandMultiplier": 1.25,
-    "urgencyMultiplier": 1.40,
+    "urgencyMultiplier": 1.4,
     "distanceMultiplier": 1.0,
     "timeMultiplier": 1.0,
     "finalPrice": 485.63,
     "strategy": "SURGE",
     "surgeReason": "high_demand",
     "breakdown": {
-      "base": 277.50,
+      "base": 277.5,
       "demand": 69.38,
-      "urgency": 110.30,
+      "urgency": 110.3,
       "distance": 0,
       "time": 0
     }
@@ -1085,6 +1157,7 @@ curl -X POST http://localhost:4000/api/revops/pricing/calculate \
 **Scenario**: Marketing wants to target enterprise logistics companies.
 
 **Step 1: Create Campaign**
+
 ```bash
 curl -X POST http://localhost:4000/api/revops/campaigns \
   -H "Authorization: Bearer $MARKETING_TOKEN" \
@@ -1098,6 +1171,7 @@ curl -X POST http://localhost:4000/api/revops/campaigns \
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -1110,6 +1184,7 @@ curl -X POST http://localhost:4000/api/revops/campaigns \
 ```
 
 **Step 2: Add Recipients**
+
 ```bash
 curl -X POST http://localhost:4000/api/revops/campaigns/campaign_xyz/recipients \
   -H "Authorization: Bearer $MARKETING_TOKEN" \
@@ -1128,6 +1203,7 @@ curl -X POST http://localhost:4000/api/revops/campaigns/campaign_xyz/recipients 
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -1138,12 +1214,14 @@ curl -X POST http://localhost:4000/api/revops/campaigns/campaign_xyz/recipients 
 Genesis AI generates 500 personalized emails (2-3 minutes).
 
 **Step 3: Send Campaign**
+
 ```bash
 curl -X POST http://localhost:4000/api/revops/campaigns/campaign_xyz/send \
   -H "Authorization: Bearer $MARKETING_TOKEN"
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -1154,12 +1232,14 @@ curl -X POST http://localhost:4000/api/revops/campaigns/campaign_xyz/send \
 Sends in batches of 50. Repeat to send all 500.
 
 **Step 4: Track Performance**
+
 ```bash
 curl http://localhost:4000/api/revops/campaigns/campaign_xyz/performance \
   -H "Authorization: Bearer $MARKETING_TOKEN"
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -1184,6 +1264,7 @@ curl http://localhost:4000/api/revops/campaigns/campaign_xyz/performance \
 **Scenario**: Enterprise deal closed, need contract signed.
 
 **Request**:
+
 ```bash
 curl -X POST http://localhost:4000/api/revops/contracts/generate \
   -H "Authorization: Bearer $SALES_TOKEN" \
@@ -1200,6 +1281,7 @@ curl -X POST http://localhost:4000/api/revops/contracts/generate \
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -1210,6 +1292,7 @@ curl -X POST http://localhost:4000/api/revops/contracts/generate \
 ```
 
 **What Happened**:
+
 1. Genesis AI generated MSA (2-page contract)
 2. Generated DPA (data processing agreement)
 3. Attached SOC 2 summary report
@@ -1218,6 +1301,7 @@ curl -X POST http://localhost:4000/api/revops/contracts/generate \
 6. DocuSign sends email: "Please sign your contract"
 
 **Sarah clicks → Signs → Webhook fires**:
+
 ```
 POST /api/webhooks/contract-signed
 {
@@ -1228,6 +1312,7 @@ POST /api/webhooks/contract-signed
 ```
 
 **Auto-provisioning**:
+
 - Contract marked `SIGNED`
 - Opportunity marked `WON`
 - Lead converted
@@ -1240,6 +1325,7 @@ POST /api/webhooks/contract-signed
 ### Example 5: RevOps Dashboard
 
 **Request**:
+
 ```bash
 curl http://localhost:4000/api/revops/dashboard \
   -H "Authorization: Bearer $ADMIN_TOKEN"
@@ -1248,6 +1334,7 @@ curl http://localhost:4000/api/revops/dashboard \
 **Response**: (See full JSON in "Example Dashboard" section above)
 
 **What CEO Sees**:
+
 - MRR: $45,600 (+18.5% MoM growth)
 - Pipeline: $124,500 across 18 deals
 - Churn: 3.1% (healthy)
@@ -1263,11 +1350,13 @@ curl http://localhost:4000/api/revops/dashboard \
 ### Issue: Genesis AI not qualifying leads
 
 **Check**:
+
 1. AI provider configured? (`AI_PROVIDER=openai`, `OPENAI_API_KEY=sk-...`)
 2. Lead has required fields? (name, email, company)
 3. Check logs: `docker logs api | grep "Genesis AI"`
 
 **Fix**:
+
 ```bash
 # Test AI service
 curl -X POST http://localhost:4000/api/revops/leads/test_lead_123/qualify \
@@ -1279,6 +1368,7 @@ curl -X POST http://localhost:4000/api/revops/leads/test_lead_123/qualify \
 **Cause**: Always enough drivers available (no demand pressure).
 
 **Check**:
+
 ```bash
 curl http://localhost:4000/api/revops/pricing/surge-stats \
   -H "Authorization: Bearer $ADMIN_TOKEN"
@@ -1286,16 +1376,19 @@ curl http://localhost:4000/api/revops/pricing/surge-stats \
 
 If `surgeFrequency: 0`, means supply > demand.
 
-**Solution**: Lower `availableDrivers` threshold in `dynamicPricing.ts` or simulate scarcity.
+**Solution**: Lower `availableDrivers` threshold in `dynamicPricing.ts` or
+simulate scarcity.
 
 ### Issue: Outbound emails not sending
 
 **Check**:
+
 1. SendGrid API key configured?
 2. Campaign status = `SCHEDULED`?
 3. Cron job running?
 
 **Manual send**:
+
 ```bash
 curl -X POST http://localhost:4000/api/revops/campaigns/campaign_xyz/send \
   -H "Authorization: Bearer $MARKETING_TOKEN"
@@ -1304,11 +1397,13 @@ curl -X POST http://localhost:4000/api/revops/campaigns/campaign_xyz/send \
 ### Issue: Contracts not generating
 
 **Check**:
+
 1. Opportunity exists?
 2. Org exists?
 3. S3 bucket configured? (`AWS_S3_BUCKET`, `AWS_ACCESS_KEY_ID`)
 
 **Test**:
+
 ```bash
 curl -X POST http://localhost:4000/api/revops/contracts/generate \
   -H "Authorization: Bearer $SALES_TOKEN" \
@@ -1322,6 +1417,7 @@ Check logs for PDF generation errors.
 ## 🎉 Phase 22 Achievement Unlocked
 
 **You now have**:
+
 - 🤖 **AI sales agent** that qualifies 100+ leads/day
 - 💰 **Dynamic pricing** that captures 20-30% more revenue
 - 📧 **Outbound engine** sending 500+ personalized emails/day

@@ -72,6 +72,7 @@ pnpm dev
 ```
 
 Verify with:
+
 ```bash
 curl http://localhost:4000/api/health
 # Response: { "uptime": 12.345, "status": "ok", "database": "connected" }
@@ -85,14 +86,14 @@ curl http://localhost:4000/api/health
 
 ```javascript
 // Frontend/Backend sending request
-const response = await fetch('http://localhost:4000/api/v4/ml/nn/initialize', {
-  method: 'POST',
+const response = await fetch("http://localhost:4000/api/v4/ml/nn/initialize", {
+  method: "POST",
   headers: {
-    'Authorization': `Bearer ${jwtToken}`,
-    'Content-Type': 'application/json',
+    Authorization: `Bearer ${jwtToken}`,
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    driverId: 'driver_5829',
+    driverId: "driver_5829",
   }),
 });
 
@@ -109,7 +110,7 @@ console.log(result);
 
 ```javascript
 const load = {
-  id: 'load_12345',
+  id: "load_12345",
   rate: 1850,
   distance: 285,
   pickupTime: new Date(Date.now() + 3600000),
@@ -119,17 +120,20 @@ const load = {
   preferenceMatch: 0.9,
 };
 
-const response = await fetch('http://localhost:4000/api/v4/ml/nn/load-acceptance', {
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${jwtToken}`,
-    'Content-Type': 'application/json',
+const response = await fetch(
+  "http://localhost:4000/api/v4/ml/nn/load-acceptance",
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${jwtToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      driverId: "driver_5829",
+      load,
+    }),
   },
-  body: JSON.stringify({
-    driverId: 'driver_5829',
-    load,
-  }),
-});
+);
 
 const result = await response.json();
 console.log(result);
@@ -145,19 +149,24 @@ console.log(result);
 #### 3. Forecast Demand
 
 ```javascript
-const historicalData = Array(30).fill(0).map((_, i) => 50 + Math.random() * 30);
+const historicalData = Array(30)
+  .fill(0)
+  .map((_, i) => 50 + Math.random() * 30);
 
-const response = await fetch('http://localhost:4000/api/v4/ml/nn/demand-forecast', {
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${jwtToken}`,
-    'Content-Type': 'application/json',
+const response = await fetch(
+  "http://localhost:4000/api/v4/ml/nn/demand-forecast",
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${jwtToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      region: "Phoenix Metro",
+      historicalData,
+    }),
   },
-  body: JSON.stringify({
-    region: 'Phoenix Metro',
-    historicalData,
-  }),
-});
+);
 
 const result = await response.json();
 console.log(result.forecast);
@@ -174,32 +183,32 @@ console.log(result.forecast);
 
 ```javascript
 // React/React Native Component
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 export function NotificationsListener() {
   const socketRef = useRef(null);
 
   useEffect(() => {
     // Initialize WebSocket
-    fetch('http://localhost:4000/api/v4/notifications/init-connection', {
-      method: 'POST',
+    fetch("http://localhost:4000/api/v4/notifications/init-connection", {
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${jwtToken}`,
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwtToken}`,
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userId: 'driver_5829' }),
+      body: JSON.stringify({ userId: "driver_5829" }),
     });
 
     // Subscribe to topics
-    fetch('http://localhost:4000/api/v4/notifications/subscribe', {
-      method: 'POST',
+    fetch("http://localhost:4000/api/v4/notifications/subscribe", {
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${jwtToken}`,
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jwtToken}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userId: 'driver_5829',
-        topic: 'load_matches',
+        userId: "driver_5829",
+        topic: "load_matches",
       }),
     });
   }, []);
@@ -212,25 +221,28 @@ export function NotificationsListener() {
 
 ```javascript
 // Backend: Dispatcher notifying drivers of new load
-const response = await fetch('http://localhost:4000/api/v4/notifications/broadcast-load-match', {
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${dispatcherToken}`,
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    load: {
-      id: 'load_12345',
-      origin: 'Phoenix, AZ',
-      destination: 'Las Vegas, NV',
-      rate: 1850,
-      distance: 285,
-      pickupTime: new Date(Date.now() + 7200000),
-      estimatedDelivery: new Date(Date.now() + 14400000),
+const response = await fetch(
+  "http://localhost:4000/api/v4/notifications/broadcast-load-match",
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${dispatcherToken}`,
+      "Content-Type": "application/json",
     },
-    driverIds: ['driver_5829', 'driver_6194', 'driver_7283'],
-  }),
-});
+    body: JSON.stringify({
+      load: {
+        id: "load_12345",
+        origin: "Phoenix, AZ",
+        destination: "Las Vegas, NV",
+        rate: 1850,
+        distance: 285,
+        pickupTime: new Date(Date.now() + 7200000),
+        estimatedDelivery: new Date(Date.now() + 14400000),
+      },
+      driverIds: ["driver_5829", "driver_6194", "driver_7283"],
+    }),
+  },
+);
 
 const result = await response.json();
 console.log(result);
@@ -253,20 +265,23 @@ console.log(result);
 
 ```javascript
 // Shipper posts load, escrow created automatically
-const response = await fetch('http://localhost:4000/api/v4/blockchain/escrow/create', {
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${shipperToken}`,
-    'Content-Type': 'application/json',
+const response = await fetch(
+  "http://localhost:4000/api/v4/blockchain/escrow/create",
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${shipperToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      shipper: "shipper_acme",
+      driver: "driver_5829",
+      amount: 1850.0,
+      loadId: "load_12345",
+      releaseCondition: "delivery_confirmed",
+    }),
   },
-  body: JSON.stringify({
-    shipper: 'shipper_acme',
-    driver: 'driver_5829',
-    amount: 1850.00,
-    loadId: 'load_12345',
-    releaseCondition: 'delivery_confirmed',
-  }),
-});
+);
 
 const result = await response.json();
 console.log(result);
@@ -283,24 +298,27 @@ console.log(result);
 
 ```javascript
 // Driver marks delivery complete, escrow releases
-const response = await fetch('http://localhost:4000/api/v4/blockchain/escrow/confirm-delivery', {
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${driverToken}`,
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    escrowId: 'escrow_16823',
-    driver: 'driver_5829',
-    proofOfDelivery: {
-      lat: 36.1699,
-      lon: -115.1398,
-      timestamp: new Date(),
-      photos: ['delivery_photo_1.jpg'],
+const response = await fetch(
+  "http://localhost:4000/api/v4/blockchain/escrow/confirm-delivery",
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${driverToken}`,
+      "Content-Type": "application/json",
     },
-    driverSignature: 'signature_hex_string',
-  }),
-});
+    body: JSON.stringify({
+      escrowId: "escrow_16823",
+      driver: "driver_5829",
+      proofOfDelivery: {
+        lat: 36.1699,
+        lon: -115.1398,
+        timestamp: new Date(),
+        photos: ["delivery_photo_1.jpg"],
+      },
+      driverSignature: "signature_hex_string",
+    }),
+  },
+);
 
 const result = await response.json();
 console.log(result);
@@ -319,34 +337,37 @@ console.log(result);
 #### 1. Create Safety Corridor
 
 ```javascript
-const response = await fetch('http://localhost:4000/api/v4/geofencing/corridors/create', {
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${adminToken}`,
-    'Content-Type': 'application/json',
+const response = await fetch(
+  "http://localhost:4000/api/v4/geofencing/corridors/create",
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${adminToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: "Phoenix to Las Vegas Safe Corridor",
+      startLocation: { lat: 33.4484, lon: -112.0742 }, // Phoenix
+      endLocation: { lat: 36.1699, lon: -115.1398 }, // Las Vegas
+      width: 2000, // 2km on both sides
+      waypoints: [
+        { lat: 33.8, lon: -113.1 },
+        { lat: 34.5, lon: -113.8 },
+        { lat: 35.2, lon: -114.5 },
+      ],
+      speed_limit: 70,
+      hazardous_areas: [
+        {
+          name: "Mountain Pass",
+          location: { lat: 34.8, lon: -113.9 },
+          type: "elevation_gain",
+          warningRadius: 5000,
+          recommendation: "Reduce speed and check brakes",
+        },
+      ],
+    }),
   },
-  body: JSON.stringify({
-    name: 'Phoenix to Las Vegas Safe Corridor',
-    startLocation: { lat: 33.4484, lon: -112.0742 }, // Phoenix
-    endLocation: { lat: 36.1699, lon: -115.1398 },   // Las Vegas
-    width: 2000, // 2km on both sides
-    waypoints: [
-      { lat: 33.8, lon: -113.1 },
-      { lat: 34.5, lon: -113.8 },
-      { lat: 35.2, lon: -114.5 },
-    ],
-    speed_limit: 70,
-    hazardous_areas: [
-      {
-        name: 'Mountain Pass',
-        location: { lat: 34.8, lon: -113.9 },
-        type: 'elevation_gain',
-        warningRadius: 5000,
-        recommendation: 'Reduce speed and check brakes',
-      },
-    ],
-  }),
-});
+);
 
 const result = await response.json();
 console.log(result);
@@ -360,22 +381,25 @@ console.log(result);
 
 ```javascript
 // Called every 5-10 seconds from mobile app
-const response = await fetch('http://localhost:4000/api/v4/geofencing/update-location', {
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${driverToken}`,
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    driverId: 'driver_5829',
-    location: {
-      lat: 34.42,
-      lon: -113.65,
-      speed: 65, // mph
-      heading: 245, // degrees
+const response = await fetch(
+  "http://localhost:4000/api/v4/geofencing/update-location",
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${driverToken}`,
+      "Content-Type": "application/json",
     },
-  }),
-});
+    body: JSON.stringify({
+      driverId: "driver_5829",
+      location: {
+        lat: 34.42,
+        lon: -113.65,
+        speed: 65, // mph
+        heading: 245, // degrees
+      },
+    }),
+  },
+);
 
 const result = await response.json();
 console.log(result.events);
@@ -390,12 +414,15 @@ console.log(result.events);
 #### 1. Get Operations Dashboard
 
 ```javascript
-const response = await fetch('http://localhost:4000/api/v4/analytics/dashboard/operations', {
-  method: 'GET',
-  headers: {
-    'Authorization': `Bearer ${dispatcherToken}`,
+const response = await fetch(
+  "http://localhost:4000/api/v4/analytics/dashboard/operations",
+  {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${dispatcherToken}`,
+    },
   },
-});
+);
 
 const dashboard = await response.json();
 console.log(dashboard.dashboard);
@@ -417,12 +444,15 @@ console.log(dashboard.dashboard);
 #### 2. Get Market Trends
 
 ```javascript
-const response = await fetch('http://localhost:4000/api/v4/analytics/market-trends', {
-  method: 'GET',
-  headers: {
-    'Authorization': `Bearer ${directorToken}`,
+const response = await fetch(
+  "http://localhost:4000/api/v4/analytics/market-trends",
+  {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${directorToken}`,
+    },
   },
-});
+);
 
 const trends = await response.json();
 console.log(trends.trends.regions);
@@ -444,28 +474,31 @@ console.log(trends.trends.regions);
 
 ```javascript
 // Auto-triggered on incident detection
-const response = await fetch('http://localhost:4000/api/v4/compliance/insurance/claim', {
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${safetyToken}`,
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    type: 'collision',
-    driverId: 'driver_5829',
-    vehicleId: 'vehicle_108',
-    date: new Date(),
-    location: '39.7392 N, 104.9903 W',
-    description: 'Rear-end collision at traffic light',
-    damageEstimate: 8500,
-    thirdParty: {
-      name: 'John Smith',
-      phoneNumber: '555-0102',
-      insuranceCompany: 'State Farm',
+const response = await fetch(
+  "http://localhost:4000/api/v4/compliance/insurance/claim",
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${safetyToken}`,
+      "Content-Type": "application/json",
     },
-    photos: ['damage_1.jpg', 'damage_2.jpg'],
-  }),
-});
+    body: JSON.stringify({
+      type: "collision",
+      driverId: "driver_5829",
+      vehicleId: "vehicle_108",
+      date: new Date(),
+      location: "39.7392 N, 104.9903 W",
+      description: "Rear-end collision at traffic light",
+      damageEstimate: 8500,
+      thirdParty: {
+        name: "John Smith",
+        phoneNumber: "555-0102",
+        insuranceCompany: "State Farm",
+      },
+      photos: ["damage_1.jpg", "damage_2.jpg"],
+    }),
+  },
+);
 
 const result = await response.json();
 console.log(result);
@@ -485,14 +518,14 @@ console.log(result);
 #### 2. Run Compliance Audit
 
 ```javascript
-const response = await fetch('http://localhost:4000/api/v4/compliance/audit', {
-  method: 'POST',
+const response = await fetch("http://localhost:4000/api/v4/compliance/audit", {
+  method: "POST",
   headers: {
-    'Authorization': `Bearer ${adminToken}`,
-    'Content-Type': 'application/json',
+    Authorization: `Bearer ${adminToken}`,
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    driverId: 'driver_5829',
+    driverId: "driver_5829",
   }),
 });
 
@@ -587,11 +620,13 @@ curl http://localhost:4000/api/v4/blockchain/statistics \
 
 ### Issue: Neural network predictions time out
 
-**Solution**: Check `NN_MODELS_CACHE_TTL` is set appropriately. Reduce prediction complexity if needed.
+**Solution**: Check `NN_MODELS_CACHE_TTL` is set appropriately. Reduce
+prediction complexity if needed.
 
 ### Issue: WebSocket disconnects frequently
 
-**Solution**: Verify `WEBSOCKET_RECONNECT_MAX` and `WEBSOCKET_BACKOFF_BASE` are reasonable. Check network stability.
+**Solution**: Verify `WEBSOCKET_RECONNECT_MAX` and `WEBSOCKET_BACKOFF_BASE` are
+reasonable. Check network stability.
 
 ### Issue: Blockchain mining too slow
 
@@ -599,11 +634,13 @@ curl http://localhost:4000/api/v4/blockchain/statistics \
 
 ### Issue: Geofencing not firing events
 
-**Solution**: Ensure `GEOFENCE_LOCATION_CHECK_INTERVAL` is low enough (5000ms recommended) and location updates are being sent.
+**Solution**: Ensure `GEOFENCE_LOCATION_CHECK_INTERVAL` is low enough (5000ms
+recommended) and location updates are being sent.
 
 ### Issue: Compliance documents not OCR'ing
 
-**Solution**: Check `OCR_CONFIDENCE_THRESHOLD` is not too high (0.85 recommended). Verify document images are clear.
+**Solution**: Check `OCR_CONFIDENCE_THRESHOLD` is not too high (0.85
+recommended). Verify document images are clear.
 
 ## 🎓 Next Steps
 
@@ -615,7 +652,8 @@ curl http://localhost:4000/api/v4/blockchain/statistics \
 
 ## 📚 Further Reading
 
-- [PHASE_4_IMPLEMENTATION_PLAN.md](PHASE_4_IMPLEMENTATION_PLAN.md) - Full technical details
+- [PHASE_4_IMPLEMENTATION_PLAN.md](PHASE_4_IMPLEMENTATION_PLAN.md) - Full
+  technical details
 - [API_DOCUMENTATION.md](API_DOCUMENTATION.md) - Complete API reference
 - [SECURITY.md](SECURITY.md) - Security best practices
 - Copilot Instructions - Architecture patterns in repo root

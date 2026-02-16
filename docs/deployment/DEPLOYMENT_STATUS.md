@@ -7,7 +7,8 @@
 - PostgreSQL 15 running in Docker
 - All 4 tables created: User, Driver, Shipment, AiEvent
 - Sample data seeded (3 users, 3 drivers, 3 shipments, 3 events)
-- Database URL: `postgresql://infamous:infamouspass@localhost:5432/infamous_freight`
+- Database URL:
+  `postgresql://infamous:infamouspass@localhost:5432/infamous_freight`
 
 ### 2. API Testing - COMPLETE ✅
 
@@ -29,7 +30,8 @@
   - ✅ infamous_api (Node.js 20)
   - ⚠️ infamous_web (Next.js 14 - build issue)
   - ✅ infamous_nginx (Nginx)
-- Code pushed to GitHub: <https://github.com/MrMiless44/Infamous-Freight-Enterprises>
+- Code pushed to GitHub:
+  <https://github.com/MrMiless44/Infamous-Freight-Enterprises>
 
 ---
 
@@ -213,7 +215,8 @@ To enable automatic deployments:
    - Create new token
 
 3. **Add to GitHub Secrets:**
-   - Go to: <https://github.com/MrMiless44/Infamous-Freight-Enterprises/settings/secrets/actions>
+   - Go to:
+     <https://github.com/MrMiless44/Infamous-Freight-Enterprises/settings/secrets/actions>
    - Add `FLY_API_TOKEN`
    - Add `VERCEL_TOKEN`
 
@@ -225,13 +228,13 @@ To enable automatic deployments:
 
 ## ✅ Current Status Summary
 
-| Component  | Status     | URL                                                        |
-| ---------- | ---------- | ---------------------------------------------------------- |
+| Component  | Status     | URL                                                          |
+| ---------- | ---------- | ------------------------------------------------------------ |
 | Local API  | ✅ Running | <http://localhost:4000>                                      |
-| Local DB   | ✅ Running | localhost:5432                                             |
+| Local DB   | ✅ Running | localhost:5432                                               |
 | GitHub     | ✅ Pushed  | <https://github.com/MrMiless44/Infamous-Freight-Enterprises> |
-| Fly.io API | ⏳ Ready   | Deploy with commands above                                 |
-| Vercel Web | ⏳ Ready   | Deploy with commands above                                 |
+| Fly.io API | ⏳ Ready   | Deploy with commands above                                   |
+| Vercel Web | ⏳ Ready   | Deploy with commands above                                   |
 
 ---
 

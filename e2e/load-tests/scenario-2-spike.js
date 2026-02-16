@@ -62,7 +62,7 @@ export default function (data) {
   // Heavy operation: List with pagination
   const listResponse = http.get(
     `${BASE_URL}/api/shipments?page=1&limit=50&sort=-createdAt`,
-    headers
+    headers,
   );
 
   requestDuration.add(listResponse.timings.duration);

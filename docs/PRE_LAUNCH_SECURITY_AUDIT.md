@@ -2,7 +2,7 @@
 
 **Date**: [Launch Date - 1 Week]  
 **Owner**: Security Lead  
-**Status**: [ ] Not Started [ ] In Progress [x] Ready to Execute  
+**Status**: [ ] Not Started [ ] In Progress [x] Ready to Execute
 
 ---
 
@@ -99,7 +99,7 @@
 - [ ] Exceed limit 1x: get 429 response
 - [ ] Exceed limit 5x: stays blocked until window resets
 - [ ] Health check /api/health: bypass rate limiter
-- [ ] Test X-RateLimit-* headers present in response
+- [ ] Test X-RateLimit-\* headers present in response
 
 ---
 
@@ -358,11 +358,11 @@ snyk test --severity-threshold=high
 
 ## Sign-Off
 
-**Security Review Completed**: _______________  
-**Date**: _____________  
+**Security Review Completed**: ******\_\_\_******  
+**Date**: ******\_******  
 **Issues Found**: 0 [ ] 1-5 [ ] 6-10 [ ] >10 [ ]  
 **All Issues Resolved**: Yes [ ] No [ ]  
-**Approved for Launch**: Yes [ ] No [ ]  
+**Approved for Launch**: Yes [ ] No [ ]
 
 **Comments**:
 
@@ -370,22 +370,22 @@ snyk test --severity-threshold=high
 [Add any notes, exceptions, or follow-up items]
 ```
 
-**Security Lead**: _____________________  
-**Date**: _________________  
+**Security Lead**: **********\_**********  
+**Date**: ********\_********  
 **Next Review**: [30 days post-launch]
 
 ---
 
 ## Common Findings & Remediation
 
-| Issue | Risk | Fix | Priority |
-|-------|------|-----|----------|
-| Missing HTTPS | Critical | Enable TLS everywhere | P0 |
-| No rate limiting | High | Implement rate limiters | P1 |
-| Hardcoded secrets | Critical | Move to Kubernetes Secrets | P0 |
-| No audit logs | High | Add logging middleware | P1 |
-| Overly permissive CORS | Medium | Restrict to known origins | P2 |
-| Unvalidated input | High | Add validators to all endpoints | P1 |
+| Issue                  | Risk     | Fix                             | Priority |
+| ---------------------- | -------- | ------------------------------- | -------- |
+| Missing HTTPS          | Critical | Enable TLS everywhere           | P0       |
+| No rate limiting       | High     | Implement rate limiters         | P1       |
+| Hardcoded secrets      | Critical | Move to Kubernetes Secrets      | P0       |
+| No audit logs          | High     | Add logging middleware          | P1       |
+| Overly permissive CORS | Medium   | Restrict to known origins       | P2       |
+| Unvalidated input      | High     | Add validators to all endpoints | P1       |
 
 ---
 

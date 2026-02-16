@@ -100,7 +100,8 @@ bash scripts/backup-database.sh
 - [ ] All 7 services running (docker-compose ps)
 - [ ] API health: `curl http://localhost:3001/api/health` returns 200
 - [ ] Web accessible: `http://localhost:3000`
-- [ ] Database connected: `docker-compose exec postgres psql -U postgres -c "SELECT 1;"`
+- [ ] Database connected:
+      `docker-compose exec postgres psql -U postgres -c "SELECT 1;"`
 - [ ] Redis responding: `docker-compose exec redis redis-cli ping`
 - [ ] Prometheus metrics: `http://localhost:9090/metrics`
 - [ ] Grafana dashboards: `http://localhost:3002`

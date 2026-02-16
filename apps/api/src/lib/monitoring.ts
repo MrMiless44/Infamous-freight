@@ -100,10 +100,8 @@ export function initDatadogRUM() {
       version: process.env.NEXT_PUBLIC_VERSION || "unknown",
 
       // Session sampling
-      sessionSampleRate:
-        process.env.NEXT_PUBLIC_ENV === "production" ? 10 : 100,
-      sessionReplaySampleRate:
-        process.env.NEXT_PUBLIC_ENV === "production" ? 20 : 100,
+      sessionSampleRate: process.env.NEXT_PUBLIC_ENV === "production" ? 10 : 100,
+      sessionReplaySampleRate: process.env.NEXT_PUBLIC_ENV === "production" ? 20 : 100,
 
       // Performance monitoring
       trackUserInteractions: true,
@@ -303,8 +301,7 @@ export const DATADOG_ALERT_RULES = {
   // Alert on database connection pool exhaustion
   dbPoolExhaustion: {
     name: "Database Pool Connections High",
-    query:
-      "avg:postgresql.connections{service:infamous-freight-db} > 90 percentile:0.95",
+    query: "avg:postgresql.connections{service:infamous-freight-db} > 90 percentile:0.95",
     threshold: 90,
     enabled: true,
   },
@@ -343,18 +340,13 @@ export const breadcrumbs = {
     addBreadcrumb(`Shipment created: ${shipmentId}`, "shipment"),
 
   driverAssigned: (driverId: string, shipmentId: string) =>
-    addBreadcrumb(
-      `Driver ${driverId} assigned to shipment ${shipmentId}`,
-      "dispatch",
-    ),
+    addBreadcrumb(`Driver ${driverId} assigned to shipment ${shipmentId}`, "dispatch"),
 
-  routeOptimized: (routeId: string) =>
-    addBreadcrumb(`Route optimized: ${routeId}`, "routing"),
+  routeOptimized: (routeId: string) => addBreadcrumb(`Route optimized: ${routeId}`, "routing"),
 
   cacheHit: (key: string) => addBreadcrumb(`Cache hit: ${key}`, "cache"),
 
-  cacheMiss: (key: string) =>
-    addBreadcrumb(`Cache miss: ${key}`, "cache", "warning"),
+  cacheMiss: (key: string) => addBreadcrumb(`Cache miss: ${key}`, "cache", "warning"),
 
   databaseQuery: (duration: number) =>
     addBreadcrumb(`Database query completed in ${duration}ms`, "database"),

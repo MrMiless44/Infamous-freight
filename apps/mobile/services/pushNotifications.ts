@@ -29,8 +29,7 @@ export class PushNotificationService {
     }
 
     // Check existing permissions
-    const { status: existingStatus } =
-      await Notifications.getPermissionsAsync();
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
 
     // Request permissions if not granted
@@ -90,11 +89,7 @@ export class PushNotificationService {
     }
   }
 
-  async scheduleLocalNotification(
-    title: string,
-    body: string,
-    data?: any,
-  ): Promise<void> {
+  async scheduleLocalNotification(title: string, body: string, data?: any): Promise<void> {
     await Notifications.scheduleNotificationAsync({
       content: {
         title,
@@ -113,19 +108,13 @@ export class PushNotificationService {
   setupNotificationListener(
     onNotificationReceived: (notification: Notifications.Notification) => void,
   ): Notifications.Subscription {
-    return Notifications.addNotificationReceivedListener(
-      onNotificationReceived,
-    );
+    return Notifications.addNotificationReceivedListener(onNotificationReceived);
   }
 
   setupNotificationResponseListener(
-    onNotificationTapped: (
-      response: Notifications.NotificationResponse,
-    ) => void,
+    onNotificationTapped: (response: Notifications.NotificationResponse) => void,
   ): Notifications.Subscription {
-    return Notifications.addNotificationResponseReceivedListener(
-      onNotificationTapped,
-    );
+    return Notifications.addNotificationResponseReceivedListener(onNotificationTapped);
   }
 }
 

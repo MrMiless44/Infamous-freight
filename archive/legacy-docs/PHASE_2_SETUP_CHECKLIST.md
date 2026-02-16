@@ -8,7 +8,8 @@
   - [x] Path module imported (line 17)
 
 - [x] Core files created
-  - [x] `apps/api/src/avatars/routes.ts` - 6 endpoints (system, me, upload, select, delete, stats)
+  - [x] `apps/api/src/avatars/routes.ts` - 6 endpoints (system, me, upload,
+        select, delete, stats)
   - [x] `apps/api/src/avatars/store.ts` - JSON persistence with atomic writes
   - [x] `apps/api/src/avatars/MOUNT_SNIPPET.ts` - Integration documentation
   - [x] `apps/api/src/auth/userId.ts` - JWT extraction utilities
@@ -169,16 +170,12 @@ curl http://localhost:4000/v1/avatars/system
 
 ## ✨ Features
 
-✅ Two-phase avatar system (system defaults + user uploads)
-✅ JWT authentication with scope-based access
-✅ Atomic JSON persistence (CI-safe)
-✅ Multer file upload with validation
-✅ Per-user storage isolation
-✅ Static file serving for both phases
-✅ Rate limiting (20 uploads/15min)
-✅ Full error handling and logging
-✅ Zod environment validation
-✅ Comprehensive API documentation
+✅ Two-phase avatar system (system defaults + user uploads) ✅ JWT
+authentication with scope-based access ✅ Atomic JSON persistence (CI-safe) ✅
+Multer file upload with validation ✅ Per-user storage isolation ✅ Static file
+serving for both phases ✅ Rate limiting (20 uploads/15min) ✅ Full error
+handling and logging ✅ Zod environment validation ✅ Comprehensive API
+documentation
 
 ---
 

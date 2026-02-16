@@ -2,7 +2,8 @@
 
 ## ✅ What Was Fixed
 
-All Docker configurations have been completely overhauled and optimized for production deployment!
+All Docker configurations have been completely overhauled and optimized for
+production deployment!
 
 ---
 
@@ -10,9 +11,9 @@ All Docker configurations have been completely overhauled and optimized for prod
 
 ### Dockerfiles (Production-Optimized)
 
-| File                                               | Changes                                                   | Status        |
-| -------------------------------------------------- | --------------------------------------------------------- | ------------- |
-| [Dockerfile.fly](Dockerfile.fly)                   | ✅ Multi-stage, security hardened, shared package support | 100% Complete |
+| File                                       | Changes                                                   | Status        |
+| ------------------------------------------ | --------------------------------------------------------- | ------------- |
+| [Dockerfile.fly](Dockerfile.fly)           | ✅ Multi-stage, security hardened, shared package support | 100% Complete |
 | [apps/api/Dockerfile](apps/api/Dockerfile) | ✅ Complete rewrite with 4-stage build                    | 100% Complete |
 | [apps/web/Dockerfile](apps/web/Dockerfile) | ✅ Next.js standalone mode, optimized layers              | 100% Complete |
 
@@ -181,10 +182,7 @@ postgres:
 ```yaml
 redis:
   command: >
-    redis-server
-    --maxmemory 256mb
-    --maxmemory-policy allkeys-lru
-    --save 60 1000
+    redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru --save 60 1000
     --appendonly yes
 ```
 
@@ -292,7 +290,8 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 - **Complete Guide**: [DOCKER_COMPLETE.md](DOCKER_COMPLETE.md)
 - **Management Script**: `./scripts/docker-manager.sh help`
 - **Docker Compose**: `docker-compose --help`
-- **README Section**: [Docker Section in README](README.md#-docker---100-production-ready)
+- **README Section**:
+  [Docker Section in README](README.md#-docker---100-production-ready)
 
 ---
 

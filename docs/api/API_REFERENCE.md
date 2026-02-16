@@ -103,14 +103,14 @@ Search users with filtering, sorting, and pagination.
 
 **Query Parameters**:
 
-| Parameter | Type | Default | Max | Description |
-|-----------|------|---------|-----|-------------|
-| `q` | string | "" | 100 | Search query (email/name, case-insensitive) |
-| `page` | number | 1 | - | Page number (1-indexed) |
-| `limit` | number | 10 | 100 | Results per page |
-| `role` | string | - | - | Filter by role: `user`, `admin`, `driver` |
-| `sortBy` | string | createdAt | - | Sort field: `name`, `email`, `createdAt` |
-| `order` | string | desc | - | Sort order: `asc`, `desc` |
+| Parameter | Type   | Default   | Max | Description                                 |
+| --------- | ------ | --------- | --- | ------------------------------------------- |
+| `q`       | string | ""        | 100 | Search query (email/name, case-insensitive) |
+| `page`    | number | 1         | -   | Page number (1-indexed)                     |
+| `limit`   | number | 10        | 100 | Results per page                            |
+| `role`    | string | -         | -   | Filter by role: `user`, `admin`, `driver`   |
+| `sortBy`  | string | createdAt | -   | Sort field: `name`, `email`, `createdAt`    |
+| `order`   | string | desc      | -   | Sort order: `asc`, `desc`                   |
 
 **Examples**:
 

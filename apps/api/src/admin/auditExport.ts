@@ -1,12 +1,12 @@
 /**
  * Audit Export (Phase 19.6)
- * 
+ *
  * Enterprise-grade audit log export for:
  * - SOC2 compliance verification
  * - Customer data retention periods
  * - Security incident investigation
  * - Regulatory compliance
- * 
+ *
  * Supports multiple export formats:
  * - JSON (structured, searchable)
  * - CSV (Excel/spreadsheet compatible)
@@ -37,7 +37,7 @@ export interface ExportResult {
 
 /**
  * Export organization audit logs for a given period
- * 
+ *
  * Usage:
  *   const result = await exportOrgAudit(prisma, {
  *     organizationId: "org_123",
@@ -56,7 +56,7 @@ export async function exportOrgAudit(
     format?: "json" | "csv" | "jsonl";
     includeMetadata?: boolean;
     outputDir?: string; // Default: /tmp
-  }
+  },
 ): Promise<ExportResult> {
   const {
     organizationId,
@@ -101,7 +101,7 @@ export async function exportOrgAudit(
         logs: logs.map((log) => sanitizeLogForExport(log, includeMetadata)),
       },
       null,
-      2 // Pretty print
+      2, // Pretty print
     );
   } else if (format === "csv") {
     content = logsToCSV(logs);
@@ -129,7 +129,7 @@ export async function exportOrgAudit(
 
 /**
  * Stream large audit log exports without loading entire dataset in memory
- * 
+ *
  * Usage:
  *   const stream = await streamOrgAudit(prisma, {
  *     organizationId: "org_123",
@@ -147,15 +147,9 @@ export async function streamOrgAudit(
     to: Date;
     format?: "json" | "jsonl";
     batchSize?: number; // Default: 1000
-  }
+  },
 ): Promise<Readable> {
-  const {
-    organizationId,
-    from,
-    to,
-    format = "jsonl",
-    batchSize = 1000,
-  } = options;
+  const { organizationId, from, to, format = "jsonl", batchSize = 1000 } = options;
 
   const where = {
     organizationId,
@@ -212,7 +206,7 @@ export async function streamOrgAudit(
       if (format === "json") {
         yield "]}\n";
       }
-    })()
+    })(),
   );
 }
 
@@ -231,17 +225,9 @@ export async function exportFilteredAudit(
     userId?: string;
     format?: "json" | "csv" | "jsonl";
     maxRecords?: number;
-  }
+  },
 ): Promise<ExportResult> {
-  const {
-    from,
-    to,
-    action,
-    entity,
-    userId,
-    format = "json",
-    maxRecords = 10000,
-  } = filters;
+  const { from, to, action, entity, userId, format = "json", maxRecords = 10000 } = filters;
 
   const where: any = {
     organizationId,
@@ -287,19 +273,14 @@ export async function exportFilteredAudit(
  * Sanitize audit log for external export
  * Removes sensitive data, redacts PII
  */
-function sanitizeLogForExport(
-  log: any,
-  includeMetadata: boolean = true
-): any {
+function sanitizeLogForExport(log: any, includeMetadata: boolean = true): any {
   return {
     timestamp: log.createdAt,
     actor: log.actorUserId ? { id: log.actorUserId } : null,
     action: log.action,
     entity: log.entity,
     entityId: log.entityId,
-    ...(includeMetadata && log.metadata
-      ? { details: redactSensitiveData(log.metadata) }
-      : {}),
+    ...(includeMetadata && log.metadata ? { details: redactSensitiveData(log.metadata) } : {}),
   };
 }
 
@@ -345,16 +326,9 @@ function logsToCSV(
     entity: string;
     entityId: string | null;
     metadata: any;
-  }>
+  }>,
 ): string {
-  const headers = [
-    "Timestamp",
-    "Actor",
-    "Action",
-    "Entity",
-    "EntityId",
-    "Details",
-  ];
+  const headers = ["Timestamp", "Actor", "Action", "Entity", "EntityId", "Details"];
 
   const rows = logs.map((log) => [
     log.createdAt.toISOString(),
@@ -370,11 +344,9 @@ function logsToCSV(
     ...rows.map((row) =>
       row
         .map((cell) =>
-          typeof cell === "string" && cell.includes(",")
-            ? `"${cell.replace(/"/g, '""')}"`
-            : cell
+          typeof cell === "string" && cell.includes(",") ? `"${cell.replace(/"/g, '""')}"` : cell,
         )
-        .join(",")
+        .join(","),
     ),
   ].join("\n");
 
@@ -389,7 +361,7 @@ export async function generateDPAReport(
   prisma: PrismaClient,
   organizationId: string,
   from: Date,
-  to: Date
+  to: Date,
 ): Promise<{
   summary: {
     organizationId: string;
@@ -450,8 +422,7 @@ export async function generateDPAReport(
     timeline: Array.from(grouped.entries())
       .map(([date, actions]) => ({
         date,
-        eventCount: logs.filter((l) => l.createdAt.toISOString().startsWith(date))
-          .length,
+        eventCount: logs.filter((l) => l.createdAt.toISOString().startsWith(date)).length,
         actions: Array.from(actions),
       }))
       .sort((a, b) => a.date.localeCompare(b.date)),

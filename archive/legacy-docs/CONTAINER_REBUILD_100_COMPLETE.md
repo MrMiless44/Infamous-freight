@@ -2,7 +2,8 @@
 
 ## Status: ✅ 100% READY FOR DEPLOYMENT
 
-This document provides comprehensive instructions for a complete container rebuild of the Infamous Freight Enterprises development environment.
+This document provides comprehensive instructions for a complete container
+rebuild of the Infamous Freight Enterprises development environment.
 
 ---
 

@@ -4,13 +4,13 @@ on:
   pull_request:
     branches: [main, develop]
     paths:
-      - 'compliance/policies/**'
-      - '.github/workflows/compliance-check.yml'
+      - "compliance/policies/**"
+      - ".github/workflows/compliance-check.yml"
   push:
     branches: [main, develop]
     paths:
-      - 'compliance/policies/**'
-      - '.github/workflows/compliance-check.yml'
+      - "compliance/policies/**"
+      - ".github/workflows/compliance-check.yml"
   workflow_dispatch:
 
 permissions:

@@ -112,18 +112,9 @@ export const Button: React.FC<ButtonProps> = ({
       accessibilityState={{ disabled: disabled || loading, busy: loading }}
     >
       {loading ? (
-        <ActivityIndicator
-          color={variant === "tertiary" ? "#0066CC" : "#FFFFFF"}
-        />
+        <ActivityIndicator color={variant === "tertiary" ? "#0066CC" : "#FFFFFF"} />
       ) : (
-        <Text
-          style={[
-            styles.text,
-            variantTextStyles[variant],
-            sizeTextStyles[size],
-            textStyle,
-          ]}
-        >
+        <Text style={[styles.text, variantTextStyles[variant], sizeTextStyles[size], textStyle]}>
           {children}
         </Text>
       )}

@@ -2,7 +2,8 @@
 
 **Status**: ✅ 100% COMPLETE - All recommendations implemented
 
-This document serves as the master index for the complete production-ready implementation of Infamous Freight Enterprises.
+This document serves as the master index for the complete production-ready
+implementation of Infamous Freight Enterprises.
 
 ---
 
@@ -322,20 +323,28 @@ curl -H "Origin: https://evil.com" https://infamous-freight-api.fly.dev/api/heal
 
 ### Primary Guides
 
-1. **[PRODUCTION_COMPLETE_GUIDE.md](./PRODUCTION_COMPLETE_GUIDE.md)** - Master deployment guide
-2. **[PRODUCTION_SECRETS.md](./PRODUCTION_SECRETS.md)** - Environment variables & secrets
-3. **[SECURITY_HARDENING.md](./SECURITY_HARDENING.md)** - Security checklist & best practices
+1. **[PRODUCTION_COMPLETE_GUIDE.md](./PRODUCTION_COMPLETE_GUIDE.md)** - Master
+   deployment guide
+2. **[PRODUCTION_SECRETS.md](./PRODUCTION_SECRETS.md)** - Environment variables
+   & secrets
+3. **[SECURITY_HARDENING.md](./SECURITY_HARDENING.md)** - Security checklist &
+   best practices
 
 ### Scripts
 
-1. **[setup-production.sh](../scripts/setup-production.sh)** - Complete stack setup
-2. **[deploy-complete.sh](../scripts/deploy-complete.sh)** - One-command deployment
-3. **[setup-monitoring.sh](../scripts/setup-monitoring.sh)** - Monitoring configuration
+1. **[setup-production.sh](../scripts/setup-production.sh)** - Complete stack
+   setup
+2. **[deploy-complete.sh](../scripts/deploy-complete.sh)** - One-command
+   deployment
+3. **[setup-monitoring.sh](../scripts/setup-monitoring.sh)** - Monitoring
+   configuration
 
 ### API Documentation
 
-- **Live API Docs**: <https://infamous-freight-api.fly.dev/api/docs> (when deployed)
-- **Swagger Config**: [apps/api/src/config/swagger.js](../apps/api/src/config/swagger.js)
+- **Live API Docs**: <https://infamous-freight-api.fly.dev/api/docs> (when
+  deployed)
+- **Swagger Config**:
+  [apps/api/src/config/swagger.js](../apps/api/src/config/swagger.js)
 
 ### Configuration Files
 
@@ -457,7 +466,8 @@ These require external account setup or permissions:
 ## 📞 Support
 
 - **Documentation**: See [DOCUMENTATION_INDEX.md](../DOCUMENTATION_INDEX.md)
-- **Issues**: <https://github.com/MrMiless44/Infamous-freight-enterprises/issues>
+- **Issues**:
+  <https://github.com/MrMiless44/Infamous-freight-enterprises/issues>
 - **Security**: Report privately to <security@infamous-freight.com>
 
 ---

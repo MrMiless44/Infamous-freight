@@ -56,16 +56,16 @@ data:
       external_labels:
         cluster: 'production'
         environment: 'prod'
-    
+
     alerting:
       alertmanagers:
       - static_configs:
         - targets:
           - alertmanager:9093
-    
+
     rule_files:
       - '/etc/prometheus/alerts.yml'
-    
+
     scrape_configs:
       - job_name: 'api'
         static_configs:
@@ -106,26 +106,26 @@ spec:
         app: prometheus
     spec:
       containers:
-      - name: prometheus
-        image: prom/prometheus:latest
-        ports:
-        - containerPort: 9090
-        volumeMounts:
-        - name: config
-          mountPath: /etc/prometheus
-        - name: data
-          mountPath: /prometheus
-        args:
-          - '--config.file=/etc/prometheus/prometheus.yml'
-          - '--storage.tsdb.path=/prometheus'
-          - '--web.console.libraries=/etc/prometheus/console_libraries'
-          - '--web.console.templates=/etc/prometheus/consoles'
+        - name: prometheus
+          image: prom/prometheus:latest
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - name: config
+              mountPath: /etc/prometheus
+            - name: data
+              mountPath: /prometheus
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus"
+            - "--web.console.libraries=/etc/prometheus/console_libraries"
+            - "--web.console.templates=/etc/prometheus/consoles"
       volumes:
-      - name: config
-        configMap:
-          name: prometheus-config
-      - name: data
-        emptyDir: {}
+        - name: config
+          configMap:
+            name: prometheus-config
+        - name: data
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
@@ -134,8 +134,8 @@ metadata:
   namespace: infamous-freight
 spec:
   ports:
-  - port: 9090
-    targetPort: 9090
+    - port: 9090
+      targetPort: 9090
   selector:
     app: prometheus
 ```
@@ -163,34 +163,34 @@ spec:
         app: grafana
     spec:
       containers:
-      - name: grafana
-        image: grafana/grafana:latest
-        ports:
-        - containerPort: 3000
-        env:
-        - name: GF_SECURITY_ADMIN_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: grafana-secrets
-              key: admin-password
-        - name: GF_INSTALL_PLUGINS
-          value: "grafana-piechart-panel"
-        volumeMounts:
-        - name: datasources
-          mountPath: /etc/grafana/provisioning/datasources
-        - name: dashboards
-          mountPath: /etc/grafana/provisioning/dashboards
-        - name: storage
-          mountPath: /var/lib/grafana
+        - name: grafana
+          image: grafana/grafana:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-secrets
+                  key: admin-password
+            - name: GF_INSTALL_PLUGINS
+              value: "grafana-piechart-panel"
+          volumeMounts:
+            - name: datasources
+              mountPath: /etc/grafana/provisioning/datasources
+            - name: dashboards
+              mountPath: /etc/grafana/provisioning/dashboards
+            - name: storage
+              mountPath: /var/lib/grafana
       volumes:
-      - name: datasources
-        configMap:
-          name: grafana-datasources
-      - name: dashboards
-        configMap:
-          name: grafana-dashboards
-      - name: storage
-        emptyDir: {}
+        - name: datasources
+          configMap:
+            name: grafana-datasources
+        - name: dashboards
+          configMap:
+            name: grafana-dashboards
+        - name: storage
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
@@ -199,8 +199,8 @@ metadata:
   namespace: infamous-freight
 spec:
   ports:
-  - port: 3000
-    targetPort: 3000
+    - port: 3000
+      targetPort: 3000
   selector:
     app: grafana
   type: LoadBalancer
@@ -398,16 +398,16 @@ data:
 
 ## Key Metrics to Monitor
 
-| Metric | Threshold | Action |
-|--------|-----------|--------|
-| Error Rate | > 0.1% for 5 min | Investigate logs |
-| P95 Latency | > 500ms for 5 min | Check DB, scale up |
-| P99 Latency | > 1000ms for 5 min | Escalate |
-| DB Connections | > 20 | Investigate queries |
-| Memory Usage | > 80% | Scale or optimize |
-| CPU Usage | > 75% | Scale up |
-| Uptime | < 99.9% monthly | Investigate outages |
-| Error Budget | < 10% remaining | Plan maintenance |
+| Metric         | Threshold          | Action              |
+| -------------- | ------------------ | ------------------- |
+| Error Rate     | > 0.1% for 5 min   | Investigate logs    |
+| P95 Latency    | > 500ms for 5 min  | Check DB, scale up  |
+| P99 Latency    | > 1000ms for 5 min | Escalate            |
+| DB Connections | > 20               | Investigate queries |
+| Memory Usage   | > 80%              | Scale or optimize   |
+| CPU Usage      | > 75%              | Scale up            |
+| Uptime         | < 99.9% monthly    | Investigate outages |
+| Error Budget   | < 10% remaining    | Plan maintenance    |
 
 ---
 
@@ -474,10 +474,9 @@ curl -u admin:admin http://grafana:3000/api/datasources
 ```yaml
 alerting:
   alertmanagers:
-  - static_configs:
-    - targets:
-      - alertmanager:9093
-
+    - static_configs:
+        - targets:
+            - alertmanager:9093
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -487,13 +486,13 @@ data:
   alertmanager.yml: |
     global:
       resolve_timeout: 5m
-    
+
     route:
       receiver: 'slack'
       group_wait: 10s
       group_interval: 10s
       repeat_interval: 12h
-    
+
     receivers:
     - name: 'slack'
       slack_configs:
@@ -507,15 +506,15 @@ data:
 
 ```yaml
 receivers:
-- name: 'email'
-  email_configs:
-  - to: 'alerts@yourdomain.com'
-    from: 'prometheus@yourdomain.com'
-    smarthost: 'smtp.example.com:587'
-    auth_username: 'alerts@yourdomain.com'
-    auth_password: 'PASSWORD'
-    headers:
-      Subject: 'Alert: {{ .GroupLabels.alertname }}'
+  - name: "email"
+    email_configs:
+      - to: "alerts@yourdomain.com"
+        from: "prometheus@yourdomain.com"
+        smarthost: "smtp.example.com:587"
+        auth_username: "alerts@yourdomain.com"
+        auth_password: "PASSWORD"
+        headers:
+          Subject: "Alert: {{ .GroupLabels.alertname }}"
 ```
 
 ---
@@ -579,13 +578,13 @@ curl http://api:4000/api/metrics | head -20
 
 ## Cost Estimation
 
-| Component | Cloud Option | Cost |
-|-----------|--------------|------|
-| Prometheus | EC2 t3.small (8GB) | $20/mo |
-| Grafana | EC2 t3.small | $20/mo |
-| Data retention (7 days) | EBS 100GB | $10/mo |
-| Alerting | SNS/Email | Free |
-| **Total** | AWS | **~$50/mo** |
+| Component               | Cloud Option       | Cost        |
+| ----------------------- | ------------------ | ----------- |
+| Prometheus              | EC2 t3.small (8GB) | $20/mo      |
+| Grafana                 | EC2 t3.small       | $20/mo      |
+| Data retention (7 days) | EBS 100GB          | $10/mo      |
+| Alerting                | SNS/Email          | Free        |
+| **Total**               | AWS                | **~$50/mo** |
 
 ---
 

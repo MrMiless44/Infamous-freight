@@ -64,13 +64,7 @@ async function createCertificate({
   return certificate;
 }
 
-async function updateCertificateStatus({
-  orgId,
-  id,
-  status,
-  actorUserId,
-  rejectionReason,
-}) {
+async function updateCertificateStatus({ orgId, id, status, actorUserId, rejectionReason }) {
   const client = requirePrisma();
   const existing = await client.insuranceCertificate.findFirst({
     where: { id, orgId },

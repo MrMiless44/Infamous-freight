@@ -12,13 +12,7 @@ type BidRow = {
   created_at: string;
 };
 
-export default function BidList({
-  bids,
-  canAccept,
-}: {
-  bids: BidRow[];
-  canAccept: boolean;
-}) {
+export default function BidList({ bids, canAccept }: { bids: BidRow[]; canAccept: boolean }) {
   const [busy, setBusy] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [ok, setOk] = useState<string | null>(null);
@@ -73,9 +67,7 @@ export default function BidList({
             )}
           </div>
         ))}
-        {bids.length === 0 && (
-          <div className="marketplace-muted">No bids yet.</div>
-        )}
+        {bids.length === 0 && <div className="marketplace-muted">No bids yet.</div>}
       </div>
     </div>
   );

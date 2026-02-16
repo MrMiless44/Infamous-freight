@@ -106,7 +106,8 @@ Phase 4: Advanced Scaling (15 days)
 
 ### Environment Configuration
 
-- `.env.production` - Production variables (NODE_ENV, API_PORT, DATABASE_URL, JWT_SECRET, etc.)
+- `.env.production` - Production variables (NODE_ENV, API_PORT, DATABASE_URL,
+  JWT_SECRET, etc.)
 
 ### Deployment Documentation
 
@@ -116,7 +117,8 @@ Phase 4: Advanced Scaling (15 days)
 
 ### Docker Configuration
 
-- `docker-compose.production.yml` - Services: PostgreSQL, Redis, API, Web, Prometheus, Grafana, Jaeger
+- `docker-compose.production.yml` - Services: PostgreSQL, Redis, API, Web,
+  Prometheus, Grafana, Jaeger
 
 ### Deployment Scripts
 

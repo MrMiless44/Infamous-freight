@@ -24,7 +24,8 @@ TOTAL DELIVERY                              🟢 80% COMPLETE
 
 ### Components
 
-- ✅ 11 API endpoints (drivers, jobs, matching, accept, deliver, subscribe, portal)
+- ✅ 11 API endpoints (drivers, jobs, matching, accept, deliver, subscribe,
+  portal)
 - ✅ 6 webhook event handlers (Stripe events)
 - ✅ 4 new database models (DriverProfile, Vehicle, Job, JobPayment)
 - ✅ Payment processing (Stripe Checkout & Subscriptions)

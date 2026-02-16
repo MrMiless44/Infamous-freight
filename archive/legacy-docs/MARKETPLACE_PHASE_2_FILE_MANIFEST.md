@@ -59,7 +59,8 @@ jobStateMachine.validateTransition("OPEN", "COMPLETED"); // Error!
    - Global rate limiter + authenticate middleware pattern established
 
 3. **Endpoint enhancements (all 9 endpoints):**
-   - `POST /drivers/location` - Added auth, scope, rate limit, ownership validation
+   - `POST /drivers/location` - Added auth, scope, rate limit, ownership
+     validation
    - `POST /drivers/vehicles` - Added auth, scope, ownership validation
    - `POST /jobs` - Added auth, scope, optimized Stripe customer creation
    - `GET /jobs` - Added auth, scope, pagination (page/limit/total/pages)
@@ -154,7 +155,8 @@ jobStateMachine.validateTransition("OPEN", "COMPLETED"); // Error!
 
 **Already Exports:**
 
-- `limiters` object with: general, auth, ai, billing, voice, export, passwordReset, webhook
+- `limiters` object with: general, auth, ai, billing, voice, export,
+  passwordReset, webhook
 - `rateLimit` (alias for limiters.general)
 - `authenticate` (JWT validation)
 - `authenticateFlexible` (token rotation support)
@@ -507,8 +509,8 @@ apps/api/src/marketplace/webhooks.js
 
 ### Step 1: Start Here
 
-Read: `MARKETPLACE_PHASE_2_DOCUMENTATION_INDEX.md`
-→ Guides you to appropriate documentation
+Read: `MARKETPLACE_PHASE_2_DOCUMENTATION_INDEX.md` → Guides you to appropriate
+documentation
 
 ### Step 2: Choose Your Path
 

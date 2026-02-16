@@ -129,7 +129,8 @@ If deployment fails:
 1. Check [deploy/FLY_TROUBLESHOOTING.md](deploy/FLY_TROUBLESHOOTING.md)
 2. View logs: `flyctl logs -a infamous-freight-api`
 3. Check recent releases: `flyctl releases -a infamous-freight-api`
-4. Rollback if needed: `flyctl releases rollback <version> -a infamous-freight-api`
+4. Rollback if needed:
+   `flyctl releases rollback <version> -a infamous-freight-api`
 
 ## Quick Commands Reference
 

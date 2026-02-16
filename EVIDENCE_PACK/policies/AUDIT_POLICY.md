@@ -5,7 +5,8 @@
 
 ## 1. Purpose
 
-This policy establishes requirements for audit logging, retention, and verification to ensure:
+This policy establishes requirements for audit logging, retention, and
+verification to ensure:
 
 - **Non-repudiation:** Users cannot deny actions they performed
 - **Compliance:** SOC2-lite auditability requirements met
@@ -81,15 +82,16 @@ if (!result.ok) {
 
 ## 4. Log Retention
 
-| Log Type | Retention | Storage | Rotation |
-|----------|-----------|---------|----------|
-| API access | 90 days | Hot (searchable) | Weekly |
-| Audit chain | 1 year | Archive (cold) | Monthly |
-| Error logs | 30 days | Sentry | Automatic |
-| Security events | 1 year | Archive + Sentry | Monthly |
+| Log Type        | Retention | Storage          | Rotation  |
+| --------------- | --------- | ---------------- | --------- |
+| API access      | 90 days   | Hot (searchable) | Weekly    |
+| Audit chain     | 1 year    | Archive (cold)   | Monthly   |
+| Error logs      | 30 days   | Sentry           | Automatic |
+| Security events | 1 year    | Archive + Sentry | Monthly   |
 
 - **Backup:** Audit logs backed up daily (immutable storage)
-- **Deletion:** After retention expires, logs archived to cold storage (no deletion)
+- **Deletion:** After retention expires, logs archived to cold storage (no
+  deletion)
 
 ## 5. Audit Log Verification
 
@@ -134,12 +136,12 @@ If tampering detected:
 
 ### 6.1 Who Can Access Audit Logs
 
-| Role | Read | Verify | Delete | Export |
-|------|------|--------|--------|--------|
-| User | Own events | No | No | No |
-| Admin | All | Yes | No | Yes |
-| Auditor | All | Yes | No | Yes |
-| System | All | Yes | No | Yes |
+| Role    | Read       | Verify | Delete | Export |
+| ------- | ---------- | ------ | ------ | ------ |
+| User    | Own events | No     | No     | No     |
+| Admin   | All        | Yes    | No     | Yes    |
+| Auditor | All        | Yes    | No     | Yes    |
+| System  | All        | Yes    | No     | Yes    |
 
 ### 6.2 Log Export Requirements
 
@@ -188,13 +190,13 @@ Customers can request:
 
 ## 9. Monitoring & Alerts
 
-| Alert | Condition | Severity | Action |
-|-------|-----------|----------|--------|
-| Chain break | `prevHash` mismatch | CRITICAL | Page on-call |
-| Data modified | Hash mismatch | CRITICAL | Page on-call |
-| Verification failed | Script fails | HIGH | Investigation |
-| Log quota exceeded | >1M/day | MEDIUM | Alert ops |
-| Retention violated | Logs deleted early | HIGH | Investigation |
+| Alert               | Condition           | Severity | Action        |
+| ------------------- | ------------------- | -------- | ------------- |
+| Chain break         | `prevHash` mismatch | CRITICAL | Page on-call  |
+| Data modified       | Hash mismatch       | CRITICAL | Page on-call  |
+| Verification failed | Script fails        | HIGH     | Investigation |
+| Log quota exceeded  | >1M/day             | MEDIUM   | Alert ops     |
+| Retention violated  | Logs deleted early  | HIGH     | Investigation |
 
 ## 10. Audit of Audits
 

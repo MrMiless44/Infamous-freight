@@ -1,6 +1,7 @@
 # Enterprise-Grade Code Quality Improvements
 
-This document describes the new standardized utilities added to improve code quality, maintainability, and enterprise readiness.
+This document describes the new standardized utilities added to improve code
+quality, maintainability, and enterprise readiness.
 
 ## New Modules
 
@@ -27,15 +28,19 @@ Centralized constants to eliminate magic values throughout the codebase.
 **Usage Example:**
 
 ```javascript
-const { HTTP_STATUS, PAGINATION, ERROR_MESSAGES } = require('./config/constants');
+const {
+  HTTP_STATUS,
+  PAGINATION,
+  ERROR_MESSAGES,
+} = require("./config/constants");
 
 // Instead of hardcoded values
 res.status(200).json({ limit: 50, offset: 0 });
 
 // Use constants
-res.status(HTTP_STATUS.OK).json({ 
-  limit: PAGINATION.DEFAULT_LIMIT, 
-  offset: PAGINATION.DEFAULT_OFFSET 
+res.status(HTTP_STATUS.OK).json({
+  limit: PAGINATION.DEFAULT_LIMIT,
+  offset: PAGINATION.DEFAULT_OFFSET,
 });
 ```
 
@@ -62,19 +67,26 @@ Standardized error classes and response utilities.
 **Usage Example:**
 
 ```javascript
-const { NotFoundError, asyncHandler, createSuccessResponse } = require('./lib/errors');
+const {
+  NotFoundError,
+  asyncHandler,
+  createSuccessResponse,
+} = require("./lib/errors");
 
-router.get('/shipments/:id', asyncHandler(async (req, res) => {
-  const shipment = await prisma.shipment.findUnique({ 
-    where: { id: req.params.id } 
-  });
-  
-  if (!shipment) {
-    throw new NotFoundError('Shipment not found', 'shipment');
-  }
-  
-  res.status(200).json(createSuccessResponse(shipment));
-}));
+router.get(
+  "/shipments/:id",
+  asyncHandler(async (req, res) => {
+    const shipment = await prisma.shipment.findUnique({
+      where: { id: req.params.id },
+    });
+
+    if (!shipment) {
+      throw new NotFoundError("Shipment not found", "shipment");
+    }
+
+    res.status(200).json(createSuccessResponse(shipment));
+  }),
+);
 ```
 
 ### 3. Zod Validation (`apps/api/src/lib/validation.js`)
@@ -102,25 +114,27 @@ Type-safe input validation using Zod schemas.
 **Validation Middleware:**
 
 ```javascript
-const { validateRequest, createShipmentSchema } = require('./lib/validation');
+const { validateRequest, createShipmentSchema } = require("./lib/validation");
 
 // Validate request body
-router.post('/shipments', 
-  validateRequest(createShipmentSchema, 'body'),
+router.post(
+  "/shipments",
+  validateRequest(createShipmentSchema, "body"),
   asyncHandler(async (req, res) => {
     // req.body is now validated and typed
     const shipment = await prisma.shipment.create({ data: req.body });
     res.status(201).json(createSuccessResponse(shipment));
-  })
+  }),
 );
 
 // Validate query parameters
-router.get('/shipments',
-  validateRequest(paginationSchema, 'query'),
+router.get(
+  "/shipments",
+  validateRequest(paginationSchema, "query"),
   asyncHandler(async (req, res) => {
     const { limit, offset } = req.query; // Validated and coerced
     // ...
-  })
+  }),
 );
 ```
 
@@ -143,7 +157,7 @@ Updated to support new error classes and provide consistent error responses.
 **Before:**
 
 ```javascript
-router.get('/items', async (req, res) => {
+router.get("/items", async (req, res) => {
   const limit = req.query.limit || 50;
   const offset = req.query.offset || 0;
   // ...
@@ -153,9 +167,9 @@ router.get('/items', async (req, res) => {
 **After:**
 
 ```javascript
-const { PAGINATION } = require('./config/constants');
+const { PAGINATION } = require("./config/constants");
 
-router.get('/items', async (req, res) => {
+router.get("/items", async (req, res) => {
   const limit = req.query.limit || PAGINATION.DEFAULT_LIMIT;
   const offset = req.query.offset || PAGINATION.DEFAULT_OFFSET;
   // ...
@@ -167,9 +181,9 @@ router.get('/items', async (req, res) => {
 **Before:**
 
 ```javascript
-router.post('/shipments', async (req, res) => {
+router.post("/shipments", async (req, res) => {
   if (!req.body.trackingNumber) {
-    return res.status(400).json({ error: 'Tracking number required' });
+    return res.status(400).json({ error: "Tracking number required" });
   }
   // ...
 });
@@ -178,16 +192,17 @@ router.post('/shipments', async (req, res) => {
 **After:**
 
 ```javascript
-const { validateRequest, createShipmentSchema } = require('./lib/validation');
-const { asyncHandler } = require('./lib/errors');
+const { validateRequest, createShipmentSchema } = require("./lib/validation");
+const { asyncHandler } = require("./lib/errors");
 
-router.post('/shipments', 
-  validateRequest(createShipmentSchema, 'body'),
+router.post(
+  "/shipments",
+  validateRequest(createShipmentSchema, "body"),
   asyncHandler(async (req, res) => {
     // req.body is validated
     const shipment = await prisma.shipment.create({ data: req.body });
     res.status(201).json(createSuccessResponse(shipment));
-  })
+  }),
 );
 ```
 
@@ -196,19 +211,19 @@ router.post('/shipments',
 **Before:**
 
 ```javascript
-router.get('/shipments/:id', async (req, res) => {
+router.get("/shipments/:id", async (req, res) => {
   try {
-    const shipment = await prisma.shipment.findUnique({ 
-      where: { id: req.params.id } 
+    const shipment = await prisma.shipment.findUnique({
+      where: { id: req.params.id },
     });
-    
+
     if (!shipment) {
-      return res.status(404).json({ error: 'Not found' });
+      return res.status(404).json({ error: "Not found" });
     }
-    
+
     res.json(shipment);
   } catch (error) {
-    res.status(500).json({ error: 'Internal error' });
+    res.status(500).json({ error: "Internal error" });
   }
 });
 ```
@@ -216,19 +231,26 @@ router.get('/shipments/:id', async (req, res) => {
 **After:**
 
 ```javascript
-const { NotFoundError, asyncHandler, createSuccessResponse } = require('./lib/errors');
+const {
+  NotFoundError,
+  asyncHandler,
+  createSuccessResponse,
+} = require("./lib/errors");
 
-router.get('/shipments/:id', asyncHandler(async (req, res) => {
-  const shipment = await prisma.shipment.findUnique({ 
-    where: { id: req.params.id } 
-  });
-  
-  if (!shipment) {
-    throw new NotFoundError('Shipment not found');
-  }
-  
-  res.json(createSuccessResponse(shipment));
-}));
+router.get(
+  "/shipments/:id",
+  asyncHandler(async (req, res) => {
+    const shipment = await prisma.shipment.findUnique({
+      where: { id: req.params.id },
+    });
+
+    if (!shipment) {
+      throw new NotFoundError("Shipment not found");
+    }
+
+    res.json(createSuccessResponse(shipment));
+  }),
+);
 ```
 
 ## Benefits

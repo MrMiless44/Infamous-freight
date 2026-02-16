@@ -71,7 +71,8 @@ Current status: Failing (expected - requires configuration)
 
 1. Configure GitHub secrets for CI/CD
 2. Review workflow configurations in `.github/workflows/`
-3. Check logs at: <https://github.com/MrMiless44/Infamous-freight-enterprises/actions>
+3. Check logs at:
+   <https://github.com/MrMiless44/Infamous-freight-enterprises/actions>
 
 ## 📦 Installed Packages
 
@@ -105,5 +106,5 @@ d5404c7 - fix: lower web coverage thresholds to current baseline
 
 ---
 
-**Status**: ✅ Ready for Development | ⚠️ CI/CD Needs Attention
-**Last Updated**: December 14, 2025
+**Status**: ✅ Ready for Development | ⚠️ CI/CD Needs Attention **Last
+Updated**: December 14, 2025

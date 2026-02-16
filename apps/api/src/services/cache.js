@@ -3,7 +3,7 @@
  * Provides Redis caching with fallback to memory cache
  */
 
-const { logger } = require('../middleware/logger');
+const { logger } = require("../middleware/logger");
 
 class CacheService {
   constructor() {
@@ -25,12 +25,12 @@ class CacheService {
         const info = await this.redisClient.info();
         return {
           ...this.stats,
-          type: 'redis',
-          connected: this.redisClient.status === 'ready',
+          type: "redis",
+          connected: this.redisClient.status === "ready",
           info: info,
         };
       } catch (err) {
-        logger.warn('Failed to get Redis stats', { error: err.message });
+        logger.warn("Failed to get Redis stats", { error: err.message });
       }
     }
     return this.stats;
@@ -43,13 +43,13 @@ class CacheService {
     const redisUrl = process.env.REDIS_URL || process.env.REDIS_CONNECTION_STRING;
 
     if (!redisUrl) {
-      logger.info('No REDIS_URL configured, using memory cache');
+      logger.info("No REDIS_URL configured, using memory cache");
       return true;
     }
 
     try {
       // Dynamically import ioredis (will fail gracefully if not installed)
-      const Redis = require('ioredis');
+      const Redis = require("ioredis");
 
       this.redisClient = new Redis(redisUrl, {
         maxRetriesPerRequest: 3,
@@ -58,30 +58,30 @@ class CacheService {
           return delay;
         },
         reconnectOnError(err) {
-          const targetErrors = ['READONLY', 'ECONNREFUSED'];
-          return targetErrors.some(target => err.message.includes(target));
+          const targetErrors = ["READONLY", "ECONNREFUSED"];
+          return targetErrors.some((target) => err.message.includes(target));
         },
       });
 
-      this.redisClient.on('error', (err) => {
-        logger.error('Redis connection error', { error: err.message });
-        this.stats.type = 'memory';
+      this.redisClient.on("error", (err) => {
+        logger.error("Redis connection error", { error: err.message });
+        this.stats.type = "memory";
       });
 
-      this.redisClient.on('connect', () => {
-        logger.info('Redis connected successfully');
-        this.stats.type = 'redis';
+      this.redisClient.on("connect", () => {
+        logger.info("Redis connected successfully");
+        this.stats.type = "redis";
       });
 
-      this.redisClient.on('ready', () => {
-        logger.info('Redis client ready');
+      this.redisClient.on("ready", () => {
+        logger.info("Redis client ready");
       });
 
       await this.redisClient.ping();
-      logger.info('Redis cache initialized');
+      logger.info("Redis cache initialized");
       return true;
     } catch (err) {
-      logger.warn('Failed to initialize Redis, falling back to memory cache', {
+      logger.warn("Failed to initialize Redis, falling back to memory cache", {
         error: err.message,
       });
       this.redisClient = null;
@@ -94,7 +94,7 @@ class CacheService {
    */
   async get(key) {
     try {
-      if (this.redisClient && this.redisClient.status === 'ready') {
+      if (this.redisClient && this.redisClient.status === "ready") {
         const value = await this.redisClient.get(key);
         if (value !== null) {
           this.stats.hits++;
@@ -104,7 +104,7 @@ class CacheService {
         return null;
       }
     } catch (err) {
-      logger.warn('Redis get failed, falling back to memory', {
+      logger.warn("Redis get failed, falling back to memory", {
         error: err.message,
         key,
       });
@@ -124,7 +124,7 @@ class CacheService {
    */
   async set(key, value, ttl = 3600) {
     try {
-      if (this.redisClient && this.redisClient.status === 'ready') {
+      if (this.redisClient && this.redisClient.status === "ready") {
         const serialized = JSON.stringify(value);
         if (ttl) {
           await this.redisClient.setex(key, ttl, serialized);
@@ -134,7 +134,7 @@ class CacheService {
         return true;
       }
     } catch (err) {
-      logger.warn('Redis set failed, falling back to memory', {
+      logger.warn("Redis set failed, falling back to memory", {
         error: err.message,
         key,
       });
@@ -153,11 +153,11 @@ class CacheService {
    */
   async del(key) {
     try {
-      if (this.redisClient && this.redisClient.status === 'ready') {
+      if (this.redisClient && this.redisClient.status === "ready") {
         await this.redisClient.del(key);
       }
     } catch (err) {
-      logger.warn('Redis del failed', { error: err.message, key });
+      logger.warn("Redis del failed", { error: err.message, key });
     }
     this.cache.delete(key);
   }
@@ -167,11 +167,11 @@ class CacheService {
    */
   async clear() {
     try {
-      if (this.redisClient && this.redisClient.status === 'ready') {
+      if (this.redisClient && this.redisClient.status === "ready") {
         await this.redisClient.flushdb();
       }
     } catch (err) {
-      logger.warn('Redis clear failed', { error: err.message });
+      logger.warn("Redis clear failed", { error: err.message });
     }
     this.cache.clear();
   }
@@ -180,7 +180,7 @@ class CacheService {
    * Check if cache is available
    */
   isAvailable() {
-    return this.redisClient?.status === 'ready' || true; // Memory cache always available
+    return this.redisClient?.status === "ready" || true; // Memory cache always available
   }
 }
 

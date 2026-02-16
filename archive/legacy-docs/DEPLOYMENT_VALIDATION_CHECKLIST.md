@@ -2,7 +2,8 @@
 
 ## Complete System Verification for Infamous Freight Enterprises
 
-Use this checklist to validate that all infrastructure components are working correctly before promoting to production.
+Use this checklist to validate that all infrastructure components are working
+correctly before promoting to production.
 
 ---
 

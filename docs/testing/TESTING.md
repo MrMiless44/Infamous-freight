@@ -2,7 +2,8 @@
 
 ## Overview
 
-This document describes the testing strategy, conventions, and best practices for the Infamous Freight Enterprises project.
+This document describes the testing strategy, conventions, and best practices
+for the Infamous Freight Enterprises project.
 
 ## Test Coverage Requirements
 

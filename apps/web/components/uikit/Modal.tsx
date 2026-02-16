@@ -3,8 +3,8 @@
  * User-Friendly Modal Component
  */
 
-import React, { ReactNode, useEffect } from 'react';
-import styles from './Modal.module.css';
+import React, { ReactNode, useEffect } from "react";
+import styles from "./Modal.module.css";
 
 export interface ModalProps {
   isOpen: boolean;
@@ -14,7 +14,7 @@ export interface ModalProps {
   actions?: Array<{
     label: string;
     onClick: () => void;
-    variant?: 'primary' | 'secondary' | 'danger';
+    variant?: "primary" | "secondary" | "danger";
   }>;
   closeOnBackdrop?: boolean;
 }
@@ -29,14 +29,14 @@ export const Modal: React.FC<ModalProps> = ({
 }) => {
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
       const handleEscape = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') onClose();
+        if (e.key === "Escape") onClose();
       };
-      window.addEventListener('keydown', handleEscape);
+      window.addEventListener("keydown", handleEscape);
       return () => {
-        window.removeEventListener('keydown', handleEscape);
-        document.body.style.overflow = 'unset';
+        window.removeEventListener("keydown", handleEscape);
+        document.body.style.overflow = "unset";
       };
     }
   }, [isOpen, onClose]);
@@ -50,21 +50,12 @@ export const Modal: React.FC<ModalProps> = ({
         onClick={() => closeOnBackdrop && onClose()}
         aria-hidden="true"
       />
-      <div
-        className={styles.modal}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title"
-      >
+      <div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div className={styles.header}>
           <h2 className={styles.title} id="modal-title">
             {title}
           </h2>
-          <button
-            className={styles.closeButton}
-            onClick={onClose}
-            aria-label="Close modal"
-          >
+          <button className={styles.closeButton} onClick={onClose} aria-label="Close modal">
             ✕
           </button>
         </div>
@@ -74,7 +65,7 @@ export const Modal: React.FC<ModalProps> = ({
             {actions.map((action, idx) => (
               <button
                 key={idx}
-                className={`${styles.action} ${styles[action.variant || 'secondary']}`}
+                className={`${styles.action} ${styles[action.variant || "secondary"]}`}
                 onClick={action.onClick}
               >
                 {action.label}

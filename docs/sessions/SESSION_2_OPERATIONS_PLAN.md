@@ -57,7 +57,8 @@ export RENDER_API_KEY="your-key-here"
 
 1. Go to: <https://github.com/MrMiless44/Infamous-freight-enterprises/issues>
 2. Click: **New Issue**
-3. Use template from: [SESSION_3_PREPARATION.md#issue-template](SESSION_3_PREPARATION.md)
+3. Use template from:
+   [SESSION_3_PREPARATION.md#issue-template](SESSION_3_PREPARATION.md)
 4. Include:
    - What happened
    - When it happened
@@ -110,7 +111,8 @@ export RENDER_API_KEY="your-key-here"
    - Dependency updates
    - Time: 2-3 days
 
-**Recommendation**: Start with #1 (Monitoring) so you have full visibility before other work.
+**Recommendation**: Start with #1 (Monitoring) so you have full visibility
+before other work.
 
 ---
 
@@ -187,13 +189,9 @@ pnpm test -- apps/api/__tests__/routes.users.test.js
 
 You'll know everything is working when:
 
-✅ **Daily checklist passes** (5/5 items green)
-✅ **Zero critical errors** in logs
-✅ **API response time** <500ms
-✅ **Web loads in** <3s
-✅ **Database queries** <50ms
-✅ **No 5xx errors** in error logs
-✅ **Uptime** >99.9%
+✅ **Daily checklist passes** (5/5 items green) ✅ **Zero critical errors** in
+logs ✅ **API response time** <500ms ✅ **Web loads in** <3s ✅ **Database
+queries** <50ms ✅ **No 5xx errors** in error logs ✅ **Uptime** >99.9%
 
 ---
 
@@ -239,7 +237,8 @@ January+ (Session 3)
 
 ## � Render API Commands
 
-**Get your API key**: <https://dashboard.render.com/> → Profile → Account Settings → API Keys
+**Get your API key**: <https://dashboard.render.com/> → Profile → Account
+Settings → API Keys
 
 ### List All Services
 
@@ -377,7 +376,9 @@ curl --header 'Authorization: Bearer YOUR_API_KEY' \
 
 **🎉 Congratulations on completing Session 2!**
 
-Your production system is live, tested, documented, and ready for the next phase. Monitor it well, document what you find, and we'll tackle Session 3 together!
+Your production system is live, tested, documented, and ready for the next
+phase. Monitor it well, document what you find, and we'll tackle Session 3
+together!
 
 **See you next week! 🚀**
 

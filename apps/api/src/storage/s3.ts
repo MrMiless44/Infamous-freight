@@ -43,9 +43,7 @@ export async function presignPutObject(params: {
     expiresIn: params.expiresInSeconds ?? 120,
   });
 
-  const base = env.s3PublicBaseUrl
-    ? String(env.s3PublicBaseUrl).replace(/\/+$/, "")
-    : null;
+  const base = env.s3PublicBaseUrl ? String(env.s3PublicBaseUrl).replace(/\/+$/, "") : null;
   const publicUrl = base ? `${base}/${params.key}` : null;
 
   return { uploadUrl, publicUrl };

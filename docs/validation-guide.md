@@ -1,6 +1,8 @@
 # Validation Guide
 
-This guide documents the validation and quality gates used across the Infamous Freight Enterprise monorepo. All validators are configured under `configs/` and executed through top-level scripts for consistency.
+This guide documents the validation and quality gates used across the Infamous
+Freight Enterprise monorepo. All validators are configured under `configs/` and
+executed through top-level scripts for consistency.
 
 ## Quick Commands
 
@@ -10,13 +12,15 @@ This guide documents the validation and quality gates used across the Infamous F
 - **Validate HTML only**: `pnpm lint:html`
 - **Generate coverage reports**: `pnpm test:coverage` (uploads to Codecov in CI)
 
-> CI automatically runs `pnpm validate`, `pnpm lint`, `pnpm test`, `pnpm test:coverage`, and uploads coverage artifacts.
+> CI automatically runs `pnpm validate`, `pnpm lint`, `pnpm test`,
+> `pnpm test:coverage`, and uploads coverage artifacts.
 
 ## HTML Validation
 
 - **Tool**: [`html-validate`](https://html-validate.org/)
 - **Configuration**: `configs/validation/html-validate.config.js`
-- **Ignores**: Node modules, build artifacts, Playwright reports, and coverage output
+- **Ignores**: Node modules, build artifacts, Playwright reports, and coverage
+  output
 - **Manual run**:
 
   ```bash
@@ -52,12 +56,14 @@ This guide documents the validation and quality gates used across the Infamous F
   pnpm exec eslint -c configs/linting/eslint.config.js "src/**/*.{js,jsx,ts,tsx}" "tests/**/*.{js,jsx,ts,tsx}"
   ```
 
-- **Type checking**: Packages expose `typecheck` scripts where applicable and are executed in CI with `pnpm -r --if-present typecheck`.
+- **Type checking**: Packages expose `typecheck` scripts where applicable and
+  are executed in CI with `pnpm -r --if-present typecheck`.
 
 ## Coverage & Reporting
 
 - Coverage is generated with `pnpm test:coverage` (workspace-aware).
-- `.github/workflows/ci.yml` uploads `lcov.info` artifacts to Codecov using `codecov/codecov-action`.
+- `.github/workflows/ci.yml` uploads `lcov.info` artifacts to Codecov using
+  `codecov/codecov-action`.
 - Coverage path filters are defined in `codecov.yml` for API and Web targets.
 
 ## Where Configurations Live
@@ -66,4 +72,5 @@ This guide documents the validation and quality gates used across the Infamous F
 - **Validation**: `configs/validation/` (HTML/CSS rules and ignores)
 - **Linting**: `configs/linting/eslint.config.js`
 
-Keep these locations in sync when adding new validators to ensure local and CI environments share the same rules.
+Keep these locations in sync when adding new validators to ensure local and CI
+environments share the same rules.

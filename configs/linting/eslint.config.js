@@ -6,10 +6,11 @@ import tsPlugin from "@typescript-eslint/eslint-plugin";
 // Custom rule: prevent direct imports from @infamous-freight/shared/src
 const noDirectSharedImportsRule = {
   meta: {
-    type: 'problem',
+    type: "problem",
     docs: {
-      description: 'Prevent direct imports from @infamous-freight/shared/src, use @infamous-freight/shared instead',
-      category: 'Best Practices',
+      description:
+        "Prevent direct imports from @infamous-freight/shared/src, use @infamous-freight/shared instead",
+      category: "Best Practices",
       recommended: true,
     },
   },
@@ -17,7 +18,7 @@ const noDirectSharedImportsRule = {
     return {
       ImportDeclaration(node) {
         const importSource = node.source.value;
-        if (importSource && importSource.includes('@infamous-freight/shared/src')) {
+        if (importSource && importSource.includes("@infamous-freight/shared/src")) {
           context.report({
             node,
             message: `Import from '@infamous-freight/shared' instead of '@infamous-freight/shared/src'. This bypasses the build process.`,
@@ -84,20 +85,22 @@ export default [
       "no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
       "no-var": "error",
       "prefer-const": "error",
-      "eqeqeq": ["error", "always"],
+      eqeqeq: ["error", "always"],
       "no-implicit-globals": "error",
-      // Custom rule for shared package imports
-      "no-direct-shared-imports": "error",
     },
   },
   // Apply custom rule globally
   {
     plugins: {
-      "local": {
+      local: {
         rules: {
           "no-direct-shared-imports": noDirectSharedImportsRule,
         },
       },
+    },
+    rules: {
+      // Custom rule for shared package imports
+      "local/no-direct-shared-imports": "error",
     },
   },
   {
@@ -129,12 +132,15 @@ export default [
       // All console methods are banned; use Pino logger instead
       "no-console": "error",
       "no-unused-vars": "off", // Handled by TypeScript
-      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/explicit-function-return-type": "off",
       "no-var": "error",
       "prefer-const": "error",
-      "eqeqeq": ["error", "always"],
+      eqeqeq: ["error", "always"],
     },
   },
   {
@@ -170,10 +176,7 @@ export default [
     },
   },
   {
-    files: [
-      "apps/web/**/*.{js,jsx,ts,tsx}",
-      "tests/e2e/**/*.{js,jsx,ts,tsx}",
-    ],
+    files: ["apps/web/**/*.{js,jsx,ts,tsx}", "tests/e2e/**/*.{js,jsx,ts,tsx}"],
     languageOptions: {
       globals: {
         window: "readonly",
@@ -183,12 +186,13 @@ export default [
         PerformanceObserver: "readonly",
       },
     },
+    rules: {
+      // Allow console in web/frontend for browser debugging
+      "no-console": "off",
+    },
   },
   {
-    files: [
-      "**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "**/*.{spec,test}.{js,jsx,ts,tsx}",
-    ],
+    files: ["**/__tests__/**/*.{js,jsx,ts,tsx}", "**/*.{spec,test}.{js,jsx,ts,tsx}"],
     languageOptions: {
       globals: {
         describe: "readonly",

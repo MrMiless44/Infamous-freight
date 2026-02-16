@@ -75,7 +75,8 @@ rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m])
 Create a Grafana dashboard to visualize Fly.io metrics:
 
 1. Add Prometheus data source: `https://infamous-freight-api.fly.dev:9091`
-2. Import dashboard: [Fly.io Node.js Dashboard](https://grafana.com/grafana/dashboards/)
+2. Import dashboard:
+   [Fly.io Node.js Dashboard](https://grafana.com/grafana/dashboards/)
 3. Configure alerts in Grafana
 
 ## Uptime Monitoring
@@ -204,11 +205,13 @@ flyctl apps restart infamous-freight-api
 
 ### Debugging Checklist
 
-- [ ] Check health endpoint: `curl https://infamous-freight-api.fly.dev/api/health`
+- [ ] Check health endpoint:
+      `curl https://infamous-freight-api.fly.dev/api/health`
 - [ ] View logs: `flyctl logs -a infamous-freight-api`
 - [ ] Check metrics: <https://fly.io/apps/infamous-freight-apps/api/metrics>
 - [ ] Verify secrets: `flyctl secrets list -a infamous-freight-api`
-- [ ] Test database: `flyctl ssh console -a infamous-freight-api -C "cd /app && npx prisma db pull"`
+- [ ] Test database:
+      `flyctl ssh console -a infamous-freight-api -C "cd /app && npx prisma db pull"`
 - [ ] Check recent deploys: `flyctl releases -a infamous-freight-api`
 
 ## Dashboard Recommendations
@@ -227,4 +230,5 @@ Monitor: <https://fly.io/apps/infamous-freight-api>
 
 ---
 
-**Best Practice**: Set up at least one external uptime monitor and configure email/Slack alerts for critical metrics.
+**Best Practice**: Set up at least one external uptime monitor and configure
+email/Slack alerts for critical metrics.

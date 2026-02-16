@@ -10,19 +10,24 @@
 
 ## EXECUTIVE SUMMARY
 
-**INFÆMOUS FREIGHT** proposes a **strategic investment + integration partnership** with Google to dominate the $900B global freight market using AI, cloud infrastructure, and Google's unmatched logistics network.
+**INFÆMOUS FREIGHT** proposes a **strategic investment + integration
+partnership** with Google to dominate the $900B global freight market using AI,
+cloud infrastructure, and Google's unmatched logistics network.
 
 ### Why Google Should Invest:
 
 1. **Massive TAM**: $900B+ global freight industry (unsolved by any tech player)
-2. **Proven Traction**: $8.2M ARR Month 1, 30% Free→Pro conversion, 10-15x LTV:CAC
-3. **Google Synergy**: 
+2. **Proven Traction**: $8.2M ARR Month 1, 30% Free→Pro conversion, 10-15x
+   LTV:CAC
+3. **Google Synergy**:
    - **Cloud**: We run on GCP (BigQuery, Vertex AI, Cloud Functions)
-   - **AI/ML**: Genesis synthetic intelligence built on Google's LLM infrastructure
+   - **AI/ML**: Genesis synthetic intelligence built on Google's LLM
+     infrastructure
    - **Maps**: Real-time optimization using Google Maps Platform
    - **Waymo Future**: Autonomous freight = network effect premium
 4. **Global Scale**: Infrastructure ready for 55+ countries
-5. **Network Effects**: Marketplace creates defensible moat (Stripe-for-Freight model)
+5. **Network Effects**: Marketplace creates defensible moat (Stripe-for-Freight
+   model)
 
 ### The Opportunity:
 
@@ -38,17 +43,20 @@
 ### 1.1 Market Opportunity
 
 **Global Freight Market**: $900B+ annually
+
 - Trucking: $700B (mostly fragmented, owner-operators)
 - Maritime: $100B
 - Rail: $50B
 - Air freight: $50B+
 
 **Technology Gap**: <5% of freight market uses modern software
+
 - Legacy TMS systems: 10+ year old tech
 - No unified AI operating system
 - Massive efficiency loss (30-40% of margins wasted)
 
 **Google's Position**:
+
 - 4.2M truck drivers globally (using Google Maps daily)
 - Logistics infrastructure (Google Cloud, AI/LLM, Maps Platform)
 - Scale: Google's network = 55+ countries instant reach
@@ -57,6 +65,7 @@
 ### 1.2 Why INFÆMOUS FREIGHT + Google = Winning Formula
 
 **Current State** (February 2026):
+
 - ✅ $8.2M ARR (Month 1)
 - ✅ 13,000+ users, 3,950 paying customers
 - ✅ 73% gross margin
@@ -66,6 +75,7 @@
 - ✅ Profitability path: Month 3
 
 **What Google Adds**:
+
 1. **Cloud Scale**: GCP infrastructure for 100M+ users
 2. **AI Capability**: Vertex AI + LLM integration (beyond what we built)
 3. **Maps Superpowers**: Real-time optimization, autonomous readiness
@@ -77,14 +87,14 @@
 
 **6-Month Path (with Google investment)**:
 
-| Month | ARR | Users | Paying | MRR | Google ROI |
-|-------|-----|-------|--------|-----|-----------|
-| M1 | $8.2M | 13K | 3.95K | $686K | — |
-| M2 | $22.7M | 35K | 10.8K | $1.9M | 4x |
-| M3 | $42.75M | 68K | 20.4K | $3.56M | 8x |
-| M4 | $76M | 120K | 36K | $6.33M | 12x |
-| M5 | $105M | 165K | 49.5K | $8.75M | 18x |
-| M6 | $143.6M | 225K | 67.5K | $11.97M | 25x+ |
+| Month | ARR     | Users | Paying | MRR     | Google ROI |
+| ----- | ------- | ----- | ------ | ------- | ---------- |
+| M1    | $8.2M   | 13K   | 3.95K  | $686K   | —          |
+| M2    | $22.7M  | 35K   | 10.8K  | $1.9M   | 4x         |
+| M3    | $42.75M | 68K   | 20.4K  | $3.56M  | 8x         |
+| M4    | $76M    | 120K  | 36K    | $6.33M  | 12x        |
+| M5    | $105M   | 165K  | 49.5K  | $8.75M  | 18x        |
+| M6    | $143.6M | 225K  | 67.5K  | $11.97M | 25x+       |
 
 **Google's $2M Investment = 25x ROI in 6 months** (plus equity upside)
 
@@ -95,6 +105,7 @@
 ### 2.1 Google Cloud Integration (Immediate)
 
 **Current Architecture**:
+
 - ✅ Multi-region deployed on GCP
 - ✅ PostgreSQL + Redis
 - ✅ Vertex AI for GenAI features
@@ -108,22 +119,22 @@ INFÆMOUS FREIGHT + GOOGLE CLOUD = Freight OS v2.0
    - Real-time analytics on freight patterns
    - Predictive pricing engine
    - Anomaly detection for fraud
-   
+
 2. Vertex AI Expansion ($150K credits)
    - Custom fine-tuned LLM for freight terminology
    - Autonomous dispatch optimization
    - Driver behavior prediction
-   
+
 3. Google Maps Platform ($200K credits)
    - Real-time route optimization
    - Traffic-aware delivery promises
    - Autonomous vehicle readiness
-   
+
 4. Cloud Functions + Pub/Sub
    - Serverless scaling for peak loads
    - Event-driven freight notifications
    - Real-time driver communication
-   
+
 5. Cloud Security (Compliance):
    - Confidential Computing for sensitive data
    - VPC Service Controls
@@ -137,14 +148,16 @@ Total Google Cloud Value: $450K+ in credits/services
 **Current State**: Genesis AI (synthetic intelligence) built with GPT-4 baseline
 
 **Google Upgrade**:
+
 - Replace OpenAI LLM with Gemini 2.0 (Google's flagship)
 - Leverage Gemini's logistics domain training
 - Use Vertex AI Agent Builder for autonomous workflows
 - Multi-modal (text + voice + images) dispatch commands
 
 **Example Workflow**:
+
 ```
-Driver: "Vertex, find me loads from Chicago to LA, 
+Driver: "Vertex, find me loads from Chicago to LA,
          high margin, avoid I-40, deliver by 6pm"
 
 Gemini 2.0 + Vertex AI:
@@ -152,23 +165,26 @@ Gemini 2.0 + Vertex AI:
 2. Queries BigQuery freight marketplace
 3. Calculates real-time routing (Maps API)
 4. Optimizes for margin + safety + efficiency
-5. Responds: "3 loads match. Loading dock 14. 
+5. Responds: "3 loads match. Loading dock 14.
    Leaves 2:15pm, 8pm arrival, $2,400 profit."
 ```
 
 ### 2.3 Waymo Autonomous Freight Integration
 
 **Phase 1 (Month 3)**: Waymo data integration
+
 - Anonymous autonomous vehicle readiness scores
 - Freight compatibility analysis
 - Premium pricing for autonomous-ready routes
 
 **Phase 2 (Month 6)**: Waymo partnership program
+
 - Exclusive autonomous freight network
 - Premium positioning for Waymo trucks
 - Revenue share: INFÆMOUS gets 5% of Waymo freight revenue
 
 **Phase 3 (Year 2)**: Autonomous-first logistics
+
 - INFÆMOUS becomes dispatch layer for Waymo network
 - Google + Waymo + INFÆMOUS = autonomous freight monopoly
 - Exit opportunity: Google acquires INFÆMOUS at $5B+ valuation
@@ -235,35 +251,35 @@ Operations: $300K (10%)
 
 **Tier 1: Direct Decision Makers**
 
-| Executive | Division | Focus | Relationship Path |
-|-----------|----------|-------|-------------------|
-| **Sundar Pichai** | CEO (Google/Alphabet) | Strategic investments, AI strategy | Through Google Ventures |
-| **Ruth Porat** | CFO | Investment decisions $2M+ | Through corporate development |
-| **Andrew Moore** | VP Google Cloud AI | AI/ML products, Vertex AI | Technical partnership lead |
-| **Scott Beaumont** | VP Google Cloud Sales | Enterprise customers | Cloud sales partnership |
+| Executive          | Division              | Focus                              | Relationship Path             |
+| ------------------ | --------------------- | ---------------------------------- | ----------------------------- |
+| **Sundar Pichai**  | CEO (Google/Alphabet) | Strategic investments, AI strategy | Through Google Ventures       |
+| **Ruth Porat**     | CFO                   | Investment decisions $2M+          | Through corporate development |
+| **Andrew Moore**   | VP Google Cloud AI    | AI/ML products, Vertex AI          | Technical partnership lead    |
+| **Scott Beaumont** | VP Google Cloud Sales | Enterprise customers               | Cloud sales partnership       |
 
 **Tier 2: Partnerships & Ventures**
 
-| Executive | Organization | Focus | Relationship Path |
-|-----------|--------------|-------|-------------------|
-| **AI Venture Lead** | Google Ventures | Strategic AI investments | Primary contact |
-| **Cloud Partnerships Dir** | Google Cloud | Strategic cloud partnerships | Cloud sales intro |
-| **Logistics VCs** | Google Ventures | Logistics/supply chain theme | Sector specialist |
+| Executive                  | Organization    | Focus                        | Relationship Path |
+| -------------------------- | --------------- | ---------------------------- | ----------------- |
+| **AI Venture Lead**        | Google Ventures | Strategic AI investments     | Primary contact   |
+| **Cloud Partnerships Dir** | Google Cloud    | Strategic cloud partnerships | Cloud sales intro |
+| **Logistics VCs**          | Google Ventures | Logistics/supply chain theme | Sector specialist |
 
 **Tier 3: Product Teams**
 
-| Team | Product | Integration | Contact |
-|------|---------|-------------|---------|
-| **Vertex AI Team** | Gemini, LLM  | Genesis AI upgrade | Technical discussion |
-| **Maps Platform** | Google Maps | Real-time optimization | Product partnership |
-| **Waymo** | Autonomous vehicles | Freight network data | Strategic partnership |
-| **BigQuery Team** | Data warehouse | Freight analytics | Data science lead |
+| Team               | Product             | Integration            | Contact               |
+| ------------------ | ------------------- | ---------------------- | --------------------- |
+| **Vertex AI Team** | Gemini, LLM         | Genesis AI upgrade     | Technical discussion  |
+| **Maps Platform**  | Google Maps         | Real-time optimization | Product partnership   |
+| **Waymo**          | Autonomous vehicles | Freight network data   | Strategic partnership |
+| **BigQuery Team**  | Data warehouse      | Freight analytics      | Data science lead     |
 
 ### 4.2 Warm Intro Paths
 
 **Best Warm Intro Paths to Google**:
 
-1. **Via Google Ventures**: 
+1. **Via Google Ventures**:
    - Existing Google Ventures portfolio founders
    - VCs that have Google relationships (Sequoia, Accel, TCV)
    - Request intro to AI investing team
@@ -278,7 +294,7 @@ Operations: $300K (10%)
    - Autonomous vehicle researchers
    - Supply chain strategy consultants
 
-4. **Via Anthropic/OpenAI Exit**: 
+4. **Via Anthropic/OpenAI Exit**:
    - Use existing relationships from AI partnership community
    - Reach through advisory board members with Google connections
 
@@ -288,12 +304,13 @@ Operations: $300K (10%)
 
 ### 5.1 Cold Email to Google Ventures
 
-**Subject**: INFÆMOUS FREIGHT ($8.2M ARR) + Google Cloud/Waymo strategic alignment
+**Subject**: INFÆMOUS FREIGHT ($8.2M ARR) + Google Cloud/Waymo strategic
+alignment
 
 ```
 Hi [Google Ventures Partner],
 
-I'm reaching out because we're building what could become 
+I'm reaching out because we're building what could become
 Google's infrastructure play in the $900B freight market.
 
 INFÆMOUS FREIGHT launched 4 weeks ago:
@@ -306,7 +323,7 @@ INFÆMOUS FREIGHT launched 4 weeks ago:
 
 We're 100% built on Google Cloud:
 • Vertex AI for Genesis synthetic intelligence
-• BigQuery for real-time freight analytics  
+• BigQuery for real-time freight analytics
 • Google Maps Platform for route optimization
 • Cloud Functions for autonomous dispatch
 
@@ -318,7 +335,7 @@ Strategic opportunity for Google:
 5. Gemini 2.0 AI use case validation
 
 We're raising $2-5M Series A with strategic partner focus.
-Google is the perfect fit—not just as investor, but as 
+Google is the perfect fit—not just as investor, but as
 infrastructure + AI + autonomous partner.
 
 Three reasons to move fast:
@@ -333,7 +350,7 @@ Santorio Miles
 CEO, INFÆMOUS FREIGHT
 santorio@infamous-freight.com
 
-P.S. — We can run the demo live on Google Cloud. 
+P.S. — We can run the demo live on Google Cloud.
 Real-time optimization + Vertex AI in action.
 ```
 
@@ -344,10 +361,10 @@ Real-time optimization + Vertex AI in action.
 ```
 Hi [Advisor/VC Contact],
 
-I'd love your help with an intro to [Google Ventures Partner Name] 
+I'd love your help with an intro to [Google Ventures Partner Name]
 at Google Ventures, or their logistics/AI investment team.
 
-Quick context: We just launched INFÆMOUS FREIGHT, the AI operating 
+Quick context: We just launched INFÆMOUS FREIGHT, the AI operating
 system for the $900B global freight industry.
 
 Month 1 metrics (actual):
@@ -363,7 +380,7 @@ Why this matters for Google:
 • Enterprise logistics sales channel for GCP
 • Clear path to $100M+ ARR
 
-We're raising $2-5M Series A and positioning Google as strategic 
+We're raising $2-5M Series A and positioning Google as strategic
 infrastructure + investment partner (not just a VC).
 
 [Fund] seems like a perfect fit because:
@@ -371,7 +388,7 @@ infrastructure + investment partner (not just a VC).
 2. You have logistics domain expertise
 3. Google Cloud is core to our product strategy
 
-Would an intro be possible? Happy to jump on a call if you want 
+Would an intro be possible? Happy to jump on a call if you want
 to learn more first.
 
 Thanks,
@@ -380,13 +397,14 @@ Santorio
 
 ### 5.3 Direct Email to Google Cloud Partnership Team
 
-**Subject**: Strategic partnership: INFÆMOUS FREIGHT + Google Cloud (freight industry)
+**Subject**: Strategic partnership: INFÆMOUS FREIGHT + Google Cloud (freight
+industry)
 
 ```
 Hi [Cloud Partnership Director],
 
-We're building the operating system for global freight on 
-Google Cloud infrastructure. I think there's a strategic 
+We're building the operating system for global freight on
+Google Cloud infrastructure. I think there's a strategic
 partnership opportunity here.
 
 INFÆMOUS FREIGHT status:
@@ -413,7 +431,7 @@ Partnership Opportunity:
 4. Sales integration: GCP enterprise customer outreach
 5. Waymo partnership: Autonomous freight readiness
 
-I'll be in SF next week. Would love to grab coffee and demo 
+I'll be in SF next week. Would love to grab coffee and demo
 the product live on your infrastructure.
 
 Are you free Thursday/Friday afternoon?
@@ -422,7 +440,7 @@ Santorio Miles
 CEO, INFÆMOUS FREIGHT
 santorio@infamous-freight.com
 
-P.S. — We're already a Google Cloud customer success story 
+P.S. — We're already a Google Cloud customer success story
 (multi-region, 99.9% uptime, SOC 2 ready). This formalizes that.
 ```
 
@@ -433,7 +451,7 @@ P.S. — We're already a Google Cloud customer success story
 ```
 Hi [Waymo Partnership Manager],
 
-I'm reaching out because INFÆMOUS FREIGHT could become the 
+I'm reaching out because INFÆMOUS FREIGHT could become the
 dispatch layer for Waymo's autonomous freight network.
 
 Quick context:
@@ -452,7 +470,7 @@ Mutual Benefits:
 ✅ INFÆMOUS: Premium autonomous route opportunities
 ✅ Google: Freight logistics + autonomous integration
 
-This is the dispatch layer that turns Waymo trucks into 
+This is the dispatch layer that turns Waymo trucks into
 a profitable network business (not just cool tech).
 
 Can we schedule a partnership discussion next week?
@@ -467,6 +485,7 @@ santorio@infamous-freight.com
 ## PART 6: GOOGLE PITCH DECK (10 Slides)
 
 ### **Slide 1: Title**
+
 ```
 INFÆMOUS FREIGHT × GOOGLE
 The AI-First Freight Operating System
@@ -476,6 +495,7 @@ Google Cloud + AI + Waymo Partnership
 ```
 
 ### **Slide 2: Market Opportunity**
+
 ```
 $900B Global Freight Market
 99% Fragmented (Zero Tech Monopoly)
@@ -493,6 +513,7 @@ Google's Position:
 ```
 
 ### **Slide 3: INFÆMOUS FREIGHT Traction**
+
 ```
 Month 1 Actuals (January 2026):
 • ARR: $8.2M ✅ Verified
@@ -507,6 +528,7 @@ Profitability: Month 3 (guaranteed)
 ```
 
 ### **Slide 4: Google Cloud Integration (Current)**
+
 ```
 Already Running on Google Cloud:
 ✅ Vertex AI (Genesis synthetic intelligence)
@@ -522,26 +544,28 @@ This is Google infrastructure as competitive moat.
 ```
 
 ### **Slide 5: Enhanced Google Integration (Funded)**
+
 ```
 With $2-5M Google Investment:
 
 1. Gemini 2.0 LLM Integration
    └─ Genesis AI becomes Google-powered
-   
+
 2. Vertex AI Advanced Features
    └─ Autonomous dispatch optimization
-   
+
 3. Maps Platform Superpowers
    └─ Real-time route + traffic + autonomous readiness
-   
+
 4. BigQuery Analytics
    └─ Freight market intelligence (network effect)
-   
+
 5. Waymo Autonomous Integration
    └─ Freight OS becomes dispatch layer for Waymo
 ```
 
 ### **Slide 6: Financial Projections (6-Month Path)**
+
 ```
 With Google Investment + Partnership:
 
@@ -557,6 +581,7 @@ Google's $2M Investment = 25x ROI in 6 months
 ```
 
 ### **Slide 7: Business Model**
+
 ```
 Multiple Revenue Streams (De-risked):
 
@@ -577,6 +602,7 @@ Enterprise Contracts: Custom pricing
 ```
 
 ### **Slide 8: Competitive Moat**
+
 ```
 Why INFÆMOUS FREIGHT Wins:
 
@@ -592,6 +618,7 @@ Defensible Until $5B+ Exit
 ```
 
 ### **Slide 9: Go-to-Market + Google Synergy**
+
 ```
 Customer Acquisition (Freemium):
 • Free tier removes friction
@@ -610,6 +637,7 @@ Result: 225K users, $11.97M MRR by Month 6
 ```
 
 ### **Slide 10: Investment Ask + Partnership**
+
 ```
 INVESTMENT STRUCTURE:
 
@@ -640,6 +668,7 @@ Google captures value through equity + cloud revenue
 ### 7.1 Why Google Should Want This
 
 **For Google Cloud Division**:
+
 - New enterprise vertical (logistics) with $900B TAM
 - 13,000+ new cloud customers (potential)
 - Vertex AI validation (LLM in freight optimization)
@@ -647,6 +676,7 @@ Google captures value through equity + cloud revenue
 - Competitive moat vs AWS (we chose GCP intentionally)
 
 **For Google Ventures**:
+
 - Pre-product fit → validated PMF in 4 weeks
 - 10-15x LTV:CAC (exceptional fundamentals)
 - Clear path to $100M+ ARR
@@ -654,17 +684,20 @@ Google captures value through equity + cloud revenue
 - Defensible moat (freemium + AI + network effects)
 
 **For Waymo Division**:
+
 - Perfect dispatch layer for autonomous network
 - Makes autonomous trucks profitable (not just cool)
 - Network effects: More trucks = Better freight matching
 - Long-term: Autonomous as premium = Higher margins
 
 **For Google Maps**:
+
 - New use case (freight-specific optimization)
 - Real-time integration (demand signal for traffic)
 - Platform expansion (freight market intelligence)
 
 **For Gemini/AI**:
+
 - Validation of LLM in operational optimization
 - Domain-specific AI (freight terminology + optimization)
 - Case study for enterprise AI applications
@@ -676,18 +709,21 @@ Google captures value through equity + cloud revenue
 ### 8.1 Why Google + INFÆMOUS > Other Options
 
 **vs. AWS/Azure**:
+
 - ✅ We're already on Google Cloud
 - ✅ Gemini 2.0 is superior to Claude/GPT for logistics
 - ✅ Maps integration = unique moat
 - ✅ Waymo integration = autonomous premium
 
 **vs. Stripe/etc (non-logistics investors)**:
+
 - ✅ Logistics expertise (Google Maps + Waymo)
 - ✅ Infrastructure moat (GCP)
 - ✅ AI capability (Vertex AI + Gemini)
 - ✅ Network effects (driver base + Waymo network)
 
 **vs. Logistics-Only VCs**:
+
 - ✅ Cloud infrastructure (scale)
 - ✅ AI/LLM partnership (product moat)
 - ✅ Autonomous readiness (future value creation)
@@ -698,14 +734,14 @@ Google captures value through equity + cloud revenue
 
 ## PART 9: INVESTMENT RISKS + MITIGATION
 
-| Risk | Mitigation |
-|------|------------|
-| **Market adoption slow** | Proven 40%+ weekly growth, viral loops working |
-| **Competitive response** | Freemium moat, marketplace network, Waymo integration |
-| **Execution risk** | Founder track record (proven exits), team in place |
-| **Regulatory** | SOC 2 ready, GDPR compliant, compliance roadmap (FedRAMP) |
-| **Customer retention** | 95% retention Month 2, NPS 80+ (exceptional) |
-| **Integration complexity** | Running on GCP already, Vertex AI native |
+| Risk                       | Mitigation                                                |
+| -------------------------- | --------------------------------------------------------- |
+| **Market adoption slow**   | Proven 40%+ weekly growth, viral loops working            |
+| **Competitive response**   | Freemium moat, marketplace network, Waymo integration     |
+| **Execution risk**         | Founder track record (proven exits), team in place        |
+| **Regulatory**             | SOC 2 ready, GDPR compliant, compliance roadmap (FedRAMP) |
+| **Customer retention**     | 95% retention Month 2, NPS 80+ (exceptional)              |
+| **Integration complexity** | Running on GCP already, Vertex AI native                  |
 
 ---
 
@@ -760,24 +796,29 @@ Target Close: April 1-5, 2026
 ### Direct Google Contacts to Target
 
 **Priority 1: Google Ventures**
+
 - Rajen Sheth, Partner (AI/Infrastructure)
 - Karim Faris, Partner (Logistics/Supply Chain)
 - [AI Investment Lead Name]
 
 **Priority 2: Google Cloud Sales/Partnerships**
+
 - Scott Beaumont, VP Google Cloud Sales
 - [Cloud Partnerships Director Name]
 - [Enterprise Logistics Account Lead]
 
 **Priority 3: Waymo**
+
 - [Waymo Partnerships Director]
 - [Waymo Freight Strategy Lead]
 
 **Priority 4: Vertex AI/Gemini Team**
+
 - Andrew Moore, VP Google Cloud AI
 - [Gemini Product Lead Name]
 
 **Warm Intro Paths**:
+
 - Through existing Google Cloud customer relationships
 - Through VCs with Google connections (Sequoia, Accel, TCV)
 - Through AI research community (OpenAI, Anthropic alumni)
@@ -821,28 +862,33 @@ ROI Multiple: 50-250x on $3M investment
 ### Quantified Value to Google
 
 **1. Cloud Revenue** (Direct)
+
 - 13,000+ new customer relationships
 - Average: $50K-$500K logistics spend/year = $10-50M TAM
 - Google take: $30-40% net margin
 - Year 1 cloud revenue: $10-15M
 
 **2. Waymo Integration Value**
+
 - Autonomous freight dispatch becomes core business
 - Premium pricing: 30-50% above fuel-only rates
 - Waymo network optimization: Millions in efficiency gains
 - Long-term: Autonomous as 60-80% margin business
 
 **3. Strategic Options Value**
+
 - Acquisition option: Pay $1B, Google owns freight OS ($5-10B TAM)
 - Competitive defense: Keep Amazon/Walmart out of logistics stack
 - Data moat: Freight market intelligence beats competitors
 
 **4. AI/Gemini Validation**
+
 - Proves Gemini in operational optimization
 - Enterprise AI case study
 - Marketing value: "Powered by Gemini" for freight market
 
 **5. Maps + BigQuery Expansion**
+
 - Freight-specific map services (premium tier)
 - Logistics intelligence products (new revenue line)
 - Enterprise analytics (BigQuery growth)
@@ -868,7 +914,8 @@ ROI Multiple: 50-250x on $3M investment
 
 ### One-Liner for Google Executives:
 
-> "We're building the Stripe of freight on your cloud infrastructure. Invest now, and we make Google the backbone of global logistics."
+> "We're building the Stripe of freight on your cloud infrastructure. Invest
+> now, and we make Google the backbone of global logistics."
 
 ---
 
@@ -879,6 +926,7 @@ ROI Multiple: 50-250x on $3M investment
 
 ---
 
-**Next Action**: Send this proposal + request warm intro to Google Ventures AI/Logistics team.
+**Next Action**: Send this proposal + request warm intro to Google Ventures
+AI/Logistics team.
 
 🚀 **Let's go make Google the infrastructure for global freight.**

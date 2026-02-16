@@ -2,7 +2,7 @@
 
 **Current Status**: Code deployed to `origin/main` (100% complete)  
 **Next Phase**: Production environment setup and deployment  
-**Timeline**: ~2-4 weeks depending on your infrastructure  
+**Timeline**: ~2-4 weeks depending on your infrastructure
 
 ---
 
@@ -11,6 +11,7 @@
 ### Phase 1: Environment & Infrastructure (Week 1)
 
 #### A. Set Up Production Environment
+
 - [ ] **Database**
   - [ ] Provision PostgreSQL instance (RDS, Cloud SQL, or self-managed)
   - [ ] Enable automated backups (daily minimum)
@@ -47,39 +48,42 @@
     - [ ] Slow query rate > 10/min
 
 #### B. Configure Secrets & Environment
+
 - [ ] **Generate Strong Secrets**
+
   ```bash
   # JWT Secret (32+ bytes)
   openssl rand -base64 32
-  
+
   # API encryption keys (if needed)
   openssl rand -base64 32
-  
+
   # Database password (32+ char, mixed case, numbers, symbols)
   openssl rand -base64 24
   ```
 
 - [ ] **Set Environment Variables**
+
   ```env
   # Auth
   JWT_SECRET=<generated-secret>
-  
+
   # Database
   DATABASE_URL=postgresql://user:pass@prod-db.example.com:5432/infamouz_freight
-  
+
   # API
   API_PORT=4000
   CORS_ORIGINS=https://app.domain.com,https://api.domain.com
-  
+
   # Performance
   SLOW_QUERY_THRESHOLD_MS=1000
   RESPONSE_CACHE_TTL_MINUTES=5
-  
+
   # Monitoring
   SENTRY_DSN=https://key@sentry.io/project-id
   SENTRY_ENVIRONMENT=production
   SENTRY_TRACES_SAMPLE_RATE=0.1
-  
+
   # Datadog (optional)
   DD_TRACE_ENABLED=true
   DD_ENV=production
@@ -93,20 +97,22 @@
   - [ ] Audit secret access
 
 #### C. Pre-Deploy Testing
+
 - [ ] **Test in Staging Environment**
+
   ```bash
   # Clone production setup in staging
   docker-compose -f docker-compose.yml up
-  
+
   # Run full test suite
   pnpm --filter api test
-  
+
   # Run integration tests
   pnpm --filter api test -- security-performance.integration.test.js
-  
+
   # Load test
   ab -n 1000 -c 10 http://staging-api.example.com/api/health
-  
+
   # Verify metrics
   curl http://staging-api.example.com/api/metrics | head -20
   ```
@@ -131,7 +137,9 @@
 ### Phase 2: CI/CD Pipeline (Week 1-2)
 
 #### A. GitHub Actions Setup
+
 - [ ] **Create `.github/workflows/deploy.yml`**
+
   ```yaml
   name: Deploy to Production
   on:
@@ -147,7 +155,7 @@
         - run: pnpm lint
         - run: pnpm check:types
         - run: pnpm --filter api test
-    
+
     deploy:
       needs: test
       runs-on: ubuntu-latest
@@ -165,6 +173,7 @@
   - [ ] Require branch protection on `main`
 
 #### B. Automated Deployments
+
 - [ ] **Configure Auto-Deployment**
   - [ ] After tests pass, automatically deploy to production
   - [ ] Or use manual deployment gate with approval
@@ -175,19 +184,23 @@
 ### Phase 3: Data & Database (Week 2)
 
 #### A. Database Setup
+
 - [ ] **Run Migrations**
+
   ```bash
   # In production environment
   DATABASE_URL=<production-url> pnpm prisma:migrate:deploy
   ```
 
 - [ ] **Verify Schema**
+
   ```bash
   # Check all tables exist
   psql "$DATABASE_URL" -c "\dt"
   ```
 
 - [ ] **Create Indexes** (for performance)
+
   ```sql
   -- Add indexes for common queries
   CREATE INDEX idx_shipments_user_id ON shipments(userId);
@@ -202,11 +215,13 @@
   - [ ] Document recovery process
 
 #### B. Data Validation
+
 - [ ] **Verify Data Integrity**
+
   ```sql
   -- Check for orphaned records
   SELECT COUNT(*) FROM shipments WHERE userId NOT IN (SELECT id FROM users);
-  
+
   -- Check for null constraints
   SELECT COUNT(*) FROM shipments WHERE userId IS NULL;
   ```
@@ -216,6 +231,7 @@
 ### Phase 4: Production Launch (Week 3)
 
 #### A. Pre-Launch Checklist
+
 - [ ] **Infrastructure Ready**
   - [ ] API servers configured and tested
   - [ ] Database ready with backups
@@ -237,14 +253,16 @@
   - [ ] Incident response plan documented
 
 #### B. Blue-Green Deployment Strategy
+
 - [ ] **Deploy to Blue Environment**
+
   ```bash
   # Deploy new version
   kubectl apply -f k8s/deployment-blue.yaml
-  
+
   # Wait for health checks to pass
   kubectl wait --for=condition=ready pod -l deployment=blue
-  
+
   # Verify metrics and health
   curl http://blue-api.internal.example.com/api/health
   ```
@@ -256,10 +274,11 @@
   - [ ] Validate auth flows
 
 - [ ] **Switch Traffic to Blue**
+
   ```bash
   # Update load balancer
   kubectl patch service api-service -p '{"spec":{"selector":{"deployment":"blue"}}}'
-  
+
   # Monitor for errors
   tail -f /var/log/api.log | grep error
   ```
@@ -271,7 +290,9 @@
   - [ ] Verify no rate limit spikes
 
 #### C. Rollback Plan (If Needed)
+
 - [ ] **Switch Back to Green**
+
   ```bash
   kubectl patch service api-service -p '{"spec":{"selector":{"deployment":"green"}}}'
   ```
@@ -286,6 +307,7 @@
 ### Phase 5: Post-Launch Monitoring (Week 3+)
 
 #### A. First Week Monitoring
+
 - [ ] **Daily Health Checks**
   - [ ] 9 AM: Check error rate (should be < 0.5%)
   - [ ] 12 PM: Check P95 latency (should be < 500ms)
@@ -306,6 +328,7 @@
   - [ ] Database connection pool depleted → Restart API, check for leaks
 
 #### B. Long-Term Monitoring
+
 - [ ] **Monthly Reviews**
   - [ ] Analyze performance trends
   - [ ] Review security logs
@@ -323,6 +346,7 @@
 ## 🔧 Specific Implementation Guides
 
 ### A. Docker Deployment
+
 ```bash
 # Build image
 docker build -f apps/api/Dockerfile -t infamouz-freight-api:latest .
@@ -336,6 +360,7 @@ docker-compose -f docker-compose.prod.yml up -d
 ```
 
 ### B. Kubernetes Deployment
+
 ```bash
 # Create namespace
 kubectl create namespace infamouz-freight
@@ -354,6 +379,7 @@ kubectl logs -f deployment/infamouz-freight-api -n infamouz-freight
 ```
 
 ### C. Heroku Deployment
+
 ```bash
 # Create app
 heroku create infamouz-freight-api
@@ -373,19 +399,20 @@ heroku logs --tail -a infamouz-freight-api
 
 ## 📊 Success Metrics (First 30 Days)
 
-| Metric | Target | Action if Failed |
-|--------|--------|------------------|
-| Uptime | > 99.9% | Review infra, add redundancy |
-| Error Rate | < 0.1% | Debug, check logs in Sentry |
-| P95 Latency | < 500ms | Check slow queries, scale DB |
-| Slow Query Rate | < 1/min | Optimize queries, add indexes |
-| Rate Limit Hits | < 1% of requests | Adjust limits or scale |
+| Metric          | Target           | Action if Failed              |
+| --------------- | ---------------- | ----------------------------- |
+| Uptime          | > 99.9%          | Review infra, add redundancy  |
+| Error Rate      | < 0.1%           | Debug, check logs in Sentry   |
+| P95 Latency     | < 500ms          | Check slow queries, scale DB  |
+| Slow Query Rate | < 1/min          | Optimize queries, add indexes |
+| Rate Limit Hits | < 1% of requests | Adjust limits or scale        |
 
 ---
 
 ## 🚨 Incident Response
 
 ### If API Goes Down
+
 1. **Immediate (0-5 min)**
    - Check health endpoint: `curl /api/health`
    - Check logs: `docker logs <container>` or `kubectl logs <pod>`
@@ -405,6 +432,7 @@ heroku logs --tail -a infamouz-freight-api
    - Temporary fix: Disable caching if cache is issue
 
 ### If Database is Slow
+
 1. Check slow query log
 2. Identify the query
 3. Add index if needed
@@ -412,6 +440,7 @@ heroku logs --tail -a infamouz-freight-api
 5. Contact DBA for optimization
 
 ### If Rate Limiting is Too Strict
+
 1. Check limits: `RATE_LIMIT_GENERAL_MAX=100`
 2. Increase if traffic is legitimate
 3. Add allowlist for internal services
@@ -445,6 +474,7 @@ heroku logs --tail -a infamouz-freight-api
 ## 📞 Support & Escalation
 
 ### On-Call Process
+
 1. **Level 1 (Tier 1)**: Application developer
    - Check logs, restart services
    - Escalate if not resolved in 15 min
@@ -481,11 +511,10 @@ heroku logs --tail -a infamouz-freight-api
 **Week 1**: Daily monitoring, bug fixes as needed  
 **Week 2**: Optimize based on real traffic patterns  
 **Week 3**: Plan next features based on feedback  
-**Week 4+**: Regular maintenance and improvements  
+**Week 4+**: Regular maintenance and improvements
 
 ---
 
 **Estimated Timeline**: 3-4 weeks from start to production-live  
 **Team Size**: 2-3 engineers (1 DevOps, 1-2 full-stack)  
 **Cost**: Varies by platform (RDS: $50-200/mo, Compute: $100-500/mo)
-

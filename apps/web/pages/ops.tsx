@@ -78,9 +78,7 @@ export default function Ops() {
         throw new Error(data?.error || "route-risk failed");
       }
       setRouteSummary(data.summary as RouteSummary);
-      setRouteWeather(
-        data.weather as { origin: WeatherPoint; destination: WeatherPoint },
-      );
+      setRouteWeather(data.weather as { origin: WeatherPoint; destination: WeatherPoint });
     } catch (e: any) {
       setErr(e?.message || "route-risk failed");
     } finally {
@@ -91,8 +89,7 @@ export default function Ops() {
   const card: React.CSSProperties = {
     borderRadius: 16,
     border: "1px solid rgba(200,0,0,0.35)",
-    background:
-      "linear-gradient(135deg, rgba(255,0,0,0.06), rgba(90,0,0,0.06))",
+    background: "linear-gradient(135deg, rgba(255,0,0,0.06), rgba(90,0,0,0.06))",
     padding: 18,
     boxShadow: "0 12px 40px rgba(120,0,0,0.08)",
   };
@@ -135,9 +132,7 @@ export default function Ops() {
           flexWrap: "wrap",
         }}
       >
-        <h1 style={{ margin: 0, color: "rgb(170,0,0)" }}>
-          {t(locale, "ops.title")}
-        </h1>
+        <h1 style={{ margin: 0, color: "rgb(170,0,0)" }}>{t(locale, "ops.title")}</h1>
         <span style={{ color: "#5a1a1a", opacity: 0.8 }}>
           {t(locale, "ops.subtitle")} (Open-Meteo by default)
         </span>
@@ -169,9 +164,7 @@ export default function Ops() {
         }}
       >
         <section style={card}>
-          <h2 style={{ marginTop: 0, color: "#5a1a1a" }}>
-            Weather at Coordinates
-          </h2>
+          <h2 style={{ marginTop: 0, color: "#5a1a1a" }}>Weather at Coordinates</h2>
           <div
             style={{
               display: "flex",
@@ -182,19 +175,11 @@ export default function Ops() {
           >
             <label style={{ color: "#4a0f0f" }}>
               Lat
-              <input
-                style={input}
-                value={lat}
-                onChange={(e) => setLat(e.target.value)}
-              />
+              <input style={input} value={lat} onChange={(e) => setLat(e.target.value)} />
             </label>
             <label style={{ color: "#4a0f0f" }}>
               Lon
-              <input
-                style={input}
-                value={lon}
-                onChange={(e) => setLon(e.target.value)}
-              />
+              <input style={input} value={lon} onChange={(e) => setLon(e.target.value)} />
             </label>
             <button style={button} onClick={fetchWeather} disabled={busy}>
               Fetch Weather
@@ -222,9 +207,7 @@ export default function Ops() {
         </section>
 
         <section style={card}>
-          <h2 style={{ marginTop: 0, color: "#5a1a1a" }}>
-            Route Risk (Origin → Destination)
-          </h2>
+          <h2 style={{ marginTop: 0, color: "#5a1a1a" }}>Route Risk (Origin → Destination)</h2>
           <div
             style={{
               display: "flex",
@@ -251,19 +234,11 @@ export default function Ops() {
             </label>
             <label style={{ color: "#4a0f0f" }}>
               D Lat
-              <input
-                style={input}
-                value={destLat}
-                onChange={(e) => setDestLat(e.target.value)}
-              />
+              <input style={input} value={destLat} onChange={(e) => setDestLat(e.target.value)} />
             </label>
             <label style={{ color: "#4a0f0f" }}>
               D Lon
-              <input
-                style={input}
-                value={destLon}
-                onChange={(e) => setDestLon(e.target.value)}
-              />
+              <input style={input} value={destLon} onChange={(e) => setDestLon(e.target.value)} />
             </label>
             <button style={button} onClick={fetchRoute} disabled={busy}>
               Compute Risk
@@ -332,11 +307,9 @@ export default function Ops() {
         </section>
       </div>
 
-      <div
-        style={{ marginTop: 14, opacity: 0.75, fontSize: 12, color: "#4a0f0f" }}
-      >
-        Next: plug in traffic (HERE/Google), telematics, and imagery providers
-        behind the same API surface.
+      <div style={{ marginTop: 14, opacity: 0.75, fontSize: 12, color: "#4a0f0f" }}>
+        Next: plug in traffic (HERE/Google), telematics, and imagery providers behind the same API
+        surface.
       </div>
     </main>
   );

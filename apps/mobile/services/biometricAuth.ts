@@ -24,8 +24,7 @@ export class BiometricAuthService {
         return false;
       }
 
-      this.supportedTypes =
-        await LocalAuthentication.supportedAuthenticationTypesAsync();
+      this.supportedTypes = await LocalAuthentication.supportedAuthenticationTypesAsync();
       this.isAvailable = true;
 
       return true;
@@ -66,31 +65,18 @@ export class BiometricAuthService {
 
   async setBiometricEnabled(enabled: boolean): Promise<void> {
     try {
-      await AsyncStorage.setItem(
-        BIOMETRIC_ENABLED_KEY,
-        enabled ? "true" : "false",
-      );
+      await AsyncStorage.setItem(BIOMETRIC_ENABLED_KEY, enabled ? "true" : "false");
     } catch (error) {
       console.error("Failed to save biometric preference:", error);
     }
   }
 
   getBiometricType(): string {
-    if (
-      this.supportedTypes.includes(
-        LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION,
-      )
-    ) {
+    if (this.supportedTypes.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION)) {
       return "Face ID";
-    } else if (
-      this.supportedTypes.includes(
-        LocalAuthentication.AuthenticationType.FINGERPRINT,
-      )
-    ) {
+    } else if (this.supportedTypes.includes(LocalAuthentication.AuthenticationType.FINGERPRINT)) {
       return "Touch ID / Fingerprint";
-    } else if (
-      this.supportedTypes.includes(LocalAuthentication.AuthenticationType.IRIS)
-    ) {
+    } else if (this.supportedTypes.includes(LocalAuthentication.AuthenticationType.IRIS)) {
       return "Iris Recognition";
     }
     return "Biometric";

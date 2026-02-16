@@ -50,7 +50,8 @@
 
 ### **Step 1: Add Token to GitHub** (2 minutes)
 
-**URL**: https://github.com/MrMiless44/Infamous-freight-enterprises/settings/secrets/actions
+**URL**:
+https://github.com/MrMiless44/Infamous-freight-enterprises/settings/secrets/actions
 
 **Actions**:
 
@@ -78,7 +79,8 @@
 
 ### **Step 3: Watch Deployment** (10-15 minutes)
 
-**Monitor at**: https://github.com/MrMiless44/Infamous-freight-enterprises/actions
+**Monitor at**:
+https://github.com/MrMiless44/Infamous-freight-enterprises/actions
 
 **Expected stages**:
 
@@ -376,7 +378,8 @@ flyctl auth token
 
 ### **Right Now**:
 
-1. Open: https://github.com/MrMiless44/Infamous-freight-enterprises/settings/secrets/actions
+1. Open:
+   https://github.com/MrMiless44/Infamous-freight-enterprises/settings/secrets/actions
 2. Add secret: `FLY_API_TOKEN`
 3. Paste token value
 4. Click "Add secret"

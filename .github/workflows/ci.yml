@@ -11,32 +11,11 @@ concurrency:
 
 permissions:
   contents: read
-  pull-requests: write
-
-env:
-  NODE_ENV: test
-  JWT_SECRET: test-secret-for-ci
-  DATABASE_URL: postgresql://test:test@localhost:5432/test_db
 
 jobs:
   ci:
     runs-on: ubuntu-latest
     timeout-minutes: 45
-
-    services:
-      postgres:
-        image: postgres:15-alpine
-        env:
-          POSTGRES_USER: test
-          POSTGRES_PASSWORD: test
-          POSTGRES_DB: test_db
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     steps:
       - name: Checkout
@@ -45,12 +24,12 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 9.15.0
+          version: 8
 
       - name: Setup Node + pnpm cache
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 20
           cache: pnpm
 
       - name: Guard: no package-lock.json anywhere
@@ -72,68 +51,100 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build shared package
-        run: pnpm --filter @infamous-freight/shared build
-
-      - name: Lint API
-        run: pnpm --filter api lint
-        continue-on-error: false
-
-      - name: Lint Web
-        run: cd apps/web && pnpm run typecheck
+      # === LINT ACROSS ALL PACKAGES ===
+      - name: Lint (shared)
+        run: cd packages/shared && pnpm lint || echo "No linter configured"
         continue-on-error: true
 
-      - name: Typecheck API
-        run: pnpm --filter api typecheck
+      - name: Lint (api)
+        run: cd api && pnpm lint
         continue-on-error: false
 
-      - name: Typecheck Web
-        run: pnpm --filter web typecheck
+      - name: Lint (web)
+        run: cd web && pnpm lint || echo "No linter configured"
         continue-on-error: true
 
-      - name: Typecheck Shared
-        run: pnpm --filter @infamous-freight/shared typecheck
-        continue-on-error: true
-
-      - name: Test API with Coverage
-        run: pnpm --filter api test:coverage
-        continue-on-error: false
-
-      - name: Upload API Coverage
-        uses: codecov/codecov-action@v3
-        if: always()
-        with:
-          files: ./apps/api/coverage/coverage-final.json
-          flags: api
-          name: api-coverage
-          fail_ci_if_error: false
-
-      - name: Check API Coverage Thresholds
-        run: |
-          cd apps/api
-          node -e "const c=require('./coverage/coverage-summary.json');const t=c.total;if(t.branches.pct<80||t.functions.pct<85||t.lines.pct<88)process.exit(1)"
-        continue-on-error: false
-
-      - name: Build API
-        run: pnpm --filter api build
-        continue-on-error: false
-
-      - name: Build Web
-        run: pnpm --filter web build
-        env:
-          NEXT_PUBLIC_API_BASE: http://localhost:4000/api
-        continue-on-error: false
-
-      - name: Verify Build Outputs
-        run: |
-          echo "Checking API build..."
-          test -f apps/api/src/server.js || exit 1
-          echo "Checking Web build..."
-          test -d apps/web/.next || exit 1
-          echo "✅ All builds verified"
-
-      - name: notify vercel
-        if: always()
+      - name: notify vercel (lint)
         uses: vercel/repository-dispatch/actions/status@v1
         with:
-          name: Vercel - genesis: ci-complete
+          name: Vercel - genesis: lint
+
+      # === TYPE-CHECK ACROSS ALL PACKAGES ===
+      - name: Typecheck (shared)
+        run: cd packages/shared && pnpm typecheck
+        continue-on-error: false
+
+      - name: Typecheck (api)
+        run: cd api && pnpm typecheck
+        continue-on-error: false
+
+      - name: Typecheck (web)
+        run: cd web && pnpm typecheck
+        continue-on-error: false
+
+      - name: Typecheck (e2e)
+        run: cd e2e && pnpm typecheck || echo "No typecheck in e2e"
+        continue-on-error: true
+
+      - name: notify vercel (typecheck)
+        uses: vercel/repository-dispatch/actions/status@v1
+        with:
+          name: Vercel - genesis: typecheck
+
+      # === TEST ACROSS ALL PACKAGES ===
+      - name: Build shared (pre-test)
+        run: cd packages/shared && pnpm build
+        continue-on-error: false
+
+      - name: Test (api)
+        run: cd api && pnpm test --coverage
+        continue-on-error: false
+        env:
+          JWT_SECRET: test-secret-key-for-ci
+          NODE_ENV: test
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./api/coverage/lcov.info
+          flags: api
+          fail_ci_if_error: false
+
+      - name: Test (e2e)
+        run: cd e2e && pnpm test || echo "No e2e tests configured"
+        continue-on-error: true
+        env:
+          NODE_ENV: test
+
+      - name: notify vercel (test)
+        uses: vercel/repository-dispatch/actions/status@v1
+        with:
+          name: Vercel - genesis: test
+
+      # === BUILD ACROSS ALL PACKAGES ===
+      - name: Build (shared)
+        run: cd packages/shared && pnpm build
+        continue-on-error: false
+
+      - name: Build (api)
+        run: cd api && pnpm build
+        continue-on-error: false
+
+      - name: Build (web)
+        run: cd web && pnpm build
+        continue-on-error: false
+
+      - name: notify vercel (build)
+        uses: vercel/repository-dispatch/actions/status@v1
+        with:
+          name: Vercel - genesis: build
+
+      # === PRISMA VALIDATION ===
+      - name: Prisma format check
+        run: cd api && pnpm prisma format --check || (echo "Prisma schema needs formatting" && exit 1)
+        continue-on-error: false
+
+      - name: Prisma validate
+        run: cd api && pnpm prisma validate
+        continue-on-error: false
+

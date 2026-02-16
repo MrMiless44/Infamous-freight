@@ -57,7 +57,17 @@ export const acceptJobSchema = z.object({
 
 export const updateJobStatusSchema = z.object({
   jobId: z.string().min(1, "Job ID required"),
-  status: z.enum(["DRAFT", "REQUIRES_PAYMENT", "OPEN", "HELD", "ACCEPTED", "PICKED_UP", "DELIVERED", "COMPLETED", "CANCELED"]),
+  status: z.enum([
+    "DRAFT",
+    "REQUIRES_PAYMENT",
+    "OPEN",
+    "HELD",
+    "ACCEPTED",
+    "PICKED_UP",
+    "DELIVERED",
+    "COMPLETED",
+    "CANCELED",
+  ]),
 });
 
 // Type exports for TypeScript

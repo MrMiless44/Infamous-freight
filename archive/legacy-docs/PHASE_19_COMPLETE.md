@@ -2,67 +2,78 @@
 
 **Status: ✅ PRODUCTION READY**
 
-Infæmous Freight is now an enterprise-grade logistics platform with row-level security, per-tenant encryption, and comprehensive audit trails. This phase upgrades from SaaS to **Fortune-500 enterprise readiness**.
+Infæmous Freight is now an enterprise-grade logistics platform with row-level
+security, per-tenant encryption, and comprehensive audit trails. This phase
+upgrades from SaaS to **Fortune-500 enterprise readiness**.
 
 ---
 
 ## 📋 What's Implemented
 
 ### 1. **Multi-Tenant Data Model** ✅
-   - **Organization table**: Every customer (broker, shipper, fleet) is an org
-   - **User ↔ Organization**: Each user belongs to exactly one org
-   - **Job ↔ Organization**: Each job belongs to the shipper's org
-   - **OrgAuditLog**: Customer-visible audit trail (separate from operational events)
-   - All existing data (shipments, payments) migrated to tenant context
+
+- **Organization table**: Every customer (broker, shipper, fleet) is an org
+- **User ↔ Organization**: Each user belongs to exactly one org
+- **Job ↔ Organization**: Each job belongs to the shipper's org
+- **OrgAuditLog**: Customer-visible audit trail (separate from operational
+  events)
+- All existing data (shipments, payments) migrated to tenant context
 
 ### 2. **Row-Level Security (RLS)** ✅
-   - **Tenant-scoped Prisma client** (`apps/api/src/db/tenant.ts`): 
-     - Every query automatically filtered by `organizationId`
-     - Developers can't accidentally leak cross-tenant data
-     - Covers: Job, User, JobEvent, OrgAuditLog
-   - **One tenant can never read another's data** — enforced in code
+
+- **Tenant-scoped Prisma client** (`apps/api/src/db/tenant.ts`):
+  - Every query automatically filtered by `organizationId`
+  - Developers can't accidentally leak cross-tenant data
+  - Covers: Job, User, JobEvent, OrgAuditLog
+- **One tenant can never read another's data** — enforced in code
 
 ### 3. **Tenant-Aware Authentication** ✅
-   - **JWT claim**: `org_id` identifies the customer's organization
-   - **Auth extraction** (`requireOrganization` middleware):
-     - Validates JWT includes `org_id`
-     - Extracts into `req.auth.organizationId`
-     - Block requests missing organization claim
-   - **Dev fallback**: `x-org-id` header for local testing
+
+- **JWT claim**: `org_id` identifies the customer's organization
+- **Auth extraction** (`requireOrganization` middleware):
+  - Validates JWT includes `org_id`
+  - Extracts into `req.auth.organizationId`
+  - Block requests missing organization claim
+- **Dev fallback**: `x-org-id` header for local testing
 
 ### 4. **Per-Tenant Encryption Keys** ✅
-   - **KMS module** (`apps/api/src/security/kms.ts`):
-     - Master key (MASTER_KEY env var) encrypts data keys
-     - Each org gets unique AES-256 data key (256-bit encryption)
-     - Data key stored encrypted in `Organization.dataKeyEnc`
-     - **Functions**:
-       - `generateDataKey()` — Create + encrypt new key for org
-       - `decryptDataKey(encryptedKeyB64)` — Decrypt with master
-       - `encryptField(dataKey, plaintext)` — AES-256-GCM field-level crypto
-       - `decryptField(dataKey, encryptedB64)` — Decrypt field
-   - **Field-level encryption**: Sensitive data (SSN, bank tokens, payout details) encrypted per-tenant
+
+- **KMS module** (`apps/api/src/security/kms.ts`):
+  - Master key (MASTER_KEY env var) encrypts data keys
+  - Each org gets unique AES-256 data key (256-bit encryption)
+  - Data key stored encrypted in `Organization.dataKeyEnc`
+  - **Functions**:
+    - `generateDataKey()` — Create + encrypt new key for org
+    - `decryptDataKey(encryptedKeyB64)` — Decrypt with master
+    - `encryptField(dataKey, plaintext)` — AES-256-GCM field-level crypto
+    - `decryptField(dataKey, encryptedB64)` — Decrypt field
+- **Field-level encryption**: Sensitive data (SSN, bank tokens, payout details)
+  encrypted per-tenant
 
 ### 5. **Tenant Audit Logs** ✅
-   - **OrgAuditLog table**: Customer-visible audit trail
-   - **Separate from JobEvent**: 
-     - JobEvent = operational (system-generated)
-     - OrgAuditLog = compliance (user actions, sensitive events)
-   - **Audit helper** (`apps/api/src/audit/orgAuditLog.ts`):
-     - `logAuditEvent()` — Log single event
-     - `logAuditEventsBatch()` — Atomic multi-event logging
-     - `getAuditLogs()` — Query with filtering (action, entity, date range)
-     - **Constants**: `AUDIT_ACTIONS`, `AUDIT_ENTITIES` (prevents string literal bugs)
-     - **CSV export**: `auditLogsToCSV()` for spreadsheet analysis
+
+- **OrgAuditLog table**: Customer-visible audit trail
+- **Separate from JobEvent**:
+  - JobEvent = operational (system-generated)
+  - OrgAuditLog = compliance (user actions, sensitive events)
+- **Audit helper** (`apps/api/src/audit/orgAuditLog.ts`):
+  - `logAuditEvent()` — Log single event
+  - `logAuditEventsBatch()` — Atomic multi-event logging
+  - `getAuditLogs()` — Query with filtering (action, entity, date range)
+  - **Constants**: `AUDIT_ACTIONS`, `AUDIT_ENTITIES` (prevents string literal
+    bugs)
+  - **CSV export**: `auditLogsToCSV()` for spreadsheet analysis
 
 ### 6. **Audit Exports (Enterprise Compliance)** ✅
-   - **Export module** (`apps/api/src/admin/auditExport.ts`):
-     - `exportOrgAudit()` — Export logs for period (JSON/CSV/JSONL)
-     - `streamOrgAudit()` — Stream large exports without memory spike
-     - `exportFilteredAudit()` — Export with action/entity/user filters
-     - `generateDPAReport()` — Data Processing Agreement compliance report
-   - **Formats**: JSON (structured), CSV (Excel), JSONL (streaming)
-   - **Redaction**: Automatic PII redaction (passwords, tokens, SSN) in exports
-   - **SOC2 compliance**: Exportable audit trail for auditors
+
+- **Export module** (`apps/api/src/admin/auditExport.ts`):
+  - `exportOrgAudit()` — Export logs for period (JSON/CSV/JSONL)
+  - `streamOrgAudit()` — Stream large exports without memory spike
+  - `exportFilteredAudit()` — Export with action/entity/user filters
+  - `generateDPAReport()` — Data Processing Agreement compliance report
+- **Formats**: JSON (structured), CSV (Excel), JSONL (streaming)
+- **Redaction**: Automatic PII redaction (passwords, tokens, SSN) in exports
+- **SOC2 compliance**: Exportable audit trail for auditors
 
 ---
 
@@ -106,14 +117,14 @@ Infæmous Freight is now an enterprise-grade logistics platform with row-level s
 
 ## 🔐 Security Guarantees
 
-| Control | Implemented | Verified |
-|---------|-------------|----------|
-| **Tenant Isolation** | ✅ Row-level Prisma extension | Tenants can't access other data |
-| **Data Encryption** | ✅ AES-256-GCM per tenant | Master key never leaves server memory |
-| **Audit Trail** | ✅ OrgAuditLog + exportable | Every sensitive action logged |
-| **PII Protection** | ✅ Field-level encryption | SSN, bank, tokens encrypted |
-| **Compliance Export** | ✅ JSON/CSV/JSONL + redaction | SOC2 auditors can verify |
-| **Key Rotation Ready** | ✅ Decryption abstracted | Can re-encrypt keys without app changes |
+| Control                | Implemented                   | Verified                                |
+| ---------------------- | ----------------------------- | --------------------------------------- |
+| **Tenant Isolation**   | ✅ Row-level Prisma extension | Tenants can't access other data         |
+| **Data Encryption**    | ✅ AES-256-GCM per tenant     | Master key never leaves server memory   |
+| **Audit Trail**        | ✅ OrgAuditLog + exportable   | Every sensitive action logged           |
+| **PII Protection**     | ✅ Field-level encryption     | SSN, bank, tokens encrypted             |
+| **Compliance Export**  | ✅ JSON/CSV/JSONL + redaction | SOC2 auditors can verify                |
+| **Key Rotation Ready** | ✅ Decryption abstracted      | Can re-encrypt keys without app changes |
 
 ---
 
@@ -149,17 +160,17 @@ router.get(
     try {
       const orgId = req.auth.organizationId; // From JWT org_id claim
       const tprisma = tenantPrisma(prisma, orgId); // Row-level security
-      
+
       // This automatically filters by organizationId
       const jobs = await tprisma.job.findMany({
         include: { shipper: true, driver: true },
       });
-      
+
       res.json(jobs);
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 ```
 
@@ -174,14 +185,14 @@ async function updateUserPII(userId: string, orgId: string, pii: any) {
     where: { id: orgId },
     select: { dataKeyEnc: true },
   });
-  
+
   // Decrypt data key with master key
   const dataKey = decryptDataKey(org!.dataKeyEnc!);
-  
+
   // Encrypt sensitive fields
   const encryptedSSN = encryptField(dataKey, pii.ssn);
   const encryptedBank = encryptField(dataKey, pii.bankAccount);
-  
+
   // Store encrypted
   await prisma.user.update({
     where: { id: userId },
@@ -196,12 +207,16 @@ async function updateUserPII(userId: string, orgId: string, pii: any) {
 ### 4. **Log Audit Events**
 
 ```typescript
-import { logAuditEvent, AUDIT_ACTIONS, AUDIT_ENTITIES } from "@/audit/orgAuditLog";
+import {
+  logAuditEvent,
+  AUDIT_ACTIONS,
+  AUDIT_ENTITIES,
+} from "@/audit/orgAuditLog";
 
 router.post("/jobs/:id/accept", authenticate, async (req, res, next) => {
   try {
     const job = await acceptJob(jobId);
-    
+
     // Log for compliance
     await logAuditEvent(prisma, {
       organizationId: req.auth.organizationId,
@@ -215,7 +230,7 @@ router.post("/jobs/:id/accept", authenticate, async (req, res, next) => {
         estimatedMinutes: job.estimatedMinutes,
       },
     });
-    
+
     res.json(job);
   } catch (err) {
     next(err);
@@ -235,20 +250,20 @@ router.get(
   async (req, res, next) => {
     try {
       const { from, to, format } = req.query; // ISO dates, format: json|csv|jsonl
-      
+
       const result = await exportOrgAudit(prisma, {
         organizationId: req.auth.organizationId,
         from: new Date(from),
         to: new Date(to),
         format: format as "json" | "csv" | "jsonl",
       });
-      
+
       // Stream file to client
       res.download(result.filePath, result.fileName);
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 ```
 
@@ -317,7 +332,8 @@ MASTER_KEY=your_32_byte_base64_key_here
 }
 ```
 
-**Required for Phase 19**: `org_id` claim. Without it, `requireOrganization` blocks the request.
+**Required for Phase 19**: `org_id` claim. Without it, `requireOrganization`
+blocks the request.
 
 ---
 
@@ -331,11 +347,11 @@ describe("tenantPrisma", () => {
     const org1 = await prisma.organization.create({
       data: { name: "Org1", slug: "org1" },
     });
-    
+
     const org2 = await prisma.organization.create({
       data: { name: "Org2", slug: "org2" },
     });
-    
+
     // Create job in org1
     const job = await prisma.job.create({
       data: {
@@ -345,13 +361,13 @@ describe("tenantPrisma", () => {
         // ... other fields
       },
     });
-    
+
     // Org2's tenant client should not see org1's job
     const org2Client = tenantPrisma(prisma, org2.id);
     const found = await org2Client.job.findUnique({
       where: { id: job.id },
     });
-    
+
     expect(found).toBeNull();
   });
 });
@@ -367,7 +383,7 @@ it("should log job acceptance", async () => {
       action: "JOB_ACCEPTED",
     },
   });
-  
+
   expect(logs).toHaveLength(1);
   expect(logs[0].metadata.wave).toBe(2);
 });
@@ -383,7 +399,7 @@ it("should export audit logs as CSV", async () => {
     to: new Date("2026-01-31"),
     format: "csv",
   });
-  
+
   expect(result.format).toBe("csv");
   expect(result.recordCount).toBeGreaterThan(0);
   const content = readFileSync(result.filePath, "utf-8");
@@ -456,18 +472,22 @@ it("should export audit logs as CSV", async () => {
 ## 📞 Support & Troubleshooting
 
 ### "No organization" Error
+
 **Cause**: JWT missing `org_id` claim  
 **Fix**: Update JWT issuance to include org_id
 
 ### Decryption Failed
+
 **Cause**: MASTER_KEY mismatch or missing  
 **Fix**: Verify MASTER_KEY is set and consistent
 
 ### Audit Logs Not Appearing
+
 **Cause**: Migration not applied  
 **Fix**: Run `pnpm prisma migrate deploy`
 
 ### Tenant Isolation Breach
+
 **Cause**: Prisma query not using tenantPrisma()  
 **Fix**: Audit all routes, wrap with tenantPrisma(prisma, orgId)
 
@@ -483,6 +503,7 @@ it("should export audit logs as CSV", async () => {
 4. **Compliance**: SOC2/DPA-ready with automated report generation
 
 **Fortune-500 procurement teams now see:**
+
 - ✅ Multi-tenancy with proven isolation
 - ✅ Encryption at rest (per-tenant keys)
 - ✅ Audit trail (tamper-evident + exportable)
@@ -492,4 +513,4 @@ it("should export audit logs as CSV", async () => {
 
 ---
 
-*Generated: 2026-01-16 | Phase 19 Complete | Status: Production Ready*
+_Generated: 2026-01-16 | Phase 19 Complete | Status: Production Ready_

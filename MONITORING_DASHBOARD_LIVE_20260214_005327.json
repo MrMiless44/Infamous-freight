@@ -53,11 +53,7 @@
       "Revenue tracking error",
       "Signup processing failed"
     ],
-    "warning": [
-      "Email campaign < 10% open rate",
-      "Conversion rate < 2%",
-      "Web Lighthouse < 70"
-    ]
+    "warning": ["Email campaign < 10% open rate", "Conversion rate < 2%", "Web Lighthouse < 70"]
   },
   "dashboard_urls": {
     "internal": "https://localhost:3000/dashboard",

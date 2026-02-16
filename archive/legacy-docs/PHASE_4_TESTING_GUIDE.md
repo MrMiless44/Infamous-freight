@@ -3,6 +3,7 @@
 ## Quick Start
 
 ### Prerequisites
+
 - Job created and paid via Stripe (Phase 2 complete)
 - Job should be OPEN status
 - At least 1 eligible driver with:
@@ -15,6 +16,7 @@
 ## Test 1: Single Driver Accept (Happy Path)
 
 ### Setup
+
 ```bash
 # 1. Ensure you have a paid OPEN job
 JOB_ID="your_job_id"
@@ -23,6 +25,7 @@ DRIVER_ID="your_driver_id"
 ```
 
 ### Execute
+
 ```bash
 curl -X POST http://localhost:4000/api/marketplace/jobs/$JOB_ID/accept \
   -H "Authorization: Bearer $DRIVER_JWT" \
@@ -30,6 +33,7 @@ curl -X POST http://localhost:4000/api/marketplace/jobs/$JOB_ID/accept \
 ```
 
 ### Expected Response
+
 ```json
 {
   "ok": true,
@@ -55,6 +59,7 @@ curl -X POST http://localhost:4000/api/marketplace/jobs/$JOB_ID/accept \
 ```
 
 ### Verify
+
 ```bash
 # Check job status updated
 curl -X GET http://localhost:4000/api/marketplace/jobs/$JOB_ID/timeline \
@@ -70,6 +75,7 @@ curl -X GET http://localhost:4000/api/marketplace/jobs/$JOB_ID/timeline \
 ## Test 2: Race Condition (Two Drivers Simultaneously)
 
 ### Setup
+
 ```bash
 JOB_ID="your_open_job_id"
 DRIVER1_JWT="token_for_driver_1"
@@ -84,6 +90,7 @@ DRIVER2_ID="driver_2"
 ```
 
 ### Execute (Terminal 1)
+
 ```bash
 curl -X POST http://localhost:4000/api/marketplace/jobs/$JOB_ID/accept \
   -H "Authorization: Bearer $DRIVER1_JWT" \
@@ -91,6 +98,7 @@ curl -X POST http://localhost:4000/api/marketplace/jobs/$JOB_ID/accept \
 ```
 
 ### Execute (Terminal 2 - at the same time)
+
 ```bash
 curl -X POST http://localhost:4000/api/marketplace/jobs/$JOB_ID/accept \
   -H "Authorization: Bearer $DRIVER2_JWT" \
@@ -98,7 +106,9 @@ curl -X POST http://localhost:4000/api/marketplace/jobs/$JOB_ID/accept \
 ```
 
 ### Expected Results
+
 **One succeeds** (example: Driver 1):
+
 ```json
 {
   "ok": true,
@@ -111,6 +121,7 @@ curl -X POST http://localhost:4000/api/marketplace/jobs/$JOB_ID/accept \
 ```
 
 **One fails** (example: Driver 2):
+
 ```json
 {
   "error": "Job was just accepted by another driver"
@@ -118,20 +129,25 @@ curl -X POST http://localhost:4000/api/marketplace/jobs/$JOB_ID/accept \
 ```
 
 ### Why This Matters
-- Without race-safe logic: Both might think they accepted it, job assigned to second updater
-- With race-safe logic: Only one succeeds, second fails immediately with clear message
+
+- Without race-safe logic: Both might think they accepted it, job assigned to
+  second updater
+- With race-safe logic: Only one succeeds, second fails immediately with clear
+  message
 
 ---
 
 ## Test 3: Ineligible Driver (Lacks Vehicle)
 
 ### Setup
+
 ```bash
 DRIVER_NO_VEHICLE_ID="driver_without_van"
 JOB_REQUIRES_VAN="job_needing_van"
 ```
 
 ### Execute
+
 ```bash
 curl -X POST http://localhost:4000/api/marketplace/jobs/$JOB_REQUIRES_VAN/accept \
   -H "Authorization: Bearer $DRIVER_NO_VEHICLE_JWT" \
@@ -139,6 +155,7 @@ curl -X POST http://localhost:4000/api/marketplace/jobs/$JOB_REQUIRES_VAN/accept
 ```
 
 ### Expected Response
+
 ```json
 {
   "error": "No compatible vehicle available"
@@ -146,6 +163,7 @@ curl -X POST http://localhost:4000/api/marketplace/jobs/$JOB_REQUIRES_VAN/accept
 ```
 
 ### Verify in Database
+
 ```bash
 # Job status should NOT change
 psql $DATABASE_URL
@@ -158,20 +176,23 @@ SELECT status, driver_id FROM "Job" WHERE id = '$JOB_REQUIRES_VAN';
 ## Test 4: Inactive Driver
 
 ### Setup
+
 ```bash
 # Deactivate a driver
 psql $DATABASE_URL
-UPDATE "DriverProfile" SET "isActive" = false 
+UPDATE "DriverProfile" SET "isActive" = false
 WHERE "userId" = 'driver_id_to_deactivate';
 ```
 
 ### Execute
+
 ```bash
 curl -X POST http://localhost:4000/api/marketplace/jobs/$JOB_ID/accept \
   -H "Authorization: Bearer $INACTIVE_DRIVER_JWT"
 ```
 
 ### Expected Response
+
 ```json
 {
   "error": "Driver is not active"
@@ -183,6 +204,7 @@ curl -X POST http://localhost:4000/api/marketplace/jobs/$JOB_ID/accept \
 ## Test 5: Missing Driver Location
 
 ### Setup
+
 ```bash
 # Create a driver without location
 # Or clear location:
@@ -192,12 +214,14 @@ WHERE "userId" = 'driver_id';
 ```
 
 ### Execute
+
 ```bash
 curl -X POST http://localhost:4000/api/marketplace/jobs/$JOB_ID/accept \
   -H "Authorization: Bearer $NO_LOCATION_JWT"
 ```
 
 ### Expected Response
+
 ```json
 {
   "error": "Driver location not available"
@@ -209,6 +233,7 @@ curl -X POST http://localhost:4000/api/marketplace/jobs/$JOB_ID/accept \
 ## Test 6: Unpaid Job (No Payment Record)
 
 ### Setup
+
 ```bash
 # Create a job but DON'T pay
 # Or manually reset payment status:
@@ -218,12 +243,14 @@ WHERE "jobId" = 'job_id';
 ```
 
 ### Execute
+
 ```bash
 curl -X POST http://localhost:4000/api/marketplace/jobs/$UNPAID_JOB_ID/accept \
   -H "Authorization: Bearer $DRIVER_JWT"
 ```
 
 ### Expected Response
+
 ```json
 {
   "error": "Job payment not confirmed"
@@ -235,12 +262,14 @@ curl -X POST http://localhost:4000/api/marketplace/jobs/$UNPAID_JOB_ID/accept \
 ## Test 7: View My Jobs
 
 ### Execute
+
 ```bash
 curl -X GET http://localhost:4000/api/marketplace/drivers/$DRIVER_ID/jobs \
   -H "Authorization: Bearer $DRIVER_JWT" | jq
 ```
 
 ### Expected Response
+
 ```json
 {
   "ok": true,
@@ -260,6 +289,7 @@ curl -X GET http://localhost:4000/api/marketplace/drivers/$DRIVER_ID/jobs \
 ```
 
 ### Verify Authorization
+
 ```bash
 # Driver 2 tries to view Driver 1's jobs
 curl -X GET http://localhost:4000/api/marketplace/drivers/$DRIVER1_ID/jobs \
@@ -274,12 +304,14 @@ curl -X GET http://localhost:4000/api/marketplace/drivers/$DRIVER1_ID/jobs \
 ## Test 8: Admin Can View Any Driver's Jobs
 
 ### Execute
+
 ```bash
 curl -X GET http://localhost:4000/api/marketplace/drivers/$DRIVER1_ID/jobs \
   -H "Authorization: Bearer $ADMIN_JWT"
 ```
 
 ### Expected Response
+
 ```json
 {
   "ok": true,
@@ -293,6 +325,7 @@ curl -X GET http://localhost:4000/api/marketplace/drivers/$DRIVER1_ID/jobs \
 ## Stress Test: 10 Drivers Race for Same Job
 
 ### Setup Script
+
 ```bash
 #!/bin/bash
 
@@ -324,19 +357,23 @@ wait
 ```
 
 ### Expected Outcome
-- **1 driver**: HTTP 200 with `{ ok: true, job: { status: "ACCEPTED", driverId: "..." } }`
-- **9 drivers**: HTTP 400 with `{ error: "Job was just accepted by another driver" }`
+
+- **1 driver**: HTTP 200 with
+  `{ ok: true, job: { status: "ACCEPTED", driverId: "..." } }`
+- **9 drivers**: HTTP 400 with
+  `{ error: "Job was just accepted by another driver" }`
 - **Job status**: ACCEPTED with 1 assigned driver
 - **JobEvent table**: Exactly 1 ACCEPTED event (no duplicates)
 
 ### Verify Results
+
 ```bash
 psql $DATABASE_URL
 -- Check job only has one driver
 SELECT id, status, driver_id FROM "Job" WHERE id = '$JOB_ID';
 
 -- Check exactly one ACCEPTED event
-SELECT COUNT(*) FROM "JobEvent" 
+SELECT COUNT(*) FROM "JobEvent"
 WHERE job_id = '$JOB_ID' AND type = 'ACCEPTED';
 # Should show: 1
 ```
@@ -349,25 +386,25 @@ WHERE job_id = '$JOB_ID' AND type = 'ACCEPTED';
 psql $DATABASE_URL
 
 -- View all events for a job
-SELECT type, actor_user_id, message, created_at 
-FROM "JobEvent" 
+SELECT type, actor_user_id, message, created_at
+FROM "JobEvent"
 WHERE job_id = 'job_123'
 ORDER BY created_at;
 
 -- Check job status and driver
-SELECT id, status, driver_id, updated_at 
-FROM "Job" 
+SELECT id, status, driver_id, updated_at
+FROM "Job"
 WHERE id = 'job_123';
 
 -- View all jobs for a driver
-SELECT id, status, shipper_id, price_usd, created_at 
-FROM "Job" 
+SELECT id, status, shipper_id, price_usd, created_at
+FROM "Job"
 WHERE driver_id = 'driver_456'
 ORDER BY created_at DESC;
 
 -- Count ACCEPTED events
-SELECT type, COUNT(*) 
-FROM "JobEvent" 
+SELECT type, COUNT(*)
+FROM "JobEvent"
 WHERE type = 'ACCEPTED'
 GROUP BY type;
 ```
@@ -377,24 +414,32 @@ GROUP BY type;
 ## Common Issues & Fixes
 
 ### Issue: "Job not found"
+
 - Verify JOB_ID exists in database
 - Check you're using correct job ID (not shipper ID, etc.)
 
 ### Issue: "Driver not found"
+
 - Verify DRIVER_ID exists
 - Check driver role is set to "DRIVER"
 
 ### Issue: "Driver is not active"
-- Activate driver: `UPDATE "DriverProfile" SET "isActive" = true WHERE "userId" = 'driver_id'`
+
+- Activate driver:
+  `UPDATE "DriverProfile" SET "isActive" = true WHERE "userId" = 'driver_id'`
 
 ### Issue: "Driver location not available"
-- Set driver location: `UPDATE "DriverProfile" SET "lastLat" = 37.7749, "lastLng" = -122.4194 WHERE "userId" = 'driver_id'`
+
+- Set driver location:
+  `UPDATE "DriverProfile" SET "lastLat" = 37.7749, "lastLng" = -122.4194 WHERE "userId" = 'driver_id'`
 
 ### Issue: "No compatible vehicle available"
+
 - Add vehicle for driver with matching type and capacity
 - Verify vehicle type matches job's requiredVehicle
 
 ### Issue: Race test shows both drivers accepted it
+
 - Verify using `updateMany` with compound WHERE clause (not `update`)
 - Check code in router.js lines 500-515
 - Ensure transaction isolation level is correct
@@ -404,12 +449,14 @@ GROUP BY type;
 ## Performance Notes
 
 **Expected Latencies**:
+
 - Accept (successful): ~80-120ms
 - Accept (race loss): ~40-60ms
 - List jobs (10 items): ~20-40ms
 - List jobs (100 items): ~40-70ms
 
 **If Slow**:
+
 1. Check database indexes: `\d "Job"` in psql
 2. Verify network latency: `curl -w "@curl-format.txt" ...`
 3. Check API server logs for errors
@@ -435,4 +482,3 @@ GROUP BY type;
 ---
 
 **Phase 4 Testing Complete!** 🎉
-

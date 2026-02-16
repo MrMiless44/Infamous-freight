@@ -264,9 +264,7 @@
       "title": "Rate Limit Blocks",
       "id": 7,
       "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "targets": [
-        { "expr": "sum(rate(rate_limit_block_total[5m]))", "refId": "A" }
-      ],
+      "targets": [{ "expr": "sum(rate(rate_limit_block_total[5m]))", "refId": "A" }],
       "fieldConfig": { "defaults": { "unit": "req/s" }, "overrides": [] },
       "options": {
         "legend": { "displayMode": "hidden" },
@@ -318,9 +316,7 @@
       "title": "Uptime (API)",
       "id": 9,
       "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "targets": [
-        { "expr": "avg_over_time(up{service=\"api\"}[24h])", "refId": "A" }
-      ],
+      "targets": [{ "expr": "avg_over_time(up{service=\"api\"}[24h])", "refId": "A" }],
       "fieldConfig": {
         "defaults": {
           "unit": "percentunit",

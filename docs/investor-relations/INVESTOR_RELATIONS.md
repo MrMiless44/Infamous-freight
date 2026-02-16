@@ -332,20 +332,14 @@ Distribution: Board + main investors
 
 ## Success Metrics (Series A Pitch - EOY 2026)
 
-✅ ARR: $5.4M (3x from $1.8M)
-✅ Growth: 200%+ YoY
-✅ LTV/CAC: 7.2x+ (excellent)
-✅ CAC Payback: 5 months (efficient)
-✅ Rule of 40: 190%+ (strong)
-✅ Gross Margin: 75%+ (healthy)
-✅ Clear path to profitability
-✅ Strong team with domain expertise
-✅ Defensible competitive position
-✅ $25M Series A closed
+✅ ARR: $5.4M (3x from $1.8M) ✅ Growth: 200%+ YoY ✅ LTV/CAC: 7.2x+ (excellent)
+✅ CAC Payback: 5 months (efficient) ✅ Rule of 40: 190%+ (strong) ✅ Gross
+Margin: 75%+ (healthy) ✅ Clear path to profitability ✅ Strong team with domain
+expertise ✅ Defensible competitive position ✅ $25M Series A closed
 
 ---
 
 **Status**: ✅ INVESTOR RELATIONS & FUNDRAISING PREP READY
 
-Financial metrics, pitch deck, data room, and investor updates to prepare
-for $25M Series A fundraising in Q4 2026 / Q1 2027.
+Financial metrics, pitch deck, data room, and investor updates to prepare for
+$25M Series A fundraising in Q4 2026 / Q1 2027.

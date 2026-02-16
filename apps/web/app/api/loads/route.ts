@@ -11,9 +11,7 @@ const Create = z.object({
   dropoff_location: z.string().optional(),
 });
 
-function mapErrorToResponse(
-  err: unknown,
-): { status: number; body: Record<string, unknown> } {
+function mapErrorToResponse(err: unknown): { status: number; body: Record<string, unknown> } {
   const anyErr = err as any;
 
   const status: number =
@@ -51,7 +49,7 @@ export async function GET(req: Request) {
   } catch (error) {
     // Fallback error handling to avoid unhandled promise rejections
     // and to provide a consistent JSON error response.
-    // eslint-disable-next-line no-console
+     
     console.error("GET /api/loads failed", error);
     const { status, body } = mapErrorToResponse(error);
     return jsonWithRequestId(req, body, { status });
@@ -69,11 +67,10 @@ export async function POST(req: Request) {
       .select("*")
       .single();
 
-    if (error)
-      return jsonWithRequestId(req, { error: error.message }, { status: 400 });
+    if (error) return jsonWithRequestId(req, { error: error.message }, { status: 400 });
     return jsonWithRequestId(req, { ok: true, load: data });
   } catch (error) {
-    // eslint-disable-next-line no-console
+     
     console.error("POST /api/loads failed", error);
     const { status, body } = mapErrorToResponse(error);
     return jsonWithRequestId(req, body, { status });

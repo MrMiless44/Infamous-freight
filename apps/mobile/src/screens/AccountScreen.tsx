@@ -3,7 +3,7 @@
  * Manages profile info, payment methods, preferences
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   ScrollView,
@@ -14,10 +14,11 @@ import {
   TextInput,
   ActivityIndicator,
   Alert,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { colors, spacing, typography } from '../theme';
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { colors, spacing, typography } from "../theme";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface DriverProfile {
   name: string;
@@ -25,7 +26,7 @@ interface DriverProfile {
   phone: string;
   rating: number;
   totalJobs: number;
-  accountStatus: 'active' | 'suspended' | 'pending';
+  accountStatus: "active" | "suspended" | "pending";
 }
 
 interface AccountScreenProps {
@@ -37,7 +38,7 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   const [profile, setProfile] = useState<DriverProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
-  
+
   // Settings
   const [pushNotifications, setPushNotifications] = useState(true);
   const [emailNotifications, setEmailNotifications] = useState(true);
@@ -51,36 +52,60 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
   const loadProfile = async () => {
     try {
       setLoading(true);
-      // TODO: Replace with actual API call
-      // const response = await fetch(`${API_BASE_URL}/api/driver/profile`);
-      // const data = await response.json();
+      const apiBaseUrl = process.env.EXPO_PUBLIC_API_URL || process.env.API_BASE_URL;
+      let profileData: DriverProfile | null = null;
+
+      if (apiBaseUrl) {
+        try {
+          const response = await fetch(`${apiBaseUrl}/api/users/me`);
+          if (response.ok) {
+            const result = await response.json();
+            if (result?.ok && result.user) {
+              profileData = {
+                name: result.user.name || "Driver",
+                email: result.user.email,
+                phone: result.user.phone || "Not provided",
+                rating: 0,
+                totalJobs: Array.isArray(result.user.shipments) ? result.user.shipments.length : 0,
+                accountStatus: "active",
+              };
+            }
+          }
+        } catch (apiError) {
+          console.warn("Profile API unavailable, using mock data:", apiError);
+        }
+      }
 
       const mockProfile: DriverProfile = {
-        name: 'John Smith',
-        email: 'john@example.com',
-        phone: '+1 (555) 123-4567',
+        name: "John Smith",
+        email: "john@example.com",
+        phone: "+1 (555) 123-4567",
         rating: 4.8,
         totalJobs: 156,
-        accountStatus: 'active',
+        accountStatus: "active",
       };
-      setProfile(mockProfile);
+      setProfile(profileData || mockProfile);
     } catch (error) {
-      console.error('Error loading profile:', error);
+      console.error("Error loading profile:", error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleLogout = () => {
-    Alert.alert('Logout', 'Are you sure you want to logout?', [
-      { text: 'Cancel', onPress: () => {} },
+    Alert.alert("Logout", "Are you sure you want to logout?", [
+      { text: "Cancel", onPress: () => {} },
       {
-        text: 'Logout',
-        onPress: () => {
-          // TODO: Call logout API and clear session
-          navigation.replace('Login');
+        text: "Logout",
+        onPress: async () => {
+          try {
+            await AsyncStorage.multiRemove(["authToken", "refreshToken"]);
+          } catch (storageError) {
+            console.warn("Failed to clear auth storage:", storageError);
+          }
+          navigation.replace("Login");
         },
-        style: 'destructive',
+        style: "destructive",
       },
     ]);
   };
@@ -103,7 +128,7 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
         <View style={styles.avatarContainer}>
           <Text style={styles.avatar}>JS</Text>
         </View>
-        
+
         <View style={styles.profileInfo}>
           <Text style={styles.profileName}>{profile.name}</Text>
           <View style={styles.ratingContainer}>
@@ -111,9 +136,22 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
             <Text style={styles.rating}>{profile.rating}</Text>
             <Text style={styles.ratingCount}>({profile.totalJobs} jobs)</Text>
           </View>
-          
-          <View style={[styles.statusBadge, { backgroundColor: profile.accountStatus === 'active' ? colors.successLight : colors.warningLight }]}>
-            <Text style={[styles.statusText, { color: profile.accountStatus === 'active' ? colors.success : colors.warning }]}>
+
+          <View
+            style={[
+              styles.statusBadge,
+              {
+                backgroundColor:
+                  profile.accountStatus === "active" ? colors.successLight : colors.warningLight,
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.statusText,
+                { color: profile.accountStatus === "active" ? colors.success : colors.warning },
+              ]}
+            >
               {profile.accountStatus.charAt(0).toUpperCase() + profile.accountStatus.slice(1)}
             </Text>
           </View>
@@ -123,7 +161,7 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
       {/* Contact Info Section */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Contact Information</Text>
-        
+
         <View style={styles.infoRow}>
           <MaterialCommunityIcons name="email" size={20} color={colors.primary} />
           <Text style={styles.infoText}>{profile.email}</Text>
@@ -138,7 +176,7 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
       {/* Documents Section */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Documents & Compliance</Text>
-        
+
         <TouchableOpacity style={styles.documentRow}>
           <MaterialCommunityIcons name="file-document" size={20} color={colors.primary} />
           <View style={styles.documentInfo}>
@@ -170,7 +208,7 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
       {/* Notification Settings */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Notifications</Text>
-        
+
         <View style={styles.settingRow}>
           <View style={styles.settingLabelContainer}>
             <MaterialCommunityIcons name="bell" size={20} color={colors.primary} />
@@ -201,13 +239,15 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
       {/* Load Preferences */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Load Preferences</Text>
-        
+
         <View style={styles.settingRow}>
           <View style={styles.settingLabelContainer}>
             <MaterialCommunityIcons name="lightning-bolt" size={20} color={colors.primary} />
             <View>
               <Text style={styles.settingLabel}>Auto-Accept Direct Loads</Text>
-              <Text style={styles.settingDescription}>Automatically accept posted loads over $2/mile</Text>
+              <Text style={styles.settingDescription}>
+                Automatically accept posted loads over $2/mile
+              </Text>
             </View>
           </View>
           <Switch
@@ -238,7 +278,7 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
       {/* Payment Settings */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Payment Methods</Text>
-        
+
         <TouchableOpacity style={styles.paymentRow}>
           <MaterialCommunityIcons name="bank" size={20} color={colors.primary} />
           <View style={styles.paymentInfo}>
@@ -261,7 +301,7 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
       {/* Help & Support */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Help & Support</Text>
-        
+
         <TouchableOpacity style={styles.helpRow}>
           <MaterialCommunityIcons name="help-circle" size={20} color={colors.primary} />
           <Text style={styles.helpText}>Help Center</Text>
@@ -282,10 +322,7 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({ navigation }) => {
       </View>
 
       {/* Logout Button */}
-      <TouchableOpacity
-        style={styles.logoutButton}
-        onPress={handleLogout}
-      >
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <MaterialCommunityIcons name="logout" size={20} color={colors.danger} />
         <Text style={styles.logoutButtonText}>Logout</Text>
       </TouchableOpacity>
@@ -299,8 +336,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   profileHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: colors.white,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.xl,
@@ -312,14 +349,14 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: spacing.lg,
   },
   avatar: {
     ...typography.h2,
     color: colors.white,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   profileInfo: {
     flex: 1,
@@ -330,29 +367,29 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xs,
   },
   ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: spacing.xs,
     marginBottom: spacing.sm,
   },
   rating: {
     ...typography.body,
     color: colors.warning,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   ratingCount: {
     ...typography.caption,
     color: colors.gray600,
   },
   statusBadge: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
     borderRadius: 12,
   },
   statusText: {
     ...typography.caption,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   section: {
     marginTop: spacing.lg,
@@ -365,8 +402,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   infoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: spacing.md,
     paddingVertical: spacing.md,
     backgroundColor: colors.white,
@@ -380,8 +417,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   documentRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: spacing.lg,
     paddingVertical: spacing.md,
     backgroundColor: colors.white,
@@ -395,7 +432,7 @@ const styles = StyleSheet.create({
   documentName: {
     ...typography.body,
     color: colors.gray900,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   documentStatus: {
     ...typography.caption,
@@ -403,9 +440,9 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
   settingRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     backgroundColor: colors.white,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
@@ -414,14 +451,14 @@ const styles = StyleSheet.create({
   },
   settingLabelContainer: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: spacing.md,
   },
   settingLabel: {
     ...typography.body,
     color: colors.gray900,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   settingDescription: {
     ...typography.caption,
@@ -429,8 +466,8 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
   paymentRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: spacing.lg,
     paddingVertical: spacing.md,
     backgroundColor: colors.white,
@@ -444,7 +481,7 @@ const styles = StyleSheet.create({
   paymentLabel: {
     ...typography.body,
     color: colors.gray900,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   paymentStatus: {
     ...typography.caption,
@@ -452,8 +489,8 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
   helpRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: spacing.lg,
     paddingVertical: spacing.md,
     backgroundColor: colors.white,
@@ -473,15 +510,15 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.lg,
     backgroundColor: colors.dangerLight,
     borderRadius: 8,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     gap: spacing.md,
   },
   logoutButtonText: {
     ...typography.button,
     color: colors.danger,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
 

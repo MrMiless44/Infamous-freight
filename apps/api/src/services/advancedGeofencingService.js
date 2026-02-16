@@ -3,7 +3,7 @@
  * Multi-zone geofencing, automated actions, safety corridors, real-time alerts
  */
 
-const logger = require("../middleware/logger");
+const { logger } = require("../middleware/logger");
 
 class AdvancedGeofencingService {
     constructor() {
@@ -261,7 +261,7 @@ class AdvancedGeofencingService {
                         corridorId,
                         corridorName: corridor.name,
                         deviationDistance: Math.round(distanceFromCorridor),
-                        severity: this.getDeviation Severity(distanceFromCorridor, corridor.width),
+                        severity: this.getDeviationSeverity(distanceFromCorridor, corridor.width),
                         timestamp: location.timestamp,
                         location,
                     };

@@ -1,6 +1,8 @@
 # Developer Onboarding Guide
 
-This guide summarizes the essentials for contributing to the Infamous Freight Enterprise monorepo, with links to the most relevant configurations and commands.
+This guide summarizes the essentials for contributing to the Infamous Freight
+Enterprise monorepo, with links to the most relevant configurations and
+commands.
 
 ## Repository Layout
 

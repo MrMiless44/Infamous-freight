@@ -17,17 +17,15 @@ export default function ConnectPage() {
   useEffect(() => setToken(getToken()), []);
   useEffect(() => {
     if (!token) return;
-    api("/connect/status", {}, token).then(setStatus).catch(() => {});
+    api("/connect/status", {}, token)
+      .then(setStatus)
+      .catch(() => {});
   }, [token]);
 
   async function start() {
     setErr("");
     try {
-      const res = await api(
-        "/connect/create",
-        { method: "POST", body: JSON.stringify({}) },
-        token,
-      );
+      const res = await api("/connect/create", { method: "POST", body: JSON.stringify({}) }, token);
       window.location.href = res.url;
     } catch (e: any) {
       setErr(e.message);
@@ -87,12 +85,10 @@ export default function ConnectPage() {
                 <strong>Onboarded:</strong> {String(status?.onboarded ?? false)}
               </div>
               <div>
-                <strong>Details Submitted:</strong>{" "}
-                {String(status?.details_submitted ?? false)}
+                <strong>Details Submitted:</strong> {String(status?.details_submitted ?? false)}
               </div>
               <div>
-                <strong>Payouts Enabled:</strong>{" "}
-                {String(status?.payouts_enabled ?? false)}
+                <strong>Payouts Enabled:</strong> {String(status?.payouts_enabled ?? false)}
               </div>
             </div>
           </div>

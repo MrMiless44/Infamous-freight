@@ -11,11 +11,9 @@ export default function AuthButton() {
     const supabase = supabaseBrowser();
     supabase.auth.getSession().then(({ data }: any) => setAuthed(!!data.session));
 
-    const { data: sub } = supabase.auth.onAuthStateChange(
-      (_event: string, session: any) => {
-        setAuthed(!!session);
-      }
-    );
+    const { data: sub } = supabase.auth.onAuthStateChange((_event: string, session: any) => {
+      setAuthed(!!session);
+    });
 
     return () => sub.subscription.unsubscribe();
   }, []);

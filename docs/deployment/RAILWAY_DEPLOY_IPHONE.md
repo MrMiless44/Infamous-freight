@@ -2,8 +2,7 @@
 
 ## Step 1: Visit Railway Website
 
-Open Safari on your iPhone and go to:
-**<https://railway.app>**
+Open Safari on your iPhone and go to: **<https://railway.app>**
 
 ## Step 2: Sign In with GitHub
 

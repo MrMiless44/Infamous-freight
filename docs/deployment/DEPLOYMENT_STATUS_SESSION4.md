@@ -33,21 +33,21 @@ b5d69eb feat(sentry): add proper instrumentation at top of server
 
 ### Fly.io API (infamous-freight-ai)
 
-| Aspect              | Status             | Details                                        |
-| ------------------- | ------------------ | ---------------------------------------------- |
+| Aspect              | Status             | Details                                          |
+| ------------------- | ------------------ | ------------------------------------------------ |
 | **Health Endpoint** | ⏳ 502 Bad Gateway | <https://infamous-freight-ai.fly.dev/api/health> |
-| **Deployment**      | ⏳ Rebuilding      | Picked up latest commits from main             |
-| **Build Stage**     | ⏳ In Progress     | Docker image building                          |
-| **Expected**        | ~2-5 min           | Should complete soon                           |
-| **Machines**        | ✅ Ready           | 65 machines across 15+ regions                 |
+| **Deployment**      | ⏳ Rebuilding      | Picked up latest commits from main               |
+| **Build Stage**     | ⏳ In Progress     | Docker image building                            |
+| **Expected**        | ~2-5 min           | Should complete soon                             |
+| **Machines**        | ✅ Ready           | 65 machines across 15+ regions                   |
 
 ### Vercel Web App
 
-| Aspect        | Status                                                                            | Details                               |
-| ------------- | --------------------------------------------------------------------------------- | ------------------------------------- |
-| **Web App**   | ⚠️ SSO Protected                                                                  | HTTP 401 Unauthorized                 |
+| Aspect        | Status                                                                              | Details                               |
+| ------------- | ----------------------------------------------------------------------------------- | ------------------------------------- |
+| **Web App**   | ⚠️ SSO Protected                                                                    | HTTP 401 Unauthorized                 |
 | **URL**       | <https://infamous-freight-enterprises-e1mn358un-santorio-miles-projects.vercel.app> |                                       |
-| **Next Step** | Manual disable                                                                    | Go to Vercel dashboard to disable SSO |
+| **Next Step** | Manual disable                                                                      | Go to Vercel dashboard to disable SSO |
 
 ---
 
@@ -81,14 +81,17 @@ b5d69eb feat(sentry): add proper instrumentation at top of server
 ### Immediate (Auto)
 
 - Fly deployment to complete (~1-5 minutes)
-- Check health endpoint again: `curl https://infamous-freight-ai.fly.dev/api/health`
+- Check health endpoint again:
+  `curl https://infamous-freight-ai.fly.dev/api/health`
 
 ### Manual (Optional)
 
 1. **Disable Vercel SSO**:
-   - Visit: <https://vercel.com/santorio-miles-projects/infamous-freight-enterprises/settings/deployment-protection>
+   - Visit:
+     <https://vercel.com/santorio-miles-projects/infamous-freight-enterprises/settings/deployment-protection>
    - Toggle: "Vercel Authentication" to OFF
-   - Then test: `curl https://infamous-freight-enterprises-e1mn358un-santorio-miles-projects.vercel.app/api/health`
+   - Then test:
+     `curl https://infamous-freight-enterprises-e1mn358un-santorio-miles-projects.vercel.app/api/health`
 
 ---
 
@@ -156,4 +159,5 @@ curl -X POST https://infamous-freight-ai.fly.dev/api/users \
 
 ---
 
-**Recommendation**: Wait 5 minutes and re-check Fly health endpoint to confirm deployment succeeded.
+**Recommendation**: Wait 5 minutes and re-check Fly health endpoint to confirm
+deployment succeeded.

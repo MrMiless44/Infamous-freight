@@ -31,18 +31,10 @@ export async function POST(req: Request) {
     // Handle request validation errors explicitly
     if (err instanceof z.ZodError) {
       const details = typeof err.flatten === "function" ? err.flatten() : (err as any).errors;
-      return jsonWithRequestId(
-        req,
-        { error: "Invalid request body", details },
-        { status: 400 },
-      );
+      return jsonWithRequestId(req, { error: "Invalid request body", details }, { status: 400 });
     }
 
     // Fallback for unexpected errors
-    return jsonWithRequestId(
-      req,
-      { error: "Internal Server Error" },
-      { status: 500 },
-    );
+    return jsonWithRequestId(req, { error: "Internal Server Error" }, { status: 500 });
   }
 }

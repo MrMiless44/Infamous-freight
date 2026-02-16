@@ -242,24 +242,24 @@ spec:
   template:
     spec:
       containers:
-      - name: api
-        image: infamous-freight-api:1.0.0
-        env:
-        - name: JWT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: app-secrets
-              key: jwt-secret
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: app-secrets
-              key: database-url
-        - name: CORS_ORIGINS
-          valueFrom:
-            secretKeyRef:
-              name: app-secrets
-              key: cors-origins
+        - name: api
+          image: infamous-freight-api:1.0.0
+          env:
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: jwt-secret
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: database-url
+            - name: CORS_ORIGINS
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: cors-origins
 ```
 
 ---

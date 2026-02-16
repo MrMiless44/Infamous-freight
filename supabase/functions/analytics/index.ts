@@ -6,8 +6,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
 serve(async (req) => {
@@ -27,7 +26,7 @@ serve(async (req) => {
         global: {
           headers: { Authorization: req.headers.get("Authorization")! },
         },
-      }
+      },
     );
 
     // Get the authenticated user
@@ -62,7 +61,7 @@ serve(async (req) => {
     // Calculate date range
     const now = new Date();
     let startDate = new Date();
-    
+
     switch (timeRange) {
       case "24h":
         startDate.setHours(now.getHours() - 24);
@@ -120,8 +119,7 @@ serve(async (req) => {
         busy: drivers.filter((d) => d.status === "busy").length,
         offline: drivers.filter((d) => d.status === "offline").length,
         averageRating:
-          drivers.reduce((sum, d) => sum + parseFloat(d.rating || "0"), 0) /
-          drivers.length,
+          drivers.reduce((sum, d) => sum + parseFloat(d.rating || "0"), 0) / drivers.length,
       };
     }
 
@@ -134,9 +132,7 @@ serve(async (req) => {
     if (!customersError && customers) {
       analytics.metrics.customers = {
         total: customers.length,
-        new: customers.filter(
-          (c) => new Date(c.created_at) >= startDate
-        ).length,
+        new: customers.filter((c) => new Date(c.created_at) >= startDate).length,
       };
     }
 
@@ -152,10 +148,7 @@ serve(async (req) => {
         total: invoices.length,
         paid: invoices.filter((i) => i.status === "paid").length,
         overdue: invoices.filter((i) => i.status === "overdue").length,
-        totalAmount: invoices.reduce(
-          (sum, i) => sum + parseFloat(i.total_amount),
-          0
-        ),
+        totalAmount: invoices.reduce((sum, i) => sum + parseFloat(i.total_amount), 0),
         paidAmount: invoices
           .filter((i) => i.status === "paid")
           .reduce((sum, i) => sum + parseFloat(i.total_amount), 0),

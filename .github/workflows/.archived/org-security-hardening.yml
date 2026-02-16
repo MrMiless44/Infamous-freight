@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   schedule:
     # Daily security hardening verification
-    - cron: '0 1 * * *'
+    - cron: "0 1 * * *"
 
 permissions:
   contents: read
@@ -17,7 +17,7 @@ jobs:
   security-hardening:
     name: "GitHub Organization Security Hardening"
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@v4
@@ -27,7 +27,7 @@ jobs:
         with:
           script: |
             const checks = [];
-            
+
             // Check 1: Two-Factor Authentication
             console.log('🔐 Checking 2FA requirement...');
             checks.push({
@@ -35,7 +35,7 @@ jobs:
               status: '✅ Configuration verified',
               action: 'Settings → Security & analysis → Enable 2FA requirement'
             });
-            
+
             // Check 2: Secret Scanning
             console.log('🔍 Checking secret scanning...');
             checks.push({
@@ -43,7 +43,7 @@ jobs:
               status: '✅ Enabled for organization',
               action: 'Settings → Code security & analysis → Enable'
             });
-            
+
             // Check 3: Dependabot
             console.log('📦 Checking Dependabot...');
             checks.push({
@@ -51,7 +51,7 @@ jobs:
               status: '✅ Enabled with auto-merge',
               action: 'Monitor via Security → Dependabot'
             });
-            
+
             // Check 4: CodeQL
             console.log('🔍 Checking CodeQL...');
             checks.push({
@@ -59,7 +59,7 @@ jobs:
               status: '✅ Enabled 100% coverage',
               action: 'Monitor via Security → Code scanning'
             });
-            
+
             // Check 5: Branch Protection
             console.log('🛡️  Checking branch protection...');
             checks.push({
@@ -67,12 +67,12 @@ jobs:
               status: '✅ Rules enforced on main',
               action: 'Settings → Branches → Verify rules'
             });
-            
+
             // Print summary
             console.log('\n════════════════════════════════════════');
             console.log('GitHub Organization Security Hardening');
             console.log('════════════════════════════════════════\n');
-            
+
             checks.forEach(check => {
               console.log(`${check.name}: ${check.status}`);
               console.log(`  → ${check.action}\n`);
@@ -83,14 +83,14 @@ jobs:
         with:
           script: |
             console.log('🔍 Scanning for public vulnerabilities...\n');
-            
+
             const severities = {
               critical: 0,
               high: 0,
               medium: 0,
               low: 0
             };
-            
+
             console.log(`📊 Vulnerability Summary:`);
             console.log(`  🔴 Critical: ${severities.critical}`);
             console.log(`  🟠 High: ${severities.high}`);
@@ -101,83 +101,83 @@ jobs:
         run: |
           cat >> $GITHUB_STEP_SUMMARY << 'EOF'
           # 🔒 GitHub Organization Security Hardening Report
-          
+
           ## ✅ Configuration Status
-          
+
           ### Authentication
           - ✅ Two-Factor Authentication: Required
           - ✅ SSH Key Verification: Enabled
           - ✅ Personal Access Token Expiry: 90 days
-          
+
           ### Secret Management
           - ✅ Secret Scanning: Enabled
           - ✅ Secret Push Protection: Enabled
           - ✅ Auto Secret Rotation: Configured
-          
+
           ### Code Security
           - ✅ CodeQL Analysis: 100% Coverage
           - ✅ Branch Protection: Enforced
           - ✅ Signed Commits: Required
-          
+
           ### Dependency Management
           - ✅ Dependabot Alerts: Enabled
           - ✅ Security Updates: Auto-merge
           - ✅ Version Updates: Scheduled Daily
-          
+
           ## 📋 Security Checklist
-          
+
           ### Organization Level
           - [x] 2FA enforcement
           - [x] Secret scanning enabled
           - [x] Audit logging enabled
           - [x] Role-based access control
           - [x] IP allowlist configured
-          
+
           ### Repository Level  
           - [x] Branch protection rules
           - [x] Require status checks
           - [x] Require code owner review
           - [x] Dismiss stale reviews
           - [x] Require signed commits
-          
+
           ### Compliance
           - [x] SOC 2 Type II ready
           - [x] GDPR compliant
           - [x] HIPAA audit trail enabled
           - [x] ISO 27001 aligned
-          
+
           ## 🔗 Resources
-          
+
           - [Organization Security Settings](https://github.com/organizations/MrMiless44/settings/security)
           - [Repository Branch Protection](https://github.com/MrMiless44/Infamous-freight-enterprises/settings/branches)
           - [Security Alerts Dashboard](https://github.com/MrMiless44/Infamous-freight-enterprises/security)
           - [Audit Log](https://github.com/organizations/MrMiless44/audit-log)
-          
+
           ## 🚀 Next Steps
-          
+
           1. **Enable Organization 2FA** (if not already)
              - Settings → Security & analysis → Require 2FA
-          
+
           2. **Configure IP Allowlist** (advanced security)
              - Settings → IP allow list
-          
+
           3. **Setup SAML SSO** (enterprise)
              - Settings → Security → SAML
-          
+
           4. **Enable Audit Log Streaming** (compliance)
              - Settings → Audit log → Enable streaming
-          
+
           5. **Configure Webhooks Security**
              - Settings → Webhooks → Add secret to all
-          
+
           ## 📞 Security Team
-          
+
           - **Primary Contact**: security@infamous-freight.com
           - **Emergency**: security-oncall@infamous-freight.com
           - **GitHub Admin**: @MrMiless44
-          
+
           ---
-          
+
           **Last Checked**: $(date -u)  
           **Status**: ✅ All systems green
           **Next Review**: Daily at 01:00 UTC
@@ -195,14 +195,14 @@ jobs:
   verify-branch-protection:
     name: "Verify Branch Protection Rules"
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: 🛡️  Check main branch protection
         uses: actions/github-script@v6
         with:
           script: |
             console.log('🛡️  Verifying main branch protection...\n');
-            
+
             const requirements = [
               '✅ Require pull request reviews',
               '✅ Require status checks to pass',
@@ -213,16 +213,16 @@ jobs:
               '✅ Block force pushes',
               '✅ Block deletions'
             ];
-            
+
             requirements.forEach(req => console.log(req));
-            
+
             console.log('\n✅ All branch protection rules verified');
 
   # Security audit
   security-audit:
     name: "Automated Security Audit"
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: 📋 Audit Security Configuration
         run: |
@@ -258,7 +258,7 @@ jobs:
   compliance-check:
     name: "Compliance Verification"
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: ✅ Verify Compliance Status
         run: |

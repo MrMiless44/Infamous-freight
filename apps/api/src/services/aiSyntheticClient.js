@@ -106,10 +106,7 @@ class AISyntheticClient {
         },
       };
     } catch (error) {
-      console.warn(
-        "Anthropic failed, falling back to synthetic:",
-        error.message,
-      );
+      console.warn("Anthropic failed, falling back to synthetic:", error.message);
       return this.processSynthetic(command, userId);
     }
   }

@@ -3,15 +3,18 @@
 **Status**: ✅ **100% PRODUCTION READY**  
 **Date Completed**: January 15, 2026  
 **Implementation Time**: ~1 hour  
-**Code Added**: ~100 lines across 2 files  
+**Code Added**: ~100 lines across 2 files
 
 ---
 
 ## 🎯 Overview
 
-**Phase 4** implements a concurrency-safe driver acceptance mechanism. When multiple drivers try to accept the same job simultaneously, exactly one wins — preventing job duplication or conflicts.
+**Phase 4** implements a concurrency-safe driver acceptance mechanism. When
+multiple drivers try to accept the same job simultaneously, exactly one wins —
+preventing job duplication or conflicts.
 
-**Key Guarantee**: Race-safe first-wins semantics via database-level constraints (no competing transactions can both succeed).
+**Key Guarantee**: Race-safe first-wins semantics via database-level constraints
+(no competing transactions can both succeed).
 
 ---
 
@@ -48,12 +51,14 @@
 **Path**: `/api/src/marketplace/router.js` (lines 427–538)
 
 **Request**:
+
 ```bash
 POST /marketplace/jobs/{jobId}/accept
 Authorization: Bearer {JWT}
 ```
 
 **Response** (Success):
+
 ```json
 {
   "ok": true,
@@ -76,6 +81,7 @@ Authorization: Bearer {JWT}
 ```
 
 **Response** (Race Lost):
+
 ```json
 {
   "error": "Job was just accepted by another driver"
@@ -85,13 +91,14 @@ Authorization: Bearer {JWT}
 ### 2. Race-Safe Logic (Transactional First-Wins)
 
 **Key Code Snippet**:
+
 ```javascript
 // RACE-SAFE UPDATE: Only succeed if job is still OPEN and has no driver
 const updateResult = await tx.job.updateMany({
   where: {
     id: jobId,
     status: "OPEN",
-    driverId: null,  // Must still be unassigned
+    driverId: null, // Must still be unassigned
   },
   data: {
     status: "ACCEPTED",
@@ -106,9 +113,12 @@ if (updateResult.count === 0) {
 ```
 
 **Why This Works**:
+
 - `updateMany()` with compound WHERE clause is atomic at the database level
-- Multiple transactions cannot both satisfy the same WHERE conditions for the same row
-- First transaction to execute changes `status` or `driverId`, blocking all others
+- Multiple transactions cannot both satisfy the same WHERE conditions for the
+  same row
+- First transaction to execute changes `status` or `driverId`, blocking all
+  others
 - Subsequent transactions get `count === 0` and know they lost the race
 
 ### 3. Driver Eligibility Checks (Before Race)
@@ -134,11 +144,12 @@ await tx.jobEvent.create({
     type: "ACCEPTED",
     actorUserId: driverUserId,
     message: "Driver accepted job",
-  }
+  },
 });
 ```
 
-This event is visible in the timeline (Phase 3) and creates a permanent record of who accepted and when.
+This event is visible in the timeline (Phase 3) and creates a permanent record
+of who accepted and when.
 
 ---
 
@@ -149,12 +160,14 @@ This event is visible in the timeline (Phase 3) and creates a permanent record o
 **Path**: `/api/src/marketplace/router.js` (lines 540–576)
 
 **Request**:
+
 ```bash
 GET /marketplace/drivers/{driverUserId}/jobs
 Authorization: Bearer {JWT}
 ```
 
 **Response**:
+
 ```json
 {
   "ok": true,
@@ -182,6 +195,7 @@ Authorization: Bearer {JWT}
 ```
 
 **Authorization**:
+
 - Drivers can only see **their own jobs**
 - Admins can see **any driver's jobs**
 - 403 Forbidden for unauthorized access
@@ -213,10 +227,12 @@ curl -X GET http://localhost:4000/api/marketplace/jobs/{jobId}/timeline \
 ### 4.2 Race Test (Two Drivers Simultaneously)
 
 **Setup**:
+
 - 1 OPEN, paid job
 - 2 eligible drivers (both have compatible vehicles, active, location set)
 
 **Test**:
+
 ```bash
 # Terminal 1:
 curl -X POST http://localhost:4000/api/marketplace/jobs/{jobId}/accept \
@@ -248,10 +264,10 @@ curl -X GET http://localhost:4000/api/marketplace/drivers/{driverId}/jobs \
 
 ## 🗂️ Files Modified
 
-| File | Changes | Lines |
-|------|---------|-------|
-| `apps/api/src/marketplace/router.js` | Upgraded accept endpoint with race-safe logic + added my jobs endpoint | +100 |
-| `apps/api/src/marketplace/validators.js` | (Already had acceptJobSchema) | — |
+| File                                     | Changes                                                                | Lines |
+| ---------------------------------------- | ---------------------------------------------------------------------- | ----- |
+| `apps/api/src/marketplace/router.js`     | Upgraded accept endpoint with race-safe logic + added my jobs endpoint | +100  |
+| `apps/api/src/marketplace/validators.js` | (Already had acceptJobSchema)                                          | —     |
 
 **Total**: ~100 lines of production code
 
@@ -260,33 +276,38 @@ curl -X GET http://localhost:4000/api/marketplace/drivers/{driverId}/jobs \
 ## 🔐 Security & Concurrency Guarantees
 
 ### Race Safety
+
 ✅ **Database-Level Atomicity**: `updateMany()` with compound WHERE is atomic  
-✅ **No Pessimistic Locks**: Uses optimistic concurrency (faster, no deadlocks)  
-✅ **No Lost Updates**: Only one transaction can win; others know immediately  
+✅ **No Pessimistic Locks**: Uses optimistic concurrency (faster, no
+deadlocks)  
+✅ **No Lost Updates**: Only one transaction can win; others know immediately
 
 ### Authorization
+
 ✅ **Driver Self-Service**: Drivers can only accept jobs for themselves  
 ✅ **Admin Override**: Admins can view any driver's jobs  
-✅ **JWT-based**: All endpoints require valid bearer token  
+✅ **JWT-based**: All endpoints require valid bearer token
 
 ### Eligibility Verification
+
 ✅ **Vehicle Compatibility**: Type + capacity checked before race attempt  
 ✅ **Active Driver**: Only active drivers can accept  
 ✅ **Location Tracking**: Requires valid driver location  
-✅ **Payment Confirmed**: Only accepts paid jobs (SUCCEEDED status)  
+✅ **Payment Confirmed**: Only accepts paid jobs (SUCCEEDED status)
 
 ---
 
 ## 📊 Performance Characteristics
 
-| Operation | Time | Notes |
-|-----------|------|-------|
-| Accept job (success) | ~100ms | 1 DB write + event log |
-| Accept job (race loss) | ~50ms | Read-only, error returned fast |
-| List my jobs (10 jobs) | ~30ms | Simple query + join |
-| List my jobs (100 jobs) | ~50ms | Paginated, limited to 100 |
+| Operation               | Time   | Notes                          |
+| ----------------------- | ------ | ------------------------------ |
+| Accept job (success)    | ~100ms | 1 DB write + event log         |
+| Accept job (race loss)  | ~50ms  | Read-only, error returned fast |
+| List my jobs (10 jobs)  | ~30ms  | Simple query + join            |
+| List my jobs (100 jobs) | ~50ms  | Paginated, limited to 100      |
 
 **Database Indexes Used**:
+
 - `job.status + job.driverId` (implicit in updateMany WHERE clause)
 - `job.driverId` (for "my jobs" query)
 - Composite index from Phase 3 still applies
@@ -344,11 +365,13 @@ const result = await tx.job.updateMany({
 
 ### Why Eligibility Checks Before Race?
 
-Prevents unnecessary race attempts for ineligible drivers. If driver lacks required vehicle, we fail fast before hitting the database race condition.
+Prevents unnecessary race attempts for ineligible drivers. If driver lacks
+required vehicle, we fail fast before hitting the database race condition.
 
 ### Why Event Logged Inside Transaction?
 
-Ensures atomicity: if state change succeeds, event is logged. If state change fails (race loss), event is not logged. No orphaned events.
+Ensures atomicity: if state change succeeds, event is logged. If state change
+fails (race loss), event is not logged. No orphaned events.
 
 ---
 
@@ -397,6 +420,7 @@ T2: Driver C executes updateMany (WHERE status=OPEN)
 ## 🚀 Next Phase (Phase 5)
 
 **Phase 5 — In-Transit & Delivery Logging** will add:
+
 - PICKED_UP event (driver confirms pickup)
 - DELIVERED event (driver confirms delivery)
 - Location metadata in events for geofencing/proof
@@ -406,17 +430,19 @@ T2: Driver C executes updateMany (WHERE status=OPEN)
 
 ## 🎯 Conclusion
 
-**Phase 4** successfully implements the most critical concurrency pattern in the marketplace: **first-wins driver acceptance**. The use of `updateMany()` with compound WHERE clause provides:
+**Phase 4** successfully implements the most critical concurrency pattern in the
+marketplace: **first-wins driver acceptance**. The use of `updateMany()` with
+compound WHERE clause provides:
 
 ✅ **Simplicity** — No need for locks or semaphores  
 ✅ **Performance** — Optimistic concurrency, sub-100ms latency  
 ✅ **Correctness** — Database guarantees atomicity  
-✅ **Debuggability** — Every attempt logged to JobEvent table  
+✅ **Debuggability** — Every attempt logged to JobEvent table
 
-The marketplace is now **production-ready for concurrent driver acceptance scenarios**. 🎉
+The marketplace is now **production-ready for concurrent driver acceptance
+scenarios**. 🎉
 
 ---
 
 **Status**: ✅ **COMPLETE & PRODUCTION READY**  
-**Ready for Phase 5**: In-Transit & Delivery Logging  
-
+**Ready for Phase 5**: In-Transit & Delivery Logging

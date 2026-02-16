@@ -1,6 +1,6 @@
 /**
  * Lead Capture Service (Phase 21.2 & 21.5)
- * 
+ *
  * Captures leads from landing pages and syncs to CRM systems
  * (HubSpot, Salesforce, Notion, Slack)
  */
@@ -51,7 +51,7 @@ export interface CreateLeadInput {
 
 function normalizeLeadMetadata(
   metadata: Record<string, any> | undefined,
-  serverCreatedAtIso: string
+  serverCreatedAtIso: string,
 ): Record<string, any> {
   const source = metadata && typeof metadata === "object" ? { ...metadata } : {};
 
@@ -102,9 +102,8 @@ export async function createLead(input: CreateLeadInput): Promise<any> {
         estimatedMonthlyBudget: input.estimatedMonthlyBudget,
         currentProvider: input.currentProvider,
         painPoints: input.painPoints,
-        metadata: Object.keys(normalizedMetadata).length > 0
-          ? JSON.stringify(normalizedMetadata)
-          : null,
+        metadata:
+          Object.keys(normalizedMetadata).length > 0 ? JSON.stringify(normalizedMetadata) : null,
         status: "new",
       },
     });
@@ -154,7 +153,7 @@ export async function getLead(email: string): Promise<any> {
 export async function updateLeadStatus(
   leadId: string,
   status: string,
-  notes?: string
+  notes?: string,
 ): Promise<any> {
   return prisma.lead.update({
     where: { id: leadId },
@@ -169,10 +168,7 @@ export async function updateLeadStatus(
 /**
  * Mark lead as converted (signed up)
  */
-export async function convertLead(
-  leadId: string,
-  organizationId: string
-): Promise<any> {
+export async function convertLead(leadId: string, organizationId: string): Promise<any> {
   const lead = await prisma.lead.update({
     where: { id: leadId },
     data: {
@@ -370,7 +366,7 @@ async function syncToSalesforce(lead: any): Promise<void> {
   if (!tokenResponse.ok) {
     const details = typeof tokenBody === "string" ? tokenBody : JSON.stringify(tokenBody);
     throw new Error(
-      `Salesforce token request failed (${tokenResponse.status} ${tokenResponse.statusText}): ${details || "No response body"}`
+      `Salesforce token request failed (${tokenResponse.status} ${tokenResponse.statusText}): ${details || "No response body"}`,
     );
   }
 
@@ -414,11 +410,10 @@ async function syncToSalesforce(lead: any): Promise<void> {
 
   if (!response.ok) {
     const responseBody = await parseResponseBody(response);
-    const details =
-      typeof responseBody === "string" ? responseBody : JSON.stringify(responseBody);
+    const details = typeof responseBody === "string" ? responseBody : JSON.stringify(responseBody);
 
     throw new Error(
-      `Salesforce API error (${response.status} ${response.statusText}): ${details || "No response body"}`
+      `Salesforce API error (${response.status} ${response.statusText}): ${details || "No response body"}`,
     );
   }
 
@@ -506,7 +501,8 @@ async function notifySlack(event: SlackEvent): Promise<void> {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `*New Lead Captured*\n` +
+            text:
+              `*New Lead Captured*\n` +
               `Name: ${event.lead.name}\n` +
               `Email: ${event.lead.email}\n` +
               `Type: ${event.lead.type}\n` +
@@ -525,7 +521,8 @@ async function notifySlack(event: SlackEvent): Promise<void> {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `*Lead Converted to Customer*\n` +
+            text:
+              `*Lead Converted to Customer*\n` +
               `Name: ${event.lead.name}\n` +
               `Email: ${event.lead.email}\n` +
               `Organization ID: ${event.organizationId}\n` +
@@ -542,7 +539,8 @@ async function notifySlack(event: SlackEvent): Promise<void> {
           type: "section",
           text: {
             type: "mrkdwn",
-            text: `*Demo Scheduled*\n` +
+            text:
+              `*Demo Scheduled*\n` +
               `Lead: ${event.lead.name}\n` +
               `Email: ${event.lead.email}\n` +
               `Scheduled For: ${event.demoDate?.toLocaleString() || "N/A"}`,

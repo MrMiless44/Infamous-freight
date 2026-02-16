@@ -2,7 +2,8 @@
 
 ## Overview
 
-This document covers deployment of all security, performance, and observability features implemented (100%).
+This document covers deployment of all security, performance, and observability
+features implemented (100%).
 
 ## Quick Start
 
@@ -54,6 +55,7 @@ LOG_LEVEL=info
 ## Features Implemented (100%)
 
 ### 🔐 Security
+
 - ✅ Organization boundary enforcement (`requireOrganization`)
 - ✅ Scope-based access control (`requireScope`)
 - ✅ JWT authentication with org_id claim
@@ -64,14 +66,17 @@ LOG_LEVEL=info
 - ✅ OPTIONS preflight exemption from rate limiting
 
 ### ✅ Validation
+
 - ✅ Enum validation (SHIPMENT_STATUSES)
 - ✅ UUID validation (path & body)
 - ✅ Pagination query validation
 - ✅ Consistent error responses
 
 ### 📊 Observability
+
 - ✅ Prometheus metrics endpoint (`/api/metrics`)
-- ✅ Request duration histograms (buckets: 10, 50, 100, 250, 500, 1000, 2500, 5000ms)
+- ✅ Request duration histograms (buckets: 10, 50, 100, 250, 500, 1000, 2500,
+  5000ms)
 - ✅ Latency percentiles (P50, P95, P99)
 - ✅ Request/error counts by path
 - ✅ Rate limiter metrics (hits, blocked, success)
@@ -80,6 +85,7 @@ LOG_LEVEL=info
 - ✅ Sentry integration
 
 ### 🚀 DevOps
+
 - ✅ Pre-push hook (linting, type-check, build, tests)
 - ✅ Pre-dev hook (shared package build check)
 - ✅ Route scope registry documentation
@@ -87,6 +93,7 @@ LOG_LEVEL=info
 - ✅ Route scope registry documentation
 
 ### 🧪 Tests
+
 - ✅ Shipments auth/org/scope tests
 - ✅ Billing auth/org/scope tests
 - ✅ Metrics Prometheus format tests
@@ -168,27 +175,37 @@ curl -s http://localhost:4000/api/metrics | head -20
 ## Common Issues
 
 ### Q: Metrics endpoint returns empty?
+
 A: Middleware must be wired in server.js. Check:
+
 ```bash
 grep -n "cacheResponseMiddleware\|metricsRecorderMiddleware" apps/api/src/server.js
 ```
+
 Should see both lines after `correlationMiddleware`.
 
 ### Q: Slow queries not logged?
+
 A: Check Prisma initialization:
+
 ```bash
 grep -n "attachSlowQueryLogger" apps/api/src/db/prisma.js
 ```
+
 Should be called after `new PrismaClient()`.
 
 ### Q: Auth tests failing?
+
 A: Ensure `requireOrganization` middleware is applied. Check routes:
+
 ```bash
 grep -A5 "GET.*shipments" apps/api/src/routes/shipments.js | grep requireOrganization
 ```
 
 ### Q: CORS errors on cross-origin requests?
+
 A: Verify `CORS_ORIGINS` environment variable:
+
 ```bash
 echo $CORS_ORIGINS
 # Should match frontend origin: http://localhost:3000
@@ -196,13 +213,17 @@ echo $CORS_ORIGINS
 
 ## Documentation
 
-- [Route Scope Registry](docs/ROUTE_SCOPE_REGISTRY.md) – All routes & their required scopes
-- [CORS & Security](docs/CORS_AND_SECURITY.md) – CORS configuration & best practices
-- [Copilot Instructions](.github/copilot-instructions.md) – Development guidelines
+- [Route Scope Registry](docs/ROUTE_SCOPE_REGISTRY.md) – All routes & their
+  required scopes
+- [CORS & Security](docs/CORS_AND_SECURITY.md) – CORS configuration & best
+  practices
+- [Copilot Instructions](.github/copilot-instructions.md) – Development
+  guidelines
 
 ## Support
 
 For issues:
+
 1. Check verification script output
 2. Review relevant test file
 3. Check Sentry Issues dashboard

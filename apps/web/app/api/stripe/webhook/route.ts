@@ -117,17 +117,14 @@ export async function POST(req: Request) {
         }
       }
     } else {
-      // eslint-disable-next-line no-console
-      console.warn(
-        "[stripe:webhook] Unable to resolve company_id for subscription event",
-        {
-          eventType: event.type,
-          subscriptionId: sub.id,
-          customerId,
-          billingCompanyId: billing?.company_id ?? null,
-          metadataCompanyId: sub.metadata?.company_id ?? null,
-        },
-      );
+       
+      console.warn("[stripe:webhook] Unable to resolve company_id for subscription event", {
+        eventType: event.type,
+        subscriptionId: sub.id,
+        customerId,
+        billingCompanyId: billing?.company_id ?? null,
+        metadataCompanyId: sub.metadata?.company_id ?? null,
+      });
     }
   }
 

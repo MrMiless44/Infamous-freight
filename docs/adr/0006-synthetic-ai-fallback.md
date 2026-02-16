@@ -6,7 +6,9 @@ Accepted
 
 ## Context
 
-The platform includes AI features for route optimization, shipment analysis, and natural language command processing. These features rely on external AI providers:
+The platform includes AI features for route optimization, shipment analysis, and
+natural language command processing. These features rely on external AI
+providers:
 
 - OpenAI GPT models
 - Anthropic Claude models
@@ -19,11 +21,13 @@ Challenges with external AI dependencies:
 - Testing requires real API calls (slow, expensive)
 - CI/CD pipeline failures when API is down
 
-We needed a strategy to maintain development velocity and system reliability without always depending on paid external services.
+We needed a strategy to maintain development velocity and system reliability
+without always depending on paid external services.
 
 ## Decision
 
-We implemented a **synthetic AI engine fallback** that simulates AI responses when external providers are unavailable or not configured.
+We implemented a **synthetic AI engine fallback** that simulates AI responses
+when external providers are unavailable or not configured.
 
 **Architecture** (`apps/api/src/services/aiSyntheticClient.js`):
 
@@ -222,10 +226,12 @@ If synthetic responses become insufficient:
 1. **Cached responses**: Store real AI responses, replay in dev
 2. **Offline AI model**: Integrate llama.cpp or similar for local inference
 3. **Provider rotation**: Try OpenAI → Anthropic → Synthetic
-4. **Smart fallback**: Use synthetic for simple commands, require real AI for complex ones
+4. **Smart fallback**: Use synthetic for simple commands, require real AI for
+   complex ones
 
 ## Related
 
 - [ADR-0001: Monorepo Architecture](0001-monorepo-architecture.md)
 - [.env.example](../../.env.example) - AI provider configuration
-- [apps/api/src/services/aiSyntheticClient.js](../../apps/api/src/services/aiSyntheticClient.js) - Implementation
+- [apps/api/src/services/aiSyntheticClient.js](../../apps/api/src/services/aiSyntheticClient.js) -
+  Implementation

@@ -12,7 +12,8 @@
 - [x] All tests passing (79+ tests)
 - [x] Coverage targets met (91-94% for core services)
 - [x] Code committed and pushed to GitHub (commit: 26fb08a)
-- [x] Web app deployed to Vercel (<https://infamous-freight-enterprises-git-f34b9b-santorio-miles-projects.vercel.app>)
+- [x] Web app deployed to Vercel
+      (<https://infamous-freight-enterprises-git-f34b9b-santorio-miles-projects.vercel.app>)
 - [x] Railway deployment guide created (RAILWAY_DEPLOY_IPHONE.md)
 - [ ] Environment variables prepared
 - [ ] Database migration plan ready
@@ -78,7 +79,8 @@ SENTRY_DSN=<IF_USING_SENTRY>
 - [ ] Check for successful database connection
 - [ ] Run migrations via Railway CLI or manual Prisma commands
   - Option A: Add to build command: `pnpm prisma:migrate:deploy`
-  - Option B: Run from local: `DATABASE_URL=<railway-url> pnpm prisma:migrate:deploy`
+  - Option B: Run from local:
+    `DATABASE_URL=<railway-url> pnpm prisma:migrate:deploy`
 
 ### 7. Deploy & Monitor
 
@@ -154,13 +156,13 @@ SENTRY_DSN=<IF_USING_SENTRY>
 
 Record these after successful deployment:
 
-- **Deployment Date/Time:** _________________
-- **Railway URL:** _________________
-- **Database Host:** _________________
-- **Average Response Time:** _________ ms
-- **Build Time:** _________ seconds
-- **Initial Memory Usage:** _________ MB
-- **Initial CPU Usage:** _________ %
+- **Deployment Date/Time:** ********\_********
+- **Railway URL:** ********\_********
+- **Database Host:** ********\_********
+- **Average Response Time:** ****\_**** ms
+- **Build Time:** ****\_**** seconds
+- **Initial Memory Usage:** ****\_**** MB
+- **Initial CPU Usage:** ****\_**** %
 
 ---
 
@@ -168,9 +170,10 @@ Record these after successful deployment:
 
 - **GitHub Repo:** <https://github.com/MrMiless44/Infamous-freight-enterprises>
 - **Railway Dashboard:** <https://railway.app/dashboard>
-- **Web App (Vercel):** <https://infamous-freight-enterprises-git-f34b9b-santorio-miles-projects.vercel.app>
-- **API Deployed URL:** _________________ (fill after deployment)
-- **Database Dashboard:** _________________ (from Railway)
+- **Web App (Vercel):**
+  <https://infamous-freight-enterprises-git-f34b9b-santorio-miles-projects.vercel.app>
+- **API Deployed URL:** ********\_******** (fill after deployment)
+- **Database Dashboard:** ********\_******** (from Railway)
 
 ---
 

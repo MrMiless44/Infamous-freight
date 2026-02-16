@@ -86,9 +86,9 @@ test.describe("Billing & Payments", () => {
     await page.locator('a:has-text("Billing")').click();
 
     // Should show error message
-    await expect(
-      page.locator("text=Error loading billing information"),
-    ).toBeVisible({ timeout: 5000 });
+    await expect(page.locator("text=Error loading billing information")).toBeVisible({
+      timeout: 5000,
+    });
   });
 
   test("should paginate through invoices", async ({ page }) => {

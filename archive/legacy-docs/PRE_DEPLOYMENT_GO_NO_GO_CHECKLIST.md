@@ -10,7 +10,8 @@
 
 ## 🔴 STOP - Read Before Proceeding
 
-This checklist determines **GO/NO-GO** for production deployment. All items must be verified before proceeding.
+This checklist determines **GO/NO-GO** for production deployment. All items must
+be verified before proceeding.
 
 ---
 
@@ -530,19 +531,19 @@ _________________________________
 
 ## Deployment Authorization
 
-**Date**: ******\_\_\_******
+**Date**: **\*\***\_\_\_**\*\***
 
-**Authorized By** (Technical): **********\_**********
+**Authorized By** (Technical): ****\*\*****\_****\*\*****
 
-**Authorized By** (Operations): ********\_\_\_\_********
+**Authorized By** (Operations): **\*\*\*\***\_\_\_\_**\*\*\*\***
 
-**Authorized By** (Management): ********\_\_\_\_********
+**Authorized By** (Management): **\*\*\*\***\_\_\_\_**\*\*\*\***
 
-**Deployment Window**: ******\_\_\_******
+**Deployment Window**: **\*\***\_\_\_**\*\***
 
-**Expected Duration**: ******\_\_\_******
+**Expected Duration**: **\*\***\_\_\_**\*\***
 
-**Expected Completion**: ******\_\_\_******
+**Expected Completion**: **\*\***\_\_\_**\*\***
 
 **Rollback Plan**: Documented in BLUE_GREEN_DEPLOYMENT_PROCEDURE.md
 

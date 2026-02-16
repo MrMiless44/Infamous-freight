@@ -43,15 +43,9 @@ describe("Metrics Routes", () => {
     app.use(express.json());
     app.use("/api", require("../../src/routes/metrics"));
 
-    validToken = jwt.sign(
-      { sub: "user-123", scopes: ["metrics:read"] },
-      process.env.JWT_SECRET,
-    );
+    validToken = jwt.sign({ sub: "user-123", scopes: ["metrics:read"] }, process.env.JWT_SECRET);
 
-    adminToken = jwt.sign(
-      { sub: "admin-123", scopes: ["admin"] },
-      process.env.JWT_SECRET,
-    );
+    adminToken = jwt.sign({ sub: "admin-123", scopes: ["admin"] }, process.env.JWT_SECRET);
 
     jest.clearAllMocks();
   });
@@ -88,10 +82,7 @@ describe("Metrics Routes", () => {
     });
 
     it("should require metrics:read scope", async () => {
-      const noScopeToken = jwt.sign(
-        { sub: "user-123", scopes: [] },
-        process.env.JWT_SECRET,
-      );
+      const noScopeToken = jwt.sign({ sub: "user-123", scopes: [] }, process.env.JWT_SECRET);
 
       const response = await request(app)
         .get("/api/metrics/revenue/live")
@@ -140,9 +131,7 @@ describe("Metrics Routes", () => {
 
       expect(response.status).toBe(200);
       expect(response.headers["content-type"]).toContain("text/csv");
-      expect(response.headers["content-disposition"]).toContain(
-        "revenue-metrics.csv",
-      );
+      expect(response.headers["content-disposition"]).toContain("revenue-metrics.csv");
     });
 
     it("should require metrics:export scope", async () => {

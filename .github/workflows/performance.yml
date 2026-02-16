@@ -3,12 +3,12 @@ name: Performance Monitoring
 on:
   pull_request:
     paths:
-      - 'apps/web/**'
-      - '.github/workflows/performance.yml'
+      - "apps/web/**"
+      - ".github/workflows/performance.yml"
   push:
     branches: [main]
     paths:
-      - 'apps/web/**'
+      - "apps/web/**"
 
 concurrency:
   group: performance-${{ github.ref }}
@@ -17,14 +17,14 @@ concurrency:
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install pnpm
         run: corepack enable
@@ -50,18 +50,18 @@ jobs:
         with:
           temporaryPublicStorage: true
           runs: 3
-          configPath: './lighthouserc.json'
+          configPath: "./lighthouserc.json"
 
   bundle-size:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install pnpm
         run: corepack enable

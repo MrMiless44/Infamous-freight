@@ -9,7 +9,7 @@ export const HTTP_STATUS = {
   INTERNAL_SERVER_ERROR: 500,
 } as const;
 
-export const SHIPMENT_STATUSES = ['CREATED','IN_TRANSIT','DELIVERED','CANCELLED'] as const;
+export const SHIPMENT_STATUSES = ["CREATED", "IN_TRANSIT", "DELIVERED", "CANCELLED"] as const;
 
 export const DISPUTE_STATUS = {
   OPEN: "OPEN",

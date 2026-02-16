@@ -6,18 +6,11 @@ import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 // Lazy-load heavy recharts components with fallback
-const LineChart = dynamic(
-  () => import("recharts").then((mod) => mod.LineChart),
-  {
-    loading: () => (
-      <div className="h-[300px] bg-gray-100 animate-pulse rounded" />
-    ),
-  },
-);
+const LineChart = dynamic(() => import("recharts").then((mod) => mod.LineChart), {
+  loading: () => <div className="h-[300px] bg-gray-100 animate-pulse rounded" />,
+});
 const BarChart = dynamic(() => import("recharts").then((mod) => mod.BarChart), {
-  loading: () => (
-    <div className="h-[300px] bg-gray-100 animate-pulse rounded" />
-  ),
+  loading: () => <div className="h-[300px] bg-gray-100 animate-pulse rounded" />,
 });
 
 // Import only required recharts components once dynamically
@@ -73,9 +66,7 @@ interface RevenueAlert {
 export const RevenueMonitorDashboard: React.FC = () => {
   const [metrics, setMetrics] = useState<RevenueMetrics | null>(null);
   const [mrrHistory, setMrrHistory] = useState<MRRHistoryPoint[]>([]);
-  const [tierDistribution, setTierDistribution] = useState<TierDistribution[]>(
-    [],
-  );
+  const [tierDistribution, setTierDistribution] = useState<TierDistribution[]>([]);
   const [alerts, setAlerts] = useState<RevenueAlert[]>([]);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
@@ -93,7 +84,7 @@ export const RevenueMonitorDashboard: React.FC = () => {
       setLastUpdated(new Date());
       setLoading(false);
     } catch (error) {
-      // eslint-disable-next-line no-console
+       
       console.error("Failed to fetch metrics:", error);
       setLoading(false);
     }
@@ -133,15 +124,10 @@ export const RevenueMonitorDashboard: React.FC = () => {
     <div className="min-h-screen bg-gray-50 p-6">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Revenue Dashboard
-        </h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Revenue Dashboard</h1>
         <p className="text-gray-600">
           Last updated: {lastUpdated.toLocaleTimeString()}
-          <button
-            onClick={fetchMetrics}
-            className="ml-4 text-blue-600 hover:text-blue-800"
-          >
+          <button onClick={fetchMetrics} className="ml-4 text-blue-600 hover:text-blue-800">
             Refresh
           </button>
         </p>
@@ -228,17 +214,13 @@ export const RevenueMonitorDashboard: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* MRR Growth Chart */}
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-semibold mb-4">
-            MRR Growth (Last 12 Months)
-          </h3>
+          <h3 className="text-lg font-semibold mb-4">MRR Growth (Last 12 Months)</h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={mrrHistory}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
               <YAxis />
-              <Tooltip
-                formatter={(value: number) => formatCurrency(Number(value))}
-              />
+              <Tooltip formatter={(value: number) => formatCurrency(Number(value))} />
               <Legend />
               <Line
                 type="monotone"
@@ -273,9 +255,7 @@ export const RevenueMonitorDashboard: React.FC = () => {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="tier" />
               <YAxis />
-              <Tooltip
-                formatter={(value: number) => formatCurrency(Number(value))}
-              />
+              <Tooltip formatter={(value: number) => formatCurrency(Number(value))} />
               <Legend />
               <Bar dataKey="revenue" fill="#4CAF50" name="Revenue" />
               <Bar dataKey="count" fill="#2196F3" name="Customers" />
@@ -289,37 +269,21 @@ export const RevenueMonitorDashboard: React.FC = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <h3 className="text-lg font-semibold mb-4">Today's Performance</h3>
           <div className="space-y-3">
-            <StatRow
-              label="Revenue"
-              value={formatCurrency(metrics.revenueToday)}
-            />
-            <StatRow
-              label="New Customers"
-              value={metrics.newCustomersToday.toString()}
-            />
-            <StatRow
-              label="Net Revenue Retention"
-              value={formatPercent(metrics.nrr)}
-            />
+            <StatRow label="Revenue" value={formatCurrency(metrics.revenueToday)} />
+            <StatRow label="New Customers" value={metrics.newCustomersToday.toString()} />
+            <StatRow label="Net Revenue Retention" value={formatPercent(metrics.nrr)} />
           </div>
         </div>
 
         <div className="bg-white rounded-lg shadow-md p-6">
           <h3 className="text-lg font-semibold mb-4">This Week</h3>
           <div className="space-y-3">
-            <StatRow
-              label="Revenue"
-              value={formatCurrency(metrics.revenueThisWeek)}
-            />
-            <StatRow
-              label="New Customers"
-              value={metrics.newCustomersThisWeek.toString()}
-            />
+            <StatRow label="Revenue" value={formatCurrency(metrics.revenueThisWeek)} />
+            <StatRow label="New Customers" value={metrics.newCustomersThisWeek.toString()} />
             <StatRow
               label="Avg Deal Size"
               value={formatCurrency(
-                metrics.revenueThisWeek /
-                  Math.max(metrics.newCustomersThisWeek, 1),
+                metrics.revenueThisWeek / Math.max(metrics.newCustomersThisWeek, 1),
               )}
             />
           </div>
@@ -328,14 +292,8 @@ export const RevenueMonitorDashboard: React.FC = () => {
         <div className="bg-white rounded-lg shadow-md p-6">
           <h3 className="text-lg font-semibold mb-4">This Month</h3>
           <div className="space-y-3">
-            <StatRow
-              label="Revenue"
-              value={formatCurrency(metrics.revenueThisMonth)}
-            />
-            <StatRow
-              label="New Customers"
-              value={metrics.newCustomersThisMonth.toString()}
-            />
+            <StatRow label="Revenue" value={formatCurrency(metrics.revenueThisMonth)} />
+            <StatRow label="New Customers" value={metrics.newCustomersThisMonth.toString()} />
             <StatRow label="MRR Growth" value="+$12,450" />
           </div>
         </div>

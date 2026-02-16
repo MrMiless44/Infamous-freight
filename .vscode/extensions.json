@@ -65,8 +65,5 @@
     "waderyan.nodejs-extension-pack",
     "ms-vscode.js-debug-nightly"
   ],
-  "unwantedRecommendations": [
-    "ms-dotnettools.vscode-dotnet-pack",
-    "sarthikbhat.json-server"
-  ]
+  "unwantedRecommendations": ["ms-dotnettools.vscode-dotnet-pack", "sarthikbhat.json-server"]
 }

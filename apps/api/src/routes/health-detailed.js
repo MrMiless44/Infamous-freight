@@ -4,9 +4,9 @@
  * Module: Detailed Health Check & Monitoring
  */
 
-const express = require('express');
-const os = require('os');
-const { prisma } = require('../config/database');
+const express = require("express");
+const os = require("os");
+const { prisma } = require("../config/database");
 
 const router = express.Router();
 
@@ -14,100 +14,100 @@ const router = express.Router();
  * Basic health check - used by Docker/Kubernetes health checks
  * GET /api/health
  */
-router.get('/health', async (req, res) => {
-    const startTime = Date.now();
-    const health = {
-        status: 'ok',
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
-        environment: process.env.NODE_ENV || 'development',
-        version: process.env.npm_package_version || '2.1.0',
-        services: {},
-        system: {}
+router.get("/health", async (req, res) => {
+  const startTime = Date.now();
+  const health = {
+    status: "ok",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || "development",
+    version: process.env.npm_package_version || "2.1.0",
+    services: {},
+    system: {},
+  };
+
+  try {
+    // Check PostgreSQL
+    const dbStart = Date.now();
+    await prisma.$queryRaw`SELECT 1`;
+    health.services.database = {
+      status: "healthy",
+      responseTime: `${Date.now() - dbStart}ms`,
     };
-
-    try {
-        // Check PostgreSQL
-        const dbStart = Date.now();
-        await prisma.$queryRaw`SELECT 1`;
-        health.services.database = {
-            status: 'healthy',
-            responseTime: `${Date.now() - dbStart}ms`
-        };
-    } catch (error) {
-        health.status = 'degraded';
-        health.services.database = {
-            status: 'unhealthy',
-            error: error.message
-        };
-    }
-
-    // System metrics
-    health.system = {
-        uptime: `${Math.floor(os.uptime() / 60)} minutes`,
-        loadAverage: os.loadavg(),
-        freeMemory: `${(os.freemem() / 1024 / 1024).toFixed(2)} MB`,
-        totalMemory: `${(os.totalmem() / 1024 / 1024).toFixed(2)} MB`,
-        cpuCores: os.cpus().length,
-        platform: os.platform()
+  } catch (error) {
+    health.status = "degraded";
+    health.services.database = {
+      status: "unhealthy",
+      error: error.message,
     };
+  }
 
-    const statusCode = health.status === 'ok' ? 200 : 503;
-    res.status(statusCode).json(health);
+  // System metrics
+  health.system = {
+    uptime: `${Math.floor(os.uptime() / 60)} minutes`,
+    loadAverage: os.loadavg(),
+    freeMemory: `${(os.freemem() / 1024 / 1024).toFixed(2)} MB`,
+    totalMemory: `${(os.totalmem() / 1024 / 1024).toFixed(2)} MB`,
+    cpuCores: os.cpus().length,
+    platform: os.platform(),
+  };
+
+  const statusCode = health.status === "ok" ? 200 : 503;
+  res.status(statusCode).json(health);
 });
 
 /**
  * Liveness probe - Kubernetes will restart pod if this fails
  * GET /api/health/live
  */
-router.get('/health/live', (req, res) => {
-    res.status(200).json({ status: 'alive' });
+router.get("/health/live", (req, res) => {
+  res.status(200).json({ status: "alive" });
 });
 
 /**
  * Readiness probe - Kubernetes removes from load balancer if this fails
  * GET /api/health/ready
  */
-router.get('/health/ready', async (req, res) => {
-    try {
-        await prisma.$queryRaw`SELECT 1`;
-        res.status(200).json({ status: 'ready' });
-    } catch (error) {
-        res.status(503).json({ status: 'not_ready', error: error.message });
-    }
+router.get("/health/ready", async (req, res) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.status(200).json({ status: "ready" });
+  } catch (error) {
+    res.status(503).json({ status: "not_ready", error: error.message });
+  }
 });
 
 /**
  * Detailed health check - requires authentication
  * GET /api/health/details
  */
-router.get('/health/details', async (req, res) => {
-    const details = {
-        status: 'ok',
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
-        memory: {
-            rss: `${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)} MB`,
-            heapTotal: `${(process.memoryUsage().heapTotal / 1024 / 1024).toFixed(2)} MB`,
-            heapUsed: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,
-            external: `${(process.memoryUsage().external / 1024 / 1024).toFixed(2)} MB`
-        },
-        system: {
-            platform: os.platform(),
-            arch: os.arch(),
-            cpuCores: os.cpus().length,
-            loadAverage: os.loadavg(),
-            freeMemory: `${(os.freemem() / 1024 / 1024 / 1024).toFixed(2)} GB`,
-            totalMemory: `${(os.totalmem() / 1024 / 1024 / 1024).toFixed(2)} GB`,
-            uptime: `${Math.floor(os.uptime() / 3600)} hours`
-        },
-        services: {},
-        performance: {}
-    };
+router.get("/health/details", async (req, res) => {
+  const details = {
+    status: "ok",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    memory: {
+      rss: `${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)} MB`,
+      heapTotal: `${(process.memoryUsage().heapTotal / 1024 / 1024).toFixed(2)} MB`,
+      heapUsed: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,
+      external: `${(process.memoryUsage().external / 1024 / 1024).toFixed(2)} MB`,
+    },
+    system: {
+      platform: os.platform(),
+      arch: os.arch(),
+      cpuCores: os.cpus().length,
+      loadAverage: os.loadavg(),
+      freeMemory: `${(os.freemem() / 1024 / 1024 / 1024).toFixed(2)} GB`,
+      totalMemory: `${(os.totalmem() / 1024 / 1024 / 1024).toFixed(2)} GB`,
+      uptime: `${Math.floor(os.uptime() / 3600)} hours`,
+    },
+    services: {},
+    performance: {},
+  };
 
-    try {
-        const dbStart = Date.now();
-        const dbResult = await prisma.$queryRaw`
+  try {
+    const dbStart = Date.now();
+    const dbResult = await prisma.$queryRaw`
       SELECT 
         count(*) as table_count,
         current_database() as database_name,
@@ -116,37 +116,37 @@ router.get('/health/details', async (req, res) => {
       WHERE table_schema = 'public'
     `;
 
-        details.services.database = {
-            status: 'healthy',
-            responseTime: `${Date.now() - dbStart}ms`,
-            tableCount: dbResult[0]?.table_count || 0,
-            database: dbResult[0]?.database_name || 'unknown'
-        };
-    } catch (error) {
-        details.status = 'degraded';
-        details.services.database = {
-            status: 'unhealthy',
-            error: error.message
-        };
-    }
-
-    // Performance metrics
-    details.performance = {
-        eventLoopLag: 'normal',
-        gcPauses: 'normal',
-        activeHandles: process._getActiveHandles().length,
-        activeRequests: process._getActiveRequests().length
+    details.services.database = {
+      status: "healthy",
+      responseTime: `${Date.now() - dbStart}ms`,
+      tableCount: dbResult[0]?.table_count || 0,
+      database: dbResult[0]?.database_name || "unknown",
     };
+  } catch (error) {
+    details.status = "degraded";
+    details.services.database = {
+      status: "unhealthy",
+      error: error.message,
+    };
+  }
 
-    res.json(details);
+  // Performance metrics
+  details.performance = {
+    eventLoopLag: "normal",
+    gcPauses: "normal",
+    activeHandles: process._getActiveHandles().length,
+    activeRequests: process._getActiveRequests().length,
+  };
+
+  res.json(details);
 });
 
 /**
  * Health dashboard HTML
  * GET /api/health/dashboard
  */
-router.get('/health/dashboard', (req, res) => {
-    const html = `
+router.get("/health/dashboard", (req, res) => {
+  const html = `
     <!DOCTYPE html>
     <html>
     <head>
@@ -326,8 +326,8 @@ router.get('/health/dashboard', (req, res) => {
     </html>
   `;
 
-    res.set('Content-Type', 'text/html');
-    res.send(html);
+  res.set("Content-Type", "text/html");
+  res.send(html);
 });
 
 module.exports = router;

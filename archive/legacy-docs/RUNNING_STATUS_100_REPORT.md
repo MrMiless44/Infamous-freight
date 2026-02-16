@@ -12,7 +12,8 @@
 
 **Found**: VS Code's embedded Node.js v22.21.1  
 **Location**: `/vscode/bin/linux-alpine/17523c000eef5c2197a369b1dda37574b9c63217-insider/node`  
-**Symlink Created**: `/home/vscode/.local/bin/node` → VS Code Node.js  
+**Symlink
+Created**: `/home/vscode/.local/bin/node` → VS Code Node.js  
 **Version**: v22.21.1 (LTS) ✅
 
 ```bash

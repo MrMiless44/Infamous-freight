@@ -7,17 +7,17 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Deployment environment'
+        description: "Deployment environment"
         required: true
-        default: 'production'
+        default: "production"
         type: choice
         options:
           - production
           - staging
 
 env:
-  NODE_VERSION: '24.x'
-  PNPM_VERSION: '10.28.2'
+  NODE_VERSION: "24.x"
+  PNPM_VERSION: "10.28.2"
 
 jobs:
   test:

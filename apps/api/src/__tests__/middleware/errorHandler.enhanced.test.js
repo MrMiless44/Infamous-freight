@@ -17,413 +17,404 @@ const { prisma } = require("../../db/prisma");
 jest.mock("@sentry/node");
 
 describe("Error Handler - Enhanced Tests", () => {
-    let app;
+  let app;
 
-    beforeAll(() => {
-        // Load app after mocks are set up
-        app = require("../../app");
+  beforeAll(() => {
+    // Load app after mocks are set up
+    app = require("../../app");
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  afterAll(async () => {
+    await prisma?.$disconnect?.();
+  });
+
+  // ============================================================================
+  // Test 1: Sentry Integration on 500 Errors
+  // ============================================================================
+  describe("Sentry Integration", () => {
+    test("should send 500 errors to Sentry with context", async () => {
+      const sentrySpy = jest.spyOn(Sentry, "captureException");
+
+      // Trigger a 500 error by requesting non-existent route with server error
+      await request(app).get("/api/trigger-error-for-testing").expect(404);
+
+      // Note: In real implementation, you'd create a test route that throws an error
+      // For now, we'll test the actual error handler middleware directly
     });
 
-    beforeEach(() => {
-        jest.clearAllMocks();
+    test("should attach user context to authenticated errors", async () => {
+      const sentrySpy = jest.spyOn(Sentry, "captureException");
+      const setUserSpy = jest.spyOn(Sentry, "setUser");
+
+      const token = generateTestJWT({
+        sub: "user-123",
+        email: "test@example.com",
+        scopes: ["shipments:read"],
+      });
+
+      // Make request with authentication
+      await request(app)
+        .get("/api/shipments/99999") // Non-existent resource
+        .set("Authorization", `Bearer ${token}`);
+
+      // Should have set user context (if error occurred)
+      // Note: This depends on error actually being thrown
     });
 
-    afterAll(async () => {
-        await prisma?.$disconnect?.();
+    test("should include request path and method in error context", async () => {
+      const response = await request(app)
+        .post("/api/invalid-endpoint")
+        .send({ test: "data" })
+        .expect(404);
+
+      expect(response.body).toHaveProperty("error");
+    });
+  });
+
+  // ============================================================================
+  // Test 2: HTTP Status Code Handling
+  // ============================================================================
+  describe("HTTP Status Codes", () => {
+    test("should return 400 for validation errors", async () => {
+      const token = generateTestJWT({
+        sub: "user-123",
+        scopes: ["shipments:write"],
+      });
+
+      const response = await request(app)
+        .post("/api/shipments")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+          // Missing required fields like origin, destination
+          weight: "invalid",
+        })
+        .expect(400);
+
+      expect(response.body).toHaveProperty("details");
+      expect(Array.isArray(response.body.details)).toBe(true);
     });
 
-    // ============================================================================
-    // Test 1: Sentry Integration on 500 Errors
-    // ============================================================================
-    describe("Sentry Integration", () => {
-        test("should send 500 errors to Sentry with context", async () => {
-            const sentrySpy = jest.spyOn(Sentry, "captureException");
+    test("should return 401 for missing authentication", async () => {
+      const response = await request(app)
+        .get("/api/shipments") // Protected route
+        .expect(401);
 
-            // Trigger a 500 error by requesting non-existent route with server error
-            await request(app).get("/api/trigger-error-for-testing").expect(404);
-
-            // Note: In real implementation, you'd create a test route that throws an error
-            // For now, we'll test the actual error handler middleware directly
-        });
-
-        test("should attach user context to authenticated errors", async () => {
-            const sentrySpy = jest.spyOn(Sentry, "captureException");
-            const setUserSpy = jest.spyOn(Sentry, "setUser");
-
-            const token = generateTestJWT({
-                sub: "user-123",
-                email: "test@example.com",
-                scopes: ["shipments:read"],
-            });
-
-            // Make request with authentication
-            await request(app)
-                .get("/api/shipments/99999") // Non-existent resource
-                .set("Authorization", `Bearer ${token}`);
-
-            // Should have set user context (if error occurred)
-            // Note: This depends on error actually being thrown
-        });
-
-        test("should include request path and method in error context", async () => {
-            const response = await request(app)
-                .post("/api/invalid-endpoint")
-                .send({ test: "data" })
-                .expect(404);
-
-            expect(response.body).toHaveProperty("error");
-        });
+      expect(response.body.error).toMatch(/token|auth/i);
     });
 
-    // ============================================================================
-    // Test 2: HTTP Status Code Handling
-    // ============================================================================
-    describe("HTTP Status Codes", () => {
-        test("should return 400 for validation errors", async () => {
-            const token = generateTestJWT({
-                sub: "user-123",
-                scopes: ["shipments:write"],
-            });
+    test("should return 403 for insufficient scope", async () => {
+      const tokenWithoutScope = generateTestJWT({
+        sub: "user-123",
+        scopes: [], // No scopes
+      });
 
-            const response = await request(app)
-                .post("/api/shipments")
-                .set("Authorization", `Bearer ${token}`)
-                .send({
-                    // Missing required fields like origin, destination
-                    weight: "invalid",
-                })
-                .expect(400);
+      const response = await request(app)
+        .post("/api/ai/command")
+        .set("Authorization", `Bearer ${tokenWithoutScope}`)
+        .send({ command: "test" })
+        .expect(403);
 
-            expect(response.body).toHaveProperty("details");
-            expect(Array.isArray(response.body.details)).toBe(true);
-        });
-
-        test("should return 401 for missing authentication", async () => {
-            const response = await request(app)
-                .get("/api/shipments") // Protected route
-                .expect(401);
-
-            expect(response.body.error).toMatch(/token|auth/i);
-        });
-
-        test("should return 403 for insufficient scope", async () => {
-            const tokenWithoutScope = generateTestJWT({
-                sub: "user-123",
-                scopes: [], // No scopes
-            });
-
-            const response = await request(app)
-                .post("/api/ai/command")
-                .set("Authorization", `Bearer ${tokenWithoutScope}`)
-                .send({ command: "test" })
-                .expect(403);
-
-            expect(response.body.error).toMatch(/scope|permission/i);
-        });
-
-        test("should return 404 for non-existent resources", async () => {
-            const token = generateTestJWT({ scopes: ["shipments:read"] });
-
-            const response = await request(app)
-                .get("/api/shipments/99999")
-                .set("Authorization", `Bearer ${token}`);
-
-            if (!prisma) {
-                expect([400, 500]).toContain(response.status);
-            } else {
-                expect(response.status).toBe(404);
-                expect(response.body.error).toMatch(/not found/i);
-            }
-        });
-
-        test("should return 429 for rate limit exceeded", async () => {
-            const token = generateTestJWT({ scopes: ["ai:command"] });
-
-            // Make 25 rapid requests to exceed rate limit (20/min for AI)
-            const requests = [];
-            for (let i = 0; i < 25; i++) {
-                requests.push(
-                    request(app)
-                        .post("/api/ai/command")
-                        .set("Authorization", `Bearer ${token}`)
-                        .send({ command: `test-${i}` })
-                );
-            }
-
-            const responses = await Promise.all(requests);
-
-            // At least some should be rate limited
-            const rateLimited = responses.filter((r) => r.status === 429);
-            expect(rateLimited.length).toBeGreaterThan(0);
-
-            if (rateLimited.length > 0) {
-                expect(rateLimited[0].body.error).toMatch(/rate limit|too many/i);
-            }
-        });
+      expect(response.body.error).toMatch(/scope|permission/i);
     });
 
-    // ============================================================================
-    // Test 3: Error Response Format
-    // ============================================================================
-    describe("Error Response Format", () => {
-        test("should return consistent error format", async () => {
-            const response = await request(app).get("/api/nonexistent").expect(404);
+    test("should return 404 for non-existent resources", async () => {
+      const token = generateTestJWT({ scopes: ["shipments:read"] });
 
-            expect(response.body).toHaveProperty("error");
-            expect(typeof response.body.error).toBe("string");
-        });
+      const response = await request(app)
+        .get("/api/shipments/99999")
+        .set("Authorization", `Bearer ${token}`);
 
-        test("should include error details in development mode", () => {
-            const originalEnv = process.env.NODE_ENV;
-            process.env.NODE_ENV = "development";
-
-            // Error responses in development should include more details
-            // This is tested in isolation of the error handler
-
-            process.env.NODE_ENV = originalEnv;
-        });
-
-        test("should sanitize error messages in production", () => {
-            const originalEnv = process.env.NODE_ENV;
-            process.env.NODE_ENV = "production";
-
-            // Production errors should not leak sensitive information
-            // Stack traces should not be included
-
-            process.env.NODE_ENV = originalEnv;
-        });
+      if (!prisma) {
+        expect([400, 500]).toContain(response.status);
+      } else {
+        expect(response.status).toBe(404);
+        expect(response.body.error).toMatch(/not found/i);
+      }
     });
 
-    // ============================================================================
-    // Test 4: Database Errors
-    // ============================================================================
-    describe("Database Error Handling", () => {
-        test("should handle database connection errors gracefully", async () => {
-            // Mock Prisma to throw connection error
-            if (!prisma?.shipment?.findMany) {
-                return;
-            }
+    test("should return 429 for rate limit exceeded", async () => {
+      const token = generateTestJWT({ scopes: ["ai:command"] });
 
-            jest.spyOn(prisma.shipment, "findMany").mockRejectedValueOnce(
-                new Error("Database connection lost")
-            );
+      // Make 25 rapid requests to exceed rate limit (20/min for AI)
+      const requests = [];
+      for (let i = 0; i < 25; i++) {
+        requests.push(
+          request(app)
+            .post("/api/ai/command")
+            .set("Authorization", `Bearer ${token}`)
+            .send({ command: `test-${i}` }),
+        );
+      }
 
-            const token = generateTestJWT({ scopes: ["shipments:read"] });
+      const responses = await Promise.all(requests);
 
-            const response = await request(app)
-                .get("/api/shipments")
-                .set("Authorization", `Bearer ${token}`)
-                .expect(500);
+      // At least some should be rate limited
+      const rateLimited = responses.filter((r) => r.status === 429);
+      expect(rateLimited.length).toBeGreaterThan(0);
 
-            expect(response.body.error).toBeTruthy();
+      if (rateLimited.length > 0) {
+        expect(rateLimited[0].body.error).toMatch(/rate limit|too many/i);
+      }
+    });
+  });
 
-            // Restore mock
-            jest.restoreAllMocks();
-        });
+  // ============================================================================
+  // Test 3: Error Response Format
+  // ============================================================================
+  describe("Error Response Format", () => {
+    test("should return consistent error format", async () => {
+      const response = await request(app).get("/api/nonexistent").expect(404);
 
-        test("should handle Prisma validation errors", async () => {
-            if (!prisma?.shipment?.create) {
-                return;
-            }
-
-            jest.spyOn(prisma.shipment, "create").mockRejectedValueOnce(
-                new Error("Foreign key constraint failed")
-            );
-
-            const token = generateTestJWT({ scopes: ["shipments:write"] });
-
-            const response = await request(app)
-                .post("/api/shipments")
-                .set("Authorization", `Bearer ${token}`)
-                .send({
-                    origin: "New York",
-                    destination: "Los Angeles",
-                    weight: 1000,
-                    driverId: "non-existent-driver",
-                })
-                .expect(500);
-
-            expect(response.body.error).toBeTruthy();
-
-            jest.restoreAllMocks();
-        });
+      expect(response.body).toHaveProperty("error");
+      expect(typeof response.body.error).toBe("string");
     });
 
-    // ============================================================================
-    // Test 5: Validation Errors
-    // ============================================================================
-    describe("Validation Error Handling", () => {
-        test("should return detailed validation errors", async () => {
-            const token = generateTestJWT({
-                sub: "user-123",
-                scopes: ["shipments:write"],
-            });
+    test("should include error details in development mode", () => {
+      const originalEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = "development";
 
-            const response = await request(app)
-                .post("/api/shipments")
-                .set("Authorization", `Bearer ${token}`)
-                .send({
-                    origin: "", // Empty required field
-                    destination: "X", // Too short
-                    weight: -100, // Invalid negative
-                })
-                .expect(400);
+      // Error responses in development should include more details
+      // This is tested in isolation of the error handler
 
-            expect(response.body.details).toBeDefined();
-            expect(Array.isArray(response.body.details)).toBe(true);
-            expect(response.body.details.length).toBeGreaterThan(0);
-
-            // Each error should have a message
-            response.body.details.forEach((error) => {
-                expect(error).toHaveProperty("msg");
-            });
-        });
-
-        test("should validate email format", async () => {
-            const token = generateTestJWT({
-                sub: "user-123",
-                scopes: ["users:write"],
-            });
-
-            const response = await request(app)
-                .patch("/api/users/me")
-                .set("Authorization", `Bearer ${token}`)
-                .send({
-                    email: "invalid-email", // Invalid format
-                    name: "Test User",
-                })
-                .expect(400);
-
-            expect(response.body.details).toBeDefined();
-            const emailError = response.body.details.find((e) =>
-                e.msg.toLowerCase().includes("email")
-            );
-            expect(emailError).toBeDefined();
-        });
+      process.env.NODE_ENV = originalEnv;
     });
 
-    // ============================================================================
-    // Test 6: Authentication Errors
-    // ============================================================================
-    describe("Authentication Error Handling", () => {
-        test("should reject expired JWT tokens", async () => {
-            const expiredToken = generateTestJWT(
-                { sub: "user-123" },
-                { expiresIn: "-1h" } // Already expired
-            );
+    test("should sanitize error messages in production", () => {
+      const originalEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = "production";
 
-            const response = await request(app)
-                .get("/api/shipments")
-                .set("Authorization", `Bearer ${expiredToken}`)
-                .expect(401);
+      // Production errors should not leak sensitive information
+      // Stack traces should not be included
 
-            expect(response.body.error).toMatch(/token|expired/i);
-        });
+      process.env.NODE_ENV = originalEnv;
+    });
+  });
 
-        test("should reject malformed JWT tokens", async () => {
-            const response = await request(app)
-                .get("/api/shipments")
-                .set("Authorization", "Bearer invalid.token.format")
-                .expect(401);
+  // ============================================================================
+  // Test 4: Database Errors
+  // ============================================================================
+  describe("Database Error Handling", () => {
+    test("should handle database connection errors gracefully", async () => {
+      // Mock Prisma to throw connection error
+      if (!prisma?.shipment?.findMany) {
+        return;
+      }
 
-            expect(response.body.error).toMatch(/token|invalid/i);
-        });
+      jest
+        .spyOn(prisma.shipment, "findMany")
+        .mockRejectedValueOnce(new Error("Database connection lost"));
 
-        test("should require Bearer prefix in Authorization header", async () => {
-            const token = generateTestJWT({ sub: "user-123" });
+      const token = generateTestJWT({ scopes: ["shipments:read"] });
 
-            const response = await request(app)
-                .get("/api/shipments")
-                .set("Authorization", token) // Missing "Bearer" prefix
-                .expect(401);
+      const response = await request(app)
+        .get("/api/shipments")
+        .set("Authorization", `Bearer ${token}`)
+        .expect(500);
 
-            expect(response.body.error).toBeTruthy();
-        });
+      expect(response.body.error).toBeTruthy();
+
+      // Restore mock
+      jest.restoreAllMocks();
     });
 
-    // ============================================================================
-    // Test 7: Feature Flag Errors
-    // ============================================================================
-    describe("Feature Flag Error Handling", () => {
-        test("should return 503 when feature is disabled", async () => {
-            // Save original env
-            const originalEnv = process.env.ENABLE_AI_COMMANDS;
+    test("should handle Prisma validation errors", async () => {
+      if (!prisma?.shipment?.create) {
+        return;
+      }
 
-            // Disable AI feature
-            process.env.ENABLE_AI_COMMANDS = "false";
+      jest
+        .spyOn(prisma.shipment, "create")
+        .mockRejectedValueOnce(new Error("Foreign key constraint failed"));
 
-            const token = generateTestJWT({ scopes: ["ai:command"] });
+      const token = generateTestJWT({ scopes: ["shipments:write"] });
 
-            const response = await request(app)
-                .post("/api/ai/command")
-                .set("Authorization", `Bearer ${token}`)
-                .send({ command: "test" });
+      const response = await request(app)
+        .post("/api/shipments")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+          origin: "New York",
+          destination: "Los Angeles",
+          weight: 1000,
+          driverId: "non-existent-driver",
+        })
+        .expect(500);
 
-            expect([429, 503]).toContain(response.status);
-            if (response.status === 503) {
-                expect(response.body.error).toMatch(/not available|disabled/i);
-            }
+      expect(response.body.error).toBeTruthy();
 
-            // Restore env
-            process.env.ENABLE_AI_COMMANDS = originalEnv;
-        });
+      jest.restoreAllMocks();
+    });
+  });
+
+  // ============================================================================
+  // Test 5: Validation Errors
+  // ============================================================================
+  describe("Validation Error Handling", () => {
+    test("should return detailed validation errors", async () => {
+      const token = generateTestJWT({
+        sub: "user-123",
+        scopes: ["shipments:write"],
+      });
+
+      const response = await request(app)
+        .post("/api/shipments")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+          origin: "", // Empty required field
+          destination: "X", // Too short
+          weight: -100, // Invalid negative
+        })
+        .expect(400);
+
+      expect(response.body.details).toBeDefined();
+      expect(Array.isArray(response.body.details)).toBe(true);
+      expect(response.body.details.length).toBeGreaterThan(0);
+
+      // Each error should have a message
+      response.body.details.forEach((error) => {
+        expect(error).toHaveProperty("msg");
+      });
     });
 
-    // ============================================================================
-    // Test 8: CORS Errors
-    // ============================================================================
-    describe("CORS Error Handling", () => {
-        test("should handle CORS preflight requests", async () => {
-            const response = await request(app)
-                .options("/api/shipments")
-                .set("Origin", "http://localhost:3000")
-                .set("Access-Control-Request-Method", "POST");
+    test("should validate email format", async () => {
+      const token = generateTestJWT({
+        sub: "user-123",
+        scopes: ["users:write"],
+      });
 
-            // Should return 204 or 200 for OPTIONS
-            expect([200, 204]).toContain(response.status);
-        });
+      const response = await request(app)
+        .patch("/api/users/me")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+          email: "invalid-email", // Invalid format
+          name: "Test User",
+        })
+        .expect(400);
 
-        test("should reject requests from unauthorized origins", async () => {
-            const response = await request(app)
-                .get("/api/health")
-                .set("Origin", "http://evil-site.com");
+      expect(response.body.details).toBeDefined();
+      const emailError = response.body.details.find((e) => e.msg.toLowerCase().includes("email"));
+      expect(emailError).toBeDefined();
+    });
+  });
 
-            // CORS should be configured to reject or not set headers for unauthorized origins
-            // The health endpoint might still respond but without CORS headers
-        });
+  // ============================================================================
+  // Test 6: Authentication Errors
+  // ============================================================================
+  describe("Authentication Error Handling", () => {
+    test("should reject expired JWT tokens", async () => {
+      const expiredToken = generateTestJWT(
+        { sub: "user-123" },
+        { expiresIn: "-1h" }, // Already expired
+      );
+
+      const response = await request(app)
+        .get("/api/shipments")
+        .set("Authorization", `Bearer ${expiredToken}`)
+        .expect(401);
+
+      expect(response.body.error).toMatch(/token|expired/i);
     });
 
-    // ============================================================================
-    // Test 10: Error Logging
-    // ============================================================================
-    describe("Error Logging", () => {
-        test("should log errors with correlation IDs", async () => {
-            const response = await request(app).get("/api/nonexistent").expect(404);
+    test("should reject malformed JWT tokens", async () => {
+      const response = await request(app)
+        .get("/api/shipments")
+        .set("Authorization", "Bearer invalid.token.format")
+        .expect(401);
 
-            // Error should have been logged
-            // In a real test, you'd spy on the logger
-        });
-
-        test("should log different levels for different errors", async () => {
-            // 404 errors: info or warning
-            await request(app).get("/api/nonexistent").expect(404);
-
-            // 500 errors: error level
-            if (!prisma?.shipment?.findMany) {
-                return;
-            }
-
-            jest
-                .spyOn(prisma.shipment, "findMany")
-                .mockRejectedValueOnce(new Error("Database error"));
-
-            const token = generateTestJWT({ scopes: ["shipments:read"] });
-            await request(app)
-                .get("/api/shipments")
-                .set("Authorization", `Bearer ${token}`)
-                .expect(500);
-
-            jest.restoreAllMocks();
-        });
+      expect(response.body.error).toMatch(/token|invalid/i);
     });
+
+    test("should require Bearer prefix in Authorization header", async () => {
+      const token = generateTestJWT({ sub: "user-123" });
+
+      const response = await request(app)
+        .get("/api/shipments")
+        .set("Authorization", token) // Missing "Bearer" prefix
+        .expect(401);
+
+      expect(response.body.error).toBeTruthy();
+    });
+  });
+
+  // ============================================================================
+  // Test 7: Feature Flag Errors
+  // ============================================================================
+  describe("Feature Flag Error Handling", () => {
+    test("should return 503 when feature is disabled", async () => {
+      // Save original env
+      const originalEnv = process.env.ENABLE_AI_COMMANDS;
+
+      // Disable AI feature
+      process.env.ENABLE_AI_COMMANDS = "false";
+
+      const token = generateTestJWT({ scopes: ["ai:command"] });
+
+      const response = await request(app)
+        .post("/api/ai/command")
+        .set("Authorization", `Bearer ${token}`)
+        .send({ command: "test" });
+
+      expect([429, 503]).toContain(response.status);
+      if (response.status === 503) {
+        expect(response.body.error).toMatch(/not available|disabled/i);
+      }
+
+      // Restore env
+      process.env.ENABLE_AI_COMMANDS = originalEnv;
+    });
+  });
+
+  // ============================================================================
+  // Test 8: CORS Errors
+  // ============================================================================
+  describe("CORS Error Handling", () => {
+    test("should handle CORS preflight requests", async () => {
+      const response = await request(app)
+        .options("/api/shipments")
+        .set("Origin", "http://localhost:3000")
+        .set("Access-Control-Request-Method", "POST");
+
+      // Should return 204 or 200 for OPTIONS
+      expect([200, 204]).toContain(response.status);
+    });
+
+    test("should reject requests from unauthorized origins", async () => {
+      const response = await request(app).get("/api/health").set("Origin", "http://evil-site.com");
+
+      // CORS should be configured to reject or not set headers for unauthorized origins
+      // The health endpoint might still respond but without CORS headers
+    });
+  });
+
+  // ============================================================================
+  // Test 10: Error Logging
+  // ============================================================================
+  describe("Error Logging", () => {
+    test("should log errors with correlation IDs", async () => {
+      const response = await request(app).get("/api/nonexistent").expect(404);
+
+      // Error should have been logged
+      // In a real test, you'd spy on the logger
+    });
+
+    test("should log different levels for different errors", async () => {
+      // 404 errors: info or warning
+      await request(app).get("/api/nonexistent").expect(404);
+
+      // 500 errors: error level
+      if (!prisma?.shipment?.findMany) {
+        return;
+      }
+
+      jest.spyOn(prisma.shipment, "findMany").mockRejectedValueOnce(new Error("Database error"));
+
+      const token = generateTestJWT({ scopes: ["shipments:read"] });
+      await request(app).get("/api/shipments").set("Authorization", `Bearer ${token}`).expect(500);
+
+      jest.restoreAllMocks();
+    });
+  });
 });

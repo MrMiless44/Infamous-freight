@@ -14,21 +14,15 @@ export async function GET(req: Request) {
       activeCompanyId,
     });
   } catch (err: unknown) {
-   const anyErr = err as { status?: number; statusCode?: number; message?: string };
-   const status =
-     typeof anyErr.status === "number"
-       ? anyErr.status
-       : typeof anyErr.statusCode === "number"
-         ? anyErr.statusCode
-         : 500;
-   const message =
-     anyErr && typeof anyErr.message === "string"
-       ? anyErr.message
-       : "Internal Server Error";
-   return jsonWithRequestId(
-     req,
-     { error: message },
-     { status },
-   );
+    const anyErr = err as { status?: number; statusCode?: number; message?: string };
+    const status =
+      typeof anyErr.status === "number"
+        ? anyErr.status
+        : typeof anyErr.statusCode === "number"
+          ? anyErr.statusCode
+          : 500;
+    const message =
+      anyErr && typeof anyErr.message === "string" ? anyErr.message : "Internal Server Error";
+    return jsonWithRequestId(req, { error: message }, { status });
   }
 }

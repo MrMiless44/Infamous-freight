@@ -9,14 +9,14 @@
  * Prevents invalid state changes
  */
 const VALID_TRANSITIONS = {
-    DRAFT: ["REQUIRES_PAYMENT", "CANCELED"],
-    REQUIRES_PAYMENT: ["OPEN", "CANCELED"],
-    OPEN: ["ACCEPTED", "CANCELED"],
-    ACCEPTED: ["PICKED_UP", "CANCELED"],
-    PICKED_UP: ["DELIVERED", "CANCELED"],
-    DELIVERED: ["COMPLETED"],
-    COMPLETED: [], // Terminal state
-    CANCELED: [], // Terminal state
+  DRAFT: ["REQUIRES_PAYMENT", "CANCELED"],
+  REQUIRES_PAYMENT: ["OPEN", "CANCELED"],
+  OPEN: ["ACCEPTED", "CANCELED"],
+  ACCEPTED: ["PICKED_UP", "CANCELED"],
+  PICKED_UP: ["DELIVERED", "CANCELED"],
+  DELIVERED: ["COMPLETED"],
+  COMPLETED: [], // Terminal state
+  CANCELED: [], // Terminal state
 };
 
 /**
@@ -26,7 +26,7 @@ const VALID_TRANSITIONS = {
  * @returns {boolean} True if transition is allowed
  */
 function canTransition(currentStatus, newStatus) {
-    return VALID_TRANSITIONS[currentStatus]?.includes(newStatus) || false;
+  return VALID_TRANSITIONS[currentStatus]?.includes(newStatus) || false;
 }
 
 /**
@@ -35,7 +35,7 @@ function canTransition(currentStatus, newStatus) {
  * @returns {string[]} Array of allowed next statuses
  */
 function getAllowedTransitions(currentStatus) {
-    return VALID_TRANSITIONS[currentStatus] || [];
+  return VALID_TRANSITIONS[currentStatus] || [];
 }
 
 /**
@@ -45,17 +45,17 @@ function getAllowedTransitions(currentStatus) {
  * @throws {Error} If transition is not allowed
  */
 function validateTransition(currentStatus, newStatus) {
-    if (!canTransition(currentStatus, newStatus)) {
-        throw new Error(
-            `Invalid status transition: ${currentStatus} -> ${newStatus}. ` +
-            `Allowed transitions: ${getAllowedTransitions(currentStatus).join(", ") || "none"}`
-        );
-    }
+  if (!canTransition(currentStatus, newStatus)) {
+    throw new Error(
+      `Invalid status transition: ${currentStatus} -> ${newStatus}. ` +
+        `Allowed transitions: ${getAllowedTransitions(currentStatus).join(", ") || "none"}`,
+    );
+  }
 }
 
 module.exports = {
-    VALID_TRANSITIONS,
-    canTransition,
-    getAllowedTransitions,
-    validateTransition,
+  VALID_TRANSITIONS,
+  canTransition,
+  getAllowedTransitions,
+  validateTransition,
 };

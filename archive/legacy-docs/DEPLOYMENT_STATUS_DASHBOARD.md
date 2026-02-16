@@ -26,7 +26,8 @@ Uptime:     99.9%
 
 - Production: https://mrmiless44-genesis.vercel.app
 - Dashboard: https://vercel.com/santorio-miles-projects/mrmiless44-genesis
-- Deployments: https://vercel.com/santorio-miles-projects/mrmiless44-genesis/deployments
+- Deployments:
+  https://vercel.com/santorio-miles-projects/mrmiless44-genesis/deployments
 
 ---
 
@@ -176,7 +177,8 @@ Region:     iad (US East)
 ### **Pending** ⏳
 
 - [ ] FLY_API_TOKEN (Fly.io authentication)
-  - **Location**: https://github.com/MrMiless44/Infamous-freight-enterprises/settings/secrets/actions
+  - **Location**:
+    https://github.com/MrMiless44/Infamous-freight-enterprises/settings/secrets/actions
   - **Name**: `FLY_API_TOKEN`
   - **Get Token**: `flyctl auth token` (in local terminal)
 
@@ -302,10 +304,13 @@ Database Query (avg):    < 100ms ✅
 
 - **Web Live**: https://mrmiless44-genesis.vercel.app
 - **API Production**: https://infamous-freight-api.fly.dev
-- **GitHub Actions**: https://github.com/MrMiless44/Infamous-freight-enterprises/actions
-- **Vercel Dashboard**: https://vercel.com/santorio-miles-projects/mrmiless44-genesis
+- **GitHub Actions**:
+  https://github.com/MrMiless44/Infamous-freight-enterprises/actions
+- **Vercel Dashboard**:
+  https://vercel.com/santorio-miles-projects/mrmiless44-genesis
 - **Fly.io Console**: https://fly.io/apps
-- **GitHub Secrets**: https://github.com/MrMiless44/Infamous-freight-enterprises/settings/secrets/actions
+- **GitHub Secrets**:
+  https://github.com/MrMiless44/Infamous-freight-enterprises/settings/secrets/actions
 - **Sentry Errors**: https://sentry.io/organizations/
 - **Deployment Docs**: See DEPLOYMENT_SYSTEM_100.md
 

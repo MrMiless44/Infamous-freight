@@ -2,19 +2,22 @@
 
 ## Overview
 
-This guide ensures all web interfaces meet WCAG 2.1 AA standards. Accessibility is critical for inclusive user experience and legal compliance.
+This guide ensures all web interfaces meet WCAG 2.1 AA standards. Accessibility
+is critical for inclusive user experience and legal compliance.
 
 ## Testing Tools
 
 ### 1. Automated Tools
 
 #### axe DevTools
+
 ```bash
 # Install Chrome extension: axe DevTools by Deque
 # Reports on accessibility violations in real-time
 ```
 
 #### Lighthouse (Built-in)
+
 ```bash
 # Run accessibility audit
 cd apps/web
@@ -26,12 +29,14 @@ pnpm start &
 ```
 
 #### WAVE Browser Extension
+
 ```bash
 # Install: WebAIM WAVE
 # Highlights potential accessibility issues
 ```
 
 #### eslint-plugin-jsx-a11y
+
 ```bash
 # Already configured in apps/web/eslint.config.js
 # Catches accessibility issues at development time
@@ -43,7 +48,9 @@ pnpm lint:a11y
 ### 2. Manual Testing Checklist
 
 #### Keyboard Navigation
+
 - [ ] **Tab Order**: All interactive elements reachable via Tab key
+
   ```bash
   # Test: Press Tab repeatedly through entire page
   # Expected: Logical order (top-to-bottom, left-to-right)
@@ -51,10 +58,11 @@ pnpm lint:a11y
   ```
 
 - [ ] **Focus Visible**: Clear focus indicator on all elements
+
   ```css
   /* Ensure focus is always visible */
   :focus {
-    outline: 2px solid #4A90E2;
+    outline: 2px solid #4a90e2;
     outline-offset: 2px;
   }
   ```
@@ -65,7 +73,9 @@ pnpm lint:a11y
   ```
 
 #### Color Contrast
+
 - [ ] **Text Contrast**: Minimum 4.5:1 for small text, 3:1 for large
+
   ```bash
   # Use WebAIM Contrast Checker
   # Verify on all background combinations
@@ -77,7 +87,9 @@ pnpm lint:a11y
   ```
 
 #### Images & Icons
+
 - [ ] **Alt Text**: All meaningful images have descriptive alt text
+
   ```jsx
   <img src="shipment.png" alt="Shipment in transit on map" />
   ```
@@ -90,13 +102,16 @@ pnpm lint:a11y
   ```
 
 #### Forms
+
 - [ ] **Labels**: All inputs have associated labels
+
   ```jsx
   <label htmlFor="email">Email Address</label>
   <input id="email" type="email" required />
   ```
 
 - [ ] **Error Messages**: Linked to form fields
+
   ```jsx
   <input aria-describedby="email-error" />
   <p id="email-error" role="alert">Invalid email format</p>
@@ -108,13 +123,16 @@ pnpm lint:a11y
   ```
 
 #### Screen Reader Testing
+
 - [ ] **Text Content**: All text readable by screen readers
+
   ```bash
   # Test with: NVDA (Windows), JAWS, or VoiceOver (Mac)
   # Verify page structure makes sense
   ```
 
 - [ ] **Landmarks**: Proper use of semantic HTML
+
   ```jsx
   <header>Navigation</header>
   <main>Content</main>
@@ -130,7 +148,9 @@ pnpm lint:a11y
   ```
 
 #### Motion & Animation
+
 - [ ] **Animations**: Respect prefers-reduced-motion
+
   ```css
   @media (prefers-reduced-motion: reduce) {
     * {
@@ -148,7 +168,9 @@ pnpm lint:a11y
   ```
 
 #### Page Structure
+
 - [ ] **Headings**: Proper hierarchy (h1, then h2, h3, etc.)
+
   ```jsx
   <h1>Page Title</h1>
   <h2>Section</h2>
@@ -156,12 +178,17 @@ pnpm lint:a11y
   ```
 
 - [ ] **No Empty Links**: All links have descriptive text
-  ```jsx
-  {/* ❌ Bad */}
-  <a href="/shipment/123">Read more</a>
 
-  {/* ✅ Good */}
-  <a href="/shipment/123">View shipment details for package #123</a>
+  ```jsx
+  {
+    /* ❌ Bad */
+  }
+  <a href="/shipment/123">Read more</a>;
+
+  {
+    /* ✅ Good */
+  }
+  <a href="/shipment/123">View shipment details for package #123</a>;
   ```
 
 ## Automated Testing
@@ -170,28 +197,28 @@ pnpm lint:a11y
 
 ```javascript
 // apps/web/__tests__/accessibility.test.js
-import { render, screen } from '@testing-library/react';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { render, screen } from "@testing-library/react";
+import { axe, toHaveNoViolations } from "jest-axe";
 
 expect.extend(toHaveNoViolations);
 
-describe('Accessibility', () => {
-  test('Login page has no violations', async () => {
+describe("Accessibility", () => {
+  test("Login page has no violations", async () => {
     const { container } = render(<LoginPage />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
-  test('Form labels are associated with inputs', () => {
+  test("Form labels are associated with inputs", () => {
     render(<ShipmentForm />);
-    const input = screen.getByLabelText('Origin Address');
+    const input = screen.getByLabelText("Origin Address");
     expect(input).toBeInTheDocument();
   });
 
-  test('Error messages are announced to screen readers', async () => {
+  test("Error messages are announced to screen readers", async () => {
     render(<PaymentForm />);
-    const errorMessage = screen.getByRole('alert');
-    expect(errorMessage).toHaveAttribute('role', 'alert');
+    const errorMessage = screen.getByRole("alert");
+    expect(errorMessage).toHaveAttribute("role", "alert");
   });
 });
 ```
@@ -200,28 +227,30 @@ describe('Accessibility', () => {
 
 ```typescript
 // e2e/accessibility.spec.ts
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test.describe('Accessibility', () => {
-  test('Keyboard navigation works on dashboard', async ({ page }) => {
-    await page.goto('http://localhost:3000/dashboard');
+test.describe("Accessibility", () => {
+  test("Keyboard navigation works on dashboard", async ({ page }) => {
+    await page.goto("http://localhost:3000/dashboard");
 
     // Tab through all interactive elements
     let focusCount = 0;
     while (focusCount < 20) {
-      await page.keyboard.press('Tab');
+      await page.keyboard.press("Tab");
       focusCount++;
-      const focused = await page.evaluate(() => document.activeElement?.tagName);
-      expect(['BUTTON', 'A', 'INPUT']).toContain(focused);
+      const focused = await page.evaluate(
+        () => document.activeElement?.tagName,
+      );
+      expect(["BUTTON", "A", "INPUT"]).toContain(focused);
     }
   });
 
-  test('Color contrast meets WCAG AA', async ({ page }) => {
+  test("Color contrast meets WCAG AA", async ({ page }) => {
     const violations = await page.evaluate(() => {
       // Simple contrast check (would use axe-core in production)
-      const elements = document.querySelectorAll('button, a, p');
+      const elements = document.querySelectorAll("button, a, p");
       const low = [];
-      elements.forEach(el => {
+      elements.forEach((el) => {
         const style = window.getComputedStyle(el);
         // Simplified: check if text is readable
         if (style.color === style.backgroundColor) {
@@ -238,24 +267,25 @@ test.describe('Accessibility', () => {
 
 ## Accessibility Audit Checklist
 
-| Area | Status | Notes |
-|------|--------|-------|
-| Keyboard Navigation | [ ] | All pages navigable via Tab |
-| Color Contrast | [ ] | 4.5:1 for text, 3:1 for large |
-| Alt Text | [ ] | All images have descriptive alt |
-| Form Labels | [ ] | All inputs associated with labels |
-| Error Messages | [ ] | Linked to fields, aria-live |
-| Headings | [ ] | Proper hierarchy |
-| Landmarks | [ ] | Semantic HTML used |
-| Skip Links | [ ] | Skip to main content available |
-| Focus Visible | [ ] | Clear focus indicators |
-| Screen Reader | [ ] | Tested with NVDA/JAWS/VO |
-| Motion/Animation | [ ] | Respects prefers-reduced-motion |
-| Videos | [ ] | No auto-play, captions included |
+| Area                | Status | Notes                             |
+| ------------------- | ------ | --------------------------------- |
+| Keyboard Navigation | [ ]    | All pages navigable via Tab       |
+| Color Contrast      | [ ]    | 4.5:1 for text, 3:1 for large     |
+| Alt Text            | [ ]    | All images have descriptive alt   |
+| Form Labels         | [ ]    | All inputs associated with labels |
+| Error Messages      | [ ]    | Linked to fields, aria-live       |
+| Headings            | [ ]    | Proper hierarchy                  |
+| Landmarks           | [ ]    | Semantic HTML used                |
+| Skip Links          | [ ]    | Skip to main content available    |
+| Focus Visible       | [ ]    | Clear focus indicators            |
+| Screen Reader       | [ ]    | Tested with NVDA/JAWS/VO          |
+| Motion/Animation    | [ ]    | Respects prefers-reduced-motion   |
+| Videos              | [ ]    | No auto-play, captions included   |
 
 ## Common Issues & Fixes
 
 ### Issue: Low Color Contrast
+
 ```jsx
 // ❌ Bad
 <p style={{ color: '#999', backgroundColor: '#f5f5f5' }}>Light text</p>
@@ -265,6 +295,7 @@ test.describe('Accessibility', () => {
 ```
 
 ### Issue: Missing Form Labels
+
 ```jsx
 // ❌ Bad
 <input type="email" placeholder="Email" />
@@ -275,6 +306,7 @@ test.describe('Accessibility', () => {
 ```
 
 ### Issue: Icon-Only Buttons
+
 ```jsx
 // ❌ Bad
 <button><TrashIcon /></button>
@@ -286,6 +318,7 @@ test.describe('Accessibility', () => {
 ```
 
 ### Issue: Missing Skip Link
+
 ```jsx
 // ✅ Good - Add at start of page
 <a href="#main-content" className="sr-only">
@@ -304,7 +337,7 @@ test.describe('Accessibility', () => {
     white-space: nowrap;
     border-width: 0;
   }
-  
+
   .sr-only:focus {
     position: static;
     width: auto;
@@ -324,9 +357,11 @@ test.describe('Accessibility', () => {
 
 - **WCAG 2.1 Guidelines**: https://www.w3.org/WAI/WCAG21/quickref/
 - **WebAIM**: https://webaim.org/
-- **MDN Accessibility**: https://developer.mozilla.org/en-US/docs/Web/Accessibility
+- **MDN Accessibility**:
+  https://developer.mozilla.org/en-US/docs/Web/Accessibility
 - **axe DevTools**: https://www.deque.com/axe/devtools/
-- **Keyboard Navigation**: https://www.w3.org/WAI/WCAG21/Understanding/keyboard.html
+- **Keyboard Navigation**:
+  https://www.w3.org/WAI/WCAG21/Understanding/keyboard.html
 
 ## Continuous Accessibility
 

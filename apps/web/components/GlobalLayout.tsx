@@ -4,11 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { getLocaleFromRouter, t } from "../lib/i18n/t";
 
-export default function GlobalLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function GlobalLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const locale = getLocaleFromRouter(router.locale);
 
@@ -71,8 +67,7 @@ export default function GlobalLayout({
 
       <footer className="site-footer">
         <div className="container">
-          Global UX baseline: i18n (EN/ES), a11y skip-link, SEO defaults, locale
-          formatting.
+          Global UX baseline: i18n (EN/ES), a11y skip-link, SEO defaults, locale formatting.
         </div>
       </footer>
     </>

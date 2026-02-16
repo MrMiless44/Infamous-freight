@@ -11,7 +11,10 @@
 
 ## Executive Summary
 
-The complete infrastructure overhaul for Infamous Freight Enterprises has been successfully implemented with **zero-downtime deployment capability**, **comprehensive monitoring**, **security hardening**, and **production-ready operational procedures**.
+The complete infrastructure overhaul for Infamous Freight Enterprises has been
+successfully implemented with **zero-downtime deployment capability**,
+**comprehensive monitoring**, **security hardening**, and **production-ready
+operational procedures**.
 
 ### What Was Delivered
 

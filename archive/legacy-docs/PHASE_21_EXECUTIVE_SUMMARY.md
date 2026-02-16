@@ -8,9 +8,11 @@
 
 ## 📊 Executive Summary
 
-Phase 21 transforms Infæmous Freight from a "ready-to-sell" technology platform into a **scalable revenue machine** with:
+Phase 21 transforms Infæmous Freight from a "ready-to-sell" technology platform
+into a **scalable revenue machine** with:
 
 ### What Was Built
+
 - ✅ **5 Backend Services** (1,500+ lines of TypeScript)
 - ✅ **20 API Endpoints** with full validation & authentication
 - ✅ **5 Database Models** for leads, demos, referrals, CRM sync, metrics
@@ -21,6 +23,7 @@ Phase 21 transforms Infæmous Freight from a "ready-to-sell" technology platform
 - ✅ **Investor Metrics Dashboard** (real-time KPIs)
 
 ### What This Enables
+
 1. **Lead Capture** — Funnel prospects from landing pages into CRM
 2. **Sales Pipeline** — Track leads from contact → demo → signed contract
 3. **Demo Automation** — Schedule with Calendly/Google Calendar
@@ -35,6 +38,7 @@ Phase 21 transforms Infæmous Freight from a "ready-to-sell" technology platform
 ### Backend Services
 
 #### 1. Lead Capture Service (`leadCapture.ts`)
+
 ```
 Prospect fills form on landing page
     ↓
@@ -48,6 +52,7 @@ Sales rep reaches out
 ```
 
 #### 2. Demo Scheduling Service (`demoScheduling.ts`)
+
 ```
 Lead books demo
     ↓
@@ -61,6 +66,7 @@ updateDemoStatus() → Mark completed/no-show
 ```
 
 #### 3. Referral System (`referrals.ts`)
+
 ```
 Customer gets referral code: REF_ABC123_XYZ789
     ↓
@@ -76,6 +82,7 @@ Viral loop continues
 ```
 
 #### 4. ROI Calculator (`roiCalculator.ts`)
+
 ```
 Enterprise prospect enters:
 - Loads/month: 500
@@ -94,6 +101,7 @@ Prospect impressed → Books demo
 ```
 
 #### 5. Metrics Engine (`metrics.ts`)
+
 ```
 Daily snapshot captures:
 - MRR (Monthly Recurring Revenue)
@@ -113,6 +121,7 @@ Used for:
 ## 📊 Metrics Available
 
 ### Real-Time Dashboard
+
 ```
 {
   "mrr": 8421,              // Monthly recurring revenue
@@ -129,6 +138,7 @@ Used for:
 ```
 
 ### Growth Tracking
+
 ```
 {
   "mrrGrowth": {
@@ -151,6 +161,7 @@ Used for:
 ## 🔌 20 API Endpoints
 
 ### Lead Management (5)
+
 ```
 POST   /api/sales/leads              # Create lead from form
 GET    /api/sales/leads/:email       # Get single lead
@@ -159,6 +170,7 @@ GET    /api/sales/leads              # List all (admin dashboard)
 ```
 
 ### Demo Scheduling (4)
+
 ```
 POST   /api/sales/demo               # Schedule via Calendly/Google Calendar
 GET    /api/sales/demo/:id           # Get details
@@ -167,12 +179,14 @@ GET    /api/sales/demo/stats         # Conversion metrics
 ```
 
 ### ROI Calculation (2)
+
 ```
 POST   /api/sales/roi-calculate      # Get custom ROI for prospect inputs
 GET    /api/sales/roi-defaults       # Get industry defaults
 ```
 
 ### Referral System (3)
+
 ```
 POST   /api/sales/referral           # Generate referral code
 GET    /api/sales/referral/stats     # Referrer's earnings & conversions
@@ -180,6 +194,7 @@ GET    /api/sales/referral/leaderboard # Top 10 referrers
 ```
 
 ### Metrics (5)
+
 ```
 GET    /api/sales/metrics            # Current snapshot
 GET    /api/sales/metrics/trend      # Historical (30 days)
@@ -189,6 +204,7 @@ POST   /api/sales/metrics/snapshot   # Store today's snapshot
 ```
 
 ### Admin (1)
+
 ```
 POST   /api/sales/leads/bulk-export  # Export all leads (admin)
 ```
@@ -198,6 +214,7 @@ POST   /api/sales/leads/bulk-export  # Export all leads (admin)
 ## 💰 Revenue Impact Model
 
 ### Expected Conversion Funnel
+
 ```
 Landing page visitors: 1000
     ↓
@@ -215,6 +232,7 @@ New MRR: $1,500+
 ```
 
 ### Referral Growth Model
+
 ```
 10 customers with referral codes
     ↓
@@ -234,6 +252,7 @@ $300 to acquire 30 customers = $10 CAC
 ### 5 New Models
 
 #### Lead
+
 ```
 Tracks prospect from first touch to customer
 - Email, name, company, phone
@@ -246,6 +265,7 @@ Tracks prospect from first touch to customer
 ```
 
 #### DemoBooking
+
 ```
 Tracks scheduled demos
 - Links to Lead
@@ -257,6 +277,7 @@ Tracks scheduled demos
 ```
 
 #### Referral
+
 ```
 Tracks referral rewards
 - Referrer email → Referee email
@@ -267,6 +288,7 @@ Tracks referral rewards
 ```
 
 #### CrmSync
+
 ```
 Logs CRM integrations
 - Which entity (lead, org, subscription)
@@ -277,6 +299,7 @@ Logs CRM integrations
 ```
 
 #### MetricsSnapshot
+
 ```
 Daily/hourly metrics capture
 - Revenue: MRR, GMV, platform take
@@ -293,18 +316,18 @@ Daily/hourly metrics capture
 ### 1. Add to API (`app.js`)
 
 ```typescript
-import salesRoutes from './routes/sales';
+import salesRoutes from "./routes/sales";
 
-app.use('/api/sales', salesRoutes);
+app.use("/api/sales", salesRoutes);
 
 // Schedule daily metrics snapshot
-schedule.scheduleJob('0 0 * * *', async () => {
+schedule.scheduleJob("0 0 * * *", async () => {
   const metrics = await getMetricsSnapshot();
   await storeMetricsSnapshot(metrics);
 });
 
 // Schedule demo reminders (9 AM daily)
-schedule.scheduleJob('0 9 * * *', async () => {
+schedule.scheduleJob("0 9 * * *", async () => {
   await sendDemoReminders();
 });
 ```
@@ -312,11 +335,12 @@ schedule.scheduleJob('0 9 * * *', async () => {
 ### 2. Create Landing Pages (apps/web/)
 
 **Shipper Page** (`/landing/shipper`)
+
 ```html
 <form action="/api/sales/leads" method="POST">
-  <input name="name" placeholder="Your name">
-  <input name="email" placeholder="your@email.com">
-  <input name="company" placeholder="Company">
+  <input name="name" placeholder="Your name" />
+  <input name="email" placeholder="your@email.com" />
+  <input name="company" placeholder="Company" />
   <select name="type">
     <option value="SHIPPER">Shipper</option>
   </select>
@@ -325,10 +349,11 @@ schedule.scheduleJob('0 9 * * *', async () => {
 ```
 
 **ROI Calculator** (`/roi-calculator`)
+
 ```html
 <form id="roi-form">
-  <input name="estimatedLoadsPerMonth" type="number" placeholder="500">
-  <input name="averageLoadPrice" type="number" placeholder="500">
+  <input name="estimatedLoadsPerMonth" type="number" placeholder="500" />
+  <input name="averageLoadPrice" type="number" placeholder="500" />
   <select name="plan">
     <option value="STARTER">Starter ($99/mo)</option>
     <option value="GROWTH">Growth ($499/mo)</option>
@@ -363,6 +388,7 @@ pnpm prisma generate
 ## 🎯 Use Cases
 
 ### Use Case 1: B2B Enterprise Sales
+
 ```
 1. CFO finds you via Google
 2. Lands on /landing/enterprise
@@ -375,6 +401,7 @@ pnpm prisma generate
 ```
 
 ### Use Case 2: Driver Referral Loop
+
 ```
 1. Driver A completes 10 jobs
 2. Earns referral code (REF_ABC123)
@@ -386,6 +413,7 @@ pnpm prisma generate
 ```
 
 ### Use Case 3: Investor Pitch
+
 ```
 1. CEO pulls /api/sales/metrics/investor
 2. Dashboard shows:
@@ -414,7 +442,8 @@ pnpm prisma generate
 
 ## 📚 Documentation
 
-1. **[PHASE_21_COMPLETE.md](PHASE_21_COMPLETE.md)** — Full technical guide (500+ lines)
+1. **[PHASE_21_COMPLETE.md](PHASE_21_COMPLETE.md)** — Full technical guide (500+
+   lines)
 2. **[PHASE_21_DELIVERY.md](PHASE_21_DELIVERY.md)** — Delivery summary
 3. **Code comments** — Every function documented
 4. **API examples** — curl commands for all endpoints
@@ -430,7 +459,7 @@ pnpm prisma generate
 ✅ Viral referral growth system  
 ✅ Real-time metrics dashboard  
 ✅ Sales pipeline visibility  
-✅ Investor reporting ready  
+✅ Investor reporting ready
 
 ---
 

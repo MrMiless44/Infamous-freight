@@ -10,7 +10,7 @@ const nextConfig = {
   turbopack: {
     resolveAlias: {
       "@": "./src",
-    }
+    },
   },
   typescript: {
     // Fix TypeScript errors: pnpm --filter web typecheck
@@ -25,16 +25,12 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   experimental: {
     serverActions: {
-      bodySizeLimit: '2mb'
+      bodySizeLimit: "2mb",
     },
-    optimizePackageImports: [
-      '@infamous-freight/shared',
-      'recharts',
-      '@supabase/supabase-js',
-    ],
+    optimizePackageImports: ["@infamous-freight/shared", "recharts", "@supabase/supabase-js"],
   },
   compiler: {
-    removeConsole: process.env.NODE_ENV === "production"
+    removeConsole: process.env.NODE_ENV === "production",
   },
   images: {
     formats: ["image/avif", "image/webp"],
@@ -45,14 +41,14 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "infamous-freight-api.fly.dev",
-        pathname: "/api/uploads/**"
+        pathname: "/api/uploads/**",
       },
       {
         protocol: "https",
         hostname: "*.supabase.co",
-        pathname: "/storage/**"
-      }
-    ]
+        pathname: "/storage/**",
+      },
+    ],
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
@@ -68,32 +64,32 @@ const nextConfig = {
               name: "core-vendors",
               priority: 20,
               reuseExistingChunk: true,
-              enforce: true
+              enforce: true,
             },
             payments: {
               test: /[\\/]node_modules[\\/](@stripe|stripe)[\\/]/,
               name: "payment-vendors",
               priority: 15,
-              reuseExistingChunk: true
+              reuseExistingChunk: true,
             },
             charts: {
               test: /[\\/]node_modules[\\/](recharts)[\\/]/,
               name: "chart-vendors",
               priority: 10,
-              reuseExistingChunk: true
+              reuseExistingChunk: true,
             },
             supabase: {
               test: /[\\/]node_modules[\\/](@supabase)[\\/]/,
               name: "supabase-vendors",
               priority: 12,
-              reuseExistingChunk: true
+              reuseExistingChunk: true,
             },
             commons: {
               test: /[\\/]node_modules[\\/]/,
               name: "common-vendors",
               priority: 5,
               minChunks: 2,
-              reuseExistingChunk: true
+              reuseExistingChunk: true,
             },
             shared: {
               minChunks: 2,
@@ -105,14 +101,14 @@ const nextConfig = {
                   .update(chunks.map((chunk) => chunk.name).join("_"))
                   .digest("hex");
                 return `shared-${hash.substring(0, 8)}`;
-              }
-            }
-          }
-        }
+              },
+            },
+          },
+        },
       };
     }
     return config;
-  }
+  },
 };
 
 export default nextConfig;

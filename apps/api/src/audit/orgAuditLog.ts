@@ -1,9 +1,9 @@
 /**
  * Tenant Audit Log Helpers (Phase 19.5)
- * 
+ *
  * Separate from JobEvent (operational) and system audit chain.
  * OrgAuditLog is customer-visible, enterprise-grade audit trail.
- * 
+ *
  * Every sensitive action is logged:
  * - Job acceptance
  * - Payment processing
@@ -25,7 +25,7 @@ export interface AuditLogContext {
 
 /**
  * Log a customer-visible audit event
- * 
+ *
  * Usage:
  *   await logAuditEvent(prisma, {
  *     organizationId: orgId,
@@ -36,10 +36,7 @@ export interface AuditLogContext {
  *     metadata: { driverId, wave: 2, estimatedMinutes: 45 },
  *   });
  */
-export async function logAuditEvent(
-  prisma: PrismaClient,
-  context: AuditLogContext
-): Promise<void> {
+export async function logAuditEvent(prisma: PrismaClient, context: AuditLogContext): Promise<void> {
   try {
     await prisma.orgAuditLog.create({
       data: {
@@ -66,7 +63,7 @@ export async function logAuditEvent(
  */
 export async function logAuditEventsBatch(
   prisma: PrismaClient,
-  contexts: AuditLogContext[]
+  contexts: AuditLogContext[],
 ): Promise<void> {
   try {
     await prisma.orgAuditLog.createMany({
@@ -104,7 +101,7 @@ export async function getAuditLogs(
     to?: Date;
     limit?: number;
     offset?: number;
-  }
+  },
 ) {
   const limit = Math.min(filters?.limit || 100, 1000); // Max 1000 per page
   const offset = filters?.offset || 0;
@@ -203,7 +200,7 @@ export const AUDIT_ENTITIES = {
 export function createAuditMetadata(
   details: Record<string, any>,
   userAgent?: string,
-  ipAddress?: string
+  ipAddress?: string,
 ): Record<string, any> {
   return {
     ...details,
@@ -225,16 +222,9 @@ export function auditLogsToCSV(
     entity: string;
     entityId: string | null;
     metadata: any;
-  }>
+  }>,
 ): string {
-  const headers = [
-    "Timestamp",
-    "Actor",
-    "Action",
-    "Entity",
-    "EntityId",
-    "Details",
-  ];
+  const headers = ["Timestamp", "Actor", "Action", "Entity", "EntityId", "Details"];
 
   const rows = logs.map((log) => [
     log.createdAt.toISOString(),
@@ -250,11 +240,9 @@ export function auditLogsToCSV(
     ...rows.map((row) =>
       row
         .map((cell) =>
-          typeof cell === "string" && cell.includes(",")
-            ? `"${cell.replace(/"/g, '""')}"`
-            : cell
+          typeof cell === "string" && cell.includes(",") ? `"${cell.replace(/"/g, '""')}"` : cell,
         )
-        .join(",")
+        .join(","),
     ),
   ].join("\n");
 
@@ -263,12 +251,12 @@ export function auditLogsToCSV(
 
 /**
  * Type-safe audit logging with middleware integration
- * 
+ *
  * Usage in route:
  *   router.post("/jobs/:id/accept", authenticate, async (req, res, next) => {
  *     try {
  *       const job = await service.acceptJob(jobId);
- *       
+ *
  *       await auditLog(prisma, {
  *         organizationId: req.auth.organizationId,
  *         userId: req.auth.userId,
@@ -280,7 +268,7 @@ export function auditLogsToCSV(
  *           wave: job.offerWave,
  *         }, req.get("user-agent"), req.ip),
  *       });
- *       
+ *
  *       res.json(job);
  *     } catch (err) {
  *       next(err);

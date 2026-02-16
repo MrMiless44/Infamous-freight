@@ -3,6 +3,7 @@
 ## 🚀 Getting Started with Phase 2 Features
 
 ### 1. Run Database Migrations
+
 ```bash
 cd apps/api
 
@@ -17,6 +18,7 @@ pnpm prisma generate
 ```
 
 ### 2. Start Development Server with Phase 2
+
 ```bash
 # Terminal 1: API (with webhook service + analytics)
 cd apps/api
@@ -32,6 +34,7 @@ pnpm start
 ```
 
 ### 3. Test Phase 2 APIs
+
 ```bash
 # Get auth token
 TOKEN=$(curl -X POST http://localhost:4000/v1/auth/login \
@@ -132,6 +135,7 @@ DATABASE_URL=postgresql://user:pass@localhost:5432/infamous
 ## 🧪 Testing Phase 2
 
 ### Run All Tests
+
 ```bash
 cd apps/api
 
@@ -149,6 +153,7 @@ pnpm test:watch
 ```
 
 ### Expected Test Output
+
 ```
 PASS  src/routes/loadboard.test.js
   Loadboard API Routes
@@ -188,29 +193,30 @@ Time: 2.847s
 
 ```javascript
 // Example: Shipper-only route
-const express = require('express');
-const { 
-  authenticate, 
-  requireShipper, 
-  enforceOrgIsolation 
-} = require('../middleware/authGuards');
+const express = require("express");
+const {
+  authenticate,
+  requireShipper,
+  enforceOrgIsolation,
+} = require("../middleware/authGuards");
 
 const router = express.Router();
 
 router.post(
-  '/post-load',
-  authenticate,           // Verify JWT
-  requireShipper,         // Ensure user is shipper
-  enforceOrgIsolation,    // Verify org access
+  "/post-load",
+  authenticate, // Verify JWT
+  requireShipper, // Ensure user is shipper
+  enforceOrgIsolation, // Verify org access
   async (req, res) => {
     // Protected route logic
-  }
+  },
 );
 
 module.exports = router;
 ```
 
 ### Token Structure (JWT Payload)
+
 ```json
 {
   "sub": "user-uuid-123",
@@ -228,6 +234,7 @@ module.exports = router;
 ## 📊 Analytics API Reference
 
 ### Get Driver Dashboard
+
 ```
 GET /api/analytics/driver/dashboard?days=7
 
@@ -262,6 +269,7 @@ Response:
 ```
 
 ### Get Revenue Trends
+
 ```
 GET /api/analytics/driver/trends?months=12
 
@@ -278,6 +286,7 @@ Response: [
 ```
 
 ### Get Public Leaderboard
+
 ```
 GET /api/analytics/leaderboard?metric=earnings&limit=5
 
@@ -300,6 +309,7 @@ Response: [
 ## 🔔 Webhook API Reference
 
 ### Subscribe to Event
+
 ```
 POST /api/webhooks/subscribe
 Authorization: Bearer TOKEN
@@ -325,6 +335,7 @@ Response:
 ```
 
 ### List Subscriptions
+
 ```
 GET /api/webhooks/subscriptions
 Authorization: Bearer TOKEN
@@ -346,6 +357,7 @@ Response:
 ```
 
 ### Unsubscribe
+
 ```
 DELETE /api/webhooks/subscriptions/loads:new
 Authorization: Bearer TOKEN
@@ -358,6 +370,7 @@ Response:
 ```
 
 ### Webhook Payload Structure
+
 ```json
 {
   "id": "evt-456xyz",
@@ -377,27 +390,34 @@ Response:
 ```
 
 ### Verify Webhook Signature (Node.js)
+
 ```javascript
-const crypto = require('crypto');
+const crypto = require("crypto");
 
 function verifyWebhookSignature(payload, signature, secret) {
   const expected = crypto
-    .createHmac('sha256', secret)
+    .createHmac("sha256", secret)
     .update(JSON.stringify(payload))
-    .digest('hex');
-  
+    .digest("hex");
+
   return expected === signature;
 }
 
 // In your Express middleware
-router.post('/webhooks/loads', (req, res) => {
-  const signature = req.headers['x-webhook-signature'];
-  const event = req.headers['x-webhook-event'];
-  
-  if (!verifyWebhookSignature(req.body, signature, process.env.WEBHOOK_SIGNING_SECRET)) {
-    return res.status(401).json({ error: 'Invalid signature' });
+router.post("/webhooks/loads", (req, res) => {
+  const signature = req.headers["x-webhook-signature"];
+  const event = req.headers["x-webhook-event"];
+
+  if (
+    !verifyWebhookSignature(
+      req.body,
+      signature,
+      process.env.WEBHOOK_SIGNING_SECRET,
+    )
+  ) {
+    return res.status(401).json({ error: "Invalid signature" });
   }
-  
+
   console.log(`Received ${event} event`);
   res.json({ received: true });
 });
@@ -447,6 +467,7 @@ router.post('/webhooks/loads', (req, res) => {
 ## 🔍 Debugging Phase 2
 
 ### Check Webhook Queue Status (Admin)
+
 ```bash
 curl -H "Authorization: Bearer ADMIN_TOKEN" \
   "http://localhost:4000/api/webhooks/status"
@@ -463,6 +484,7 @@ Response:
 ```
 
 ### View Database (Prisma Studio)
+
 ```bash
 cd apps/api
 pnpm prisma studio
@@ -472,6 +494,7 @@ pnpm prisma studio
 ```
 
 ### Check Logs
+
 ```bash
 # API logs (with correlation IDs)
 tail -f logs/api.log
@@ -488,76 +511,78 @@ DATABASE_LOG_LEVEL=info pnpm dev
 ## 🔄 Common Workflows
 
 ### Workflow 1: A Driver Searching & Bidding
+
 ```javascript
 // 1. Get authenticated
-const { accessToken } = await login('driver@email.com', 'password');
+const { accessToken } = await login("driver@email.com", "password");
 
 // 2. Search all load boards (including Uber Freight)
-const loads = await fetch('/api/loads/search', {
+const loads = await fetch("/api/loads/search", {
   headers: { Authorization: `Bearer ${accessToken}` },
   query: {
-    pickupCity: 'Denver',
-    dropoffCity: 'Phoenix',
-    source: 'all',  // ← Includes uberfright
-    minRate: 1.50
-  }
+    pickupCity: "Denver",
+    dropoffCity: "Phoenix",
+    source: "all", // ← Includes uberfright
+    minRate: 1.5,
+  },
 });
 
 // 3. Subscribe to notifications
-await fetch('/api/webhooks/subscribe', {
-  method: 'POST',
+await fetch("/api/webhooks/subscribe", {
+  method: "POST",
   headers: { Authorization: `Bearer ${accessToken}` },
   body: JSON.stringify({
-    event: 'bid:received',
-    targetUrl: 'https://myapp.com/notify'
-  })
+    event: "bid:received",
+    targetUrl: "https://myapp.com/notify",
+  }),
 });
 
 // 4. Bid on a load
-const bid = await fetch('/api/loads/uber-12345/bid', {
-  method: 'POST',
+const bid = await fetch("/api/loads/uber-12345/bid", {
+  method: "POST",
   headers: { Authorization: `Bearer ${accessToken}` },
   body: JSON.stringify({
     bidAmount: 1850,
-    phone: '+1-555-1234',
-    comments: 'Ready immediately'
-  })
+    phone: "+1-555-1234",
+    comments: "Ready immediately",
+  }),
 });
 
 // 5. View analytics
-const dashboard = await fetch('/api/analytics/driver/dashboard', {
-  headers: { Authorization: `Bearer ${accessToken}` }
+const dashboard = await fetch("/api/analytics/driver/dashboard", {
+  headers: { Authorization: `Bearer ${accessToken}` },
 });
 ```
 
 ### Workflow 2: A Shipper Posting Loads
+
 ```javascript
 // 1. Post a load
-const load = await fetch('/api/shipper/post-load', {
-  method: 'POST',
+const load = await fetch("/api/shipper/post-load", {
+  method: "POST",
   headers: { Authorization: `Bearer ${shipperToken}` },
   body: JSON.stringify({
-    pickupCity: 'Chicago',
-    dropoffCity: 'Atlanta',
+    pickupCity: "Chicago",
+    dropoffCity: "Atlanta",
     weight: 45000,
-    equipmentType: 'dry_van',
-    rate: 1800
-  })
+    equipmentType: "dry_van",
+    rate: 1800,
+  }),
 });
 
 // 2. Subscribe to carrier bids
-await fetch('/api/webhooks/subscribe', {
-  method: 'POST',
+await fetch("/api/webhooks/subscribe", {
+  method: "POST",
   headers: { Authorization: `Bearer ${shipperToken}` },
   body: JSON.stringify({
-    event: 'bid:received',
-    targetUrl: 'https://shipper-app.com/webhooks/bids'
-  })
+    event: "bid:received",
+    targetUrl: "https://shipper-app.com/webhooks/bids",
+  }),
 });
 
 // 3. View org metrics
-const metrics = await fetch('/api/analytics/shipper/dashboard', {
-  headers: { Authorization: `Bearer ${shipperToken}` }
+const metrics = await fetch("/api/analytics/shipper/dashboard", {
+  headers: { Authorization: `Bearer ${shipperToken}` },
 });
 ```
 
@@ -572,5 +597,5 @@ const metrics = await fetch('/api/analytics/shipper/dashboard', {
 
 ---
 
-*Last Updated: February 15, 2026*  
-*Phase 2 Release*
+_Last Updated: February 15, 2026_  
+_Phase 2 Release_

@@ -1,6 +1,7 @@
 # Contributing to Infamous Freight Enterprises
 
-Thank you for your interest in contributing! This guide will help you get started.
+Thank you for your interest in contributing! This guide will help you get
+started.
 
 ## 📋 Table of Contents
 
@@ -169,7 +170,8 @@ These run automatically on commit via Husky hooks.
 
 1. Run full test suite: `cd apps/api && pnpm test`
 2. Check coverage: `cd apps/api && pnpm test:coverage`
-3. Review uncovered code - is it intentional? See [COVERAGE_GAPS.md](./docs/COVERAGE_GAPS.md)
+3. Review uncovered code - is it intentional? See
+   [COVERAGE_GAPS.md](./docs/COVERAGE_GAPS.md)
 
 **Writing Tests:**
 
@@ -179,8 +181,8 @@ These run automatically on commit via Husky hooks.
 - Use descriptive test names
 - Clear mocks between tests
 
-**When to Skip Tests:**
-See [COVERAGE_GAPS.md](./docs/COVERAGE_GAPS.md) for guidance on:
+**When to Skip Tests:** See [COVERAGE_GAPS.md](./docs/COVERAGE_GAPS.md) for
+guidance on:
 
 - Process signal handlers
 - Database connection failures
@@ -399,7 +401,8 @@ When reporting issues:
 
 ### pnpm Version Management
 
-This project uses **Corepack** to automatically manage pnpm versions. The required version is specified in `package.json` (`pnpm@7.5.1`).
+This project uses **Corepack** to automatically manage pnpm versions. The
+required version is specified in `package.json` (`pnpm@7.5.1`).
 
 **If pnpm is not found:**
 
@@ -423,7 +426,8 @@ corepack prepare pnpm@7.5.1 --activate
 
 - Ensure Corepack is enabled: `corepack enable`
 - Verify pnpm version: `pnpm --version` (should be 7.5.1)
-- If still failing, try: `git commit --no-verify` as a workaround while debugging
+- If still failing, try: `git commit --no-verify` as a workaround while
+  debugging
 
 ### Other Common Issues
 

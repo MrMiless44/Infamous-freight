@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from "@prisma/client";
 
 /**
  * Metered Billing Service
@@ -8,9 +8,9 @@ import { Prisma } from '@prisma/client';
 export class MeteredBillingService {
   static async recordUsage(
     userId: string,
-    metricType: 'api_calls' | 'shipments',
+    metricType: "api_calls" | "shipments",
     quantity: number,
-    tier: 'free' | 'pro' | 'enterprise'
+    tier: "free" | "pro" | "enterprise",
   ) {
     // Log usage to database
     await Prisma.usageMetric.create({
@@ -26,7 +26,7 @@ export class MeteredBillingService {
     // Check if tier has overage charges
     if (this.hasOverage(tier, metricType, quantity)) {
       const overage = this.calculateOverage(tier, metricType, quantity);
-      
+
       // Log for billing
       await Prisma.overageCharge.create({
         data: {
@@ -41,11 +41,7 @@ export class MeteredBillingService {
     }
   }
 
-  private static hasOverage(
-    tier: string,
-    metricType: string,
-    quantity: number
-  ): boolean {
+  private static hasOverage(tier: string, metricType: string, quantity: number): boolean {
     const limits = {
       free: { api_calls: 100, shipments: 10 },
       pro: { api_calls: 1000, shipments: 1000 },
@@ -57,11 +53,7 @@ export class MeteredBillingService {
     return quantity > limit;
   }
 
-  private static calculateOverage(
-    tier: string,
-    metricType: string,
-    quantity: number
-  ) {
+  private static calculateOverage(tier: string, metricType: string, quantity: number) {
     const limits = {
       free: { api_calls: 100, shipments: 10 },
       pro: { api_calls: 1000, shipments: 1000 },
@@ -89,7 +81,7 @@ export class MeteredBillingService {
     startOfMonth.setHours(0, 0, 0, 0);
 
     const usage = await Prisma.usageMetric.groupBy({
-      by: ['metricType'],
+      by: ["metricType"],
       where: {
         userId,
         recordedAt: { gte: startOfMonth },

@@ -65,7 +65,8 @@ git push origin main
 
 Trigger deployment manually via GitHub Actions:
 
-1. Go to: https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/fly-deploy.yml
+1. Go to:
+   https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/fly-deploy.yml
 2. Click **"Run workflow"**
 3. Select branch: `main`
 4. Click **"Run workflow"**
@@ -203,4 +204,5 @@ flyctl releases rollback <version> -a infamous-freight-api
 
 ---
 
-**Ready to deploy**: Once you add `FLY_API_TOKEN` to GitHub Secrets, push any change to trigger automatic deployment! 🚀
+**Ready to deploy**: Once you add `FLY_API_TOKEN` to GitHub Secrets, push any
+change to trigger automatic deployment! 🚀

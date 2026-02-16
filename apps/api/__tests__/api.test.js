@@ -75,10 +75,7 @@ describe("Legacy API Test Suite", () => {
     console.log("🔐 Authentication Tests");
 
     const token = generateToken("test-user", "test@example.com", "user");
-    assert(
-      token && typeof token === "string",
-      "generateToken() returns a string",
-    );
+    assert(token && typeof token === "string", "generateToken() returns a string");
 
     const parts = token.split(".");
     assert(parts.length === 3, "Token has 3 parts (header.payload.signature)");
@@ -86,10 +83,7 @@ describe("Legacy API Test Suite", () => {
     const payload = verifyToken(token);
     assert(payload !== null, "verifyToken() validates correct token");
     assert(payload.sub === "test-user", "Token contains correct user ID");
-    assert(
-      payload.email === "test@example.com",
-      "Token contains correct email",
-    );
+    assert(payload.email === "test@example.com", "Token contains correct email");
 
     const invalidToken = verifyToken("invalid.token.here");
     assert(invalidToken === null, "verifyToken() rejects invalid token");
@@ -127,14 +121,8 @@ describe("Legacy API Test Suite", () => {
       "sanitize() removes HTML tags",
     );
 
-    assert(
-      validateEmail("test@example.com"),
-      "validateEmail() accepts valid email",
-    );
-    assert(
-      !validateEmail("invalid-email"),
-      "validateEmail() rejects invalid email",
-    );
+    assert(validateEmail("test@example.com"), "validateEmail() accepts valid email");
+    assert(!validateEmail("invalid-email"), "validateEmail() rejects invalid email");
 
     // ===== CACHE TESTS =====
     console.log("\n💾 Cache Tests");
@@ -142,10 +130,7 @@ describe("Legacy API Test Suite", () => {
     const cache = new Cache(1000);
     cache.set("test-key", { data: "test-value" });
     const cached = cache.get("test-key");
-    assert(
-      cached !== null && cached.data === "test-value",
-      "Cache stores and retrieves data",
-    );
+    assert(cached !== null && cached.data === "test-value", "Cache stores and retrieves data");
 
     const missing = cache.get("non-existent");
     assert(missing === null, "Cache returns null for missing key");
@@ -170,10 +155,7 @@ describe("Legacy API Test Suite", () => {
     limiter.reset("user-1");
     assert(limiter.isAllowed("user-1"), "Request allowed after reset");
 
-    assert(
-      limiter.isAllowed("user-2"),
-      "Different user not affected by rate limit",
-    );
+    assert(limiter.isAllowed("user-2"), "Different user not affected by rate limit");
 
     // ===== STATISTICS TESTS =====
     console.log("\n📊 Statistics Tests");
@@ -182,19 +164,14 @@ describe("Legacy API Test Suite", () => {
     assert(typeof cacheStats.size === "number", "Cache stats available");
 
     const limiterStats = limiter.stats();
-    assert(
-      typeof limiterStats.identifiers === "number",
-      "Limiter stats available",
-    );
+    assert(typeof limiterStats.identifiers === "number", "Limiter stats available");
 
     // ===== SUMMARY =====
     console.log(`\n${"=".repeat(50)}`);
     console.log(`Tests Passed: ${passed}`);
     console.log(`Tests Failed: ${failed}`);
     console.log(`Total Tests: ${passed + failed}`);
-    console.log(
-      `Success Rate: ${((passed / (passed + failed)) * 100).toFixed(1)}%`,
-    );
+    console.log(`Success Rate: ${((passed / (passed + failed)) * 100).toFixed(1)}%`);
     console.log(`${"=".repeat(50)}\n`);
 
     if (failed > 0) {

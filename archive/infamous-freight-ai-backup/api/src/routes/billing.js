@@ -58,11 +58,7 @@ router.post("/billing/subscribe", async (req, res) => {
       message: "Subscription initiated",
       tier,
       customerId: customer.id,
-      nextSteps: [
-        "Complete Stripe setup",
-        "Redirect to checkout",
-        "Activate subscription",
-      ],
+      nextSteps: ["Complete Stripe setup", "Redirect to checkout", "Activate subscription"],
     });
   } catch (err) {
     console.error("Subscription error:", err);

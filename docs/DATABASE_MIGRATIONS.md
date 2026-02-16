@@ -1,10 +1,14 @@
 # Database Migration Strategy
 
-This guide documents safe, reliable database migration procedures for the Infamous Freight Enterprises platform. All migrations use Prisma ORM with PostgreSQL.
+This guide documents safe, reliable database migration procedures for the
+Infamous Freight Enterprises platform. All migrations use Prisma ORM with
+PostgreSQL.
 
 ## Overview
 
-Migrations move your database schema from one state to another in a controlled way. This document ensures all migrations are safe, reversible, and production-ready.
+Migrations move your database schema from one state to another in a controlled
+way. This document ensures all migrations are safe, reversible, and
+production-ready.
 
 ## Prerequisites
 
@@ -17,25 +21,19 @@ Migrations move your database schema from one state to another in a controlled w
 
 ### Safe Migrations (No Data Loss)
 
-✅ Adding new nullable columns
-✅ Adding new tables
-✅ Adding columns with default values
-✅ Renaming columns (with proper schema handling)
-✅ Relaxing constraints
+✅ Adding new nullable columns ✅ Adding new tables ✅ Adding columns with
+default values ✅ Renaming columns (with proper schema handling) ✅ Relaxing
+constraints
 
 ### Dangerous Migrations (Requires Strategy)
 
-⚠️ Removing columns
-⚠️ Removing tables
-⚠️ Changing column types
-⚠️ Adding NOT NULL columns without defaults
-⚠️ Adding unique constraints to populated columns
+⚠️ Removing columns ⚠️ Removing tables ⚠️ Changing column types ⚠️ Adding NOT
+NULL columns without defaults ⚠️ Adding unique constraints to populated columns
 
 ### Very Risky (Requires Approval)
 
-❌ Dropping entire tables with data
-❌ Major schema restructuring
-❌ Changing column primary keys
+❌ Dropping entire tables with data ❌ Major schema restructuring ❌ Changing
+column primary keys
 
 ## Development Workflow
 

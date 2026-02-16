@@ -42,7 +42,7 @@ router.get(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 router.post(
@@ -71,7 +71,7 @@ router.post(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 router.post(
@@ -94,7 +94,7 @@ router.post(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 router.post(
@@ -117,7 +117,7 @@ router.post(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 router.get(
@@ -135,7 +135,7 @@ router.get(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 router.put(
@@ -157,7 +157,7 @@ router.put(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 router.get(
@@ -189,7 +189,7 @@ router.get(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 router.post(
@@ -209,7 +209,7 @@ router.post(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 router.post(
@@ -240,7 +240,7 @@ router.post(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 router.post(
@@ -269,7 +269,7 @@ router.post(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 module.exports = router;

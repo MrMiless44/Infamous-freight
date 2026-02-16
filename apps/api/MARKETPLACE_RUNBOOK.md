@@ -7,7 +7,8 @@ Complete implementation of a DoorDash-style marketplace with:
 - **Jobs**: Shippers post delivery jobs
 - **Matching**: Drivers see nearby jobs they can fulfill
 - **Pay-per-delivery**: Stripe Checkout for job payments
-- **Subscriptions**: Tiered plans (Starter/Pro/Enterprise) with delivery discounts
+- **Subscriptions**: Tiered plans (Starter/Pro/Enterprise) with delivery
+  discounts
 - **Customer Portal**: Self-service subscription management
 
 ## 📦 Installation

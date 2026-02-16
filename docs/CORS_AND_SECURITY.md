@@ -11,9 +11,12 @@ CORS_ORIGINS=http://localhost:3000,https://app.infamous-freight.com,https://mobi
 
 ## How It Works
 
-1. **Allow-list validation**: Only origins in `CORS_ORIGINS` are allowed to make cross-origin requests.
-2. **Server-to-server exempt**: Requests without an `Origin` header bypass CORS checks (backend-to-backend calls).
-3. **Credentials allowed**: Cookies and auth headers are permitted from allowed origins.
+1. **Allow-list validation**: Only origins in `CORS_ORIGINS` are allowed to make
+   cross-origin requests.
+2. **Server-to-server exempt**: Requests without an `Origin` header bypass CORS
+   checks (backend-to-backend calls).
+3. **Credentials allowed**: Cookies and auth headers are permitted from allowed
+   origins.
 
 ## Security Best Practices
 
@@ -61,10 +64,12 @@ CSP violations are reported to `/api/csp-violation` and logged to Sentry.
 
 ## Rate Limiting by Origin
 
-Rate limiters respect organization context. Clients from different origins are rate-limited separately per user/org:
+Rate limiters respect organization context. Clients from different origins are
+rate-limited separately per user/org:
 
 ```javascript
 keyGenerator: (req) => req.user?.sub || req.ip,
 ```
 
-This prevents cross-origin DoS attacks while allowing legitimate multi-origin traffic.
+This prevents cross-origin DoS attacks while allowing legitimate multi-origin
+traffic.

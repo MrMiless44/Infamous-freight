@@ -72,25 +72,16 @@ export class OfflineQueueService {
     this.isProcessing = false;
   }
 
-  private async processAction(
-    action: QueuedAction,
-    apiClient: any,
-  ): Promise<void> {
+  private async processAction(action: QueuedAction, apiClient: any): Promise<void> {
     switch (action.type) {
       case "shipment_update":
-        await apiClient.updateShipment(
-          action.payload.id,
-          action.payload.updates,
-        );
+        await apiClient.updateShipment(action.payload.id, action.payload.updates);
         break;
       case "shipment_create":
         await apiClient.createShipment(action.payload);
         break;
       case "status_change":
-        await apiClient.updateShipmentStatus(
-          action.payload.id,
-          action.payload.status,
-        );
+        await apiClient.updateShipmentStatus(action.payload.id, action.payload.status);
         break;
     }
   }

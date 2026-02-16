@@ -31,7 +31,8 @@ process.on("SIGTERM", disconnect);
 - Mocking process signal handlers
 - Complex test environment setup
 
-**Risk level**: LOW - These are defensive fallbacks that rarely execute in production.
+**Risk level**: LOW - These are defensive fallbacks that rarely execute in
+production.
 
 ### 2. Process Signal Handlers (server.js - 90%)
 
@@ -191,7 +192,8 @@ coverageThreshold: {
 }
 ```
 
-**Philosophy**: Maintain 84%+ coverage for business logic, accept gaps in defensive/infrastructure code.
+**Philosophy**: Maintain 84%+ coverage for business logic, accept gaps in
+defensive/infrastructure code.
 
 ## When to Add Tests
 

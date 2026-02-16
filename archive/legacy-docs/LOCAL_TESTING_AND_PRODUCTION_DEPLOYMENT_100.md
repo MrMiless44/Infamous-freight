@@ -403,7 +403,9 @@ bash scripts/setup-secrets.sh
 ---
 
 **Questions?** See the detailed guides linked above.  
-**Ready to go?** Start with LOCAL_TESTING_100_EXECUTION.md or PRODUCTION_DEPLOYMENT_EXECUTION.md  
-**Need help?** Check INCIDENT_RESPONSE_PLAYBOOK.md or POST_DEPLOYMENT_OPERATIONS_GUIDE.md
+**Ready to go?** Start with LOCAL_TESTING_100_EXECUTION.md or
+PRODUCTION_DEPLOYMENT_EXECUTION.md  
+**Need help?** Check INCIDENT_RESPONSE_PLAYBOOK.md or
+POST_DEPLOYMENT_OPERATIONS_GUIDE.md
 
 **🏆 YOU'VE GOT THIS! 🏆**

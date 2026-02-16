@@ -326,7 +326,8 @@ Before going live:
 - [ ] Unit tests passing (`npm test`)
 - [ ] E2E tests passing (`npm run test:e2e`)
 - [ ] Web endpoint responding (`https://mrmiless44-genesis.vercel.app`)
-- [ ] API health endpoint responding (`https://infamous-freight-api.fly.dev/api/health`)
+- [ ] API health endpoint responding
+      (`https://infamous-freight-api.fly.dev/api/health`)
 - [ ] Sentry connected & monitoring errors
 - [ ] GitHub Actions CI/CD passing
 - [ ] Post-deploy health workflow active

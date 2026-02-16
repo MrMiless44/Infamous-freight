@@ -2,15 +2,15 @@
 
 ## Quick Reference
 
-| Step | Time | Owner | Checklist |
-|------|------|-------|-----------|
-| Pre-deployment | 30min | DevOps | [ ] Verify all tests pass |
-| Build & Push | 15min | DevOps | [ ] Docker images pushed to registry |
-| Database | 20min | DBA | [ ] Migrations run, schema verified |
-| Deploy API | 10min | DevOps | [ ] Pods rolling out, health checks passing |
-| Deploy Web | 10min | DevOps | [ ] CDN cache cleared, deployment verified |
-| Verification | 30min | QA | [ ] Smoke tests pass, key endpoints respond |
-| Monitoring | 10min | DevOps | [ ] Dashboards loaded, alerts active |
+| Step           | Time  | Owner  | Checklist                                   |
+| -------------- | ----- | ------ | ------------------------------------------- |
+| Pre-deployment | 30min | DevOps | [ ] Verify all tests pass                   |
+| Build & Push   | 15min | DevOps | [ ] Docker images pushed to registry        |
+| Database       | 20min | DBA    | [ ] Migrations run, schema verified         |
+| Deploy API     | 10min | DevOps | [ ] Pods rolling out, health checks passing |
+| Deploy Web     | 10min | DevOps | [ ] CDN cache cleared, deployment verified  |
+| Verification   | 30min | QA     | [ ] Smoke tests pass, key endpoints respond |
+| Monitoring     | 10min | DevOps | [ ] Dashboards loaded, alerts active        |
 
 ---
 
@@ -146,12 +146,12 @@ kubectl logs deployment/api | grep "ERROR\|error" | head -20
 
 ## Common Issues & Solutions
 
-| Issue | Solution |
-|-------|----------|
-| Pod stuck in ImagePullBackOff | Check image registry credentials |
-| Database migration fails | Check migration files; rollback if necessary |
-| High CPU/memory | Check for infinite loops; scale up replicas |
-| 5xx errors spiking | Check application logs; rollback if > 1% |
+| Issue                         | Solution                                     |
+| ----------------------------- | -------------------------------------------- |
+| Pod stuck in ImagePullBackOff | Check image registry credentials             |
+| Database migration fails      | Check migration files; rollback if necessary |
+| High CPU/memory               | Check for infinite loops; scale up replicas  |
+| 5xx errors spiking            | Check application logs; rollback if > 1%     |
 
 ---
 

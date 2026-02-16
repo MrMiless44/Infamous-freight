@@ -3,8 +3,8 @@
  * User-Friendly Card Component
  */
 
-import React, { ReactNode } from 'react';
-import styles from './Card.module.css';
+import React, { ReactNode } from "react";
+import styles from "./Card.module.css";
 
 export interface CardProps {
   children: ReactNode;
@@ -13,7 +13,7 @@ export interface CardProps {
   icon?: ReactNode;
   onClick?: () => void;
   interactive?: boolean;
-  variant?: 'default' | 'elevated' | 'bordered';
+  variant?: "default" | "elevated" | "bordered";
   className?: string;
 }
 
@@ -24,26 +24,30 @@ export const Card: React.FC<CardProps> = ({
   icon,
   onClick,
   interactive = false,
-  variant = 'default',
-  className = '',
+  variant = "default",
+  className = "",
 }) => {
   return (
     <div
       className={`
         ${styles.card}
         ${styles[variant]}
-        ${interactive ? styles.interactive : ''}
+        ${interactive ? styles.interactive : ""}
         ${className}
       `}
       onClick={onClick}
-      role={interactive ? 'button' : undefined}
+      role={interactive ? "button" : undefined}
       tabIndex={interactive ? 0 : undefined}
-      onKeyDown={interactive ? (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onClick?.();
-        }
-      } : undefined}
+      onKeyDown={
+        interactive
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onClick?.();
+              }
+            }
+          : undefined
+      }
     >
       {icon && <div className={styles.icon}>{icon}</div>}
       {title && <h3 className={styles.title}>{title}</h3>}

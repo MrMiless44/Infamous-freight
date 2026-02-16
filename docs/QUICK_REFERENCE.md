@@ -198,4 +198,5 @@ git commit --no-verify
 
 ---
 
-**Need help?** See [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md) for complete docs.
+**Need help?** See [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md) for complete
+docs.

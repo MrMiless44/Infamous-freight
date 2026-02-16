@@ -122,7 +122,8 @@ See `.env.example` for required environment variables:
 - `DATADOG_CLIENT_TOKEN`: Datadog RUM token
 - `DATADOG_APPLICATION_ID`: Datadog application ID
 
-**Important**: Variables prefixed with `NEXT_PUBLIC_` are exposed to the browser.
+**Important**: Variables prefixed with `NEXT_PUBLIC_` are exposed to the
+browser.
 
 ## 📊 Performance
 
@@ -153,7 +154,7 @@ Next.js 14 uses file-based routing:
 
 ```typescript
 // pages/shipments/[id].tsx
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
 export default function Shipment() {
   const router = useRouter();
@@ -177,14 +178,14 @@ export async function getServerSideProps() {
 ### Client-Side Fetching
 
 ```typescript
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 function MyComponent() {
   const [data, setData] = useState(null);
-  
+
   useEffect(() => {
-    fetch('/api/data')
-      .then(res => res.json())
+    fetch("/api/data")
+      .then((res) => res.json())
       .then(setData);
   }, []);
 }
@@ -193,8 +194,8 @@ function MyComponent() {
 ## 🎯 Type Safety with Shared Package
 
 ```typescript
-import type { Shipment, ApiResponse } from '@infamous-freight/shared';
-import { SHIPMENT_STATUSES } from '@infamous-freight/shared';
+import type { Shipment, ApiResponse } from "@infamous-freight/shared";
+import { SHIPMENT_STATUSES } from "@infamous-freight/shared";
 
 interface Props {
   shipment: Shipment;

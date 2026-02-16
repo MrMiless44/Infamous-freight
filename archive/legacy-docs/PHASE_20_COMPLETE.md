@@ -8,10 +8,13 @@
 
 Phase 20 implements a **two-tier revenue model** for Infæmous Freight:
 
-1. **Transactional Fees** (Per-Delivery): $5–$25 base + 8–15% commission per vehicle type
-2. **Enterprise Subscriptions** (Monthly): Starter ($99/100 jobs) → Growth ($499/1k jobs) → Enterprise ($2,500/unlimited)
+1. **Transactional Fees** (Per-Delivery): $5–$25 base + 8–15% commission per
+   vehicle type
+2. **Enterprise Subscriptions** (Monthly): Starter ($99/100 jobs) → Growth
+   ($499/1k jobs) → Enterprise ($2,500/unlimited)
 
 This phase adds:
+
 - ✅ Stripe subscription management (create, upgrade, cancel)
 - ✅ Usage metering (jobs/month tracking + overage detection)
 - ✅ Monthly invoice generation (batch job on 1st of month)
@@ -28,11 +31,11 @@ This phase adds:
 ### Transactional Fees (Per-Delivery Commission)
 
 | Vehicle Type | Base Fee | Commission |
-|---|---|---|
-| Car/SUV | $5 | 8% |
-| Van | $8 | 10% |
-| Box Truck | $15 | 12% |
-| Semi | $25 | 15% |
+| ------------ | -------- | ---------- |
+| Car/SUV      | $5       | 8%         |
+| Van          | $8       | 10%        |
+| Box Truck    | $15      | 12%        |
+| Semi         | $25      | 15%        |
 
 **Formula**: `Fee = baseFee + (jobPrice × commissionPercent)`
 
@@ -42,15 +45,17 @@ This phase adds:
 
 ### Subscription Plans (Monthly)
 
-| Plan | Monthly | Included Jobs | Overage Price |
-|---|---|---|---|
-| **Starter** | $99 | 100 | $1.50/job |
-| **Growth** | $499 | 1,000 | $1.50/job |
-| **Enterprise** | $2,500 | Unlimited | $0 |
+| Plan           | Monthly | Included Jobs | Overage Price |
+| -------------- | ------- | ------------- | ------------- |
+| **Starter**    | $99     | 100           | $1.50/job     |
+| **Growth**     | $499    | 1,000         | $1.50/job     |
+| **Enterprise** | $2,500  | Unlimited     | $0            |
 
-**Overage Pricing**: Jobs beyond quota charged at $1.50 each (except Enterprise).
+**Overage Pricing**: Jobs beyond quota charged at $1.50 each (except
+Enterprise).
 
 **Example**: Growth org with 1,200 jobs in a month:
+
 - Base: $499
 - Overage: (1,200 - 1,000) × $1.50 = $300
 - **Total**: $799
@@ -62,6 +67,7 @@ This phase adds:
 ### Database Models (Prisma)
 
 #### `OrgBilling`
+
 Links organization to Stripe customer + subscription + pricing:
 
 ```prisma
@@ -69,28 +75,29 @@ model OrgBilling {
   id                  String   @id @default(cuid())
   organizationId      String   @unique
   organization        Organization @relation(fields: [organizationId], references: [id])
-  
+
   plan                BillingPlan  // STARTER | GROWTH | ENTERPRISE | CUSTOM
   stripeCustomerId    String       // Stripe customer ID
   stripeSubId         String?      // Stripe subscription ID
   stripeStatus        String?      // active | past_due | canceled | etc.
-  
+
   monthlyBase         Float        // Base fee for plan
   monthlyQuota        Int          // Job quota for plan
   overagePrice        Float        // Per-job overage fee
-  
+
   billingCycleStart   DateTime     // When subscription started
   nextBillingDate     DateTime     // Next invoice date
-  
+
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
-  
+
   @@index([organizationId])
   @@index([stripeCustomerId])
 }
 ```
 
 #### `OrgUsage`
+
 Tracks monthly job counts + revenue per organization:
 
 ```prisma
@@ -98,16 +105,16 @@ model OrgUsage {
   id                  String   @id @default(cuid())
   organizationId      String
   organization        Organization @relation(fields: [organizationId], references: [id])
-  
+
   month               String   // YYYY-MM format
   jobs                Int      // Total jobs completed
   revenue             Float    // Transactional revenue from jobs
   overageJobs         Int      // Jobs beyond quota
   overageCharge       Float    // Total overage fee
-  
+
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
-  
+
   @@unique([organizationId, month])
   @@index([organizationId])
   @@index([month])
@@ -115,6 +122,7 @@ model OrgUsage {
 ```
 
 #### `OrgInvoice`
+
 Generated invoices linked to Stripe:
 
 ```prisma
@@ -122,20 +130,20 @@ model OrgInvoice {
   id                  String   @id @default(cuid())
   organizationId      String
   organization        Organization @relation(fields: [organizationId], references: [id])
-  
+
   month               String        // YYYY-MM
   baseFee             Float         // Plan monthly fee
   overageCharge       Float         // Additional overage
   totalAmount         Float         // baseFee + overageCharge
-  
+
   stripeInvoiceId     String?       // Link to Stripe invoice
   stripeStatus        String?       // draft | open | paid | void | uncollectible
   pdfUrl              String?       // S3/cloud storage URL
   paidAt              DateTime?     // When marked as paid
-  
+
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
-  
+
   @@unique([organizationId, month])
   @@index([organizationId])
   @@index([stripeStatus])
@@ -147,7 +155,7 @@ model OrgInvoice {
 ```prisma
 model Organization {
   // ... existing fields ...
-  
+
   billing         OrgBilling?
   usage           OrgUsage[]
   invoices        OrgInvoice[]
@@ -161,24 +169,29 @@ model Organization {
 ### Core Billing Services
 
 **`apps/api/src/billing/stripeSync.ts`** (250+ lines)
+
 - Subscription lifecycle management
 - Functions:
-  - `createStripeSubscription(orgId, name, plan)` — Create customer + subscription
+  - `createStripeSubscription(orgId, name, plan)` — Create customer +
+    subscription
   - `updateSubscriptionPlan(orgId, newPlan)` — Upgrade/downgrade
   - `cancelSubscription(orgId, immediately)` — Cancel with optional proration
   - `syncSubscriptionStatus(orgId)` — Sync Stripe ↔ DB
   - `getSubscriptionDetails(orgId)` — Portal metadata
 
 **`apps/api/src/billing/usage.ts`** (300+ lines)
+
 - Job completion tracking + fee calculation
 - Functions:
   - `calculatePlatformFee(vehicleType, jobPrice)` — $base + % calculation
-  - `recordJobCompletion(orgId, jobId, vehicleType, jobPrice)` — Called on job COMPLETED
+  - `recordJobCompletion(orgId, jobId, vehicleType, jobPrice)` — Called on job
+    COMPLETED
   - `getMonthlyUsage(orgId, month)` — Query usage
   - `getUsageSummary(orgId, fromMonth, toMonth)` — Date range
   - `resetMonthlyUsage(orgId)` — Testing utility
 
 **`apps/api/src/billing/invoicing.ts`** (350+ lines)
+
 - Monthly invoice generation
 - Functions:
   - `generateOrgInvoice(orgId, month)` — Single invoice
@@ -188,6 +201,7 @@ model Organization {
   - `sendInvoiceReminder(orgId, month)` — Resend
 
 **`apps/api/src/billing/documents.ts`** (350+ lines)
+
 - Compliance document generation
 - Functions:
   - `generateDPAPDF(orgId, orgName)` — Data Processing Agreement
@@ -198,22 +212,23 @@ model Organization {
 
 **`apps/api/src/routes/billing.ts`** (NEW - TypeScript)
 
-| Endpoint | Method | Purpose |
-|---|---|---|
-| `/api/billing/portal` | GET | Redirect to Stripe billing portal |
-| `/api/billing/subscribe` | POST | Create subscription |
-| `/api/billing/upgrade` | POST | Upgrade plan |
-| `/api/billing/cancel` | POST | Cancel subscription |
-| `/api/billing/subscription` | GET | Get subscription details |
-| `/api/billing/usage` | GET | Get current usage |
-| `/api/billing/usage/summary` | GET | Get date range usage |
-| `/api/billing/invoice/:month` | GET | Retrieve invoice |
-| `/api/billing/invoice/:month/reminder` | POST | Send invoice reminder |
-| `/api/billing/pricing` | GET | Public pricing info |
+| Endpoint                               | Method | Purpose                           |
+| -------------------------------------- | ------ | --------------------------------- |
+| `/api/billing/portal`                  | GET    | Redirect to Stripe billing portal |
+| `/api/billing/subscribe`               | POST   | Create subscription               |
+| `/api/billing/upgrade`                 | POST   | Upgrade plan                      |
+| `/api/billing/cancel`                  | POST   | Cancel subscription               |
+| `/api/billing/subscription`            | GET    | Get subscription details          |
+| `/api/billing/usage`                   | GET    | Get current usage                 |
+| `/api/billing/usage/summary`           | GET    | Get date range usage              |
+| `/api/billing/invoice/:month`          | GET    | Retrieve invoice                  |
+| `/api/billing/invoice/:month/reminder` | POST   | Send invoice reminder             |
+| `/api/billing/pricing`                 | GET    | Public pricing info               |
 
 ### Background Jobs
 
 **`apps/api/src/jobs/monthlyInvoicing.ts`** (400+ lines)
+
 - BullMQ scheduled job for 1st of month (midnight UTC)
 - Generates invoices for all active organizations
 - Sends Slack notifications (completion + errors)
@@ -228,13 +243,14 @@ model Organization {
 When a job status transitions to `COMPLETED`:
 
 ```typescript
-import { recordJobCompletion } from '../billing/usage';
+import { recordJobCompletion } from "../billing/usage";
 
 // In job update route
 await recordJobCompletion(orgId, jobId, vehicleType, jobPrice);
 ```
 
 This:
+
 - Increments `OrgUsage.jobs` for the month
 - Adds to `OrgUsage.revenue`
 - Calculates overage if quota exceeded
@@ -245,14 +261,18 @@ This:
 When a new organization is created:
 
 ```typescript
-import { createStripeSubscription } from '../billing/stripeSync';
-import { storeComplianceDocuments } from '../billing/documents';
+import { createStripeSubscription } from "../billing/stripeSync";
+import { storeComplianceDocuments } from "../billing/documents";
 
 // Create Stripe customer + subscription (default: STARTER)
-const sub = await createStripeSubscription(orgId, orgName, 'STARTER');
+const sub = await createStripeSubscription(orgId, orgName, "STARTER");
 
 // Generate & store compliance docs
-const docs = await storeComplianceDocuments(orgId, orgName, sub.stripeCustomerId);
+const docs = await storeComplianceDocuments(
+  orgId,
+  orgName,
+  sub.stripeCustomerId,
+);
 ```
 
 ### 3. **Monthly Invoicing**
@@ -260,7 +280,7 @@ const docs = await storeComplianceDocuments(orgId, orgName, sub.stripeCustomerId
 Automatic invocation via BullMQ (1st of month):
 
 ```typescript
-import { scheduleMonthlyInvoicing } from '../jobs/monthlyInvoicing';
+import { scheduleMonthlyInvoicing } from "../jobs/monthlyInvoicing";
 
 // In API server startup (app.js)
 await scheduleMonthlyInvoicing();
@@ -269,7 +289,7 @@ await scheduleMonthlyInvoicing();
 Or manual trigger:
 
 ```typescript
-import { triggerMonthlyInvoicing } from '../jobs/monthlyInvoicing';
+import { triggerMonthlyInvoicing } from "../jobs/monthlyInvoicing";
 
 // POST /api/admin/billing/invoices/generate (admin-only endpoint)
 const jobId = await triggerMonthlyInvoicing();
@@ -333,6 +353,7 @@ SLACK_WEBHOOK_URL=https://hooks.slack.com/services/YOUR/WEBHOOK/URL
 ### Example 1: Create Subscription
 
 **Request**:
+
 ```bash
 POST /api/billing/subscribe
 Content-Type: application/json
@@ -344,6 +365,7 @@ Authorization: Bearer <jwt_token>
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -360,24 +382,25 @@ Authorization: Bearer <jwt_token>
 ### Example 2: Record Job Completion
 
 **In Job Completion Handler** (`apps/api/src/routes/jobs.ts`):
-```typescript
-import { recordJobCompletion } from '../billing/usage';
 
-router.post('/jobs/:id/complete', authenticate, async (req, res) => {
+```typescript
+import { recordJobCompletion } from "../billing/usage";
+
+router.post("/jobs/:id/complete", authenticate, async (req, res) => {
   const { id } = req.params;
   const { vehicleType, finalPrice } = req.body;
 
   // Update job status
   const job = await prisma.job.update({
     where: { id },
-    data: { status: 'COMPLETED' },
+    data: { status: "COMPLETED" },
   });
 
   // Record for billing
   try {
     await recordJobCompletion(job.organizationId, id, vehicleType, finalPrice);
   } catch (err) {
-    console.error('Failed to record billing:', err);
+    console.error("Failed to record billing:", err);
     // Don't fail the job update if billing fails
   }
 
@@ -388,12 +411,14 @@ router.post('/jobs/:id/complete', authenticate, async (req, res) => {
 ### Example 3: Get Monthly Usage
 
 **Request**:
+
 ```bash
 GET /api/billing/usage?month=2025-01
 Authorization: Bearer <jwt_token>
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -401,7 +426,7 @@ Authorization: Bearer <jwt_token>
     "organizationId": "org_123",
     "month": "2025-01",
     "jobs": 95,
-    "revenue": 892.50,
+    "revenue": 892.5,
     "overageJobs": 0,
     "overageCharge": 0
   }
@@ -411,12 +436,14 @@ Authorization: Bearer <jwt_token>
 ### Example 4: Retrieve Invoice
 
 **Request**:
+
 ```bash
 GET /api/billing/invoice/2025-01
 Authorization: Bearer <jwt_token>
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -491,6 +518,7 @@ INVOICE_PAID
 ### DPA & SOC2
 
 Both documents are generated automatically:
+
 - **DPA** (Data Processing Agreement): Shows compliance with GDPR
 - **SOC2**: Demonstrates security controls (encryption, RBAC, audit logging)
 
@@ -570,16 +598,20 @@ GET /api/admin/billing/churn       # Cancellation trends
 ## 🐛 Troubleshooting
 
 ### Issue: "No billing found"
+
 **Cause**: Organization doesn't have OrgBilling record  
 **Solution**: Create subscription first: `POST /api/billing/subscribe`
 
 ### Issue: "Invalid price ID"
-**Cause**: STRIPE_PRICE_* env var is wrong  
+
+**Cause**: STRIPE*PRICE*\* env var is wrong  
 **Solution**: Copy correct price ID from Stripe Dashboard → Products
 
 ### Issue: Invoices not generating
+
 **Cause**: BullMQ job not running  
 **Solution**:
+
 ```bash
 # Check Redis connection
 redis-cli ping
@@ -589,8 +621,10 @@ curl -X POST http://localhost:4000/api/admin/billing/invoices/generate
 ```
 
 ### Issue: Stripe webhook not received
+
 **Cause**: STRIPE_WEBHOOK_SECRET mismatch  
 **Solution**:
+
 ```bash
 # Get secret from Stripe Dashboard → Webhooks
 # Copy to .env: STRIPE_WEBHOOK_SECRET=whsec_...
@@ -601,9 +635,12 @@ curl -X POST http://localhost:4000/api/admin/billing/invoices/generate
 
 ## 📚 Related Phases
 
-- **Phase 19**: Enterprise Controls & Customer Security (multi-tenancy, encryption, audit)
-- **Phase 21**: Sales Enablement & Go-To-Market (landing pages, pitch decks, ROI calculator)
-- **Phase 22**: Advanced Analytics & Business Intelligence (revenue dashboards, cohort analysis)
+- **Phase 19**: Enterprise Controls & Customer Security (multi-tenancy,
+  encryption, audit)
+- **Phase 21**: Sales Enablement & Go-To-Market (landing pages, pitch decks, ROI
+  calculator)
+- **Phase 22**: Advanced Analytics & Business Intelligence (revenue dashboards,
+  cohort analysis)
 - **Phase 23**: Mobile App & Progressive Web App (React Native + PWA)
 
 ---
@@ -611,6 +648,7 @@ curl -X POST http://localhost:4000/api/admin/billing/invoices/generate
 ## 📞 Support
 
 For billing issues or questions:
+
 1. Check this documentation
 2. Review audit logs: `apps/api/src/audit/orgAuditLog.ts`
 3. Check Stripe dashboard for payment failures

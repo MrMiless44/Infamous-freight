@@ -1,10 +1,12 @@
 # Repository Structure
 
-This document describes the organization of the Infamous Freight Enterprise repository.
+This document describes the organization of the Infamous Freight Enterprise
+repository.
 
 ## Overview
 
-The repository follows a clean, organized structure with configuration files, documentation, and source code properly separated.
+The repository follows a clean, organized structure with configuration files,
+documentation, and source code properly separated.
 
 ## Top-Level Structure
 
@@ -84,7 +86,8 @@ Code quality and formatting configurations:
 
 Testing configurations:
 
-- `playwright.config.js` - Playwright test configuration shared by CI and local runs
+- `playwright.config.js` - Playwright test configuration shared by CI and local
+  runs
 
 ### configs/validation/
 
@@ -96,7 +99,8 @@ Validation and static analysis configurations:
 
 ### Symlinks for Compatibility
 
-Some configuration files require being at the repository root for tools to work correctly. Root entrypoints re-export the versions in `configs/`:
+Some configuration files require being at the repository root for tools to work
+correctly. Root entrypoints re-export the versions in `configs/`:
 
 - `codecov.yml` → `configs/ci-cd/codecov.yml`
 - `eslint.config.js` → `configs/linting/eslint.config.js`
@@ -107,7 +111,8 @@ Some configuration files require being at the repository root for tools to work 
 - `.pnpmrc` → `configs/linting/.pnpmrc`
 - `.stylelintrc.json` → `configs/linting/.stylelintrc.json`
 
-This approach keeps the root directory clean while maintaining tool compatibility.
+This approach keeps the root directory clean while maintaining tool
+compatibility.
 
 ## Documentation (docs/)
 
@@ -254,9 +259,11 @@ The repository follows these naming conventions:
 
 ### Files
 
-- **Documentation**: UPPERCASE with underscores (e.g., `README.md`, `CONTRIBUTING.md`)
+- **Documentation**: UPPERCASE with underscores (e.g., `README.md`,
+  `CONTRIBUTING.md`)
 - **Scripts**: kebab-case with `.sh` extension (e.g., `backup-database.sh`)
-- **Config files**: kebab-case or dot-prefix (e.g., `.eslintrc.json`, `configs/docker/docker-compose.yml`)
+- **Config files**: kebab-case or dot-prefix (e.g., `.eslintrc.json`,
+  `configs/docker/docker-compose.yml`)
 - **Source files**: PascalCase for components, camelCase for utilities
 
 ### Directories
@@ -312,7 +319,8 @@ When adding new files, follow these guidelines:
 
 ### Source Code
 
-- Add to appropriate workspace (`apps/api/`, `apps/web/`, `apps/mobile/`, or `packages/shared/`)
+- Add to appropriate workspace (`apps/api/`, `apps/web/`, `apps/mobile/`, or
+  `packages/shared/`)
 - Follow existing directory structure
 - Update workspace package.json if adding dependencies
 

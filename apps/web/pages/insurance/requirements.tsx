@@ -40,11 +40,31 @@ export default function InsuranceRequirements() {
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr>
-              <th style={{ textAlign: "left", borderBottom: "1px solid #e2e8f0", paddingBottom: 8 }}>Coverage</th>
-              <th style={{ textAlign: "left", borderBottom: "1px solid #e2e8f0", paddingBottom: 8 }}>Min Limit</th>
-              <th style={{ textAlign: "left", borderBottom: "1px solid #e2e8f0", paddingBottom: 8 }}>Warning Days</th>
-              <th style={{ textAlign: "left", borderBottom: "1px solid #e2e8f0", paddingBottom: 8 }}>Grace Days</th>
-              <th style={{ textAlign: "left", borderBottom: "1px solid #e2e8f0", paddingBottom: 8 }}>Required For</th>
+              <th
+                style={{ textAlign: "left", borderBottom: "1px solid #e2e8f0", paddingBottom: 8 }}
+              >
+                Coverage
+              </th>
+              <th
+                style={{ textAlign: "left", borderBottom: "1px solid #e2e8f0", paddingBottom: 8 }}
+              >
+                Min Limit
+              </th>
+              <th
+                style={{ textAlign: "left", borderBottom: "1px solid #e2e8f0", paddingBottom: 8 }}
+              >
+                Warning Days
+              </th>
+              <th
+                style={{ textAlign: "left", borderBottom: "1px solid #e2e8f0", paddingBottom: 8 }}
+              >
+                Grace Days
+              </th>
+              <th
+                style={{ textAlign: "left", borderBottom: "1px solid #e2e8f0", paddingBottom: 8 }}
+              >
+                Required For
+              </th>
             </tr>
           </thead>
           <tbody>

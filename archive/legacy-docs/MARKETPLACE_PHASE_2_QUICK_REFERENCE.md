@@ -226,8 +226,8 @@ curl http://localhost:4000/api/health
 
 ## 📚 File Reference
 
-| File                                   | Purpose           | Key Functions                       |
-| -------------------------------------- | ----------------- | ----------------------------------- |
+| File                                        | Purpose           | Key Functions                       |
+| ------------------------------------------- | ----------------- | ----------------------------------- |
 | `apps/api/src/lib/jobStateMachine.js`       | State validation  | `validateTransition()`              |
 | `apps/api/src/lib/stripe.js`                | Stripe client     | `stripe.checkout.sessions.create()` |
 | `apps/api/src/lib/pricing.js`               | Price computation | `computePriceUsd()`                 |
@@ -323,7 +323,8 @@ Total: 4 files modified, 1 new file, ~365 lines added
 - [ ] All code compiles: `node --check apps/api/src/marketplace/router.js`
 - [ ] Linter passes: `pnpm lint`
 - [ ] Auth tokens work: `curl -H "Authorization: Bearer $JWT"`
-- [ ] Pagination works: `curl "http://localhost:4000/api/marketplace/jobs?limit=5"`
+- [ ] Pagination works:
+      `curl "http://localhost:4000/api/marketplace/jobs?limit=5"`
 - [ ] Database connected: `curl http://localhost:4000/api/health`
 - [ ] Stripe webhook URL configured in Stripe Dashboard
 - [ ] Environment variables set (.env configured)
@@ -351,11 +352,15 @@ Before going live:
 
 **Issue?** Check in order:
 
-1. [MARKETPLACE_PHASE_2_TESTING_GUIDE.md](MARKETPLACE_PHASE_2_TESTING_GUIDE.md) - Test examples
-2. [MARKETPLACE_ENHANCEMENTS_COMPLETE.md](MARKETPLACE_ENHANCEMENTS_COMPLETE.md) - Feature docs
-3. [PHASE_2_DEPLOYMENT_VERIFICATION.md](PHASE_2_DEPLOYMENT_VERIFICATION.md) - Deployment guide
+1. [MARKETPLACE_PHASE_2_TESTING_GUIDE.md](MARKETPLACE_PHASE_2_TESTING_GUIDE.md) -
+   Test examples
+2. [MARKETPLACE_ENHANCEMENTS_COMPLETE.md](MARKETPLACE_ENHANCEMENTS_COMPLETE.md) -
+   Feature docs
+3. [PHASE_2_DEPLOYMENT_VERIFICATION.md](PHASE_2_DEPLOYMENT_VERIFICATION.md) -
+   Deployment guide
 
-**Not finding it?** The implementation is thoroughly documented. All features have working code examples.
+**Not finding it?** The implementation is thoroughly documented. All features
+have working code examples.
 
 ---
 

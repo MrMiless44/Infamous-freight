@@ -1,6 +1,7 @@
-curl <https://infamous-freight-api.fly.dev/health>
-curl <https://infamous-freight-api.fly.dev/api/health> # If on different path
-fly logs --app infamous-freight-api --no-tail# 🚀 INFAMOUS FREIGHT ENTERPRISES - PRODUCTION DEPLOYMENT STATUS
+curl <https://infamous-freight-api.fly.dev/health> curl
+<https://infamous-freight-api.fly.dev/api/health> # If on different path fly
+logs --app infamous-freight-api --no-tail# 🚀 INFAMOUS FREIGHT ENTERPRISES -
+PRODUCTION DEPLOYMENT STATUS
 
 **Last Updated**: December 13, 2025 - 16:46 UTC  
 **Status**: ✅ **DOCKER BUILD ISSUES FIXED - REDEPLOYING**
@@ -86,8 +87,8 @@ fly logs --app infamous-freight-api --no-tail# 🚀 INFAMOUS FREIGHT ENTERPRISES
 
 ## 🔗 PRODUCTION URLS
 
-| Service              | URL                                                        | Status       |
-| -------------------- | ---------------------------------------------------------- | ------------ |
+| Service              | URL                                                          | Status       |
+| -------------------- | ------------------------------------------------------------ | ------------ |
 | **API**              | <https://infamous-freight-api.fly.dev>                       | 🟠 Starting  |
 | **API Health**       | <https://infamous-freight-api.fly.dev/health>                | 🟠 Testing   |
 | **Web Frontend**     | <https://web-\*.vercel.app>                                  | 🟠 Deploying |
@@ -188,7 +189,8 @@ flyctl status --app infamous-freight-api
 
 ### Docker Build Failing
 
-1. Check GitHub Actions: <https://github.com/MrMiless44/Infamous-freight-enterprises/actions>
+1. Check GitHub Actions:
+   <https://github.com/MrMiless44/Infamous-freight-enterprises/actions>
 2. View "Build Docker Images" workflow for logs
 
 ---
@@ -203,9 +205,11 @@ flyctl status --app infamous-freight-api
 
 ---
 
-**🎉 You're in the final stretch! Both platforms are configured and deploying. Machines are initializing.**
+**🎉 You're in the final stretch! Both platforms are configured and deploying.
+Machines are initializing.**
 
-**Next Step**: Wait 2-3 minutes for API to fully initialize, then test the health endpoint.
+**Next Step**: Wait 2-3 minutes for API to fully initialize, then test the
+health endpoint.
 
 ```tsx
 // pages/_app.tsx or app/layout.tsx

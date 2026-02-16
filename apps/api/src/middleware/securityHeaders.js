@@ -21,11 +21,8 @@ function securityHeaders(app) {
           objectSrc: ["'none'"],
           mediaSrc: ["'self'"],
           frameSrc: ["'none'"],
-          upgradeInsecureRequests:
-            process.env.NODE_ENV === "production" ? [] : [],
-          reportUri: process.env.CSP_REPORT_URI
-            ? [process.env.CSP_REPORT_URI]
-            : [],
+          upgradeInsecureRequests: process.env.NODE_ENV === "production" ? [] : [],
+          reportUri: process.env.CSP_REPORT_URI ? [process.env.CSP_REPORT_URI] : [],
         },
       },
       crossOriginEmbedderPolicy: true,
@@ -79,10 +76,7 @@ function securityHeaders(app) {
     res.setHeader("Server", "Server"); // Generic, don't reveal Express
 
     // Strict Transport Security
-    res.setHeader(
-      "Strict-Transport-Security",
-      "max-age=63072000; includeSubDomains; preload",
-    );
+    res.setHeader("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
 
     // Require HTTPS for all cookies
     if (process.env.NODE_ENV === "production") {

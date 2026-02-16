@@ -8,7 +8,8 @@
 
 ## 🚀 Deployment Setup Overview
 
-This guide sets up complete deployment infrastructure for all 4 phases, enabling seamless progression from development through production scaling.
+This guide sets up complete deployment infrastructure for all 4 phases, enabling
+seamless progression from development through production scaling.
 
 ---
 

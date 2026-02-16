@@ -2,7 +2,8 @@
 
 ## 🎉 Congratulations!
 
-Your **Infamous Freight Enterprises** monorepo is now configured for **100% automated deployment** across all platforms!
+Your **Infamous Freight Enterprises** monorepo is now configured for **100%
+automated deployment** across all platforms!
 
 ---
 
@@ -11,7 +12,8 @@ Your **Infamous Freight Enterprises** monorepo is now configured for **100% auto
 ### 🌐 **Web Application** (Next.js)
 
 - **Platform**: Vercel
-- **URL**: https://infamous-freight-enterprises-git-f34b9b-santorio-miles-projects.vercel.app
+- **URL**:
+  https://infamous-freight-enterprises-git-f34b9b-santorio-miles-projects.vercel.app
 - **Deployment**: Auto-deploys on web changes to `main` branch
 - **Features**:
   - ✅ Monorepo build configuration
@@ -55,9 +57,9 @@ The workflow automatically detects which part of your monorepo changed:
 
 | Changes Detected         | Action             |
 | ------------------------ | ------------------ |
-| `apps/api/**`        | Deploy API only    |
-| `apps/web/**`        | Deploy Web only    |
-| `apps/mobile/**`     | Deploy Mobile only |
+| `apps/api/**`            | Deploy API only    |
+| `apps/web/**`            | Deploy Web only    |
+| `apps/mobile/**`         | Deploy Mobile only |
 | `src/packages/shared/**` | Deploy all apps    |
 | `.github/workflows/**`   | Deploy all apps    |
 
@@ -374,7 +376,8 @@ You now have a **production-ready, enterprise-grade deployment system**!
 
 ### Your Deployment URLs:
 
-- 🌐 **Web**: https://infamous-freight-enterprises-git-f34b9b-santorio-miles-projects.vercel.app
+- 🌐 **Web**:
+  https://infamous-freight-enterprises-git-f34b9b-santorio-miles-projects.vercel.app
 - 🔌 **API**: https://infamous-freight-api.fly.dev
 - 📱 **Mobile**: https://expo.dev/@infamous-freight/mobile
 
@@ -391,7 +394,8 @@ You now have a **production-ready, enterprise-grade deployment system**!
 
 **Need Help?**
 
-Run `./scripts/verify-auto-deploy.sh` to check your configuration, or `./scripts/check-deployments.sh` to verify services are live.
+Run `./scripts/verify-auto-deploy.sh` to check your configuration, or
+`./scripts/check-deployments.sh` to verify services are live.
 
 ---
 

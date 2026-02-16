@@ -10,9 +10,7 @@ const required = [
   "AI_SECURITY_MODE",
 ];
 
-const missing = required.filter(
-  (k) => !process.env[k] || process.env[k].trim() === "",
-);
+const missing = required.filter((k) => !process.env[k] || process.env[k].trim() === "");
 
 if (missing.length > 0) {
   console.error("Environment validation failed. Missing:");

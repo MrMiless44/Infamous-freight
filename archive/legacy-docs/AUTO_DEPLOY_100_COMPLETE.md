@@ -6,7 +6,8 @@
 
 ## 📊 Overview
 
-The **Auto Deploy 100%** system provides fully automated, orchestrated deployment of the Infamous Freight stack with:
+The **Auto Deploy 100%** system provides fully automated, orchestrated
+deployment of the Infamous Freight stack with:
 
 - ✅ **Automatic change detection** - Identifies which services changed
 - ✅ **Quality gates** - Lint, type-check, and test before deployment
@@ -79,18 +80,21 @@ The **Auto Deploy 100%** system provides fully automated, orchestrated deploymen
 ## 🔄 Deployment Flow
 
 ### Stage 1: Pre-flight Checks
+
 - Verify all required tools (git, pnpm, node)
 - Check git status and stash uncommitted changes
 - Confirm branch is main
 - Validate environment configuration
 
 ### Stage 2: Change Detection
+
 - Compare commits to detect modified services
 - Identify: API, Web, Mobile, Shared changes
 - Support force-deploy-all mode
 - Log detection results
 
 ### Stage 3: Quality Verification
+
 - Install dependencies
 - Build shared package
 - Run linters (ESLint)
@@ -99,6 +103,7 @@ The **Auto Deploy 100%** system provides fully automated, orchestrated deploymen
 - Integration tests
 
 ### Stage 4: Build Services
+
 - Build API (Express + CommonJS)
 - Build Web (Next.js + TypeScript)
 - Build Shared package
@@ -106,24 +111,28 @@ The **Auto Deploy 100%** system provides fully automated, orchestrated deploymen
 - Cache for reuse
 
 ### Stage 5: Check Credentials
+
 - Verify Fly.io token (API deployment)
 - Verify Vercel token (Web deployment)
 - Verify Docker registry (if needed)
 - Report credential status
 
 ### Stage 6: Deploy Services
+
 - Deploy API to Fly.io
 - Wait for health checks
 - Deploy Web to Vercel
 - Verify deployments
 
 ### Stage 7: Smoke Tests
+
 - Test API health endpoint (`/api/health`)
 - Test Web homepage accessibility
 - Verify connectivity
 - Log results
 
 ### Stage 8: Summary Report
+
 - Report all deployed services
 - Report skipped services
 - Report failed deployments
@@ -224,11 +233,12 @@ Add these secrets to your GitHub repository:
 ## 📊 Deployment Stages Breakdown
 
 ### Stage 1: Detect Changes
+
 ```yaml
 Inputs:
   - Git diff (HEAD~1 vs HEAD)
   - Force deploy flag
-  
+
 Outputs:
   - api_changed: true/false
   - web_changed: true/false
@@ -238,59 +248,60 @@ Outputs:
 ```
 
 ### Stage 2: Verify Quality
+
 ```yaml
 Runs:
   - pnpm lint
   - pnpm check:types
   - pnpm --filter api test
   - pnpm --filter @infamous-freight/shared build
-  
+
 Stops on: Any failure
 ```
 
 ### Stage 3: Build Services
+
 ```yaml
 Builds:
   - @infamous-freight/shared (if shared changed)
   - api (if api changed)
   - web (if web changed)
   - mobile (if mobile changed)
-  
+
 Artifacts: Uploaded for 1 day
 ```
 
 ### Stage 4: Deploy API
+
 ```yaml
 Prerequisites:
   - Build passed
   - Fly.io token available
   - Changes detected in apps/api/
-  
-Command:
-  flyctl deploy --remote-only \
-    --build-arg NODE_ENV=production
-    
+
+Command: flyctl deploy --remote-only \ --build-arg NODE_ENV=production
+
 Validation:
   - Check /api/health endpoint
   - Retry 5 times (5s intervals)
 ```
 
 ### Stage 5: Deploy Web
+
 ```yaml
 Prerequisites:
   - Build passed
   - Vercel token available
   - Changes detected in apps/web/
-  
-Command:
-  vercel deploy --prod \
-    --build-env=NODE_ENV=production
-    
+
+Command: vercel deploy --prod \ --build-env=NODE_ENV=production
+
 Validation:
   - Check https://... accessibility
 ```
 
 ### Stage 6: Summary Report
+
 ```yaml
 Reports:
   - Services deployed
@@ -298,7 +309,7 @@ Reports:
   - Deployment times
   - Live URLs
   - Error logs (if any)
-  
+
 Posts to:
   - GitHub Actions summary
   - Slack (if configured)
@@ -309,12 +320,14 @@ Posts to:
 ## ✨ Features
 
 ### 🔍 Smart Change Detection
+
 - Detects only what changed
 - Reduces deployment time
 - Skips unnecessary builds
 - Force-all-services option available
 
 ### ✅ Quality Gates
+
 ```
 Lint ──┐
        ├─→ Type Check ──┐
@@ -325,24 +338,28 @@ Tests ─┘               ├─→ Build ──→ Deploy
 ```
 
 ### 🔐 Secure Credential Handling
+
 - Credentials stored in GitHub Secrets
 - Never logged or exposed
 - Rotated automatically by GitHub
 - Separate tokens per service
 
 ### 📊 Comprehensive Logging
+
 - Each step logged to file
 - All commands captured
 - Duration tracking
 - Error reporting
 
 ### 🎯 Smoke Tests
+
 - Verify deployments actually work
 - Check health endpoints
 - Validate connectivity
 - Retry logic for timing issues
 
 ### 🔄 Rollback Support
+
 - Failed deployments halt
 - Previous versions stay live
 - Easy manual rollback via Git tags
@@ -361,6 +378,7 @@ Yellow dot: 🟡 Currently running
 ### Workflow Summary
 
 Each run shows:
+
 - **Changes Detected**: What services changed
 - **Quality Checks**: Lint/type-check/test results
 - **Build Status**: Build artifacts ready
@@ -423,17 +441,20 @@ cat deployment-*.log
 ## 📈 Monitoring
 
 ### Real-time Monitoring
+
 - Watch deployment progress on GitHub Actions
 - Check API health: `https://infamous-freight-api.fly.dev/api/health`
 - Monitor Web: `https://infamous-freight-enterprises.vercel.app`
 
 ### Deployment History
+
 - GitHub Actions: Full run history with logs
 - Fly.io Dashboard: API deployment history
 - Vercel Dashboard: Web deployment history
 - Prometheus: Metrics and performance data
 
 ### Alerts (If Configured)
+
 - Slack notifications on deployment status
 - Email alerts for failures
 - PagerDuty escalation for critical failures
@@ -443,6 +464,7 @@ cat deployment-*.log
 ## 🔒 Security
 
 ### Token Management
+
 - ✅ Secrets stored in GitHub Actions
 - ✅ Never logged or exposed in output
 - ✅ Per-platform tokens (Fly, Vercel)
@@ -450,12 +472,14 @@ cat deployment-*.log
 - ✅ Audit trail of all deployments
 
 ### Code Review
+
 - ✅ Only main branch deploying
 - ✅ Requires pull request review first
 - ✅ CI checks run before merge
 - ✅ Status checks prevent merge if failing
 
 ### Deployment Authorization
+
 - ✅ GitHub Actions runs with repo permissions
 - ✅ Separate service accounts recommended
 - ✅ Audit logs track who deployed what
@@ -466,9 +490,11 @@ cat deployment-*.log
 ## 📚 Related Documentation
 
 - [LAUNCH_DAY_CHECKLIST.md](LAUNCH_DAY_CHECKLIST.md) - Launch execution steps
-- [DEPLOYMENT_RUNBOOK_KUBERNETES.md](DEPLOYMENT_RUNBOOK_KUBERNETES.md) - K8s deployment
+- [DEPLOYMENT_RUNBOOK_KUBERNETES.md](DEPLOYMENT_RUNBOOK_KUBERNETES.md) - K8s
+  deployment
 - [ENV_SETUP_SECRETS_GUIDE.md](ENV_SETUP_SECRETS_GUIDE.md) - Environment setup
-- [INCIDENT_RESPONSE_PLAYBOOK.md](INCIDENT_RESPONSE_PLAYBOOK.md) - Incident procedures
+- [INCIDENT_RESPONSE_PLAYBOOK.md](INCIDENT_RESPONSE_PLAYBOOK.md) - Incident
+  procedures
 
 ---
 
@@ -494,7 +520,8 @@ Before deploying to production:
 For deployment issues:
 
 1. **Check logs**: `gh run view <RUN_ID> --log`
-2. **Review status**: https://github.com/MrMiless44/Infamous-freight-enterprises/actions
+2. **Review status**:
+   https://github.com/MrMiless44/Infamous-freight-enterprises/actions
 3. **Manual redeploy**: Retry failed workflow from GitHub UI
 4. **Rollback**: Use previous Git commit tag
 

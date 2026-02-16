@@ -2,7 +2,7 @@
 
 **Document Type:** Quick Reference Guide  
 **Last Updated:** 2026-02-15  
-**Status:** Production Ready  
+**Status:** Production Ready
 
 ---
 
@@ -113,6 +113,7 @@ Base: 50 points
 ```
 
 **Interpretation:**
+
 - Score > 85: Highly recommended
 - Score 70-85: Good fit
 - Score 50-70: OK fit
@@ -121,6 +122,7 @@ Base: 50 points
 ### Earnings Forecast Model
 
 **Formula:**
+
 ```
 Predicted Daily Earnings = (Trend Component × Day) × Seasonal Factor × Market Growth
 
@@ -132,6 +134,7 @@ Where:
 ```
 
 **Example Interpretation:**
+
 ```json
 {
   "predictedEarnings": 1650,
@@ -144,6 +147,7 @@ Where:
 ### Rate Suggestion Model
 
 **Formula:**
+
 ```
 Optimal Rate = Base Rate × Demand × Scarcity × Urgency
 
@@ -156,6 +160,7 @@ Range = [Suggested × 0.95, Suggested × 1.15]
 ```
 
 **Example:**
+
 ```
 Load: 200 miles
 Base: 1.50 × 200 = $300
@@ -172,6 +177,7 @@ Recommended: $415.80 (±$20 range)
 ### Surge Pricing
 
 **Formula:**
+
 ```
 Surge Rate = Baseline Rate × Surge Factor (0.5x–2.5x)
 
@@ -184,6 +190,7 @@ Availability: Fewer drivers = higher multiplier
 ```
 
 **Interpretation:**
+
 - Surge 1.0x = Normal pricing
 - Surge 1.5x = 50% premium (very high demand)
 - Surge 0.7x = 30% discount (low demand)
@@ -204,13 +211,13 @@ Availability: Fewer drivers = higher multiplier
 
 ### Alert Types
 
-| Alert Type | Trigger | Action |
-|-----------|---------|--------|
-| **entry** | Inside geofence radius | Notify driver "You've arrived" |
-| **exit** | Left geofence radius | Notify shipper "Driver left" |
-| **proximity** | Within alert radius | "Getting close" guidance |
-| **approaching** | 200m away | Turn on navigation |
-| **alert** | 300m away | "Prepare for X" |
+| Alert Type      | Trigger                | Action                         |
+| --------------- | ---------------------- | ------------------------------ |
+| **entry**       | Inside geofence radius | Notify driver "You've arrived" |
+| **exit**        | Left geofence radius   | Notify shipper "Driver left"   |
+| **proximity**   | Within alert radius    | "Getting close" guidance       |
+| **approaching** | 200m away              | Turn on navigation             |
+| **alert**       | 300m away              | "Prepare for X"                |
 
 ### Geofence Types
 
@@ -242,17 +249,17 @@ Examples:
 
 ### Available Templates (9 Total)
 
-| Template | Used For | Icon | Priority |
-|----------|----------|------|----------|
-| `loadAvailable` | New load posted | ✨ | HIGH |
-| `loadExpiring` | Load about to expire | ⏰ | HIGH |
-| `geofenceAlert` | Arrival alerts | 📍 | HIGH |
-| `paymentReceived` | Payment notification | 💰 | NORMAL |
-| `maintenanceReminder` | Vehicle maintenance | 🔧 | NORMAL |
-| `docExpiring` | License/cert expiring | 📄 | HIGH |
-| `promoBanner` | Promotional offers | 🎉 | NORMAL |
-| `urgentAlert` | Critical alerts | 🚨 | HIGH |
-| `leaderboardUpdate` | Ranking changes | 🏆 | NORMAL |
+| Template              | Used For              | Icon | Priority |
+| --------------------- | --------------------- | ---- | -------- |
+| `loadAvailable`       | New load posted       | ✨   | HIGH     |
+| `loadExpiring`        | Load about to expire  | ⏰   | HIGH     |
+| `geofenceAlert`       | Arrival alerts        | 📍   | HIGH     |
+| `paymentReceived`     | Payment notification  | 💰   | NORMAL   |
+| `maintenanceReminder` | Vehicle maintenance   | 🔧   | NORMAL   |
+| `docExpiring`         | License/cert expiring | 📄   | HIGH     |
+| `promoBanner`         | Promotional offers    | 🎉   | NORMAL   |
+| `urgentAlert`         | Critical alerts       | 🚨   | HIGH     |
+| `leaderboardUpdate`   | Ranking changes       | 🏆   | NORMAL   |
 
 ### Variable Usage
 
@@ -275,12 +282,12 @@ Examples:
 ### Topics (for batch sending)
 
 ```javascript
-"loads_available"    // New load alerts
-"price_alerts"       // Surge pricing & rate opportunities
-"promotions"         // Bonuses, referrals, seasonal offers
-"maintenance"        // Maintenance due, inspections
-"compliance"         // Safety alerts, documentation needed
-"earnings"           // Daily/weekly summaries
+"loads_available"; // New load alerts
+"price_alerts"; // Surge pricing & rate opportunities
+"promotions"; // Bonuses, referrals, seasonal offers
+"maintenance"; // Maintenance due, inspections
+"compliance"; // Safety alerts, documentation needed
+"earnings"; // Daily/weekly summaries
 ```
 
 ### Quiet Hours Example
@@ -396,20 +403,21 @@ apps/api/src/
 
 ### Issue: ML recommendations all score same
 
-**Cause:** Driver profile not fully populated
-**Fix:**
+**Cause:** Driver profile not fully populated **Fix:**
+
 ```javascript
 // Ensure driver has:
-driverProfile.acceptanceRate  // 0-1
-driverProfile.rating          // 0-5
-driverProfile.equipmentTypes  // ["Dry Van", ...]
-driverProfile.favoriteCorridors // ["Denver→Phoenix", ...]
+driverProfile.acceptanceRate; // 0-1
+driverProfile.rating; // 0-5
+driverProfile.equipmentTypes; // ["Dry Van", ...]
+driverProfile.favoriteCorridors; // ["Denver→Phoenix", ...]
 ```
 
 ### Issue: Geofence alerts not firing
 
 **Cause:** Location updates not being sent OR alert already fired 5 min ago
 **Fix:**
+
 ```javascript
 // Check mobile app is sending location updates:
 POST /api/geofencing/location-update { lat, lng }
@@ -420,8 +428,8 @@ POST /api/geofencing/location-update { lat, lng }
 
 ### Issue: Push notifications not arriving Android
 
-**Cause:** Invalid FCM token format OR Firebase not configured
-**Fix:**
+**Cause:** Invalid FCM token format OR Firebase not configured **Fix:**
+
 ```bash
 # Verify FCM token length (minimum 50 chars)
 echo "${FCM_TOKEN}" | wc -c
@@ -432,12 +440,12 @@ echo "${FIREBASE_ADMIN_KEY}" | jq .
 
 ### Issue: Permission denied on notification endpoints
 
-**Cause:** Token missing scope or wrong user type
-**Fix:**
+**Cause:** Token missing scope or wrong user type **Fix:**
+
 ```javascript
 // Check JWT token claims:
 const payload = jwt_decode(token);
-console.log(payload.scopes);  // Should include "driver", "shipper", or "admin"
+console.log(payload.scopes); // Should include "driver", "shipper", or "admin"
 ```
 
 ---
@@ -450,7 +458,7 @@ console.log(payload.scopes);  // Should include "driver", "shipper", or "admin"
 1. Shipper posts load via /api/loads/post
 2. System triggers notification via topic "loads_available"
 3. Push service finds all subscribed drivers
-4. Filters by geofence (near pickup?) 
+4. Filters by geofence (near pickup?)
 5. FCM sends platform-specific message
 6. Mobile app displays notification + plays sound
 7. Driver taps → opens load details

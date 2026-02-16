@@ -64,9 +64,7 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     // Sanitize filename: timestamp-random.ext
     const ext = path.extname(file.originalname);
-    const basename = `avatar-${Date.now()}-${crypto
-      .randomBytes(4)
-      .toString("hex")}${ext}`;
+    const basename = `avatar-${Date.now()}-${crypto.randomBytes(4).toString("hex")}${ext}`;
     cb(null, basename);
   },
 });
@@ -168,9 +166,7 @@ router.post(
   async (req, res) => {
     try {
       if (storageMode === "s3") {
-        return res
-          .status(400)
-          .json({ error: "Direct upload disabled. Use /me/presign" });
+        return res.status(400).json({ error: "Direct upload disabled. Use /me/presign" });
       }
       const userId = getUserId(req);
       if (!userId) {
@@ -231,96 +227,82 @@ router.post(
  * POST /v1/avatars/me/select/:filename
  * Select avatar as active (requires auth)
  */
-router.post(
-  "/me/select/:filename",
-  limiters.general,
-  authenticate,
-  async (req, res) => {
-    try {
-      const userId = getUserId(req);
-      if (!userId) {
-        return res.status(401).json({ error: "Unauthorized" });
-      }
+router.post("/me/select/:filename", limiters.general, authenticate, async (req, res) => {
+  try {
+    const userId = getUserId(req);
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
 
-      await initializeStore();
+    await initializeStore();
 
-      const selected = await selectAvatar(userId, req.params.filename);
-      if (!selected) {
-        return res.status(404).json({
-          error: "Avatar not found",
-          message: `Avatar '${req.params.filename}' not found for this user`,
-        });
-      }
-
-      res.json({
-        success: true,
-        message: "Avatar selected",
-        avatar: toResponseAvatar(selected),
-        timestamp: new Date().toISOString(),
-      });
-    } catch (error) {
-      console.error("Error selecting avatar:", error);
-      res.status(500).json({
-        error: "Failed to select avatar",
-        message: error instanceof Error ? error.message : "Unknown error",
+    const selected = await selectAvatar(userId, req.params.filename);
+    if (!selected) {
+      return res.status(404).json({
+        error: "Avatar not found",
+        message: `Avatar '${req.params.filename}' not found for this user`,
       });
     }
-  },
-);
+
+    res.json({
+      success: true,
+      message: "Avatar selected",
+      avatar: toResponseAvatar(selected),
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("Error selecting avatar:", error);
+    res.status(500).json({
+      error: "Failed to select avatar",
+      message: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+});
 
 /**
  * DELETE /v1/avatars/me/:filename
  * Delete uploaded avatar (requires auth)
  */
-router.delete(
-  "/me/:filename",
-  limiters.general,
-  authenticate,
-  async (req, res) => {
-    try {
-      const userId = getUserId(req);
-      if (!userId) {
-        return res.status(401).json({ error: "Unauthorized" });
-      }
+router.delete("/me/:filename", limiters.general, authenticate, async (req, res) => {
+  try {
+    const userId = getUserId(req);
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
 
-      await initializeStore();
-      const avatars = await getUserAvatars(userId);
-      const target = avatars.find((a) => a.fileName === req.params.filename);
-      if (!target) {
-        return res.status(404).json({
-          error: "Avatar not found",
-          message: `Avatar '${req.params.filename}' not found for this user`,
-        });
-      }
-
-      const deleted = await deleteAvatar(userId, req.params.filename);
-
-      // Delete file from disk for local storage
-      if ((target.storage || "local") === "local") {
-        const filePath = path.join(
-          env.avatarUploadDir,
-          userId,
-          req.params.filename,
-        );
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
-        }
-      }
-
-      res.json({
-        success: true,
-        message: "Avatar deleted",
-        timestamp: new Date().toISOString(),
-      });
-    } catch (error) {
-      console.error("Error deleting avatar:", error);
-      res.status(500).json({
-        error: "Failed to delete avatar",
-        message: error instanceof Error ? error.message : "Unknown error",
+    await initializeStore();
+    const avatars = await getUserAvatars(userId);
+    const target = avatars.find((a) => a.fileName === req.params.filename);
+    if (!target) {
+      return res.status(404).json({
+        error: "Avatar not found",
+        message: `Avatar '${req.params.filename}' not found for this user`,
       });
     }
-  },
-);
+
+    const deleted = await deleteAvatar(userId, req.params.filename);
+
+    // Delete file from disk for local storage
+    if ((target.storage || "local") === "local") {
+      const filePath = path.join(env.avatarUploadDir, userId, req.params.filename);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    }
+
+    res.json({
+      success: true,
+      message: "Avatar deleted",
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("Error deleting avatar:", error);
+    res.status(500).json({
+      error: "Failed to delete avatar",
+      message: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+});
 
 /**
  * POST /v1/avatars/me/presign
@@ -334,19 +316,16 @@ router.post(
   async (req, res) => {
     try {
       const userId = getUserId(req);
-      if (!userId)
-        return res.status(401).json({ ok: false, error: "Unauthorized" });
+      if (!userId) return res.status(401).json({ ok: false, error: "Unauthorized" });
 
       const out = await handlePresign(userId, req.body);
       if (!out.ok) return res.status(400).json(out);
       return res.json(out);
     } catch (error) {
-      res
-        .status(400)
-        .json({
-          ok: false,
-          error: error instanceof Error ? error.message : "presign failed",
-        });
+      res.status(400).json({
+        ok: false,
+        error: error instanceof Error ? error.message : "presign failed",
+      });
     }
   },
 );
@@ -363,12 +342,9 @@ router.post(
   async (req, res) => {
     try {
       const userId = getUserId(req);
-      if (!userId)
-        return res.status(401).json({ ok: false, error: "Unauthorized" });
+      if (!userId) return res.status(401).json({ ok: false, error: "Unauthorized" });
       if (storageMode !== "s3") {
-        return res
-          .status(400)
-          .json({ ok: false, error: "complete requires AVATAR_STORAGE=s3" });
+        return res.status(400).json({ ok: false, error: "complete requires AVATAR_STORAGE=s3" });
       }
 
       await initializeStore();
@@ -397,12 +373,10 @@ router.post(
 
       return res.json({ ok: true, avatar: toResponseAvatar(avatar) });
     } catch (error) {
-      res
-        .status(400)
-        .json({
-          ok: false,
-          error: error instanceof Error ? error.message : "complete failed",
-        });
+      res.status(400).json({
+        ok: false,
+        error: error instanceof Error ? error.message : "complete failed",
+      });
     }
   },
 );
@@ -411,29 +385,23 @@ router.post(
  * GET /v1/avatars/stats
  * Get avatar store statistics (admin only)
  */
-router.get(
-  "/stats",
-  limiters.general,
-  authenticate,
-  requireScope("admin"),
-  async (req, res) => {
-    try {
-      await initializeStore();
-      const stats = await getStoreStats();
+router.get("/stats", limiters.general, authenticate, requireScope("admin"), async (req, res) => {
+  try {
+    await initializeStore();
+    const stats = await getStoreStats();
 
-      res.json({
-        success: true,
-        stats,
-        timestamp: new Date().toISOString(),
-      });
-    } catch (error) {
-      console.error("Error retrieving stats:", error);
-      res.status(500).json({
-        error: "Failed to retrieve statistics",
-        message: error instanceof Error ? error.message : "Unknown error",
-      });
-    }
-  },
-);
+    res.json({
+      success: true,
+      stats,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("Error retrieving stats:", error);
+    res.status(500).json({
+      error: "Failed to retrieve statistics",
+      message: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+});
 
 export default router;

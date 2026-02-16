@@ -72,9 +72,7 @@ export async function createUserAvatar(
   };
 }
 
-export async function getSelection(
-  userId: string,
-): Promise<AvatarSelection | null> {
+export async function getSelection(userId: string): Promise<AvatarSelection | null> {
   const p = getPrisma();
   if (!p) return json.getSelectedAvatar(userId);
 

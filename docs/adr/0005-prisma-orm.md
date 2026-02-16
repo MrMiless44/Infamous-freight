@@ -6,7 +6,8 @@ Accepted
 
 ## Context
 
-The API service needed an ORM/database abstraction layer for PostgreSQL. Requirements:
+The API service needed an ORM/database abstraction layer for PostgreSQL.
+Requirements:
 
 - Type-safe database queries
 - Migration management
@@ -214,6 +215,7 @@ If we later need more control:
 
 ## Related
 
-- [ADR-0002: Shared Package Pattern](0002-shared-package-pattern.md) - Types defined in shared, Prisma models in API
+- [ADR-0002: Shared Package Pattern](0002-shared-package-pattern.md) - Types
+  defined in shared, Prisma models in API
 - Prisma Documentation: <https://www.prisma.io/docs>
 - [DATABASE_MIGRATIONS.md](../DATABASE_MIGRATIONS.md) - Migration best practices

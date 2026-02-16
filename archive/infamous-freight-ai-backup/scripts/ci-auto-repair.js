@@ -9,19 +9,14 @@ const https = require("https");
 const endpoint =
   process.env.AI_AUTOREPAIR_ENDPOINT ||
   (process.env.AI_SYNTHETIC_ENGINE_URL
-    ? process.env.AI_SYNTHETIC_ENGINE_URL.replace(
-        "/internal/ai-sim",
-        "/api/ai/repair/env",
-      )
+    ? process.env.AI_SYNTHETIC_ENGINE_URL.replace("/internal/ai-sim", "/api/ai/repair/env")
     : undefined);
 
 const apiKey = process.env.AI_SYNTHETIC_API_KEY;
 const securityMode = process.env.AI_SECURITY_MODE || "strict";
 
 if (!endpoint) {
-  console.error(
-    "AI_AUTOREPAIR_ENDPOINT or AI_SYNTHETIC_ENGINE_URL must be set",
-  );
+  console.error("AI_AUTOREPAIR_ENDPOINT or AI_SYNTHETIC_ENGINE_URL must be set");
   process.exit(1);
 }
 

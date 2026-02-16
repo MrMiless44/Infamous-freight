@@ -1,9 +1,4 @@
-import {
-  formatDate,
-  formatCurrency,
-  generateTrackingNumber,
-  debounce,
-} from "../utils";
+import { formatDate, formatCurrency, generateTrackingNumber, debounce } from "../utils";
 
 describe("formatDate", () => {
   it("should format date to YYYY-MM-DD", () => {

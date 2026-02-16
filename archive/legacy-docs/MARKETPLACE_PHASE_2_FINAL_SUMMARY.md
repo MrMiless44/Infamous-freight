@@ -21,7 +21,6 @@ DRAFT → REQUIRES_PAYMENT → (Stripe Checkout) → Webhook → OPEN
 - ✅ `apps/api/src/lib/stripe.ts` (14 lines)
   - Stripe SDK client initialization
   - API version: 2024-06-20
-  
 - ✅ `apps/api/src/marketplace/pricing.ts` (67 lines)
   - TypeScript reference implementation
   - Plan-based discount logic
@@ -50,14 +49,12 @@ DRAFT → REQUIRES_PAYMENT → (Stripe Checkout) → Webhook → OPEN
   - Event deduplication (idempotency cache)
   - Retry logic with exponential backoff
   - Handles checkout.session.completed → payment + job state update
-  
 - ✅ `apps/api/src/lib/pricing.js` (44 lines)
   - Full pricing implementation with:
     - Base rates by vehicle type
     - $1.50/mile distance fee
     - Weight/volume surcharges
     - Plan-based discounts (10-30% off)
-  
 - ✅ `apps/api/src/server.js`
   - Webhooks router mounted at `/api/webhooks`
   - Raw body middleware for signature verification
@@ -86,14 +83,14 @@ Minimum = Base Rate
 
 ### Base Rates by Vehicle
 
-| Vehicle | Base |
-|---------|------|
-| CAR | $8 |
-| SUV | $12 |
-| VAN | $18 |
-| BOX_TRUCK | $45 |
-| STRAIGHT_TRUCK | $70 |
-| SEMI | $120 |
+| Vehicle        | Base |
+| -------------- | ---- |
+| CAR            | $8   |
+| SUV            | $12  |
+| VAN            | $18  |
+| BOX_TRUCK      | $45  |
+| STRAIGHT_TRUCK | $70  |
+| SEMI           | $120 |
 
 ### Fees
 
@@ -131,9 +128,9 @@ Creates job in REQUIRES_PAYMENT status.
   "shipperId": "user-123",
   "pickupAddress": "123 Main St, NYC",
   "pickupLat": 40.7128,
-  "pickupLng": -74.0060,
+  "pickupLng": -74.006,
   "dropoffAddress": "456 Park Ave, NYC",
-  "dropoffLat": 40.7580,
+  "dropoffLat": 40.758,
   "dropoffLng": -73.9855,
   "requiredVehicle": "BOX_TRUCK",
   "weightLbs": 500,
@@ -201,11 +198,11 @@ Idempotency-Key: unique-request-id (optional)
 
 ### Events Handled
 
-| Event | Action |
-|-------|--------|
+| Event                        | Action                       |
+| ---------------------------- | ---------------------------- |
 | `checkout.session.completed` | Payment SUCCEEDED → Job OPEN |
-| `customer.subscription.*` | Update plan tier/status |
-| `invoice.payment_*` | Update subscription status |
+| `customer.subscription.*`    | Update plan tier/status      |
+| `invoice.payment_*`          | Update subscription status   |
 
 ### Idempotency Protection
 
@@ -286,14 +283,14 @@ curl http://localhost:4000/api/marketplace/jobs/$JOB_ID \
 
 ## 🔐 Security Layers
 
-| Layer | Mechanism | Impact |
-|-------|-----------|--------|
-| **Signature Verification** | STRIPE_WEBHOOK_SECRET | Prevent forged webhooks |
-| **Idempotency Keys** | Passed to Stripe API | No duplicate checkouts |
-| **Event Deduplication** | processedEvents Set | No duplicate job opens |
-| **Database Transactions** | prisma.$transaction | Atomic payment + job updates |
-| **State Validation** | validateTransition() | No invalid status chains |
-| **JWT Authentication** | Bearer token required | Unauthorized access blocked |
+| Layer                      | Mechanism             | Impact                       |
+| -------------------------- | --------------------- | ---------------------------- |
+| **Signature Verification** | STRIPE_WEBHOOK_SECRET | Prevent forged webhooks      |
+| **Idempotency Keys**       | Passed to Stripe API  | No duplicate checkouts       |
+| **Event Deduplication**    | processedEvents Set   | No duplicate job opens       |
+| **Database Transactions**  | prisma.$transaction   | Atomic payment + job updates |
+| **State Validation**       | validateTransition()  | No invalid status chains     |
+| **JWT Authentication**     | Bearer token required | Unauthorized access blocked  |
 
 ---
 
@@ -353,9 +350,8 @@ curl http://localhost:4000/api/marketplace/jobs/$JOB_ID \
 - [Stripe Checkout Docs](https://stripe.com/docs/payments/checkout)
 - [Stripe Webhooks](https://stripe.com/docs/webhooks)
 - [Stripe Testing](https://stripe.com/docs/testing)
-- Phase 1 Reference: [MARKETPLACE_PHASE_1_COMPLETE.md](MARKETPLACE_PHASE_1_COMPLETE.md)
-
-
+- Phase 1 Reference:
+  [MARKETPLACE_PHASE_1_COMPLETE.md](MARKETPLACE_PHASE_1_COMPLETE.md)
 
 1. **MARKETPLACE_PHASE_2_DOCUMENTATION_INDEX.md**
    - Navigation guide for all documentation
@@ -472,15 +468,19 @@ curl http://localhost:4000/api/marketplace/jobs/$JOB_ID \
 
 ### For Developers (1 hour)
 
-1. Read: [MARKETPLACE_PHASE_2_QUICK_REFERENCE.md](MARKETPLACE_PHASE_2_QUICK_REFERENCE.md)
-2. Test: [MARKETPLACE_PHASE_2_TESTING_GUIDE.md](MARKETPLACE_PHASE_2_TESTING_GUIDE.md)
+1. Read:
+   [MARKETPLACE_PHASE_2_QUICK_REFERENCE.md](MARKETPLACE_PHASE_2_QUICK_REFERENCE.md)
+2. Test:
+   [MARKETPLACE_PHASE_2_TESTING_GUIDE.md](MARKETPLACE_PHASE_2_TESTING_GUIDE.md)
 3. Deploy: Follow deployment steps
 
 ### For Architects (30 minutes)
 
 1. Review: [MARKETPLACE_PHASE_2_COMPLETE.md](MARKETPLACE_PHASE_2_COMPLETE.md)
-2. Verify: [PHASE_2_DEPLOYMENT_VERIFICATION.md](PHASE_2_DEPLOYMENT_VERIFICATION.md)
-3. Deep-dive: [MARKETPLACE_ENHANCEMENTS_COMPLETE.md](MARKETPLACE_ENHANCEMENTS_COMPLETE.md)
+2. Verify:
+   [PHASE_2_DEPLOYMENT_VERIFICATION.md](PHASE_2_DEPLOYMENT_VERIFICATION.md)
+3. Deep-dive:
+   [MARKETPLACE_ENHANCEMENTS_COMPLETE.md](MARKETPLACE_ENHANCEMENTS_COMPLETE.md)
 
 ### For Managers (15 minutes)
 
@@ -580,11 +580,16 @@ A **production-grade DoorDash-style marketplace** with:
 
 All questions answered in documentation:
 
-- **"How do I...?"** → [MARKETPLACE_PHASE_2_QUICK_REFERENCE.md](MARKETPLACE_PHASE_2_QUICK_REFERENCE.md)
-- **"How do I test...?"** → [MARKETPLACE_PHASE_2_TESTING_GUIDE.md](MARKETPLACE_PHASE_2_TESTING_GUIDE.md)
-- **"What's the...?"** → [MARKETPLACE_ENHANCEMENTS_COMPLETE.md](MARKETPLACE_ENHANCEMENTS_COMPLETE.md)
-- **"How do I deploy...?"** → [PHASE_2_DEPLOYMENT_VERIFICATION.md](PHASE_2_DEPLOYMENT_VERIFICATION.md)
-- **"What's the status...?"** → [MARKETPLACE_PHASE_2_COMPLETE.md](MARKETPLACE_PHASE_2_COMPLETE.md)
+- **"How do I...?"** →
+  [MARKETPLACE_PHASE_2_QUICK_REFERENCE.md](MARKETPLACE_PHASE_2_QUICK_REFERENCE.md)
+- **"How do I test...?"** →
+  [MARKETPLACE_PHASE_2_TESTING_GUIDE.md](MARKETPLACE_PHASE_2_TESTING_GUIDE.md)
+- **"What's the...?"** →
+  [MARKETPLACE_ENHANCEMENTS_COMPLETE.md](MARKETPLACE_ENHANCEMENTS_COMPLETE.md)
+- **"How do I deploy...?"** →
+  [PHASE_2_DEPLOYMENT_VERIFICATION.md](PHASE_2_DEPLOYMENT_VERIFICATION.md)
+- **"What's the status...?"** →
+  [MARKETPLACE_PHASE_2_COMPLETE.md](MARKETPLACE_PHASE_2_COMPLETE.md)
 
 **Everything is thoroughly documented with working examples!**
 

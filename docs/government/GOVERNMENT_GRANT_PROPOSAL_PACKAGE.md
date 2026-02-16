@@ -11,11 +11,13 @@
 
 **Problem**
 
-Government logistics systems lack AI automation, leading to inefficiency and rising costs.
+Government logistics systems lack AI automation, leading to inefficiency and
+rising costs.
 
 **Solution**
 
-Infæmous Freight introduces AI-native logistics automation with enterprise-grade compliance.
+Infæmous Freight introduces AI-native logistics automation with enterprise-grade
+compliance.
 
 **Impact**
 

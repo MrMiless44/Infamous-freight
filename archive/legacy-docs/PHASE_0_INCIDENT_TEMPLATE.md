@@ -49,7 +49,7 @@ loss
 - [ ] Customer report
 - [ ] Team member notice
 - [ ] Monitoring dashboard
-- [ ] Other: ****\_\_\_****
+- [ ] Other: \***\*\_\_\_\*\***
 
 **Alert Details:**
 
@@ -123,7 +123,7 @@ exhausted the connection pool, causing new connections to timeout"
 - [ ] External dependency (external API down)
 - [ ] Configuration issue
 - [ ] Monitoring gap (should have alerted sooner)
-- [ ] Other: ****\_\_\_****
+- [ ] Other: \***\*\_\_\_\*\***
 
 **Details:**
 

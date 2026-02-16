@@ -317,7 +317,8 @@ Days 28-30: Auto-scaling + CDN + final validation
 Before starting Phase 1:
 
 - [ ] Read [PHASE_ALL_DEPLOYMENT_SETUP.md](PHASE_ALL_DEPLOYMENT_SETUP.md)
-- [ ] Review [DEPLOYMENT_EXECUTION_PROCEDURES.md](DEPLOYMENT_EXECUTION_PROCEDURES.md)
+- [ ] Review
+      [DEPLOYMENT_EXECUTION_PROCEDURES.md](DEPLOYMENT_EXECUTION_PROCEDURES.md)
 - [ ] Verify Docker is installed and running
 - [ ] Verify PostgreSQL credentials are ready
 - [ ] Update .env.production with secrets

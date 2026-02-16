@@ -4,9 +4,8 @@ import { withSentryConfig } from '@sentry/nextjs';
 const nextConfig = {
     turbopack: {},
     typescript: {
-        // TODO: Fix TypeScript errors and set to false
-        // Run: pnpm --filter web typecheck to see all errors
-        ignoreBuildErrors: true,
+        // Allow temporary TypeScript error bypass via env flag
+        ignoreBuildErrors: process.env.ALLOW_WEB_TS_ERRORS === 'true',
     },
     reactStrictMode: true,
     output: 'standalone', // Enable standalone output for Docker/Fly.io

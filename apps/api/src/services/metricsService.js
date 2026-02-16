@@ -82,10 +82,8 @@ class MetricsService {
         const active = (await redis.llen(`bull:${queueName}:active`)) || 0;
 
         // Get completed and failed counts from sorted sets
-        const completedCount =
-          (await redis.zcard(`bull:${queueName}:completed`)) || 0;
-        const failedCount =
-          (await redis.zcard(`bull:${queueName}:failed`)) || 0;
+        const completedCount = (await redis.zcard(`bull:${queueName}:completed`)) || 0;
+        const failedCount = (await redis.zcard(`bull:${queueName}:failed`)) || 0;
 
         this.metrics.queues[queueName] = {
           ...this.metrics.queues[queueName],
@@ -134,43 +132,29 @@ class MetricsService {
       metrics.push(
         `infamous_queue_processed_total{queue="${queueName}"} ${data.processed} ${timestamp}`,
       );
-      metrics.push(
-        `infamous_queue_failed_total{queue="${queueName}"} ${data.failed} ${timestamp}`,
-      );
-      metrics.push(
-        `infamous_queue_active{queue="${queueName}"} ${data.active} ${timestamp}`,
-      );
-      metrics.push(
-        `infamous_queue_waiting{queue="${queueName}"} ${data.waiting} ${timestamp}`,
-      );
+      metrics.push(`infamous_queue_failed_total{queue="${queueName}"} ${data.failed} ${timestamp}`);
+      metrics.push(`infamous_queue_active{queue="${queueName}"} ${data.active} ${timestamp}`);
+      metrics.push(`infamous_queue_waiting{queue="${queueName}"} ${data.waiting} ${timestamp}`);
     }
 
     // Worker metrics
     for (const [workerName, data] of Object.entries(this.metrics.workers)) {
-      metrics.push(
-        `infamous_worker_active{worker="${workerName}"} ${data.active} ${timestamp}`,
-      );
-      metrics.push(
-        `infamous_worker_idle{worker="${workerName}"} ${data.idle} ${timestamp}`,
-      );
+      metrics.push(`infamous_worker_active{worker="${workerName}"} ${data.active} ${timestamp}`);
+      metrics.push(`infamous_worker_idle{worker="${workerName}"} ${data.idle} ${timestamp}`);
       metrics.push(
         `infamous_worker_errors_total{worker="${workerName}"} ${data.errors} ${timestamp}`,
       );
     }
 
     // System metrics
-    metrics.push(
-      `infamous_uptime_seconds ${Math.floor(this.metrics.system.uptime)} ${timestamp}`,
-    );
+    metrics.push(`infamous_uptime_seconds ${Math.floor(this.metrics.system.uptime)} ${timestamp}`);
     metrics.push(
       `infamous_memory_heap_used_bytes ${this.metrics.system.memory.heapUsed} ${timestamp}`,
     );
     metrics.push(
       `infamous_memory_heap_total_bytes ${this.metrics.system.memory.heapTotal} ${timestamp}`,
     );
-    metrics.push(
-      `infamous_memory_rss_bytes ${this.metrics.system.memory.rss} ${timestamp}`,
-    );
+    metrics.push(`infamous_memory_rss_bytes ${this.metrics.system.memory.rss} ${timestamp}`);
 
     return metrics.join("\n");
   }
@@ -223,18 +207,9 @@ class MetricsService {
       (sum, q) => sum + q.processed,
       0,
     );
-    const totalFailed = Object.values(this.metrics.queues).reduce(
-      (sum, q) => sum + q.failed,
-      0,
-    );
-    const totalActive = Object.values(this.metrics.queues).reduce(
-      (sum, q) => sum + q.active,
-      0,
-    );
-    const totalWaiting = Object.values(this.metrics.queues).reduce(
-      (sum, q) => sum + q.waiting,
-      0,
-    );
+    const totalFailed = Object.values(this.metrics.queues).reduce((sum, q) => sum + q.failed, 0);
+    const totalActive = Object.values(this.metrics.queues).reduce((sum, q) => sum + q.active, 0);
+    const totalWaiting = Object.values(this.metrics.queues).reduce((sum, q) => sum + q.waiting, 0);
 
     const successRate =
       totalProcessed + totalFailed > 0

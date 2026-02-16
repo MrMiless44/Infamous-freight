@@ -22,9 +22,7 @@ function milesBetween(aLat, aLng, bLat, bLng) {
   const lat1 = toRad(aLat);
   const lat2 = toRad(bLat);
 
-  const s =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+  const s = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
 
   return 2 * R * Math.asin(Math.sqrt(s));
 }
@@ -39,12 +37,12 @@ function milesBetween(aLat, aLng, bLat, bLng) {
  */
 function findNearbyDrivers(lat, lng, drivers, radiusMiles) {
   return drivers
-    .filter(d => d.isActive !== false) // Include active drivers
-    .map(d => ({
+    .filter((d) => d.isActive !== false) // Include active drivers
+    .map((d) => ({
       ...d,
-      distance: milesBetween(lat, lng, d.lat, d.lng)
+      distance: milesBetween(lat, lng, d.lat, d.lng),
     }))
-    .filter(d => d.distance <= radiusMiles)
+    .filter((d) => d.distance <= radiusMiles)
     .sort((a, b) => a.distance - b.distance);
 }
 

@@ -27,7 +27,12 @@ export default function Chat({
       .channel(`thread:${threadId}`)
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "messages", filter: `thread_id=eq.${threadId}` },
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+          filter: `thread_id=eq.${threadId}`,
+        },
         (payload: any) => {
           const m = payload.new as Msg;
           setMsgs((cur) => [...cur, m]);
@@ -76,9 +81,7 @@ export default function Chat({
             <div>{m.content}</div>
           </div>
         ))}
-        {msgs.length === 0 && (
-          <div className="marketplace-muted">No messages yet.</div>
-        )}
+        {msgs.length === 0 && <div className="marketplace-muted">No messages yet.</div>}
       </div>
       <div className="marketplace-chat-inputs">
         <input
@@ -93,12 +96,7 @@ export default function Chat({
             }
           }}
         />
-        <button
-          onClick={send}
-          disabled={busy}
-          className="btn btn-primary"
-          type="button"
-        >
+        <button onClick={send} disabled={busy} className="btn btn-primary" type="button">
           Send
         </button>
       </div>

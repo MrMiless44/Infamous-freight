@@ -53,7 +53,7 @@ export default async function handler(
   const expectedSecret = process.env.REVALIDATE_SECRET;
 
   if (!expectedSecret) {
-    // eslint-disable-next-line no-console
+     
     console.error("REVALIDATE_SECRET not configured");
     return res.status(500).json({
       message: "Revalidation not configured",
@@ -105,7 +105,7 @@ export default async function handler(
       timestamp: new Date().toISOString(),
     });
   } catch (err) {
-    // eslint-disable-next-line no-console
+     
     console.error("Error revalidating:", err);
     return res.status(500).json({
       message: "Error revalidating",

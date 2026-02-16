@@ -133,4 +133,5 @@ pnpm prepare
 
 - See [README.md](README.md) for project overview
 - Check [CHANGELOG.md](CHANGELOG.md) for recent updates
-- Review [docs/ENVIRONMENT_VARIABLES.md](docs/ENVIRONMENT_VARIABLES.md) for configuration
+- Review [docs/ENVIRONMENT_VARIABLES.md](docs/ENVIRONMENT_VARIABLES.md) for
+  configuration

@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router } from "express";
 
 /**
  * Marketplace Partner API Routes
@@ -8,24 +8,24 @@ import { Router } from 'express';
 const router = Router();
 
 // POST /api/partners/apply - Apply for marketplace program
-router.post('/apply', async (req, res, next) => {
+router.post("/apply", async (req, res, next) => {
   try {
     const { name, email, company_type, description } = req.body;
 
     const application = {
-      id: 'partner_' + Math.random().toString(36).substr(2, 9),
+      id: "partner_" + Math.random().toString(36).substr(2, 9),
       name,
       email,
       company_type,
       description,
-      status: 'pending_review',
+      status: "pending_review",
       created_at: new Date(),
     };
 
     res.json({
       success: true,
       application_id: application.id,
-      message: 'Application submitted for review',
+      message: "Application submitted for review",
     });
   } catch (err) {
     next(err);
@@ -33,7 +33,7 @@ router.post('/apply', async (req, res, next) => {
 });
 
 // GET /api/partners/:partner_id/dashboard - Partner earnings dashboard
-router.get('/:partner_id/dashboard', async (req, res, next) => {
+router.get("/:partner_id/dashboard", async (req, res, next) => {
   try {
     const stats = {
       current_month: {
@@ -58,13 +58,13 @@ router.get('/:partner_id/dashboard', async (req, res, next) => {
 });
 
 // GET /api/partners/:partner_id/payouts - View payout status
-router.get('/:partner_id/payouts', async (req, res, next) => {
+router.get("/:partner_id/payouts", async (req, res, next) => {
   try {
     const payouts = [
       {
-        id: 'payout_1',
+        id: "payout_1",
         amount: 75000,
-        status: 'completed',
+        status: "completed",
         date: new Date(),
       },
     ];
@@ -72,7 +72,7 @@ router.get('/:partner_id/payouts', async (req, res, next) => {
     res.json({
       success: true,
       payouts,
-      next_payout_date: 'net_90_from_transaction',
+      next_payout_date: "net_90_from_transaction",
     });
   } catch (err) {
     next(err);

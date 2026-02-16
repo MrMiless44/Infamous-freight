@@ -29,24 +29,24 @@ router.use(requireScope("analytics:read"));
  * @query {string} status - Shipment status
  */
 router.get("/performance", async (req, res, next) => {
-    try {
-        const metrics = await analyticsService.getShipmentMetrics({
-            startDate: req.query.startDate ? new Date(req.query.startDate) : null,
-            endDate: req.query.endDate ? new Date(req.query.endDate) : null,
-            region: req.query.region,
-            status: req.query.status,
-        });
+  try {
+    const metrics = await analyticsService.getShipmentMetrics({
+      startDate: req.query.startDate ? new Date(req.query.startDate) : null,
+      endDate: req.query.endDate ? new Date(req.query.endDate) : null,
+      region: req.query.region,
+      status: req.query.status,
+    });
 
-        res.json({
-            success: true,
-            data: {
-                metrics,
-                timestamp: new Date().toISOString(),
-            },
-        });
-    } catch (err) {
-        next(err);
-    }
+    res.json({
+      success: true,
+      data: {
+        metrics,
+        timestamp: new Date().toISOString(),
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 /**
@@ -55,21 +55,21 @@ router.get("/performance", async (req, res, next) => {
  * @query {number} monthsAhead - Number of months to forecast (default 3)
  */
 router.get("/revenue", async (req, res, next) => {
-    try {
-        const monthsAhead = parseInt(req.query.monthsAhead || "3", 10);
+  try {
+    const monthsAhead = parseInt(req.query.monthsAhead || "3", 10);
 
-        const forecast = await analyticsService.forecastRevenue(monthsAhead);
+    const forecast = await analyticsService.forecastRevenue(monthsAhead);
 
-        res.json({
-            success: true,
-            data: {
-                forecast,
-                generatedAt: new Date().toISOString(),
-            },
-        });
-    } catch (err) {
-        next(err);
-    }
+    res.json({
+      success: true,
+      data: {
+        forecast,
+        generatedAt: new Date().toISOString(),
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 /**
@@ -77,18 +77,16 @@ router.get("/revenue", async (req, res, next) => {
  * Get performance analytics for a specific region
  */
 router.get("/regions/:region", async (req, res, next) => {
-    try {
-        const regional = await analyticsService.getRegionalAnalytics(
-            req.params.region,
-        );
+  try {
+    const regional = await analyticsService.getRegionalAnalytics(req.params.region);
 
-        res.json({
-            success: true,
-            data: regional,
-        });
-    } catch (err) {
-        next(err);
-    }
+    res.json({
+      success: true,
+      data: regional,
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 /**
@@ -96,19 +94,19 @@ router.get("/regions/:region", async (req, res, next) => {
  * Get performance metrics for all drivers
  */
 router.get("/drivers", async (req, res, next) => {
-    try {
-        const drivers = await analyticsService.getDriverAnalytics();
+  try {
+    const drivers = await analyticsService.getDriverAnalytics();
 
-        res.json({
-            success: true,
-            data: {
-                drivers,
-                totalDrivers: drivers.length,
-            },
-        });
-    } catch (err) {
-        next(err);
-    }
+    res.json({
+      success: true,
+      data: {
+        drivers,
+        totalDrivers: drivers.length,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 /**
@@ -116,16 +114,16 @@ router.get("/drivers", async (req, res, next) => {
  * Get customer satisfaction metrics and NPS
  */
 router.get("/satisfaction", async (req, res, next) => {
-    try {
-        const satisfaction = await analyticsService.getCustomerSatisfaction();
+  try {
+    const satisfaction = await analyticsService.getCustomerSatisfaction();
 
-        res.json({
-            success: true,
-            data: satisfaction,
-        });
-    } catch (err) {
-        next(err);
-    }
+    res.json({
+      success: true,
+      data: satisfaction,
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 /**
@@ -133,16 +131,16 @@ router.get("/satisfaction", async (req, res, next) => {
  * Get cost analysis and optimization opportunities
  */
 router.get("/costs", async (req, res, next) => {
-    try {
-        const costs = await analyticsService.getCostAnalysis();
+  try {
+    const costs = await analyticsService.getCostAnalysis();
 
-        res.json({
-            success: true,
-            data: costs,
-        });
-    } catch (err) {
-        next(err);
-    }
+    res.json({
+      success: true,
+      data: costs,
+    });
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;

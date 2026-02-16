@@ -4,7 +4,7 @@
  * Module: Standardized Error Response Utilities
  */
 
-const { HTTP_STATUS, ERROR_MESSAGES } = require('../config/constants');
+const { HTTP_STATUS, ERROR_MESSAGES } = require("../config/constants");
 
 /**
  * Standard API Error class with proper structure
@@ -12,7 +12,7 @@ const { HTTP_STATUS, ERROR_MESSAGES } = require('../config/constants');
 class ApiError extends Error {
   constructor(message, statusCode = HTTP_STATUS.INTERNAL_SERVER_ERROR, details = null) {
     super(message);
-    this.name = 'ApiError';
+    this.name = "ApiError";
     this.statusCode = statusCode;
     this.details = details;
     this.timestamp = new Date().toISOString();
@@ -37,7 +37,7 @@ class ApiError extends Error {
 class ValidationError extends ApiError {
   constructor(message = ERROR_MESSAGES.VALIDATION_FAILED, details = null) {
     super(message, HTTP_STATUS.BAD_REQUEST, details);
-    this.name = 'ValidationError';
+    this.name = "ValidationError";
   }
 }
 
@@ -47,7 +47,7 @@ class ValidationError extends ApiError {
 class AuthenticationError extends ApiError {
   constructor(message = ERROR_MESSAGES.UNAUTHORIZED) {
     super(message, HTTP_STATUS.UNAUTHORIZED);
-    this.name = 'AuthenticationError';
+    this.name = "AuthenticationError";
   }
 }
 
@@ -57,7 +57,7 @@ class AuthenticationError extends ApiError {
 class AuthorizationError extends ApiError {
   constructor(message = ERROR_MESSAGES.FORBIDDEN) {
     super(message, HTTP_STATUS.FORBIDDEN);
-    this.name = 'AuthorizationError';
+    this.name = "AuthorizationError";
   }
 }
 
@@ -67,7 +67,7 @@ class AuthorizationError extends ApiError {
 class NotFoundError extends ApiError {
   constructor(message = ERROR_MESSAGES.NOT_FOUND, resource = null) {
     super(message, HTTP_STATUS.NOT_FOUND, resource ? { resource } : null);
-    this.name = 'NotFoundError';
+    this.name = "NotFoundError";
   }
 }
 
@@ -77,7 +77,7 @@ class NotFoundError extends ApiError {
 class RateLimitError extends ApiError {
   constructor(message = ERROR_MESSAGES.RATE_LIMIT_EXCEEDED, retryAfter = null) {
     super(message, HTTP_STATUS.TOO_MANY_REQUESTS, retryAfter ? { retryAfter } : null);
-    this.name = 'RateLimitError';
+    this.name = "RateLimitError";
   }
 }
 
@@ -87,7 +87,7 @@ class RateLimitError extends ApiError {
 class ConflictError extends ApiError {
   constructor(message, details = null) {
     super(message, HTTP_STATUS.CONFLICT, details);
-    this.name = 'ConflictError';
+    this.name = "ConflictError";
   }
 }
 
@@ -141,7 +141,7 @@ module.exports = {
   NotFoundError,
   RateLimitError,
   ConflictError,
-  
+
   // Response Utilities
   createSuccessResponse,
   createErrorResponse,

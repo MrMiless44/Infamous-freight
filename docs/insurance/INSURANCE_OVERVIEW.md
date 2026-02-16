@@ -1,6 +1,9 @@
 # Insurance Overview
 
-The Infæmous Freight Insurance Center provides a centralized workflow for certificate intake, compliance evaluation, and embedded insurance monetization. It supports core coverage lines (CGL, Cyber, E&O, Contingent Cargo) with extensible coverage types as the platform grows.
+The Infæmous Freight Insurance Center provides a centralized workflow for
+certificate intake, compliance evaluation, and embedded insurance monetization.
+It supports core coverage lines (CGL, Cyber, E&O, Contingent Cargo) with
+extensible coverage types as the platform grows.
 
 ## Primary Workflows
 

@@ -6,7 +6,8 @@
 
 ## Overview
 
-This document outlines the security controls and standards implemented across Infæmous Freight's platform to meet SOC2-lite requirements.
+This document outlines the security controls and standards implemented across
+Infæmous Freight's platform to meet SOC2-lite requirements.
 
 ## 1. Access Control
 
@@ -14,19 +15,20 @@ This document outlines the security controls and standards implemented across In
 
 - **JWT-based:** All API endpoints protected with JSON Web Tokens
 - **Expiration:** 24-hour token lifetime with 7-day refresh token
-- **Rotation-ready:** Optional JWKS support for key rotation without redeployment
+- **Rotation-ready:** Optional JWKS support for key rotation without
+  redeployment
 - **Fallback:** Automatic validation via JWT_SECRET if JWKS not configured
 
 ### 1.2 Authorization (RBAC)
 
 Four roles with granular permissions:
 
-| Role | Permissions | Use Case |
-|------|-------------|----------|
-| SHIPPER | job:create, job:accept, offer:accept | Freight shippers booking deliveries |
-| DRIVER | job:deliver, offer:respond, payout:receive | Drivers executing deliveries |
-| ADMIN | admin:ops, user:manage | Operational management |
-| SYSTEM | All permissions | Internal services/automation |
+| Role    | Permissions                                | Use Case                            |
+| ------- | ------------------------------------------ | ----------------------------------- |
+| SHIPPER | job:create, job:accept, offer:accept       | Freight shippers booking deliveries |
+| DRIVER  | job:deliver, offer:respond, payout:receive | Drivers executing deliveries        |
+| ADMIN   | admin:ops, user:manage                     | Operational management              |
+| SYSTEM  | All permissions                            | Internal services/automation        |
 
 **Critical endpoints protected:**
 
@@ -38,7 +40,8 @@ Four roles with granular permissions:
 ### 1.3 Session Management
 
 - No persistent sessions; token-based stateless design
-- Rate limiting prevents brute force: 5 attempts per 15 minutes per IP (auth endpoints)
+- Rate limiting prevents brute force: 5 attempts per 15 minutes per IP (auth
+  endpoints)
 - Failed attempts logged and monitored
 
 ## 2. Data Protection
@@ -81,13 +84,13 @@ Four roles with granular permissions:
 
 ## 4. Rate Limiting & DoS Protection
 
-| Limiter | Rate | Window | Purpose |
-|---------|------|--------|---------|
-| General | 100 requests | 15 minutes | API baseline protection |
-| Auth | 5 attempts | 15 minutes | Brute force prevention |
-| AI | 20 requests | 1 minute | AI service throttle |
-| Billing | 30 requests | 15 minutes | Payment operation protection |
-| Export | 5 requests | 1 hour | Heavy query protection |
+| Limiter | Rate         | Window     | Purpose                      |
+| ------- | ------------ | ---------- | ---------------------------- |
+| General | 100 requests | 15 minutes | API baseline protection      |
+| Auth    | 5 attempts   | 15 minutes | Brute force prevention       |
+| AI      | 20 requests  | 1 minute   | AI service throttle          |
+| Billing | 30 requests  | 15 minutes | Payment operation protection |
+| Export  | 5 requests   | 1 hour     | Heavy query protection       |
 
 ## 5. Security Headers
 
@@ -111,7 +114,8 @@ Referrer-Policy: strict-origin-when-cross-origin
 
 ## 7. Incident Response
 
-**Contact:** <security@infamous-freight.com> (critical), <security-oncall@infamous-freight.com> (24/7)
+**Contact:** <security@infamous-freight.com> (critical),
+<security-oncall@infamous-freight.com> (24/7)
 
 **Response time SLAs:**
 

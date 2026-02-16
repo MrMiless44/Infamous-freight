@@ -42,7 +42,7 @@ services:
       - key: PORT
         value: 3001
     autoDeploy: true
-    
+
 databases:
   - name: infamous-freight-db
     databaseName: infamous_freight

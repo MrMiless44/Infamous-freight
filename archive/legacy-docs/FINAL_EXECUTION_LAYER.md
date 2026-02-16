@@ -1,20 +1,22 @@
 # Infæmous Holdings Group — Final Execution Layer
 
-This document captures the declared **Final Execution Layer** for Infæmous Holdings Group, consolidating the operational framing across legal, financial, AI, logistics, fintech, public markets, and sovereign-scale infrastructure.
+This document captures the declared **Final Execution Layer** for Infæmous
+Holdings Group, consolidating the operational framing across legal, financial,
+AI, logistics, fintech, public markets, and sovereign-scale infrastructure.
 
 ## 🌐 Sovereign-Grade Global Infrastructure
 
 ### Operational Topology
 
-| Region | Capability |
-| --- | --- |
-| North America | Full ops, AI, fintech |
-| Europe | GDPR, AI governance |
-| Asia | Low-latency AI routing |
-| China | CDN + regulatory routing |
-| Middle East | Trade & customs AI |
-| Africa | Emerging market logistics |
-| South America | Trade corridor AI |
+| Region        | Capability                |
+| ------------- | ------------------------- |
+| North America | Full ops, AI, fintech     |
+| Europe        | GDPR, AI governance       |
+| Asia          | Low-latency AI routing    |
+| China         | CDN + regulatory routing  |
+| Middle East   | Trade & customs AI        |
+| Africa        | Emerging market logistics |
+| South America | Trade corridor AI         |
 
 ### Capabilities
 
@@ -28,14 +30,14 @@ This document captures the declared **Final Execution Layer** for Infæmous Hold
 
 ### Corporate Framework
 
-| Layer | Status |
-| --- | --- |
-| Parent Holding Corp | Active |
-| Subsidiaries | Structured |
-| IP Holding Entity | Established |
-| FinTech Entity | Separated |
-| AI R&D Entity | Established |
-| International Entities | Ready |
+| Layer                  | Status      |
+| ---------------------- | ----------- |
+| Parent Holding Corp    | Active      |
+| Subsidiaries           | Structured  |
+| IP Holding Entity      | Established |
+| FinTech Entity         | Separated   |
+| AI R&D Entity          | Established |
+| International Entities | Ready       |
 
 ### Legal Readiness
 
@@ -49,14 +51,14 @@ This document captures the declared **Final Execution Layer** for Infæmous Hold
 
 ### AI Capabilities
 
-| Layer | Status |
-| --- | --- |
-| Model Governance | Active |
-| AI Audits | Enabled |
-| Explainability | Live |
-| AI Risk Controls | Enforced |
-| Human Oversight | Integrated |
-| Regulatory Alignment | Enforced |
+| Layer                | Status     |
+| -------------------- | ---------- |
+| Model Governance     | Active     |
+| AI Audits            | Enabled    |
+| Explainability       | Live       |
+| AI Risk Controls     | Enforced   |
+| Human Oversight      | Integrated |
+| Regulatory Alignment | Enforced   |
 
 ### AI Monetization Engine
 
@@ -83,15 +85,15 @@ This document captures the declared **Final Execution Layer** for Infæmous Hold
 
 ### Financial Capabilities
 
-| Feature | Status |
-| --- | --- |
-| Carrier wallets | Live |
-| Instant settlement | Live |
-| Factoring | Active |
-| Underwriting AI | Live |
-| Credit scoring | Active |
+| Feature                | Status   |
+| ---------------------- | -------- |
+| Carrier wallets        | Live     |
+| Instant settlement     | Live     |
+| Factoring              | Active   |
+| Underwriting AI        | Live     |
+| Credit scoring         | Active   |
 | Insurance underwriting | Embedded |
-| Cross-border FX | Enabled |
+| Cross-border FX        | Enabled  |
 
 ## 🌐 IGFX — Global Freight Exchange
 
@@ -108,14 +110,14 @@ This document captures the declared **Final Execution Layer** for Infæmous Hold
 
 ### Standards
 
-| Standard | Status |
-| --- | --- |
-| FedRAMP | Roadmap |
-| CMMC | Ready |
-| CJIS | Ready |
-| ITAR | Ready |
+| Standard        | Status   |
+| --------------- | -------- |
+| FedRAMP         | Roadmap  |
+| CMMC            | Ready    |
+| CJIS            | Ready    |
+| ITAR            | Ready    |
 | DoD Procurement | Eligible |
-| NATO Vendor | Eligible |
+| NATO Vendor     | Eligible |
 
 ### Use Cases
 
@@ -130,20 +132,20 @@ This document captures the declared **Final Execution Layer** for Infæmous Hold
 ### Conservative
 
 | Year | Revenue |
-| --- | --- |
-| 1 | $15M |
-| 3 | $90M |
-| 5 | $280M |
-| 7 | $650M |
+| ---- | ------- |
+| 1    | $15M    |
+| 3    | $90M    |
+| 5    | $280M   |
+| 7    | $650M   |
 
 ### Aggressive
 
 | Year | Revenue |
-| --- | --- |
-| 1 | $25M |
-| 3 | $180M |
-| 5 | $700M |
-| 7 | $1.8B+ |
+| ---- | ------- |
+| 1    | $25M    |
+| 3    | $180M   |
+| 5    | $700M   |
+| 7    | $1.8B+  |
 
 ## 🧬 Final Structure — Infæmous Holdings
 
@@ -159,4 +161,6 @@ INFÆMOUS HOLDINGS GROUP
 
 ## 🏁 Final Status
 
-Infæmous Holdings is positioned as a global AI + logistics + financial infrastructure company, architected for public markets, sovereign contracts, institutional capital, and global scale readiness.
+Infæmous Holdings is positioned as a global AI + logistics + financial
+infrastructure company, architected for public markets, sovereign contracts,
+institutional capital, and global scale readiness.

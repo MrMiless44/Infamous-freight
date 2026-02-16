@@ -19,7 +19,7 @@ export default function ThreadSummaryButton({ threadId }: { threadId: string }) 
       });
 
       if (!response.ok) {
-        // eslint-disable-next-line no-console
+         
         console.error("Failed to summarize thread", {
           status: response.status,
           statusText: response.statusText,
@@ -30,7 +30,7 @@ export default function ThreadSummaryButton({ threadId }: { threadId: string }) 
 
       window.location.reload();
     } catch (error) {
-      // eslint-disable-next-line no-console
+       
       console.error("Error while summarizing thread", error);
       window.alert("An error occurred while summarizing the thread. Please try again.");
     } finally {
@@ -39,12 +39,7 @@ export default function ThreadSummaryButton({ threadId }: { threadId: string }) 
   }
 
   return (
-    <button
-      className="btn btn-secondary"
-      onClick={handleClick}
-      type="button"
-      disabled={busy}
-    >
+    <button className="btn btn-secondary" onClick={handleClick} type="button" disabled={busy}>
       {busy ? "Summarizing..." : "AI Summary"}
     </button>
   );

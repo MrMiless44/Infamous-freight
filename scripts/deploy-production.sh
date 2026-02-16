@@ -1,14 +1,15 @@
 #!/bin/bash
 # Production deployment script
 
-set -e
+set -euo pipefail
 
 echo "🚀 Starting Production Deployment..."
 
 # Configuration
 export NODE_ENV=production
-API_DIR="/workspaces/Infamous-freight-enterprises/apps/api"
-WEB_DIR="/workspaces/Infamous-freight-enterprises/apps/web"
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+API_DIR="$ROOT_DIR/apps/api"
+WEB_DIR="$ROOT_DIR/apps/web"
 
 # Colors
 GREEN='\033[0;32m'
@@ -20,8 +21,29 @@ print_status() {
     echo -e "${2}${1}${NC}"
 }
 
+require_command() {
+    local cmd="$1"
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+        print_status "❌ Missing required command: $cmd" "$RED"
+        exit 1
+    fi
+}
+
+require_dir() {
+    local dir="$1"
+    if [ ! -d "$dir" ]; then
+        print_status "❌ Missing directory: $dir" "$RED"
+        exit 1
+    fi
+}
+
 # Pre-deployment checks
 print_status "\n📋 Step 1: Pre-deployment checks" "$YELLOW"
+
+require_command "pnpm"
+require_command "node"
+require_dir "$API_DIR"
+require_dir "$WEB_DIR"
 
 # Check if required environment variables are set
 REQUIRED_VARS=(

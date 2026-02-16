@@ -6,14 +6,21 @@ you find the information you need.
 ## 🌍 Platform Overview (NEW!)
 
 ### What We Offer
-- **[Platform Offering](PLATFORM_OFFERING.md)** - Complete value proposition: features, benefits, roadmap, and market opportunity
-- **[Elevator Pitches](ELEVATOR_PITCH.md)** - Quick pitches for investors, customers, press, and talent (10s to 90s versions)
-- **[Launch Strategy](../SOFT_LAUNCH_STRATEGY_10_TO_100.md)** - 4-week production rollout plan
+
+- **[Platform Offering](PLATFORM_OFFERING.md)** - Complete value proposition:
+  features, benefits, roadmap, and market opportunity
+- **[Elevator Pitches](ELEVATOR_PITCH.md)** - Quick pitches for investors,
+  customers, press, and talent (10s to 90s versions)
+- **[Launch Strategy](../SOFT_LAUNCH_STRATEGY_10_TO_100.md)** - 4-week
+  production rollout plan
 
 ### Business & Market
+
 - **[Pitch Deck Content](pitch-deck-content.md)** - Product pitch materials
-- **[Investor Technical Appendix](investor-technical-appendix.md)** - Technical details for investors
-- **[Pricing Architecture Blueprint](revenue-operations/PRICING_ARCHITECTURE_BLUEPRINT.md)** - Production-ready pricing and revenue governance
+- **[Investor Technical Appendix](investor-technical-appendix.md)** - Technical
+  details for investors
+- **[Pricing Architecture Blueprint](revenue-operations/PRICING_ARCHITECTURE_BLUEPRINT.md)** -
+  Production-ready pricing and revenue governance
 
 ---
 
@@ -56,7 +63,8 @@ you find the information you need.
 
 - **[API Reference](apps/api/API_REFERENCE.md)** - Complete API endpoint
   documentation
-- **[API Testing Guide](apps/api/API_TESTING_GUIDE.md)** - How to test API endpoints
+- **[API Testing Guide](apps/api/API_TESTING_GUIDE.md)** - How to test API
+  endpoints
 - **[API Security Checklist](API_SECURITY_CHECKLIST.md)** - Security best
   practices
 
@@ -197,4 +205,5 @@ root:
 
 ## Contributing
 
-See the [Contributing Guidelines](../CONTRIBUTING.md) for information on how to contribute to this project.
+See the [Contributing Guidelines](../CONTRIBUTING.md) for information on how to
+contribute to this project.

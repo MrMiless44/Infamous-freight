@@ -2,7 +2,9 @@
 
 ## Overview
 
-The HTML Quality workflow (`.github/workflows/html-quality.yml`) ensures HTML files in the repository meet quality standards through automated validation using HTML Tidy.
+The HTML Quality workflow (`.github/workflows/html-quality.yml`) ensures HTML
+files in the repository meet quality standards through automated validation
+using HTML Tidy.
 
 ## Workflow Triggers
 
@@ -18,7 +20,8 @@ A single job that performs HTML validation with the following steps:
 
 #### 1. Show Repository Tree (Debugging)
 
-Displays the directory structure and lists top-level HTML files for debugging purposes.
+Displays the directory structure and lists top-level HTML files for debugging
+purposes.
 
 ```yaml
 - name: Show repo tree (for debugging)
@@ -29,7 +32,8 @@ Displays the directory structure and lists top-level HTML files for debugging pu
     ls -la *.html || true
 ```
 
-**Purpose**: Helps diagnose issues related to file discovery and directory structure.
+**Purpose**: Helps diagnose issues related to file discovery and directory
+structure.
 
 #### 2. Install HTML Tidy
 
@@ -45,11 +49,13 @@ Installs HTML Tidy (libtidy) version 5.6.0 for HTML validation.
     tidy -v || true
 ```
 
-**Tool**: [HTML Tidy](http://www.html-tidy.org/) - A command-line tool for checking and cleaning HTML.
+**Tool**: [HTML Tidy](http://www.html-tidy.org/) - A command-line tool for
+checking and cleaning HTML.
 
 #### 3. Validate HTML Files
 
-Recursively finds and validates all HTML files using the `.tidyrc` configuration.
+Recursively finds and validates all HTML files using the `.tidyrc`
+configuration.
 
 **File Discovery**:
 
@@ -151,7 +157,9 @@ Common HTML Tidy errors:
 - Invalid nesting
 - Character encoding issues
 
-Refer to [HTML Tidy documentation](http://api.html-tidy.org/tidy/quickref_5.6.0.html) for error codes and fixes.
+Refer to
+[HTML Tidy documentation](http://api.html-tidy.org/tidy/quickref_5.6.0.html) for
+error codes and fixes.
 
 ## Workflow Status
 

@@ -1,6 +1,7 @@
 # New API Routes Documentation
 
-This document describes the new API routes added for dispatch, driver, fleet, and customer management.
+This document describes the new API routes added for dispatch, driver, fleet,
+and customer management.
 
 ## Overview
 
@@ -11,7 +12,8 @@ Four new route modules have been added to the API:
 3. **Fleet** - Vehicle management and maintenance tracking
 4. **Customer** - Customer management and AI support
 
-All routes require authentication and implement role-based access control (RBAC).
+All routes require authentication and implement role-based access control
+(RBAC).
 
 ## Authentication
 
@@ -38,7 +40,8 @@ Get a paginated list of loads.
 
 **Query Parameters:**
 
-- `status` (optional) - Filter by status: PENDING, ASSIGNED, IN_TRANSIT, DELIVERED, CANCELLED
+- `status` (optional) - Filter by status: PENDING, ASSIGNED, IN_TRANSIT,
+  DELIVERED, CANCELLED
 - `page` (optional) - Page number (default: 1)
 - `limit` (optional) - Results per page (default: 10)
 
@@ -137,7 +140,8 @@ Assign a load to a driver and vehicle. Requires ADMIN or DISPATCHER role.
 }
 ```
 
-If `useAI` is true and driverId/vehicleId are not provided, the AI will recommend assignments.
+If `useAI` is true and driverId/vehicleId are not provided, the AI will
+recommend assignments.
 
 **Response:**
 
@@ -156,7 +160,8 @@ If `useAI` is true and driverId/vehicleId are not provided, the AI will recommen
 
 ### POST /optimize
 
-Get AI-powered route optimization for multiple loads. Requires ADMIN or DISPATCHER role.
+Get AI-powered route optimization for multiple loads. Requires ADMIN or
+DISPATCHER role.
 
 **Request Body:**
 

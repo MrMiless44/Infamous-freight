@@ -334,7 +334,8 @@ eas channel:edit --channel production --branch previous-branch
 
 - Default: `AI_PROVIDER=stub` (no external keys needed)
 - OpenAI: set `AI_PROVIDER=openai`, `OPENAI_API_KEY`, optional `OPENAI_MODEL`
-- Anthropic: set `AI_PROVIDER=anthropic`, `ANTHROPIC_API_KEY`, optional `ANTHROPIC_MODEL`
+- Anthropic: set `AI_PROVIDER=anthropic`, `ANTHROPIC_API_KEY`, optional
+  `ANTHROPIC_MODEL`
 
 ## ✅ Final Verification
 
@@ -351,4 +352,5 @@ eas channel:edit --channel production --branch previous-branch
 
 **Deployment Complete!** 🎉
 
-All 3 priorities (Bundle Optimization, Mobile Features, API Enhancements) are now live.
+All 3 priorities (Bundle Optimization, Mobile Features, API Enhancements) are
+now live.

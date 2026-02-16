@@ -27,23 +27,23 @@
 
 You now have a complete **user-friendly component library**:
 
-| Component | Location | Purpose |
-|-----------|----------|---------|
-| Button | `apps/web/components/uikit/Button.tsx` | All actions |
-| Input | `apps/web/components/uikit/Input.tsx` | Form fields |
-| Card | `apps/web/components/uikit/Card.tsx` | Content blocks |
-| Alert | `apps/web/components/uikit/Alert.tsx` | Messages |
-| Tooltip | `apps/web/components/uikit/Tooltip.tsx` | Help text |
-| Modal | `apps/web/components/uikit/Modal.tsx` | Dialogs |
-| Onboarding | `apps/web/components/uikit/Onboarding.tsx` | Tours |
-| EmptyState | `apps/web/components/uikit/EmptyState.tsx` | No data |
+| Component  | Location                                   | Purpose        |
+| ---------- | ------------------------------------------ | -------------- |
+| Button     | `apps/web/components/uikit/Button.tsx`     | All actions    |
+| Input      | `apps/web/components/uikit/Input.tsx`      | Form fields    |
+| Card       | `apps/web/components/uikit/Card.tsx`       | Content blocks |
+| Alert      | `apps/web/components/uikit/Alert.tsx`      | Messages       |
+| Tooltip    | `apps/web/components/uikit/Tooltip.tsx`    | Help text      |
+| Modal      | `apps/web/components/uikit/Modal.tsx`      | Dialogs        |
+| Onboarding | `apps/web/components/uikit/Onboarding.tsx` | Tours          |
+| EmptyState | `apps/web/components/uikit/EmptyState.tsx` | No data        |
 
 ### 1.2 Installation
 
 All components are ready to use. No installation needed!
 
 ```tsx
-import { Button, Card, Alert, Input } from '@/components/uikit';
+import { Button, Card, Alert, Input } from "@/components/uikit";
 ```
 
 ---
@@ -53,45 +53,45 @@ import { Button, Card, Alert, Input } from '@/components/uikit';
 ### 2.1 Replace Basic HTML with User-Friendly Components
 
 **Before (❌ Not user-friendly):**
+
 ```tsx
 export function ShipmentsPage() {
   const [shipments, setShipments] = useState([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   return (
     <div>
       <h1>Shipments</h1>
-      {error && <p style={{color: 'red'}}>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <button onClick={handleCreate}>Add</button>
-      <div>
-        {shipments.length === 0 && <p>No shipments</p>}
-      </div>
+      <div>{shipments.length === 0 && <p>No shipments</p>}</div>
     </div>
   );
 }
 ```
 
 **After (✅ User-friendly):**
+
 ```tsx
-import { Button, Alert, Card, EmptyState } from '@/components/uikit';
+import { Button, Alert, Card, EmptyState } from "@/components/uikit";
 
 export function ShipmentsPage() {
   const [shipments, setShipments] = useState([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   return (
     <div className="page">
       <h1>My Shipments</h1>
-      
+
       {error && (
         <Alert
           type="error"
           title="Couldn't load shipments"
           message={error}
-          onClose={() => setError('')}
+          onClose={() => setError("")}
         />
       )}
-      
+
       {shipments.length === 0 ? (
         <EmptyState
           icon="📦"
@@ -99,13 +99,13 @@ export function ShipmentsPage() {
           description="Create your first shipment to track it in real-time."
           action={{
             label: "Create Shipment",
-            onClick: handleCreate
+            onClick: handleCreate,
           }}
           hint="Tip: You can import up to 100 shipments using CSV."
         />
       ) : (
         <div className="grid">
-          {shipments.map(shipment => (
+          {shipments.map((shipment) => (
             <Card
               key={shipment.id}
               title={shipment.id}
@@ -113,13 +113,17 @@ export function ShipmentsPage() {
               interactive
               onClick={() => navigate(`/shipments/${shipment.id}`)}
             >
-              <p><strong>Status:</strong> {shipment.status}</p>
-              <p><strong>ETA:</strong> {shipment.eta}</p>
+              <p>
+                <strong>Status:</strong> {shipment.status}
+              </p>
+              <p>
+                <strong>ETA:</strong> {shipment.eta}
+              </p>
             </Card>
           ))}
         </div>
       )}
-      
+
       <Button
         variant="primary"
         onClick={handleCreate}
@@ -135,15 +139,16 @@ export function ShipmentsPage() {
 ### 2.2 Form Fields - Before & After
 
 **Before (❌):**
+
 ```tsx
-<input
-  placeholder="Enter email"
-  onChange={(e) => setEmail(e.target.value)}
-/>
-{errors.email && <p style={{color: 'red'}}>{errors.email}</p>}
+<input placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} />;
+{
+  errors.email && <p style={{ color: "red" }}>{errors.email}</p>;
+}
 ```
 
 **After (✅):**
+
 ```tsx
 <Input
   label="Email Address"
@@ -158,13 +163,15 @@ export function ShipmentsPage() {
 ### 2.3 Buttons - Before & After
 
 **Before (❌):**
+
 ```tsx
 <button onClick={handleSave} disabled={loading}>
-  {loading ? '...' : 'Save'}
+  {loading ? "..." : "Save"}
 </button>
 ```
 
 **After (✅):**
+
 ```tsx
 <Button
   variant="primary"
@@ -184,15 +191,17 @@ export function ShipmentsPage() {
 
 ```tsx
 // apps/web/pages/_app.tsx
-import { AuthProvider } from '@/context/AuthContext';
-import { HelpProvider } from '@/context/HelpContext';
-import { OnboardingProvider } from '@/context/OnboardingContext';  // NEW
+import { AuthProvider } from "@/context/AuthContext";
+import { HelpProvider } from "@/context/HelpContext";
+import { OnboardingProvider } from "@/context/OnboardingContext"; // NEW
 
 export default function App({ Component, pageProps }) {
   return (
     <HelpProvider>
       <AuthProvider>
-        <OnboardingProvider>  {/* NEW */}
+        <OnboardingProvider>
+          {" "}
+          {/* NEW */}
           <GlobalLayout>
             <Component {...pageProps} />
           </GlobalLayout>
@@ -207,42 +216,43 @@ export default function App({ Component, pageProps }) {
 
 ```tsx
 // apps/web/context/OnboardingContext.tsx
-import React, { createContext, useState, useContext } from 'react';
-import { Onboarding, OnboardingStep } from '@/components/uikit/Onboarding';
+import React, { createContext, useState, useContext } from "react";
+import { Onboarding, OnboardingStep } from "@/components/uikit/Onboarding";
 
 const OnboardingContext = createContext();
 
 export const ONBOARDING_STEPS: OnboardingStep[] = [
   {
-    id: 'welcome',
-    title: '🎉 Welcome to Infamous Freight',
-    description: 'The command center for modern freight operations.',
-    image: '/onboarding/welcome.svg'
+    id: "welcome",
+    title: "🎉 Welcome to Infamous Freight",
+    description: "The command center for modern freight operations.",
+    image: "/onboarding/welcome.svg",
   },
   {
-    id: 'dashboard',
-    title: 'Your Command Center',
-    description: 'Track all your shipments, vehicles, and revenue in one place.',
-    target: '.dashboard-widget'
+    id: "dashboard",
+    title: "Your Command Center",
+    description:
+      "Track all your shipments, vehicles, and revenue in one place.",
+    target: ".dashboard-widget",
   },
   {
-    id: 'create-shipment',
-    title: 'Create Your First Shipment',
-    description: 'Click the + Create Shipment button to get started.',
-    target: '.create-button'
+    id: "create-shipment",
+    title: "Create Your First Shipment",
+    description: "Click the + Create Shipment button to get started.",
+    target: ".create-button",
   },
   {
-    id: 'track-live',
-    title: 'Real-Time Tracking',
-    description: 'Monitor your shipments live as they move across the country.',
-    target: '.tracking-map'
+    id: "track-live",
+    title: "Real-Time Tracking",
+    description: "Monitor your shipments live as they move across the country.",
+    target: ".tracking-map",
   },
   {
-    id: 'help',
-    title: 'Need Help?',
-    description: 'Look for the ? icon anywhere in the app for contextual help.',
-    image: '/onboarding/help.svg'
-  }
+    id: "help",
+    title: "Need Help?",
+    description: "Look for the ? icon anywhere in the app for contextual help.",
+    image: "/onboarding/help.svg",
+  },
 ];
 
 export function OnboardingProvider({ children }) {
@@ -257,7 +267,7 @@ export function OnboardingProvider({ children }) {
         onClose={() => setIsOpen(false)}
         onComplete={() => {
           setIsOpen(false);
-          localStorage.setItem('onboarding_completed', 'true');
+          localStorage.setItem("onboarding_completed", "true");
         }}
       />
     </OnboardingContext.Provider>
@@ -271,9 +281,9 @@ export const useOnboarding = () => useContext(OnboardingContext);
 
 ```tsx
 // apps/web/pages/dashboard.tsx
-import { useEffect } from 'react';
-import { useOnboarding } from '@/context/OnboardingContext';
-import { useAuth } from '@/context/AuthContext';
+import { useEffect } from "react";
+import { useOnboarding } from "@/context/OnboardingContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -281,17 +291,13 @@ export default function Dashboard() {
 
   useEffect(() => {
     // Show onboarding if user is new
-    const completed = localStorage.getItem('onboarding_completed');
+    const completed = localStorage.getItem("onboarding_completed");
     if (!completed && user?.isNewUser) {
       setIsOpen(true);
     }
   }, [user]);
 
-  return (
-    <div className="dashboard">
-      {/* Your content */}
-    </div>
-  );
+  return <div className="dashboard">{/* Your content */}</div>;
 }
 ```
 
@@ -305,7 +311,7 @@ export default function Dashboard() {
 // Already created at: apps/web/context/HelpContext.tsx
 // Just wrap your app:
 
-import { HelpProvider } from '@/context/HelpContext';
+import { HelpProvider } from "@/context/HelpContext";
 
 export default function App({ Component, pageProps }) {
   return (
@@ -319,9 +325,9 @@ export default function App({ Component, pageProps }) {
 ### 4.2 Add Help Buttons
 
 ```tsx
-import { useHelp } from '@/context/HelpContext';
-import { Tooltip } from '@/components/uikit/Tooltip';
-import { Button } from '@/components/uikit/Button';
+import { useHelp } from "@/context/HelpContext";
+import { Tooltip } from "@/components/uikit/Tooltip";
+import { Button } from "@/components/uikit/Button";
 
 export function ShipmentsPage() {
   const { showHelp } = useHelp();
@@ -332,8 +338,8 @@ export function ShipmentsPage() {
         Shipments
         <Tooltip content="Click for help">
           <button
-            onClick={() => showHelp('shipments')}
-            style={{ border: 'none', background: 'none', cursor: 'pointer' }}
+            onClick={() => showHelp("shipments")}
+            style={{ border: "none", background: "none", cursor: "pointer" }}
           >
             ❓
           </button>
@@ -348,27 +354,21 @@ export function ShipmentsPage() {
 
 ```tsx
 // apps/web/components/HelpModal.tsx
-import { useHelp } from '@/context/HelpContext';
-import { Modal } from '@/components/uikit/Modal';
-import { HELP_ARTICLES } from '@/context/HelpContext';
+import { useHelp } from "@/context/HelpContext";
+import { Modal } from "@/components/uikit/Modal";
+import { HELP_ARTICLES } from "@/context/HelpContext";
 
 export function HelpModal() {
   const { helpArticleOpen, hideHelp } = useHelp();
 
   if (!helpArticleOpen) return null;
 
-  const article = HELP_ARTICLES.find(a => a.id === helpArticleOpen);
+  const article = HELP_ARTICLES.find((a) => a.id === helpArticleOpen);
   if (!article) return null;
 
   return (
-    <Modal
-      isOpen
-      onClose={hideHelp}
-      title={`Help: ${article.title}`}
-    >
-      <div style={{ whiteSpace: 'pre-wrap' }}>
-        {article.content}
-      </div>
+    <Modal isOpen onClose={hideHelp} title={`Help: ${article.title}`}>
+      <div style={{ whiteSpace: "pre-wrap" }}>{article.content}</div>
     </Modal>
   );
 }
@@ -418,7 +418,7 @@ export function HelpModal() {
 // Bottom navigation for mobile
 export function MobileNav() {
   return (
-    <nav className="mobile-nav" style={{ display: 'flex', gap: '1rem' }}>
+    <nav className="mobile-nav" style={{ display: "flex", gap: "1rem" }}>
       <NavButton icon="🏠" label="Home" to="/" />
       <NavButton icon="📦" label="Shipments" to="/shipments" />
       <NavButton icon="⚙️" label="Settings" to="/settings" />
@@ -492,9 +492,9 @@ npx axe-core analyze
 
 ```tsx
 // Use dynamic imports to reduce bundle size
-const HeavyComponent = dynamic(() => import('./Heavy'), {
+const HeavyComponent = dynamic(() => import("./Heavy"), {
   loading: () => <LoadingSpinner />,
-  ssr: false
+  ssr: false,
 });
 
 export function MyPage() {
@@ -509,7 +509,7 @@ export function MyPage() {
 ### 7.2 Image Optimization
 
 ```tsx
-import Image from 'next/image';
+import Image from "next/image";
 
 // Use Next.js Image for automatic optimization
 <Image
@@ -518,7 +518,7 @@ import Image from 'next/image';
   width={24}
   height={24}
   loading="lazy"
-/>
+/>;
 ```
 
 ### 7.3 Animation Performance
@@ -526,7 +526,9 @@ import Image from 'next/image';
 ```css
 /* Use transform/opacity for 60fps animations */
 .button {
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .button:hover {
@@ -611,23 +613,23 @@ import Image from 'next/image';
 
 ```tsx
 // Track onboarding completion
-trackEvent('onboarding_started');
-trackEvent('onboarding_completed');
-trackEvent('onboarding_skipped');
+trackEvent("onboarding_started");
+trackEvent("onboarding_completed");
+trackEvent("onboarding_skipped");
 
 // Track feature usage
-trackEvent('shipment_created');
-trackEvent('help_modal_opened');
-trackEvent('form_submitted');
+trackEvent("shipment_created");
+trackEvent("help_modal_opened");
+trackEvent("form_submitted");
 
 // Track errors
-trackEvent('form_validation_error', { field: 'email' });
-trackEvent('api_error', { endpoint: '/shipments', status: 500 });
+trackEvent("form_validation_error", { field: "email" });
+trackEvent("api_error", { endpoint: "/shipments", status: 500 });
 
 // Track UX metrics
-trackEvent('page_load', { loadTime: 1234 });
-trackEvent('button_click', { buttonText: 'Save' });
-trackEvent('modal_opened', { modalType: 'help' });
+trackEvent("page_load", { loadTime: 1234 });
+trackEvent("button_click", { buttonText: "Save" });
+trackEvent("modal_opened", { modalType: "help" });
 ```
 
 ---
@@ -653,15 +655,15 @@ npm run deploy
 
 ### 30-Day Post-Launch Goals
 
-| Metric | Target | Current |
-|--------|--------|---------|
-| Onboarding completion | > 85% | — |
-| Time to first shipment | < 5 min | — |
-| Help modal views | > 40% of users | — |
-| Support tickets | < 30/day | — |
-| Mobile conversion | Same as desktop | — |
-| Screen reader users | 100% success | — |
-| Keyboard-only users | 100% success | — |
+| Metric                 | Target          | Current |
+| ---------------------- | --------------- | ------- |
+| Onboarding completion  | > 85%           | —       |
+| Time to first shipment | < 5 min         | —       |
+| Help modal views       | > 40% of users  | —       |
+| Support tickets        | < 30/day        | —       |
+| Mobile conversion      | Same as desktop | —       |
+| Screen reader users    | 100% success    | —       |
+| Keyboard-only users    | 100% success    | —       |
 
 ---
 

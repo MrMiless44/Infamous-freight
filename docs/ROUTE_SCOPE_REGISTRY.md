@@ -1,73 +1,77 @@
 # Route Scope Registry & Authorization Guide
 
-This document describes all API routes, their required scopes, and org requirements.
+This document describes all API routes, their required scopes, and org
+requirements.
 
 ## Route-Scope Mapping
 
-See [apps/api/src/lib/routeScopeRegistry.js](../apps/api/src/lib/routeScopeRegistry.js) for the authoritative registry.
+See
+[apps/api/src/lib/routeScopeRegistry.js](../apps/api/src/lib/routeScopeRegistry.js)
+for the authoritative registry.
 
 ### Shipments (Organization-Bound)
 
 | Route                           | Method | Scopes            | Org Required |
 | ------------------------------- | ------ | ----------------- | ------------ |
-| `/api/shipments`                | GET    | `shipments:read`  | ✅ Yes        |
-| `/api/shipments`                | POST   | `shipments:write` | ✅ Yes        |
-| `/api/shipments/:id`            | GET    | `shipments:read`  | ✅ Yes        |
-| `/api/shipments/:id`            | PATCH  | `shipments:write` | ✅ Yes        |
-| `/api/shipments/:id`            | DELETE | `shipments:write` | ✅ Yes        |
-| `/api/shipments/export/:format` | GET    | `shipments:read`  | ✅ Yes        |
+| `/api/shipments`                | GET    | `shipments:read`  | ✅ Yes       |
+| `/api/shipments`                | POST   | `shipments:write` | ✅ Yes       |
+| `/api/shipments/:id`            | GET    | `shipments:read`  | ✅ Yes       |
+| `/api/shipments/:id`            | PATCH  | `shipments:write` | ✅ Yes       |
+| `/api/shipments/:id`            | DELETE | `shipments:write` | ✅ Yes       |
+| `/api/shipments/export/:format` | GET    | `shipments:read`  | ✅ Yes       |
 
 ### Billing (Organization-Bound)
 
 | Route                                  | Method | Scopes          | Org Required |
 | -------------------------------------- | ------ | --------------- | ------------ |
-| `/api/billing/create-payment-intent`   | POST   | `billing:write` | ✅ Yes        |
-| `/api/billing/create-subscription`     | POST   | `billing:write` | ✅ Yes        |
-| `/api/billing/subscriptions`           | GET    | `billing:read`  | ✅ Yes        |
-| `/api/billing/cancel-subscription/:id` | POST   | `billing:write` | ✅ Yes        |
-| `/api/billing/revenue`                 | GET    | `billing:read`  | ✅ Yes        |
+| `/api/billing/create-payment-intent`   | POST   | `billing:write` | ✅ Yes       |
+| `/api/billing/create-subscription`     | POST   | `billing:write` | ✅ Yes       |
+| `/api/billing/subscriptions`           | GET    | `billing:read`  | ✅ Yes       |
+| `/api/billing/cancel-subscription/:id` | POST   | `billing:write` | ✅ Yes       |
+| `/api/billing/revenue`                 | GET    | `billing:read`  | ✅ Yes       |
 
 ### AI Commands (Organization-Bound)
 
 | Route              | Method | Scopes       | Org Required |
 | ------------------ | ------ | ------------ | ------------ |
-| `/api/ai/commands` | POST   | `ai:command` | ✅ Yes        |
+| `/api/ai/commands` | POST   | `ai:command` | ✅ Yes       |
 
 ### Voice (Organization-Bound)
 
 | Route                | Method | Scopes          | Org Required |
 | -------------------- | ------ | --------------- | ------------ |
-| `/api/voice/ingest`  | POST   | `voice:ingest`  | ✅ Yes        |
-| `/api/voice/command` | POST   | `voice:command` | ✅ Yes        |
+| `/api/voice/ingest`  | POST   | `voice:ingest`  | ✅ Yes       |
+| `/api/voice/command` | POST   | `voice:command` | ✅ Yes       |
 
 ### Users (Organization-Bound)
 
 | Route            | Method | Scopes       | Org Required |
 | ---------------- | ------ | ------------ | ------------ |
-| `/api/users/:id` | GET    | `user:read`  | ✅ Yes        |
-| `/api/users/:id` | PATCH  | `user:write` | ✅ Yes        |
+| `/api/users/:id` | GET    | `user:read`  | ✅ Yes       |
+| `/api/users/:id` | PATCH  | `user:write` | ✅ Yes       |
 
 ### Analytics (Organization-Bound)
 
 | Route                      | Method | Scopes           | Org Required |
 | -------------------------- | ------ | ---------------- | ------------ |
-| `/api/analytics/dashboard` | GET    | `analytics:read` | ✅ Yes        |
-| `/api/analytics/export`    | GET    | `analytics:read` | ✅ Yes        |
+| `/api/analytics/dashboard` | GET    | `analytics:read` | ✅ Yes       |
+| `/api/analytics/export`    | GET    | `analytics:read` | ✅ Yes       |
 
 ### Metrics (Public metrics endpoint, scoped by metrics scopes)
 
 | Route                              | Method | Scopes           | Org Required |
 | ---------------------------------- | ------ | ---------------- | ------------ |
-| `/api/metrics`                     | GET    | None (public)    | ❌ No         |
-| `/api/metrics/revenue/live`        | GET    | `metrics:read`   | ✅ Yes        |
-| `/api/metrics/revenue/clear-cache` | POST   | `admin`          | ✅ Yes        |
-| `/api/metrics/revenue/export`      | GET    | `metrics:export` | ✅ Yes        |
+| `/api/metrics`                     | GET    | None (public)    | ❌ No        |
+| `/api/metrics/revenue/live`        | GET    | `metrics:read`   | ✅ Yes       |
+| `/api/metrics/revenue/clear-cache` | POST   | `admin`          | ✅ Yes       |
+| `/api/metrics/revenue/export`      | GET    | `metrics:export` | ✅ Yes       |
 
 ## Adding New Routes
 
 When adding a new protected route:
 
-1. Update [apps/api/src/lib/routeScopeRegistry.js](../apps/api/src/lib/routeScopeRegistry.js)
+1. Update
+   [apps/api/src/lib/routeScopeRegistry.js](../apps/api/src/lib/routeScopeRegistry.js)
 2. Apply `requireScope()` and `requireOrganization` in route handler
 3. Add integration test in `apps/api/src/__tests__/integration/`
 
@@ -78,13 +82,13 @@ router.post(
   "/new-feature",
   limiters.general,
   authenticate,
-  requireOrganization,          // ✅ Add org check
+  requireOrganization, // ✅ Add org check
   requireScope("new-feature:write"), // ✅ Declare scope
   auditLog,
   [...validators],
   async (req, res, next) => {
     // Handler
-  }
+  },
 );
 ```
 
@@ -100,16 +104,16 @@ Use JWT test helper in tests:
 
 ```javascript
 function signToken(payload = {}) {
-  const base = { sub: 'user-1', email: 'u1@example.com', ...payload };
-  return jwt.sign(base, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const base = { sub: "user-1", email: "u1@example.com", ...payload };
+  return jwt.sign(base, process.env.JWT_SECRET, { expiresIn: "1h" });
 }
 
 // Test missing scope
-test('403 when missing scope', async () => {
-  const token = signToken({ org_id: 'org-1', scopes: [] });
+test("403 when missing scope", async () => {
+  const token = signToken({ org_id: "org-1", scopes: [] });
   const res = await request(app)
-    .post('/api/shipments')
-    .set('Authorization', `Bearer ${token}`);
+    .post("/api/shipments")
+    .set("Authorization", `Bearer ${token}`);
   expect(res.status).toBe(403);
   expect(res.body.error).toMatch(/Insufficient scope/i);
 });
@@ -120,13 +124,17 @@ test('403 when missing scope', async () => {
 When issuing JWTs (e.g., in login flow), include:
 
 ```javascript
-const token = jwt.sign({
-  sub: userId,                    // User ID
-  email: user.email,
-  role: user.role,                // 'user', 'admin'
-  org_id: user.organizationId,    // Organization ID
-  scopes: user.scopes,            // Array: ['shipments:read', 'billing:write', ...]
-}, JWT_SECRET, { expiresIn: '1h' });
+const token = jwt.sign(
+  {
+    sub: userId, // User ID
+    email: user.email,
+    role: user.role, // 'user', 'admin'
+    org_id: user.organizationId, // Organization ID
+    scopes: user.scopes, // Array: ['shipments:read', 'billing:write', ...]
+  },
+  JWT_SECRET,
+  { expiresIn: "1h" },
+);
 ```
 
 ## Common Scopes

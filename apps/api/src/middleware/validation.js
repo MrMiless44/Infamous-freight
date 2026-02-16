@@ -19,11 +19,7 @@ function validateString(field, opts = {}) {
 }
 
 function validateEmail(field = "email") {
-  return body(field)
-    .trim()
-    .isEmail()
-    .withMessage("Invalid email")
-    .normalizeEmail();
+  return body(field).trim().isEmail().withMessage("Invalid email").normalizeEmail();
 }
 
 function validatePhone(field = "phone") {
@@ -51,23 +47,24 @@ function validateUUIDBody(field = "id") {
 function validateEnum(field, allowed) {
   return body(field)
     .custom((value) => allowed.includes(value))
-    .withMessage(`${field} must be one of: ${Array.isArray(allowed) ? allowed.join(", ") : allowed}`);
+    .withMessage(
+      `${field} must be one of: ${Array.isArray(allowed) ? allowed.join(", ") : allowed}`,
+    );
 }
 
 // Validate enum values in query parameters
 function validateEnumQuery(field, allowed) {
   return query(field)
     .custom((value) => allowed.includes(value))
-    .withMessage(`${field} must be one of: ${Array.isArray(allowed) ? allowed.join(", ") : allowed}`);
+    .withMessage(
+      `${field} must be one of: ${Array.isArray(allowed) ? allowed.join(", ") : allowed}`,
+    );
 }
 
 // Common pagination query validators
 function validatePaginationQuery({ page = "page", pageSize = "pageSize", maxPageSize = 100 } = {}) {
   return [
-    query(page)
-      .optional()
-      .isInt({ min: 1 })
-      .withMessage(`${page} must be a positive integer`),
+    query(page).optional().isInt({ min: 1 }).withMessage(`${page} must be a positive integer`),
     query(pageSize)
       .optional()
       .isInt({ min: 1, max: maxPageSize })
@@ -80,9 +77,7 @@ function handleValidationErrors(req, res, next) {
   if (errors.isEmpty()) return next();
   return res.status(400).json({
     error: "Validation failed",
-    details: errors
-      .array()
-      .map((e) => ({ field: e.path || e.param, msg: e.msg })),
+    details: errors.array().map((e) => ({ field: e.path || e.param, msg: e.msg })),
   });
 }
 

@@ -56,7 +56,8 @@ Since Docker and OpenSSL aren't available in the dev container, deploy directly:
 # 5. Deploys with monitoring enabled
 ```
 
-**Why This Works**: Cloud platforms have proper Docker environments with OpenSSL support.
+**Why This Works**: Cloud platforms have proper Docker environments with OpenSSL
+support.
 
 ---
 
@@ -351,4 +352,5 @@ pnpm web:dev
 
 **Ready to deploy to production? Start with Vercel and Fly.io!**
 
-🚀 All code ready. Infrastructure constraints are environment-specific, not code-specific.
+🚀 All code ready. Infrastructure constraints are environment-specific, not
+code-specific.

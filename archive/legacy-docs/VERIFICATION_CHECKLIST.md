@@ -12,18 +12,21 @@
 **Status**: ⏳ **NEEDS MANUAL ACTION**
 
 ### What to do:
+
 1. In VS Code, press **Ctrl+Shift+P** (or **Cmd+Shift+P** on Mac)
 2. Type: `Dev Containers: Rebuild`
 3. Click the option to execute
 4. Wait for container to rebuild (2-3 minutes)
 
 ### What happens:
+
 - Node.js v20 restored
 - pnpm package manager restored
 - All devcontainer features re-initialized
 - Environment ready for development
 
 ### Verify it worked:
+
 ```bash
 node --version      # Should show v20.x.x or higher
 pnpm --version      # Should show 8.15.9 or higher
@@ -51,6 +54,7 @@ pnpm test
 ```
 
 ### Expected Results:
+
 ```
 ✅ No build errors
 ✅ All dependencies installed
@@ -59,6 +63,7 @@ pnpm test
 ```
 
 ### If tests fail:
+
 ```bash
 # Clean and reinstall
 pnpm clean
@@ -78,6 +83,7 @@ pnpm test -- --verbose
 **Status**: 🔄 **IN PROGRESS - Check Dashboard**
 
 ### What to check:
+
 1. Visit: https://vercel.com/dashboard
 2. Look for "Infamous-freight-enterprises" project
 3. Check recent deployments
@@ -85,12 +91,14 @@ pnpm test -- --verbose
 ### Deployment Status Indicators:
 
 **Successful Deployment** ✅
+
 - Status shows "Ready"
 - Green checkmark next to deployment
 - Preview URL loads without errors
 - Shows most recent commit (a809890, c4c7556, c0af458, etc.)
 
 **Failed Deployment** ❌
+
 - Status shows "Error" or "Failed"
 - Red X or warning icon
 - Check logs for error messages
@@ -129,7 +137,8 @@ https://infamous-freight-enterprises-git-f34b9b-santorio-miles-projects.vercel.a
 
 **Status**: ⏳ **NEXT AFTER VERIFY BUILD**
 
-See **[BACKEND_DEPLOYMENT_OPTIONS.md](./BACKEND_DEPLOYMENT_OPTIONS.md)** for detailed instructions.
+See **[BACKEND_DEPLOYMENT_OPTIONS.md](./BACKEND_DEPLOYMENT_OPTIONS.md)** for
+detailed instructions.
 
 ### Quick Start (Recommended: Railway)
 
@@ -172,11 +181,13 @@ curl -X GET https://your-api-url/api/shipments \
 ## 📋 Complete Verification Checklist
 
 ### Devcontainer Status
+
 - [ ] Devcontainer restarted successfully
 - [ ] `node --version` returns v20+
 - [ ] `pnpm --version` returns 8.15.9+
 
 ### Build Status
+
 - [ ] `pnpm install` completes successfully
 - [ ] `pnpm build` with no errors
 - [ ] `pnpm test` shows 197 passing tests
@@ -184,6 +195,7 @@ curl -X GET https://your-api-url/api/shipments \
 - [ ] No TypeScript errors: `pnpm check:types`
 
 ### Frontend Status (Vercel)
+
 - [ ] Vercel dashboard shows "Ready" status
 - [ ] Production URL loads in browser
 - [ ] No console errors (F12)
@@ -191,6 +203,7 @@ curl -X GET https://your-api-url/api/shipments \
 - [ ] API calls returning data
 
 ### Backend Status
+
 - [ ] Backend deployed to chosen platform
 - [ ] Health check endpoint responds (200 OK)
 - [ ] Database connection successful
@@ -198,6 +211,7 @@ curl -X GET https://your-api-url/api/shipments \
 - [ ] Error handling working
 
 ### Configuration Status
+
 - [ ] Environment variables set correctly
 - [ ] Database connection string valid
 - [ ] JWT secret configured
@@ -205,6 +219,7 @@ curl -X GET https://your-api-url/api/shipments \
 - [ ] Logging configured
 
 ### Monitoring Status
+
 - [ ] Error tracking enabled (Sentry)
 - [ ] Performance monitoring active
 - [ ] Health checks configured
@@ -212,6 +227,7 @@ curl -X GET https://your-api-url/api/shipments \
 - [ ] Alerts setup (optional)
 
 ### Documentation Status
+
 - [ ] README.md reviewed
 - [ ] DEPLOYMENT_GUIDE.md reviewed
 - [ ] API_REFERENCE.md available
@@ -223,12 +239,14 @@ curl -X GET https://your-api-url/api/shipments \
 ## 🎯 Success Criteria
 
 ### ✅ Minimum Success (MVP)
+
 - Frontend deployed and loading
 - Backend deployed and responding to health checks
 - Database connected
 - Basic API endpoints working
 
 ### ✅ Full Success
+
 - All of above PLUS:
 - 197 tests passing
 - 0 TypeScript errors/warnings
@@ -238,6 +256,7 @@ curl -X GET https://your-api-url/api/shipments \
 - Documentation complete and reviewed
 
 ### ✅ Production Ready
+
 - All of above PLUS:
 - Load testing completed
 - Security scan passed (CodeQL)
@@ -251,29 +270,33 @@ curl -X GET https://your-api-url/api/shipments \
 
 ### Current State (After All Steps)
 
-| Component | Status | Link |
-|-----------|--------|------|
-| Frontend | ✅ Live | https://infamousfreight.vercel.app |
-| Backend | ⏳ Deploying | Configure via BACKEND_DEPLOYMENT_OPTIONS.md |
-| Database | ✅ Ready | Platform-specific connection string |
-| Tests | ✅ Passing | 197/197 tests + 86.2% coverage |
-| Documentation | ✅ Complete | 4 comprehensive guides |
-| IP Protection | ✅ Complete | LICENSE, COPYRIGHT, LEGAL_NOTICE |
-| Repository | ✅ Clean | 0 errors, committed and pushed |
+| Component     | Status       | Link                                        |
+| ------------- | ------------ | ------------------------------------------- |
+| Frontend      | ✅ Live      | https://infamousfreight.vercel.app          |
+| Backend       | ⏳ Deploying | Configure via BACKEND_DEPLOYMENT_OPTIONS.md |
+| Database      | ✅ Ready     | Platform-specific connection string         |
+| Tests         | ✅ Passing   | 197/197 tests + 86.2% coverage              |
+| Documentation | ✅ Complete  | 4 comprehensive guides                      |
+| IP Protection | ✅ Complete  | LICENSE, COPYRIGHT, LEGAL_NOTICE            |
+| Repository    | ✅ Clean     | 0 errors, committed and pushed              |
 
 ---
 
 ## 📞 Troubleshooting
 
 ### Issue: Devcontainer won't rebuild
-**Solution**: 
+
+**Solution**:
+
 1. Close all VS Code windows
 2. Delete .devcontainer cache: `rm -rf ~/.devcontainer`
 3. Reopen workspace
 4. Try rebuild again
 
 ### Issue: `pnpm install` takes too long
+
 **Solution**:
+
 ```bash
 # Clear pnpm cache
 pnpm store prune
@@ -283,7 +306,9 @@ pnpm install --frozen-lockfile
 ```
 
 ### Issue: Tests failing after rebuild
+
 **Solution**:
+
 ```bash
 # Ensure PostgreSQL is running (if local development)
 docker-compose up -d db
@@ -295,14 +320,18 @@ pnpm test
 ```
 
 ### Issue: Vercel deployment shows error
+
 **Solution**:
+
 1. Check Vercel logs: https://vercel.com/dashboard
 2. Verify environment variables are set
 3. Check that all TypeScript compiles locally
 4. Push fix to main branch
 
 ### Issue: Backend API returns 502 errors
+
 **Solution**:
+
 1. Check deployment logs on your platform
 2. Verify DATABASE_URL is correct
 3. Verify JWT_SECRET is set

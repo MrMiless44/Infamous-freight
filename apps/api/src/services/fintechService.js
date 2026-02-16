@@ -4,8 +4,8 @@
  * Supports factor rates (2-5%) and payment scheduling
  */
 
-const logger = require("../middleware/logger");
-const prisma = require("../prisma/client");
+const { logger } = require("../middleware/logger");
+const prisma = require("../lib/prisma");
 
 class FintechService {
     constructor() {
@@ -420,7 +420,7 @@ class FintechService {
     /**
      * Get fintech dashboard summary
      */
-    async getFintech Dashboard(driverId) {
+    async getFintechDashboard(driverId) {
         try {
             const [earlyPayments, fuelCards, financing, insurance] = await Promise.all([
                 prisma.earlyPaymentRequest.findMany({

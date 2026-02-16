@@ -2,15 +2,15 @@
 
 ## Files Created/Modified
 
-| File | Purpose | Status |
-|------|---------|--------|
-| `apps/api/prisma/schema.prisma` | Added Organization + OrgAuditLog models, extended User/Job | ✅ |
-| `apps/api/src/db/tenant.ts` | Tenant-scoped Prisma client (row-level security) | ✅ |
-| `apps/api/src/middleware/security.js` | Updated authenticate() + added requireOrganization() | ✅ |
-| `apps/api/src/security/kms.ts` | AES-256-GCM key manager + field encryption | ✅ |
-| `apps/api/src/audit/orgAuditLog.ts` | Audit logging + queries + CSV export | ✅ |
-| `apps/api/src/admin/auditExport.ts` | Audit export (JSON/CSV/JSONL) + DPA report | ✅ |
-| `apps/api/.env.phase19` | MASTER_KEY environment variable | ✅ |
+| File                                  | Purpose                                                    | Status |
+| ------------------------------------- | ---------------------------------------------------------- | ------ |
+| `apps/api/prisma/schema.prisma`       | Added Organization + OrgAuditLog models, extended User/Job | ✅     |
+| `apps/api/src/db/tenant.ts`           | Tenant-scoped Prisma client (row-level security)           | ✅     |
+| `apps/api/src/middleware/security.js` | Updated authenticate() + added requireOrganization()       | ✅     |
+| `apps/api/src/security/kms.ts`        | AES-256-GCM key manager + field encryption                 | ✅     |
+| `apps/api/src/audit/orgAuditLog.ts`   | Audit logging + queries + CSV export                       | ✅     |
+| `apps/api/src/admin/auditExport.ts`   | Audit export (JSON/CSV/JSONL) + DPA report                 | ✅     |
+| `apps/api/.env.phase19`               | MASTER_KEY environment variable                            | ✅     |
 
 ---
 
@@ -53,6 +53,7 @@ const org = await prisma.organization.create({
 ### 4. Secure JWT Claims
 
 Ensure JWT includes:
+
 ```json
 {
   "sub": "user_123",
@@ -76,7 +77,7 @@ router.get(
     const tprisma = tenantPrisma(prisma, orgId); // ← Enforce isolation
     const jobs = await tprisma.job.findMany();
     res.json(jobs);
-  }
+  },
 );
 ```
 
@@ -97,7 +98,12 @@ const jobs = await tprisma.job.findMany(); // ← Only org's jobs
 ### KMS (Encryption)
 
 ```typescript
-import { generateDataKey, decryptDataKey, encryptField, decryptField } from "@/security/kms";
+import {
+  generateDataKey,
+  decryptDataKey,
+  encryptField,
+  decryptField,
+} from "@/security/kms";
 
 // Create org with encrypted key
 const dataKeyEnc = generateDataKey();
@@ -193,13 +199,13 @@ assert(decrypted === "secret");
 
 ## Common Issues
 
-| Issue | Solution |
-|-------|----------|
-| "No organization" error | JWT missing `org_id` claim |
-| Decryption failed | MASTER_KEY not set or wrong value |
-| Cross-org data leak | Route not using `tenantPrisma()` |
-| Audit logs missing | Migration not applied |
-| PII visible in exports | Check CSV redaction (should show `***REDACTED***`) |
+| Issue                   | Solution                                           |
+| ----------------------- | -------------------------------------------------- |
+| "No organization" error | JWT missing `org_id` claim                         |
+| Decryption failed       | MASTER_KEY not set or wrong value                  |
+| Cross-org data leak     | Route not using `tenantPrisma()`                   |
+| Audit logs missing      | Migration not applied                              |
+| PII visible in exports  | Check CSV redaction (should show `***REDACTED***`) |
 
 ---
 
@@ -227,6 +233,7 @@ curl http://localhost:4000/api/audit/logs
 ## Monitoring
 
 Set alerts for:
+
 - `AUTH_FAILED` audit events (spike detection)
 - `SCOPE_VIOLATION` events (unauthorized access attempts)
 - KMS decryption errors (key corruption)
@@ -254,4 +261,4 @@ Set alerts for:
 
 **Status**: ✅ Production Ready | Phase 19 Complete | Enterprise Secured
 
-*2026-01-16*
+_2026-01-16_

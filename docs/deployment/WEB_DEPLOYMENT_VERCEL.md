@@ -48,7 +48,8 @@ git push origin main
 Wait 2-3 minutes for build to complete:
 
 1. Check deployment status: <https://vercel.com/dashboard/[project>]
-2. View live deployment: Your Vercel domain (e.g., <https://infamous-freight-web.vercel.app>)
+2. View live deployment: Your Vercel domain (e.g.,
+   <https://infamous-freight-web.vercel.app>)
 3. Check browser console for any errors
 4. Test an API call in the browser:
 

@@ -1,6 +1,6 @@
 /**
  * Stripe Subscription Sync Service (Phase 20.3)
- * 
+ *
  * Manages subscription creation, updates, and cancellations
  * Syncs org billing with Stripe's subscription model
  */
@@ -14,8 +14,7 @@ const prisma = new PrismaClient();
 // Stripe price IDs from environment (created in Stripe dashboard)
 const STRIPE_PRICES = {
   [BillingPlan.STARTER]: process.env.STRIPE_PRICE_STARTER || "",
-  [BillingPlan.GROWTH]:
-    process.env.STRIPE_PRICE_GROWTH || process.env.STRIPE_PRICE_PRO || "",
+  [BillingPlan.GROWTH]: process.env.STRIPE_PRICE_GROWTH || process.env.STRIPE_PRICE_PRO || "",
   [BillingPlan.ENTERPRISE]: process.env.STRIPE_PRICE_ENTERPRISE || "",
 };
 
@@ -44,7 +43,7 @@ export async function createStripeSubscription(
   organizationId: string,
   orgName: string,
   plan: BillingPlan = BillingPlan.STARTER,
-  email?: string
+  email?: string,
 ): Promise<{
   customerId: string;
   subscriptionId: string;
@@ -68,7 +67,7 @@ export async function createStripeSubscription(
     if (!priceId) {
       throw new Error(
         `No Stripe price ID configured for plan: ${plan}. ` +
-        `Set STRIPE_PRICE_${plan.toUpperCase()} in .env`
+          `Set STRIPE_PRICE_${plan.toUpperCase()} in .env`,
       );
     }
 
@@ -84,7 +83,7 @@ export async function createStripeSubscription(
     });
 
     console.log(
-      `Created Stripe subscription ${subscription.id} (${plan}) for org ${organizationId}`
+      `Created Stripe subscription ${subscription.id} (${plan}) for org ${organizationId}`,
     );
 
     // 3. Update OrgBilling record
@@ -133,7 +132,7 @@ export async function createStripeSubscription(
  */
 export async function updateSubscriptionPlan(
   organizationId: string,
-  newPlan: BillingPlan
+  newPlan: BillingPlan,
 ): Promise<void> {
   try {
     const billing = await prisma.orgBilling.findUnique({
@@ -141,9 +140,7 @@ export async function updateSubscriptionPlan(
     });
 
     if (!billing?.stripeSubId) {
-      throw new Error(
-        `Organization ${organizationId} has no active Stripe subscription`
-      );
+      throw new Error(`Organization ${organizationId} has no active Stripe subscription`);
     }
 
     const priceId = STRIPE_PRICES[newPlan];
@@ -172,9 +169,7 @@ export async function updateSubscriptionPlan(
       },
     });
 
-    console.log(
-      `Updated subscription for org ${organizationId} to ${newPlan}`
-    );
+    console.log(`Updated subscription for org ${organizationId} to ${newPlan}`);
   } catch (error) {
     console.error("Failed to update subscription plan", {
       organizationId,
@@ -190,7 +185,7 @@ export async function updateSubscriptionPlan(
  */
 export async function cancelSubscription(
   organizationId: string,
-  immediately: boolean = false
+  immediately: boolean = false,
 ): Promise<void> {
   try {
     const billing = await prisma.orgBilling.findUnique({
@@ -199,7 +194,7 @@ export async function cancelSubscription(
 
     if (!billing?.stripeSubId) {
       console.warn(
-        `No Stripe subscription found for org ${organizationId}. Skipping cancellation.`
+        `No Stripe subscription found for org ${organizationId}. Skipping cancellation.`,
       );
       return;
     }
@@ -219,9 +214,7 @@ export async function cancelSubscription(
       },
     });
 
-    console.log(
-      `Canceled subscription for org ${organizationId} (immediately: ${immediately})`
-    );
+    console.log(`Canceled subscription for org ${organizationId} (immediately: ${immediately})`);
   } catch (error) {
     console.error("Failed to cancel subscription", {
       organizationId,
@@ -257,9 +250,7 @@ export async function syncSubscriptionStatus(organizationId: string): Promise<vo
       },
     });
 
-    console.log(
-      `Synced subscription status for org ${organizationId}: ${subscription.status}`
-    );
+    console.log(`Synced subscription status for org ${organizationId}: ${subscription.status}`);
   } catch (error) {
     console.error("Failed to sync subscription status", {
       organizationId,
@@ -299,9 +290,7 @@ export async function getSubscriptionDetails(organizationId: string) {
       status: subscription.status,
       currentPeriodStart: new Date(subscription.current_period_start * 1000),
       currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-      cancelAt: subscription.cancel_at
-        ? new Date(subscription.cancel_at * 1000)
-        : null,
+      cancelAt: subscription.cancel_at ? new Date(subscription.cancel_at * 1000) : null,
       items: subscription.items.data.map((item) => ({
         priceId: item.price.id,
         quantity: item.quantity,

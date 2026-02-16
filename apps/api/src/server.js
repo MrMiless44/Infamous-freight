@@ -38,14 +38,8 @@ const { cacheResponseMiddleware } = require("./middleware/responseCache");
 const { rateLimit } = require("./middleware/security");
 const { authMiddleware: jwtRotationAuth } = require("./auth/jwtRotation");
 const errorHandler = require("./middleware/errorHandler");
-const {
-  securityHeaders,
-  handleCSPViolation,
-} = require("./middleware/securityHeaders");
-const {
-  initSentry: legacySentry,
-  attachErrorHandler,
-} = require("./config/sentry");
+const { securityHeaders, handleCSPViolation } = require("./middleware/securityHeaders");
+const { initSentry: legacySentry, attachErrorHandler } = require("./config/sentry");
 const { initSentry, Sentry } = require("./observability/sentry");
 const config = require("./config");
 const { compressionMiddleware } = require("./middleware/performance");
@@ -60,6 +54,7 @@ const aiSimRoutes = require("./routes/aiSim.internal");
 const usersRoutes = require("./routes/users");
 const shipmentsRoutes = require("./routes/shipments");
 const analyticsRoutes = require("./routes/analytics");
+const phase11AnalyticsRoutes = require("./routes/phase11.analytics");
 const metricsRoutes = require("./routes/metrics");
 const adminFeatureFlagsRoutes = require("./routes/admin/feature-flags");
 const adminOpsRoutes = require("./routes/admin/ops");
@@ -91,7 +86,7 @@ const analyticsBIRoutes = require("./routes/analytics-bi");
 const complianceInsuranceRoutes = require("./routes/compliance-insurance");
 const marketplaceEnabled =
   String(
-    process.env.FEATURE_GET_TRUCKN ?? process.env.MARKETPLACE_ENABLED ?? "true"
+    process.env.FEATURE_GET_TRUCKN ?? process.env.MARKETPLACE_ENABLED ?? "true",
   ).toLowerCase() === "true";
 let marketplaceRouter;
 let marketplaceBillingRouter;
@@ -131,9 +126,7 @@ const { auditContextMiddleware, initializeAuditLogging } = require("./middleware
 const { idempotencyMiddleware } = require("./middleware/idempotency");
 
 const app = express();
-const DEFAULT_REQUEST_TIMEOUT_MS = Number(
-  process.env.REQUEST_TIMEOUT_MS || 30000,
-);
+const DEFAULT_REQUEST_TIMEOUT_MS = Number(process.env.REQUEST_TIMEOUT_MS || 30000);
 
 // Prevent hung requests from consuming resources indefinitely
 app.use((req, res, next) => {
@@ -183,7 +176,7 @@ app.use(idempotencyMiddleware);
 
 // Stripe webhooks need raw body - must be before express.json()
 if (marketplaceEnabled && marketplaceWebhooks) {
-  app.use("/api/webhooks", marketplaceWebhooks);
+  app.use("/api/webhooks", marketplaceWebhooks.router || marketplaceWebhooks);
 }
 if (stripeWebhookRouter) {
   app.use("/api/stripe", stripeWebhookRouter);
@@ -215,6 +208,7 @@ app.use("/api/loads", loadboardRoutes);
 app.use("/api/webhooks", webhookRoutes);
 app.use("/api/analytics", analyticsRoutesPhase2);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/analytics/phase11", phase11AnalyticsRoutes);
 app.use("/api/ml", mlRoutes);
 app.use("/api/geofencing", geofencingRoutes);
 app.use("/api/notifications", notificationsRoutes);
@@ -260,11 +254,7 @@ if (marketplaceEnabled && marketplaceRouter) {
 if (marketplaceEnabled && marketplaceBillingRouter) {
   app.use("/api/marketplace/billing", marketplaceBillingRouter);
 }
-if (
-  marketplaceEnabled &&
-  marketplaceMetricsRouter &&
-  process.env.NODE_ENV !== "test"
-) {
+if (marketplaceEnabled && marketplaceMetricsRouter && process.env.NODE_ENV !== "test") {
   app.use("/api/marketplace", marketplaceMetricsRouter);
 }
 app.get("/health", (_req, res) => res.status(200).send("ok"));
@@ -288,10 +278,7 @@ try {
       ],
       serverAdapter,
     });
-    app.use(
-      process.env.BULLBOARD_PATH || "/ops/queues",
-      serverAdapter.getRouter(),
-    );
+    app.use(process.env.BULLBOARD_PATH || "/ops/queues", serverAdapter.getRouter());
   }
 } catch (e) {
   // Fail open if bull-board not available
@@ -381,11 +368,11 @@ if (require.main === module) {
 
     // Initialize Prisma audit logging
     try {
-      const { prisma } = require('./db/prisma');
+      const { prisma } = require("./db/prisma");
       initializeAuditLogging(prisma);
-      logger.info('Prisma audit logging initialized');
+      logger.info("Prisma audit logging initialized");
     } catch (error) {
-      logger.warn('Audit logging initialization failed', { error: error.message });
+      logger.warn("Audit logging initialization failed", { error: error.message });
     }
 
     // Initialize Real-Time WebSocket server
@@ -452,23 +439,23 @@ const SHUTDOWN_TIMEOUT_MS = 10000;
 async function shutdown(signal) {
   logger.info(`Received ${signal}, shutting down gracefully`);
   try {
-    const { prisma } = require('./db/prisma');
+    const { prisma } = require("./db/prisma");
     await prisma?.$disconnect?.();
   } catch (error) {
-    logger.warn('Prisma disconnect failed', { error: error.message });
+    logger.warn("Prisma disconnect failed", { error: error.message });
   }
 
   if (httpServer) {
     httpServer.close((err) => {
       if (err) {
-        logger.error('HTTP server close error', { error: err.message });
+        logger.error("HTTP server close error", { error: err.message });
         process.exit(1);
       }
       process.exit(0);
     });
 
     setTimeout(() => {
-      logger.error('Force exit after graceful shutdown timeout');
+      logger.error("Force exit after graceful shutdown timeout");
       process.exit(1);
     }, SHUTDOWN_TIMEOUT_MS);
   } else {
@@ -476,7 +463,7 @@ async function shutdown(signal) {
   }
 }
 
-['SIGTERM', 'SIGINT'].forEach((signal) => {
+["SIGTERM", "SIGINT"].forEach((signal) => {
   process.on(signal, () => shutdown(signal));
 });
 

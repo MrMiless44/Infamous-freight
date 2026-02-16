@@ -1,10 +1,11 @@
 # Vercel Project Settings Execution Plan
 
-This guide captures the latest Vercel project settings checklist for Infæmous Freight, aligned with the current production deployment standard.
+This guide captures the latest Vercel project settings checklist for Infæmous
+Freight, aligned with the current production deployment standard.
 
 ## Phase 1 — Lock production + Git
 
-1) **Confirm Production Branch = `main`**
+1. **Confirm Production Branch = `main`**
    - Vercel → Project → Settings → Git
    - Production Branch: `main`
    - Confirm the connected repo is the correct one for this project.
@@ -13,7 +14,8 @@ This guide captures the latest Vercel project settings checklist for Infæmous F
 
 ## Phase 2 — Fix domain assignments
 
-Currently assigned domains should match the project actually serving that traffic.
+Currently assigned domains should match the project actually serving that
+traffic.
 
 **Option A (Recommended): Separate Web + API projects**
 
@@ -117,14 +119,14 @@ exit 1
 
 **If Next.js is at repo root:**
 
-- Root Directory: *(blank)*
-- Install Command: `npm install` *(or leave blank to use Vercel's default)*
+- Root Directory: _(blank)_
+- Install Command: `npm install` _(or leave blank to use Vercel's default)_
 - Build Command: `npm run build`
 
 **If Next.js is in a subfolder (example: `web`):**
 
 - Root Directory: `web`
-- Install Command: `npm install` *(or leave blank to use Vercel's default)*
+- Install Command: `npm install` _(or leave blank to use Vercel's default)_
 - Build Command: `npm run build`
 
 ## Phase 7 — Verify environment variables
@@ -142,10 +144,11 @@ Minimum sanity set (adjust to your stack):
 
 ## Phase 8 — Final verification steps
 
-1) Make a tiny app change that should trigger a build.
-2) Merge to `main` → confirm production deploy runs.
-3) Make a docs-only change → confirm production build is skipped (if ignore step enabled).
-4) Confirm domain resolves to the expected project (web vs API).
+1. Make a tiny app change that should trigger a build.
+2. Merge to `main` → confirm production deploy runs.
+3. Make a docs-only change → confirm production build is skipped (if ignore step
+   enabled).
+4. Confirm domain resolves to the expected project (web vs API).
 
 ---
 

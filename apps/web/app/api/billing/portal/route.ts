@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       .single();
 
     if (billingError) {
-      // eslint-disable-next-line no-console
+       
       console.error("Error fetching company billing record", billingError);
       return jsonWithRequestId(
         req,
@@ -26,11 +26,7 @@ export async function POST(req: Request) {
     }
 
     if (!billing?.stripe_customer_id) {
-      return jsonWithRequestId(
-        req,
-        { error: "No stripe customer yet" },
-        { status: 400 },
-      );
+      return jsonWithRequestId(req, { error: "No stripe customer yet" }, { status: 400 });
     }
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL!;
@@ -41,7 +37,7 @@ export async function POST(req: Request) {
 
     return jsonWithRequestId(req, { ok: true, url: session.url });
   } catch (error) {
-    // eslint-disable-next-line no-console
+     
     console.error("Failed to create billing portal session", error);
     return jsonWithRequestId(
       req,

@@ -20,8 +20,7 @@ const ShipmentChart = dynamic(() => import("../components/ShipmentChart"), {
 });
 
 const ReportGenerator = dynamic(() => import("../components/ReportGenerator"), {
-  loading: () =>
-    React.createElement("div", null, "Loading report generator..."),
+  loading: () => React.createElement("div", null, "Loading report generator..."),
 });
 
 void ShipmentChart;

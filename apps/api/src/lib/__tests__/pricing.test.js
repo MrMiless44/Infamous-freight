@@ -50,8 +50,7 @@ describe("Pricing Module", () => {
         estimatedMiles: miles,
         estimatedMinutes: minutes,
       });
-      const expectedPrice =
-        basePrice + miles * pricePerMile + minutes * pricePerMinute; // 5 + 7.5 + 5 = 17.5
+      const expectedPrice = basePrice + miles * pricePerMile + minutes * pricePerMinute; // 5 + 7.5 + 5 = 17.5
       expect(price).toBe(expectedPrice);
     });
 
@@ -61,8 +60,7 @@ describe("Pricing Module", () => {
         estimatedMinutes: 30,
         shipperPlanTier: "BASIC",
       });
-      const baseComputePrice =
-        basePrice + 10 * pricePerMile + 30 * pricePerMinute;
+      const baseComputePrice = basePrice + 10 * pricePerMile + 30 * pricePerMinute;
       expect(price).toBe(baseComputePrice);
     });
 
@@ -72,8 +70,7 @@ describe("Pricing Module", () => {
         estimatedMinutes: 30,
         shipperPlanTier: "STARTER",
       });
-      const baseComputePrice =
-        basePrice + 10 * pricePerMile + 30 * pricePerMinute;
+      const baseComputePrice = basePrice + 10 * pricePerMile + 30 * pricePerMinute;
       expect(price).toBeCloseTo(baseComputePrice * 0.9, 2);
     });
 
@@ -83,8 +80,7 @@ describe("Pricing Module", () => {
         estimatedMinutes: 30,
         shipperPlanTier: "PRO",
       });
-      const baseComputePrice =
-        basePrice + 10 * pricePerMile + 30 * pricePerMinute;
+      const baseComputePrice = basePrice + 10 * pricePerMile + 30 * pricePerMinute;
       expect(price).toBeCloseTo(baseComputePrice * 0.8, 2);
     });
 
@@ -94,8 +90,7 @@ describe("Pricing Module", () => {
         estimatedMinutes: 30,
         shipperPlanTier: "ENTERPRISE",
       });
-      const baseComputePrice =
-        basePrice + 10 * pricePerMile + 30 * pricePerMinute;
+      const baseComputePrice = basePrice + 10 * pricePerMile + 30 * pricePerMinute;
       expect(price).toBeCloseTo(baseComputePrice * 0.7, 2);
     });
 
@@ -135,9 +130,7 @@ describe("Pricing Module", () => {
         estimatedMiles: 3.33,
         estimatedMinutes: 7.77,
       });
-      expect(price.toString().split(".")[1]?.length || 0).toBeLessThanOrEqual(
-        2,
-      );
+      expect(price.toString().split(".")[1]?.length || 0).toBeLessThanOrEqual(2);
     });
 
     it("should handle zero miles and minutes", () => {

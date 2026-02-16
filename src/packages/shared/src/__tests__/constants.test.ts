@@ -1,9 +1,4 @@
-import {
-  HTTP_STATUS,
-  ERROR_MESSAGES,
-  SHIPMENT_STATUSES,
-  USER_ROLES,
-} from "../constants";
+import { HTTP_STATUS, ERROR_MESSAGES, SHIPMENT_STATUSES, USER_ROLES } from "../constants";
 
 describe("HTTP_STATUS", () => {
   it("should have correct status codes", () => {

@@ -8,7 +8,8 @@
 
 ## Executive Summary
 
-**Infamous Freight Enterprises** is now **100% deployed** across all infrastructure:
+**Infamous Freight Enterprises** is now **100% deployed** across all
+infrastructure:
 
 - ✅ **Web Frontend**: LIVE on Vercel (https://mrmiless44-genesis.vercel.app)
 - ✅ **API Backend**: Deployed to Fly.dev (infamous-freight-api)
@@ -40,8 +41,10 @@ flyctl deploy --remote-only
 
 - **Container Image**: Multi-stage Docker build (Dockerfile.fly)
   - Base: Node.js 20-alpine
-  - Optimization: 4-stage build (base → deps → shared-builder → builder → runner)
-  - Security: Non-root user (nodejs:1001), dumb-init signal handling, security updates
+  - Optimization: 4-stage build (base → deps → shared-builder → builder →
+    runner)
+  - Security: Non-root user (nodejs:1001), dumb-init signal handling, security
+    updates
   - Final image size: ~500MB (optimized)
 
 - **Fly.dev App Configuration** (fly.toml):
@@ -90,8 +93,8 @@ pnpm test
 
 **Test Suites** (10 total):
 
-| Suite               | Location                                              | Tests | Status   |
-| ------------------- | ----------------------------------------------------- | ----- | -------- |
+| Suite               | Location                                                   | Tests | Status   |
+| ------------------- | ---------------------------------------------------------- | ----- | -------- |
 | Health Checks       | `apps/api/__tests__/routes/health.test.js`                 | 3     | ✅ Ready |
 | AI Commands         | `apps/api/__tests__/routes/ai.commands.test.js`            | 8     | ✅ Ready |
 | Billing             | `apps/api/__tests__/routes/billing.test.js`                | 6     | ✅ Ready |
@@ -106,7 +109,8 @@ pnpm test
 **Total**: 50+ tests configured  
 **Expected coverage**: ≥80% (enforced in CI)  
 **Runtime**: ~20 seconds  
-**Jest config**: `apps/api/jest.config.js` (Node environment, coverage thresholds)
+**Jest config**: `apps/api/jest.config.js` (Node environment, coverage
+thresholds)
 
 ### 4. **E2E Tests** ✅
 
@@ -141,7 +145,7 @@ pnpm test:e2e
 | -------------------- | ------ | ----------------------------------------------- |
 | **Live URL**         | ✅     | https://mrmiless44-genesis.vercel.app           |
 | **Build command**    | ✅     | `pnpm --filter web build`                       |
-| **Output directory** | ✅     | `apps/web/.next`                                     |
+| **Output directory** | ✅     | `apps/web/.next`                                |
 | **Framework**        | ✅     | Next.js 14.2.35                                 |
 | **Node version**     | ✅     | 22.16.0                                         |
 | **Analytics**        | ✅     | Vercel Analytics + Speed Insights + Datadog RUM |
@@ -181,8 +185,8 @@ pnpm test:e2e
 | ---------------------------- | ------ | ----------------------------------- |
 | **ORM**                      | ✅     | Prisma 5.20+                        |
 | **Database**                 | ✅     | PostgreSQL                          |
-| **Migrations**               | ✅     | `apps/api/prisma/migrations/`            |
-| **Schema validation**        | ✅     | `apps/api/prisma/schema.prisma`          |
+| **Migrations**               | ✅     | `apps/api/prisma/migrations/`       |
+| **Schema validation**        | ✅     | `apps/api/prisma/schema.prisma`     |
 | **Client generation**        | ✅     | `pnpm prisma:generate` (auto in CI) |
 | **Health check integration** | ✅     | `SELECT 1` query in `/api/health`   |
 

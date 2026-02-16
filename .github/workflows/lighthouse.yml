@@ -62,19 +62,19 @@ jobs:
           script: |
             const fs = require('fs');
             const results = JSON.parse(fs.readFileSync('./.lighthouseci/results.json', 'utf8'));
-            
+
             const comment = `## Lighthouse CI Results
-            
+
             | Metric | Score |
             |--------|-------|
             | Performance | ${results[0].summary.performance * 100} |
             | Accessibility | ${results[0].summary.accessibility * 100} |
             | Best Practices | ${results[0].summary['best-practices'] * 100} |
             | SEO | ${results[0].summary.seo * 100} |
-            
+
             [View full report](${results[0].persistedUrl})
             `;
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

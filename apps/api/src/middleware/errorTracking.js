@@ -2,9 +2,9 @@
 // Recovers 15-25% of failed payments = $11K-19K annually
 // Provides real-time error alerts and performance monitoring
 
-const Sentry = require('@sentry/node');
-const { ProfilingIntegration } = require('@sentry/profiling-node');
-const { logger } = require('./logger');
+const Sentry = require("@sentry/node");
+const { ProfilingIntegration } = require("@sentry/profiling-node");
+const { logger } = require("./logger");
 
 /**
  * Initialize Sentry with comprehensive monitoring
@@ -13,29 +13,29 @@ const { logger } = require('./logger');
 function initializeSentry(app) {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
-    
+
     // Environment
-    environment: process.env.NODE_ENV || 'development',
-    
+    environment: process.env.NODE_ENV || "development",
+
     // Release tracking
-    release: process.env.npm_package_version || '1.0.0',
-    
+    release: process.env.npm_package_version || "1.0.0",
+
     // Performance monitoring
-    tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
-    profilesSampleRate: process.env.NODE_ENV === 'production' ? 0.1 : 1.0,
-    
+    tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
+    profilesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
+
     // Integrations
     integrations: [
       // Express integration
       new Sentry.Integrations.Http({ tracing: true }),
       new Sentry.Integrations.Express({ app }),
       new ProfilingIntegration(),
-      
+
       // Node.js integrations
       new Sentry.Integrations.OnUncaughtException(),
       new Sentry.Integrations.OnUnhandledRejection(),
     ],
-    
+
     // Filter out sensitive data
     beforeSend(event, hint) {
       // Remove PII
@@ -44,29 +44,29 @@ function initializeSentry(app) {
         delete event.request.headers?.Authorization;
         delete event.request.headers?.authorization;
       }
-      
+
       // Remove sensitive query params
       if (event.request?.query_string) {
         const sanitized = event.request.query_string
-          .replace(/password=[^&]*/gi, 'password=***')
-          .replace(/token=[^&]*/gi, 'token=***')
-          .replace(/key=[^&]*/gi, 'key=***');
+          .replace(/password=[^&]*/gi, "password=***")
+          .replace(/token=[^&]*/gi, "token=***")
+          .replace(/key=[^&]*/gi, "key=***");
         event.request.query_string = sanitized;
       }
-      
+
       return event;
     },
-    
+
     // Ignore non-critical errors
     ignoreErrors: [
-      'Non-Error exception captured',
-      'Non-Error promise rejection captured',
+      "Non-Error exception captured",
+      "Non-Error promise rejection captured",
       /Network request failed/i,
       /timeout/i,
     ],
   });
-  
-  logger.info('Sentry initialized for error tracking');
+
+  logger.info("Sentry initialized for error tracking");
 }
 
 /**
@@ -76,19 +76,19 @@ function initializeSentry(app) {
 function trackPaymentError(error, context = {}) {
   Sentry.withScope((scope) => {
     // Set error type tag
-    scope.setTag('error_type', 'payment');
-    scope.setTag('payment_provider', context.provider || 'stripe');
-    
+    scope.setTag("error_type", "payment");
+    scope.setTag("payment_provider", context.provider || "stripe");
+
     // Add payment context
-    scope.setContext('payment', {
+    scope.setContext("payment", {
       amount: context.amount,
-      currency: context.currency || 'USD',
+      currency: context.currency || "USD",
       customerId: context.customerId,
       method: context.method,
       tier: context.tier,
       attemptNumber: context.attemptNumber || 1,
     });
-    
+
     // Set user context (without PII)
     if (context.userId) {
       scope.setUser({
@@ -96,15 +96,15 @@ function trackPaymentError(error, context = {}) {
         tier: context.tier,
       });
     }
-    
+
     // Critical level for payment errors
-    scope.setLevel('critical');
-    
+    scope.setLevel("critical");
+
     // Capture the exception
     Sentry.captureException(error);
   });
-  
-  console.error('💳 Payment error tracked:', {
+
+  console.error("💳 Payment error tracked:", {
     error: error.message,
     context,
   });
@@ -116,18 +116,18 @@ function trackPaymentError(error, context = {}) {
  */
 function trackSubscriptionError(error, context = {}) {
   Sentry.withScope((scope) => {
-    scope.setTag('error_type', 'subscription');
-    scope.setTag('action', context.action); // create, upgrade, cancel, etc.
-    
-    scope.setContext('subscription', {
+    scope.setTag("error_type", "subscription");
+    scope.setTag("action", context.action); // create, upgrade, cancel, etc.
+
+    scope.setContext("subscription", {
       subscriptionId: context.subscriptionId,
       customerId: context.customerId,
       fromTier: context.fromTier,
       toTier: context.toTier,
       action: context.action,
     });
-    
-    scope.setLevel('error');
+
+    scope.setLevel("error");
     Sentry.captureException(error);
   });
 }
@@ -138,19 +138,19 @@ function trackSubscriptionError(error, context = {}) {
  */
 function trackWebhookError(error, context = {}) {
   Sentry.withScope((scope) => {
-    scope.setTag('error_type', 'webhook');
-    scope.setTag('webhook_type', context.type);
-    scope.setTag('provider', context.provider || 'stripe');
-    
-    scope.setContext('webhook', {
+    scope.setTag("error_type", "webhook");
+    scope.setTag("webhook_type", context.type);
+    scope.setTag("provider", context.provider || "stripe");
+
+    scope.setContext("webhook", {
       type: context.type,
       eventId: context.eventId,
       provider: context.provider,
       retryCount: context.retryCount || 0,
-      payload: context.payload ? 'present' : 'missing',
+      payload: context.payload ? "present" : "missing",
     });
-    
-    scope.setLevel('critical');
+
+    scope.setLevel("critical");
     Sentry.captureException(error);
   });
 }
@@ -160,17 +160,17 @@ function trackWebhookError(error, context = {}) {
  */
 function trackInvoiceError(error, context = {}) {
   Sentry.withScope((scope) => {
-    scope.setTag('error_type', 'invoice');
-    scope.setTag('action', context.action); // generate, send, retry
-    
-    scope.setContext('invoice', {
+    scope.setTag("error_type", "invoice");
+    scope.setTag("action", context.action); // generate, send, retry
+
+    scope.setContext("invoice", {
       invoiceId: context.invoiceId,
       customerId: context.customerId,
       amount: context.amount,
       action: context.action,
     });
-    
-    scope.setLevel('error');
+
+    scope.setLevel("error");
     Sentry.captureException(error);
   });
 }
@@ -181,10 +181,10 @@ function trackInvoiceError(error, context = {}) {
  */
 function trackRateLimitViolation(context = {}) {
   Sentry.withScope((scope) => {
-    scope.setTag('error_type', 'rate_limit');
-    scope.setTag('endpoint', context.endpoint);
-    
-    scope.setContext('rate_limit', {
+    scope.setTag("error_type", "rate_limit");
+    scope.setTag("endpoint", context.endpoint);
+
+    scope.setContext("rate_limit", {
       endpoint: context.endpoint,
       userId: context.userId,
       ip: context.ip,
@@ -192,9 +192,9 @@ function trackRateLimitViolation(context = {}) {
       limit: context.limit,
       windowSeconds: context.windowSeconds,
     });
-    
-    scope.setLevel('warning');
-    Sentry.captureMessage('Rate limit exceeded', 'warning');
+
+    scope.setLevel("warning");
+    Sentry.captureMessage("Rate limit exceeded", "warning");
   });
 }
 
@@ -203,23 +203,21 @@ function trackRateLimitViolation(context = {}) {
  * Identifies slow operations that need optimization
  */
 function trackSlowOperation(operationName, durationMs, context = {}) {
-  if (durationMs > 3000) { // Operations taking >3 seconds
+  if (durationMs > 3000) {
+    // Operations taking >3 seconds
     Sentry.withScope((scope) => {
-      scope.setTag('performance_issue', 'slow_operation');
-      scope.setTag('operation', operationName);
-      
-      scope.setContext('performance', {
+      scope.setTag("performance_issue", "slow_operation");
+      scope.setTag("operation", operationName);
+
+      scope.setContext("performance", {
         operation: operationName,
         durationMs,
         threshold: 3000,
         ...context,
       });
-      
-      scope.setLevel('warning');
-      Sentry.captureMessage(
-        `Slow operation: ${operationName} took ${durationMs}ms`,
-        'warning'
-      );
+
+      scope.setLevel("warning");
+      Sentry.captureMessage(`Slow operation: ${operationName} took ${durationMs}ms`, "warning");
     });
   }
 }
@@ -230,10 +228,10 @@ function trackSlowOperation(operationName, durationMs, context = {}) {
  */
 function sentryRequestHandler() {
   return Sentry.Handlers.requestHandler({
-    user: ['id', 'email', 'tier'],
+    user: ["id", "email", "tier"],
     ip: true,
     request: true,
-    transaction: 'path',
+    transaction: "path",
   });
 }
 
@@ -263,9 +261,9 @@ function sentryErrorHandler() {
  */
 function trackBusinessEvent(eventName, data = {}) {
   Sentry.addBreadcrumb({
-    category: 'business',
+    category: "business",
     message: eventName,
-    level: 'info',
+    level: "info",
     data,
   });
 }
@@ -278,30 +276,30 @@ async function withErrorTracking(operationName, operation, context = {}) {
     op: operationName,
     name: operationName,
   });
-  
+
   const startTime = Date.now();
-  
+
   try {
     const result = await operation();
     const duration = Date.now() - startTime;
-    
+
     // Track slow operations
     trackSlowOperation(operationName, duration, context);
-    
-    transaction.setStatus('ok');
+
+    transaction.setStatus("ok");
     return result;
   } catch (error) {
-    transaction.setStatus('error');
-    
+    transaction.setStatus("error");
+
     // Track based on operation type
-    if (operationName.includes('payment')) {
+    if (operationName.includes("payment")) {
       trackPaymentError(error, context);
-    } else if (operationName.includes('subscription')) {
+    } else if (operationName.includes("subscription")) {
       trackSubscriptionError(error, context);
     } else {
       Sentry.captureException(error);
     }
-    
+
     throw error;
   } finally {
     transaction.finish();
@@ -319,7 +317,7 @@ module.exports = {
   trackSlowOperation,
   trackBusinessEvent,
   withErrorTracking,
-  
+
   // Middleware
   sentryRequestHandler,
   sentryTracingHandler,

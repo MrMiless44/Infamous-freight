@@ -1,15 +1,15 @@
 # INFAMOUS FREIGHT PLATFORM - FULL API DOCUMENTATION
 
-**Generated**: Feb 14, 2025
-**Version**: 1.0.0
-**Status**: Production Ready
+**Generated**: Feb 14, 2025 **Version**: 1.0.0 **Status**: Production Ready
 
 ---
 
 ## 🔗 LOAD BOARD API ENDPOINTS
 
 ### Authentication
+
 All endpoints require JWT token in Authorization header:
+
 ```
 Authorization: Bearer <JWT_TOKEN>
 ```
@@ -21,32 +21,32 @@ Required scopes are noted per endpoint.
 ## 📦 LOADS API
 
 ### 1. Search Loads Across All Boards
+
 **Endpoint**: `GET /api/loads/search`
 
 **Scopes Required**: `loads:search`
 
-**Query Parameters**:
-| Parameter | Type | Required | Description | Example |
-|-----------|------|----------|-------------|---------|
-| source | string | no | Load board source | `dat`, `truckstop`, `convoy`, `all` (default) |
-| pickupCity | string | no | Pickup city name | `Dallas` |
-| pickupState | string | no | Pickup state code | `TX` |
-| dropoffCity | string | no | Delivery city name | `Houston` |
-| dropoffState | string | no | Delivery state code | `TX` |
-| maxMiles | number | no | Maximum distance | `500` (default) |
-| minRate | number | no | Minimum rate per mile | `1.50` |
-| equipmentType | string | no | Vehicle type | `Dry Van` |
-| hazmat | boolean | no | Hazmat materials | `false` (default) |
-| pageSize | number | no | Results per page | `50` (max 500) |
-| page | number | no | Page number | `1` (default) |
+**Query Parameters**: | Parameter | Type | Required | Description | Example |
+|-----------|------|----------|-------------|---------| | source | string | no |
+Load board source | `dat`, `truckstop`, `convoy`, `all` (default) | | pickupCity
+| string | no | Pickup city name | `Dallas` | | pickupState | string | no |
+Pickup state code | `TX` | | dropoffCity | string | no | Delivery city name |
+`Houston` | | dropoffState | string | no | Delivery state code | `TX` | |
+maxMiles | number | no | Maximum distance | `500` (default) | | minRate | number
+| no | Minimum rate per mile | `1.50` | | equipmentType | string | no | Vehicle
+type | `Dry Van` | | hazmat | boolean | no | Hazmat materials | `false`
+(default) | | pageSize | number | no | Results per page | `50` (max 500) | |
+page | number | no | Page number | `1` (default) |
 
 **Request Example**:
+
 ```bash
 curl -H "Authorization: Bearer <TOKEN>" \
   "http://localhost:4000/api/loads/search?pickupCity=Dallas&dropoffCity=Houston&minRate=1.50&pageSize=50"
 ```
 
 **Response Success** (200 OK):
+
 ```json
 {
   "success": true,
@@ -109,6 +109,7 @@ curl -H "Authorization: Bearer <TOKEN>" \
 ```
 
 **Response Error** (400/401/500):
+
 ```json
 {
   "success": false,
@@ -119,22 +120,24 @@ curl -H "Authorization: Bearer <TOKEN>" \
 ---
 
 ### 2. Get Load Details
+
 **Endpoint**: `GET /api/loads/:id`
 
 **Scopes Required**: `loads:read`
 
-**URL Parameters**:
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| id | string | yes | Load ID (e.g., `DAT-12345`) |
+**URL Parameters**: | Parameter | Type | Required | Description |
+|-----------|------|----------|-------------| | id | string | yes | Load ID
+(e.g., `DAT-12345`) |
 
 **Request Example**:
+
 ```bash
 curl -H "Authorization: Bearer <TOKEN>" \
   "http://localhost:4000/api/loads/DAT-12345"
 ```
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -187,6 +190,7 @@ curl -H "Authorization: Bearer <TOKEN>" \
 ```
 
 **Response Error** (404):
+
 ```json
 {
   "success": false,
@@ -197,16 +201,17 @@ curl -H "Authorization: Bearer <TOKEN>" \
 ---
 
 ### 3. Place Bid on Load
+
 **Endpoint**: `POST /api/loads/:id/bid`
 
 **Scopes Required**: `loads:bid`
 
-**URL Parameters**:
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| id | string | yes | Load ID (e.g., `DAT-12345`) |
+**URL Parameters**: | Parameter | Type | Required | Description |
+|-----------|------|----------|-------------| | id | string | yes | Load ID
+(e.g., `DAT-12345`) |
 
 **Request Body**:
+
 ```json
 {
   "phone": "+1-555-123-4567",
@@ -214,13 +219,13 @@ curl -H "Authorization: Bearer <TOKEN>" \
 }
 ```
 
-**Body Parameters**:
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| phone | string | yes | Driver's contact phone (min 10 chars) |
-| comments | string | no | Additional notes (max 500 chars) |
+**Body Parameters**: | Parameter | Type | Required | Description |
+|-----------|------|----------|-------------| | phone | string | yes | Driver's
+contact phone (min 10 chars) | | comments | string | no | Additional notes (max
+500 chars) |
 
 **Request Example**:
+
 ```bash
 curl -X POST \
   -H "Authorization: Bearer <TOKEN>" \
@@ -230,6 +235,7 @@ curl -X POST \
 ```
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -244,6 +250,7 @@ curl -X POST \
 ```
 
 **Response Error** (400 - Missing profile):
+
 ```json
 {
   "success": false,
@@ -252,6 +259,7 @@ curl -X POST \
 ```
 
 **Response Error** (400 - Invalid phone):
+
 ```json
 {
   "success": false,
@@ -262,17 +270,20 @@ curl -X POST \
 ---
 
 ### 4. Get Load Board Statistics
+
 **Endpoint**: `GET /api/loads/stats/summary`
 
 **Scopes Required**: `loads:read`
 
 **Request Example**:
+
 ```bash
 curl -H "Authorization: Bearer <TOKEN>" \
   "http://localhost:4000/api/loads/stats/summary"
 ```
 
 **Response** (200 OK):
+
 ```json
 {
   "success": true,
@@ -305,7 +316,7 @@ curl -H "Authorization: Bearer <TOKEN>" \
 ### JavaScript/TypeScript (Web & Mobile)
 
 ```typescript
-import type { ApiResponse } from '@infamous-freight/shared';
+import type { ApiResponse } from "@infamous-freight/shared";
 
 interface Load {
   id: string;
@@ -324,9 +335,9 @@ async function searchLoads(filters: {
   minRate?: number;
 }) {
   const params = new URLSearchParams();
-  if (filters.pickupCity) params.append('pickupCity', filters.pickupCity);
-  if (filters.dropoffCity) params.append('dropoffCity', filters.dropoffCity);
-  if (filters.minRate) params.append('minRate', filters.minRate.toString());
+  if (filters.pickupCity) params.append("pickupCity", filters.pickupCity);
+  if (filters.dropoffCity) params.append("dropoffCity", filters.dropoffCity);
+  if (filters.minRate) params.append("minRate", filters.minRate.toString());
 
   const response = await fetch(
     `${process.env.API_BASE_URL}/api/loads/search?${params}`,
@@ -334,7 +345,7 @@ async function searchLoads(filters: {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
-    }
+    },
   );
 
   const result: ApiResponse<{
@@ -362,7 +373,7 @@ async function getLoadDetails(loadId: string) {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
-    }
+    },
   );
 
   const result: ApiResponse<Load> = await response.json();
@@ -375,16 +386,16 @@ async function placeBid(loadId: string, phone: string, comments?: string) {
   const response = await fetch(
     `${process.env.API_BASE_URL}/api/loads/${loadId}/bid`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
         Authorization: `Bearer ${authToken}`,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         phone,
         comments,
       }),
-    }
+    },
   );
 
   const result: ApiResponse<{ bidId: string }> = await response.json();
@@ -455,9 +466,11 @@ function LoadsList() {
 ## 🔐 AUTHENTICATION
 
 ### Getting JWT Token
+
 See `/docs/authentication.md` for OAuth2 flow details.
 
 Token includes:
+
 - `sub`: User ID
 - `email`: User email
 - `role`: User role (driver, shipper, admin)
@@ -465,26 +478,28 @@ Token includes:
 
 ### Required Scopes
 
-| Endpoint | Scope |
-|----------|-------|
-| GET /api/loads/search | `loads:search` |
-| GET /api/loads/:id | `loads:read` |
-| POST /api/loads/:id/bid | `loads:bid` |
-| GET /api/loads/stats | `loads:read` |
+| Endpoint                | Scope          |
+| ----------------------- | -------------- |
+| GET /api/loads/search   | `loads:search` |
+| GET /api/loads/:id      | `loads:read`   |
+| POST /api/loads/:id/bid | `loads:bid`    |
+| GET /api/loads/stats    | `loads:read`   |
 
 ### Rate Limits
-| Endpoint | Limit |
-|----------|-------|
+
+| Endpoint     | Limit          |
+| ------------ | -------------- |
 | Search Loads | 100/15 minutes |
-| Get Details | 200/15 minutes |
-| Place Bid | 20/1 minute |
-| Stats | 100/15 minutes |
+| Get Details  | 200/15 minutes |
+| Place Bid    | 20/1 minute    |
+| Stats        | 100/15 minutes |
 
 ---
 
 ## ❌ ERROR RESPONSES
 
 All errors follow this format:
+
 ```json
 {
   "success": false,
@@ -493,32 +508,34 @@ All errors follow this format:
 ```
 
 ### Common HTTP Status Codes
-| Code | Meaning |
-|------|---------|
-| 200 | Success |
-| 400 | Bad request (validation failed) |
-| 401 | Unauthorized (invalid/missing token) |
-| 403 | Forbidden (insufficient scopes) |
-| 429 | Rate limit exceeded |
-| 500 | Server error |
+
+| Code | Meaning                              |
+| ---- | ------------------------------------ |
+| 200  | Success                              |
+| 400  | Bad request (validation failed)      |
+| 401  | Unauthorized (invalid/missing token) |
+| 403  | Forbidden (insufficient scopes)      |
+| 429  | Rate limit exceeded                  |
+| 500  | Server error                         |
 
 ---
 
 ## 📊 DATA MODELS
 
 ### Load Object
+
 ```typescript
 interface Load {
   // Identification
-  id: string;              // Unique ID (e.g., "DAT-12345")
-  source: string;          // Load board source ("dat", "truckstop", "convoy")
-  externalId: string;      // ID in external system
+  id: string; // Unique ID (e.g., "DAT-12345")
+  source: string; // Load board source ("dat", "truckstop", "convoy")
+  externalId: string; // ID in external system
 
   // Pickup
   pickupCity: string;
   pickupState: string;
   pickupZip: string;
-  pickupDate: string;      // ISO date
+  pickupDate: string; // ISO date
 
   // Delivery
   dropoffCity: string;
@@ -527,19 +544,19 @@ interface Load {
 
   // Freight
   miles: number;
-  weight: number;          // lbs
-  length: number;          // feet
+  weight: number; // lbs
+  length: number; // feet
   commodity: string;
-  equipmentType: string;   // "Dry Van", "Reefer", etc
-  loads: number;           // Number of pallets/units
+  equipmentType: string; // "Dry Van", "Reefer", etc
+  loads: number; // Number of pallets/units
 
   // Pricing
   rate: number;
-  rateType: string;        // "per_mile", "per_load"
+  rateType: string; // "per_mile", "per_load"
 
   // Timing
-  postedTime: string;      // ISO timestamp
-  postedAgo: number;       // Minutes ago
+  postedTime: string; // ISO timestamp
+  postedAgo: number; // Minutes ago
 
   // Shipper
   shipper: {
@@ -557,7 +574,7 @@ interface Load {
   };
 
   // AI Ranking
-  score: number;           // 0-100, higher is better
+  score: number; // 0-100, higher is better
 }
 ```
 
@@ -566,6 +583,7 @@ interface Load {
 ## 🧪 TESTING
 
 ### Mock Load Data Available
+
 If no API credentials configured, all endpoints return realistic mock data:
 
 ```bash
@@ -618,6 +636,7 @@ curl -X POST \
 ## 📞 SUPPORT
 
 For API issues:
+
 1. Check `/api/health` endpoint for service status
 2. Review logs: `docker logs infamous-freight-api`
 3. Verify JWT token: decode at jwt.io
@@ -626,6 +645,5 @@ For API issues:
 
 ---
 
-**Last Updated**: Feb 14, 2025
-**API Version**: 1.0.0
-**SDK Availability**: TypeScript, JavaScript, Python (coming soon)
+**Last Updated**: Feb 14, 2025 **API Version**: 1.0.0 **SDK Availability**:
+TypeScript, JavaScript, Python (coming soon)

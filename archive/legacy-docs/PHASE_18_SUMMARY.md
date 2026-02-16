@@ -9,6 +9,7 @@
 ## What Was Implemented
 
 ### 1. Sentry Error Tracking (`apps/api/src/observability/sentry.js`)
+
 - ✅ Automatic exception capture
 - ✅ Performance tracing (10% sample rate)
 - ✅ Request/response context
@@ -17,10 +18,12 @@
 - ✅ Fail-safe (works without SENTRY_DSN)
 
 **Mounted in:**
+
 - API server (early + late handlers)
 - Initializes worker heartbeat
 
 ### 2. Health & Status Monitoring
+
 - ✅ `GET /api/health` - Basic liveness
 - ✅ `GET /api/status` - Full operational snapshot
 - ✅ Worker heartbeat system (`apps/api/src/worker/heartbeat.js`)
@@ -28,6 +31,7 @@
 - ✅ Release and environment info
 
 ### 3. Audit Chain Verification (`apps/api/src/audit/verify.js`)
+
 - ✅ Hash chain integrity validation
 - ✅ Tampering detection (broken chain, data modified)
 - ✅ Single job verification
@@ -35,6 +39,7 @@
 - ✅ Sentry alerting on tampering
 
 ### 4. Evidence Pack (Enterprise Audit Folder)
+
 - ✅ `EVIDENCE_PACK/` folder created
 - ✅ `SECURITY_POLICY.md` - Full security controls documentation
 - ✅ `AUDIT_POLICY.md` - Audit trail and verification procedures
@@ -46,23 +51,23 @@
 
 ## Files Created
 
-| File | Purpose |
-|------|---------|
-| `apps/api/src/observability/sentry.js` | Sentry initialization & helpers |
-| `apps/api/src/worker/heartbeat.js` | Worker liveness monitoring |
-| `apps/api/src/audit/verify.js` | Audit chain tamper detection |
-| `EVIDENCE_PACK/README.md` | Compliance evidence guide |
-| `EVIDENCE_PACK/policies/SECURITY_POLICY.md` | Security controls reference |
-| `EVIDENCE_PACK/policies/AUDIT_POLICY.md` | Audit trail requirements |
-| `EVIDENCE_PACK/artifacts/verify.sh` | Auditor verification tool |
-| `PHASE_18_COMPLETE.md` | Detailed implementation notes |
+| File                                        | Purpose                         |
+| ------------------------------------------- | ------------------------------- |
+| `apps/api/src/observability/sentry.js`      | Sentry initialization & helpers |
+| `apps/api/src/worker/heartbeat.js`          | Worker liveness monitoring      |
+| `apps/api/src/audit/verify.js`              | Audit chain tamper detection    |
+| `EVIDENCE_PACK/README.md`                   | Compliance evidence guide       |
+| `EVIDENCE_PACK/policies/SECURITY_POLICY.md` | Security controls reference     |
+| `EVIDENCE_PACK/policies/AUDIT_POLICY.md`    | Audit trail requirements        |
+| `EVIDENCE_PACK/artifacts/verify.sh`         | Auditor verification tool       |
+| `PHASE_18_COMPLETE.md`                      | Detailed implementation notes   |
 
 ## Files Modified
 
-| File | Changes |
-|------|---------|
+| File                     | Changes                                                       |
+| ------------------------ | ------------------------------------------------------------- |
 | `apps/api/src/server.js` | Added Sentry handlers + /api/status endpoint + heartbeat init |
-| `apps/api/.env.example` | Added SENTRY_* and RELEASE_SHA environment variables |
+| `apps/api/.env.example`  | Added SENTRY\_\* and RELEASE_SHA environment variables        |
 
 ---
 
@@ -82,23 +87,27 @@ RELEASE_SHA=git-commit-hash
 ## Quick Start
 
 ### 1. Install Dependencies
+
 ```bash
 cd apps/api
 npm add @sentry/node @sentry/profiling-node
 ```
 
 ### 2. Configure Sentry
+
 ```bash
 export SENTRY_DSN="https://key@o1234.ingest.sentry.io/5678"
 export RELEASE_SHA="$(git rev-parse --short HEAD)"
 ```
 
 ### 3. Start Services
+
 ```bash
 pnpm dev
 ```
 
 ### 4. Verify Installation
+
 ```bash
 # Test health
 curl http://localhost:4000/api/health
@@ -116,6 +125,7 @@ cd EVIDENCE_PACK/artifacts
 ## Compliance Features
 
 ✅ **SOC2-lite Ready:**
+
 - Security policies documented
 - Audit trail immutable (hash chaining)
 - Error tracking enabled (Sentry)
@@ -125,6 +135,7 @@ cd EVIDENCE_PACK/artifacts
 - Evidence for auditors
 
 ✅ **Enterprise Features:**
+
 - Comprehensive security policy
 - Audit trail requirements documented
 - Verification script for independent validation
@@ -136,6 +147,7 @@ cd EVIDENCE_PACK/artifacts
 ## Monitoring Workflows
 
 ### Daily Operations
+
 ```bash
 # Check API health
 curl https://api.infamous-freight.com/api/health
@@ -148,6 +160,7 @@ curl https://api.infamous-freight.com/api/status | jq
 ```
 
 ### Weekly Compliance
+
 ```bash
 # Run verification
 ./EVIDENCE_PACK/artifacts/verify.sh production
@@ -157,6 +170,7 @@ node -e "const v=require('./apps/api/src/audit/verify'); ..."
 ```
 
 ### Monthly Audit
+
 ```bash
 # Export audit logs
 curl -H "Authorization: Bearer $TOKEN" \
@@ -172,6 +186,7 @@ curl -H "Authorization: Bearer $TOKEN" \
 ## Architecture Impact
 
 ### Observability Stack
+
 ```
 API Request
   ↓
@@ -185,6 +200,7 @@ API Request
 ```
 
 ### Audit Chain Flow
+
 ```
 Job Event Created
   ↓
@@ -233,18 +249,21 @@ verify.verifyJobAuditChain('job-123', prisma).then(r => console.log(r));
 ## Next Steps
 
 ### Immediate (This Sprint)
+
 - [ ] Set SENTRY_DSN in production environment
 - [ ] Test error capture with sample exception
 - [ ] Verify worker heartbeat is updating
 - [ ] Run verify.sh script successfully
 
 ### Short Term (Next 2 weeks)
+
 - [ ] Populate EVIDENCE_PACK with real logs
 - [ ] Add screenshots of Sentry dashboard
 - [ ] Create sample audit export
 - [ ] Test full verification workflow
 
 ### Medium Term (Next Month)
+
 - [ ] Monthly audit chain verification
 - [ ] Quarterly compliance review
 - [ ] Customer evidence pack delivery
@@ -264,6 +283,7 @@ verify.verifyJobAuditChain('job-123', prisma).then(r => console.log(r));
 ## Support
 
 For questions about Phase 18:
+
 - Sentry: https://sentry.io/organizations/infamous-freight/
 - Verification script: `./EVIDENCE_PACK/artifacts/verify.sh --help`
 - Policies: `EVIDENCE_PACK/policies/`

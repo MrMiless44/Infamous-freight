@@ -86,9 +86,9 @@ The auto-deploy workflow uses smart path detection:
 
 | Path Changed             | Services Deployed |
 | ------------------------ | ----------------- |
-| `apps/api/**`        | API only          |
-| `apps/web/**`        | Web only          |
-| `apps/mobile/**`     | Mobile only       |
+| `apps/api/**`            | API only          |
+| `apps/web/**`            | Web only          |
+| `apps/mobile/**`         | Mobile only       |
 | `src/packages/shared/**` | All services      |
 | `.github/workflows/**`   | All services      |
 
@@ -215,4 +215,5 @@ Your deployment is 100% ready when:
 
 ---
 
-**Need help?** Check [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) or run `./scripts/check-deployments.sh`
+**Need help?** Check [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) or run
+`./scripts/check-deployments.sh`

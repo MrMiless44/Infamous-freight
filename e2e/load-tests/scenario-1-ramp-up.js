@@ -35,7 +35,7 @@ export const options = {
     // Error rate must be less than 5%
     errors: ["rate<0.05"],
     // 95% of checks must pass
-    "checks": ["rate>0.95"],
+    checks: ["rate>0.95"],
   },
 };
 
@@ -108,11 +108,7 @@ export default function (data) {
   });
 
   const createStart = Date.now();
-  const createResponse = http.post(
-    `${BASE_URL}/api/shipments`,
-    createPayload,
-    headers
-  );
+  const createResponse = http.post(`${BASE_URL}/api/shipments`, createPayload, headers);
   const createDuration = Date.now() - createStart;
 
   shipmentCreateDuration.add(createDuration);

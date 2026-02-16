@@ -8,7 +8,8 @@ Infæmous Freight — The AI-first Freight Intelligence Platform
 
 **Subheading**
 
-Dispatch. Finance. AI. Compliance. All in one system. AI-powered dispatch, audit, and optimization with a real-time financial engine.
+Dispatch. Finance. AI. Compliance. All in one system. AI-powered dispatch,
+audit, and optimization with a real-time financial engine.
 
 **CTA**
 
@@ -20,8 +21,9 @@ Dispatch. Finance. AI. Compliance. All in one system. AI-powered dispatch, audit
 
 ## Positioning Strip
 
-**You are not "another TMS."**
-Infæmous Freight unifies AI dispatch, finance, compliance, and synthetic intelligence avatars (Genesis) into a multimodal SaaS + AI + fintech platform.
+**You are not "another TMS."** Infæmous Freight unifies AI dispatch, finance,
+compliance, and synthetic intelligence avatars (Genesis) into a multimodal
+SaaS + AI + fintech platform.
 
 **Core Differentiators**
 
@@ -37,7 +39,8 @@ Infæmous Freight unifies AI dispatch, finance, compliance, and synthetic intell
 
 **What We Do**
 
-Infæmous Freight replaces fragmented logistics software with a single AI-first freight intelligence system that compounds revenue and performance.
+Infæmous Freight replaces fragmented logistics software with a single AI-first
+freight intelligence system that compounds revenue and performance.
 
 **Core Capabilities**
 
@@ -76,7 +79,8 @@ Infæmous Freight replaces fragmented logistics software with a single AI-first 
 
 ## Funnel Architecture
 
-Traffic → Landing Page → Free Tool / Demo → Trial Account → AI wow moment → Paid Plan → Expansion (AI usage, more seats, enterprise)
+Traffic → Landing Page → Free Tool / Demo → Trial Account → AI wow moment → Paid
+Plan → Expansion (AI usage, more seats, enterprise)
 
 ---
 
@@ -104,4 +108,7 @@ Traffic → Landing Page → Free Tool / Demo → Trial Account → AI wow momen
 
 ## Data Network Effects
 
-As Infæmous Freight scales, it accumulates lane pricing, carrier reliability scores, fraud patterns, and delivery performance metrics. This becomes the intelligence moat that powers superior pricing, automation, and AI decisioning — the Bloomberg Terminal of Freight AI.
+As Infæmous Freight scales, it accumulates lane pricing, carrier reliability
+scores, fraud patterns, and delivery performance metrics. This becomes the
+intelligence moat that powers superior pricing, automation, and AI decisioning —
+the Bloomberg Terminal of Freight AI.

@@ -264,7 +264,8 @@ flyctl logs --app infamous-freight-api
 ## 📖 Documentation
 
 - Fly.io Secrets: <https://fly.io/docs/reference/secrets/>
-- Prisma Connection URLs: <https://www.prisma.io/docs/reference/database-reference/connection-urls>
+- Prisma Connection URLs:
+  <https://www.prisma.io/docs/reference/database-reference/connection-urls>
 - Sentry Setup: <https://docs.sentry.io/platforms/node/>
 - Datadog APM: <https://docs.datadoghq.com/tracing/>
 

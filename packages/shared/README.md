@@ -1,10 +1,12 @@
 # @infamous-freight/shared
 
-Shared TypeScript package containing domain types, constants, and utilities used across the Infamous Freight monorepo.
+Shared TypeScript package containing domain types, constants, and utilities used
+across the Infamous Freight monorepo.
 
 ## 📦 Installation
 
-This package is automatically linked via pnpm workspaces. To use it in another package:
+This package is automatically linked via pnpm workspaces. To use it in another
+package:
 
 ```json
 {
@@ -33,13 +35,25 @@ pnpm clean
 
 ```typescript
 // Import types
-import type { Shipment, ShipmentStatus, ApiResponse } from '@infamous-freight/shared';
+import type {
+  Shipment,
+  ShipmentStatus,
+  ApiResponse,
+} from "@infamous-freight/shared";
 
 // Import constants
-import { SHIPMENT_STATUSES, HTTP_STATUS, ERROR_CODES } from '@infamous-freight/shared';
+import {
+  SHIPMENT_STATUSES,
+  HTTP_STATUS,
+  ERROR_CODES,
+} from "@infamous-freight/shared";
 
 // Import utilities
-import { formatDate, validateEmail, sanitizeInput } from '@infamous-freight/shared';
+import {
+  formatDate,
+  validateEmail,
+  sanitizeInput,
+} from "@infamous-freight/shared";
 ```
 
 ## 📁 Project Structure
@@ -115,7 +129,7 @@ This package is used across the monorepo. Breaking changes require:
 ### Using Types
 
 ```typescript
-import type { ApiResponse, Shipment } from '@infamous-freight/shared';
+import type { ApiResponse, Shipment } from "@infamous-freight/shared";
 
 function getShipment(id: string): Promise<ApiResponse<Shipment>> {
   // Implementation
@@ -125,7 +139,7 @@ function getShipment(id: string): Promise<ApiResponse<Shipment>> {
 ### Using Constants
 
 ```typescript
-import { HTTP_STATUS, SHIPMENT_STATUSES } from '@infamous-freight/shared';
+import { HTTP_STATUS, SHIPMENT_STATUSES } from "@infamous-freight/shared";
 
 if (status === SHIPMENT_STATUSES.DELIVERED) {
   return res.status(HTTP_STATUS.OK).json({ success: true });
@@ -135,10 +149,10 @@ if (status === SHIPMENT_STATUSES.DELIVERED) {
 ### Using Utilities
 
 ```typescript
-import { validateEmail, sanitizeInput } from '@infamous-freight/shared';
+import { validateEmail, sanitizeInput } from "@infamous-freight/shared";
 
 if (!validateEmail(email)) {
-  throw new Error('Invalid email');
+  throw new Error("Invalid email");
 }
 
 const clean = sanitizeInput(userInput);
@@ -146,7 +160,8 @@ const clean = sanitizeInput(userInput);
 
 ## 🧪 Testing
 
-Currently, this package does not have its own tests. Types and utilities are tested through consuming packages.
+Currently, this package does not have its own tests. Types and utilities are
+tested through consuming packages.
 
 ## 🔄 Build Process
 
@@ -164,7 +179,8 @@ The package is built using TypeScript compiler:
 
 ## 📦 Versioning
 
-This package follows the main monorepo version. Version bumps should be coordinated across all packages.
+This package follows the main monorepo version. Version bumps should be
+coordinated across all packages.
 
 ## 🤝 Contributing
 
@@ -176,9 +192,11 @@ This package follows the main monorepo version. Version bumps should be coordina
 
 ## ⚠️ Important Notes
 
-- **Always import from package root**: `@infamous-freight/shared`, not `@infamous-freight/shared/dist/types`
+- **Always import from package root**: `@infamous-freight/shared`, not
+  `@infamous-freight/shared/dist/types`
 - **Rebuild after changes**: Types aren't hot-reloaded
-- **No circular dependencies**: This package must not depend on apps/api/web/mobile
+- **No circular dependencies**: This package must not depend on
+  apps/api/web/mobile
 - **Keep it lean**: Only add truly shared code
 
 ## 📄 License

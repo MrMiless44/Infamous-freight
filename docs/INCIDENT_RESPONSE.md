@@ -3,7 +3,7 @@
 **Document**: Production Incident Response Guide  
 **Last Updated**: February 12, 2026  
 **Audience**: On-call Engineers, DevOps, Tech Lead  
-**Severity**: Critical  
+**Severity**: Critical
 
 ---
 
@@ -13,15 +13,17 @@
 
 **Impact**: Service completely unavailable  
 **Response Time**: Immediate (< 2 min)  
-**Severity**: P1  
+**Severity**: P1
 
 #### Detection
+
 - ✅ Uptime monitoring alert
 - ✅ User reports via support
 - ✅ Sentry massive error spike
 - ✅ All health checks failing
 
 #### Immediate Actions (0-5 min)
+
 ```bash
 # 1. Declare incident
 $ @slack: @channel INCIDENT: Critical outage detected
@@ -42,6 +44,7 @@ $ kubectl restart statefulset/database
 ```
 
 #### Investigation (5-15 min)
+
 ```bash
 # Check logs
 $ kubectl logs -l app=api --tail=100 | grep ERROR
@@ -58,28 +61,34 @@ $ curl -X GET https://api.sendgrid.com/v3/mail_settings -H "Authorization: Beare
 ```
 
 #### Resolution Path
+
 If **API crashed**:
+
 - Redeploy last known good version
 - Check logs for crash reason
 - Increase resource limits if needed
 
 If **Database down**:
+
 - Check PostgreSQL status
 - Verify disk space
 - Attempt recovery
 - Failover to replica if available
 
 If **External service failure**:
+
 - Switch to graceful degradation mode
 - Notify customers of impact
 - Monitor service status
 
 #### Communication (Every 5 min)
+
 - Slack update with status
 - Customer status page update
 - Email to affected customers (if applicable)
 
 #### Post-Incident (After resolution)
+
 - [ ] Write incident report
 - [ ] Schedule blameless post-mortem
 - [ ] Create follow-up tickets
@@ -91,15 +100,17 @@ If **External service failure**:
 
 **Impact**: Degraded service, many user-facing errors  
 **Response Time**: 5-10 minutes  
-**Severity**: P2  
+**Severity**: P2
 
 #### Detection Signals
+
 - ✅ Error rate > 1% in Sentry
 - ✅ API response time p95 > 1000ms
 - ✅ Database query timeout errors
 - ✅ 5xx status code spike
 
 #### Investigation (5-10 min)
+
 ```bash
 # 1. Check error patterns
 # Go to: https://sentry.io/crimes/...
@@ -120,22 +131,27 @@ $ curl -X GET https://api.infamous-freight.com/api/shipments -H "Authorization: 
 ```
 
 #### Remediation Options
+
 1. **Scale up resources**
+
    ```bash
    $ kubectl scale deployment/api --replicas=5
    ```
 
 2. **Clear cache**
+
    ```bash
    $ redis-cli FLUSHDB
    ```
 
 3. **Restart specific service**
+
    ```bash
    $ kubectl restart deployment/api
    ```
 
 4. **Temporary circuit breaker**
+
    ```bash
    $ Disable expensive features
    $ Redirect traffic to read-only mode
@@ -152,15 +168,17 @@ $ curl -X GET https://api.infamous-freight.com/api/shipments -H "Authorization: 
 
 **Impact**: Users experience slow application  
 **Response Time**: 10-15 minutes  
-**Severity**: P3  
+**Severity**: P3
 
 #### Detection
+
 - ✅ API p95 response time > 500ms
 - ✅ Database queries > 200ms
 - ✅ User reports of slowness
 - ✅ JavaScript bundle size increased
 
 #### Investigation
+
 ```bash
 # Check slow queries
 $ psql $DATABASE_URL -c "SELECT query, calls, total_time FROM pg_stat_statements ORDER BY total_time DESC LIMIT 10;"
@@ -177,7 +195,9 @@ $ ls -lh apps/web/.next/static/chunks/*.js | awk '{print $5, $9}' | sort -h
 ```
 
 #### Optimization Steps
+
 1. Add query indexes
+
    ```sql
    CREATE INDEX idx_shipments_status_createdAt ON shipments(status, created_at DESC);
    ```
@@ -193,27 +213,31 @@ $ ls -lh apps/web/.next/static/chunks/*.js | awk '{print $5, $9}' | sort -h
 
 **Impact**: Incorrect or missing data  
 **Response Time**: Immediate  
-**Severity**: P1 (if customer-facing data) / P3 (if internal)  
+**Severity**: P1 (if customer-facing data) / P3 (if internal)
 
 #### Detection
+
 - ✅ Automated data validation checks
 - ✅ User reports missing shipments/payments
 - ✅ Reconciliation alerts
 - ✅ Sentry data consistency errors
 
 #### Immediate Actions
+
 1. **Assess scope**
    - How many records affected?
    - When did issue start?
    - What data is affected?
 
 2. **Prevent further damage**
+
    ```bash
    # Disable writes if corrupted data being written
    $ kubectl set env deployment/api API_READ_ONLY=true
    ```
 
 3. **Evaluate database state**
+
    ```bash
    # Check transaction log
    $ psql $DATABASE_URL -c "SELECT * FROM pg_stat_xact_user_tables ORDER BY n_tup_ins + n_tup_upd + n_tup_del DESC;"
@@ -230,9 +254,10 @@ $ ls -lh apps/web/.next/static/chunks/*.js | awk '{print $5, $9}' | sort -h
 
 **Impact**: Potential data breach or unauthorized access  
 **Response Time**: Immediate  
-**Severity**: P0 (Critical)  
+**Severity**: P0 (Critical)
 
 #### Detection
+
 - ✅ Suspicious authentication attempts
 - ✅ Potential credential leak
 - ✅ Unauthorized API access
@@ -240,7 +265,9 @@ $ ls -lh apps/web/.next/static/chunks/*.js | awk '{print $5, $9}' | sort -h
 - ✅ Third-party notification
 
 #### Immediate Actions
+
 1. **Isolate affected systems**
+
    ```bash
    $ Restrict API access temporarily
    $ Rotate all credentials
@@ -248,6 +275,7 @@ $ ls -lh apps/web/.next/static/chunks/*.js | awk '{print $5, $9}' | sort -h
    ```
 
 2. **Secure database**
+
    ```bash
    $ psql $DATABASE_URL -c "SELECT usename, usesuper, usecreatedb FROM pg_user;"
    $ Disable suspect accounts
@@ -274,6 +302,7 @@ $ ls -lh apps/web/.next/static/chunks/*.js | awk '{print $5, $9}' | sort -h
 ## Common Issues & Quick Fixes
 
 ### Issue: High CPU Usage
+
 ```bash
 # Find resource hog
 $ kubectl top pods -l app=api --sort-by=cpu
@@ -291,6 +320,7 @@ $ kubectl delete pod <pod-name>
 ```
 
 ### Issue: Memory Leak
+
 ```bash
 # Monitor memory
 $ kubectl top pods -l app=api --sort-by=memory
@@ -304,6 +334,7 @@ $ kubectl delete pod <pod-name>
 ```
 
 ### Issue: Database Locks
+
 ```bash
 # Find blocking queries
 $ psql $DATABASE_URL -c "SELECT * FROM pg_stat_activity;"
@@ -313,6 +344,7 @@ $ psql $DATABASE_URL -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity 
 ```
 
 ### Issue: Out of Disk Space
+
 ```bash
 # Check usage
 $ df -h
@@ -335,12 +367,12 @@ $ rm /var/log/postgresql/postgresql-*.log
 
 ### Severity Levels
 
-| Level | Impact | Response | Escalate After |
-|-------|--------|----------|-----------------|
-| P0 | Complete outage | 1 min | Immediate |
-| P1 | Major outage/data loss | 5 min | 10 min |
-| P2 | Degraded service | 15 min | 30 min |
-| P3 | Minor issues | 1 hour | 4 hours |
+| Level | Impact                 | Response | Escalate After |
+| ----- | ---------------------- | -------- | -------------- |
+| P0    | Complete outage        | 1 min    | Immediate      |
+| P1    | Major outage/data loss | 5 min    | 10 min         |
+| P2    | Degraded service       | 15 min   | 30 min         |
+| P3    | Minor issues           | 1 hour   | 4 hours        |
 
 ### Escalation Contacts
 
@@ -350,6 +382,7 @@ $ rm /var/log/postgresql/postgresql-*.log
 4. **Fourth Level**: External Support (security incidents, emergency)
 
 ### Escalation Commands
+
 ```bash
 # Escalate to Tech Lead
 $ @tech-lead We need your expertise on <issue>
@@ -366,6 +399,7 @@ $ #war-room-<incident-id>
 ## Communication Template
 
 ### Initial Report (< 5 min)
+
 ```
 ⚠️ INCIDENT: [Brief description]
 - Start Time: [Time]
@@ -375,6 +409,7 @@ $ #war-room-<incident-id>
 ```
 
 ### Update (Every 10-15 min)
+
 ```
 🔄 UPDATE: Incident [ID]
 - Current Status: [Investigating/Partially resolved/Resolved]
@@ -383,6 +418,7 @@ $ #war-room-<incident-id>
 ```
 
 ### Resolution
+
 ```
 ✅ RESOLVED: Incident [ID]
 - Root Cause: [Brief explanation]
@@ -421,18 +457,21 @@ $ #war-room-<incident-id>
 ## Tools & Access
 
 ### Monitoring
+
 - Sentry: https://sentry.io/crimes/...
 - Datadog: https://app.datadoghq.com
 - Kubernetes Dashboard: https://k8s.infamous-freight.com
 - Status Page: https://status.infamous-freight.com
 
 ### Access
+
 - Production SSH: `ssh ec2-user@prod.api.infamous-freight.com`
 - Database Console: `psql $DATABASE_URL`
 - Redis Console: `redis-cli -h $REDIS_HOST`
 - Logs: CloudWatch / ELK Stack
 
 ### Commands Cheatsheet
+
 ```bash
 # General
 kubectl get pods                           # List all pods
@@ -456,5 +495,4 @@ kubectl scale deployment/api --replicas=5 # Scale up
 **Incident Runbook Owner**: DevOps / On-Call Team  
 **Last Updated**: February 12, 2026  
 **Review Schedule**: Quarterly  
-**Next Update**: May 2026  
-
+**Next Update**: May 2026

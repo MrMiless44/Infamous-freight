@@ -163,10 +163,7 @@ export function getPermissionsForRole(role: UserRole): Permission[] {
 /**
  * Check if role has permission
  */
-export function roleHasPermission(
-  role: UserRole,
-  permission: Permission,
-): boolean {
+export function roleHasPermission(role: UserRole, permission: Permission): boolean {
   return getPermissionsForRole(role).includes(permission);
 }
 

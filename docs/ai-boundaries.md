@@ -2,7 +2,10 @@
 
 ## Overview
 
-Infamous Freight Enterprise employs AI agents as specialized workforce roles with clearly defined boundaries, permissions, and oversight mechanisms. This document outlines the governance framework for AI operations, including allowed actions, forbidden operations, escalation procedures, and audit requirements.
+Infamous Freight Enterprise employs AI agents as specialized workforce roles
+with clearly defined boundaries, permissions, and oversight mechanisms. This
+document outlines the governance framework for AI operations, including allowed
+actions, forbidden operations, escalation procedures, and audit requirements.
 
 ## AI Role Definitions
 
@@ -292,11 +295,13 @@ Every AI decision must log:
   - Response time: Immediate
   - Escalation: CTO + Legal
   - AI suspension: Automatic
-- **P1 (High)**: Financial impact >$10K, customer data exposure, repeated boundary violations
+- **P1 (High)**: Financial impact >$10K, customer data exposure, repeated
+  boundary violations
   - Response time: 1 hour
   - Escalation: Engineering manager + Operations lead
   - AI suspension: Review-based
-- **P2 (Medium)**: Customer complaints, minor boundary violations, confidence drift
+- **P2 (Medium)**: Customer complaints, minor boundary violations, confidence
+  drift
   - Response time: 4 hours
   - Escalation: Team lead
   - AI suspension: Not required

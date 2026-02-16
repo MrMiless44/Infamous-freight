@@ -64,10 +64,7 @@ test.describe("Authentication Flow", () => {
     });
   });
 
-  test("should successfully login with valid credentials", async ({
-    page,
-    context,
-  }) => {
+  test("should successfully login with valid credentials", async ({ page, context }) => {
     // Skip if no test credentials available
     const testEmail = process.env.TEST_EMAIL;
     const testPassword = process.env.TEST_PASSWORD;

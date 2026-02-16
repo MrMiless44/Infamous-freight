@@ -59,13 +59,9 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const systemColorScheme = useColorScheme();
-  const [theme, setTheme] = useState<Theme>(
-    systemColorScheme === "dark" ? "dark" : "light",
-  );
+  const [theme, setTheme] = useState<Theme>(systemColorScheme === "dark" ? "dark" : "light");
 
   useEffect(() => {
     // Listen for system theme changes

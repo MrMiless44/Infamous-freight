@@ -381,7 +381,8 @@ flyctl postgres db restore --backup-id <id> --app infamous-freight-db
 
 - OWASP Top 10: <https://owasp.org/www-project-top-ten/>
 - Node.js Security Best Practices: <https://nodejs.org/en/docs/guides/security/>
-- Express Security: <https://expressjs.com/en/advanced/best-practice-security.html>
+- Express Security:
+  <https://expressjs.com/en/advanced/best-practice-security.html>
 - Fly.io Security: <https://fly.io/docs/reference/security/>
 
 ## 🚨 Reporting Security Issues

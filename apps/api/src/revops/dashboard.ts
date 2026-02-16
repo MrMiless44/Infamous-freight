@@ -4,8 +4,8 @@
  * Module: Revenue Operations Dashboard - AI-Powered Business Intelligence
  */
 
-import { PrismaClient } from '@prisma/client';
-import { aiSyntheticClient } from '../services/aiSyntheticClient';
+import { PrismaClient } from "@prisma/client";
+import { aiSyntheticClient } from "../services/aiSyntheticClient";
 
 const prisma = new PrismaClient();
 
@@ -24,7 +24,7 @@ interface RevOpsDashboard {
     avgSalesCycle: number; // days
     topDeals: any[];
   };
-  
+
   // Revenue metrics
   revenue: {
     mrr: number;
@@ -33,7 +33,7 @@ interface RevOpsDashboard {
     platformTake: number;
     revenueGrowth: number; // % MoM
   };
-  
+
   // Customer metrics
   customers: {
     totalOrgs: number;
@@ -45,7 +45,7 @@ interface RevOpsDashboard {
     cac: number;
     ltvCacRatio: number;
   };
-  
+
   // Pricing metrics
   pricing: {
     avgJobPrice: number;
@@ -53,7 +53,7 @@ interface RevOpsDashboard {
     avgSurgeMultiplier: number;
     revenueFromSurge: number;
   };
-  
+
   // Operational metrics
   operations: {
     activeDrivers: number;
@@ -63,7 +63,7 @@ interface RevOpsDashboard {
     jobsThisMonth: number;
     avgJobsPerDriver: number;
   };
-  
+
   // AI recommendations
   recommendations: any[];
 }
@@ -75,7 +75,14 @@ async function calculatePipelineValue() {
   const opportunities = await prisma.salesOpportunity.findMany({
     where: {
       stage: {
-        in: ['QUALIFIED', 'DEMO_SCHEDULED', 'DEMO_COMPLETED', 'PROPOSAL_SENT', 'NEGOTIATING', 'CONTRACT_SENT'],
+        in: [
+          "QUALIFIED",
+          "DEMO_SCHEDULED",
+          "DEMO_COMPLETED",
+          "PROPOSAL_SENT",
+          "NEGOTIATING",
+          "CONTRACT_SENT",
+        ],
       },
     },
     select: {
@@ -84,13 +91,13 @@ async function calculatePipelineValue() {
       stage: true,
     },
   });
-  
+
   // Weighted pipeline value
   const pipelineValue = opportunities.reduce((sum, opp) => {
     const weighted = (opp.expectedMrr?.toNumber() || 0) * (opp.probability / 100);
     return sum + weighted;
   }, 0);
-  
+
   return {
     totalValue: pipelineValue,
     dealCount: opportunities.length,
@@ -102,18 +109,18 @@ async function calculatePipelineValue() {
  */
 async function calculateConversionRate(days: number = 30) {
   const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-  
+
   const totalLeads = await prisma.lead.count({
     where: { createdAt: { gte: since } },
   });
-  
+
   const convertedLeads = await prisma.lead.count({
     where: {
       createdAt: { gte: since },
-      status: 'won',
+      status: "won",
     },
   });
-  
+
   return totalLeads > 0 ? (convertedLeads / totalLeads) * 100 : 0;
 }
 
@@ -123,7 +130,7 @@ async function calculateConversionRate(days: number = 30) {
 async function calculateAvgSalesCycle() {
   const wonDeals = await prisma.salesOpportunity.findMany({
     where: {
-      stage: 'WON',
+      stage: "WON",
       wonAt: { not: null },
     },
     select: {
@@ -132,14 +139,14 @@ async function calculateAvgSalesCycle() {
     },
     take: 100, // Last 100 won deals
   });
-  
+
   if (wonDeals.length === 0) return 0;
-  
+
   const totalDays = wonDeals.reduce((sum, deal) => {
     const days = (deal.wonAt!.getTime() - deal.createdAt.getTime()) / (1000 * 60 * 60 * 24);
     return sum + days;
   }, 0);
-  
+
   return Math.round(totalDays / wonDeals.length);
 }
 
@@ -149,20 +156,20 @@ async function calculateAvgSalesCycle() {
 async function calculateMRR() {
   const billing = await prisma.orgBilling.findMany({
     where: {
-      stripeSubscriptionStatus: 'active',
+      stripeSubscriptionStatus: "active",
     },
     select: {
       plan: true,
     },
   });
-  
+
   const planPricing = {
     STARTER: 79,
     GROWTH: 199,
     ENTERPRISE: 599,
     CUSTOM: 5000, // Average custom deal
   };
-  
+
   return billing.reduce((sum, b) => {
     return sum + (planPricing[b.plan] || 0);
   }, 0);
@@ -174,7 +181,7 @@ async function calculateMRR() {
 async function calculateChurnRate() {
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
   const sixtyDaysAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000);
-  
+
   // Orgs active 30-60 days ago
   const activeLastMonth = await prisma.organization.count({
     where: {
@@ -182,7 +189,7 @@ async function calculateChurnRate() {
       isActive: true,
     },
   });
-  
+
   // Orgs that churned in last 30 days
   const churned = await prisma.organization.count({
     where: {
@@ -191,7 +198,7 @@ async function calculateChurnRate() {
       updatedAt: { gte: thirtyDaysAgo }, // Became inactive recently
     },
   });
-  
+
   return activeLastMonth > 0 ? (churned / activeLastMonth) * 100 : 0;
 }
 
@@ -200,7 +207,7 @@ async function calculateChurnRate() {
  */
 async function calculateLTV(avgMrrPerOrg: number, churnRate: number) {
   if (churnRate === 0) return avgMrrPerOrg * 36; // Assume 3-year lifetime
-  
+
   // LTV = ARPA / Monthly Churn Rate
   const monthlyChurnRate = churnRate / 100;
   return monthlyChurnRate > 0 ? avgMrrPerOrg / monthlyChurnRate : avgMrrPerOrg * 36;
@@ -219,7 +226,7 @@ async function calculateCAC() {
       },
     },
   });
-  
+
   const newOrgs = await prisma.organization.count({
     where: {
       createdAt: {
@@ -227,10 +234,10 @@ async function calculateCAC() {
       },
     },
   });
-  
+
   // Estimate: $500/campaign + $1000/month fixed sales costs
-  const estimatedSpend = (campaigns * 500) + 1000;
-  
+  const estimatedSpend = campaigns * 500 + 1000;
+
   return newOrgs > 0 ? estimatedSpend / newOrgs : 0;
 }
 
@@ -239,7 +246,7 @@ async function calculateCAC() {
  */
 async function getSurgePricingMetrics() {
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-  
+
   const allPricing = await prisma.dynamicPricing.findMany({
     where: {
       appliedAt: { gte: thirtyDaysAgo },
@@ -251,21 +258,22 @@ async function getSurgePricingMetrics() {
       demandMultiplier: true,
     },
   });
-  
-  const surgeJobs = allPricing.filter(p => p.strategy === 'SURGE');
-  
+
+  const surgeJobs = allPricing.filter((p) => p.strategy === "SURGE");
+
   const surgeRevenue = surgeJobs.reduce((sum, p) => {
     const surgeAmount = p.finalPrice.toNumber() - p.basePrice.toNumber();
     return sum + surgeAmount;
   }, 0);
-  
+
   return {
     totalJobs: allPricing.length,
     surgeJobs: surgeJobs.length,
     surgeFrequency: allPricing.length > 0 ? (surgeJobs.length / allPricing.length) * 100 : 0,
-    avgSurgeMultiplier: surgeJobs.length > 0
-      ? surgeJobs.reduce((sum, p) => sum + p.demandMultiplier.toNumber(), 0) / surgeJobs.length
-      : 1.0,
+    avgSurgeMultiplier:
+      surgeJobs.length > 0
+        ? surgeJobs.reduce((sum, p) => sum + p.demandMultiplier.toNumber(), 0) / surgeJobs.length
+        : 1.0,
     revenueFromSurge: surgeRevenue,
   };
 }
@@ -275,71 +283,71 @@ async function getSurgePricingMetrics() {
  */
 async function generateRecommendations(metrics: any): Promise<any[]> {
   const recommendations: any[] = [];
-  
+
   // 1. High churn rate
   if (metrics.customers.churnRate > 5) {
     recommendations.push({
-      priority: 'HIGH',
-      category: 'churn',
-      title: 'High churn rate detected',
+      priority: "HIGH",
+      category: "churn",
+      title: "High churn rate detected",
       description: `Monthly churn is ${metrics.customers.churnRate.toFixed(1)}%, above healthy threshold of 5%.`,
       impact: `Reducing churn to 3% would increase ARR by $${Math.round((metrics.revenue.arr * 0.02) / 1000)}k`,
       actions: [
-        'Implement customer health scoring',
-        'Proactive outreach to at-risk accounts',
-        'Improve onboarding experience',
+        "Implement customer health scoring",
+        "Proactive outreach to at-risk accounts",
+        "Improve onboarding experience",
       ],
     });
   }
-  
+
   // 2. Low LTV:CAC ratio
   if (metrics.customers.ltvCacRatio < 3) {
     recommendations.push({
-      priority: 'HIGH',
-      category: 'unit_economics',
-      title: 'Low LTV:CAC ratio',
+      priority: "HIGH",
+      category: "unit_economics",
+      title: "Low LTV:CAC ratio",
       description: `Ratio is ${metrics.customers.ltvCacRatio.toFixed(1)}x, target is 3x+`,
-      impact: 'Unsustainable growth - need to reduce CAC or increase LTV',
+      impact: "Unsustainable growth - need to reduce CAC or increase LTV",
       actions: [
-        'Optimize ad spend (reduce CAC)',
-        'Increase prices 10-15%',
-        'Focus on high-value segments',
+        "Optimize ad spend (reduce CAC)",
+        "Increase prices 10-15%",
+        "Focus on high-value segments",
       ],
     });
   }
-  
+
   // 3. High surge frequency
   if (metrics.pricing.surgeFrequency > 50) {
     recommendations.push({
-      priority: 'MEDIUM',
-      category: 'pricing',
-      title: 'Frequent surge pricing',
+      priority: "MEDIUM",
+      category: "pricing",
+      title: "Frequent surge pricing",
       description: `${metrics.pricing.surgeFrequency.toFixed(0)}% of jobs are surge-priced`,
       impact: `Customers may churn. Consider increasing base prices by ${(metrics.pricing.avgSurgeMultiplier - 1) * 50}%.`,
       actions: [
-        'Increase base prices 10-15%',
-        'Recruit more drivers to reduce surge need',
-        'Communicate surge pricing transparently',
+        "Increase base prices 10-15%",
+        "Recruit more drivers to reduce surge need",
+        "Communicate surge pricing transparently",
       ],
     });
   }
-  
+
   // 4. Low conversion rate
   if (metrics.sales.conversionRate < 5) {
     recommendations.push({
-      priority: 'MEDIUM',
-      category: 'sales',
-      title: 'Low lead conversion rate',
+      priority: "MEDIUM",
+      category: "sales",
+      title: "Low lead conversion rate",
       description: `Only ${metrics.sales.conversionRate.toFixed(1)}% of leads convert`,
-      impact: 'Missing revenue opportunities',
+      impact: "Missing revenue opportunities",
       actions: [
-        'Improve lead qualification (Genesis AI)',
-        'Faster demo scheduling',
-        'Better nurture campaigns',
+        "Improve lead qualification (Genesis AI)",
+        "Faster demo scheduling",
+        "Better nurture campaigns",
       ],
     });
   }
-  
+
   // 5. Ask AI for additional insights
   try {
     const aiPrompt = `Analyze these business metrics and provide 1-2 additional revenue optimization recommendations:
@@ -353,32 +361,33 @@ Pipeline: $${Math.round(metrics.sales.pipelineValue)}
 Focus on: pricing strategy, sales efficiency, or operational improvements.`;
 
     const response = await aiSyntheticClient.chat.completions.create({
-      model: 'gpt-4',
+      model: "gpt-4",
       messages: [
         {
-          role: 'system',
-          content: 'You are Genesis, a RevOps AI for Infæmous Freight. Provide data-driven revenue optimization recommendations.',
+          role: "system",
+          content:
+            "You are Genesis, a RevOps AI for Infæmous Freight. Provide data-driven revenue optimization recommendations.",
         },
-        { role: 'user', content: aiPrompt },
+        { role: "user", content: aiPrompt },
       ],
       max_tokens: 300,
       temperature: 0.7,
     });
-    
+
     const aiRec = response.choices[0]?.message?.content;
     if (aiRec) {
       recommendations.push({
-        priority: 'LOW',
-        category: 'ai_insight',
-        title: 'AI-powered insight',
+        priority: "LOW",
+        category: "ai_insight",
+        title: "AI-powered insight",
         description: aiRec,
-        source: 'genesis-ai',
+        source: "genesis-ai",
       });
     }
   } catch (error) {
-    console.error('[RevOps] AI recommendation failed:', error);
+    console.error("[RevOps] AI recommendation failed:", error);
   }
-  
+
   return recommendations;
 }
 
@@ -386,17 +395,17 @@ Focus on: pricing strategy, sales efficiency, or operational improvements.`;
  * Main function: Get complete RevOps dashboard
  */
 export async function getRevOpsDashboard(): Promise<RevOpsDashboard> {
-  console.log('[RevOps] Generating dashboard...');
-  
+  console.log("[RevOps] Generating dashboard...");
+
   // Sales metrics
   const pipeline = await calculatePipelineValue();
   const avgDealSize = pipeline.dealCount > 0 ? pipeline.totalValue / pipeline.dealCount : 0;
   const conversionRate = await calculateConversionRate();
   const avgSalesCycle = await calculateAvgSalesCycle();
-  
+
   const topDeals = await prisma.salesOpportunity.findMany({
     where: {
-      stage: { in: ['QUALIFIED', 'DEMO_COMPLETED', 'PROPOSAL_SENT', 'NEGOTIATING'] },
+      stage: { in: ["QUALIFIED", "DEMO_COMPLETED", "PROPOSAL_SENT", "NEGOTIATING"] },
     },
     include: {
       lead: {
@@ -408,30 +417,43 @@ export async function getRevOpsDashboard(): Promise<RevOpsDashboard> {
       },
     },
     orderBy: {
-      dealScore: 'desc',
+      dealScore: "desc",
     },
     take: 5,
   });
-  
+
   // Revenue metrics
   const mrr = await calculateMRR();
   const arr = mrr * 12;
-  
+
   // GMV and platform take (from existing metrics service)
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+  const sixtyDaysAgo = new Date(Date.now() - 60 * 24 * 60 * 60 * 1000);
   const jobs = await prisma.job.findMany({
     where: {
       createdAt: { gte: thirtyDaysAgo },
-      status: 'COMPLETED',
+      status: "COMPLETED",
     },
     select: {
       price: true,
     },
   });
-  
+
+  const previousJobs = await prisma.job.findMany({
+    where: {
+      createdAt: { gte: sixtyDaysAgo, lt: thirtyDaysAgo },
+      status: "COMPLETED",
+    },
+    select: {
+      price: true,
+    },
+  });
+
   const gmv = jobs.reduce((sum, j) => sum + (j.price?.toNumber() || 0), 0);
+  const previousGmv = previousJobs.reduce((sum, j) => sum + (j.price?.toNumber() || 0), 0);
   const platformTake = gmv * 0.12; // Average 12% take rate
-  
+  const revenueGrowth = previousGmv > 0 ? ((gmv - previousGmv) / previousGmv) * 100 : 0;
+
   // Customer metrics
   const totalOrgs = await prisma.organization.count();
   const activeOrgs = await prisma.organization.count({
@@ -442,24 +464,24 @@ export async function getRevOpsDashboard(): Promise<RevOpsDashboard> {
       createdAt: { gte: thirtyDaysAgo },
     },
   });
-  
+
   const churnRate = await calculateChurnRate();
   const avgMrrPerOrg = activeOrgs > 0 ? mrr / activeOrgs : 0;
   const ltv = await calculateLTV(avgMrrPerOrg, churnRate);
   const cac = await calculateCAC();
   const ltvCacRatio = cac > 0 ? ltv / cac : 0;
-  
+
   // Pricing metrics
   const surgePricing = await getSurgePricingMetrics();
-  
+
   // Operational metrics
   const activeDrivers = await prisma.user.count({
     where: {
-      role: 'DRIVER',
+      role: "DRIVER",
       // Has jobs in last 30 days
     },
   });
-  
+
   const jobsToday = await prisma.job.count({
     where: {
       createdAt: {
@@ -467,7 +489,7 @@ export async function getRevOpsDashboard(): Promise<RevOpsDashboard> {
       },
     },
   });
-  
+
   const jobsThisWeek = await prisma.job.count({
     where: {
       createdAt: {
@@ -475,15 +497,15 @@ export async function getRevOpsDashboard(): Promise<RevOpsDashboard> {
       },
     },
   });
-  
+
   const jobsThisMonth = await prisma.job.count({
     where: {
       createdAt: { gte: thirtyDaysAgo },
     },
   });
-  
+
   const avgJobsPerDriver = activeDrivers > 0 ? jobsThisMonth / activeDrivers : 0;
-  
+
   // Assemble dashboard
   const dashboard: RevOpsDashboard = {
     sales: {
@@ -499,7 +521,7 @@ export async function getRevOpsDashboard(): Promise<RevOpsDashboard> {
       arr,
       gmv,
       platformTake,
-      revenueGrowth: 0, // TODO: Calculate from historical data
+      revenueGrowth,
     },
     customers: {
       totalOrgs,
@@ -527,12 +549,12 @@ export async function getRevOpsDashboard(): Promise<RevOpsDashboard> {
     },
     recommendations: [],
   };
-  
+
   // Generate AI recommendations
   dashboard.recommendations = await generateRecommendations(dashboard);
-  
-  console.log('[RevOps] Dashboard generated successfully');
-  
+
+  console.log("[RevOps] Dashboard generated successfully");
+
   return dashboard;
 }
 
@@ -546,10 +568,10 @@ export async function storeRecommendation(recommendation: any) {
       recommendation: recommendation.description,
       impact: recommendation.impact,
       confidence: 80, // Default
-      actionType: recommendation.actions?.[0] || 'manual_review',
+      actionType: recommendation.actions?.[0] || "manual_review",
       actionData: JSON.stringify(recommendation),
-      status: 'pending',
-      createdBy: 'genesis-ai',
+      status: "pending",
+      createdBy: "genesis-ai",
     },
   });
 }
@@ -560,12 +582,12 @@ export async function storeRecommendation(recommendation: any) {
 export async function markRecommendationImplemented(
   recommendationId: string,
   approvedBy: string,
-  actualImpact?: string
+  actualImpact?: string,
 ) {
   return prisma.revenueOptimization.update({
     where: { id: recommendationId },
     data: {
-      status: 'implemented',
+      status: "implemented",
       approvedBy,
       implementedAt: new Date(),
       actualImpact,

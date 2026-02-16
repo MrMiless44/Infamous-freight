@@ -9,7 +9,8 @@
 
 - [x] **Git Repository**: All code pushed to `main` branch
 - [x] **Docker Configuration**: Fixed Dockerfile for simplified dependencies
-- [x] **Render Configuration**: Updated `render.yaml` with correct repository URL
+- [x] **Render Configuration**: Updated `render.yaml` with correct repository
+      URL
 - [x] **Bundle Analyzer**: Integrated with Next.js for production builds
 - [x] **Codecov**: Configured with token and bundle analysis
 
@@ -113,7 +114,8 @@ docker compose -f docker-compose.prod.yml up -d
 - **API Health**: <https://infamous-freight-api.fly.dev/health>
 - **Fly.io Dashboard**: <https://fly.io/dashboard>
 - **Vercel Dashboard**: <https://vercel.com/dashboard>
-- **GitHub Actions**: <https://github.com/MrMiless44/Infamous-freight-enterprises/actions>
+- **GitHub Actions**:
+  <https://github.com/MrMiless44/Infamous-freight-enterprises/actions>
 
 ---
 

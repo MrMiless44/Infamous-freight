@@ -1,9 +1,9 @@
 /**
  * Commitlint Configuration
  * Enforces Conventional Commits standard
- * 
+ *
  * Format: type(scope): subject
- * 
+ *
  * Types:
  * - feat: A new feature
  * - fix: A bug fix
@@ -15,7 +15,7 @@
  * - chore: Changes to the build process or auxiliary tools
  * - ci: Changes to our CI configuration files and scripts
  * - revert: Reverts a previous commit
- * 
+ *
  * Examples:
  * - feat(api): add user authentication endpoint
  * - fix(web): resolve button styling issue on mobile
@@ -24,31 +24,20 @@
  */
 
 module.exports = {
-  extends: ['@commitlint/config-conventional'],
+  extends: ["@commitlint/config-conventional"],
   rules: {
-    'type-enum': [
+    "type-enum": [
       2,
-      'always',
-      [
-        'feat',
-        'fix',
-        'docs',
-        'style',
-        'refactor',
-        'perf',
-        'test',
-        'chore',
-        'ci',
-        'revert'
-      ]
+      "always",
+      ["feat", "fix", "docs", "style", "refactor", "perf", "test", "chore", "ci", "revert"],
     ],
-    'type-case': [2, 'always', 'lower-case'],
-    'type-empty': [2, 'never'],
-    'scope-case': [2, 'always', 'lower-case'],
-    'subject-empty': [2, 'never'],
-    'subject-full-stop': [2, 'never', '.'],
-    'header-max-length': [2, 'always', 100],
-    'body-leading-blank': [2, 'always'],
-    'footer-leading-blank': [2, 'always']
-  }
+    "type-case": [2, "always", "lower-case"],
+    "type-empty": [2, "never"],
+    "scope-case": [2, "always", "lower-case"],
+    "subject-empty": [2, "never"],
+    "subject-full-stop": [2, "never", "."],
+    "header-max-length": [2, "always", 100],
+    "body-leading-blank": [2, "always"],
+    "footer-leading-blank": [2, "always"],
+  },
 };

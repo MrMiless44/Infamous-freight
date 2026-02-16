@@ -3,7 +3,7 @@
  * Shows current route, ETA, and delivery status
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -11,20 +11,20 @@ import {
   Text,
   ActivityIndicator,
   Dimensions,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { colors, spacing, typography } from '../theme';
-import MapView, { Marker, Polyline } from 'react-native-maps';
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { colors, spacing, typography } from "../theme";
+import MapView, { Marker, Polyline } from "react-native-maps";
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 interface RouteInfo {
   distance: number;
   duration: number;
   remainingDistance: number;
   remainingTime: number;
-  status: 'in_transit' | 'at_pickup' | 'at_delivery' | 'idle';
+  status: "in_transit" | "at_pickup" | "at_delivery" | "idle";
   currentLat: number;
   currentLng: number;
   pickupLat: number;
@@ -50,16 +50,29 @@ export const MapScreen: React.FC<MapScreenProps> = ({ navigation }) => {
   const loadRouteData = async () => {
     try {
       setLoading(true);
-      // TODO: Replace with actual API call
-      // const response = await fetch(`${API_BASE_URL}/api/driver/route`);
-      // const data = await response.json();
+      const apiBaseUrl = process.env.EXPO_PUBLIC_API_URL || process.env.API_BASE_URL;
+      let routeData: RouteInfo | null = null;
+
+      if (apiBaseUrl) {
+        try {
+          const response = await fetch(`${apiBaseUrl}/api/driver/route`);
+          if (response.ok) {
+            const result = await response.json();
+            if (result?.success && result.data) {
+              routeData = result.data;
+            }
+          }
+        } catch (apiError) {
+          console.warn("Route API unavailable, using mock data:", apiError);
+        }
+      }
 
       const mockRoute: RouteInfo = {
         distance: 245,
         duration: 380,
         remainingDistance: 120,
         remainingTime: 185,
-        status: 'in_transit',
+        status: "in_transit",
         currentLat: 32.7767,
         currentLng: -96.797,
         pickupLat: 32.7555,
@@ -67,9 +80,9 @@ export const MapScreen: React.FC<MapScreenProps> = ({ navigation }) => {
         deliveryLat: 29.7604,
         deliveryLng: -95.3698,
       };
-      setRoute(mockRoute);
+      setRoute(routeData || mockRoute);
     } catch (error) {
-      console.error('Error loading route data:', error);
+      console.error("Error loading route data:", error);
     } finally {
       setLoading(false);
     }
@@ -88,7 +101,7 @@ export const MapScreen: React.FC<MapScreenProps> = ({ navigation }) => {
 
   const showFullRoute = () => {
     if (route && mapRef) {
-      mapRef.fitToSuppliedMarkers(['current', 'delivery'], {
+      mapRef.fitToSuppliedMarkers(["current", "delivery"], {
         edgePadding: {
           top: 100,
           right: 50,
@@ -189,18 +202,12 @@ export const MapScreen: React.FC<MapScreenProps> = ({ navigation }) => {
 
         {/* Quick Actions */}
         <View style={styles.quickActionsRow}>
-          <TouchableOpacity
-            style={styles.quickActionButton}
-            onPress={centerOnCurrent}
-          >
+          <TouchableOpacity style={styles.quickActionButton} onPress={centerOnCurrent}>
             <MaterialCommunityIcons name="crosshairs-gps" size={20} color={colors.primary} />
             <Text style={styles.quickActionLabel}>Center</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.quickActionButton}
-            onPress={showFullRoute}
-          >
+          <TouchableOpacity style={styles.quickActionButton} onPress={showFullRoute}>
             <MaterialCommunityIcons name="plus" size={20} color={colors.primary} />
             <Text style={styles.quickActionLabel}>Route</Text>
           </TouchableOpacity>
@@ -219,7 +226,7 @@ export const MapScreen: React.FC<MapScreenProps> = ({ navigation }) => {
       <View style={[styles.infoPanel, { top: insets.top + spacing.lg }]}>
         <TouchableOpacity
           style={styles.infoPanelButton}
-          onPress={() => setRoute({ ...route, status: 'idle' })}
+          onPress={() => setRoute({ ...route, status: "idle" })}
         >
           <MaterialCommunityIcons name="information" size={20} color={colors.primary} />
         </TouchableOpacity>
@@ -241,8 +248,8 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderWidth: 3,
     borderColor: colors.white,
     shadowColor: colors.black,
@@ -256,16 +263,16 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
     backgroundColor: colors.primaryDark,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   deliveryMarker: {
     width: 40,
     height: 40,
     borderRadius: 20,
     backgroundColor: colors.white,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderWidth: 2,
     borderColor: colors.danger,
     shadowColor: colors.black,
@@ -275,7 +282,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   etaCard: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
@@ -291,9 +298,9 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   etaHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: spacing.md,
   },
   etaTitle: {
@@ -301,8 +308,8 @@ const styles = StyleSheet.create({
     color: colors.gray900,
   },
   statusBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: spacing.sm,
     backgroundColor: colors.successLight,
     paddingHorizontal: spacing.md,
@@ -312,10 +319,10 @@ const styles = StyleSheet.create({
   statusText: {
     ...typography.caption,
     color: colors.success,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   etaMain: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: spacing.lg,
   },
   etaTime: {
@@ -324,13 +331,13 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   etaDetails: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: spacing.md,
   },
   etaDetail: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: spacing.sm,
   },
   etaDetailText: {
@@ -343,7 +350,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.gray300,
   },
   quickActionsRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: spacing.md,
     marginBottom: spacing.lg,
   },
@@ -353,9 +360,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     borderRadius: 8,
     backgroundColor: colors.gray100,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: spacing.sm,
   },
   callButton: {
@@ -364,13 +371,13 @@ const styles = StyleSheet.create({
   quickActionLabel: {
     ...typography.caption,
     color: colors.primary,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   callButtonText: {
     color: colors.white,
   },
   infoPanel: {
-    position: 'absolute',
+    position: "absolute",
     right: spacing.lg,
   },
   infoPanelButton: {
@@ -378,8 +385,8 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     backgroundColor: colors.white,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     shadowColor: colors.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,

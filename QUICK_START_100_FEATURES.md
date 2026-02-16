@@ -17,7 +17,9 @@ cp .env.example .env
 ## Required API Keys
 
 ### Minimal Setup (Mock Mode)
+
 No API keys needed! Services fall back to synthetic/mock implementations:
+
 - AI voice → Mock transcription
 - Document OCR → Mock extraction
 - Route optimization → Basic algorithms
@@ -26,6 +28,7 @@ No API keys needed! Services fall back to synthetic/mock implementations:
 **Perfect for local development and testing!**
 
 ### Production Setup
+
 Add to `.env`:
 
 ```bash
@@ -87,32 +90,37 @@ node test-websocket.js
 ```
 
 **test-websocket.js**:
+
 ```javascript
-const WebSocket = require('ws');
+const WebSocket = require("ws");
 
-const ws = new WebSocket('ws://localhost:3001/ws');
+const ws = new WebSocket("ws://localhost:3001/ws");
 
-ws.on('open', () => {
-  console.log('✅ Connected to WebSocket');
-  
+ws.on("open", () => {
+  console.log("✅ Connected to WebSocket");
+
   // Authenticate
-  ws.send(JSON.stringify({
-    type: 'auth',
-    token: 'YOUR_JWT_TOKEN'
-  }));
-  
+  ws.send(
+    JSON.stringify({
+      type: "auth",
+      token: "YOUR_JWT_TOKEN",
+    }),
+  );
+
   // Subscribe to shipment updates
   setTimeout(() => {
-    ws.send(JSON.stringify({
-      type: 'subscribe',
-      resourceType: 'shipment',
-      resourceId: 'SHIPMENT_ID'
-    }));
+    ws.send(
+      JSON.stringify({
+        type: "subscribe",
+        resourceType: "shipment",
+        resourceId: "SHIPMENT_ID",
+      }),
+    );
   }, 1000);
 });
 
-ws.on('message', (data) => {
-  console.log('📨 Received:', JSON.parse(data));
+ws.on("message", (data) => {
+  console.log("📨 Received:", JSON.parse(data));
 });
 ```
 
@@ -332,22 +340,22 @@ curl -X POST http://localhost:3001/api/documents/ocr \
 
 ```javascript
 // apps/mobile/App.js
-import offlineSync from './services/offlineSync';
+import offlineSync from "./services/offlineSync";
 
 // Queue operation when offline
 await offlineSync.queueOperation({
-  type: 'update_location',
-  vehicleId: 'TRUCK-001',
+  type: "update_location",
+  vehicleId: "TRUCK-001",
   location: { lat: 41.8781, lng: -87.6298 },
-  timestamp: new Date().toISOString()
+  timestamp: new Date().toISOString(),
 });
 
 // Subscribe to sync events
 offlineSync.subscribe((event) => {
-  if (event.type === 'sync_completed') {
-    console.log('Sync successful:', event.results);
+  if (event.type === "sync_completed") {
+    console.log("Sync successful:", event.results);
   }
-  if (event.type === 'conflict_requires_manual') {
+  if (event.type === "conflict_requires_manual") {
     // Show UI for user to resolve conflict
     showConflictDialog(event.serverData, event.localData);
   }
@@ -429,10 +437,14 @@ curl http://localhost:3001/api/websocket/stats \
 ## Common Issues
 
 ### 1. "No API key configured"
-**Solution**: Services work in mock mode by default. Add API keys for production features.
+
+**Solution**: Services work in mock mode by default. Add API keys for production
+features.
 
 ### 2. "JWT authentication failed"
+
 **Solution**: Generate JWT token:
+
 ```bash
 # Using your auth service
 curl -X POST http://localhost:3001/v1/auth/login \
@@ -441,21 +453,27 @@ curl -X POST http://localhost:3001/v1/auth/login \
 ```
 
 ### 3. "WebSocket connection refused"
+
 **Solution**: Ensure API is running with WebSocket enabled:
+
 ```bash
 # Check logs for "WebSocket server initialized"
 pnpm api:dev | grep WebSocket
 ```
 
 ### 4. "Prisma client not found"
+
 **Solution**: Generate Prisma client:
+
 ```bash
 cd apps/api
 pnpm prisma:generate
 ```
 
 ### 5. "Shared package types not found"
+
 **Solution**: Build shared package:
+
 ```bash
 pnpm --filter @infamous-freight/shared build
 ```
@@ -482,6 +500,7 @@ k6 run load-test-ai.k6.js
 ## Production Deployment
 
 ### Environment
+
 ```bash
 NODE_ENV=production
 API_PORT=3001
@@ -492,6 +511,7 @@ CORS_ORIGINS=https://app.infamousfreight.com
 ```
 
 ### Build
+
 ```bash
 # Build all packages
 pnpm build
@@ -504,6 +524,7 @@ pnpm start
 ```
 
 ### Health Check
+
 ```bash
 # Kubernetes readiness probe
 curl http://localhost:3001/api/health
@@ -513,8 +534,10 @@ curl http://localhost:3001/api/health
 
 ## Support
 
-- **Documentation**: See [IMPLEMENTATION_COMPLETE_100.md](./IMPLEMENTATION_COMPLETE_100.md)
-- **Architecture**: See [.github/copilot-instructions.md](./.github/copilot-instructions.md)
+- **Documentation**: See
+  [IMPLEMENTATION_COMPLETE_100.md](./IMPLEMENTATION_COMPLETE_100.md)
+- **Architecture**: See
+  [.github/copilot-instructions.md](./.github/copilot-instructions.md)
 - **Issues**: Open GitHub issue with logs and reproduction steps
 
 ---

@@ -35,8 +35,10 @@
 ### 2. **Bonus & Loyalty System** ✅
 
 - **Status**: Complete & Deployed
-- **Features**: 4-tier loyalty, referral bonuses, performance bonuses, milestone rewards
-- **Implementation**: `apps/api/src/services/bonusEngine.js`, `apps/api/src/services/loyaltyProgram.js`
+- **Features**: 4-tier loyalty, referral bonuses, performance bonuses, milestone
+  rewards
+- **Implementation**: `apps/api/src/services/bonusEngine.js`,
+  `apps/api/src/services/loyaltyProgram.js`
 - **Routes**: `apps/api/src/routes/bonuses.js`
 - **Endpoints**: 8 REST endpoints with JWT auth
 - **Database**: Prisma schema integrated
@@ -45,9 +47,12 @@
 ### 3. **Instant Payout System** ✅
 
 - **Status**: Complete & Deployed
-- **Features**: Stripe + PayPal integration, 0-15 min payouts, instant settlement
-- **Implementation**: `apps/api/src/services/paymentService.js`, `apps/api/src/services/stripeService.js`
-- **Routes**: `apps/api/src/routes/billing.js`, `apps/api/src/routes/payments.js`, `apps/api/src/routes/billing-payments.js`
+- **Features**: Stripe + PayPal integration, 0-15 min payouts, instant
+  settlement
+- **Implementation**: `apps/api/src/services/paymentService.js`,
+  `apps/api/src/services/stripeService.js`
+- **Routes**: `apps/api/src/routes/billing.js`,
+  `apps/api/src/routes/payments.js`, `apps/api/src/routes/billing-payments.js`
 - **Endpoints**: 10+ REST endpoints
 - **Rate Limits**: 30 requests / 15 minutes (billing-specific)
 - **Last Updated**: Commit b6842c7
@@ -55,7 +60,8 @@
 ### 4. **GPS Satellite Tracking** ✅
 
 - **Status**: Complete & Deployed
-- **Features**: Real-time vehicle tracking, geofencing, route monitoring, alerts, analytics
+- **Features**: Real-time vehicle tracking, geofencing, route monitoring,
+  alerts, analytics
 - **Implementation**: `apps/api/src/services/trackingService.js`
 - **Routes**: `apps/api/src/routes/tracking.js`
 - **Endpoints**: 12 REST endpoints with analytics
@@ -65,7 +71,8 @@
 ### 5. **AI Recommendation Engine** ✅
 
 - **Status**: Complete & Deployed
-- **Features**: Multi-factor scoring, collaborative filtering, personalized suggestions, feedback loop, trending analysis
+- **Features**: Multi-factor scoring, collaborative filtering, personalized
+  suggestions, feedback loop, trending analysis
 - **Implementation**: `apps/api/src/services/recommendationService.js`
 - **Routes**: `apps/api/src/routes/recommendations.js`
 - **Endpoints**: 11 REST endpoints
@@ -76,7 +83,8 @@
 ### 6. **Logistics Management System** ✅
 
 - **Status**: Complete & Deployed
-- **Features**: Shipment tracking, warehouse ops, inventory control, fleet management, load optimization, supply chain analytics
+- **Features**: Shipment tracking, warehouse ops, inventory control, fleet
+  management, load optimization, supply chain analytics
 - **Implementation**: `apps/api/src/services/logisticsService.js`
 - **Routes**: `apps/api/src/routes/logistics.js`
 - **Endpoints**: 15 REST endpoints
@@ -87,7 +95,8 @@
 ### 7. **Avatar System** ✅
 
 - **Status**: Complete & Deployed
-- **Features**: 4 featured system avatars, user uploads (PNG/JPEG/WebP, 6 MB max), avatar selection, persistent storage
+- **Features**: 4 featured system avatars, user uploads (PNG/JPEG/WebP, 6 MB
+  max), avatar selection, persistent storage
 - **Implementation**:
   - API: `apps/api/src/avatars/store.js`, `apps/api/src/avatars/routes.js`
   - Frontend: `apps/web/components/AvatarSelector.tsx`
@@ -100,8 +109,10 @@
 ### 8. **Security & Authentication** ✅
 
 - **Status**: Complete & Integrated
-- **Features**: JWT auth, scope-based authorization, rate limiting, input validation, audit logging
-- **Implementation**: `apps/api/src/middleware/security.js`, `apps/api/src/middleware/validation.js`
+- **Features**: JWT auth, scope-based authorization, rate limiting, input
+  validation, audit logging
+- **Implementation**: `apps/api/src/middleware/security.js`,
+  `apps/api/src/middleware/validation.js`
 - **Rate Limits**:
   - General: 100/15min
   - Auth: 5/15min
@@ -372,14 +383,14 @@ kubectl apply -f k8s/deployment.yaml
 
 ### Common Issues
 
-| Issue                     | Solution                                            |
-| ------------------------- | --------------------------------------------------- |
-| Port 3001 already in use  | Kill: `lsof -ti:3001 \| xargs kill -9`              |
-| Node modules missing      | Run: `pnpm install`                                 |
-| Database migration failed | Run: `cd apps/api && pnpm prisma:migrate:dev`            |
-| JWT auth failing          | Verify `JWT_SECRET` env var is set                  |
-| Avatar upload fails       | Check `apps/api/public/uploads/avatars/` permissions     |
-| Build errors              | Run: `pnpm --filter @infamous-freight/shared build` |
+| Issue                     | Solution                                             |
+| ------------------------- | ---------------------------------------------------- |
+| Port 3001 already in use  | Kill: `lsof -ti:3001 \| xargs kill -9`               |
+| Node modules missing      | Run: `pnpm install`                                  |
+| Database migration failed | Run: `cd apps/api && pnpm prisma:migrate:dev`        |
+| JWT auth failing          | Verify `JWT_SECRET` env var is set                   |
+| Avatar upload fails       | Check `apps/api/public/uploads/avatars/` permissions |
+| Build errors              | Run: `pnpm --filter @infamous-freight/shared build`  |
 
 ### Verification Commands
 

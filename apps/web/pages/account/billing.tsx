@@ -30,8 +30,7 @@ export default function Billing() {
     setBusy(true);
     setErr(null);
     try {
-      const customerId =
-        prompt("Enter Stripe customerId (enable DB lookup in Phase-15):") || "";
+      const customerId = prompt("Enter Stripe customerId (enable DB lookup in Phase-15):") || "";
       const token = localStorage.getItem("genesisToken") || "dev-token";
       const res = await fetch(`${apiBase}/v1/billing/portal`, {
         method: "POST",

@@ -18,10 +18,7 @@ interface ErrorBoundaryState {
   error: Error | null;
 }
 
-export class ErrorBoundary extends Component<
-  ErrorBoundaryProps,
-  ErrorBoundaryState
-> {
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false, error: null };
@@ -32,7 +29,7 @@ export class ErrorBoundary extends Component<
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // eslint-disable-next-line no-console
+     
     console.error("ErrorBoundary caught an error:", error, errorInfo);
     this.props.onError?.(error, errorInfo);
   }
@@ -47,9 +44,7 @@ export class ErrorBoundary extends Component<
         return this.props.fallback(this.state.error, this.resetError);
       }
 
-      return (
-        <ErrorFallback error={this.state.error} resetError={this.resetError} />
-      );
+      return <ErrorFallback error={this.state.error} resetError={this.resetError} />;
     }
 
     return this.props.children;
@@ -62,10 +57,7 @@ interface ErrorFallbackProps {
   resetError: () => void;
 }
 
-export const ErrorFallback: React.FC<ErrorFallbackProps> = ({
-  error,
-  resetError,
-}) => {
+export const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error, resetError }) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
@@ -99,11 +91,7 @@ export const ErrorFallback: React.FC<ErrorFallbackProps> = ({
           <Button onClick={resetError} fullWidth>
             Try Again
           </Button>
-          <Button
-            variant="tertiary"
-            onClick={() => (window.location.href = "/")}
-            fullWidth
-          >
+          <Button variant="tertiary" onClick={() => (window.location.href = "/")} fullWidth>
             Go Home
           </Button>
         </div>
@@ -127,10 +115,7 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({
   className = "",
 }) => {
   return (
-    <div
-      className={`bg-red-50 border-l-4 border-red-500 p-4 rounded ${className}`}
-      role="alert"
-    >
+    <div className={`bg-red-50 border-l-4 border-red-500 p-4 rounded ${className}`} role="alert">
       <div className="flex">
         <div className="flex-shrink-0">
           <svg
@@ -169,16 +154,10 @@ export const NotFound: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="text-center">
         <h1 className="text-9xl font-bold text-gray-200">404</h1>
-        <h2 className="mt-4 text-3xl font-semibold text-gray-900">
-          Page not found
-        </h2>
-        <p className="mt-2 text-gray-600">
-          Sorry, we couldn't find the page you're looking for.
-        </p>
+        <h2 className="mt-4 text-3xl font-semibold text-gray-900">Page not found</h2>
+        <p className="mt-2 text-gray-600">Sorry, we couldn't find the page you're looking for.</p>
         <div className="mt-6">
-          <Button onClick={() => (window.location.href = "/")}>
-            Go back home
-          </Button>
+          <Button onClick={() => (window.location.href = "/")}>Go back home</Button>
         </div>
       </div>
     </div>

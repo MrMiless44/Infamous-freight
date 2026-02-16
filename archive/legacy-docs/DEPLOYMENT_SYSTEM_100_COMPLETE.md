@@ -242,7 +242,8 @@ Alerts & Dashboards
    flyctl auth token
    ```
 
-2. Go to: https://github.com/MrMiless44/Infamous-freight-enterprises/settings/secrets/actions
+2. Go to:
+   https://github.com/MrMiless44/Infamous-freight-enterprises/settings/secrets/actions
 
 3. Click **"New repository secret"**
 
@@ -428,4 +429,5 @@ Sentry: Track errors
 **Author**: GitHub Copilot  
 **Status**: ✅ **99% COMPLETE — PRODUCTION READY**
 
-One final step: Add `FLY_API_TOKEN` to GitHub Secrets for 100% complete automated deployment system! 🎯
+One final step: Add `FLY_API_TOKEN` to GitHub Secrets for 100% complete
+automated deployment system! 🎯

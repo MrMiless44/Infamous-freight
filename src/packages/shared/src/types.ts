@@ -19,11 +19,7 @@ export interface Shipment {
   updatedAt: Date;
 }
 
-export type ShipmentStatus =
-  | "pending"
-  | "in_transit"
-  | "delivered"
-  | "cancelled";
+export type ShipmentStatus = "pending" | "in_transit" | "delivered" | "cancelled";
 
 export interface ApiResponse<T = any> {
   success: boolean;

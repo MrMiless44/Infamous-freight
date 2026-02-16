@@ -212,8 +212,8 @@ EOF
 
 | Severity             | Response | Escalate After | Manager | CTO |
 | -------------------- | -------- | -------------- | ------- | --- |
-| CRITICAL (>50% down) | 2 min    | 5 min          | ✅       | ✅   |
-| HIGH (10-50% down)   | 5 min    | 15 min         | ✅       | ✓   |
+| CRITICAL (>50% down) | 2 min    | 5 min          | ✅      | ✅  |
+| HIGH (10-50% down)   | 5 min    | 15 min         | ✅      | ✓   |
 | MEDIUM (1-10% down)  | 10 min   | 30 min         | ✓       | ✓   |
 | LOW (< 1% down)      | 30 min   | 60 min         | ✓       | ✗   |
 
@@ -352,13 +352,11 @@ git log -p -1 | grep "JWT_SECRET\|NEXTAUTH"
 ```markdown
 # Production Incident Post-Mortem
 
-**Date:** [Date]
-**Service:** Production
-**Duration:** [X minutes]
-**Status Pages Updated:** [Yes/No]
-**Root Cause:** [What actually caused the issue]
+**Date:** [Date] **Service:** Production **Duration:** [X minutes] **Status
+Pages Updated:** [Yes/No] **Root Cause:** [What actually caused the issue]
 
 ## Timeline
+
 - HH:MM - Issue detected
 - HH:MM - Incident declared
 - HH:MM - Rollback started
@@ -366,27 +364,33 @@ git log -p -1 | grep "JWT_SECRET\|NEXTAUTH"
 - HH:MM - Post-mortem called
 
 ## What Happened
+
 [Detailed description of issue]
 
 ## Why It Happened
+
 [Root cause analysis]
 
 ## How We Responded
+
 - Time to detect: X minutes
 - Time to rollback: Y minutes
 - Time to stable: Z minutes
 
 ## Impact
+
 - Users affected: ~[N]
 - Requests failed: ~[N]
 - Data loss: Yes/No, describe
 
 ## What We'll Do To Prevent
+
 1. [Action item #1 - owner, deadline]
 2. [Action item #2 - owner, deadline]
 3. [Action item #3 - owner, deadline]
 
 ## Follow-Up
+
 - [ ] Fix root cause
 - [ ] Add automated tests
 - [ ] Update runbooks
@@ -427,4 +431,5 @@ ETA: 5-10 minutes total
 - Documentation: PRODUCTION_READINESS_100.md
 - Sentry: <https://sentry.io/organizations/infamousfreight/>
 
-**Remember:** Rollbacks are safe and expected. It's OK to rollback. Better to be safe than sorry! ✅
+**Remember:** Rollbacks are safe and expected. It's OK to rollback. Better to be
+safe than sorry! ✅

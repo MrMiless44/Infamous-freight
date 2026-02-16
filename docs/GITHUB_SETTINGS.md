@@ -1,6 +1,7 @@
 # GitHub Repository Settings Guide
 
-This guide helps you configure recommended settings for the Infamous Freight Enterprises repository.
+This guide helps you configure recommended settings for the Infamous Freight
+Enterprises repository.
 
 ## 🔒 Branch Protection Rules
 
@@ -206,7 +207,8 @@ Use your production site URL:
 https://<YOUR-PROJECT-REF>.supabase.co/auth/v1/callback
 ```
 
-Replace `<YOUR-PROJECT-REF>` with your Supabase project ref (the ID in your Supabase URL).
+Replace `<YOUR-PROJECT-REF>` with your Supabase project ref (the ID in your
+Supabase URL).
 
 **Example**
 
@@ -230,9 +232,9 @@ Then go to **Authentication → URL Configuration** and set:
 
 **Redirect URLs**
 
-- <http://localhost:3000/>**
-- <https://infamous-freight.netlify.app/>**
-- <https://infamous-freight.vercel.app/>**
+- <http://localhost:3000/>\*\*
+- <https://infamous-freight.netlify.app/>\*\*
+- <https://infamous-freight.vercel.app/>\*\*
 
 ### Frontend Supabase JS Usage
 
@@ -255,11 +257,9 @@ await supabase.auth.getSession();
 
 Enable insights for better project visibility:
 
-✅ **Pulse:** Track repository activity
-✅ **Contributors:** Show contributor statistics
-✅ **Community:** Monitor community health
-✅ **Traffic:** Track views and clones
-✅ **Commits:** Analyze commit patterns
+✅ **Pulse:** Track repository activity ✅ **Contributors:** Show contributor
+statistics ✅ **Community:** Monitor community health ✅ **Traffic:** Track
+views and clones ✅ **Commits:** Analyze commit patterns
 
 ## 🚀 Actions Settings
 
@@ -273,8 +273,7 @@ Enable insights for better project visibility:
 
 ### Cache Settings
 
-✅ **Cache storage:** 10 GB (default)
-✅ **Cache retention:** 7 days
+✅ **Cache storage:** 10 GB (default) ✅ **Cache retention:** 7 days
 
 ## 📧 Webhooks (Optional)
 
@@ -333,4 +332,5 @@ After configuration, verify:
 
 ---
 
-**Note:** Some settings require admin access to the repository. Contact repository owners if you don't have sufficient permissions.
+**Note:** Some settings require admin access to the repository. Contact
+repository owners if you don't have sufficient permissions.

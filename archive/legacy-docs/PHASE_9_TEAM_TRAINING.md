@@ -459,7 +459,8 @@ What do you do?
 ### On-Call Schedule
 
 - **Primary**: [View Schedule](https://infamous-freight.pagerduty.com/schedules)
-- **Secondary**: [View Schedule](https://infamous-freight.pagerduty.com/schedules)
+- **Secondary**:
+  [View Schedule](https://infamous-freight.pagerduty.com/schedules)
 - **Escalation**: Backend Lead → Platform Lead → CTO
 
 ---
@@ -475,12 +476,13 @@ What do you do?
 - [ ] Document incidents
 - [ ] Restore services (restart, scale, clear cache)
 
-**Name**: **********\_\_\_\_**********  
-**Date**: **********\_\_\_\_**********  
-**Trainer**: **********\_\_\_\_**********
+**Name**: ****\*\*****\_\_\_\_****\*\*****  
+**Date**: ****\*\*****\_\_\_\_****\*\*****  
+**Trainer**: ****\*\*****\_\_\_\_****\*\*****
 
 ---
 
-**Training Complete! You're now certified to handle Phase 9 on-call incidents.** 🎓
+**Training Complete! You're now certified to handle Phase 9 on-call incidents.**
+🎓
 
 Need help? Ask in #on-call-support or contact your trainer.

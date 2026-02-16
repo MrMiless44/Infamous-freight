@@ -4,25 +4,31 @@
 
 ### 1. ✅ Missing fly.toml at Project Root
 
-**Problem**: Fly.io expects `fly.toml` at the project root, but it was located in `configs/ci-cd/fly.toml`
+**Problem**: Fly.io expects `fly.toml` at the project root, but it was located
+in `configs/ci-cd/fly.toml`
 
-**Solution**: Created `/workspaces/Infamous-freight-enterprises/fly.toml` with correct configuration
+**Solution**: Created `/workspaces/Infamous-freight-enterprises/fly.toml` with
+correct configuration
 
 ### 2. ✅ Incorrect Dockerfile Path
 
-**Problem**: Original fly.toml pointed to `apps/api/Dockerfile` which doesn't exist
+**Problem**: Original fly.toml pointed to `apps/api/Dockerfile` which doesn't
+exist
 
-**Solution**: Created optimized `Dockerfile.fly` at project root that properly handles the monorepo structure
+**Solution**: Created optimized `Dockerfile.fly` at project root that properly
+handles the monorepo structure
 
 ### 3. ✅ Monorepo Build Context
 
-**Problem**: The project uses pnpm workspaces with API at `apps/api/`, requiring special Docker build handling
+**Problem**: The project uses pnpm workspaces with API at `apps/api/`, requiring
+special Docker build handling
 
 **Solution**: New Dockerfile properly:
 
 - Installs pnpm in the base image
 - Copies workspace configuration files
-- Uses `pnpm install --filter infamous-freight-api...` to install only API dependencies
+- Uses `pnpm install --filter infamous-freight-api...` to install only API
+  dependencies
 - Generates Prisma client before build
 - Uses multi-stage build for smaller production image
 
@@ -50,7 +56,8 @@
 
 **Cause**: Fly.io can't find the Dockerfile specified in fly.toml
 
-**Fix**: Ensure `Dockerfile.fly` exists at project root and `fly.toml` references it correctly
+**Fix**: Ensure `Dockerfile.fly` exists at project root and `fly.toml`
+references it correctly
 
 ### Error: "pnpm: command not found"
 
@@ -62,7 +69,8 @@
 
 **Cause**: Dependencies not properly installed in Docker image
 
-**Fix**: Check that `pnpm install --filter infamous-freight-api...` runs successfully in build stage
+**Fix**: Check that `pnpm install --filter infamous-freight-api...` runs
+successfully in build stage
 
 ### Error: "Prisma Client has not been generated"
 
@@ -83,7 +91,8 @@
    cd /app && pnpm run prisma:migrate
    ```
 
-2. Or uncomment the migration line in Dockerfile.fly (not recommended for production)
+2. Or uncomment the migration line in Dockerfile.fly (not recommended for
+   production)
 
 ## Environment Variables Required
 
@@ -248,5 +257,4 @@ flyctl scale vm dedicated-cpu-1x -a infamous-freight-api
 
 ---
 
-**Last Updated**: 2026-01-01
-**Status**: ✅ Ready for deployment
+**Last Updated**: 2026-01-01 **Status**: ✅ Ready for deployment

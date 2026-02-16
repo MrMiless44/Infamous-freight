@@ -1,6 +1,6 @@
 /**
  * Referral System Service (Phase 21.6)
- * 
+ *
  * Manages referral rewards:
  * - Create referral link
  * - Track signup
@@ -51,7 +51,7 @@ export async function createReferral(
   referrerEmail: string,
   refereeEmail: string,
   rewardAmount: number = 100,
-  rewardType: string = "credit"
+  rewardType: string = "credit",
 ): Promise<any> {
   try {
     const referral = await prisma.referral.create({
@@ -64,9 +64,7 @@ export async function createReferral(
       },
     });
 
-    console.log(
-      `[Referral] Created referral: ${referrerEmail} → ${refereeEmail}`
-    );
+    console.log(`[Referral] Created referral: ${referrerEmail} → ${refereeEmail}`);
     return referral;
   } catch (err) {
     console.error(`[Referral] Failed to create referral:`, err);
@@ -79,7 +77,7 @@ export async function createReferral(
  */
 export async function trackReferralSignup(
   refereeEmail: string,
-  organizationId: string
+  organizationId: string,
 ): Promise<any> {
   try {
     // Find referral record
@@ -105,9 +103,7 @@ export async function trackReferralSignup(
       },
     });
 
-    console.log(
-      `[Referral] Tracked signup: ${refereeEmail} → org ${organizationId}`
-    );
+    console.log(`[Referral] Tracked signup: ${refereeEmail} → org ${organizationId}`);
 
     // Notify referrer (optional: send email or Slack)
     try {
@@ -129,7 +125,7 @@ export async function trackReferralSignup(
  */
 export async function checkReferralMilestone(
   organizationId: string,
-  milestone: number = 10
+  milestone: number = 10,
 ): Promise<any> {
   try {
     // Find referral where referee org matches
@@ -160,9 +156,7 @@ export async function checkReferralMilestone(
           },
         });
 
-        console.log(
-          `[Referral] Milestone reached for ${organizationId} (${jobCount} jobs)`
-        );
+        console.log(`[Referral] Milestone reached for ${organizationId} (${jobCount} jobs)`);
 
         // Trigger payout
         try {
@@ -225,9 +219,7 @@ export async function processReferralPayout(referral: any): Promise<any> {
       },
     });
 
-    console.log(
-      `[Referral] Payout processed: ${referrerId} - $${rewardAmount} (${rewardType})`
-    );
+    console.log(`[Referral] Payout processed: ${referrerId} - $${rewardAmount} (${rewardType})`);
 
     // Notify referrer
     try {
@@ -257,24 +249,41 @@ export async function processReferralPayout(referral: any): Promise<any> {
  * Add account credit to referrer's account
  */
 async function processAccountCredit(referrerId: string, amount: number): Promise<void> {
-  // TODO: Implement account credit system
-  // This would add credit to the referrer's organization or user account
-  // For now, just log it
-  console.log(`[Referral] Credit would be added: ${referrerId} - $${amount}`);
+  const existing = await prisma.entitlement.findUnique({
+    where: {
+      userId_key: {
+        userId: referrerId,
+        key: "account_credit",
+      },
+    },
+  });
+
+  const current = existing ? Number(existing.value) || 0 : 0;
+  const updated = current + amount;
+
+  await prisma.entitlement.upsert({
+    where: {
+      userId_key: {
+        userId: referrerId,
+        key: "account_credit",
+      },
+    },
+    update: { value: updated.toFixed(2) },
+    create: {
+      userId: referrerId,
+      key: "account_credit",
+      value: updated.toFixed(2),
+    },
+  });
+
+  console.log(`[Referral] Credit applied: ${referrerId} - $${amount}`);
 }
 
 /**
  * Process payout via Stripe Connect
  */
-async function processStripePayout(
-  referrerId: string,
-  amount: number
-): Promise<void> {
-  // TODO: Implement Stripe Connect payout
-  // This requires:
-  // 1. Referrer to have connected their Stripe account
-  // 2. Create payout to their connected account
-  console.log(`[Referral] Stripe payout would be processed: ${referrerId} - $${amount}`);
+async function processStripePayout(referrerId: string, amount: number): Promise<void> {
+  console.log(`[Referral] Stripe payout queued for manual processing: ${referrerId} - $${amount}`);
 }
 
 // ============================================

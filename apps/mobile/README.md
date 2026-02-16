@@ -113,14 +113,14 @@ pnpm test
 Example:
 
 ```typescript
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#fff'
-  }
+    backgroundColor: "#fff",
+  },
 });
 ```
 
@@ -158,10 +158,12 @@ export function AppNavigator() {
 ## 🌐 API Integration
 
 ```typescript
-import type { ApiResponse, Shipment } from '@infamous-freight/shared';
+import type { ApiResponse, Shipment } from "@infamous-freight/shared";
 
 async function fetchShipments(): Promise<ApiResponse<Shipment[]>> {
-  const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/shipments`);
+  const response = await fetch(
+    `${process.env.EXPO_PUBLIC_API_URL}/api/shipments`,
+  );
   return response.json();
 }
 ```
@@ -169,8 +171,8 @@ async function fetchShipments(): Promise<ApiResponse<Shipment[]>> {
 ## 🎯 Type Safety with Shared Package
 
 ```typescript
-import type { Shipment } from '@infamous-freight/shared';
-import { SHIPMENT_STATUSES } from '@infamous-freight/shared';
+import type { Shipment } from "@infamous-freight/shared";
+import { SHIPMENT_STATUSES } from "@infamous-freight/shared";
 
 interface Props {
   shipment: Shipment;

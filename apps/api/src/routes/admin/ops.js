@@ -9,134 +9,122 @@ const { getLastTwilioStatus } = require("../../services/notificationTelemetry");
 const router = express.Router();
 
 function requireAdmin(req, res, next) {
-    if (req.user?.role === 'admin') return next();
-    return res.status(403).json({ error: 'Admin access required' });
+  if (req.user?.role === "admin") return next();
+  return res.status(403).json({ error: "Admin access required" });
 }
 
 router.get(
-    "/admin/health/full",
-    authenticate,
-    requireAdmin,
-    requirePerm("admin:ops"),
-    auditLog,
-    async (_req, res) => {
-        const details = {
-            status: 'ok',
-            timestamp: new Date().toISOString(),
-            version: process.env.npm_package_version || 'unknown',
-            commit: process.env.GITHUB_SHA,
-            uptimeSeconds: Math.round(process.uptime()),
-            services: {},
-            system: {
-                platform: os.platform(),
-                arch: os.arch(),
-                cpuCores: os.cpus().length,
-                loadAverage: os.loadavg(),
-                freeMemoryMB: Math.round(os.freemem() / 1024 / 1024),
-                totalMemoryMB: Math.round(os.totalmem() / 1024 / 1024),
-            },
+  "/admin/health/full",
+  authenticate,
+  requireAdmin,
+  requirePerm("admin:ops"),
+  auditLog,
+  async (_req, res) => {
+    const details = {
+      status: "ok",
+      timestamp: new Date().toISOString(),
+      version: process.env.npm_package_version || "unknown",
+      commit: process.env.GITHUB_SHA,
+      uptimeSeconds: Math.round(process.uptime()),
+      services: {},
+      system: {
+        platform: os.platform(),
+        arch: os.arch(),
+        cpuCores: os.cpus().length,
+        loadAverage: os.loadavg(),
+        freeMemoryMB: Math.round(os.freemem() / 1024 / 1024),
+        totalMemoryMB: Math.round(os.totalmem() / 1024 / 1024),
+      },
+    };
+
+    // Database check
+    try {
+      const client = getPrisma?.() || prisma;
+      if (client) {
+        const dbStart = Date.now();
+        await client.$queryRaw`SELECT 1`;
+        details.services.database = {
+          status: "healthy",
+          responseTimeMs: Date.now() - dbStart,
         };
-
-        // Database check
-        try {
-            const client = getPrisma?.() || prisma;
-            if (client) {
-                const dbStart = Date.now();
-                await client.$queryRaw`SELECT 1`;
-                details.services.database = {
-                    status: 'healthy',
-                    responseTimeMs: Date.now() - dbStart,
-                };
-            } else {
-                details.services.database = {
-                    status: 'skipped',
-                    note: 'Prisma not initialized (persistenceMode=json?)',
-                };
-            }
-        } catch (error) {
-            details.status = 'degraded';
-            details.services.database = {
-                status: 'unhealthy',
-                error: error.message,
-            };
-        }
-
-        res.status(details.status === 'ok' ? 200 : 503).json(details);
-    },
-);
-
-router.get(
-    "/admin/readiness",
-    authenticate,
-    requireAdmin,
-    requirePerm("admin:ops"),
-    auditLog,
-    async (_req, res) => {
-        const details = {
-            status: "ok",
-            timestamp: new Date().toISOString(),
-            version: process.env.APP_VERSION || process.env.npm_package_version || "unknown",
-            gitSha: process.env.GIT_SHA || process.env.GITHUB_SHA || "unknown",
-            uptimeSeconds: Math.round(process.uptime()),
-            database: { ok: false, latencyMs: null, error: null, skipped: false },
-            stripe: { lastWebhookId: null, lastWebhookAt: null },
-            twilio: { lastStatus: null },
+      } else {
+        details.services.database = {
+          status: "skipped",
+          note: "Prisma not initialized (persistenceMode=json?)",
         };
+      }
+    } catch (error) {
+      details.status = "degraded";
+      details.services.database = {
+        status: "unhealthy",
+        error: error.message,
+      };
+    }
 
-        try {
-            const client = getPrisma?.() || prisma;
-            if (!client) {
-                details.database.ok = true;
-                details.database.skipped = true;
-                details.database.error = "db_not_configured";
-            } else {
-                const dbStart = Date.now();
-                await client.$queryRaw`SELECT 1`;
-                details.database.ok = true;
-                details.database.latencyMs = Date.now() - dbStart;
-            }
-        } catch (error) {
-            details.status = "degraded";
-            details.database.error = error.message;
-        }
-
-        try {
-            const client = getPrisma?.() || prisma;
-            if (client?.webhookEvent) {
-                const lastWebhook = await client.webhookEvent.findFirst({
-                    orderBy: { createdAt: "desc" },
-                });
-                details.stripe.lastWebhookId = lastWebhook?.id || null;
-                details.stripe.lastWebhookAt = lastWebhook?.createdAt || null;
-            }
-        } catch (error) {
-            details.stripe.error = error.message;
-        }
-
-        details.twilio.lastStatus = getLastTwilioStatus();
-
-        res.status(details.status === "ok" ? 200 : 503).json(details);
-    },
+    res.status(details.status === "ok" ? 200 : 503).json(details);
+  },
 );
 
 router.get(
-    "/admin/rate-limits",
-    authenticate,
-    requireAdmin,
-    auditLog,
-    (_req, res) => {
-        res.json({ stats: rateLimitMetrics.snapshot() });
-    },
+  "/admin/readiness",
+  authenticate,
+  requireAdmin,
+  requirePerm("admin:ops"),
+  auditLog,
+  async (_req, res) => {
+    const details = {
+      status: "ok",
+      timestamp: new Date().toISOString(),
+      version: process.env.APP_VERSION || process.env.npm_package_version || "unknown",
+      gitSha: process.env.GIT_SHA || process.env.GITHUB_SHA || "unknown",
+      uptimeSeconds: Math.round(process.uptime()),
+      database: { ok: false, latencyMs: null, error: null, skipped: false },
+      stripe: { lastWebhookId: null, lastWebhookAt: null },
+      twilio: { lastStatus: null },
+    };
+
+    try {
+      const client = getPrisma?.() || prisma;
+      if (!client) {
+        details.database.ok = true;
+        details.database.skipped = true;
+        details.database.error = "db_not_configured";
+      } else {
+        const dbStart = Date.now();
+        await client.$queryRaw`SELECT 1`;
+        details.database.ok = true;
+        details.database.latencyMs = Date.now() - dbStart;
+      }
+    } catch (error) {
+      details.status = "degraded";
+      details.database.error = error.message;
+    }
+
+    try {
+      const client = getPrisma?.() || prisma;
+      if (client?.webhookEvent) {
+        const lastWebhook = await client.webhookEvent.findFirst({
+          orderBy: { createdAt: "desc" },
+        });
+        details.stripe.lastWebhookId = lastWebhook?.id || null;
+        details.stripe.lastWebhookAt = lastWebhook?.createdAt || null;
+      }
+    } catch (error) {
+      details.stripe.error = error.message;
+    }
+
+    details.twilio.lastStatus = getLastTwilioStatus();
+
+    res.status(details.status === "ok" ? 200 : 503).json(details);
+  },
 );
 
-router.get(
-    "/admin/database/slow-queries",
-    authenticate,
-    requireAdmin,
-    auditLog,
-    (_req, res) => {
-        res.json({ slowQueries: getSlowQueries(50) });
-    },
-);
+router.get("/admin/rate-limits", authenticate, requireAdmin, auditLog, (_req, res) => {
+  res.json({ stats: rateLimitMetrics.snapshot() });
+});
+
+router.get("/admin/database/slow-queries", authenticate, requireAdmin, auditLog, (_req, res) => {
+  res.json({ slowQueries: getSlowQueries(50) });
+});
 
 module.exports = router;

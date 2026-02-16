@@ -86,7 +86,8 @@ export class VoiceSearchService {
       // Command patterns
       const patterns = {
         loadSearch: /find|search|looking for|show me|get|find me/i,
-        destination: /to|going to|headed to|toward|towards|destination|city|phoenix|denver|las vegas|los angeles/i,
+        destination:
+          /to|going to|headed to|toward|towards|destination|city|phoenix|denver|las vegas|los angeles/i,
         origin: /from|starting from|pickup|origin|leaving|denver|phoenix/i,
         earnings: /earnings|money|how much|pay|rate|revenue/i,
         bidding: /bid|offer|place bid|bid on|accept/i,

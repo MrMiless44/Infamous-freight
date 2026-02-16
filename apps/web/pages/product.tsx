@@ -5,18 +5,15 @@ import { trackEvent } from "../src/lib/analytics";
 const highlights = [
   {
     title: "Genesis AI Dispatch",
-    description:
-      "Autonomous matching, routing, and exception handling with transparent reasoning.",
+    description: "Autonomous matching, routing, and exception handling with transparent reasoning.",
   },
   {
     title: "Fleet Control Center",
-    description:
-      "Live availability, driver performance, and on-time risk signals in one view.",
+    description: "Live availability, driver performance, and on-time risk signals in one view.",
   },
   {
     title: "Billing + Insurance Engine",
-    description:
-      "Auto-invoicing, metered AI usage, and embedded coverage for every load.",
+    description: "Auto-invoicing, metered AI usage, and embedded coverage for every load.",
   },
 ];
 
@@ -38,12 +35,10 @@ export default function ProductPage() {
         <div className="container hero-inner">
           <div>
             <p className="section-subtitle">Product</p>
-            <h1 className="hero-title">
-              One operational stack for every freight decision.
-            </h1>
+            <h1 className="hero-title">One operational stack for every freight decision.</h1>
             <p className="hero-copy">
-              Infæmous Freight Enterprise connects dispatch, fleet, billing, and
-              insurance into a single AI-native operating system.
+              Infæmous Freight Enterprise connects dispatch, fleet, billing, and insurance into a
+              single AI-native operating system.
             </p>
             <div className="hero-actions">
               <Link
@@ -61,8 +56,8 @@ export default function ProductPage() {
           <div className="hero-card">
             <h3>Genesis Command</h3>
             <p>
-              Execute structured actions with reasoning summaries, confidence
-              scores, and auditable trails.
+              Execute structured actions with reasoning summaries, confidence scores, and auditable
+              trails.
             </p>
             <div className="metric-grid">
               <div className="metric-card">
@@ -86,8 +81,8 @@ export default function ProductPage() {
         <div className="container">
           <h2 className="section-title">Core capabilities</h2>
           <p className="section-subtitle">
-            Designed for operations leaders who need speed, transparency, and
-            control at every layer.
+            Designed for operations leaders who need speed, transparency, and control at every
+            layer.
           </p>
           <div className="grid grid-3" style={{ marginTop: "24px" }}>
             {highlights.map((item) => (

@@ -45,9 +45,21 @@ export default function CarrierInsuranceDetail() {
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr>
-              <th style={{ textAlign: "left", borderBottom: "1px solid #e2e8f0", paddingBottom: 8 }}>Coverage</th>
-              <th style={{ textAlign: "left", borderBottom: "1px solid #e2e8f0", paddingBottom: 8 }}>Status</th>
-              <th style={{ textAlign: "left", borderBottom: "1px solid #e2e8f0", paddingBottom: 8 }}>Expires</th>
+              <th
+                style={{ textAlign: "left", borderBottom: "1px solid #e2e8f0", paddingBottom: 8 }}
+              >
+                Coverage
+              </th>
+              <th
+                style={{ textAlign: "left", borderBottom: "1px solid #e2e8f0", paddingBottom: 8 }}
+              >
+                Status
+              </th>
+              <th
+                style={{ textAlign: "left", borderBottom: "1px solid #e2e8f0", paddingBottom: 8 }}
+              >
+                Expires
+              </th>
             </tr>
           </thead>
           <tbody>

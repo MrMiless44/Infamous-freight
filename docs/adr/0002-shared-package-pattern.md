@@ -6,7 +6,8 @@ Accepted
 
 ## Context
 
-With multiple services (API, Web, Mobile) in our monorepo, we needed a strategy for sharing:
+With multiple services (API, Web, Mobile) in our monorepo, we needed a strategy
+for sharing:
 
 - TypeScript type definitions (User, Shipment, ApiResponse, etc.)
 - Constants (HTTP status codes, shipment statuses, user roles)
@@ -22,7 +23,8 @@ Options considered:
 
 ## Decision
 
-We created a **local workspace package** at `packages/shared/` that exports common code.
+We created a **local workspace package** at `packages/shared/` that exports
+common code.
 
 **Package structure:**
 

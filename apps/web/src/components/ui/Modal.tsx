@@ -101,10 +101,7 @@ export const Modal: React.FC<ModalProps> = ({
         {(title || showCloseButton) && (
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             {title && (
-              <h2
-                id="modal-title"
-                className="text-xl font-semibold text-gray-900"
-              >
+              <h2 id="modal-title" className="text-xl font-semibold text-gray-900">
                 {title}
               </h2>
             )}
@@ -114,12 +111,7 @@ export const Modal: React.FC<ModalProps> = ({
                 className="p-1 text-gray-400 hover:text-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 aria-label="Close modal"
               >
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

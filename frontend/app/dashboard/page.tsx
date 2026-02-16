@@ -11,7 +11,7 @@ export default function Dashboard() {
       origin: "OKC",
       destination: "Dallas",
       weight: 12000,
-      miles: 210
+      miles: 210,
     });
     setProfit(res.data.estimated_profit);
   };

@@ -3,15 +3,18 @@
 **Date**: February 14, 2026  
 **Status**: ✅ PRODUCTION-READY  
 **Setup Time**: 2-3 hours  
-**Prerequisites**: Datadog account, Vercel access, Fly.io access  
+**Prerequisites**: Datadog account, Vercel access, Fly.io access
 
 ---
 
 ## 🎯 OVERVIEW
 
-This guide provides step-by-step instructions to create all 5 real-time monitoring dashboards recommended in the strategic audit. Each dashboard is optimized for INFÆMOUS FREIGHT's launch and growth metrics.
+This guide provides step-by-step instructions to create all 5 real-time
+monitoring dashboards recommended in the strategic audit. Each dashboard is
+optimized for INFÆMOUS FREIGHT's launch and growth metrics.
 
 **What You'll Build**:
+
 1. ✅ Operational Health Dashboard (infrastructure)
 2. ✅ Business Metrics Dashboard (revenue & conversions)
 3. ✅ User Engagement Dashboard (product usage)
@@ -46,20 +49,21 @@ open https://app.datadoghq.com
 ## 📊 DASHBOARD 1: OPERATIONAL HEALTH (Infrastructure Monitoring)
 
 ### **Purpose**
+
 Monitor API/Web uptime, performance, errors. Alert on degradation.
 
 ### **Metrics to Track**
 
-| Metric | Target | Alert Threshold | Source |
-|--------|--------|----------------|--------|
-| **API Uptime** | 99.95% | <99% | Fly.io / Datadog APM |
-| **API Latency (p50)** | <200ms | >300ms | Datadog APM |
-| **API Latency (p95)** | <400ms | >600ms | Datadog APM |
-| **API Latency (p99)** | <500ms | >1000ms | Datadog APM |
-| **Error Rate** | <0.12% | >1% | Sentry / Datadog |
-| **Request Volume** | N/A (baseline) | Drop >50% | Datadog APM |
-| **Database Connections** | <80% pool | >90% | Prisma metrics |
-| **Redis Connection** | Healthy | Disconnected | Custom metric |
+| Metric                   | Target         | Alert Threshold | Source               |
+| ------------------------ | -------------- | --------------- | -------------------- |
+| **API Uptime**           | 99.95%         | <99%            | Fly.io / Datadog APM |
+| **API Latency (p50)**    | <200ms         | >300ms          | Datadog APM          |
+| **API Latency (p95)**    | <400ms         | >600ms          | Datadog APM          |
+| **API Latency (p99)**    | <500ms         | >1000ms         | Datadog APM          |
+| **Error Rate**           | <0.12%         | >1%             | Sentry / Datadog     |
+| **Request Volume**       | N/A (baseline) | Drop >50%       | Datadog APM          |
+| **Database Connections** | <80% pool      | >90%            | Prisma metrics       |
+| **Redis Connection**     | Healthy        | Disconnected    | Custom metric        |
 
 ### **Datadog Dashboard JSON (Import Template)**
 
@@ -164,26 +168,28 @@ Monitor API/Web uptime, performance, errors. Alert on degradation.
 ## 💰 DASHBOARD 2: BUSINESS METRICS (Revenue & Growth)
 
 ### **Purpose**
+
 Track revenue, conversions, customer acquisition. Measure launch success.
 
 ### **Metrics to Track**
 
-| Metric | Target (Week 1) | Target (Month 1) | Source |
-|--------|----------------|------------------|--------|
-| **Free Signups** | 2,100+ | 13,000+ | PostgreSQL |
-| **Pro Conversions (Free→Pro)** | 100+ | 3,900+ | Stripe |
-| **Enterprise Deals** | 1-2 | 50+ | Salesforce / Manual |
-| **MRR** | $10K+ | $686K+ | Stripe |
-| **Daily Revenue** | $10K Day 1 | $23K avg | Stripe |
-| **Conversion Rate (Free→Pro)** | 30% | 30% | Calculated |
-| **Upgrade Rate (Pro→Enterprise)** | 15% | 15% | Calculated |
+| Metric                            | Target (Week 1) | Target (Month 1) | Source              |
+| --------------------------------- | --------------- | ---------------- | ------------------- |
+| **Free Signups**                  | 2,100+          | 13,000+          | PostgreSQL          |
+| **Pro Conversions (Free→Pro)**    | 100+            | 3,900+           | Stripe              |
+| **Enterprise Deals**              | 1-2             | 50+              | Salesforce / Manual |
+| **MRR**                           | $10K+           | $686K+           | Stripe              |
+| **Daily Revenue**                 | $10K Day 1      | $23K avg         | Stripe              |
+| **Conversion Rate (Free→Pro)**    | 30%             | 30%              | Calculated          |
+| **Upgrade Rate (Pro→Enterprise)** | 15%             | 15%              | Calculated          |
 
 ### **Datadog Dashboard Configuration**
 
 **Widget 1: Free Signups (Daily)**
+
 ```sql
 -- PostgreSQL query (via custom metric)
-SELECT 
+SELECT
   DATE(created_at) as date,
   COUNT(*) as free_signups
 FROM users
@@ -194,8 +200,9 @@ LIMIT 30;
 ```
 
 **Widget 2: Pro Conversions (Daily)**
+
 ```sql
-SELECT 
+SELECT
   DATE(upgraded_at) as date,
   COUNT(*) as pro_conversions
 FROM users
@@ -206,9 +213,10 @@ LIMIT 30;
 ```
 
 **Widget 3: MRR (Real-Time)**
+
 ```sql
-SELECT 
-  SUM(CASE 
+SELECT
+  SUM(CASE
     WHEN plan = 'pro' THEN 99
     WHEN plan = 'enterprise' THEN 999
     ELSE 0
@@ -218,6 +226,7 @@ WHERE plan IN ('pro', 'enterprise');
 ```
 
 **Widget 4: Conversion Funnel**
+
 ```
 Stage 1: Visitors → Signups (tracked via Datadog RUM)
 Stage 2: Free → Pro (30% target)
@@ -227,26 +236,28 @@ Stage 3: Pro → Enterprise (15% target)
 ### **Setup Steps**
 
 1. **Create Custom Metrics** (API integration):
+
    ```javascript
    // apps/api/src/services/metricsService.js
-   const { dogstatsd } = require('datadog-metrics');
-   
+   const { dogstatsd } = require("datadog-metrics");
+
    // Track signups
-   dogstatsd.increment('infamous.signups.free', 1, ['plan:free']);
-   
+   dogstatsd.increment("infamous.signups.free", 1, ["plan:free"]);
+
    // Track conversions
-   dogstatsd.increment('infamous.conversions.pro', 1, ['plan:pro']);
-   
+   dogstatsd.increment("infamous.conversions.pro", 1, ["plan:pro"]);
+
    // Track revenue
-   dogstatsd.gauge('infamous.revenue.mrr', currentMRR);
+   dogstatsd.gauge("infamous.revenue.mrr", currentMRR);
    ```
 
 2. **Stripe Webhook** (track revenue events):
+
    ```javascript
    // apps/api/src/routes/webhooks/stripe.js
-   stripe.webhooks.on('customer.subscription.created', (event) => {
-     dogstatsd.increment('infamous.subscriptions.new');
-     dogstatsd.gauge('infamous.revenue.mrr', calculateMRR());
+   stripe.webhooks.on("customer.subscription.created", (event) => {
+     dogstatsd.increment("infamous.subscriptions.new");
+     dogstatsd.gauge("infamous.revenue.mrr", calculateMRR());
    });
    ```
 
@@ -257,29 +268,30 @@ Stage 3: Pro → Enterprise (15% target)
 ## 👥 DASHBOARD 3: USER ENGAGEMENT (Product Usage)
 
 ### **Purpose**
+
 Understand how users interact with the platform. Identify drop-off points.
 
 ### **Metrics to Track**
 
-| Metric | Target | Alert | Source |
-|--------|--------|-------|--------|
-| **DAU/MAU Ratio** | >40% | <30% | Datadog RUM |
-| **Session Duration** | >10 min | <5 min | Datadog RUM |
-| **Onboarding Completion** | >85% | <70% | Custom event |
-| **Feature Usage (Top 10)** | N/A | Track trends | Datadog RUM |
-| **Help System Usage** | >40% | <20% | Custom event |
-| **Time to First Action** | <5 min | >10 min | Custom event |
-| **Mobile vs Desktop** | Track ratio | N/A | Datadog RUM |
+| Metric                     | Target      | Alert        | Source       |
+| -------------------------- | ----------- | ------------ | ------------ |
+| **DAU/MAU Ratio**          | >40%        | <30%         | Datadog RUM  |
+| **Session Duration**       | >10 min     | <5 min       | Datadog RUM  |
+| **Onboarding Completion**  | >85%        | <70%         | Custom event |
+| **Feature Usage (Top 10)** | N/A         | Track trends | Datadog RUM  |
+| **Help System Usage**      | >40%        | <20%         | Custom event |
+| **Time to First Action**   | <5 min      | >10 min      | Custom event |
+| **Mobile vs Desktop**      | Track ratio | N/A          | Datadog RUM  |
 
 ### **Datadog RUM Custom Events**
 
 ```typescript
 // apps/web/lib/analytics.ts
-import { datadogRum } from '@datadog/browser-rum';
+import { datadogRum } from "@datadog/browser-rum";
 
 // Track onboarding completion
 export const trackOnboardingComplete = (userId: string) => {
-  datadogRum.addAction('onboarding_complete', {
+  datadogRum.addAction("onboarding_complete", {
     userId,
     timestamp: Date.now(),
   });
@@ -287,7 +299,7 @@ export const trackOnboardingComplete = (userId: string) => {
 
 // Track feature usage
 export const trackFeatureUsage = (feature: string, userId: string) => {
-  datadogRum.addAction('feature_used', {
+  datadogRum.addAction("feature_used", {
     featureName: feature,
     userId,
   });
@@ -295,15 +307,19 @@ export const trackFeatureUsage = (feature: string, userId: string) => {
 
 // Track help system
 export const trackHelpView = (articleId: string, userId: string) => {
-  datadogRum.addAction('help_viewed', {
+  datadogRum.addAction("help_viewed", {
     articleId,
     userId,
   });
 };
 
 // Track time to first action
-export const trackFirstAction = (userId: string, actionType: string, timeSinceSignup: number) => {
-  datadogRum.addAction('first_action', {
+export const trackFirstAction = (
+  userId: string,
+  actionType: string,
+  timeSinceSignup: number,
+) => {
+  datadogRum.addAction("first_action", {
     userId,
     actionType,
     timeSinceSignup, // milliseconds
@@ -325,26 +341,28 @@ export const trackFirstAction = (userId: string, actionType: string, timeSinceSi
 ## 🚀 DASHBOARD 4: PRODUCT HUNT LAUNCH (Day 1 Specific)
 
 ### **Purpose**
-Real-time tracking for Product Hunt launch day. Monitor upvotes, comments, traffic.
+
+Real-time tracking for Product Hunt launch day. Monitor upvotes, comments,
+traffic.
 
 ### **Metrics to Track (Launch Day Only)**
 
-| Metric | Target | Real-Time Update | Source |
-|--------|--------|------------------|--------|
-| **Upvotes** | 500+ | Every 15 min | Product Hunt API |
-| **Comments** | 50+ | Every 15 min | Product Hunt API |
-| **Ranking** | Top 5 | Every 30 min | Product Hunt |
-| **Traffic from PH** | 5,000+ | Real-time | Datadog RUM referrer |
-| **Conversion (PH→Signup)** | 20%+ | Real-time | Custom tracking |
-| **Response Time** | <60 min | Manual | Product Hunt |
+| Metric                     | Target  | Real-Time Update | Source               |
+| -------------------------- | ------- | ---------------- | -------------------- |
+| **Upvotes**                | 500+    | Every 15 min     | Product Hunt API     |
+| **Comments**               | 50+     | Every 15 min     | Product Hunt API     |
+| **Ranking**                | Top 5   | Every 30 min     | Product Hunt         |
+| **Traffic from PH**        | 5,000+  | Real-time        | Datadog RUM referrer |
+| **Conversion (PH→Signup)** | 20%+    | Real-time        | Custom tracking      |
+| **Response Time**          | <60 min | Manual           | Product Hunt         |
 
 ### **Product Hunt API Integration**
 
 ```javascript
 // apps/api/src/services/productHuntService.js
-const axios = require('axios');
+const axios = require("axios");
 
-const PRODUCT_HUNT_API = 'https://api.producthunt.com/v2/api/graphql';
+const PRODUCT_HUNT_API = "https://api.producthunt.com/v2/api/graphql";
 const PH_TOKEN = process.env.PRODUCT_HUNT_API_TOKEN;
 
 async function getProductHuntMetrics(postId) {
@@ -364,23 +382,30 @@ async function getProductHuntMetrics(postId) {
       }
     }
   `;
-  
-  const response = await axios.post(PRODUCT_HUNT_API, { query }, {
-    headers: {
-      'Authorization': `Bearer ${PH_TOKEN}`,
-      'Content-Type': 'application/json',
+
+  const response = await axios.post(
+    PRODUCT_HUNT_API,
+    { query },
+    {
+      headers: {
+        Authorization: `Bearer ${PH_TOKEN}`,
+        "Content-Type": "application/json",
+      },
     },
-  });
-  
+  );
+
   return response.data.data.post;
 }
 
 // Poll every 15 minutes on launch day
-setInterval(async () => {
-  const metrics = await getProductHuntMetrics(POST_ID);
-  dogstatsd.gauge('infamous.producthunt.upvotes', metrics.votesCount);
-  dogstatsd.gauge('infamous.producthunt.comments', metrics.commentsCount);
-}, 15 * 60 * 1000); // 15 minutes
+setInterval(
+  async () => {
+    const metrics = await getProductHuntMetrics(POST_ID);
+    dogstatsd.gauge("infamous.producthunt.upvotes", metrics.votesCount);
+    dogstatsd.gauge("infamous.producthunt.comments", metrics.commentsCount);
+  },
+  15 * 60 * 1000,
+); // 15 minutes
 ```
 
 ### **Traffic Tracking from Product Hunt**
@@ -395,7 +420,7 @@ function MyApp({ Component, pageProps }) {
     // Track Product Hunt referrals
     const urlParams = new URLSearchParams(window.location.search);
     const referrer = document.referrer;
-    
+
     if (referrer.includes('producthunt.com') || urlParams.get('ref') === 'producthunt') {
       datadogRum.addAction('traffic_from_producthunt', {
         url: window.location.href,
@@ -403,18 +428,19 @@ function MyApp({ Component, pageProps }) {
       });
     }
   }, []);
-  
+
   return <Component {...pageProps} />;
 }
 ```
 
 ### **Setup Steps**
 
-1. **Get Product Hunt API Token**: https://www.producthunt.com/v2/oauth/applications
+1. **Get Product Hunt API Token**:
+   https://www.producthunt.com/v2/oauth/applications
 2. **Add to .env**: `PRODUCT_HUNT_API_TOKEN=your_token_here`
 3. **Deploy polling service** (apps/api/src/services/productHuntService.js)
 4. **Create real-time dashboard** (refresh every 5 minutes)
-5. **Set up Slack alerts**: 
+5. **Set up Slack alerts**:
    - Every 100 upvotes milestone
    - When ranking changes
    - When comments exceed 50
@@ -424,33 +450,36 @@ function MyApp({ Component, pageProps }) {
 ## 💼 DASHBOARD 5: SERIES A METRICS (Investor Readiness)
 
 ### **Purpose**
+
 Track metrics investors care about. Show traction, growth, unit economics.
 
 ### **Metrics to Track**
 
-| Metric | Current | Target (Month 1) | VC Benchmark |
-|--------|---------|------------------|--------------|
-| **ARR** | - | $8.2M | $5M+ for Series A |
-| **Growth Rate (MoM)** | - | 177%+ | >10% MoM |
-| **CAC** | - | $75 (Pro) | <$100 |
-| **LTV** | - | $1,188 (Pro) | >$1,000 |
-| **LTV:CAC Ratio** | - | 15.8x | >3x |
-| **Gross Margin** | - | 73% | >70% |
-| **Burn Rate** | - | Profitable Month 3 | <$200K/mo |
-| **Runway** | - | N/A (profitable) | 18+ months |
+| Metric                | Current | Target (Month 1)   | VC Benchmark      |
+| --------------------- | ------- | ------------------ | ----------------- |
+| **ARR**               | -       | $8.2M              | $5M+ for Series A |
+| **Growth Rate (MoM)** | -       | 177%+              | >10% MoM          |
+| **CAC**               | -       | $75 (Pro)          | <$100             |
+| **LTV**               | -       | $1,188 (Pro)       | >$1,000           |
+| **LTV:CAC Ratio**     | -       | 15.8x              | >3x               |
+| **Gross Margin**      | -       | 73%                | >70%              |
+| **Burn Rate**         | -       | Profitable Month 3 | <$200K/mo         |
+| **Runway**            | -       | N/A (profitable)   | 18+ months        |
 
 ### **Dashboard Widgets**
 
 **Widget 1: ARR Growth (Line Chart)**
+
 ```javascript
 // Calculate ARR from MRR
 const arr = mrr * 12;
 
 // Track monthly
-dogstatsd.gauge('infamous.financials.arr', arr);
+dogstatsd.gauge("infamous.financials.arr", arr);
 ```
 
 **Widget 2: Unit Economics**
+
 ```javascript
 // CAC (Customer Acquisition Cost)
 const cac = totalMarketingSpend / newCustomers;
@@ -461,24 +490,26 @@ const ltv = avgMonthlyRevenue * avgCustomerLifetimeMonths;
 // Ratio
 const ltvCacRatio = ltv / cac; // Target: >3x (we have 15.8x)
 
-dogstatsd.gauge('infamous.financials.cac', cac);
-dogstatsd.gauge('infamous.financials.ltv', ltv);
-dogstatsd.gauge('infamous.financials.ltv_cac_ratio', ltvCacRatio);
+dogstatsd.gauge("infamous.financials.cac", cac);
+dogstatsd.gauge("infamous.financials.ltv", ltv);
+dogstatsd.gauge("infamous.financials.ltv_cac_ratio", ltvCacRatio);
 ```
 
 **Widget 3: Growth Rate (MoM %)**
+
 ```javascript
 const currentMRR = getCurrentMRR();
 const lastMonthMRR = getLastMonthMRR();
 const growthRate = ((currentMRR - lastMonthMRR) / lastMonthMRR) * 100;
 
-dogstatsd.gauge('infamous.growth.mom_rate', growthRate);
+dogstatsd.gauge("infamous.growth.mom_rate", growthRate);
 ```
 
 **Widget 4: Cohort Retention**
+
 ```sql
 -- Track retention by signup cohort
-SELECT 
+SELECT
   DATE_TRUNC('month', created_at) as cohort,
   COUNT(*) as total_users,
   SUM(CASE WHEN last_active_at > NOW() - INTERVAL '30 days' THEN 1 ELSE 0 END) as active_users,
@@ -514,30 +545,30 @@ Access: Public link (no login required)
 
 ### **Critical Alerts (PagerDuty - 24/7 On-Call)**
 
-| Alert | Threshold | Action |
-|-------|-----------|--------|
-| API uptime < 99% | 5 min | Page engineer |
-| Error rate > 5% | 1 min | Page engineer |
-| Database connection pool > 95% | Immediate | Page DBA |
-| Payment processing failure | Immediate | Page on-call |
+| Alert                          | Threshold | Action        |
+| ------------------------------ | --------- | ------------- |
+| API uptime < 99%               | 5 min     | Page engineer |
+| Error rate > 5%                | 1 min     | Page engineer |
+| Database connection pool > 95% | Immediate | Page DBA      |
+| Payment processing failure     | Immediate | Page on-call  |
 
 ### **Warning Alerts (Slack #infæmous-alerts)**
 
-| Alert | Threshold | Action |
-|-------|-----------|--------|
-| Error rate > 1% | 5 min | Investigate |
-| p99 latency > 1s | 10 min | Check logs |
-| Signup rate drops 50% | 30 min | Marketing review |
-| Email delivery < 95% | 15 min | Check service |
+| Alert                 | Threshold | Action           |
+| --------------------- | --------- | ---------------- |
+| Error rate > 1%       | 5 min     | Investigate      |
+| p99 latency > 1s      | 10 min    | Check logs       |
+| Signup rate drops 50% | 30 min    | Marketing review |
+| Email delivery < 95%  | 15 min    | Check service    |
 
 ### **Info Alerts (Slack #infæmous-wins)**
 
-| Alert | Threshold | Action |
-|-------|-----------|--------|
-| Product Hunt: 100 upvotes milestone | Real-time | Celebrate! |
-| Pro conversion | Real-time | Celebrate! |
-| Enterprise deal closed | Real-time | Celebrate! |
-| Series A term sheet | Immediate | Celebrate! 🎉 |
+| Alert                               | Threshold | Action        |
+| ----------------------------------- | --------- | ------------- |
+| Product Hunt: 100 upvotes milestone | Real-time | Celebrate!    |
+| Pro conversion                      | Real-time | Celebrate!    |
+| Enterprise deal closed              | Real-time | Celebrate!    |
+| Series A term sheet                 | Immediate | Celebrate! 🎉 |
 
 ### **Setup in Datadog**
 
@@ -548,7 +579,7 @@ Access: Public link (no login required)
    Alert when: avg of [metric] over last 5 minutes
    is above [threshold]
    ```
-4. **Notification**: 
+4. **Notification**:
    - Critical: `@pagerduty-infæmous`
    - Warning: `@slack-infæmous-alerts`
    - Info: `@slack-infæmous-wins`
@@ -641,7 +672,8 @@ After 7 days, your monitoring should achieve:
 - **Datadog Docs**: https://docs.datadoghq.com/dashboards/
 - **Product Hunt API**: https://api.producthunt.com/v2/docs
 - **Datadog RUM Guide**: https://docs.datadoghq.com/real_user_monitoring/
-- **Sentry Integration**: https://docs.sentry.io/platforms/javascript/guides/express/
+- **Sentry Integration**:
+  https://docs.sentry.io/platforms/javascript/guides/express/
 - **Stripe Webhooks**: https://stripe.com/docs/webhooks
 
 ---
@@ -655,6 +687,7 @@ After 7 days, your monitoring should achieve:
 5. ✅ **Launch Day**: All dashboards live, alerts active
 
 **Ready to launch when**:
+
 - All 5 dashboards show data
 - All alerts tested and working
 - Team trained on dashboard usage
@@ -664,6 +697,6 @@ After 7 days, your monitoring should achieve:
 
 **Status**: ✅ MONITORING SETUP GUIDE COMPLETE  
 **Next**: Run STAGING_DEPLOYMENT_100.sh to deploy and activate monitoring  
-**Timeline**: 2-3 hours to full monitoring readiness  
+**Timeline**: 2-3 hours to full monitoring readiness
 
 🎯 **Real-time visibility = confident launch = successful Series A** 🚀

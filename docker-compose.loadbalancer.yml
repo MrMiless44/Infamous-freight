@@ -2,7 +2,7 @@
 # Version: 1.0.0
 # Purpose: Production load balancing with NGINX
 
-version: '3.8'
+version: "3.8"
 
 services:
   # NGINX Load Balancer
@@ -13,20 +13,20 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"  # Status endpoint (internal only)
+      - "8080:8080" # Status endpoint (internal only)
     volumes:
       # NGINX configuration
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      
+
       # SSL certificates (replace with your actual certs)
       - ./ssl:/etc/nginx/ssl:ro
-      
+
       # Cache directory
       - nginx_cache:/var/cache/nginx
-      
+
       # Logs
       - nginx_logs:/var/log/nginx
-      
+
       # Let's Encrypt challenge directory
       - ./certbot/www:/var/www/certbot:ro
     networks:
@@ -45,10 +45,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2'
+          cpus: "2"
           memory: 1G
         reservations:
-          cpus: '0.5'
+          cpus: "0.5"
           memory: 256M
 
   # API Instance 1
@@ -80,10 +80,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2'
+          cpus: "2"
           memory: 2G
         reservations:
-          cpus: '0.5'
+          cpus: "0.5"
           memory: 512M
 
   # API Instance 2
@@ -115,10 +115,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2'
+          cpus: "2"
           memory: 2G
         reservations:
-          cpus: '0.5'
+          cpus: "0.5"
           memory: 512M
 
   # API Instance 3 (Backup)
@@ -150,13 +150,13 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1'
+          cpus: "1"
           memory: 1G
         reservations:
-          cpus: '0.25'
+          cpus: "0.25"
           memory: 256M
     profiles:
-      - high-availability  # Only start with --profile high-availability
+      - high-availability # Only start with --profile high-availability
 
   # Web Instance 1
   web-1:
@@ -184,10 +184,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2'
+          cpus: "2"
           memory: 2G
         reservations:
-          cpus: '0.5'
+          cpus: "0.5"
           memory: 512M
 
   # Web Instance 2
@@ -216,10 +216,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2'
+          cpus: "2"
           memory: 2G
         reservations:
-          cpus: '0.5'
+          cpus: "0.5"
           memory: 512M
 
   # PostgreSQL Database
@@ -245,10 +245,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2'
+          cpus: "2"
           memory: 2G
         reservations:
-          cpus: '0.5'
+          cpus: "0.5"
           memory: 512M
 
   # Redis Cache
@@ -277,10 +277,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1'
+          cpus: "1"
           memory: 2G
         reservations:
-          cpus: '0.25'
+          cpus: "0.25"
           memory: 512M
 
   # Let's Encrypt Certbot
@@ -294,7 +294,7 @@ services:
     networks:
       - infæmous_network
     profiles:
-      - ssl  # Only start with --profile ssl
+      - ssl # Only start with --profile ssl
 
 networks:
   infæmous_network:

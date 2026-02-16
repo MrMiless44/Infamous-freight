@@ -6,7 +6,7 @@
 
 /**
  * Compute delivery price based on vehicle type, distance, and shipper plan.
- * 
+ *
  * Base rates by vehicle (minimum charge):
  * - CAR: $8.00
  * - SUV: $12.00
@@ -14,10 +14,10 @@
  * - BOX_TRUCK: $45.00
  * - STRAIGHT_TRUCK: $70.00
  * - SEMI: $120.00
- * 
+ *
  * Distance-based pricing: $1.50 per mile
  * Plan discounts: STARTER -10%, PRO -15%, ENTERPRISE -20%
- * 
+ *
  * Minimum charge: base rate for vehicle type
  */
 function computePriceUsd(input) {

@@ -56,7 +56,8 @@ Environment Variables:
 
 ### 1.5 Get Your URL
 
-- Copy the deployment URL: `https://infamous-freight-enterprises-XXXXX.vercel.app`
+- Copy the deployment URL:
+  `https://infamous-freight-enterprises-XXXXX.vercel.app`
 - Save for later (needed for API config)
 
 **Status After Step 1**: ✅ Web is live!
@@ -369,8 +370,7 @@ After deployment, you should see:
 
 ### Web Won't Deploy
 
-**Issue**: Build fails on Vercel
-**Solution**:
+**Issue**: Build fails on Vercel **Solution**:
 
 ```bash
 # Check build locally
@@ -384,8 +384,7 @@ pnpm build
 
 ### API Won't Start
 
-**Issue**: Deployment fails on Fly.io
-**Solution**:
+**Issue**: Deployment fails on Fly.io **Solution**:
 
 ```bash
 # Check logs
@@ -402,8 +401,7 @@ flyctl deploy
 
 ### API Returns 500
 
-**Issue**: API is running but returns errors
-**Solution**:
+**Issue**: API is running but returns errors **Solution**:
 
 ```bash
 # Check logs
@@ -420,8 +418,7 @@ flyctl logs --app infamous-freight-api-prod
 
 ### Web Can't Reach API
 
-**Issue**: Web app loads but API calls fail
-**Solution**:
+**Issue**: Web app loads but API calls fail **Solution**:
 
 ```bash
 # Check environment variable
@@ -437,8 +434,7 @@ NEXT_PUBLIC_API_URL=https://infamous-freight-api-prod.fly.dev
 
 ### Database Connection Fails
 
-**Issue**: "Error: connect ECONNREFUSED"
-**Solution**:
+**Issue**: "Error: connect ECONNREFUSED" **Solution**:
 
 ```bash
 # Test connection string locally
@@ -541,6 +537,5 @@ Once all 5 steps are complete:
 - QUICK_DEPLOYMENT.md - Detailed guide
 - PERFORMANCE_MONITORING_COMPLETE.md - Full documentation
 
-Ask me anything you want clarified
-I'll answer and point to right docs
-Then pick PATH A, B, or C
+Ask me anything you want clarified I'll answer and point to right docs Then pick
+PATH A, B, or C

@@ -180,7 +180,7 @@ jobs:
             const passed = results.stats.expected;
             const failed = results.stats.unexpected;
             const comment = `## E2E Test Results\n\n- ✅ Passed: ${passed}\n- ❌ Failed: ${failed}\n\n[View full report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})`;
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

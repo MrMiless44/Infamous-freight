@@ -10,12 +10,14 @@
 
 ### 1. ✅ Validation Middleware Fixes (Commit 6e2d893)
 
-**Issue**: POST /api/users route missing validation error handling, returning 500 errors
+**Issue**: POST /api/users route missing validation error handling, returning
+500 errors
 
 **Fixes Applied**:
 
 - Added `handleValidationErrors` middleware to route chain
-- Fixed response format to use `ApiResponse` interface: `{ success: true, data: {...}, message: "..." }`
+- Fixed response format to use `ApiResponse` interface:
+  `{ success: true, data: {...}, message: "..." }`
 - Added explicit `isString()` checks before email validation
 - Enhanced name and role validators with proper type checking
 - Updated error responses to match interface expectations
@@ -84,14 +86,17 @@
 - **Status**: ⏳ Rebuilding (502 errors)
 - **Expected**: Should pickup new commits soon
 - **Health Check**: <https://infamous-freight-ai.fly.dev/api/health>
-- **Region**: 65+ machines across 15+ regions (sjc, syd, sin, ewr, iad, yyz, nrt, arn, gru, cdg, ams)
+- **Region**: 65+ machines across 15+ regions (sjc, syd, sin, ewr, iad, yyz,
+  nrt, arn, gru, cdg, ams)
 
 #### Vercel Web App
 
 - **Status**: ⚠️ SSO Protected (HTTP 401)
-- **URL**: <https://infamous-freight-enterprises-e1mn358un-santorio-miles-projects.vercel.app>
+- **URL**:
+  <https://infamous-freight-enterprises-e1mn358un-santorio-miles-projects.vercel.app>
 - **Issue**: SSO authentication required - needs manual dashboard disable
-- **Dashboard**: <https://vercel.com/santorio-miles-projects/infamous-freight-enterprises/settings/deployment-protection>
+- **Dashboard**:
+  <https://vercel.com/santorio-miles-projects/infamous-freight-enterprises/settings/deployment-protection>
 
 ---
 

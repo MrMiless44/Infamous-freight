@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router } from "express";
 
 /**
  * Referral Program API Routes
@@ -8,7 +8,7 @@ import { Router } from 'express';
 const router = Router();
 
 // GET /api/referrals/link - Get user's referral link
-router.get('/link', (req, res, next) => {
+router.get("/link", (req, res, next) => {
   try {
     const user = req.user;
     const referralCode = user?.referral_code || generateReferralCode();
@@ -24,7 +24,7 @@ router.get('/link', (req, res, next) => {
 });
 
 // GET /api/referrals/stats - Get referral stats
-router.get('/stats', (req, res, next) => {
+router.get("/stats", (req, res, next) => {
   try {
     // Mock data for now - will integrate with database
     res.json({
@@ -33,7 +33,7 @@ router.get('/stats', (req, res, next) => {
       converted: 2,
       conversion_rate: 40,
       total_rewards: 120,
-      reward_status: 'pending_payout',
+      reward_status: "pending_payout",
     });
   } catch (err) {
     next(err);
@@ -41,7 +41,7 @@ router.get('/stats', (req, res, next) => {
 });
 
 // POST /api/referrals/redeem - Redeem accumulated referral credits
-router.post('/redeem', (req, res, next) => {
+router.post("/redeem", (req, res, next) => {
   try {
     res.json({
       success: true,
@@ -54,7 +54,7 @@ router.post('/redeem', (req, res, next) => {
 });
 
 function generateReferralCode() {
-  return 'ref_' + Math.random().toString(36).substr(2, 9).toUpperCase();
+  return "ref_" + Math.random().toString(36).substr(2, 9).toUpperCase();
 }
 
 export default router;

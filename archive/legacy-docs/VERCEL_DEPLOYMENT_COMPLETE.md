@@ -35,7 +35,8 @@
 
 ## Post-Deployment Workflow
 
-**Trigger**: Automatic after Vercel deploy (via `.github/workflows/post-deploy-health.yml`)
+**Trigger**: Automatic after Vercel deploy (via
+`.github/workflows/post-deploy-health.yml`)
 
 **Health Checks**:
 
@@ -44,11 +45,13 @@
 - Retry Logic: 5 attempts with exponential backoff
 - Success Criteria: HTTP 200 response within timeout
 
-**Vercel Status Notifications**: Enabled via `vercel/repository-dispatch/actions/status@v1`
+**Vercel Status Notifications**: Enabled via
+`vercel/repository-dispatch/actions/status@v1`
 
 ## Environment Configuration
 
-**Production Environment Variables** (`/workspaces/Infamous-freight-enterprises/.vercel/.env.production.local`):
+**Production Environment Variables**
+(`/workspaces/Infamous-freight-enterprises/.vercel/.env.production.local`):
 
 - Downloaded from Vercel Console
 - Includes all necessary API keys, webhooks, and configuration
@@ -68,17 +71,21 @@
 ## Critical Files
 
 - **vercel.json**: Monorepo configuration with pnpm workspaces
-- **pnpm-workspace.yaml**: Workspace definitions (api, web, packages/shared, tests/e2e)
+- **pnpm-workspace.yaml**: Workspace definitions (api, web, packages/shared,
+  tests/e2e)
 - **.github/workflows/vercel-deploy.yml**: Vercel deployment trigger
 - **.github/workflows/post-deploy-health.yml**: Health check workflow
 - **.github/workflows/ci.yml**: Enhanced CI with Vercel status notifications
 
 ## Next Steps
 
-1. ✅ **Monitor GitHub Actions**: Post-deploy health workflow will run automatically
-2. ✅ **Verify Endpoints**: Web at https://mrmiless44-genesis.vercel.app, API at https://infamous-freight-api.fly.dev/api/health
+1. ✅ **Monitor GitHub Actions**: Post-deploy health workflow will run
+   automatically
+2. ✅ **Verify Endpoints**: Web at https://mrmiless44-genesis.vercel.app, API at
+   https://infamous-freight-api.fly.dev/api/health
 3. ✅ **Review Sentry**: Error tracking enabled for both web and API
-4. ⏳ **Confirm Health Checks**: Expect post-deploy workflow to complete within 5 minutes
+4. ⏳ **Confirm Health Checks**: Expect post-deploy workflow to complete within
+   5 minutes
 
 ## Rollback Procedure
 
@@ -90,4 +97,5 @@ If issues occur:
 
 ---
 
-**100% LIVE Status**: Web frontend is in production and accessible via Vercel's global CDN.
+**100% LIVE Status**: Web frontend is in production and accessible via Vercel's
+global CDN.

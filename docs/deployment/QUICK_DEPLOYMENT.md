@@ -6,7 +6,8 @@
 
 ## ⚡ Fastest Path to Running (Docker Compose)
 
-> Docker Compose files now live under `configs/docker/`. Use the base file plus the `docker-compose.dev.yml` override for local development.
+> Docker Compose files now live under `configs/docker/`. Use the base file plus
+> the `docker-compose.dev.yml` override for local development.
 
 ```bash
 COMPOSE="docker compose -f configs/docker/docker-compose.yml -f configs/docker/docker-compose.dev.yml"
@@ -266,7 +267,8 @@ docker-compose logs api | grep "request"
 - [x] Verify `docker-compose ps` shows all services running
 - [x] Check `curl http://localhost:3001/api/health` returns 200
 - [x] Test compression: `curl -v http://localhost:3001/api/health | grep gzip`
-- [x] Apply database indexes: `docker-compose exec api psql $DATABASE_URL < scripts/db-indexes.sql`
+- [x] Apply database indexes:
+      `docker-compose exec api psql $DATABASE_URL < scripts/db-indexes.sql`
 - [x] Check Datadog dashboard for APM traces
 - [x] Monitor Web Vitals in Vercel Analytics
 - [x] Set up alerts in monitoring dashboards
@@ -282,8 +284,10 @@ docker-compose logs api | grep "request"
    - Monitor payload sizes (should be 60-70% smaller)
 
 2. **Check Database**
-   - Apply indexes: `docker-compose exec api psql $DATABASE_URL < scripts/db-indexes.sql`
-   - Verify indexes: `docker-compose exec postgres psql -U infamous -d infamous_freight -c "\d shipments_status_idx"`
+   - Apply indexes:
+     `docker-compose exec api psql $DATABASE_URL < scripts/db-indexes.sql`
+   - Verify indexes:
+     `docker-compose exec postgres psql -U infamous -d infamous_freight -c "\d shipments_status_idx"`
 
 3. **Monitor Performance**
    - Datadog: Check APM dashboard for traces

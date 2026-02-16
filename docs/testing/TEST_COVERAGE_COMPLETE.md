@@ -30,7 +30,8 @@
 #### Validation Tests
 
 - **File**: `routes.validation.test.js`
-- **Issue**: Test expected generic "Server Error" but 503 handler now preserves specific error messages
+- **Issue**: Test expected generic "Server Error" but 503 handler now preserves
+  specific error messages
 - **Fix**: Updated test expectation to match new error handling behavior
 
 ```javascript
@@ -44,7 +45,8 @@ expect(res.body.error).toBe("Stripe not configured");
 #### Billing Route Tests
 
 - **File**: `routes/billing.js`
-- **Issue**: PayPal SDK `requestBody` was incorrectly called as a function instead of assigned as a property
+- **Issue**: PayPal SDK `requestBody` was incorrectly called as a function
+  instead of assigned as a property
 - **Fix**: Changed from method call to property assignment
 
 ```javascript
@@ -61,7 +63,8 @@ request.requestBody = {
 };
 ```
 
-- **Issue**: PayPal capture response included extra wrapping that didn't match test expectations
+- **Issue**: PayPal capture response included extra wrapping that didn't match
+  test expectations
 - **Fix**: Extract `.result` property from capture response
 
 ```javascript
@@ -75,8 +78,10 @@ res.json({ ok: true, capture: capture.result });
 #### Security Headers Tests
 
 - **File**: `middleware/securityHeaders.js`
-- **Issue**: CSP violation handler not properly extracting `csp-report` from request body
-- **Fix**: Updated to check for `req.body["csp-report"]` and use `.end()` consistently
+- **Issue**: CSP violation handler not properly extracting `csp-report` from
+  request body
+- **Fix**: Updated to check for `req.body["csp-report"]` and use `.end()`
+  consistently
 
 ```javascript
 // Before
@@ -91,7 +96,8 @@ res.status(204).end();
 #### Config Tests
 
 - **File**: `__tests__/config.test.js`
-- **Issue**: Module caching prevented NODE_ENV changes from taking effect across tests
+- **Issue**: Module caching prevented NODE_ENV changes from taking effect across
+  tests
 - **Fix**: Use `jest.resetModules()` instead of manual cache deletion
 
 ```javascript
@@ -105,7 +111,8 @@ jest.resetModules();
 ### 2. Error Handler Enhancement
 
 - **File**: `middleware/errorHandler.js`
-- **Addition**: Special handling for 503 Service Unavailable errors to preserve specific error messages
+- **Addition**: Special handling for 503 Service Unavailable errors to preserve
+  specific error messages
 
 ```javascript
 // Service unavailable errors
@@ -162,9 +169,12 @@ These are difficult to test without actually killing the process:
 
 ### Low-Value Edge Cases
 
-- `aiSyntheticClient.js` lines 62-63, 77-85, 140-174 - Deep retry logic, synthetic fallback edge cases
-- `users.js` lines 66, 103-108, 145, 167, 179-197 - Prisma error paths, pagination edge cases
-- `shipments.js` lines 44, 77, 145-150, 213, 235 - Similar error handling patterns
+- `aiSyntheticClient.js` lines 62-63, 77-85, 140-174 - Deep retry logic,
+  synthetic fallback edge cases
+- `users.js` lines 66, 103-108, 145, 167, 179-197 - Prisma error paths,
+  pagination edge cases
+- `shipments.js` lines 44, 77, 145-150, 213, 235 - Similar error handling
+  patterns
 - `voice.js` lines 41-43, 62, 80 - File upload edge cases, Whisper API errors
 - `security.js` lines 21-22, 63-65 - Rate limit edge cases
 - `logger.js` lines 12, 19 - Environment-specific log configurations
@@ -234,7 +244,10 @@ All files              |    86.2 |    78.83 |   82.92 |   86.88 |
 ✅ **Zero critical bugs**  
 ✅ **Production-ready test suite**
 
-The test suite now provides comprehensive coverage of all critical paths, error handling, and business logic while maintaining pragmatic exclusions for hard-to-test system-level code (signal handlers, process exits) that don't impact application correctness.
+The test suite now provides comprehensive coverage of all critical paths, error
+handling, and business logic while maintaining pragmatic exclusions for
+hard-to-test system-level code (signal handlers, process exits) that don't
+impact application correctness.
 
 ---
 
@@ -246,21 +259,13 @@ _Test Framework: Jest 30.2.0_
 
 # Recommended: apps/api/**tests**/security/input-fuzzing.test.js
 
-const fuzzInputs = [
-'<script>alert("xss")</script>',
-'"; DROP TABLE users; --',
-'../../../etc/passwd',
-'A'.repeat(10000),
-];
+const fuzzInputs = [ '<script>alert("xss")</script>', '"; DROP TABLE users; --',
+'../../../etc/passwd', 'A'.repeat(10000), ];
 
-// Recommended: apps/api/**tests**/db/transactions.test.js
-test('should rollback on error in transaction', async () => {
-// Test transaction atomicity
-});
+// Recommended: apps/api/**tests**/db/transactions.test.js test('should rollback
+on error in transaction', async () => { // Test transaction atomicity });
 
-// Recommended: apps/api/**tests**/performance/endpoints.bench.js
-test('shipment list should respond within 200ms', async () => {
-const start = Date.now();
-await request(app).get('/api/shipments');
-expect(Date.now() - start).toBeLessThan(200);
-});
+// Recommended: apps/api/**tests**/performance/endpoints.bench.js test('shipment
+list should respond within 200ms', async () => { const start = Date.now(); await
+request(app).get('/api/shipments'); expect(Date.now() -
+start).toBeLessThan(200); });

@@ -4,5 +4,5 @@ export const vercelConfig = {
   buildCommand: "pnpm -r --filter @infamous-freight/shared build && pnpm --filter web build",
   outputDirectory: ".next",
   nodeVersion: "24.x",
-  region: "iad1"
+  region: "iad1",
 };

@@ -356,8 +356,10 @@ pnpm --filter @infamous-freight/shared build
 
 **In this workspace:**
 
-- [CONTAINER_REBUILD_100_COMPLETE.md](CONTAINER_REBUILD_100_COMPLETE.md) - Detailed guide
-- [CONTAINER_REBUILD_STATUS_100.md](CONTAINER_REBUILD_STATUS_100.md) - Status report
+- [CONTAINER_REBUILD_100_COMPLETE.md](CONTAINER_REBUILD_100_COMPLETE.md) -
+  Detailed guide
+- [CONTAINER_REBUILD_STATUS_100.md](CONTAINER_REBUILD_STATUS_100.md) - Status
+  report
 - [QUICK_REFERENCE.md](QUICK_REFERENCE.md) - Command reference
 - [README.md](README.md) - Project overview
 - [.env.example](.env.example) - Environment template

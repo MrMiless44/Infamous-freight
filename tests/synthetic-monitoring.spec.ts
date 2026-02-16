@@ -10,8 +10,7 @@ import { test, expect, chromium } from "@playwright/test";
  * Configuration
  */
 const BASE_URL = process.env.MONITOR_BASE_URL || "https://infamous-freight.com";
-const API_URL =
-  process.env.MONITOR_API_URL || "https://api.infamous-freight.com";
+const API_URL = process.env.MONITOR_API_URL || "https://api.infamous-freight.com";
 const ALERT_WEBHOOK = process.env.ALERT_WEBHOOK_URL || "";
 
 /**
@@ -124,9 +123,7 @@ test("User can login successfully", async ({ page }) => {
       const errorElement = page.locator('[data-testid="login-error"]');
       if (await errorElement.isVisible()) {
         // This is expected with test credentials
-        console.log(
-          "✓ Login form works (test credentials rejected as expected)",
-        );
+        console.log("✓ Login form works (test credentials rejected as expected)");
         return;
       }
     }
@@ -223,8 +220,7 @@ test("Site is mobile responsive", async ({ browser }) => {
   try {
     const mobileContext = await browser.newContext({
       viewport: { width: 375, height: 667 },
-      userAgent:
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15",
+      userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15",
     });
 
     const page = await mobileContext.newPage();

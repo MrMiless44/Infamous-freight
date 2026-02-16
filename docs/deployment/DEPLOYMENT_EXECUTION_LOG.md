@@ -20,7 +20,8 @@
    - Buildx plugin installed for BuildKit support.
 
 2. **Started Docker daemon with restricted options**  
-   Host lacks `CAP_NET_ADMIN` and iptables support, so the daemon was started without NAT/bridge networking and with the VFS storage driver:
+   Host lacks `CAP_NET_ADMIN` and iptables support, so the daemon was started
+   without NAT/bridge networking and with the VFS storage driver:
 
    ```bash
    dockerd --host=unix:///var/run/docker.sock \
@@ -29,7 +30,8 @@
      --ip-forward=false --ip-masq=false
    ```
 
-   - Daemon is running with BuildKit enabled; only `host` and `none` networks are available.
+   - Daemon is running with BuildKit enabled; only `host` and `none` networks
+     are available.
 
 3. **Attempted to build the API image (legacy builder)**
 
@@ -37,7 +39,8 @@
    docker build --network host -t infamous-api ./apps/api
    ```
 
-   - Result: `unshare: operation not permitted` (host disallows required namespaces).
+   - Result: `unshare: operation not permitted` (host disallows required
+     namespaces).
 
 4. **Attempted to build with BuildKit**
 
@@ -45,17 +48,23 @@
    docker buildx build --network host -t infamous-api ./apps/api --load
    ```
 
-   - Result: BuildKit failed to mount the build context (`operation not permitted`) because the host kernel does not grant `CAP_SYS_ADMIN` for mount operations.
+   - Result: BuildKit failed to mount the build context
+     (`operation not permitted`) because the host kernel does not grant
+     `CAP_SYS_ADMIN` for mount operations.
 
 ### Current Status
 
 - ❌ API image not built in this environment.
-- Host container lacks necessary kernel capabilities (`CAP_SYS_ADMIN` / namespace + mount permissions) to perform Docker/BuildKit builds, even with VFS storage and networking disabled.
+- Host container lacks necessary kernel capabilities (`CAP_SYS_ADMIN` /
+  namespace + mount permissions) to perform Docker/BuildKit builds, even with
+  VFS storage and networking disabled.
 
 ### Recommended Next Steps
 
-- Run the build on a host/runner with full Docker privileges (including `CAP_SYS_ADMIN` and iptables/NAT support).
-- Alternatively, use a remote builder (e.g., GitHub Actions, Fly.io, or another CI runner) to produce and push the `infamous-api` image.
+- Run the build on a host/runner with full Docker privileges (including
+  `CAP_SYS_ADMIN` and iptables/NAT support).
+- Alternatively, use a remote builder (e.g., GitHub Actions, Fly.io, or another
+  CI runner) to produce and push the `infamous-api` image.
 - Once on a privileged host, the standard command should work:
 
   ```bash
@@ -81,7 +90,8 @@ cd apps/web && pnpm add web-vitals@^4.0.0
 - `compression@1.8.1` installed in API
 - `web-vitals@4.0.0` installed in Web
 - All monorepo dependencies resolved
-- Minor warnings: Unsupported Node engine (v22.16.0 vs ^20.18.1) - acceptable in dev
+- Minor warnings: Unsupported Node engine (v22.16.0 vs ^20.18.1) - acceptable in
+  dev
 
 #### ✅ 2. Deployment Verification
 
@@ -134,7 +144,8 @@ DD_TRACE_ENABLED=true pnpm api:dev
 - Error: `libssl.so.1.1: No such file or directory`
 - Cause: Prisma requires OpenSSL 1.1 for query engine
 - Context: Alpine Linux environment lacks system OpenSSL dependencies
-- Resolution: Container may need to be rebuilt with OpenSSL support OR use Docker environment
+- Resolution: Container may need to be rebuilt with OpenSSL support OR use
+  Docker environment
 
 ---
 
@@ -203,10 +214,9 @@ DD_TRACE_ENABLED=true pnpm api:dev
 
 ### Issue 1: Missing OpenSSL
 
-**Symptom**: `libssl.so.1.1: No such file or directory`
-**Cause**: Alpine Linux container missing OpenSSL 1.1 system library
-**Impact**: Cannot start API server with Prisma
-**Resolutions**:
+**Symptom**: `libssl.so.1.1: No such file or directory` **Cause**: Alpine Linux
+container missing OpenSSL 1.1 system library **Impact**: Cannot start API server
+with Prisma **Resolutions**:
 
 1. Use Docker Compose: `docker-compose up` (includes OpenSSL)
 2. Install in container: `apk add openssl libssl1.1` (requires root)

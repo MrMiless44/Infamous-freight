@@ -18,9 +18,7 @@ import { logDecision } from "../observability/logger";
 /**
  * Helper: Generate customer response
  */
-async function generateCustomerResponse(
-  input: DecisionInput,
-): Promise<Record<string, unknown>> {
+async function generateCustomerResponse(input: DecisionInput): Promise<Record<string, unknown>> {
   // Implement actual customer response generation based on query type
   const parameters = (input.parameters || {}) as Record<string, unknown>;
   const shipmentData = (parameters.shipment || {}) as Record<string, unknown>;
@@ -128,8 +126,7 @@ async function generateCustomerResponse(
 export const customerOpsRole: RoleContract = {
   name: "customer-ops",
   version: "1.0.0",
-  description:
-    "AI role for customer operations, inquiry handling, and communication",
+  description: "AI role for customer operations, inquiry handling, and communication",
   confidenceThreshold: 0.9,
   capabilities: [
     "inquiry-handling",
@@ -139,10 +136,7 @@ export const customerOpsRole: RoleContract = {
     "satisfaction-tracking",
   ],
 
-  async decide(
-    input: DecisionInput,
-    context: RoleContext,
-  ): Promise<DecisionResult> {
+  async decide(input: DecisionInput, context: RoleContext): Promise<DecisionResult> {
     const decisionId = `custops-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
     const violations = await this.checkGuardrails(input, context);
@@ -171,10 +165,7 @@ export const customerOpsRole: RoleContract = {
     };
   },
 
-  async checkGuardrails(
-    input: DecisionInput,
-    context: RoleContext,
-  ): Promise<GuardrailViolation[]> {
+  async checkGuardrails(input: DecisionInput, context: RoleContext): Promise<GuardrailViolation[]> {
     const violations: GuardrailViolation[] = [];
 
     // Cannot make pricing decisions
@@ -194,7 +185,7 @@ export const customerOpsRole: RoleContract = {
     // Cannot issue refunds without approval
     if (
       (input.action.includes("refund") || input.action.includes("credit")) &&
-      !(input.parameters?.humanApproval)
+      !input.parameters?.humanApproval
     ) {
       violations.push({
         type: "policy",
@@ -221,10 +212,7 @@ export const customerOpsRole: RoleContract = {
     return violations;
   },
 
-  async calculateConfidence(
-    input: DecisionInput,
-    context: RoleContext,
-  ): Promise<ConfidenceScore> {
+  async calculateConfidence(input: DecisionInput, context: RoleContext): Promise<ConfidenceScore> {
     // Calculate confidence based on query complexity and historical resolution rates
     const parameters = (input.parameters || {}) as Record<string, unknown>;
     const inquiryType = (parameters.inquiryType as string) || "general-inquiry";
@@ -253,10 +241,7 @@ export const customerOpsRole: RoleContract = {
     let queryClarity = 0.85;
     const question = (parameters.question as string) || "";
     if (question.length > 50) queryClarity += 0.05; // More detailed queries
-    if (
-      question.toLowerCase().includes("urgent") ||
-      question.toLowerCase().includes("asap")
-    )
+    if (question.toLowerCase().includes("urgent") || question.toLowerCase().includes("asap"))
       queryClarity += 0.03; // Clear intent
     queryClarity = Math.min(0.99, queryClarity);
 

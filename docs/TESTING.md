@@ -2,7 +2,8 @@
 
 ## Overview
 
-This guide explains how to write, run, and maintain tests for the Infamous Freight Enterprises platform.
+This guide explains how to write, run, and maintain tests for the Infamous
+Freight Enterprises platform.
 
 ## Test Structure
 

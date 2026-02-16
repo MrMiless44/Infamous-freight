@@ -185,15 +185,20 @@ flyctl ssh console -a infamous-freight-api
 
 ### For New Team Members
 
-1. Start with [EXECUTIVE_SUMMARY_PHASE_8.md](EXECUTIVE_SUMMARY_PHASE_8.md) - understand the system
+1. Start with [EXECUTIVE_SUMMARY_PHASE_8.md](EXECUTIVE_SUMMARY_PHASE_8.md) -
+   understand the system
 2. Read [RUNBOOK.md](RUNBOOK.md) - learn procedures
 3. Review [GO_LIVE_COMMANDS.md](GO_LIVE_COMMANDS.md) - see deployment
 
 ### For Developers
 
-1. Review [TEST_COVERAGE_EXECUTION_REPORT.md](TEST_COVERAGE_EXECUTION_REPORT.md) - understand test fixes
-2. Check [DATABASE_OPTIMIZATION.md](DATABASE_OPTIMIZATION.md) - learn performance tips
-3. Study [apps/api/src/lib/redis.ts](apps/api/src/lib/redis.ts) - integrate caching
+1. Review
+   [TEST_COVERAGE_EXECUTION_REPORT.md](TEST_COVERAGE_EXECUTION_REPORT.md) -
+   understand test fixes
+2. Check [DATABASE_OPTIMIZATION.md](DATABASE_OPTIMIZATION.md) - learn
+   performance tips
+3. Study [apps/api/src/lib/redis.ts](apps/api/src/lib/redis.ts) - integrate
+   caching
 
 ### For DevOps/SRE
 
@@ -203,8 +208,10 @@ flyctl ssh console -a infamous-freight-api
 
 ### For Managers
 
-1. Read [EXECUTIVE_SUMMARY_PHASE_8.md](EXECUTIVE_SUMMARY_PHASE_8.md) - high-level overview
-2. Review [PHASE_8_VISUAL_SUMMARY.txt](PHASE_8_VISUAL_SUMMARY.txt) - visual checklist
+1. Read [EXECUTIVE_SUMMARY_PHASE_8.md](EXECUTIVE_SUMMARY_PHASE_8.md) -
+   high-level overview
+2. Review [PHASE_8_VISUAL_SUMMARY.txt](PHASE_8_VISUAL_SUMMARY.txt) - visual
+   checklist
 3. Check [GO_LIVE_COMMANDS.md](GO_LIVE_COMMANDS.md) - deployment timeline
 
 ---
@@ -213,7 +220,8 @@ flyctl ssh console -a infamous-freight-api
 
 ### Test Coverage
 
-- [TEST_COVERAGE_EXECUTION_REPORT.md](TEST_COVERAGE_EXECUTION_REPORT.md) - What was fixed
+- [TEST_COVERAGE_EXECUTION_REPORT.md](TEST_COVERAGE_EXECUTION_REPORT.md) - What
+  was fixed
 - [TEST_COVERAGE_FIXES.md](TEST_COVERAGE_FIXES.md) - Detailed analysis
 
 ### Deployment
@@ -234,7 +242,8 @@ flyctl ssh console -a infamous-freight-api
 
 ### Summary
 
-- [EXECUTIVE_SUMMARY_PHASE_8.md](EXECUTIVE_SUMMARY_PHASE_8.md) - Executive overview
+- [EXECUTIVE_SUMMARY_PHASE_8.md](EXECUTIVE_SUMMARY_PHASE_8.md) - Executive
+  overview
 - [PHASE_8_VISUAL_SUMMARY.txt](PHASE_8_VISUAL_SUMMARY.txt) - Visual checklist
 
 ---

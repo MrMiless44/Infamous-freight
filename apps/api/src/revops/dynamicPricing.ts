@@ -4,7 +4,7 @@
  * Module: Dynamic Pricing Engine - Surge Pricing & Revenue Optimization
  */
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -20,7 +20,7 @@ interface PricingFactors {
   pickupLocation: { lat: number; lng: number };
   dropoffLocation: { lat: number; lng: number };
   requestedPickupTime?: Date;
-  urgency?: 'standard' | 'urgent' | 'critical';
+  urgency?: "standard" | "urgent" | "critical";
 }
 
 interface PricingResult {
@@ -30,7 +30,7 @@ interface PricingResult {
   distanceMultiplier: number;
   timeMultiplier: number;
   finalPrice: number;
-  strategy: 'STANDARD' | 'SURGE' | 'DISCOUNT' | 'ENTERPRISE_CUSTOM';
+  strategy: "STANDARD" | "SURGE" | "DISCOUNT" | "ENTERPRISE_CUSTOM";
   surgeReason?: string;
   savings?: number; // If discounted
   breakdown: {
@@ -47,7 +47,7 @@ interface PricingResult {
  */
 const BASE_PRICING = {
   CAR: { base: 5, per_mile: 1.5, platform_fee: 0.08 },
-  VAN: { base: 8, per_mile: 2.0, platform_fee: 0.10 },
+  VAN: { base: 8, per_mile: 2.0, platform_fee: 0.1 },
   BOX_TRUCK: { base: 15, per_mile: 3.5, platform_fee: 0.12 },
   SEMI: { base: 25, per_mile: 5.0, platform_fee: 0.15 },
 };
@@ -57,7 +57,7 @@ const BASE_PRICING = {
  */
 function calculateBasePrice(vehicleType: string, distance: number): number {
   const pricing = BASE_PRICING[vehicleType as keyof typeof BASE_PRICING] || BASE_PRICING.CAR;
-  return pricing.base + (distance * pricing.per_mile);
+  return pricing.base + distance * pricing.per_mile;
 }
 
 /**
@@ -65,38 +65,39 @@ function calculateBasePrice(vehicleType: string, distance: number): number {
  */
 async function calculateDemandMultiplier(
   vehicleType: string,
-  pickupLocation: { lat: number; lng: number }
+  pickupLocation: { lat: number; lng: number },
 ): Promise<{ multiplier: number; reason?: string; availableDrivers: number }> {
   // Query available drivers near pickup location
   // In real implementation, this would use PostGIS or similar
   // For now, simulate based on time and randomness
-  
+
   const currentHour = new Date().getHours();
-  const isPeakHours = (currentHour >= 7 && currentHour <= 9) || (currentHour >= 16 && currentHour <= 19);
-  
+  const isPeakHours =
+    (currentHour >= 7 && currentHour <= 9) || (currentHour >= 16 && currentHour <= 19);
+
   // Simulate driver availability
   let availableDrivers = Math.floor(Math.random() * 20) + 5;
-  
+
   // Peak hours reduce availability
   if (isPeakHours) {
     availableDrivers = Math.floor(availableDrivers * 0.6);
   }
-  
+
   // Calculate multiplier based on supply/demand
   let multiplier = 1.0;
   let reason: string | undefined;
-  
+
   if (availableDrivers < 3) {
     multiplier = 2.0;
-    reason = 'low_supply';
+    reason = "low_supply";
   } else if (availableDrivers < 6) {
     multiplier = 1.5;
-    reason = 'high_demand';
+    reason = "high_demand";
   } else if (availableDrivers < 10) {
     multiplier = 1.25;
-    reason = 'moderate_demand';
+    reason = "moderate_demand";
   }
-  
+
   return { multiplier, reason, availableDrivers };
 }
 
@@ -104,14 +105,14 @@ async function calculateDemandMultiplier(
  * Calculate urgency multiplier
  */
 function calculateUrgencyMultiplier(urgency?: string, requestedTime?: Date): number {
-  if (urgency === 'critical') {
+  if (urgency === "critical") {
     return 1.75; // 75% premium for critical/emergency
   }
-  
-  if (urgency === 'urgent') {
+
+  if (urgency === "urgent") {
     return 1.4; // 40% premium for urgent
   }
-  
+
   // Check if pickup is within next 2 hours
   if (requestedTime) {
     const hoursUntilPickup = (requestedTime.getTime() - Date.now()) / (1000 * 60 * 60);
@@ -119,7 +120,7 @@ function calculateUrgencyMultiplier(urgency?: string, requestedTime?: Date): num
       return 1.3; // 30% premium for same-day urgent
     }
   }
-  
+
   return 1.0; // Standard pricing
 }
 
@@ -144,22 +145,22 @@ function calculateTimeMultiplier(requestedTime?: Date): { multiplier: number; re
   const time = requestedTime || new Date();
   const hour = time.getHours();
   const day = time.getDay();
-  
+
   // Weekend
   if (day === 0 || day === 6) {
-    return { multiplier: 1.2, reason: 'weekend' };
+    return { multiplier: 1.2, reason: "weekend" };
   }
-  
+
   // Late night (10pm - 6am)
   if (hour >= 22 || hour < 6) {
-    return { multiplier: 1.3, reason: 'overnight' };
+    return { multiplier: 1.3, reason: "overnight" };
   }
-  
+
   // Early morning (6am - 8am)
   if (hour >= 6 && hour < 8) {
-    return { multiplier: 1.15, reason: 'early_morning' };
+    return { multiplier: 1.15, reason: "early_morning" };
   }
-  
+
   return { multiplier: 1.0 };
 }
 
@@ -168,26 +169,26 @@ function calculateTimeMultiplier(requestedTime?: Date): { multiplier: number; re
  */
 async function checkDiscountEligibility(
   orgId?: string,
-  userId?: string
+  userId?: string,
 ): Promise<{ eligible: boolean; discount: number; reason?: string }> {
   if (!orgId && !userId) {
     return { eligible: false, discount: 0 };
   }
-  
+
   // Check if new customer (first 3 jobs)
   if (orgId) {
     const jobCount = await prisma.job.count({
       where: { organizationId: orgId },
     });
-    
+
     if (jobCount < 3) {
-      return { eligible: true, discount: 0.15, reason: 'first_time_customer' };
+      return { eligible: true, discount: 0.15, reason: "first_time_customer" };
     }
   }
-  
+
   // Check for promotional campaigns
   // In real implementation, check active promotions from database
-  
+
   return { eligible: false, discount: 0 };
 }
 
@@ -197,51 +198,52 @@ async function checkDiscountEligibility(
 export async function calculateDynamicPrice(
   factors: PricingFactors,
   orgId?: string,
-  userId?: string
+  userId?: string,
 ): Promise<PricingResult> {
   // 1. Calculate base price
   const basePrice = calculateBasePrice(factors.vehicleType, factors.distance);
-  
+
   // 2. Get demand multiplier
   const demandData = await calculateDemandMultiplier(factors.vehicleType, factors.pickupLocation);
   const demandMultiplier = demandData.multiplier;
-  
+
   // 3. Calculate urgency multiplier
   const urgencyMultiplier = calculateUrgencyMultiplier(
     factors.urgency,
-    factors.requestedPickupTime
+    factors.requestedPickupTime,
   );
-  
+
   // 4. Calculate distance multiplier
   const distanceMultiplier = calculateDistanceMultiplier(factors.distance);
-  
+
   // 5. Calculate time multiplier
   const timeData = calculateTimeMultiplier(factors.requestedPickupTime);
   const timeMultiplier = timeData.multiplier;
-  
+
   // 6. Check for discounts
   const discountData = await checkDiscountEligibility(orgId, userId);
-  
+
   // 7. Calculate final price
-  let finalPrice = basePrice * demandMultiplier * urgencyMultiplier * distanceMultiplier * timeMultiplier;
-  
+  let finalPrice =
+    basePrice * demandMultiplier * urgencyMultiplier * distanceMultiplier * timeMultiplier;
+
   // Apply discount if eligible
-  let strategy: PricingResult['strategy'] = 'STANDARD';
+  let strategy: PricingResult["strategy"] = "STANDARD";
   let savings: number | undefined;
   let surgeReason: string | undefined;
-  
+
   if (discountData.eligible) {
     savings = finalPrice * discountData.discount;
     finalPrice -= savings;
-    strategy = 'DISCOUNT';
+    strategy = "DISCOUNT";
   } else if (demandMultiplier > 1.3 || urgencyMultiplier > 1.3) {
-    strategy = 'SURGE';
-    surgeReason = demandData.reason || 'high_demand';
+    strategy = "SURGE";
+    surgeReason = demandData.reason || "high_demand";
   }
-  
+
   // Round to 2 decimals
   finalPrice = Math.round(finalPrice * 100) / 100;
-  
+
   // 8. Create breakdown
   const breakdown = {
     base: basePrice,
@@ -250,7 +252,7 @@ export async function calculateDynamicPrice(
     urgency: basePrice * (urgencyMultiplier - 1),
     time: basePrice * (timeMultiplier - 1),
   };
-  
+
   return {
     basePrice,
     demandMultiplier,
@@ -271,7 +273,7 @@ export async function calculateDynamicPrice(
 export async function storePricingDecision(
   jobId: string,
   pricingResult: PricingResult,
-  availableDrivers?: number
+  availableDrivers?: number,
 ) {
   return prisma.dynamicPricing.create({
     data: {
@@ -298,11 +300,11 @@ export async function storePricingDecision(
  */
 export async function getSurgePricingStats(days: number = 7) {
   const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-  
+
   const stats = await prisma.dynamicPricing.aggregate({
     where: {
       appliedAt: { gte: since },
-      strategy: 'SURGE',
+      strategy: "SURGE",
     },
     _avg: {
       demandMultiplier: true,
@@ -310,13 +312,13 @@ export async function getSurgePricingStats(days: number = 7) {
     },
     _count: true,
   });
-  
+
   const totalJobs = await prisma.dynamicPricing.count({
     where: {
       appliedAt: { gte: since },
     },
   });
-  
+
   return {
     totalJobs,
     surgeJobs: stats._count,
@@ -332,7 +334,7 @@ export async function getSurgePricingStats(days: number = 7) {
 export async function recommendPriceAdjustments() {
   // Get last 30 days of pricing data
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-  
+
   const pricingData = await prisma.dynamicPricing.findMany({
     where: {
       appliedAt: { gte: thirtyDaysAgo },
@@ -344,35 +346,36 @@ export async function recommendPriceAdjustments() {
       appliedAt: true,
     },
   });
-  
+
   // Analyze patterns
   const recommendations: any[] = [];
-  
+
   // Check if we're consistently in surge mode
-  const surgeCount = pricingData.filter(p => p.strategy === 'SURGE').length;
+  const surgeCount = pricingData.filter((p) => p.strategy === "SURGE").length;
   const surgeRate = surgeCount / pricingData.length;
-  
+
   if (surgeRate > 0.5) {
     recommendations.push({
-      type: 'increase_base_price',
-      reason: 'High surge frequency (>50% of jobs)',
-      impact: 'Reduce surge events, increase predictable revenue',
+      type: "increase_base_price",
+      reason: "High surge frequency (>50% of jobs)",
+      impact: "Reduce surge events, increase predictable revenue",
       suggestedIncrease: 0.15, // 15%
     });
   }
-  
+
   // Check if we have excess capacity
-  const avgDrivers = pricingData.reduce((sum, p) => sum + (p.availableDrivers || 0), 0) / pricingData.length;
-  
+  const avgDrivers =
+    pricingData.reduce((sum, p) => sum + (p.availableDrivers || 0), 0) / pricingData.length;
+
   if (avgDrivers > 15) {
     recommendations.push({
-      type: 'run_discount_campaign',
-      reason: 'High driver availability, low utilization',
-      impact: 'Increase job volume, improve driver retention',
-      suggestedDiscount: 0.10, // 10% off
+      type: "run_discount_campaign",
+      reason: "High driver availability, low utilization",
+      impact: "Increase job volume, improve driver retention",
+      suggestedDiscount: 0.1, // 10% off
     });
   }
-  
+
   return recommendations;
 }
 

@@ -32,7 +32,8 @@ Expected response:
 Before deploying, ensure:
 
 - [x] All tests pass locally: `pnpm test`
-- [x] Code coverage meets threshold: `pnpm test:coverage` (API ≥50% in CI, ≥75% locally)
+- [x] Code coverage meets threshold: `pnpm test:coverage` (API ≥50% in CI, ≥75%
+      locally)
 - [x] Linting passes: `pnpm lint`
 - [x] TypeScript compiles: `pnpm check:types` (web + shared)
 - [x] Shared package built: `pnpm --filter @infamous-freight/shared build`
@@ -215,7 +216,8 @@ flyctl status -a infamous-freight-api
 
 - Database connection string invalid → Set `DATABASE_URL` secret
 - JWT_SECRET not configured → Set `JWT_SECRET` secret
-- Port mismatch → Verify `Dockerfile` exposes 4000 and `fly.toml` has `PORT=4000`
+- Port mismatch → Verify `Dockerfile` exposes 4000 and `fly.toml` has
+  `PORT=4000`
 
 **Fix**:
 
@@ -232,7 +234,8 @@ flyctl logs -a infamous-freight-api
 
 ### Issue: Database Connection Errors
 
-**Symptom**: `/api/health` returns `"status": "degraded"` and `"database": "disconnected"`
+**Symptom**: `/api/health` returns `"status": "degraded"` and
+`"database": "disconnected"`
 
 **Cause**: `DATABASE_URL` not set or invalid
 
@@ -270,7 +273,8 @@ X-RateLimit-Remaining: 0
 X-RateLimit-Reset: 1702760400  # Unix timestamp
 ```
 
-**Fix**: Wait until `X-RateLimit-Reset` or implement exponential backoff in client
+**Fix**: Wait until `X-RateLimit-Reset` or implement exponential backoff in
+client
 
 ### Issue: High Memory Usage
 

@@ -21,12 +21,7 @@ type LiveRegionProps = {
 // Live region announcer for screen readers
 export function LiveRegion({ message, priority = "polite" }: LiveRegionProps) {
   return (
-    <div
-      role="status"
-      aria-live={priority}
-      aria-atomic="true"
-      className="sr-only"
-    >
+    <div role="status" aria-live={priority} aria-atomic="true" className="sr-only">
       {message}
     </div>
   );
@@ -39,7 +34,7 @@ export function useFocusTrap(ref: React.RefObject<HTMLElement>, isActive: boolea
 
     const element = ref.current;
     const focusableElements = element.querySelectorAll<HTMLElement>(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
     );
 
     const firstFocusable = focusableElements[0];
@@ -121,10 +116,7 @@ export function getContrastRatio(foreground: string, background: string): number
 }
 
 // Ensure keyboard navigation
-export function useKeyboardNavigation(
-  onEscape?: () => void,
-  onEnter?: () => void
-) {
+export function useKeyboardNavigation(onEscape?: () => void, onEnter?: () => void) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && onEscape) {

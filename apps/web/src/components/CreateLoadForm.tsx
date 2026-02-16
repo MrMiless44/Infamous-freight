@@ -33,7 +33,7 @@ export default function CreateLoadForm() {
     }
 
     const rateCents = Math.round(parsedRate * 100);
-    const { data, error } = await supabase
+    const { data, error } = (await supabase
       .from("loads")
       .insert({
         shipper_id: u.user.id,
@@ -46,7 +46,7 @@ export default function CreateLoadForm() {
         status,
       })
       .select("id")
-      .single() as any;
+      .single()) as any;
 
     if (error) {
       setErr(error.message);

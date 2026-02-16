@@ -6,7 +6,8 @@ Two critical Docker build issues have been identified and fixed:
 
 ### 1. **Prisma Schema Missing Error** ✅
 
-**Problem**: Error "Could not find Prisma Schema that is required for this command"
+**Problem**: Error "Could not find Prisma Schema that is required for this
+command"
 
 - The Dockerfile wasn't including the Prisma schema in the final Docker stage
 - This caused Prisma Client generation to fail at runtime
@@ -23,9 +24,11 @@ COPY apps/api/prisma ./apps/api/prisma
 
 ### 2. **pnpm-lock.yaml Out of Sync** ✅
 
-**Problem**: Error "Cannot install with frozen-lockfile because pnpm-lock.yaml is not up to date"
+**Problem**: Error "Cannot install with frozen-lockfile because pnpm-lock.yaml
+is not up to date"
 
-- API package.json was changed from `"@infamous-freight/shared": "workspace:*"` to `"file:../../packages/shared"`
+- API package.json was changed from `"@infamous-freight/shared": "workspace:*"`
+  to `"file:../../packages/shared"`
 - But pnpm-lock.yaml still referenced the old workspace protocol
 - Docker build failed during `pnpm install --frozen-lockfile`
 

@@ -73,12 +73,12 @@ LOCAL DATABASE:
 
 ### Revenue Model
 
-| Tier | Price | Billing | Metered |
-|------|-------|---------|---------|
-| **Free** | $0 | N/A | Soft limits (500 loads/mo) |
-| **Pro** | $99/mo | Monthly recurring | $0.01/load over 5,000 |
-| **Enterprise** | $999/mo | Monthly/annual | $0.01/load over 50,000 |
-| **Marketplace** | 15% share | Per transaction | Partner-driven |
+| Tier            | Price     | Billing           | Metered                    |
+| --------------- | --------- | ----------------- | -------------------------- |
+| **Free**        | $0        | N/A               | Soft limits (500 loads/mo) |
+| **Pro**         | $99/mo    | Monthly recurring | $0.01/load over 5,000      |
+| **Enterprise**  | $999/mo   | Monthly/annual    | $0.01/load over 50,000     |
+| **Marketplace** | 15% share | Per transaction   | Partner-driven             |
 
 ### Key Metrics
 
@@ -165,7 +165,8 @@ stripe listen --forward-to localhost:4000/api/webhooks/stripe
 
 ```yaml
 Name: INFÆMOUS FREIGHT Pro
-Description: Power user plan with unlimited dispatch, advanced analytics, and AI features
+Description:
+  Power user plan with unlimited dispatch, advanced analytics, and AI features
 Statement descriptor: INFÆMOUS PRO
 Unit label: user
 
@@ -174,7 +175,7 @@ Pricing:
   - Price: $99 USD
   - Billing period: Monthly
   - Usage type: Licensed
-  
+
 Metadata:
   tier: pro
   features: unlimited_dispatch,analytics,ai_basic,api_access
@@ -263,24 +264,24 @@ export function UpgradeButton() {
 
   const handleUpgrade = async () => {
     setLoading(true);
-    
+
     try {
       // Create checkout session
       const response = await fetch('/api/checkout/create-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO,
           tier: 'pro'
         })
       });
-      
+
       const { sessionId } = await response.json();
-      
+
       // Redirect to Stripe Checkout
       const stripe = await stripePromise;
       const { error } = await stripe!.redirectToCheckout({ sessionId });
-      
+
       if (error) {
         console.error('Checkout error:', error);
         alert('Payment failed. Please try again.');
@@ -294,7 +295,7 @@ export function UpgradeButton() {
   };
 
   return (
-    <button 
+    <button
       onClick={handleUpgrade}
       disabled={loading}
       className="btn-primary"
@@ -309,56 +310,56 @@ export function UpgradeButton() {
 
 ```javascript
 // apps/api/src/routes/checkout.js
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { stripe } = require('../config/stripe');
-const { authenticate } = require('../middleware/security');
-const { PrismaClient } = require('@prisma/client');
+const { stripe } = require("../config/stripe");
+const { authenticate } = require("../middleware/security");
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-router.post('/create-session', authenticate, async (req, res, next) => {
+router.post("/create-session", authenticate, async (req, res, next) => {
   try {
     const { priceId, tier } = req.body;
     const userId = req.user.sub;
-    
+
     // Get or create Stripe customer
     let user = await prisma.user.findUnique({ where: { id: userId } });
-    
+
     if (!user.stripeCustomerId) {
       const customer = await stripe.customers.create({
         email: user.email,
         name: user.name,
-        metadata: { userId: user.id }
+        metadata: { userId: user.id },
       });
-      
+
       await prisma.user.update({
         where: { id: userId },
-        data: { stripeCustomerId: customer.id }
+        data: { stripeCustomerId: customer.id },
       });
-      
+
       user.stripeCustomerId = customer.id;
     }
-    
+
     // Create checkout session
     const session = await stripe.checkout.sessions.create({
       customer: user.stripeCustomerId,
-      payment_method_types: ['card'],
+      payment_method_types: ["card"],
       line_items: [{ price: priceId, quantity: 1 }],
-      mode: 'subscription',
+      mode: "subscription",
       success_url: `${process.env.WEB_BASE_URL}/dashboard?upgrade=success`,
       cancel_url: `${process.env.WEB_BASE_URL}/pricing?upgrade=cancelled`,
       metadata: {
         userId: user.id,
-        tier: tier
+        tier: tier,
       },
       subscription_data: {
         metadata: {
           userId: user.id,
-          tier: tier
-        }
-      }
+          tier: tier,
+        },
+      },
     });
-    
+
     res.json({ sessionId: session.id });
   } catch (error) {
     next(error);
@@ -372,58 +373,61 @@ module.exports = router;
 
 ```javascript
 // apps/api/src/routes/subscriptions.js
-router.post('/upgrade', authenticate, async (req, res, next) => {
+router.post("/upgrade", authenticate, async (req, res, next) => {
   try {
     const { newTier } = req.body; // 'enterprise'
     const userId = req.user.sub;
-    
+
     // Get current subscription
     const subscription = await prisma.subscription.findFirst({
-      where: { 
+      where: {
         userId,
-        status: 'active'
-      }
+        status: "active",
+      },
     });
-    
+
     if (!subscription) {
-      return res.status(404).json({ error: 'No active subscription' });
+      return res.status(404).json({ error: "No active subscription" });
     }
-    
+
     // Get new price ID
-    const newPriceId = newTier === 'enterprise' 
-      ? process.env.STRIPE_PRICE_ID_ENTERPRISE
-      : process.env.STRIPE_PRICE_ID_PRO;
-    
+    const newPriceId =
+      newTier === "enterprise"
+        ? process.env.STRIPE_PRICE_ID_ENTERPRISE
+        : process.env.STRIPE_PRICE_ID_PRO;
+
     // Update subscription in Stripe (with proration)
     const stripeSubscription = await stripe.subscriptions.retrieve(
-      subscription.stripeSubscriptionId
+      subscription.stripeSubscriptionId,
     );
-    
+
     const updatedSubscription = await stripe.subscriptions.update(
       subscription.stripeSubscriptionId,
       {
-        items: [{
-          id: stripeSubscription.items.data[0].id,
-          price: newPriceId
-        }],
-        proration_behavior: 'create_prorations' // Charge immediately for upgrade
-      }
+        items: [
+          {
+            id: stripeSubscription.items.data[0].id,
+            price: newPriceId,
+          },
+        ],
+        proration_behavior: "create_prorations", // Charge immediately for upgrade
+      },
     );
-    
+
     // Update local database
     await prisma.subscription.update({
       where: { id: subscription.id },
       data: {
         tier: newTier,
         stripePriceId: newPriceId,
-        updatedAt: new Date()
-      }
+        updatedAt: new Date(),
+      },
     });
-    
+
     res.json({
       success: true,
       subscription: updatedSubscription,
-      message: `Upgraded to ${newTier}. You'll see a prorated charge on your next invoice.`
+      message: `Upgraded to ${newTier}. You'll see a prorated charge on your next invoice.`,
     });
   } catch (error) {
     next(error);
@@ -434,53 +438,53 @@ router.post('/upgrade', authenticate, async (req, res, next) => {
 ### Flow 3: Subscription Cancellation
 
 ```javascript
-router.post('/cancel', authenticate, async (req, res, next) => {
+router.post("/cancel", authenticate, async (req, res, next) => {
   try {
     const { immediate, reason } = req.body; // immediate = true to cancel now
     const userId = req.user.sub;
-    
+
     const subscription = await prisma.subscription.findFirst({
-      where: { userId, status: 'active' }
+      where: { userId, status: "active" },
     });
-    
+
     if (!subscription) {
-      return res.status(404).json({ error: 'No active subscription' });
+      return res.status(404).json({ error: "No active subscription" });
     }
-    
+
     if (immediate) {
       // Cancel immediately
       await stripe.subscriptions.cancel(subscription.stripeSubscriptionId);
-      
+
       await prisma.subscription.update({
         where: { id: subscription.id },
-        data: { 
-          status: 'cancelled',
+        data: {
+          status: "cancelled",
           cancelledAt: new Date(),
-          cancelReason: reason
-        }
+          cancelReason: reason,
+        },
       });
-      
-      res.json({ 
-        message: 'Subscription cancelled immediately. You still have access until the end of the current period.' 
+
+      res.json({
+        message:
+          "Subscription cancelled immediately. You still have access until the end of the current period.",
       });
     } else {
       // Cancel at period end
-      await stripe.subscriptions.update(
-        subscription.stripeSubscriptionId,
-        { cancel_at_period_end: true }
-      );
-      
+      await stripe.subscriptions.update(subscription.stripeSubscriptionId, {
+        cancel_at_period_end: true,
+      });
+
       await prisma.subscription.update({
         where: { id: subscription.id },
-        data: { 
+        data: {
           cancelAtPeriodEnd: true,
-          cancelReason: reason
-        }
+          cancelReason: reason,
+        },
       });
-      
+
       const periodEnd = new Date(subscription.currentPeriodEnd);
-      res.json({ 
-        message: `Subscription will cancel on ${periodEnd.toLocaleDateString()}` 
+      res.json({
+        message: `Subscription will cancel on ${periodEnd.toLocaleDateString()}`,
       });
     }
   } catch (error) {
@@ -522,29 +526,29 @@ model Subscription {
   id                    String   @id @default(uuid())
   userId                String
   user                  User     @relation(fields: [userId], references: [id])
-  
+
   // Stripe IDs
   stripeSubscriptionId  String   @unique
   stripeCustomerId      String
   stripePriceId         String
-  
+
   // Plan details
   tier                  String   // 'pro' or 'enterprise'
   status                String   // 'active', 'cancelled', 'past_due', etc.
-  
+
   // Billing period
   currentPeriodStart    DateTime
   currentPeriodEnd      DateTime
-  
+
   // Cancellation
   cancelAtPeriodEnd     Boolean  @default(false)
   cancelledAt           DateTime?
   cancelReason          String?
-  
+
   // Metadata
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
-  
+
   @@index([userId, status])
   @@index([stripeSubscriptionId])
 }
@@ -555,32 +559,32 @@ model Invoice {
   user              User     @relation(fields: [userId], references: [id])
   subscriptionId    String?
   subscription      Subscription? @relation(fields: [subscriptionId], references: [id])
-  
+
   // Stripe IDs
   stripeInvoiceId   String   @unique
   stripeChargeId    String?
-  
+
   // Amounts (in USD)
   amountSubtotal    Float
   amountTax         Float
   amountTotal       Float
-  
+
   // Status
   status            String   // 'draft', 'open', 'paid', 'void', 'uncollectible'
   paidAt            DateTime?
-  
+
   // Period
   periodStart       DateTime
   periodEnd         DateTime
-  
+
   // Metered usage
   meteredUsage      Int      @default(0) // Number of loads
   meteredAmount     Float    @default(0) // Overage charges
-  
+
   // Metadata
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
-  
+
   @@index([userId, status])
   @@index([stripeInvoiceId])
 }
@@ -589,22 +593,22 @@ model PaymentMethod {
   id                String   @id @default(uuid())
   userId            String
   user              User     @relation(fields: [userId], references: [id])
-  
+
   // Stripe
   stripePaymentMethodId String @unique
-  
+
   // Card details (last 4, brand, exp)
   brand             String   // 'Visa', 'Mastercard', etc.
   last4             String
   expMonth          Int
   expYear           Int
-  
+
   // Status
   isDefault         Boolean  @default(false)
-  
+
   // Metadata
   createdAt         DateTime @default(now())
-  
+
   @@index([userId])
 }
 ```
@@ -615,30 +619,30 @@ model PaymentMethod {
 // apps/api/src/routes/subscriptions.js
 
 // GET /api/subscriptions - List user's subscriptions
-router.get('/', authenticate, async (req, res) => {
+router.get("/", authenticate, async (req, res) => {
   const subscriptions = await prisma.subscription.findMany({
     where: { userId: req.user.sub },
     include: {
-      user: { select: { email: true, name: true } }
-    }
+      user: { select: { email: true, name: true } },
+    },
   });
-  
+
   res.json({ subscriptions });
 });
 
 // GET /api/subscriptions/:id - Get subscription details
-router.get('/:id', authenticate, async (req, res) => {
+router.get("/:id", authenticate, async (req, res) => {
   const subscription = await prisma.subscription.findUnique({
     where: { id: req.params.id },
     include: {
-      invoices: { orderBy: { createdAt: 'desc' }, take: 10 }
-    }
+      invoices: { orderBy: { createdAt: "desc" }, take: 10 },
+    },
   });
-  
+
   if (!subscription || subscription.userId !== req.user.sub) {
-    return res.status(404).json({ error: 'Subscription not found' });
+    return res.status(404).json({ error: "Subscription not found" });
   }
-  
+
   res.json({ subscription });
 });
 
@@ -655,6 +659,7 @@ router.get('/:id', authenticate, async (req, res) => {
 ### Overview
 
 Metered billing charges $0.01 per load **over** the plan limit:
+
 - Pro: 5,000 loads/month included → $0.01 per load thereafter
 - Enterprise: 50,000 loads/month included → $0.01 per load thereafter
 
@@ -662,10 +667,10 @@ Metered billing charges $0.01 per load **over** the plan limit:
 
 ```javascript
 // apps/api/src/services/meteredBillingService.js
-const { stripe } = require('../config/stripe');
-const { PrismaClient } = require('@prisma/client');
+const { stripe } = require("../config/stripe");
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const logger = require('../middleware/logger');
+const logger = require("../middleware/logger");
 
 class MeteredBillingService {
   /**
@@ -674,73 +679,76 @@ class MeteredBillingService {
   static async recordUsage(userId, quantity = 1) {
     try {
       const subscription = await prisma.subscription.findFirst({
-        where: { userId, status: 'active' }
+        where: { userId, status: "active" },
       });
-      
+
       if (!subscription) {
         return; // Free tier, no metered billing
       }
-      
+
       // Get plan limits
       const limits = {
         pro: 5000,
-        enterprise: 50000
+        enterprise: 50000,
       };
-      
+
       const limit = limits[subscription.tier] || 0;
-      
+
       // Get current month's usage
       const monthStart = new Date();
       monthStart.setDate(1);
       monthStart.setHours(0, 0, 0, 0);
-      
+
       const usage = await prisma.usageRecord.aggregate({
         where: {
           userId,
-          createdAt: { gte: monthStart }
+          createdAt: { gte: monthStart },
         },
-        _sum: { quantity: true }
+        _sum: { quantity: true },
       });
-      
+
       const totalUsage = (usage._sum.quantity || 0) + quantity;
-      
+
       // Record usage in database
       await prisma.usageRecord.create({
         data: {
           userId,
           subscriptionId: subscription.id,
           quantity,
-          timestamp: new Date()
-        }
+          timestamp: new Date(),
+        },
       });
-      
+
       // If over limit, report to Stripe
       if (totalUsage > limit) {
         const overage = totalUsage - limit;
-        
+
         // Report metered usage to Stripe
         await stripe.subscriptionItems.createUsageRecord(
           subscription.stripeSubscriptionItemId, // Metered item
           {
             quantity: quantity, // Incremental quantity
             timestamp: Math.floor(Date.now() / 1000),
-            action: 'increment'
-          }
+            action: "increment",
+          },
         );
-        
-        logger.info('Metered usage reported', {
+
+        logger.info("Metered usage reported", {
           userId,
           quantity,
           totalUsage,
-          overage
+          overage,
         });
       }
     } catch (error) {
-      logger.error('Failed to record metered usage', { userId, error: error.message });
+      logger.error("Failed to record metered usage", {
+        userId,
+        error: error.message,
+      });
       // Don't throw - usage tracking shouldn't block operations
     }
   }
-  
+
   /**
    * Get current usage for a user
    */
@@ -748,31 +756,31 @@ class MeteredBillingService {
     const monthStart = new Date();
     monthStart.setDate(1);
     monthStart.setHours(0, 0, 0, 0);
-    
+
     const usage = await prisma.usageRecord.aggregate({
       where: {
         userId,
-        createdAt: { gte: monthStart }
+        createdAt: { gte: monthStart },
       },
-      _sum: { quantity: true }
+      _sum: { quantity: true },
     });
-    
+
     const subscription = await prisma.subscription.findFirst({
-      where: { userId, status: 'active' }
+      where: { userId, status: "active" },
     });
-    
+
     const limits = { pro: 5000, enterprise: 50000, free: 500 };
-    const limit = limits[subscription?.tier || 'free'];
+    const limit = limits[subscription?.tier || "free"];
     const current = usage._sum.quantity || 0;
     const remaining = Math.max(0, limit - current);
     const overage = Math.max(0, current - limit);
-    
+
     return {
       limit,
       current,
       remaining,
       overage,
-      overageCharge: overage * 0.01 // $0.01 per load
+      overageCharge: overage * 0.01, // $0.01 per load
     };
   }
 }
@@ -784,21 +792,21 @@ module.exports = MeteredBillingService;
 
 ```javascript
 // apps/api/src/routes/loads.js
-const MeteredBillingService = require('../services/meteredBillingService');
+const MeteredBillingService = require("../services/meteredBillingService");
 
-router.post('/loads', authenticate, async (req, res, next) => {
+router.post("/loads", authenticate, async (req, res, next) => {
   try {
     // Create load
     const load = await prisma.load.create({
       data: {
         ...req.body,
-        userId: req.user.sub
-      }
+        userId: req.user.sub,
+      },
     });
-    
+
     // Record metered usage
     await MeteredBillingService.recordUsage(req.user.sub, 1);
-    
+
     res.status(201).json({ load });
   } catch (error) {
     next(error);
@@ -812,13 +820,13 @@ router.post('/loads', authenticate, async (req, res, next) => {
 // apps/web/pages/dashboard.tsx
 export default function Dashboard() {
   const [usage, setUsage] = useState(null);
-  
+
   useEffect(() => {
     fetch('/api/billing/usage')
       .then(res => res.json())
       .then(data => setUsage(data));
   }, []);
-  
+
   return (
     <div>
       <h2>Your Usage This Month</h2>
@@ -826,10 +834,10 @@ export default function Dashboard() {
         <div>
           <p>Loads: {usage.current.toLocaleString()} / {usage.limit.toLocaleString()}</p>
           <progress value={usage.current} max={usage.limit} />
-          
+
           {usage.overage > 0 && (
             <p className="text-warning">
-              You've used {usage.overage} loads over your limit. 
+              You've used {usage.overage} loads over your limit.
               You'll be charged ${usage.overageCharge.toFixed(2)} this month.
             </p>
           )}
@@ -868,38 +876,44 @@ Events to send:
 
 ```javascript
 // apps/api/src/routes/webhooks/stripe.js
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { stripe } = require('../../config/stripe');
-const { StripeWebhookHandler } = require('../../config/stripe');
-const logger = require('../../middleware/logger');
+const { stripe } = require("../../config/stripe");
+const { StripeWebhookHandler } = require("../../config/stripe");
+const logger = require("../../middleware/logger");
 
-router.post('/', express.raw({ type: 'application/json' }), async (req, res) => {
-  const sig = req.headers['stripe-signature'];
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  
-  let event;
-  
-  try {
-    // Verify webhook signature
-    event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
-  } catch (err) {
-    logger.error('Webhook signature verification failed', { error: err.message });
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
-  
-  // Handle event
-  try {
-    await StripeWebhookHandler.handleWebhook(event);
-    res.json({ received: true });
-  } catch (err) {
-    logger.error('Webhook handler failed', { 
-      type: event.type, 
-      error: err.message 
-    });
-    res.status(500).json({ error: 'Webhook processing failed' });
-  }
-});
+router.post(
+  "/",
+  express.raw({ type: "application/json" }),
+  async (req, res) => {
+    const sig = req.headers["stripe-signature"];
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+    let event;
+
+    try {
+      // Verify webhook signature
+      event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+    } catch (err) {
+      logger.error("Webhook signature verification failed", {
+        error: err.message,
+      });
+      return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    // Handle event
+    try {
+      await StripeWebhookHandler.handleWebhook(event);
+      res.json({ received: true });
+    } catch (err) {
+      logger.error("Webhook handler failed", {
+        type: event.type,
+        error: err.message,
+      });
+      res.status(500).json({ error: "Webhook processing failed" });
+    }
+  },
+);
 
 module.exports = router;
 ```
@@ -927,6 +941,7 @@ stripe trigger invoice.payment_failed
 ### Automatic Retry Logic
 
 Stripe automatically retries failed payments:
+
 - **Day 0**: Payment fails → Retry immediately
 - **Day 3**: Retry #2
 - **Day 5**: Retry #3
@@ -943,13 +958,13 @@ class DunningEmailService {
    */
   static async sendPaymentFailedEmail(invoice) {
     const user = await prisma.user.findUnique({
-      where: { id: invoice.userId }
+      where: { id: invoice.userId },
     });
-    
+
     const subscription = await prisma.subscription.findUnique({
-      where: { id: invoice.subscriptionId }
+      where: { id: invoice.subscriptionId },
     });
-    
+
     // Email template
     const emailHtml = `
       <h2>Payment Failed</h2>
@@ -964,41 +979,44 @@ class DunningEmailService {
       
       <p>If you believe this is an error, contact support@infamous-freight.com</p>
     `;
-    
+
     await sendEmail({
       to: user.email,
-      subject: 'Payment Failed - Action Required',
-      html: emailHtml
+      subject: "Payment Failed - Action Required",
+      html: emailHtml,
     });
-    
-    logger.info('Dunning email sent', { userId: user.id, invoiceId: invoice.id });
+
+    logger.info("Dunning email sent", {
+      userId: user.id,
+      invoiceId: invoice.id,
+    });
   }
-  
+
   /**
    * Send upcoming payment reminder (3 days before)
    */
   static async sendUpcomingPaymentReminder(userId) {
     const user = await prisma.user.findUnique({ where: { id: userId } });
     const subscription = await prisma.subscription.findFirst({
-      where: { userId, status: 'active' }
+      where: { userId, status: "active" },
     });
-    
+
     const emailHtml = `
       <h2>Upcoming Payment</h2>
       <p>Hi ${user.name},</p>
       <p>Your INFÆMOUS FREIGHT subscription will renew in 3 days.</p>
       
-      <p><strong>Amount:</strong> $${subscription.tier === 'pro' ? '99.00' : '999.00'}</p>
+      <p><strong>Amount:</strong> $${subscription.tier === "pro" ? "99.00" : "999.00"}</p>
       <p><strong>Renewal date:</strong> ${new Date(subscription.currentPeriodEnd).toLocaleDateString()}</p>
       
       <p>No action needed if your payment method is up to date.</p>
       <a href="${process.env.WEB_BASE_URL}/billing">View Billing</a>
     `;
-    
+
     await sendEmail({
       to: user.email,
-      subject: 'Subscription Renewal Reminder',
-      html: emailHtml
+      subject: "Subscription Renewal Reminder",
+      html: emailHtml,
     });
   }
 }
@@ -1009,7 +1027,7 @@ module.exports = DunningEmailService;
 ### Invoice Webhook Handler (Extended)
 
 ```javascript
-// Add to StripeWebhookHandler in STRIPE_CONFIG.js
+// Add to StripeWebhookHandler in archive/legacy-20260216/root-js/STRIPE_CONFIG.js
 
 static async handleInvoiceUpcoming(invoice) {
   // 3 days before invoice due
@@ -1018,13 +1036,13 @@ static async handleInvoiceUpcoming(invoice) {
     amount: invoice.total / 100,
     periodEnd: new Date(invoice.period_end * 1000)
   });
-  
+
   const subscription = await prisma.subscription.findUnique({
     where: { stripeSubscriptionId: invoice.subscription }
   });
-  
+
   if (!subscription) return;
-  
+
   // Send reminder email
   await DunningEmailService.sendUpcomingPaymentReminder(subscription.userId);
 }
@@ -1035,19 +1053,19 @@ static async handleInvoicePaymentFailed(invoice) {
     amount: invoice.total / 100,
     attemptCount: invoice.attempt_count
   });
-  
+
   await prisma.invoice.update({
     where: { stripeInvoiceId: invoice.id },
     data: { status: 'failed' }
   });
-  
+
   // Send dunning email
   const dbInvoice = await prisma.invoice.findUnique({
     where: { stripeInvoiceId: invoice.id }
   });
-  
+
   await DunningEmailService.sendPaymentFailedEmail(dbInvoice);
-  
+
   // If final attempt (4th retry), suspend subscription
   if (invoice.attempt_count >= 4) {
     await this.suspendSubscription(invoice.subscription);
@@ -1056,15 +1074,15 @@ static async handleInvoicePaymentFailed(invoice) {
 
 static async suspendSubscription(stripeSubscriptionId) {
   logger.warn('Suspending subscription due to payment failure', { stripeSubscriptionId });
-  
+
   await prisma.subscription.update({
     where: { stripeSubscriptionId },
-    data: { 
+    data: {
       status: 'suspended',
       suspendedAt: new Date()
     }
   });
-  
+
   // Optionally: downgrade to Free tier immediately
 }
 ```
@@ -1073,39 +1091,41 @@ static async suspendSubscription(stripeSubscriptionId) {
 
 ```javascript
 // apps/api/src/routes/billing.js
-router.post('/invoices/:id/retry', authenticate, async (req, res, next) => {
+router.post("/invoices/:id/retry", authenticate, async (req, res, next) => {
   try {
     const invoice = await prisma.invoice.findUnique({
-      where: { id: req.params.id }
+      where: { id: req.params.id },
     });
-    
+
     if (!invoice || invoice.userId !== req.user.sub) {
-      return res.status(404).json({ error: 'Invoice not found' });
+      return res.status(404).json({ error: "Invoice not found" });
     }
-    
-    if (invoice.status !== 'failed') {
-      return res.status(400).json({ error: 'Invoice already paid or not failed' });
+
+    if (invoice.status !== "failed") {
+      return res
+        .status(400)
+        .json({ error: "Invoice already paid or not failed" });
     }
-    
+
     // Retry payment in Stripe
     const stripeInvoice = await stripe.invoices.pay(invoice.stripeInvoiceId);
-    
-    if (stripeInvoice.status === 'paid') {
+
+    if (stripeInvoice.status === "paid") {
       await prisma.invoice.update({
         where: { id: invoice.id },
-        data: { 
-          status: 'paid',
-          paidAt: new Date()
-        }
+        data: {
+          status: "paid",
+          paidAt: new Date(),
+        },
       });
-      
-      res.json({ 
+
+      res.json({
         success: true,
-        message: 'Payment successful!' 
+        message: "Payment successful!",
       });
     } else {
-      res.status(400).json({ 
-        error: 'Payment failed. Please update your payment method.' 
+      res.status(400).json({
+        error: "Payment failed. Please update your payment method.",
       });
     }
   } catch (error) {
@@ -1122,86 +1142,99 @@ router.post('/invoices/:id/retry', authenticate, async (req, res, next) => {
 
 ```javascript
 // apps/api/src/routes/refunds.js
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { stripe } = require('../config/stripe');
-const { authenticate, requireScope } = require('../middleware/security');
-const { PrismaClient } = require('@prisma/client');
+const { stripe } = require("../config/stripe");
+const { authenticate, requireScope } = require("../middleware/security");
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 // POST /api/refunds - Issue refund (admin only)
-router.post('/', authenticate, requireScope('billing:refund'), async (req, res, next) => {
-  try {
-    const { invoiceId, reason, amount } = req.body;
-    
-    const invoice = await prisma.invoice.findUnique({
-      where: { id: invoiceId }
-    });
-    
-    if (!invoice || !invoice.stripeChargeId) {
-      return res.status(404).json({ error: 'Invoice or charge not found' });
+router.post(
+  "/",
+  authenticate,
+  requireScope("billing:refund"),
+  async (req, res, next) => {
+    try {
+      const { invoiceId, reason, amount } = req.body;
+
+      const invoice = await prisma.invoice.findUnique({
+        where: { id: invoiceId },
+      });
+
+      if (!invoice || !invoice.stripeChargeId) {
+        return res.status(404).json({ error: "Invoice or charge not found" });
+      }
+
+      // Create refund in Stripe
+      const refund = await stripe.refunds.create({
+        charge: invoice.stripeChargeId,
+        amount: amount ? Math.round(amount * 100) : undefined, // Partial or full
+        reason: reason || "requested_by_customer",
+        metadata: {
+          invoiceId: invoice.id,
+          processedBy: req.user.sub,
+        },
+      });
+
+      // Update invoice status
+      await prisma.invoice.update({
+        where: { id: invoice.id },
+        data: {
+          status:
+            refund.amount === invoice.amountTotal * 100
+              ? "refunded"
+              : "partially_refunded",
+          refundedAt: new Date(),
+          refundReason: reason,
+        },
+      });
+
+      // Create refund record
+      await prisma.refund.create({
+        data: {
+          invoiceId: invoice.id,
+          userId: invoice.userId,
+          stripeRefundId: refund.id,
+          amount: refund.amount / 100,
+          reason: reason,
+          processedBy: req.user.sub,
+        },
+      });
+
+      res.json({
+        success: true,
+        refund: {
+          id: refund.id,
+          amount: refund.amount / 100,
+          status: refund.status,
+        },
+      });
+    } catch (error) {
+      next(error);
     }
-    
-    // Create refund in Stripe
-    const refund = await stripe.refunds.create({
-      charge: invoice.stripeChargeId,
-      amount: amount ? Math.round(amount * 100) : undefined, // Partial or full
-      reason: reason || 'requested_by_customer',
-      metadata: {
-        invoiceId: invoice.id,
-        processedBy: req.user.sub
-      }
-    });
-    
-    // Update invoice status
-    await prisma.invoice.update({
-      where: { id: invoice.id },
-      data: { 
-        status: refund.amount === invoice.amountTotal * 100 ? 'refunded' : 'partially_refunded',
-        refundedAt: new Date(),
-        refundReason: reason
-      }
-    });
-    
-    // Create refund record
-    await prisma.refund.create({
-      data: {
-        invoiceId: invoice.id,
-        userId: invoice.userId,
-        stripeRefundId: refund.id,
-        amount: refund.amount / 100,
-        reason: reason,
-        processedBy: req.user.sub
-      }
-    });
-    
-    res.json({
-      success: true,
-      refund: {
-        id: refund.id,
-        amount: refund.amount / 100,
-        status: refund.status
-      }
-    });
-  } catch (error) {
-    next(error);
-  }
-});
+  },
+);
 
 // GET /api/refunds - List refunds
-router.get('/', authenticate, requireScope('billing:read'), async (req, res) => {
-  const refunds = await prisma.refund.findMany({
-    where: req.user.role === 'ADMIN' ? {} : { userId: req.user.sub },
-    include: {
-      invoice: true,
-      user: { select: { name: true, email: true } }
-    },
-    orderBy: { createdAt: 'desc' },
-    take: 50
-  });
-  
-  res.json({ refunds });
-});
+router.get(
+  "/",
+  authenticate,
+  requireScope("billing:read"),
+  async (req, res) => {
+    const refunds = await prisma.refund.findMany({
+      where: req.user.role === "ADMIN" ? {} : { userId: req.user.sub },
+      include: {
+        invoice: true,
+        user: { select: { name: true, email: true } },
+      },
+      orderBy: { createdAt: "desc" },
+      take: 50,
+    });
+
+    res.json({ refunds });
+  },
+);
 
 module.exports = router;
 ```
@@ -1222,20 +1255,20 @@ static async handleDisputeCreated(dispute) {
     amount: dispute.amount / 100,
     reason: dispute.reason
   });
-  
+
   // Find invoice
   const invoice = await prisma.invoice.findUnique({
     where: { stripeChargeId: dispute.charge }
   });
-  
+
   if (!invoice) return;
-  
+
   // Update invoice
   await prisma.invoice.update({
     where: { id: invoice.id },
     data: { status: 'disputed' }
   });
-  
+
   // Create dispute record
   await prisma.dispute.create({
     data: {
@@ -1247,7 +1280,7 @@ static async handleDisputeCreated(dispute) {
       status: 'open'
     }
   });
-  
+
   // Alert admin
   await alertAdmin('Dispute Created', {
     disputeId: dispute.id,
@@ -1262,16 +1295,16 @@ static async handleDisputeUpdated(dispute) {
     disputeId: dispute.id,
     status: dispute.status
   });
-  
+
   await prisma.dispute.update({
     where: { stripeDisputeId: dispute.id },
-    data: { 
+    data: {
       status: dispute.status,
       evidence: dispute.evidence,
       updatedAt: new Date()
     }
   });
-  
+
   if (dispute.status === 'won') {
     logger.info('Dispute won', { disputeId: dispute.id });
   } else if (dispute.status === 'lost') {
@@ -1287,6 +1320,7 @@ static async handleDisputeUpdated(dispute) {
 ### Stripe Customer Portal (Recommended)
 
 **Easiest:** Use Stripe's hosted portal for:
+
 - Update payment method
 - View invoices
 - Cancel subscription
@@ -1294,22 +1328,22 @@ static async handleDisputeUpdated(dispute) {
 
 ```javascript
 // apps/api/src/routes/billing.js
-router.post('/create-portal-session', authenticate, async (req, res, next) => {
+router.post("/create-portal-session", authenticate, async (req, res, next) => {
   try {
     const user = await prisma.user.findUnique({
-      where: { id: req.user.sub }
+      where: { id: req.user.sub },
     });
-    
+
     if (!user.stripeCustomerId) {
-      return res.status(400).json({ error: 'No billing account found' });
+      return res.status(400).json({ error: "No billing account found" });
     }
-    
+
     // Create portal session
     const session = await stripe.billingPortal.sessions.create({
       customer: user.stripeCustomerId,
       return_url: `${process.env.WEB_BASE_URL}/dashboard`,
     });
-    
+
     res.json({ url: session.url });
   } catch (error) {
     next(error);
@@ -1329,7 +1363,7 @@ export function BillingPortalButton() {
     const { url } = await res.json();
     window.location.href = url; // Redirect to Stripe portal
   };
-  
+
   return (
     <button onClick={handleClick}>
       Manage Billing
@@ -1352,17 +1386,17 @@ export default function BillingPage() {
   const [subscription, setSubscription] = useState(null);
   const [invoices, setInvoices] = useState([]);
   const [paymentMethods, setPaymentMethods] = useState([]);
-  
+
   useEffect(() => {
     fetch('/api/billing/subscription').then(r => r.json()).then(setSubscription);
     fetch('/api/billing/invoices').then(r => r.json()).then(d => setInvoices(d.invoices));
     fetch('/api/billing/payment-methods').then(r => r.json()).then(d => setPaymentMethods(d.methods));
   }, []);
-  
+
   return (
     <div>
       <h1>Billing</h1>
-      
+
       {/* Current Plan */}
       <section>
         <h2>Current Plan</h2>
@@ -1377,7 +1411,7 @@ export default function BillingPage() {
           </div>
         )}
       </section>
-      
+
       {/* Payment Methods */}
       <section>
         <h2>Payment Methods</h2>
@@ -1392,7 +1426,7 @@ export default function BillingPage() {
           Add Payment Method
         </button>
       </section>
-      
+
       {/* Invoice History */}
       <section>
         <h2>Invoice History</h2>
@@ -1451,100 +1485,100 @@ Expired card:
 
 ```javascript
 // apps/api/src/__tests__/payments.test.js
-const request = require('supertest');
-const app = require('../app');
-const { PrismaClient } = require('@prisma/client');
+const request = require("supertest");
+const app = require("../app");
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-describe('Payment System', () => {
+describe("Payment System", () => {
   let authToken;
   let userId;
-  
+
   beforeAll(async () => {
     // Create test user
     const user = await prisma.user.create({
       data: {
-        email: 'test@example.com',
-        name: 'Test User',
-        stripeCustomerId: 'cus_test123'
-      }
+        email: "test@example.com",
+        name: "Test User",
+        stripeCustomerId: "cus_test123",
+      },
     });
     userId = user.id;
-    
+
     // Generate test JWT
     authToken = generateTestToken(userId);
   });
-  
+
   afterAll(async () => {
     await prisma.user.delete({ where: { id: userId } });
   });
-  
-  describe('POST /api/checkout/create-session', () => {
-    it('should create checkout session for Pro plan', async () => {
+
+  describe("POST /api/checkout/create-session", () => {
+    it("should create checkout session for Pro plan", async () => {
       const res = await request(app)
-        .post('/api/checkout/create-session')
-        .set('Authorization', `Bearer ${authToken}`)
+        .post("/api/checkout/create-session")
+        .set("Authorization", `Bearer ${authToken}`)
         .send({
-          priceId: 'price_test_pro',
-          tier: 'pro'
+          priceId: "price_test_pro",
+          tier: "pro",
         });
-      
+
       expect(res.status).toBe(200);
-      expect(res.body).toHaveProperty('sessionId');
+      expect(res.body).toHaveProperty("sessionId");
       expect(res.body.sessionId).toMatch(/^cs_test_/);
     });
   });
-  
-  describe('POST /api/subscriptions/upgrade', () => {
-    it('should upgrade from Pro to Enterprise', async () => {
+
+  describe("POST /api/subscriptions/upgrade", () => {
+    it("should upgrade from Pro to Enterprise", async () => {
       // Create Pro subscription first
       const subscription = await prisma.subscription.create({
         data: {
           userId,
-          stripeSubscriptionId: 'sub_test123',
-          stripeCustomerId: 'cus_test123',
-          stripePriceId: 'price_test_pro',
-          tier: 'pro',
-          status: 'active',
+          stripeSubscriptionId: "sub_test123",
+          stripeCustomerId: "cus_test123",
+          stripePriceId: "price_test_pro",
+          tier: "pro",
+          status: "active",
           currentPeriodStart: new Date(),
-          currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-        }
+          currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        },
       });
-      
+
       const res = await request(app)
-        .post('/api/subscriptions/upgrade')
-        .set('Authorization', `Bearer ${authToken}`)
-        .send({ newTier: 'enterprise' });
-      
+        .post("/api/subscriptions/upgrade")
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({ newTier: "enterprise" });
+
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
-      
+
       const updated = await prisma.subscription.findUnique({
-        where: { id: subscription.id }
+        where: { id: subscription.id },
       });
-      expect(updated.tier).toBe('enterprise');
+      expect(updated.tier).toBe("enterprise");
     });
   });
-  
-  describe('Metered Billing', () => {
-    it('should record usage for paid user', async () => {
-      const MeteredBillingService = require('../services/meteredBillingService');
-      
+
+  describe("Metered Billing", () => {
+    it("should record usage for paid user", async () => {
+      const MeteredBillingService = require("../services/meteredBillingService");
+
       await MeteredBillingService.recordUsage(userId, 10);
-      
+
       const usage = await MeteredBillingService.getCurrentUsage(userId);
       expect(usage.current).toBe(10);
     });
-    
-    it('should calculate overage charges correctly', async () => {
-      const MeteredBillingService = require('../services/meteredBillingService');
-      
+
+    it("should calculate overage charges correctly", async () => {
+      const MeteredBillingService = require("../services/meteredBillingService");
+
       // Simulate 5,100 loads (100 over Pro limit)
       await MeteredBillingService.recordUsage(userId, 5100);
-      
+
       const usage = await MeteredBillingService.getCurrentUsage(userId);
       expect(usage.overage).toBe(100);
-      expect(usage.overageCharge).toBe(1.00); // $1.00 for 100 loads
+      expect(usage.overageCharge).toBe(1.0); // $1.00 for 100 loads
     });
   });
 });
@@ -1647,91 +1681,97 @@ describe('Payment System', () => {
 
 ```javascript
 // apps/api/src/routes/analytics.js
-router.get('/revenue', authenticate, requireScope('analytics:read'), async (req, res) => {
-  const { startDate, endDate } = req.query;
-  
-  // MRR (Monthly Recurring Revenue)
-  const activeSubs = await prisma.subscription.findMany({
-    where: { status: 'active' },
-    include: { user: true }
-  });
-  
-  const mrr = activeSubs.reduce((sum, sub) => {
-    const prices = { pro: 99, enterprise: 999 };
-    return sum + (prices[sub.tier] || 0);
-  }, 0);
-  
-  // ARR (Annual Recurring Revenue)
-  const arr = mrr * 12;
-  
-  // Revenue by tier
-  const revenueByTier = {
-    pro: activeSubs.filter(s => s.tier === 'pro').length * 99,
-    enterprise: activeSubs.filter(s => s.tier === 'enterprise').length * 999
-  };
-  
-  // Churn rate
-  const cancelledThisMonth = await prisma.subscription.count({
-    where: {
-      status: 'cancelled',
-      cancelledAt: {
-        gte: new Date(new Date().setDate(1)) // First of month
-      }
-    }
-  });
-  
-  const churnRate = (cancelledThisMonth / activeSubs.length) * 100;
-  
-  // LTV (Lifetime Value)
-  const avgLifetimeMonths = 12; // Assumption
-  const ltv = {
-    pro: 99 * avgLifetimeMonths,
-    enterprise: 999 * avgLifetimeMonths
-  };
-  
-  // Total revenue (historical)
-  const totalRevenue = await prisma.invoice.aggregate({
-    where: {
-      status: 'paid',
-      paidAt: {
-        gte: startDate ? new Date(startDate) : undefined,
-        lte: endDate ? new Date(endDate) : undefined
-      }
-    },
-    _sum: { amountTotal: true }
-  });
-  
-  res.json({
-    mrr,
-    arr,
-    revenueByTier,
-    churnRate: churnRate.toFixed(2) + '%',
-    ltv,
-    totalRevenue: totalRevenue._sum.amountTotal || 0,
-    activeSubscriptions: activeSubs.length
-  });
-});
+router.get(
+  "/revenue",
+  authenticate,
+  requireScope("analytics:read"),
+  async (req, res) => {
+    const { startDate, endDate } = req.query;
+
+    // MRR (Monthly Recurring Revenue)
+    const activeSubs = await prisma.subscription.findMany({
+      where: { status: "active" },
+      include: { user: true },
+    });
+
+    const mrr = activeSubs.reduce((sum, sub) => {
+      const prices = { pro: 99, enterprise: 999 };
+      return sum + (prices[sub.tier] || 0);
+    }, 0);
+
+    // ARR (Annual Recurring Revenue)
+    const arr = mrr * 12;
+
+    // Revenue by tier
+    const revenueByTier = {
+      pro: activeSubs.filter((s) => s.tier === "pro").length * 99,
+      enterprise:
+        activeSubs.filter((s) => s.tier === "enterprise").length * 999,
+    };
+
+    // Churn rate
+    const cancelledThisMonth = await prisma.subscription.count({
+      where: {
+        status: "cancelled",
+        cancelledAt: {
+          gte: new Date(new Date().setDate(1)), // First of month
+        },
+      },
+    });
+
+    const churnRate = (cancelledThisMonth / activeSubs.length) * 100;
+
+    // LTV (Lifetime Value)
+    const avgLifetimeMonths = 12; // Assumption
+    const ltv = {
+      pro: 99 * avgLifetimeMonths,
+      enterprise: 999 * avgLifetimeMonths,
+    };
+
+    // Total revenue (historical)
+    const totalRevenue = await prisma.invoice.aggregate({
+      where: {
+        status: "paid",
+        paidAt: {
+          gte: startDate ? new Date(startDate) : undefined,
+          lte: endDate ? new Date(endDate) : undefined,
+        },
+      },
+      _sum: { amountTotal: true },
+    });
+
+    res.json({
+      mrr,
+      arr,
+      revenueByTier,
+      churnRate: churnRate.toFixed(2) + "%",
+      ltv,
+      totalRevenue: totalRevenue._sum.amountTotal || 0,
+      activeSubscriptions: activeSubs.length,
+    });
+  },
+);
 ```
 
 ### Datadog Revenue Metrics
 
 ```javascript
 // Track revenue metrics in Datadog
-const { StatsD } = require('hot-shots');
+const { StatsD } = require("hot-shots");
 const dogstatsd = new StatsD();
 
 // Track MRR
-dogstatsd.gauge('infamous.revenue.mrr', mrr);
+dogstatsd.gauge("infamous.revenue.mrr", mrr);
 
 // Track conversions
-dogstatsd.increment('infamous.conversions.free_to_pro');
-dogstatsd.increment('infamous.conversions.pro_to_enterprise');
+dogstatsd.increment("infamous.conversions.free_to_pro");
+dogstatsd.increment("infamous.conversions.pro_to_enterprise");
 
 // Track churn
-dogstatsd.gauge('infamous.churn.rate', churnRate);
+dogstatsd.gauge("infamous.churn.rate", churnRate);
 
 // Track LTV:CAC
-dogstatsd.gauge('infamous.metrics.ltv_cac_ratio', ltvCacRatio);
+dogstatsd.gauge("infamous.metrics.ltv_cac_ratio", ltvCacRatio);
 ```
 
 ---
@@ -1762,10 +1802,11 @@ stripe trigger payment_intent.succeeded
 try {
   await stripe.paymentIntents.confirm(paymentIntentId);
 } catch (error) {
-  if (error.code === 'card_declined') {
+  if (error.code === "card_declined") {
     // Notify user to contact their bank
     return res.status(400).json({
-      error: 'Card declined. Please use a different payment method or contact your bank.'
+      error:
+        "Card declined. Please use a different payment method or contact your bank.",
     });
   }
   throw error;
@@ -1777,15 +1818,16 @@ try {
 ```javascript
 // Always check for existing subscription before creating
 const existing = await prisma.subscription.findFirst({
-  where: { 
+  where: {
     userId,
-    status: { in: ['active', 'trialing'] }
-  }
+    status: { in: ["active", "trialing"] },
+  },
 });
 
 if (existing) {
-  return res.status(400).json({ 
-    error: 'You already have an active subscription. To upgrade, use /api/subscriptions/upgrade.' 
+  return res.status(400).json({
+    error:
+      "You already have an active subscription. To upgrade, use /api/subscriptions/upgrade.",
   });
 }
 ```
@@ -1796,8 +1838,8 @@ if (existing) {
 // Ensure proration_behavior is set correctly
 await stripe.subscriptions.update(subscriptionId, {
   items: [{ id: itemId, price: newPriceId }],
-  proration_behavior: 'create_prorations', // NOT 'none'
-  billing_cycle_anchor: 'unchanged' // Keep original billing date
+  proration_behavior: "create_prorations", // NOT 'none'
+  billing_cycle_anchor: "unchanged", // Keep original billing date
 });
 ```
 
@@ -1849,6 +1891,7 @@ stripe config --list              # Show Stripe CLI config
 ## NEXT STEPS
 
 ### Phase 1: Setup (Week 1)
+
 - [x] Configure Stripe account
 - [x] Create products & prices
 - [x] Set environment variables
@@ -1857,6 +1900,7 @@ stripe config --list              # Show Stripe CLI config
 - [ ] Deploy webhook endpoint
 
 ### Phase 2: Integration (Week 2-3)
+
 - [ ] Implement checkout flow
 - [ ] Add subscription management
 - [ ] Configure metered billing
@@ -1864,6 +1908,7 @@ stripe config --list              # Show Stripe CLI config
 - [ ] Test cancellation flow
 
 ### Phase 3: Recovery & Optimization (Week 4)
+
 - [ ] Implement dunning emails
 - [ ] Configure automatic retries
 - [ ] Add customer billing portal
@@ -1871,6 +1916,7 @@ stripe config --list              # Show Stripe CLI config
 - [ ] Load test payment endpoints
 
 ### Phase 4: Go Live (Week 5)
+
 - [ ] Switch to live mode
 - [ ] Monitor webhooks in production
 - [ ] Test with real card
@@ -1882,6 +1928,7 @@ stripe config --list              # Show Stripe CLI config
 ## RESOURCES
 
 **Stripe Documentation:**
+
 - Checkout: https://stripe.com/docs/payments/checkout
 - Subscriptions: https://stripe.com/docs/billing/subscriptions
 - Webhooks: https://stripe.com/docs/webhooks
@@ -1889,12 +1936,16 @@ stripe config --list              # Show Stripe CLI config
 - Customer Portal: https://stripe.com/docs/billing/subscriptions/customer-portal
 
 **INFÆMOUS FREIGHT Docs:**
-- [STRIPE_CONFIG.js](STRIPE_CONFIG.js) - Webhook handlers
-- [MONITORING_DASHBOARD_SETUP_100.md](MONITORING_DASHBOARD_SETUP_100.md) - Revenue tracking
+
+- [archive/legacy-20260216/root-js/STRIPE_CONFIG.js](archive/legacy-20260216/root-js/STRIPE_CONFIG.js) -
+  Webhook handlers
+- [MONITORING_DASHBOARD_SETUP_100.md](MONITORING_DASHBOARD_SETUP_100.md) -
+  Revenue tracking
 - [SECRET_ROTATION.md](SECRET_ROTATION.md) - API key rotation
 - [ERROR_HANDLING.md](ERROR_HANDLING.md) - Payment error handling
 
 **Support:**
+
 - Stripe Support: https://support.stripe.com/
 - INFÆMOUS FREIGHT: support@infamous-freight.com
 
@@ -1902,6 +1953,7 @@ stripe config --list              # Show Stripe CLI config
 
 **Payment System 100% Complete** ✅
 
-All payment flows, subscription management, metered billing, webhooks, dunning, refunds, security, and testing documented and ready to deploy.
+All payment flows, subscription management, metered billing, webhooks, dunning,
+refunds, security, and testing documented and ready to deploy.
 
 **Revenue target: $8.2M ARR Month 1 → $143.6M ARR Month 6** 🚀

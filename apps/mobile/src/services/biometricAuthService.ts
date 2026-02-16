@@ -33,11 +33,9 @@ export class BiometricAuthService {
       this.supportedTypes = types;
       this.isAvailable = true;
 
-      const typeNames = types.map(t => {
-        if (t === LocalAuthentication.AuthenticationType.FINGERPRINT)
-          return "Fingerprint";
-        if (t === LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION)
-          return "Face";
+      const typeNames = types.map((t) => {
+        if (t === LocalAuthentication.AuthenticationType.FINGERPRINT) return "Fingerprint";
+        if (t === LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION) return "Face";
         return "Unknown";
       });
 
@@ -102,7 +100,7 @@ export class BiometricAuthService {
       // Generate secure key
       const secureKey = await crypto.digestStringAsync(
         crypto.CryptoDigestAlgorithm.SHA256,
-        `${userId}:${password}:${Date.now()}`
+        `${userId}:${password}:${Date.now()}`,
       );
 
       // Store encrypted
@@ -113,7 +111,7 @@ export class BiometricAuthService {
           key: secureKey,
           setupDate: new Date().toISOString(),
           types: this.supportedTypes,
-        })
+        }),
       );
 
       this.biometricsEnabled = true;
@@ -170,7 +168,7 @@ export class BiometricAuthService {
 
       const hashedPin = await crypto.digestStringAsync(
         crypto.CryptoDigestAlgorithm.SHA256,
-        pinCode
+        pinCode,
       );
 
       await AsyncStorage.setItem(
@@ -180,7 +178,7 @@ export class BiometricAuthService {
           setupDate: new Date().toISOString(),
           attempts: 0,
           locked: false,
-        })
+        }),
       );
 
       console.log("✅ PIN setup complete");
@@ -211,7 +209,7 @@ export class BiometricAuthService {
 
       const hashedPin = await crypto.digestStringAsync(
         crypto.CryptoDigestAlgorithm.SHA256,
-        pinCode
+        pinCode,
       );
 
       if (hashedPin !== pinData.hash) {
@@ -288,10 +286,7 @@ export class BiometricAuthService {
       const data = JSON.parse(pinData);
 
       // Verify password (would be done server-side in production)
-      const hash = await crypto.digestStringAsync(
-        crypto.CryptoDigestAlgorithm.SHA256,
-        password
-      );
+      const hash = await crypto.digestStringAsync(crypto.CryptoDigestAlgorithm.SHA256, password);
 
       // Mock verification (actual would check against stored hash)
       data.locked = false;

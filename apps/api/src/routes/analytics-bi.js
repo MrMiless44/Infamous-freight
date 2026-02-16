@@ -16,27 +16,25 @@ const logger = require("../middleware/logger");
  * Get operations dashboard
  */
 router.get(
-    "/dashboard/operations",
-    limiters.general,
-    authenticate,
-    requireScope("admin:dashboards"),
-    auditLog,
-    async (req, res, next) => {
-        try {
-            const { dispatcherId } = req.user || {};
+  "/dashboard/operations",
+  limiters.general,
+  authenticate,
+  requireScope("admin:dashboards"),
+  auditLog,
+  async (req, res, next) => {
+    try {
+      const { dispatcherId } = req.user || {};
 
-            const dashboard = await analyticsBIService.getOperationsDashboard(
-                dispatcherId,
-            );
+      const dashboard = await analyticsBIService.getOperationsDashboard(dispatcherId);
 
-            res.status(200).json({
-                success: true,
-                dashboard,
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        dashboard,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -44,23 +42,23 @@ router.get(
  * Analyze market trends for profit optimization
  */
 router.get(
-    "/market-trends",
-    limiters.general,
-    authenticate,
-    requireScope("admin:analytics"),
-    auditLog,
-    async (req, res, next) => {
-        try {
-            const trends = await analyticsBIService.analyzeMarketTrends();
+  "/market-trends",
+  limiters.general,
+  authenticate,
+  requireScope("admin:analytics"),
+  auditLog,
+  async (req, res, next) => {
+    try {
+      const trends = await analyticsBIService.analyzeMarketTrends();
 
-            res.status(200).json({
-                success: true,
-                trends,
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        trends,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -68,30 +66,27 @@ router.get(
  * Calculate driver performance score
  */
 router.post(
-    "/driver-performance",
-    limiters.general,
-    authenticate,
-    requireScope("admin:analytics"),
-    auditLog,
-    validateString("driverId"),
-    handleValidationErrors,
-    async (req, res, next) => {
-        try {
-            const { driverId, driverData } = req.body;
+  "/driver-performance",
+  limiters.general,
+  authenticate,
+  requireScope("admin:analytics"),
+  auditLog,
+  validateString("driverId"),
+  handleValidationErrors,
+  async (req, res, next) => {
+    try {
+      const { driverId, driverData } = req.body;
 
-            const result = await analyticsBIService.calculatePerformanceScore(
-                driverId,
-                driverData,
-            );
+      const result = await analyticsBIService.calculatePerformanceScore(driverId, driverData);
 
-            res.status(200).json({
-                success: true,
-                performance: result,
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        performance: result,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -99,27 +94,27 @@ router.post(
  * Optimize route for efficiency
  */
 router.post(
-    "/route-optimization",
-    limiters.general,
-    authenticate,
-    requireScope("dispatch:optimization"),
-    auditLog,
-    validateString("routeId"),
-    handleValidationErrors,
-    async (req, res, next) => {
-        try {
-            const { route } = req.body;
+  "/route-optimization",
+  limiters.general,
+  authenticate,
+  requireScope("dispatch:optimization"),
+  auditLog,
+  validateString("routeId"),
+  handleValidationErrors,
+  async (req, res, next) => {
+    try {
+      const { route } = req.body;
 
-            const result = await analyticsBIService.optimizeRoute(route);
+      const result = await analyticsBIService.optimizeRoute(route);
 
-            res.status(200).json({
-                success: true,
-                optimization: result,
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        optimization: result,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -127,27 +122,25 @@ router.post(
  * Get predictive revenue forecast
  */
 router.get(
-    "/forecast-revenue",
-    limiters.general,
-    authenticate,
-    requireScope("admin:analytics"),
-    auditLog,
-    async (req, res, next) => {
-        try {
-            const { days = 30 } = req.query;
+  "/forecast-revenue",
+  limiters.general,
+  authenticate,
+  requireScope("admin:analytics"),
+  auditLog,
+  async (req, res, next) => {
+    try {
+      const { days = 30 } = req.query;
 
-            const forecast = await analyticsBIService.getForecastRevenue(
-                parseInt(days),
-            );
+      const forecast = await analyticsBIService.getForecastRevenue(parseInt(days));
 
-            res.status(200).json({
-                success: true,
-                forecast,
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        forecast,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -155,33 +148,33 @@ router.get(
  * Get key performance indicators
  */
 router.get(
-    "/kpis",
-    limiters.general,
-    authenticate,
-    requireScope("admin:analytics"),
-    auditLog,
-    async (req, res, next) => {
-        try {
-            const kpis = {
-                deliveryAccuracy: 96.2,
-                customerSatisfaction: 4.6,
-                costPerMile: 1.28,
-                utilizationRate: 87.3,
-                deadheadPercentage: 12.7,
-                onTimeDelivery: 94.5,
-                damageRate: 0.8,
-                revenue24h: 48375,
-                profit24h: 35535,
-            };
+  "/kpis",
+  limiters.general,
+  authenticate,
+  requireScope("admin:analytics"),
+  auditLog,
+  async (req, res, next) => {
+    try {
+      const kpis = {
+        deliveryAccuracy: 96.2,
+        customerSatisfaction: 4.6,
+        costPerMile: 1.28,
+        utilizationRate: 87.3,
+        deadheadPercentage: 12.7,
+        onTimeDelivery: 94.5,
+        damageRate: 0.8,
+        revenue24h: 48375,
+        profit24h: 35535,
+      };
 
-            res.status(200).json({
-                success: true,
-                kpis,
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        kpis,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -189,53 +182,53 @@ router.get(
  * Get demand levels by region
  */
 router.get(
-    "/regions-demand",
-    limiters.general,
-    authenticate,
-    requireScope("admin:analytics"),
-    auditLog,
-    async (req, res, next) => {
-        try {
-            const regionDemand = [
-                {
-                    name: "Phoenix Metro",
-                    demandLevel: "high",
-                    avgRate: 1850,
-                    availableLoads: 47,
-                    recommendedCapacity: "increase",
-                },
-                {
-                    name: "LA Basin",
-                    demandLevel: "moderate",
-                    avgRate: 1580,
-                    availableLoads: 23,
-                    recommendedCapacity: "maintain",
-                },
-                {
-                    name: "Denver Area",
-                    demandLevel: "low",
-                    avgRate: 1420,
-                    availableLoads: 8,
-                    recommendedCapacity: "reduce",
-                },
-                {
-                    name: "Texas Triangle",
-                    demandLevel: "very_high",
-                    avgRate: 2100,
-                    availableLoads: 89,
-                    recommendedCapacity: "max_out",
-                },
-            ];
+  "/regions-demand",
+  limiters.general,
+  authenticate,
+  requireScope("admin:analytics"),
+  auditLog,
+  async (req, res, next) => {
+    try {
+      const regionDemand = [
+        {
+          name: "Phoenix Metro",
+          demandLevel: "high",
+          avgRate: 1850,
+          availableLoads: 47,
+          recommendedCapacity: "increase",
+        },
+        {
+          name: "LA Basin",
+          demandLevel: "moderate",
+          avgRate: 1580,
+          availableLoads: 23,
+          recommendedCapacity: "maintain",
+        },
+        {
+          name: "Denver Area",
+          demandLevel: "low",
+          avgRate: 1420,
+          availableLoads: 8,
+          recommendedCapacity: "reduce",
+        },
+        {
+          name: "Texas Triangle",
+          demandLevel: "very_high",
+          avgRate: 2100,
+          availableLoads: 89,
+          recommendedCapacity: "max_out",
+        },
+      ];
 
-            res.status(200).json({
-                success: true,
-                regions: regionDemand,
-                topRegion: regionDemand[3],
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        regions: regionDemand,
+        topRegion: regionDemand[3],
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 module.exports = router;

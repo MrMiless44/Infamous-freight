@@ -193,9 +193,7 @@ export default function OpsAuditPage() {
               checked={autoRefresh}
               onChange={(event) => setAutoRefresh(event.target.checked)}
             />
-            <span style={{ color: "#475569", fontSize: 14 }}>
-              Auto-refresh every 20s
-            </span>
+            <span style={{ color: "#475569", fontSize: 14 }}>Auto-refresh every 20s</span>
           </label>
         </section>
 
@@ -225,8 +223,7 @@ export default function OpsAuditPage() {
                 }}
               >
                 <div style={{ fontWeight: 600 }}>
-                  {event.action} ·{" "}
-                  <span style={{ color: "#64748b" }}>{event.entity}</span>
+                  {event.action} · <span style={{ color: "#64748b" }}>{event.entity}</span>
                 </div>
                 <div style={{ fontSize: 12, color: "#64748b" }}>
                   {new Date(event.createdAt).toLocaleString()}

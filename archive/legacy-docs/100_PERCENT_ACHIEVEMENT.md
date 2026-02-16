@@ -399,7 +399,8 @@ Deploy Time:  ~5-10 minutes
 
 ## ✅ **CERTIFICATION**
 
-This document certifies that **Infamous Freight Enterprises v2.1.0** has achieved:
+This document certifies that **Infamous Freight Enterprises v2.1.0** has
+achieved:
 
 - ✅ **100% REST API Test Coverage** — All 72 tests passing
 - ✅ **100% Code Coverage** — All statements, branches, functions, lines

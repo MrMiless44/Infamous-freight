@@ -182,7 +182,8 @@ Enable:
 - Automatic card updates
 - Customer portal
 - Invoice reminders
-- Tax configuration using **Stripe Tax (automated)** for US multi-state and initial international expansion (avoid manual tax rates)
+- Tax configuration using **Stripe Tax (automated)** for US multi-state and
+  initial international expansion (avoid manual tax rates)
 
 ## 9) Pricing Page Structure (Final Messaging)
 
@@ -201,7 +202,8 @@ Replace generic tier names with:
 
 ## 10) Example Revenue Projection (Illustrative Only)
 
-_Note: The figures below are illustrative for modeling structure and do **not** represent actual business targets or commitments._
+_Note: The figures below are illustrative for modeling structure and do **not**
+represent actual business targets or commitments._
 
 If you reach:
 
@@ -215,7 +217,8 @@ If you reach:
 
 **Add Intelligence add-ons:** additional uplift from a subset of active accounts
 
-**Illustrative total:** a healthy mid–five-figure **+ / month** opportunity before any marketplace or additional revenue vectors
+**Illustrative total:** a healthy mid–five-figure **+ / month** opportunity
+before any marketplace or additional revenue vectors
 
 ## 11) Final Strategic Configuration
 

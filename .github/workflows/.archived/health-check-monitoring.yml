@@ -5,7 +5,7 @@ name: Platform Health Check
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: "*/5 * * * *"
   workflow_dispatch:
   push:
     branches: [main]
@@ -30,7 +30,7 @@ jobs:
             echo "status=⚠️ Degraded (HTTP $RESPONSE)" >> $GITHUB_OUTPUT
             echo "color=warning" >> $GITHUB_OUTPUT
           fi
-      
+
       - name: Check Netlify Deployment
         id: netlify
         continue-on-error: true
@@ -47,19 +47,19 @@ jobs:
               break
             fi
           done
-          
+
           if [ ! -f "$GITHUB_OUTPUT" ] || ! grep -q "status=" "$GITHUB_OUTPUT"; then
             echo "status=⚠️ Check configuration" >> $GITHUB_OUTPUT
             echo "color=warning" >> $GITHUB_OUTPUT
           fi
-      
+
       - name: Check Cloudflare Pages
         id: cloudflare
         continue-on-error: true
         run: |
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 \
             https://infamous-freight-enterprises.pages.dev || echo "000")
-          
+
           if [ "$RESPONSE" = "200" ] || [ "$RESPONSE" = "404" ]; then
             echo "status=✅ Operational" >> $GITHUB_OUTPUT
             echo "color=success" >> $GITHUB_OUTPUT
@@ -67,14 +67,14 @@ jobs:
             echo "status=⚠️ Not deployed yet" >> $GITHUB_OUTPUT
             echo "color=warning" >> $GITHUB_OUTPUT
           fi
-      
+
       - name: Check Render Deployment
         id: render
         continue-on-error: true
         run: |
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 \
             https://infamous-freight.onrender.com || echo "000")
-          
+
           if [ "$RESPONSE" = "200" ] || [ "$RESPONSE" = "404" ]; then
             echo "status=✅ Operational" >> $GITHUB_OUTPUT
             echo "color=success" >> $GITHUB_OUTPUT
@@ -82,14 +82,14 @@ jobs:
             echo "status=⚠️ Not deployed yet" >> $GITHUB_OUTPUT
             echo "color=warning" >> $GITHUB_OUTPUT
           fi
-      
+
       - name: Check GitHub Pages
         id: github-pages
         continue-on-error: true
         run: |
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 \
             https://mrmiles44.github.io/Infamous-freight-enterprises/ || echo "000")
-          
+
           if [ "$RESPONSE" = "200" ]; then
             echo "status=✅ Operational" >> $GITHUB_OUTPUT
             echo "color=success" >> $GITHUB_OUTPUT
@@ -97,7 +97,7 @@ jobs:
             echo "status=⚠️ Degraded (HTTP $RESPONSE)" >> $GITHUB_OUTPUT
             echo "color=warning" >> $GITHUB_OUTPUT
           fi
-      
+
       - name: Create Status Summary
         id: summary
         run: |
@@ -113,7 +113,7 @@ jobs:
           echo "| Cloudflare | ${{ steps.cloudflare.outputs.status }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Render | ${{ steps.render.outputs.status }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
+
           # Count operational platforms
           OPERATIONAL=0
           STATUSES=(
@@ -129,9 +129,9 @@ jobs:
               OPERATIONAL=$((OPERATIONAL + 1))
             fi
           done
-          
+
           echo "**Operational Platforms:** $OPERATIONAL / 5" >> $GITHUB_STEP_SUMMARY
-          
+
           if [ $OPERATIONAL -ge 4 ]; then
             echo "**Overall Status:** ✅ Healthy" >> $GITHUB_STEP_SUMMARY
             echo "overall=healthy" >> $GITHUB_OUTPUT
@@ -142,7 +142,7 @@ jobs:
             echo "**Overall Status:** 🚨 Critical" >> $GITHUB_STEP_SUMMARY
             echo "overall=critical" >> $GITHUB_OUTPUT
           fi
-      
+
       - name: Send Slack Alert (Optional)
         if: steps.summary.outputs.overall != 'healthy'
         continue-on-error: true
@@ -163,7 +163,7 @@ jobs:
           #     }]
           #   }'
           echo "Slack alerting not configured. Add SLACK_WEBHOOK secret to enable."
-      
+
       - name: Create GitHub Issue on Failure
         if: steps.summary.outputs.overall == 'critical'
         continue-on-error: true
@@ -173,26 +173,26 @@ jobs:
             const title = '🚨 Critical: Multiple Platform Outages Detected';
             const body = `
             ## Platform Health Alert
-            
+
             **Time:** ${new Date().toISOString()}
             **Severity:** Critical
-            
+
             ### Status
             - GitHub Pages: ${{ steps.github-pages.outputs.status }}
             - Vercel: ${{ steps.vercel.outputs.status }}
             - Netlify: ${{ steps.netlify.outputs.status }}
             - Cloudflare: ${{ steps.cloudflare.outputs.status }}
             - Render: ${{ steps.render.outputs.status }}
-            
+
             ### Action Required
             1. Check platform dashboards
             2. Review recent deployments
             3. Verify DNS configuration
             4. Check for ongoing incidents on status pages
-            
+
             **Workflow Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
             `;
-            
+
             // Check if issue already exists
             const issues = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
@@ -200,7 +200,7 @@ jobs:
               state: 'open',
               labels: 'platform-health'
             });
-            
+
             if (issues.data.length === 0) {
               await github.rest.issues.create({
                 owner: context.repo.owner,

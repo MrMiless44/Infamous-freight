@@ -2,12 +2,13 @@
 
 ## ✅ Configuration Complete
 
-Your repository is now configured for **100% automatic deployment** across all platforms:
+Your repository is now configured for **100% automatic deployment** across all
+platforms:
 
 ### 🎯 What's Deployed Automatically
 
-| Component  | Platform     | Trigger        | URL                                                       |
-| ---------- | ------------ | -------------- | --------------------------------------------------------- |
+| Component  | Platform     | Trigger        | URL                                                         |
+| ---------- | ------------ | -------------- | ----------------------------------------------------------- |
 | **API**    | Fly.io       | API changes    | <https://infamous-freight-api.fly.dev>                      |
 | **Web**    | Vercel       | Web changes    | <https://infamous-freight-enterprises.vercel.app>           |
 | **Mobile** | Expo EAS     | Mobile changes | <https://expo.dev/@infamous-freight/mobile>                 |
@@ -172,7 +173,8 @@ gh run view --log
 
 ### Deployment Dashboard
 
-- **GitHub Actions**: <https://github.com/MrMiless44/Infamous-freight-enterprises/actions>
+- **GitHub Actions**:
+  <https://github.com/MrMiless44/Infamous-freight-enterprises/actions>
 - **Fly.io Dashboard**: <https://fly.io/apps/infamous-freight-api>
 - **Vercel Dashboard**: <https://vercel.com/dashboard>
 - **Expo Dashboard**: <https://expo.dev/accounts/[account]/projects>

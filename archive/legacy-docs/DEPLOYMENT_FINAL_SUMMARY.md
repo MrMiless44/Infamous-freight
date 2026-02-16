@@ -33,7 +33,8 @@
 
 ### **For Complete Instructions** (2 hours)
 
-→ Read: [DEPLOYMENT_100_PERCENT_EXECUTION_PLAN.md](DEPLOYMENT_100_PERCENT_EXECUTION_PLAN.md)
+→ Read:
+[DEPLOYMENT_100_PERCENT_EXECUTION_PLAN.md](DEPLOYMENT_100_PERCENT_EXECUTION_PLAN.md)
 
 - Phase 1: Pre-deployment (1 hour, 70+ checkpoints)
 - Phase 2: Deployment (30 minutes, step-by-step)
@@ -187,24 +188,28 @@ curl http://localhost:4000/api/health/ready
    - 3-step process
    - Troubleshooting tips
 
-2. **[DEPLOYMENT_100_PERCENT_EXECUTION_PLAN.md](DEPLOYMENT_100_PERCENT_EXECUTION_PLAN.md)** (2 hours)
+2. **[DEPLOYMENT_100_PERCENT_EXECUTION_PLAN.md](DEPLOYMENT_100_PERCENT_EXECUTION_PLAN.md)**
+   (2 hours)
    - Complete step-by-step guide
    - Phase 1: Pre-deployment (70+ checkpoints)
    - Phase 2: Deployment (services startup, DB init)
    - Phase 3: Post-deployment (monitoring, smoke tests)
 
-3. **[PRE_DEPLOYMENT_GO_NO_GO_CHECKLIST.md](PRE_DEPLOYMENT_GO_NO_GO_CHECKLIST.md)** (1 hour)
+3. **[PRE_DEPLOYMENT_GO_NO_GO_CHECKLIST.md](PRE_DEPLOYMENT_GO_NO_GO_CHECKLIST.md)**
+   (1 hour)
    - 70+ verification items
    - 5 validation sections
    - Team sign-off matrix
 
-4. **[POST_DEPLOYMENT_OPERATIONS_GUIDE.md](POST_DEPLOYMENT_OPERATIONS_GUIDE.md)** (24+ hours)
+4. **[POST_DEPLOYMENT_OPERATIONS_GUIDE.md](POST_DEPLOYMENT_OPERATIONS_GUIDE.md)**
+   (24+ hours)
    - First 24 hours checklist
    - Daily/weekly/monthly tasks
    - Dashboard interpretation
    - Success criteria
 
-5. **[INCIDENT_RESPONSE_PLAYBOOK.md](INCIDENT_RESPONSE_PLAYBOOK.md)** (Reference)
+5. **[INCIDENT_RESPONSE_PLAYBOOK.md](INCIDENT_RESPONSE_PLAYBOOK.md)**
+   (Reference)
    - Quick troubleshooting
    - All failure scenarios
    - Recovery procedures
@@ -313,20 +318,24 @@ Before you deploy, ensure:
 
 **Before Deployment** (Next 1 Hour):
 
-1. Follow [PRE_DEPLOYMENT_GO_NO_GO_CHECKLIST.md](PRE_DEPLOYMENT_GO_NO_GO_CHECKLIST.md)
+1. Follow
+   [PRE_DEPLOYMENT_GO_NO_GO_CHECKLIST.md](PRE_DEPLOYMENT_GO_NO_GO_CHECKLIST.md)
 2. Verify all 70+ checkpoints
 3. Get required sign-offs
 4. Prepare monitoring dashboards
 
 **During Deployment** (30 Minutes):
 
-1. Follow [DEPLOYMENT_100_PERCENT_EXECUTION_PLAN.md](DEPLOYMENT_100_PERCENT_EXECUTION_PLAN.md) Phase 2
+1. Follow
+   [DEPLOYMENT_100_PERCENT_EXECUTION_PLAN.md](DEPLOYMENT_100_PERCENT_EXECUTION_PLAN.md)
+   Phase 2
 2. Execute step-by-step
 3. Verify each phase completion
 
 **After Deployment** (24+ Hours):
 
-1. Follow [POST_DEPLOYMENT_OPERATIONS_GUIDE.md](POST_DEPLOYMENT_OPERATIONS_GUIDE.md)
+1. Follow
+   [POST_DEPLOYMENT_OPERATIONS_GUIDE.md](POST_DEPLOYMENT_OPERATIONS_GUIDE.md)
 2. Monitor dashboards continuously
 3. Document any issues
 4. Execute incident response if needed

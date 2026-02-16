@@ -496,4 +496,5 @@ flyctl deploy --remote-only  # Get API live in 3-5 minutes
 
 **🎉 INFAMOUS FREIGHT ENTERPRISES IS READY FOR PRODUCTION! 🚀**
 
-All systems operational. Ready to serve production traffic. Execute API deployment to achieve 100% live status.
+All systems operational. Ready to serve production traffic. Execute API
+deployment to achieve 100% live status.

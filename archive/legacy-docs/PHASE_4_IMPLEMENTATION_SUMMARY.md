@@ -3,7 +3,7 @@
 **Status**: ✅ **100% COMPLETE & PRODUCTION READY**  
 **Date**: January 15, 2026  
 **Implementation Time**: ~1 hour  
-**Code Added**: ~100 lines  
+**Code Added**: ~100 lines
 
 ---
 
@@ -14,19 +14,21 @@
 #### 1. **apps/api/src/marketplace/router.js** (+100 lines)
 
 **Upgraded POST /jobs/:jobId/accept** (lines 427–538)
+
 - Race-safe first-wins semantics via `updateMany()` with compound WHERE
 - Full driver eligibility verification (active, location, vehicle)
 - Event logging inside transaction for atomicity
 - Clear error messages for all failure modes
 
 **Key Code Pattern**:
+
 ```javascript
 // RACE-SAFE UPDATE
 const updateResult = await tx.job.updateMany({
   where: {
     id: jobId,
     status: "OPEN",
-    driverId: null,  // Must still be unassigned
+    driverId: null, // Must still be unassigned
   },
   data: {
     status: "ACCEPTED",
@@ -40,11 +42,13 @@ if (updateResult.count === 0) {
 ```
 
 **New GET /drivers/:driverId/jobs** (lines 540–576)
+
 - Lists all jobs assigned to a driver
 - Authorization: drivers see own, admins see all
 - Ordered by recency, limited to 100
 
 #### 2. **apps/api/src/marketplace/validators.js**
+
 - Already had `acceptJobSchema` ✅ (no changes needed)
 
 ---
@@ -60,8 +64,10 @@ Driver 1: T1 → updates job to ACCEPTED, driverId=driver_1
 Driver 2: T1 → updates job to ACCEPTED, driverId=driver_2  ← CONFLICT!
 ```
 
-**Without Phase 4**: Job ends up assigned to last driver to update (data corruption)  
-**With Phase 4**: Database prevents both from succeeding; first wins, second gets error immediately
+**Without Phase 4**: Job ends up assigned to last driver to update (data
+corruption)  
+**With Phase 4**: Database prevents both from succeeding; first wins, second
+gets error immediately
 
 ---
 
@@ -73,8 +79,8 @@ Driver 2: T1 → updates job to ACCEPTED, driverId=driver_2  ← CONFLICT!
 // Multiple transactions attempt this:
 updateMany({
   where: { id: jobId, status: "OPEN", driverId: null },
-  data: { status: "ACCEPTED", driverId: driverId }
-})
+  data: { status: "ACCEPTED", driverId: driverId },
+});
 
 // Only ONE transaction's WHERE clause matches
 // First transaction:  count=1 ✅ (wins)
@@ -82,6 +88,7 @@ updateMany({
 ```
 
 **Why This Is Better Than Locks**:
+
 - No lock timeouts or deadlocks
 - Better performance (optimistic = fewer DB waits)
 - Clear win/lose semantics (count tells you result)
@@ -93,14 +100,15 @@ updateMany({
 
 ### Phase 4 Endpoint Checklist
 
-| Endpoint | Method | Path | Purpose | Status |
-|----------|--------|------|---------|--------|
-| Accept Job | POST | `/jobs/:jobId/accept` | Driver accepts OPEN job (race-safe) | ✅ Complete |
-| My Jobs | GET | `/drivers/:driverId/jobs` | List driver's assigned jobs | ✅ Complete |
+| Endpoint   | Method | Path                      | Purpose                             | Status      |
+| ---------- | ------ | ------------------------- | ----------------------------------- | ----------- |
+| Accept Job | POST   | `/jobs/:jobId/accept`     | Driver accepts OPEN job (race-safe) | ✅ Complete |
+| My Jobs    | GET    | `/drivers/:driverId/jobs` | List driver's assigned jobs         | ✅ Complete |
 
 ### Validation & Eligibility
 
 **Before Race-Safe Update**:
+
 1. ✅ Job exists and is OPEN
 2. ✅ Job has confirmed payment (SUCCEEDED)
 3. ✅ Driver is active
@@ -119,7 +127,7 @@ await tx.jobEvent.create({
     type: "ACCEPTED",
     actorUserId: driverUserId,
     message: "Driver accepted job",
-  }
+  },
 });
 ```
 
@@ -154,7 +162,7 @@ COMPLETED
 ✅ **Clear Win/Lose**: Response immediately indicates race outcome  
 ✅ **Eligibility Filtering**: Fast-fail for ineligible drivers  
 ✅ **Full Audit Trail**: Every acceptance logged  
-✅ **Authorization Enforced**: Drivers can't steal other driver's jobs  
+✅ **Authorization Enforced**: Drivers can't steal other driver's jobs
 
 ---
 
@@ -162,17 +170,17 @@ COMPLETED
 
 ### Test Coverage
 
-| Test | Purpose | Result |
-|------|---------|--------|
-| Single accept | Happy path | ✅ Job status changes to ACCEPTED |
-| Race (2 drivers) | Concurrent acceptance | ✅ One wins, one fails cleanly |
-| Ineligible driver | Lacks compatible vehicle | ✅ Rejected before race |
-| Inactive driver | Driver profile inactive | ✅ Rejected before race |
-| No location | Driver location missing | ✅ Rejected before race |
-| Unpaid job | Job payment not confirmed | ✅ Rejected before race |
-| View my jobs | Driver lists own jobs | ✅ Correct jobs returned |
-| Authorization | Non-admin views other driver | ✅ 403 Forbidden |
-| Stress (10 drivers) | Race with many participants | ✅ 1 success, 9 failures |
+| Test                | Purpose                      | Result                            |
+| ------------------- | ---------------------------- | --------------------------------- |
+| Single accept       | Happy path                   | ✅ Job status changes to ACCEPTED |
+| Race (2 drivers)    | Concurrent acceptance        | ✅ One wins, one fails cleanly    |
+| Ineligible driver   | Lacks compatible vehicle     | ✅ Rejected before race           |
+| Inactive driver     | Driver profile inactive      | ✅ Rejected before race           |
+| No location         | Driver location missing      | ✅ Rejected before race           |
+| Unpaid job          | Job payment not confirmed    | ✅ Rejected before race           |
+| View my jobs        | Driver lists own jobs        | ✅ Correct jobs returned          |
+| Authorization       | Non-admin views other driver | ✅ 403 Forbidden                  |
+| Stress (10 drivers) | Race with many participants  | ✅ 1 success, 9 failures          |
 
 See **PHASE_4_TESTING_GUIDE.md** for detailed test procedures.
 
@@ -180,12 +188,12 @@ See **PHASE_4_TESTING_GUIDE.md** for detailed test procedures.
 
 ## 📈 Performance
 
-| Operation | Latency | Notes |
-|-----------|---------|-------|
-| Accept (success) | ~100ms | 1 write + event log |
-| Accept (race loss) | ~50ms | Read-only, error fast |
-| List jobs (10) | ~30ms | Simple query |
-| List jobs (100) | ~50ms | Capped at 100 |
+| Operation          | Latency | Notes                 |
+| ------------------ | ------- | --------------------- |
+| Accept (success)   | ~100ms  | 1 write + event log   |
+| Accept (race loss) | ~50ms   | Read-only, error fast |
+| List jobs (10)     | ~30ms   | Simple query          |
+| List jobs (100)    | ~50ms   | Capped at 100         |
 
 **Scalability**: Handles 100s of concurrent accept attempts without degradation
 
@@ -194,18 +202,21 @@ See **PHASE_4_TESTING_GUIDE.md** for detailed test procedures.
 ## 🔐 Security Analysis
 
 ### Authorization Model
+
 - ✅ Drivers can only accept for themselves
 - ✅ Admins can view any driver's jobs
 - ✅ All endpoints require JWT
 - ✅ All endpoints validate user role
 
 ### Race Condition Safety
+
 - ✅ Database-level atomicity (updateMany)
 - ✅ No SQL injection (Prisma parameterization)
 - ✅ No timing attacks (equal latency paths)
 - ✅ Idempotent on retry (same result if called twice)
 
 ### Data Integrity
+
 - ✅ No orphaned events (transactional logging)
 - ✅ No duplicate assignments (updateMany WHERE clause)
 - ✅ No lost updates (optimistic concurrency)
@@ -220,13 +231,14 @@ See **PHASE_4_TESTING_GUIDE.md** for detailed test procedures.
 ✅ Transaction logic verified  
 ✅ Authorization checks implemented  
 ✅ Rate limiting applied  
-✅ Error handling complete  
+✅ Error handling complete
 
 ---
 
 ## 🚀 Next Phase (Phase 5)
 
 **Phase 5 — In-Transit & Delivery Logging** will add:
+
 - PICKED_UP event (driver confirms pickup)
 - DELIVERED event (driver confirms delivery)
 - Location metadata (for geofencing/proof)
@@ -251,9 +263,9 @@ See **PHASE_4_TESTING_GUIDE.md** for detailed test procedures.
 
 ## Files Changed
 
-| File | Changes | Lines |
-|------|---------|-------|
-| apps/api/src/marketplace/router.js | Upgraded accept endpoint + added my jobs endpoint | +100 |
+| File                               | Changes                                           | Lines |
+| ---------------------------------- | ------------------------------------------------- | ----- |
+| apps/api/src/marketplace/router.js | Upgraded accept endpoint + added my jobs endpoint | +100  |
 
 **Total**: ~100 lines of production code
 
@@ -261,28 +273,33 @@ See **PHASE_4_TESTING_GUIDE.md** for detailed test procedures.
 
 ## Code Review Points
 
-✅ **Transactional Safety**: Uses `prisma.$transaction` wrapping all state changes  
+✅ **Transactional Safety**: Uses `prisma.$transaction` wrapping all state
+changes  
 ✅ **Race-Safe Update**: `updateMany()` with compound WHERE clause  
 ✅ **Audit Trail**: ACCEPTED event logged inside transaction  
 ✅ **Eligibility**: Full checks before attempting race  
 ✅ **Error Handling**: Clear messages for all failure modes  
 ✅ **Authorization**: Role checks on all endpoints  
-✅ **Type Safety**: Zod validation on inputs  
+✅ **Type Safety**: Zod validation on inputs
 
 ---
 
 ## Integration with Previous Phases
 
 **Phase 1** (Marketplace primitives)
+
 - Job, Driver, Shipper models ✅ Used for eligibility checks
 
 **Phase 2** (Stripe payments)
+
 - Payment model, confirmation check ✅ Only accepts paid jobs
 
 **Phase 3** (Auditability)
+
 - JobEvent model, logging ✅ ACCEPTED events logged
 
 **Phase 4** (Race-safe acceptance)
+
 - ✅ **NEW**: Race-safe acceptance endpoint + my jobs endpoint
 
 ---
@@ -294,7 +311,7 @@ See **PHASE_4_TESTING_GUIDE.md** for detailed test procedures.
 ✅ Backward compatible (new endpoint, updated existing)  
 ✅ Rate limiting applied  
 ✅ Error handling complete  
-✅ Documentation comprehensive  
+✅ Documentation comprehensive
 
 **Ready for production deployment** 🚀
 
@@ -302,19 +319,21 @@ See **PHASE_4_TESTING_GUIDE.md** for detailed test procedures.
 
 ## Summary
 
-Phase 4 successfully implements **first-wins driver acceptance** with true transactional safety. The combination of:
+Phase 4 successfully implements **first-wins driver acceptance** with true
+transactional safety. The combination of:
 
 1. **Eligibility verification** (prevents wasted races)
 2. **Optimistic concurrency** (via updateMany)
 3. **Transactional logging** (no orphaned events)
 4. **Clear error messages** (drivers know outcome immediately)
 
-...creates a **production-grade concurrent acceptance system** that scales to high-load scenarios (10+ drivers attempting same job).
+...creates a **production-grade concurrent acceptance system** that scales to
+high-load scenarios (10+ drivers attempting same job).
 
-The marketplace is now **ready for real-world concurrent driver acceptance patterns**. 🎉
+The marketplace is now **ready for real-world concurrent driver acceptance
+patterns**. 🎉
 
 ---
 
 **Status**: ✅ **100% COMPLETE**  
-**Ready for**: Phase 5 (In-Transit & Delivery)  
-
+**Ready for**: Phase 5 (In-Transit & Delivery)

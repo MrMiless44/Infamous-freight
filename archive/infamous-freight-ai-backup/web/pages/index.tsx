@@ -9,8 +9,7 @@ export default function Home() {
       style={{
         minHeight: "100vh",
         padding: "3rem 1.5rem",
-        background:
-          "radial-gradient(circle at top,#1a1a33 0,#050509 55%,#010103 100%)",
+        background: "radial-gradient(circle at top,#1a1a33 0,#050509 55%,#010103 100%)",
         color: "#f9fafb",
         display: "flex",
         flexDirection: "column",
@@ -32,8 +31,7 @@ export default function Home() {
                 width: "34px",
                 height: "34px",
                 borderRadius: "12px",
-                background:
-                  "conic-gradient(from 220deg,#ffcc33,#ff3366,#ffcc33)",
+                background: "conic-gradient(from 220deg,#ffcc33,#ff3366,#ffcc33)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -79,8 +77,8 @@ export default function Home() {
               marginBottom: "1.6rem",
             }}
           >
-            Infæmous Freight coordinates shippers, brokers and drivers with
-            avatar co-pilots that learn lanes, behavior and risk in real time.
+            Infæmous Freight coordinates shippers, brokers and drivers with avatar co-pilots that
+            learn lanes, behavior and risk in real time.
           </p>
           <div style={{ display: "flex", gap: "0.9rem" }}>
             <Link

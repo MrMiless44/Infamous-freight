@@ -11,12 +11,7 @@
  * @param lon2 Dropoff longitude
  * @returns Distance in miles
  */
-export function milesBetween(
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number
-): number {
+export function milesBetween(lat1: number, lon1: number, lat2: number, lon2: number): number {
   const R = 3958.8; // Earth's radius in miles
   const toRad = (d: number) => (d * Math.PI) / 180;
 
@@ -38,7 +33,7 @@ export function isWithinRadius(
   driverLng: number,
   jobLat: number,
   jobLng: number,
-  radiusMiles: number
+  radiusMiles: number,
 ): boolean {
   const distance = milesBetween(driverLat, driverLng, jobLat, jobLng);
   return distance <= radiusMiles;
@@ -57,9 +52,7 @@ export function filterByRadius(
   drivers: DriverLocation[],
   pickupLat: number,
   pickupLng: number,
-  radiusMiles: number
+  radiusMiles: number,
 ): DriverLocation[] {
-  return drivers.filter((d) =>
-    isWithinRadius(d.lat, d.lng, pickupLat, pickupLng, radiusMiles)
-  );
+  return drivers.filter((d) => isWithinRadius(d.lat, d.lng, pickupLat, pickupLng, radiusMiles));
 }

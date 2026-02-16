@@ -121,9 +121,10 @@ router.get("/health/detailed", auditLog, async (_req, res) => {
 
   const memoryUsage = process.memoryUsage();
   const totalMemory = os.totalmem();
-  const memoryPercentage = totalMemory > 0
-    ? Math.min(99, Math.max(1, Math.round((memoryUsage.rss / totalMemory) * 100)))
-    : null;
+  const memoryPercentage =
+    totalMemory > 0
+      ? Math.min(99, Math.max(1, Math.round((memoryUsage.rss / totalMemory) * 100)))
+      : null;
 
   res.status(HTTP_STATUS.OK).json({
     status: overallStatus === "healthy" ? "ok" : overallStatus,

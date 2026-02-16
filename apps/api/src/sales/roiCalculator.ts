@@ -1,6 +1,6 @@
 /**
  * ROI Calculator Service (Phase 21.4)
- * 
+ *
  * Calculates savings/ROI for enterprises
  * Formula:
  * - Current cost per load = avg broker fee + dispatch cost
@@ -13,13 +13,13 @@
 // ============================================
 
 export interface RoiInput {
-  currentBrokerFeePercent?: number;  // 8-12% typically
+  currentBrokerFeePercent?: number; // 8-12% typically
   currentDispatchCostPerLoad?: number; // $5-15 typically
-  currentDriverPayPercent?: number;   // 65-75% of load
-  
+  currentDriverPayPercent?: number; // 65-75% of load
+
   estimatedLoadsPerMonth: number;
   averageLoadPrice: number;
-  
+
   // Optional: customization
   plan?: "STARTER" | "GROWTH" | "ENTERPRISE";
   timezone?: string;
@@ -30,23 +30,23 @@ export interface RoiOutput {
   currentMonthlyLoadCost: number;
   currentMonthlyDispatchCost: number;
   currentMonthlyTotalCost: number;
-  
+
   infamousCostPerLoad: number;
   infamousMonthlyPlatformFee: number;
   infamousMonthlyDriverPay: number;
   infamousMonthlyTotalCost: number;
-  
+
   monthlySavings: number;
   annualSavings: number;
   savingsPercent: number;
   paybackMonths: number;
-  
+
   breakdownCurrentByLoad: {
     brokerFee: number;
     dispatchCost: number;
     driverPay: number;
   };
-  
+
   breakdownInfamousByLoad: {
     platformFee: number;
     driverPay: number;
@@ -58,96 +58,83 @@ export interface RoiOutput {
  */
 export function calculateRoi(input: RoiInput): RoiOutput {
   // Defaults (industry standards)
-  const brokerFeePercent = input.currentBrokerFeePercent || 0.10; // 10%
+  const brokerFeePercent = input.currentBrokerFeePercent || 0.1; // 10%
   const dispatchCostPerLoad = input.currentDispatchCostPerLoad || 8; // $8/load
-  const currentDriverPayPercent = input.currentDriverPayPercent || 0.70; // 70%
-  
+  const currentDriverPayPercent = input.currentDriverPayPercent || 0.7; // 70%
+
   const loadsPerMonth = input.estimatedLoadsPerMonth;
   const avgLoadPrice = input.averageLoadPrice;
   const plan = input.plan || "STARTER";
-  
+
   // ============================================
   // CURRENT COST (competitor's cost)
   // ============================================
-  
+
   // Per load costs
   const brokerFeePerLoad = avgLoadPrice * brokerFeePercent;
   const driverPayCurrentPerLoad = avgLoadPrice * currentDriverPayPercent;
-  const totalCurrentCostPerLoad =
-    brokerFeePerLoad + dispatchCostPerLoad + driverPayCurrentPerLoad;
-  
+  const totalCurrentCostPerLoad = brokerFeePerLoad + dispatchCostPerLoad + driverPayCurrentPerLoad;
+
   // Monthly costs
   const currentMonthlyLoadCost = loadsPerMonth * brokerFeePerLoad;
   const currentMonthlyDispatchCost = loadsPerMonth * dispatchCostPerLoad;
   const currentMonthlyDriverPayCost = loadsPerMonth * driverPayCurrentPerLoad;
   const currentMonthlyTotalCost =
-    currentMonthlyLoadCost +
-    currentMonthlyDispatchCost +
-    currentMonthlyDriverPayCost;
-  
+    currentMonthlyLoadCost + currentMonthlyDispatchCost + currentMonthlyDriverPayCost;
+
   // ============================================
   // INFAMOUS COST
   // ============================================
-  
+
   // Get plan-specific pricing
   const planPricing = getPlanPricing(plan);
   const platformFeePerLoad = planPricing.platformFeePerLoad;
   const monthlyBase = planPricing.monthlyBase;
-  
+
   // Driver pay is same (70% of load value)
   const driverPayInfamousPerLoad = avgLoadPrice * currentDriverPayPercent;
-  const totalInfamousCostPerLoad =
-    platformFeePerLoad + driverPayInfamousPerLoad;
-  
+  const totalInfamousCostPerLoad = platformFeePerLoad + driverPayInfamousPerLoad;
+
   // Monthly costs
-  const infamousMonthlyPlatformFee =
-    loadsPerMonth * platformFeePerLoad + monthlyBase;
-  const infamousMonthlyDriverPayCost =
-    loadsPerMonth * driverPayInfamousPerLoad;
-  const infamousMonthlyTotalCost =
-    infamousMonthlyPlatformFee + infamousMonthlyDriverPayCost;
-  
+  const infamousMonthlyPlatformFee = loadsPerMonth * platformFeePerLoad + monthlyBase;
+  const infamousMonthlyDriverPayCost = loadsPerMonth * driverPayInfamousPerLoad;
+  const infamousMonthlyTotalCost = infamousMonthlyPlatformFee + infamousMonthlyDriverPayCost;
+
   // ============================================
   // SAVINGS CALCULATION
   // ============================================
-  
-  const monthlySavings =
-    currentMonthlyTotalCost - infamousMonthlyTotalCost;
+
+  const monthlySavings = currentMonthlyTotalCost - infamousMonthlyTotalCost;
   const annualSavings = monthlySavings * 12;
   const savingsPercent =
-    currentMonthlyTotalCost > 0
-      ? (monthlySavings / currentMonthlyTotalCost) * 100
-      : 0;
-  
+    currentMonthlyTotalCost > 0 ? (monthlySavings / currentMonthlyTotalCost) * 100 : 0;
+
   // Payback period (implementation costs, training, etc. - ~$5k typical)
   const implementationCost = 5000;
-  const paybackMonths =
-    monthlySavings > 0
-      ? Math.ceil(implementationCost / monthlySavings)
-      : 999;
-  
+  const paybackMonths = monthlySavings > 0 ? Math.ceil(implementationCost / monthlySavings) : 999;
+
   return {
     currentCostPerLoad: totalCurrentCostPerLoad,
     currentMonthlyLoadCost,
     currentMonthlyDispatchCost,
     currentMonthlyTotalCost,
-    
+
     infamousCostPerLoad: totalInfamousCostPerLoad,
     infamousMonthlyPlatformFee,
     infamousMonthlyDriverPay: infamousMonthlyDriverPayCost,
     infamousMonthlyTotalCost,
-    
+
     monthlySavings: Math.round(monthlySavings * 100) / 100,
     annualSavings: Math.round(annualSavings * 100) / 100,
     savingsPercent: Math.round(savingsPercent * 100) / 100,
     paybackMonths,
-    
+
     breakdownCurrentByLoad: {
       brokerFee: brokerFeePerLoad,
       dispatchCost: dispatchCostPerLoad,
       driverPay: driverPayCurrentPerLoad,
     },
-    
+
     breakdownInfamousByLoad: {
       platformFee: platformFeePerLoad,
       driverPay: driverPayInfamousPerLoad,
@@ -217,10 +204,7 @@ export interface ScenarioResult {
 /**
  * Compare multiple scenarios
  */
-export function compareScenarios(
-  input: ScenarioInput,
-  plan: string = "GROWTH"
-): ScenarioResult[] {
+export function compareScenarios(input: ScenarioInput, plan: string = "GROWTH"): ScenarioResult[] {
   const scenarios: ScenarioResult[] = [];
 
   for (const loads of input.loadsPerMonth) {
@@ -251,9 +235,9 @@ export function compareScenarios(
 // ============================================
 
 export const INDUSTRY_DEFAULTS = {
-  brokerFeePercent: 0.10,
+  brokerFeePercent: 0.1,
   dispatchCostPerLoad: 8,
-  driverPayPercent: 0.70,
+  driverPayPercent: 0.7,
   implementationCost: 5000,
 };
 

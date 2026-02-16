@@ -3,11 +3,11 @@
  * User-Friendly Alert Component
  */
 
-import React, { ReactNode } from 'react';
-import styles from './Alert.module.css';
+import React, { ReactNode } from "react";
+import styles from "./Alert.module.css";
 
 export interface AlertProps {
-  type: 'success' | 'error' | 'warning' | 'info';
+  type: "success" | "error" | "warning" | "info";
   title: string;
   message?: string;
   icon?: ReactNode;
@@ -19,25 +19,18 @@ export interface AlertProps {
 }
 
 const defaultIcons = {
-  success: '✓',
-  error: '✕',
-  warning: '⚠',
-  info: 'ℹ',
+  success: "✓",
+  error: "✕",
+  warning: "⚠",
+  info: "ℹ",
 };
 
-export const Alert: React.FC<AlertProps> = ({
-  type,
-  title,
-  message,
-  icon,
-  onClose,
-  action,
-}) => {
+export const Alert: React.FC<AlertProps> = ({ type, title, message, icon, onClose, action }) => {
   return (
     <div
       className={`${styles.alert} ${styles[type]}`}
       role="alert"
-      aria-live={type === 'error' ? 'assertive' : 'polite'}
+      aria-live={type === "error" ? "assertive" : "polite"}
     >
       <div className={styles.iconWrapper}>
         {icon || <span className={styles.icon}>{defaultIcons[type]}</span>}
@@ -57,11 +50,7 @@ export const Alert: React.FC<AlertProps> = ({
           </button>
         )}
         {onClose && (
-          <button
-            className={styles.closeButton}
-            onClick={onClose}
-            aria-label="Close alert"
-          >
+          <button className={styles.closeButton} onClick={onClose} aria-label="Close alert">
             ✕
           </button>
         )}

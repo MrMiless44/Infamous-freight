@@ -223,7 +223,8 @@
 **Date**: January 15, 2026  
 **Status**: ✅ **READY FOR EXECUTION**
 
-All training materials are prepared and ready for delivery. The team can be trained and certified within 2 days (6 hours total).
+All training materials are prepared and ready for delivery. The team can be
+trained and certified within 2 days (6 hours total).
 
 ---
 

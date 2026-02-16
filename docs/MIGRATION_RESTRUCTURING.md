@@ -2,7 +2,9 @@
 
 ## Overview
 
-The repository has been restructured to improve organization and maintainability. This document describes the changes and any actions you may need to take.
+The repository has been restructured to improve organization and
+maintainability. This document describes the changes and any actions you may
+need to take.
 
 ## What Changed
 
@@ -14,7 +16,9 @@ All configuration files have been moved to the `configs/` directory:
 - `configs/ci-cd/` - CI/CD platform configurations
 - `configs/linting/` - Linting and code quality tools
 
-**Important**: Symlinks have been created at the root level for tools that require configuration files there. This means your existing workflows should continue to work without changes.
+**Important**: Symlinks have been created at the root level for tools that
+require configuration files there. This means your existing workflows should
+continue to work without changes.
 
 ### 2. Documentation Organization
 
@@ -59,7 +63,8 @@ Standardized naming conventions:
 
 ### For Most Users: No Action Required
 
-If you're working with the repository normally, **no action is needed**. Symlinks ensure that:
+If you're working with the repository normally, **no action is needed**.
+Symlinks ensure that:
 
 - Docker Compose commands still work
 - ESLint still finds its configuration
@@ -68,15 +73,19 @@ If you're working with the repository normally, **no action is needed**. Symlink
 
 ### If You Reference Config Files Directly
 
-If you have scripts or documentation that reference configuration files by path, you may need to update them:
+If you have scripts or documentation that reference configuration files by path,
+you may need to update them:
 
 **Old paths** → **New paths:**
 
-- `docker-compose.yml` → `configs/docker/docker-compose.yml` (symlink at root still works)
-- `eslint.config.js` → `configs/linting/eslint.config.js` (symlink at root still works)
+- `docker-compose.yml` → `configs/docker/docker-compose.yml` (symlink at root
+  still works)
+- `eslint.config.js` → `configs/linting/eslint.config.js` (symlink at root still
+  works)
 - `codecov.yml` → `configs/ci-cd/codecov.yml` (symlink at root still works)
 
-**Note**: You can continue using the root-level paths thanks to symlinks, but prefer using the new paths in new code.
+**Note**: You can continue using the root-level paths thanks to symlinks, but
+prefer using the new paths in new code.
 
 ### If You Have Local Modifications
 
@@ -141,15 +150,18 @@ ls docs/deployment/
 ls -la *.yml *.js | grep "^l"
 ```
 
-If symlinks are missing, they may have been deleted. Pull the latest changes again or recreate them manually.
+If symlinks are missing, they may have been deleted. Pull the latest changes
+again or recreate them manually.
 
 ### Issue: "Documentation links broken"
 
-**Solution**: Documentation has been moved. Check `docs/README.md` for the new locations. Update any bookmarks or references.
+**Solution**: Documentation has been moved. Check `docs/README.md` for the new
+locations. Update any bookmarks or references.
 
 ### Issue: "Git shows many deleted files"
 
-**Solution**: This is normal after the restructuring. These files have been moved, not deleted. Run `git status` to see the moves/renames.
+**Solution**: This is normal after the restructuring. These files have been
+moved, not deleted. Run `git status` to see the moves/renames.
 
 ## Getting Help
 

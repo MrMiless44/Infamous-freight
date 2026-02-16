@@ -66,7 +66,7 @@ IMPLEMENTATION:
    • EU pricing: EUR 150-250 (~same USD equivalent)
    • UK pricing: GBP 120-200 (slight discount due to VAT)
    • APAC pricing: Varies by country (purchasing power parity)
-   
+
    Example: "Professional plan"
    • US: $250/month
    • EU: €250/month (~$275)
@@ -291,7 +291,7 @@ SUPPORT COVERAGE:
   • Time zones: US (PST/EST) + EU (GMT) + APAC (SGT/AEST)
   • 24/7 coverage goal: Yes (by 2027)
   • Language support: English (all regions) + local languages (select)
-  
+
   2026 Setup:
   • US team: 9am-5pm PST (existing)
   • EU team: 9am-5pm GMT (1 person, hired Q4 2026)
@@ -368,12 +368,9 @@ ROI PROJECTION:
 
 ## Success Metrics (EOY 2027)
 
-✅ 3+ regions launched (UK, Canada, Australia)
-✅ 4+ languages supported
-✅ GDPR, APPI, GST compliance done
-✅ International revenue: $1-1.5M ARR
-✅ 300+ international customers
-✅ Regional sales teams: 4-6 people
+✅ 3+ regions launched (UK, Canada, Australia) ✅ 4+ languages supported ✅
+GDPR, APPI, GST compliance done ✅ International revenue: $1-1.5M ARR ✅ 300+
+international customers ✅ Regional sales teams: 4-6 people
 
 ---
 

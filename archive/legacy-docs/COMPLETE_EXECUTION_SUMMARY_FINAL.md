@@ -8,7 +8,10 @@
 
 ## Executive Overview
 
-Infamous Freight Enterprises has completed **comprehensive transformation** from a technically sound platform to a **fully production-ready, scalable, growth-focused business** with clear path to $5.4M ARR and $25M Series A fundraising.
+Infamous Freight Enterprises has completed **comprehensive transformation** from
+a technically sound platform to a **fully production-ready, scalable,
+growth-focused business** with clear path to $5.4M ARR and $25M Series A
+fundraising.
 
 ---
 
@@ -92,7 +95,8 @@ Infamous Freight Enterprises has completed **comprehensive transformation** from
 
 **Purpose**: Drive revenue growth, build ecosystem, prepare for scale
 
-1. ✅ Marketing Automation & Lead Generation (10K visitors, 200 leads/month, 5-7.5x ROI)
+1. ✅ Marketing Automation & Lead Generation (10K visitors, 200 leads/month,
+   5-7.5x ROI)
 2. ✅ Sales Operations & Playbook (200 customers/month, 35-40% win rate)
 3. ✅ Revenue Operations Alignment ($5.4M ARR, unified metrics)
 4. ✅ Customer Onboarding & Activation (<7 day value, 60% activation)

@@ -2,7 +2,9 @@
 
 ## 🎉 Status: 100% Implementation Complete
 
-All Sentry integration work is **complete and production-ready**. The implementation includes everything recommended for a Vercel + pnpm monorepo setup with Next.js.
+All Sentry integration work is **complete and production-ready**. The
+implementation includes everything recommended for a Vercel + pnpm monorepo
+setup with Next.js.
 
 ---
 
@@ -64,7 +66,7 @@ All Sentry integration work is **complete and production-ready**. The implementa
    - Automatic breadcrumb testing
    - Auto-disabled in production
 
-3. **[apps/web/pages/_error.tsx](apps/web/pages/_error.tsx)**  ⭐ NEW
+3. **[apps/web/pages/\_error.tsx](apps/web/pages/_error.tsx)** ⭐ NEW
    - Custom Next.js error page with Sentry integration
    - Server-side error capture via `getInitialProps`
    - Displays user-friendly error messages
@@ -72,7 +74,7 @@ All Sentry integration work is **complete and production-ready**. The implementa
 
 ### Utility Libraries
 
-1. **[apps/web/lib/sentry.ts](apps/web/lib/sentry.ts)**  ⭐ NEW
+1. **[apps/web/lib/sentry.ts](apps/web/lib/sentry.ts)** ⭐ NEW
    - **15+ helper functions** for easy Sentry usage:
      - `logError()` - Log caught errors with extra context
      - `logMessage()` - Log info/warning messages
@@ -83,7 +85,7 @@ All Sentry integration work is **complete and production-ready**. The implementa
      - `safeExecute()` - Try-catch wrapper
    - Re-exports Sentry types for consistent imports
 
-2. **[apps/web/lib/sentry-api.ts](apps/web/lib/sentry-api.ts)**  ⭐ NEW
+2. **[apps/web/lib/sentry-api.ts](apps/web/lib/sentry-api.ts)** ⭐ NEW
    - **API route wrapper** for automatic error tracking
    - `withSentryAPI()` - Wraps API handlers with try-catch
    - `trackApiPerformance()` - Performance monitoring for API routes
@@ -92,56 +94,59 @@ All Sentry integration work is **complete and production-ready**. The implementa
 
 ### Configuration Files
 
-1. **[apps/web/.sentryclirc](apps/web/.sentryclirc)**  ⭐ NEW
-    - Sentry CLI configuration
-    - Organization: `infamous-freight-enterprise`
-    - Project: `javascript-nextjs`
-    - Auth token from environment variable (secure)
+1. **[apps/web/.sentryclirc](apps/web/.sentryclirc)** ⭐ NEW
+   - Sentry CLI configuration
+   - Organization: `infamous-freight-enterprise`
+   - Project: `javascript-nextjs`
+   - Auth token from environment variable (secure)
 
 2. **[apps/web/.gitignore](apps/web/.gitignore)** (Updated)
-    - Ignores `.sentryclirc` (contains tokens)
-    - Ignores Sentry build artifacts (`*.sentry-*`)
-    - Prevents committing sensitive data
+   - Ignores `.sentryclirc` (contains tokens)
+   - Ignores Sentry build artifacts (`*.sentry-*`)
+   - Prevents committing sensitive data
 
 ### CI/CD Automation
 
-1. **[.github/workflows/sentry-release.yml.disabled](.github/workflows/sentry-release.yml.disabled)**  ⭐ NEW
-    - Automatic release creation on deployment
-    - Source map upload after build
-    - Commit tracking for error context
-    - **Status**: Disabled (rename to enable)
+1. **[.github/workflows/sentry-release.yml.disabled](.github/workflows/sentry-release.yml.disabled)**
+   ⭐ NEW
+   - Automatic release creation on deployment
+   - Source map upload after build
+   - Commit tracking for error context
+   - **Status**: Disabled (rename to enable)
 
 ### Documentation (Located in Root Directory)
 
 1. **[SENTRY_README.md](../../SENTRY_README.md)**
-    - Overview of Sentry integration
-    - Quick start guide
-    - Feature summary
+   - Overview of Sentry integration
+   - Quick start guide
+   - Feature summary
 
-2. **[SENTRY_VERCEL_DEPLOYMENT.md](../../SENTRY_VERCEL_DEPLOYMENT.md)**  ⚠️ CRITICAL
-    - **Must-read** guide for Vercel deployment
-    - Step-by-step instructions for environment variables
-    - Common pitfalls and solutions (2000+ lines)
+2. **[SENTRY_VERCEL_DEPLOYMENT.md](../../SENTRY_VERCEL_DEPLOYMENT.md)** ⚠️
+   CRITICAL
+   - **Must-read** guide for Vercel deployment
+   - Step-by-step instructions for environment variables
+   - Common pitfalls and solutions (2000+ lines)
 
 3. **[SENTRY_WIZARD_COMMAND.md](../../SENTRY_WIZARD_COMMAND.md)**
-    - Correct wizard commands for pnpm monorepo
-    - Warning: Must run from `apps/web` directory
-    - Post-wizard fixes
+   - Correct wizard commands for pnpm monorepo
+   - Warning: Must run from `apps/web` directory
+   - Post-wizard fixes
 
 4. **[SENTRY_CRITICAL_FIXES.md](../../SENTRY_CRITICAL_FIXES.md)**
-    - Documents all critical fixes applied
-    - Middleware fix for tunnel route
-    - Explains `/monitoring` exclusion
+   - Documents all critical fixes applied
+   - Middleware fix for tunnel route
+   - Explains `/monitoring` exclusion
 
 5. **[SENTRY_INTEGRATION_GUIDE.md](../../SENTRY_INTEGRATION_GUIDE.md)**
-    - Complete integration walkthrough
-    - Configuration explanations
-    - Testing instructions
+   - Complete integration walkthrough
+   - Configuration explanations
+   - Testing instructions
 
-6. **[apps/web/SENTRY_IMPLEMENTATION_COMPLETE.md](SENTRY_IMPLEMENTATION_COMPLETE.md)** (This file)
-    - Summary of all changes
-    - Next steps for deployment
-    - Complete file inventory
+6. **[apps/web/SENTRY_IMPLEMENTATION_COMPLETE.md](SENTRY_IMPLEMENTATION_COMPLETE.md)**
+   (This file)
+   - Summary of all changes
+   - Next steps for deployment
+   - Complete file inventory
 
 ---
 
@@ -166,7 +171,7 @@ export default nextConfig;
 
 ```javascript
 export default withSentryConfig(nextConfig, {
-  tunnelRoute: '/monitoring',
+  tunnelRoute: "/monitoring",
   // ... other Sentry options
 });
 ```
@@ -175,23 +180,24 @@ export default withSentryConfig(nextConfig, {
 
 **Changes:**
 
-- ✅ Added `/monitoring` to `SKIP_PATHS` (prevents edge proxy from blocking Sentry)
+- ✅ Added `/monitoring` to `SKIP_PATHS` (prevents edge proxy from blocking
+  Sentry)
 - ✅ Updated matcher regex to exclude `/monitoring`
 
 **Before:**
 
 ```typescript
-const SKIP_PATHS = ['/api/health', '/favicon.ico', '/_next'];
+const SKIP_PATHS = ["/api/health", "/favicon.ico", "/_next"];
 ```
 
 **After:**
 
 ```typescript
-const SKIP_PATHS = ['/api/health', '/favicon.ico', '/_next', '/monitoring'];
+const SKIP_PATHS = ["/api/health", "/favicon.ico", "/_next", "/monitoring"];
 ```
 
-**Critical Fix:**
-Without this change, middleware returns 401/403 for Sentry events, breaking error tracking.
+**Critical Fix:** Without this change, middleware returns 401/403 for Sentry
+events, breaking error tracking.
 
 ### 3. [apps/web/.env.example](apps/web/.env.example)
 
@@ -240,8 +246,8 @@ NEXT_PUBLIC_SENTRY_ENVIRONMENT=production
 
 - ✅ Changed Node engine constraint from `"20.x"` to `">=20.0.0"`
 
-**Reason:**
-Allowed installation with Node 24.13.0 (current version in container).
+**Reason:** Allowed installation with Node 24.13.0 (current version in
+container).
 
 ---
 
@@ -249,20 +255,23 @@ Allowed installation with Node 24.13.0 (current version in container).
 
 ### Fix #1: Middleware Blocking Sentry Events
 
-**Problem:** Middleware would return 401/403 for `/monitoring`, breaking Sentry.  
+**Problem:** Middleware would return 401/403 for `/monitoring`, breaking
+Sentry.  
 **Solution:** Added `/monitoring` to skip paths and matcher exclusion.  
 **Status:** ✅ Fixed
 
 ### Fix #2: Ad Blockers Blocking Sentry
 
 **Problem:** ~40% of users have ad blockers that block `sentry.io` requests.  
-**Solution:** Enabled tunnel route `/monitoring` to proxy events through Next.js.  
+**Solution:** Enabled tunnel route `/monitoring` to proxy events through
+Next.js.  
 **Status:** ✅ Implemented
 
 ### Fix #3: Missing Vercel Documentation
 
 **Problem:** No clear guide for Vercel environment variables.  
-**Solution:** Created comprehensive [SENTRY_VERCEL_DEPLOYMENT.md](../../SENTRY_VERCEL_DEPLOYMENT.md).  
+**Solution:** Created comprehensive
+[SENTRY_VERCEL_DEPLOYMENT.md](../../SENTRY_VERCEL_DEPLOYMENT.md).  
 **Status:** ✅ Documented
 
 ### Fix #4: Node Version Incompatibility
@@ -282,7 +291,8 @@ Allowed installation with Node 24.13.0 (current version in container).
    - Platform: **Next.js**
    - Project name: `javascript-nextjs`
    - Organization: `infamous-freight-enterprise`
-3. **Copy the DSN** from project settings (looks like: `https://abc123@o123.ingest.sentry.io/456`)
+3. **Copy the DSN** from project settings (looks like:
+   `https://abc123@o123.ingest.sentry.io/456`)
 
 ### Step 2: Create Sentry Auth Token (3 minutes)
 
@@ -308,7 +318,8 @@ Go to your Vercel project → Settings → Environment Variables:
 | `NEXT_PUBLIC_SENTRY_ENVIRONMENT` | `preview`                                  | Preview only                     |
 | `NEXT_PUBLIC_SENTRY_ENVIRONMENT` | `development`                              | Development only                 |
 
-⚠️ **CRITICAL**: `SENTRY_AUTH_TOKEN` is required for source maps. Without it, errors will have no code context.
+⚠️ **CRITICAL**: `SENTRY_AUTH_TOKEN` is required for source maps. Without it,
+errors will have no code context.
 
 ### Step 4: Deploy to Vercel (Automatic)
 
@@ -328,7 +339,8 @@ Go to your Vercel project → Settings → Environment Variables:
 
 1. Visit: `https://your-app.vercel.app/debug-sentry`
 2. Click "Test JavaScript Error" button
-3. Go to Sentry dashboard: <https://sentry.io/organizations/infamous-freight-enterprise/issues/>
+3. Go to Sentry dashboard:
+   <https://sentry.io/organizations/infamous-freight-enterprise/issues/>
 4. Verify error appears with:
    - ✅ Stack trace
    - ✅ Source maps (code visible, not minified)
@@ -385,7 +397,8 @@ Expected response: `200 OK` (not 401/403)
 
 Quick links to all Sentry documentation (located in root directory):
 
-1. **[SENTRY_VERCEL_DEPLOYMENT.md](../../SENTRY_VERCEL_DEPLOYMENT.md)** ⚠️ **START HERE**
+1. **[SENTRY_VERCEL_DEPLOYMENT.md](../../SENTRY_VERCEL_DEPLOYMENT.md)** ⚠️
+   **START HERE**
    - Critical guide for Vercel deployment
    - Environment variable setup
    - Common issues and solutions
@@ -409,7 +422,8 @@ Quick links to all Sentry documentation (located in root directory):
    - Configuration explanations
    - Testing and validation
 
-6. **[SENTRY_IMPLEMENTATION_COMPLETE.md](SENTRY_IMPLEMENTATION_COMPLETE.md)** (This file)
+6. **[SENTRY_IMPLEMENTATION_COMPLETE.md](SENTRY_IMPLEMENTATION_COMPLETE.md)**
+   (This file)
    - Complete summary of integration
    - File inventory and changes
    - Next steps for deployment
@@ -421,24 +435,24 @@ Quick links to all Sentry documentation (located in root directory):
 ### Example 1: Basic Error Logging
 
 ```typescript
-import { logError } from '@/lib/sentry';
+import { logError } from "@/lib/sentry";
 
 try {
   await createShipment(data);
 } catch (error) {
   logError(error, {
-    component: 'ShipmentForm',
+    component: "ShipmentForm",
     userId: user.id,
     shipmentData: data,
   });
-  toast.error('Failed to create shipment');
+  toast.error("Failed to create shipment");
 }
 ```
 
 ### Example 2: User Context
 
 ```typescript
-import { setUser, clearUser } from '@/lib/sentry';
+import { setUser, clearUser } from "@/lib/sentry";
 
 // On login
 setUser({
@@ -454,17 +468,17 @@ clearUser();
 ### Example 3: API Route Error Tracking
 
 ```typescript
-import { withSentryAPI } from '@/lib/sentry-api';
+import { withSentryAPI } from "@/lib/sentry-api";
 
 export default withSentryAPI(async (req, res) => {
   const shipment = await prisma.shipment.findUnique({
     where: { id: req.query.id },
   });
-  
+
   if (!shipment) {
-    return res.status(404).json({ error: 'Not found' });
+    return res.status(404).json({ error: "Not found" });
   }
-  
+
   res.json(shipment);
 });
 ```
@@ -472,15 +486,15 @@ export default withSentryAPI(async (req, res) => {
 ### Example 4: Custom Breadcrumbs
 
 ```typescript
-import { addBreadcrumb } from '@/lib/sentry';
+import { addBreadcrumb } from "@/lib/sentry";
 
 addBreadcrumb({
-  message: 'User started shipment creation',
-  category: 'user-action',
-  level: 'info',
+  message: "User started shipment creation",
+  category: "user-action",
+  level: "info",
   data: {
-    shipmentType: 'express',
-    origin: 'New York',
+    shipmentType: "express",
+    origin: "New York",
   },
 });
 ```
@@ -488,12 +502,12 @@ addBreadcrumb({
 ### Example 5: Performance Tracking
 
 ```typescript
-import { trackApiPerformance } from '@/lib/sentry-api';
+import { trackApiPerformance } from "@/lib/sentry-api";
 
 const startTime = Date.now();
 const result = await heavyOperation();
 
-trackApiPerformance('/api/heavy-operation', startTime);
+trackApiPerformance("/api/heavy-operation", startTime);
 ```
 
 ---
@@ -530,19 +544,24 @@ After deployment, you should see:
 
 ### Issue: "Source maps not working"
 
-**Solution:** Add `SENTRY_AUTH_TOKEN` to Vercel environment variables (all environments)
+**Solution:** Add `SENTRY_AUTH_TOKEN` to Vercel environment variables (all
+environments)
 
 ### Issue: "Events not reaching Sentry"
 
-**Solution:** Check `/monitoring` returns 200 (not 401/403). Verify middleware excludes `/monitoring`.
+**Solution:** Check `/monitoring` returns 200 (not 401/403). Verify middleware
+excludes `/monitoring`.
 
 ### Issue: "Build failing with Sentry errors"
 
-**Solution:** Make sure DSN and auth token are in Vercel environment variables, not just local `.env`
+**Solution:** Make sure DSN and auth token are in Vercel environment variables,
+not just local `.env`
 
 ### Issue: "Too many events / hitting rate limits"
 
-**Solution:** Adjust sample rates in [sentry.client.config.ts](sentry.client.config.ts) (`tracesSampleRate`, `replaysSessionSampleRate`)
+**Solution:** Adjust sample rates in
+[sentry.client.config.ts](sentry.client.config.ts) (`tracesSampleRate`,
+`replaysSessionSampleRate`)
 
 ### Issue: "Sensitive data in errors"
 
@@ -552,24 +571,31 @@ After deployment, you should see:
 
 ## 📞 Support & Resources
 
-- **Sentry Documentation**: <https://docs.sentry.io/platforms/javascript/guides/nextjs/>
+- **Sentry Documentation**:
+  <https://docs.sentry.io/platforms/javascript/guides/nextjs/>
 - **Vercel Integration**: <https://vercel.com/integrations/sentry>
 - **pnpm Monorepo**: <https://pnpm.io/workspaces>
-- **Next.js + Sentry**: <https://nextjs.org/docs/app/building-your-application/configuring/error-handling>
+- **Next.js + Sentry**:
+  <https://nextjs.org/docs/app/building-your-application/configuring/error-handling>
 
 ---
 
 ## ✨ Summary
 
-Sentry integration is **100% complete** and **production-ready**. All critical fixes applied, comprehensive documentation written, and developer-friendly utilities created.
+Sentry integration is **100% complete** and **production-ready**. All critical
+fixes applied, comprehensive documentation written, and developer-friendly
+utilities created.
 
 **Total files created**: 10 core files + comprehensive documentation  
 **Total files modified**: 5  
 **Total documentation**: 6 guides (in root directory)  
-**Time to deploy**: ~15 minutes  
+**Time to deploy**: ~15 minutes
 
-**Next action**: Follow [SENTRY_VERCEL_DEPLOYMENT.md](../../SENTRY_VERCEL_DEPLOYMENT.md) to deploy to Vercel.
+**Next action**: Follow
+[SENTRY_VERCEL_DEPLOYMENT.md](../../SENTRY_VERCEL_DEPLOYMENT.md) to deploy to
+Vercel.
 
 ---
 
-*This implementation follows all best practices for Vercel + pnpm monorepo + Next.js as recommended by the user.*
+_This implementation follows all best practices for Vercel + pnpm monorepo +
+Next.js as recommended by the user._

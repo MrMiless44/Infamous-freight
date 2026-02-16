@@ -3,7 +3,7 @@
  * Predicts driver earnings based on historical data, trends, and market conditions
  */
 
-const logger = require("../middleware/logger");
+const { logger } = require("../middleware/logger");
 
 class PredictiveEarningsService {
     constructor() {

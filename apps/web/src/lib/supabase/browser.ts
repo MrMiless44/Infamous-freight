@@ -8,14 +8,12 @@ export function supabaseBrowser(): SupabaseClient<Database> {
 
   if (!supabaseUrl || !supabaseAnonKey) {
     // During build time or when Supabase is not configured, return a typed mock client
-    // eslint-disable-next-line no-console
-    console.warn(
-      "Supabase environment variables not set. Using mock client."
-    );
+     
+    console.warn("Supabase environment variables not set. Using mock client.");
     // Return a typed stub that preserves type safety
     return createBrowserClient<Database>(
       supabaseUrl || "http://localhost:54321",
-      supabaseAnonKey || "mock-key"
+      supabaseAnonKey || "mock-key",
     );
   }
 

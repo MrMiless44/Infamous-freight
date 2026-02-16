@@ -15,7 +15,8 @@
 - Type definitions with 6 roles + 24 permissions
 - Express middleware guards (requirePermission, requireRole, etc.)
 - Enhanced JWT auth with automatic permission resolution
-- **Files**: `packages/shared/src/rbac.ts` + `apps/api/src/middleware/rbac.js` + `apps/api/src/middleware/authRBAC.js`
+- **Files**: `packages/shared/src/rbac.ts` + `apps/api/src/middleware/rbac.js` +
+  `apps/api/src/middleware/authRBAC.js`
 
 #### Component 2: Dispatch Management ✅
 
@@ -39,7 +40,8 @@
 - Fly.io configuration (Node.js API service)
 - GitHub Actions CI/CD pipeline
 - Optimized Docker image (Node 20, OpenSSL, pnpm)
-- **Files**: `fly.toml`, `apps/web/vercel.json`, `.github/workflows/deploy.yml`, `apps/api/Dockerfile`
+- **Files**: `fly.toml`, `apps/web/vercel.json`, `.github/workflows/deploy.yml`,
+  `apps/api/Dockerfile`
 
 ---
 
@@ -321,9 +323,11 @@ flyctl logs
 
 **Documentation:**
 
-- Integration Guide: [FRAMEWORK_INTEGRATION_GUIDE.md](FRAMEWORK_INTEGRATION_GUIDE.md)
+- Integration Guide:
+  [FRAMEWORK_INTEGRATION_GUIDE.md](FRAMEWORK_INTEGRATION_GUIDE.md)
 - Setup Guide: [FRAMEWORK_SETUP_GUIDE.md](FRAMEWORK_SETUP_GUIDE.md)
-- Deployment Status: [DEPLOYMENT_COMPLETE_100_PERCENT.md](DEPLOYMENT_COMPLETE_100_PERCENT.md)
+- Deployment Status:
+  [DEPLOYMENT_COMPLETE_100_PERCENT.md](DEPLOYMENT_COMPLETE_100_PERCENT.md)
 
 **Endpoints:**
 
@@ -359,4 +363,5 @@ All 4 framework components are:
 **Date**: January 23, 2026  
 **Ready for Production**: YES ✨
 
-**Next Action**: Follow "Step 1-6" above or run `node scripts/verify-deployment.js` to get started.
+**Next Action**: Follow "Step 1-6" above or run
+`node scripts/verify-deployment.js` to get started.

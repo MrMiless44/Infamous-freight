@@ -12,16 +12,14 @@ const cards = [
     id: "aurum",
     title: "AURUM Dispatch",
     subtitle: "Dispatcher Co-pilot",
-    description:
-      "Monitors lanes, suggests bids and protects margins in real time.",
+    description: "Monitors lanes, suggests bids and protects margins in real time.",
     color: "linear-gradient(135deg,#ff9966,#ff5e62)",
   },
   {
     id: "noir",
     title: "NOIR Guardian",
     subtitle: "Risk and Compliance",
-    description:
-      "Watches for anomalies, fraud and safety risks across the network.",
+    description: "Watches for anomalies, fraud and safety risks across the network.",
     color: "linear-gradient(135deg,#3a1c71,#d76d77)",
   },
 ];

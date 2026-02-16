@@ -2,9 +2,12 @@
 
 ## Overview
 
-**Phase 3** adds comprehensive auditability and observability to the marketplace. Every job state transition is now recorded as an immutable event, enabling full audit trails, debugging, and compliance reporting.
+**Phase 3** adds comprehensive auditability and observability to the
+marketplace. Every job state transition is now recorded as an immutable event,
+enabling full audit trails, debugging, and compliance reporting.
 
 **Key Achievements**:
+
 - ✅ JobEvent audit model with 12 event types
 - ✅ Transaction-safe event logging in all critical paths
 - ✅ Webhook metadata capture for full traceability
@@ -18,6 +21,7 @@
 ### 1. Prisma Schema Updates
 
 **New Enum: JobEventType**
+
 ```prisma
 enum JobEventType {
   CREATED              // Job created by shipper
@@ -36,6 +40,7 @@ enum JobEventType {
 ```
 
 **New Model: JobEvent**
+
 ```prisma
 model JobEvent {
   id        String        @id @default(cuid())
@@ -52,8 +57,10 @@ model JobEvent {
 ```
 
 **Enhanced Models**
+
 - **Job**: Added `events: JobEvent[]` relation for navigating timeline
-- **WebhookEvent**: Added `jobId` and `stripeObjId` fields for complete webhook audit trail
+- **WebhookEvent**: Added `jobId` and `stripeObjId` fields for complete webhook
+  audit trail
 
 ---
 
@@ -62,7 +69,7 @@ model JobEvent {
 **File**: `apps/api/src/marketplace/audit.ts`
 
 ```typescript
-import { prisma, JobEventType } from '@prisma/client';
+import { prisma, JobEventType } from "@prisma/client";
 
 export async function logJobEvent(input: {
   jobId: string;
@@ -83,14 +90,14 @@ export async function logJobEvent(input: {
 export async function getJobTimeline(jobId: string) {
   return prisma.jobEvent.findMany({
     where: { jobId },
-    orderBy: { createdAt: 'asc' },
+    orderBy: { createdAt: "asc" },
   });
 }
 
 export async function getLatestJobEvent(jobId: string) {
   return prisma.jobEvent.findFirst({
     where: { jobId },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
 }
 ```
@@ -100,6 +107,7 @@ export async function getLatestJobEvent(jobId: string) {
 ### 3. Integration Points
 
 #### **Job Creation Endpoint** (`POST /marketplace/jobs`)
+
 ```javascript
 const job = await prisma.job.create({ data: { ... } });
 
@@ -121,6 +129,7 @@ await logJobEvent({
 ```
 
 #### **Checkout Endpoint** (`POST /marketplace/jobs/:jobId/checkout`)
+
 ```javascript
 const session = await stripe.checkout.sessions.create({ ... });
 
@@ -134,6 +143,7 @@ await logJobEvent({
 ```
 
 #### **Webhook: Payment Succeeded** (`checkout.session.completed`)
+
 ```javascript
 async function handleCheckoutCompleted(session, correlationId) {
   const jobId = session.metadata?.jobId;
@@ -169,6 +179,7 @@ async function handleCheckoutCompleted(session, correlationId) {
 ```
 
 #### **Webhook: Payment Failed** (`checkout.session.expired`)
+
 ```javascript
 async function handleCheckoutExpired(session, correlationId) {
   const jobId = session.metadata?.jobId;
@@ -191,6 +202,7 @@ async function handleCheckoutExpired(session, correlationId) {
 **Authorization**: Shipper (own jobs), Driver (assigned jobs), Admin (all jobs)
 
 **Response**:
+
 ```json
 {
   "ok": true,
@@ -209,13 +221,13 @@ async function handleCheckoutExpired(session, correlationId) {
     },
     "pickupAddress": "123 Main St, SF, CA 94102",
     "dropoffAddress": "456 Oak Ave, SF, CA 94105",
-    "priceUsd": 15.50,
+    "priceUsd": 15.5,
     "createdAt": "2025-01-15T10:00:00Z",
     "updatedAt": "2025-01-15T12:30:00Z",
     "payment": {
       "id": "payment_789",
       "stripePaymentIntentId": "pi_1234567890",
-      "amountUsd": 15.50,
+      "amountUsd": 15.5,
       "status": "SUCCEEDED",
       "createdAt": "2025-01-15T10:05:00Z"
     }
@@ -279,6 +291,7 @@ async function handleCheckoutExpired(session, correlationId) {
 ### 5. Webhook Hardening
 
 **Metadata Capture**
+
 ```javascript
 // After signature verification
 const stripeObjId = event.data.object.id;
@@ -297,6 +310,7 @@ await prisma.webhookEvent.create({
 ```
 
 **Transactional Safety**
+
 ```javascript
 // All event logging happens inside transactions
 await prisma.$transaction(async (tx) => {
@@ -324,26 +338,27 @@ CREATE INDEX "JobEvent_type_createdAt_idx" ON "JobEvent"("type", "createdAt" DES
 
 ## Event Types Reference
 
-| Type | Triggered By | Actor | Notes |
-|------|-------------|-------|-------|
-| **CREATED** | Shipper creates job | Shipper | Includes origin/destination |
-| **PAYMENT_INITIATED** | Shipper clicks checkout | Shipper | Includes amount |
-| **PAYMENT_SUCCEEDED** | Stripe webhook | System | Includes Payment Intent ID |
-| **PAYMENT_FAILED** | Session expires or charge fails | System | For debugging |
-| **OPENED** | After payment succeeds | System | Job visible to drivers |
-| **HELD** | Driver temporarily holds job | Driver | MVP feature for market dynamics |
-| **ACCEPTED** | Driver accepts job | Driver | Binding agreement |
-| **PICKED_UP** | Driver confirms pickup | Driver | Delivery en route |
-| **DELIVERED** | Driver confirms delivery | Driver | End of delivery |
-| **COMPLETED** | Manual completion (post-delivery) | Admin | Formal closure |
-| **CANCELED** | Shipper/driver cancels | Shipper/Driver | Includes reason |
-| **NOTE** | Manual audit notes | Admin | General context |
+| Type                  | Triggered By                      | Actor          | Notes                           |
+| --------------------- | --------------------------------- | -------------- | ------------------------------- |
+| **CREATED**           | Shipper creates job               | Shipper        | Includes origin/destination     |
+| **PAYMENT_INITIATED** | Shipper clicks checkout           | Shipper        | Includes amount                 |
+| **PAYMENT_SUCCEEDED** | Stripe webhook                    | System         | Includes Payment Intent ID      |
+| **PAYMENT_FAILED**    | Session expires or charge fails   | System         | For debugging                   |
+| **OPENED**            | After payment succeeds            | System         | Job visible to drivers          |
+| **HELD**              | Driver temporarily holds job      | Driver         | MVP feature for market dynamics |
+| **ACCEPTED**          | Driver accepts job                | Driver         | Binding agreement               |
+| **PICKED_UP**         | Driver confirms pickup            | Driver         | Delivery en route               |
+| **DELIVERED**         | Driver confirms delivery          | Driver         | End of delivery                 |
+| **COMPLETED**         | Manual completion (post-delivery) | Admin          | Formal closure                  |
+| **CANCELED**          | Shipper/driver cancels            | Shipper/Driver | Includes reason                 |
+| **NOTE**              | Manual audit notes                | Admin          | General context                 |
 
 ---
 
 ## Audit Trail Examples
 
 ### Successful Job Flow
+
 ```
 10:00:00 CREATED      (shipper: "Created job")
 10:01:00 PAYMENT_INITIATED (shipper: "Payment of $15.50 initiated")
@@ -355,6 +370,7 @@ CREATE INDEX "JobEvent_type_createdAt_idx" ON "JobEvent"("type", "createdAt" DES
 ```
 
 ### Failed Payment
+
 ```
 10:00:00 CREATED      (shipper: "Created job")
 10:01:00 PAYMENT_INITIATED (shipper: "Payment of $15.50 initiated")
@@ -362,6 +378,7 @@ CREATE INDEX "JobEvent_type_createdAt_idx" ON "JobEvent"("type", "createdAt" DES
 ```
 
 ### Canceled Job
+
 ```
 10:00:00 CREATED      (shipper: "Created job")
 10:01:00 PAYMENT_INITIATED (shipper: "Payment of $15.50 initiated")
@@ -374,12 +391,13 @@ CREATE INDEX "JobEvent_type_createdAt_idx" ON "JobEvent"("type", "createdAt" DES
 
 ## Security & Compliance
 
-✅ **Immutable Audit Trail**: All events stored with `createdAt` timestamp (no updates/deletes)
-✅ **Actor Attribution**: Every event tied to `actorUserId` (except system events)
-✅ **Transactional Safety**: State changes + event logging are atomic
-✅ **Metadata Traceability**: Stripe webhook events include `stripeObjId` for cross-referencing
-✅ **Access Control**: Timeline API enforces ownership/role-based authorization
-✅ **Rate Limiting**: General limiters apply to timeline endpoint
+✅ **Immutable Audit Trail**: All events stored with `createdAt` timestamp (no
+updates/deletes) ✅ **Actor Attribution**: Every event tied to `actorUserId`
+(except system events) ✅ **Transactional Safety**: State changes + event
+logging are atomic ✅ **Metadata Traceability**: Stripe webhook events include
+`stripeObjId` for cross-referencing ✅ **Access Control**: Timeline API enforces
+ownership/role-based authorization ✅ **Rate Limiting**: General limiters apply
+to timeline endpoint
 
 ---
 
@@ -390,25 +408,28 @@ CREATE INDEX "JobEvent_type_createdAt_idx" ON "JobEvent"("type", "createdAt" DES
 - [ ] Webhook succeeded → verify PAYMENT_SUCCEEDED + OPENED logged atomically
 - [ ] Webhook expired → verify PAYMENT_FAILED logged
 - [ ] GET timeline endpoint → verify all events returned in chronological order
-- [ ] Authorization checks → shipper sees own jobs, driver sees assigned, non-owner denied
+- [ ] Authorization checks → shipper sees own jobs, driver sees assigned,
+      non-owner denied
 - [ ] Database consistency → no missing events during concurrent updates
 
 ---
 
 ## Files Modified
 
-| File | Changes |
-|------|---------|
-| `apps/api/prisma/schema.prisma` | Added JobEventType enum, JobEvent model, WebhookEvent enhancements |
-| `apps/api/src/marketplace/audit.ts` | NEW — logJobEvent, getJobTimeline, getLatestJobEvent helpers |
-| `apps/api/src/marketplace/router.js` | Added logging to job creation, checkout, timeline endpoint |
+| File                                   | Changes                                                                 |
+| -------------------------------------- | ----------------------------------------------------------------------- |
+| `apps/api/prisma/schema.prisma`        | Added JobEventType enum, JobEvent model, WebhookEvent enhancements      |
+| `apps/api/src/marketplace/audit.ts`    | NEW — logJobEvent, getJobTimeline, getLatestJobEvent helpers            |
+| `apps/api/src/marketplace/router.js`   | Added logging to job creation, checkout, timeline endpoint              |
 | `apps/api/src/marketplace/webhooks.js` | Added metadata capture, handleCheckoutExpired, transaction-safe logging |
 
 ---
 
 ## Next Phase (Phase 4)
 
-**Phase 4 — Driver Workflow Logging** will extend auditability to driver actions:
+**Phase 4 — Driver Workflow Logging** will extend auditability to driver
+actions:
+
 - Driver accepts job → ACCEPTED event
 - Driver picks up package → PICKED_UP event
 - Driver delivers → DELIVERED event
@@ -419,12 +440,13 @@ CREATE INDEX "JobEvent_type_createdAt_idx" ON "JobEvent"("type", "createdAt" DES
 ## Performance Notes
 
 **Timeline Query Optimization**:
+
 ```javascript
 // Fast: Uses composite index (jobId, createdAt)
 const events = await prisma.jobEvent.findMany({
   where: { jobId },
-  orderBy: { createdAt: 'asc' },
-  take: 100,  // Pagination
+  orderBy: { createdAt: "asc" },
+  take: 100, // Pagination
 });
 ```
 
@@ -435,6 +457,7 @@ const events = await prisma.jobEvent.findMany({
 ## Debugging Tips
 
 **Webhook Issues?**
+
 ```javascript
 // Find all events for a payment intent
 const events = await prisma.webhookEvent.findMany({
@@ -447,10 +470,11 @@ console.table(timeline);
 ```
 
 **Payment Failed?**
+
 ```javascript
 // Check latest event
 const latest = await getLatestJobEvent(jobId);
-if (latest.type === 'PAYMENT_FAILED') {
+if (latest.type === "PAYMENT_FAILED") {
   console.log("Payment failed:", latest.message);
 }
 ```
@@ -460,10 +484,10 @@ if (latest.type === 'PAYMENT_FAILED') {
 ## Conclusion
 
 Phase 3 establishes a rock-solid audit layer enabling:
+
 - **Observability**: See full job lifecycle at a glance
 - **Debugging**: Correlate Stripe events with job state via metadata
 - **Compliance**: Immutable audit trail for all transactions
 - **Support**: Answer "what happened?" with precision
 
 All marketplace actions now produce auditable records. 🎯
-

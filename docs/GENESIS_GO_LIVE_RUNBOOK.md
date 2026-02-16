@@ -1,6 +1,7 @@
 # GENESIS Go-Live Runbook (Deploy → Providers → Onboarding)
 
-This runbook is the execution order for taking GENESIS live with production controls.
+This runbook is the execution order for taking GENESIS live with production
+controls.
 
 ## Phase A — Deploy
 
@@ -117,20 +118,21 @@ Required controls:
 
 ### C1. Role model
 
-| Role | Access |
-| --- | --- |
-| User | Own GENIUS Avatar |
-| Driver | Freight workflows |
-| Enterprise | Multi-avatar workspace |
-| Admin | Monitoring and controls |
-| System | GENESIS PRIME |
+| Role       | Access                  |
+| ---------- | ----------------------- |
+| User       | Own GENIUS Avatar       |
+| Driver     | Freight workflows       |
+| Enterprise | Multi-avatar workspace  |
+| Admin      | Monitoring and controls |
+| System     | GENESIS PRIME           |
 
 ### C2. Create initial avatars
 
 - `GENESIS PRIME`:
   - role: `system`
   - compliance: `strict`
-- First user avatar should include owner, role, policy attachments, and compliance level.
+- First user avatar should include owner, role, policy attachments, and
+  compliance level.
 
 ### C3. Onboarding pipeline
 
@@ -163,7 +165,8 @@ Admin console must show:
 
 ## Verification automation
 
-Use the repository verification script to quickly validate env and service wiring:
+Use the repository verification script to quickly validate env and service
+wiring:
 
 ```bash
 bash scripts/genesis-go-live-verify.sh

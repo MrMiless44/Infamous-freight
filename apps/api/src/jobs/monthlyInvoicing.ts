@@ -1,6 +1,6 @@
 /**
  * Monthly Invoice Generation Job (Phase 20.8)
- * 
+ *
  * BullMQ scheduled job that runs on the 1st of each month
  * to generate and send invoices for all active organizations
  */
@@ -83,9 +83,7 @@ export const monthlyInvoicingWorker = new Worker(
         try {
           // Skip if no billing plan
           if (!org.billing) {
-            console.log(
-              `[MonthlyInvoicing] Skipping ${org.name} - no billing setup`
-            );
+            console.log(`[MonthlyInvoicing] Skipping ${org.name} - no billing setup`);
             continue;
           }
 
@@ -95,9 +93,7 @@ export const monthlyInvoicingWorker = new Worker(
           stats.invoicesGenerated += 1;
           stats.totalRevenue += invoice?.totalAmount || 0;
 
-          console.log(
-            `[MonthlyInvoicing] Generated invoice for ${org.name} - ${org.id}`
-          );
+          console.log(`[MonthlyInvoicing] Generated invoice for ${org.name} - ${org.id}`);
 
           // Log audit event
           try {
@@ -113,10 +109,7 @@ export const monthlyInvoicingWorker = new Worker(
               },
             });
           } catch (auditErr) {
-            console.warn(
-              `[MonthlyInvoicing] Failed to log audit for ${org.id}:`,
-              auditErr
-            );
+            console.warn(`[MonthlyInvoicing] Failed to log audit for ${org.id}:`, auditErr);
           }
         } catch (err) {
           stats.invoicesFailed += 1;
@@ -130,14 +123,14 @@ export const monthlyInvoicingWorker = new Worker(
 
       const duration = Date.now() - startTime;
       console.log(
-        `[MonthlyInvoicing] Completed in ${duration}ms - Generated: ${stats.invoicesGenerated}, Failed: ${stats.invoicesFailed}, Revenue: $${stats.totalRevenue.toFixed(2)}`
+        `[MonthlyInvoicing] Completed in ${duration}ms - Generated: ${stats.invoicesGenerated}, Failed: ${stats.invoicesFailed}, Revenue: $${stats.totalRevenue.toFixed(2)}`,
       );
 
       return stats;
     } catch (err) {
       console.error(
         "[MonthlyInvoicing] Fatal error:",
-        err instanceof Error ? err.message : String(err)
+        err instanceof Error ? err.message : String(err),
       );
       throw err;
     }
@@ -145,7 +138,7 @@ export const monthlyInvoicingWorker = new Worker(
   {
     connection: redisConfig,
     concurrency: 1, // Only one job at a time
-  }
+  },
 );
 
 // ============================================
@@ -198,7 +191,8 @@ async function notifyCompletion(stats: {
               type: "section",
               text: {
                 type: "mrkdwn",
-                text: `*Monthly Invoicing Report*\n` +
+                text:
+                  `*Monthly Invoicing Report*\n` +
                   `📊 Total Organizations: ${stats.totalOrgs}\n` +
                   `✅ Invoices Generated: ${stats.invoicesGenerated}\n` +
                   `❌ Failed: ${stats.invoicesFailed}\n` +
@@ -228,7 +222,8 @@ async function notifyError(jobId: string, reason: string) {
               type: "section",
               text: {
                 type: "mrkdwn",
-                text: `*Error in Monthly Invoicing*\n` +
+                text:
+                  `*Error in Monthly Invoicing*\n` +
                   `Job ID: ${jobId}\n` +
                   `Reason: ${reason}\n` +
                   `⏰ Time: ${new Date().toLocaleString()}`,
@@ -251,9 +246,7 @@ export async function scheduleMonthlyInvoicing() {
   try {
     // Check if job already scheduled
     const existing = await monthlyInvoicingQueue.getRepeatableJobs();
-    const alreadyScheduled = existing.some(
-      (job) => job.name === "monthly-invoicing"
-    );
+    const alreadyScheduled = existing.some((job) => job.name === "monthly-invoicing");
 
     if (alreadyScheduled) {
       console.log("[MonthlyInvoicing] Job already scheduled, skipping...");
@@ -269,7 +262,7 @@ export async function scheduleMonthlyInvoicing() {
         repeat: {
           pattern: "0 0 1 * *", // 1st of month, 00:00 UTC
         },
-      }
+      },
     );
 
     console.log("[MonthlyInvoicing] Scheduled job for 1st of each month");

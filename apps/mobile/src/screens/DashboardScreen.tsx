@@ -3,7 +3,7 @@
  * Shows earnings, current job, and quick stats
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   ScrollView,
@@ -13,13 +13,13 @@ import {
   RefreshControl,
   ActivityIndicator,
   Dimensions,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { colors, spacing, typography } from '../theme';
-import type { DriverProfile } from '@infamous-freight/shared';
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { colors, spacing, typography } from "../theme";
+import type { DriverProfile } from "@infamous-freight/shared";
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 
 interface DashboardStats {
   todaysEarnings: number;
@@ -53,29 +53,41 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) 
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      // TODO: Replace with actual API call
-      // const response = await fetch(`${API_BASE_URL}/api/driver/dashboard`);
-      // const data = await response.json();
-      
-      // Mock data for now
+      const apiBaseUrl = process.env.EXPO_PUBLIC_API_URL || process.env.API_BASE_URL;
+      let dashboardData: DashboardStats | null = null;
+
+      if (apiBaseUrl) {
+        try {
+          const response = await fetch(`${apiBaseUrl}/api/analytics/driver/dashboard?days=30`);
+          if (response.ok) {
+            const result = await response.json();
+            if (result?.success && result.data) {
+              dashboardData = result.data;
+            }
+          }
+        } catch (apiError) {
+          console.warn("Dashboard API unavailable, using mock data:", apiError);
+        }
+      }
+
       const mockStats: DashboardStats = {
-        todaysEarnings: 287.50,
+        todaysEarnings: 287.5,
         totalJobs: 156,
         completedJobs: 154,
         rating: 4.8,
         onTimePercentage: 96,
         currentLoad: {
-          id: 'LOAD-001',
-          destination: 'Los Angeles, CA',
+          id: "LOAD-001",
+          destination: "Los Angeles, CA",
           miles: 487,
           rate: 1.25,
-          status: 'IN_TRANSIT',
+          status: "IN_TRANSIT",
         },
       };
-      
-      setStats(mockStats);
+
+      setStats(dashboardData || mockStats);
     } catch (error) {
-      console.error('Error loading dashboard data:', error);
+      console.error("Error loading dashboard data:", error);
     } finally {
       setLoading(false);
     }
@@ -111,17 +123,17 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) 
 
       {/* Current Load Card */}
       {stats?.currentLoad && (
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.currentLoadCard}
-          onPress={() => navigation.navigate('Shipments')}
+          onPress={() => navigation.navigate("Shipments")}
         >
           <View style={styles.currentLoadHeader}>
             <Text style={styles.currentLoadTitle}>Current Load</Text>
             <MaterialCommunityIcons name="truck" size={24} color={colors.primary} />
           </View>
-          
+
           <Text style={styles.currentLoadDestination}>{stats.currentLoad.destination}</Text>
-          
+
           <View style={styles.currentLoadDetails}>
             <View style={styles.loadDetail}>
               <MaterialCommunityIcons name="map-marker" size={16} color={colors.gray600} />
@@ -129,13 +141,15 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) 
             </View>
             <View style={styles.loadDetail}>
               <MaterialCommunityIcons name="cash" size={16} color={colors.gray600} />
-              <Text style={styles.loadDetailText}>${(stats.currentLoad.miles * stats.currentLoad.rate).toFixed(2)}</Text>
+              <Text style={styles.loadDetailText}>
+                ${(stats.currentLoad.miles * stats.currentLoad.rate).toFixed(2)}
+              </Text>
             </View>
           </View>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.navigateButton}
-            onPress={() => navigation.navigate('Map')}
+            onPress={() => navigation.navigate("Map")}
           >
             <Text style={styles.navigateButtonText}>Navigate</Text>
           </TouchableOpacity>
@@ -151,7 +165,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) 
             {[...Array(5)].map((_, i) => (
               <MaterialCommunityIcons
                 key={i}
-                name={i < Math.floor(stats?.rating || 0) ? 'star' : 'star-outline'}
+                name={i < Math.floor(stats?.rating || 0) ? "star" : "star-outline"}
                 size={14}
                 color={colors.warning}
               />
@@ -169,26 +183,26 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) 
       {/* Quick Actions */}
       <View style={styles.quickActionsContainer}>
         <Text style={styles.quickActionsTitle}>Quick Actions</Text>
-        
-        <TouchableOpacity 
+
+        <TouchableOpacity
           style={styles.quickActionButton}
-          onPress={() => navigation.navigate('Map')}
+          onPress={() => navigation.navigate("Map")}
         >
           <MaterialCommunityIcons name="map" size={24} color={colors.primary} />
           <Text style={styles.quickActionText}>View Map</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.quickActionButton}
-          onPress={() => navigation.navigate('Shipments')}
+          onPress={() => navigation.navigate("Shipments")}
         >
           <MaterialCommunityIcons name="clipboard-list" size={24} color={colors.primary} />
           <Text style={styles.quickActionText}>My Shipments</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.quickActionButton}
-          onPress={() => navigation.navigate('Account')}
+          onPress={() => navigation.navigate("Account")}
         >
           <MaterialCommunityIcons name="account" size={24} color={colors.primary} />
           <Text style={styles.quickActionText}>Account Settings</Text>
@@ -232,8 +246,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   earningsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   earningsSubtext: {
     ...typography.caption,
@@ -253,9 +267,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   currentLoadHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: spacing.md,
   },
   currentLoadTitle: {
@@ -268,13 +282,13 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   currentLoadDetails: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: spacing.lg,
     gap: spacing.lg,
   },
   loadDetail: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: spacing.sm,
   },
   loadDetailText: {
@@ -285,14 +299,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     paddingVertical: spacing.md,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   navigateButtonText: {
     ...typography.button,
     color: colors.white,
   },
   statsGrid: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginHorizontal: spacing.lg,
     marginBottom: spacing.lg,
     gap: spacing.lg,
@@ -323,7 +337,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
   starContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: spacing.xs,
     marginTop: spacing.sm,
   },
@@ -337,8 +351,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   quickActionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: colors.white,
     borderRadius: 12,
     padding: spacing.md,

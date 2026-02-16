@@ -25,9 +25,7 @@ async function uploadCertificate({ orgId, actorUserId, payload }) {
     providerName: payload.providerName,
     policyNumber: payload.policyNumber,
     effectiveDate: payload.effectiveDate ? new Date(payload.effectiveDate) : null,
-    expirationDate: payload.expirationDate
-      ? new Date(payload.expirationDate)
-      : null,
+    expirationDate: payload.expirationDate ? new Date(payload.expirationDate) : null,
     limitsJson: payload.limitsJson || undefined,
     extractedJson: payload.extractedJson || undefined,
   });
@@ -142,8 +140,8 @@ async function getRiskScore({ orgId, carrierId }) {
   ]);
 
   const evaluation = evaluateCompliance({ requirements, certificates });
-  const suspensionsLast90Days = recentSuspensions.filter((event) =>
-    event.eventType === "SUSPEND"
+  const suspensionsLast90Days = recentSuspensions.filter(
+    (event) => event.eventType === "SUSPEND",
   ).length;
 
   return {
@@ -162,8 +160,7 @@ async function runExpirationSweep({ orgId, now = new Date() }) {
   for (const certificate of certificates) {
     if (!certificate.expirationDate) continue;
     const daysToExpiration = Math.ceil(
-      (new Date(certificate.expirationDate).getTime() - now.getTime()) /
-        (24 * 60 * 60 * 1000)
+      (new Date(certificate.expirationDate).getTime() - now.getTime()) / (24 * 60 * 60 * 1000),
     );
     if (expiringThresholds.includes(daysToExpiration)) {
       expiringEvents.push({

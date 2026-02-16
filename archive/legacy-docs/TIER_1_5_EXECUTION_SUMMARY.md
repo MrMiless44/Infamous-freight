@@ -42,13 +42,16 @@ Status: SUCCESSFULLY PUSHED ✅
 - **Missing Type Definitions (12)**: prom-client, nodemailer, swagger-jsdoc
 - **Type Mismatches (8)**: Health status enum, error codes, response types
 - **Import/Export Issues (6)**: Prisma exports, service exports, module exports
-- **Prisma Schema Mismatches (8)**: Missing properties (shipment, notification, message)
+- **Prisma Schema Mismatches (8)**: Missing properties (shipment, notification,
+  message)
 - **Type Safety (8)**: Array indexing, property access, parameter types
 
 ### Root Causes:
 
-1. **New Files Need Schema Updates**: WebSocket events and notification services reference Prisma models not yet in schema
-2. **Type Definitions Missing**: Some npm packages installed but type defs need setup
+1. **New Files Need Schema Updates**: WebSocket events and notification services
+   reference Prisma models not yet in schema
+2. **Type Definitions Missing**: Some npm packages installed but type defs need
+   setup
 3. **Health Enum Values**: Status values don't match TypeScript enum definition
 
 ### Files with Errors (5 primary):

@@ -2,13 +2,14 @@
 
 ## 📋 Overview
 
-Phase 1 establishes the core marketplace primitives for a DoorDash-style delivery platform. After Phase 1, you can:
+Phase 1 establishes the core marketplace primitives for a DoorDash-style
+delivery platform. After Phase 1, you can:
 
 ✅ Create shippers and drivers with role-based permissions  
 ✅ Driver posts location (GPS) and vehicle capabilities  
 ✅ Shipper creates a job (starts in DRAFT status)  
 ✅ System matches eligible drivers by vehicle type, capacity, and radius  
-✅ Driver accepts job, progresses through delivery workflow  
+✅ Driver accepts job, progresses through delivery workflow
 
 **No Stripe integration yet** — Phase 2 adds payment processing.
 
@@ -98,15 +99,15 @@ model Job {
   driverId        String?
   driver          User?      @relation("jobsAsDriver")
   status          JobStatus  @default(DRAFT)
-  
+
   pickupAddress   String
   pickupLat       Float
   pickupLng       Float
-  
+
   dropoffAddress  String
   dropoffLat      Float
   dropoffLng      Float
-  
+
   requiredVehicle VehicleType
   weightLbs       Int
   volumeCuFt      Int
@@ -163,7 +164,8 @@ export function filterByRadius(
 
 ## ✅ Zod Validators
 
-**File**: [apps/api/src/marketplace/validators.ts](../apps/api/src/marketplace/validators.ts)
+**File**:
+[apps/api/src/marketplace/validators.ts](../apps/api/src/marketplace/validators.ts)
 
 **Schemas**:
 
@@ -171,7 +173,8 @@ export function filterByRadius(
 - `upsertDriverProfileSchema` — User ID, active status
 - `updateDriverLocationSchema` — Coordinates (lat/lng)
 - `addVehicleSchema` — Vehicle type, weight/volume limits
-- `createJobSchema` — Pickup/dropoff addresses & coords, vehicle requirements, weight, volume
+- `createJobSchema` — Pickup/dropoff addresses & coords, vehicle requirements,
+  weight, volume
 - `matchDriversSchema` — Job ID, search radius (default 50 miles)
 - `acceptJobSchema` — Job & driver IDs
 - `updateJobStatusSchema` — New job status
@@ -314,7 +317,8 @@ curl 'http://localhost:4000/api/marketplace/jobs?shipperId=shipper-123&status=OP
 ```
 
 **PATCH /marketplace/jobs/:id/status**  
-Update job status (DRAFT → REQUIRES_PAYMENT → OPEN → ACCEPTED → PICKED_UP → DELIVERED → COMPLETED)
+Update job status (DRAFT → REQUIRES_PAYMENT → OPEN → ACCEPTED → PICKED_UP →
+DELIVERED → COMPLETED)
 
 ```bash
 curl -X PATCH http://localhost:4000/api/marketplace/jobs/{jobId}/status \
@@ -331,6 +335,7 @@ curl -X PATCH http://localhost:4000/api/marketplace/jobs/{jobId}/status \
 Find eligible drivers for a job
 
 Criteria:
+
 - ✅ Vehicle type matches job requirement
 - ✅ Vehicle capacity (weight + volume) meets job needs
 - ✅ Driver location within search radius (default 50 miles)
@@ -570,17 +575,29 @@ curl -X POST http://localhost:4000/api/marketplace/jobs/job-id/accept \
 ## 📦 Files Created/Modified
 
 ### Created:
-- ✅ [apps/api/src/lib/geo.ts](../apps/api/src/lib/geo.ts) — Distance calculations
-- ✅ [apps/api/src/marketplace/validators.ts](../apps/api/src/marketplace/validators.ts) — Zod schemas
+
+- ✅ [apps/api/src/lib/geo.ts](../apps/api/src/lib/geo.ts) — Distance
+  calculations
+- ✅
+  [apps/api/src/marketplace/validators.ts](../apps/api/src/marketplace/validators.ts)
+  — Zod schemas
 
 ### Modified:
-- ✅ [apps/api/prisma/schema.prisma](../apps/api/prisma/schema.prisma) — Fixed duplicate Subscription model
+
+- ✅ [apps/api/prisma/schema.prisma](../apps/api/prisma/schema.prisma) — Fixed
+  duplicate Subscription model
 - ✅ [apps/api/package.json](../apps/api/package.json) — Added `zod` dependency
 
 ### Already Present:
-- ✅ [apps/api/src/marketplace/router.js](../apps/api/src/marketplace/router.js) — All endpoints
-- ✅ [apps/api/src/marketplace/billingRouter.js](../apps/api/src/marketplace/billingRouter.js) — Billing
-- ✅ [apps/api/src/marketplace/webhooks.js](../apps/api/src/marketplace/webhooks.js) — Stripe webhooks
+
+- ✅ [apps/api/src/marketplace/router.js](../apps/api/src/marketplace/router.js)
+  — All endpoints
+- ✅
+  [apps/api/src/marketplace/billingRouter.js](../apps/api/src/marketplace/billingRouter.js)
+  — Billing
+- ✅
+  [apps/api/src/marketplace/webhooks.js](../apps/api/src/marketplace/webhooks.js)
+  — Stripe webhooks
 
 ---
 
@@ -598,19 +615,19 @@ Phase 2 adds **payment processing via Stripe**:
 
 ## ✨ Key Features Summary
 
-| Feature | Status | Description |
-|---------|--------|-------------|
-| **User Management** | ✅ | Shippers, drivers, admins |
-| **Driver Profiles** | ✅ | GPS location, active status |
-| **Vehicle Management** | ✅ | Multiple vehicles per driver, capacity tracking |
-| **Job Creation** | ✅ | Full address/coords, vehicle requirements |
-| **Distance Calculation** | ✅ | Haversine formula for accurate mileage |
-| **Driver Matching** | ✅ | Vehicle type + capacity + radius filters |
-| **Job Acceptance** | ✅ | Driver claims job, status transitions |
-| **Delivery Workflow** | ✅ | DRAFT → OPEN → ACCEPTED → PICKED_UP → DELIVERED → COMPLETED |
-| **Authentication** | ✅ | JWT with scope-based authorization |
-| **Validation** | ✅ | Zod schemas for all endpoints |
-| **Error Handling** | ✅ | Consistent error responses |
+| Feature                  | Status | Description                                                 |
+| ------------------------ | ------ | ----------------------------------------------------------- |
+| **User Management**      | ✅     | Shippers, drivers, admins                                   |
+| **Driver Profiles**      | ✅     | GPS location, active status                                 |
+| **Vehicle Management**   | ✅     | Multiple vehicles per driver, capacity tracking             |
+| **Job Creation**         | ✅     | Full address/coords, vehicle requirements                   |
+| **Distance Calculation** | ✅     | Haversine formula for accurate mileage                      |
+| **Driver Matching**      | ✅     | Vehicle type + capacity + radius filters                    |
+| **Job Acceptance**       | ✅     | Driver claims job, status transitions                       |
+| **Delivery Workflow**    | ✅     | DRAFT → OPEN → ACCEPTED → PICKED_UP → DELIVERED → COMPLETED |
+| **Authentication**       | ✅     | JWT with scope-based authorization                          |
+| **Validation**           | ✅     | Zod schemas for all endpoints                               |
+| **Error Handling**       | ✅     | Consistent error responses                                  |
 
 ---
 
@@ -627,5 +644,7 @@ Phase 2 adds **payment processing via Stripe**:
 
 ## 📞 Support
 
-All endpoints are protected by authentication and require proper JWT tokens with appropriate scopes. For questions about implementing Phase 2 payment processing, refer to [MARKETPLACE_PHASE_2_FINAL_SUMMARY.md](MARKETPLACE_PHASE_2_FINAL_SUMMARY.md).
-
+All endpoints are protected by authentication and require proper JWT tokens with
+appropriate scopes. For questions about implementing Phase 2 payment processing,
+refer to
+[MARKETPLACE_PHASE_2_FINAL_SUMMARY.md](MARKETPLACE_PHASE_2_FINAL_SUMMARY.md).

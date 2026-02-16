@@ -1,8 +1,11 @@
 # Incident Response Guide
 
-This guide provides procedures for responding to production incidents at Infamous Freight Enterprises. All incident responders should be familiar with this document.
+This guide provides procedures for responding to production incidents at
+Infamous Freight Enterprises. All incident responders should be familiar with
+this document.
 
 **Table of Contents**
+
 1. [Incident Severity Levels](#incident-severity-levels)
 2. [Immediate Response](#immediate-response)
 3. [Communication Protocol](#communication-protocol)
@@ -99,8 +102,10 @@ Expected Impact: [X users / X% of traffic]
 ### **During Incident**
 
 **Every 15 minutes** (if P1), **Every 30 minutes** (if P2):
+
 - Post status update in Slack #incidents thread with: **Status | ETA | Action**
-- Example: "Still investigating DB connection leak. ETA fix 15 min. Attempting pool reset."
+- Example: "Still investigating DB connection leak. ETA fix 15 min. Attempting
+  pool reset."
 
 **Frequency**: P1 = every 5-15 minutes, P2 = every 15-30 minutes, P3 = hourly
 
@@ -108,14 +113,16 @@ Expected Impact: [X users / X% of traffic]
 
 **Decide immediately**: Do customers need to know?
 
-| Incident | Notify | Channel | Message |
-|----------|--------|---------|---------|
-| API down | YES | Status page + email | "We're experiencing API issues. Our team is investigating." |
-| Payment processing down | YES | Status page + urgent email | "Payment processing temporarily unavailable. Retry later." |
-| Data delay >1 hour | Partial | Status page update | "Reporting dashboard delayed. Working on fix." |
-| Minor bug | NO | Internal tracking | "Report in #bugs, will fix in next sprint" |
+| Incident                | Notify  | Channel                    | Message                                                     |
+| ----------------------- | ------- | -------------------------- | ----------------------------------------------------------- |
+| API down                | YES     | Status page + email        | "We're experiencing API issues. Our team is investigating." |
+| Payment processing down | YES     | Status page + urgent email | "Payment processing temporarily unavailable. Retry later."  |
+| Data delay >1 hour      | Partial | Status page update         | "Reporting dashboard delayed. Working on fix."              |
+| Minor bug               | NO      | Internal tracking          | "Report in #bugs, will fix in next sprint"                  |
 
-**Status Page**: Update [status.infamous-freight.com](https://status.infamous-freight.com) (Statuspage.io)
+**Status Page**: Update
+[status.infamous-freight.com](https://status.infamous-freight.com)
+(Statuspage.io)
 
 ### **Escalation Matrix**
 
@@ -133,11 +140,13 @@ Level 4: VP Eng + CEO (if outage >1 hour or data loss)
 ### **1. API Service Down**
 
 **Symptoms**:
+
 - All API requests returning 503 Service Unavailable
 - Health check endpoint `/api/health` is failing
 - Pod logs show startup errors or crashes
 
 **Investigation**:
+
 ```bash
 # Check pod status
 kubectl get pods -n infamous-freight-api
@@ -156,6 +165,7 @@ kubectl get secrets -n infamous-freight-api
 ```
 
 **Mitigation**:
+
 1. Check Sentry for stack traces (`Settings > Integrations`)
 2. Review recent deployments (last 1 hour)
 3. Rollback if < 30 minutes old: `kubectl rollout undo deployment/api`
@@ -165,40 +175,47 @@ kubectl get secrets -n infamous-freight-api
 ### **2. Database Connection Pool Exhausted**
 
 **Symptoms**:
+
 - Error: `too many connections` or `connections unavailable`
 - P99 latency spikes, timeouts increase
 - Specific endpoints become very slow
 
 **Investigation**:
+
 ```bash
 # Check Prisma connection pool status
 SELECT count(*) FROM pg_stat_activity WHERE datname = 'infamous_freight';
 
 # Check idle connections
-SELECT * FROM pg_stat_activity 
+SELECT * FROM pg_stat_activity
 WHERE state = 'idle' AND query_start < NOW() - INTERVAL '10 minutes';
 
 # Datadog: Monitor database.connections metric
 ```
 
 **Mitigation**:
+
 1. **Immediate**: Scale down non-critical services (reporting, exports)
-2. **Short-term**: Increase pool size in env: `DATABASE_POOL_SIZE=40` (default 20)
+2. **Short-term**: Increase pool size in env: `DATABASE_POOL_SIZE=40`
+   (default 20)
 3. **Investigation**: Find code path causing connection leak
    - Check logs for `query > 30s` (timeout not released)
    - Verify `.disconnect()` or `$disconnect()` called in error handlers
-4. **Restart**: Redeploy API to reset connection pool: `kubectl rollout restart deployment/api`
+4. **Restart**: Redeploy API to reset connection pool:
+   `kubectl rollout restart deployment/api`
 
 **Prevention**: Set pool timeout to 5min, add connection cleanup job
 
 ### **3. High Memory Usage (Pod OOMKilled)**
 
 **Symptoms**:
+
 - Pod evicted: `OOMKilled` or `OutOfMemory`
 - Memory usage climbing: 512MB → 2GB over hours
 - Periodic restarts (pod restart loop)
 
 **Investigation**:
+
 ```bash
 # Check memory metrics
 kubectl top pod -n infamous-freight-api deployment/api
@@ -211,6 +228,7 @@ curl http://pod-ip:3001/api/debug/heap-snapshot > heap.json
 ```
 
 **Mitigation**:
+
 1. **Immediate**: Scale up pod memory: `requests: 512Mi → 1Gi` in deployment
 2. **Investigation**: Check for memory leaks
    - Logging too verbosely? (reduce log level)
@@ -222,11 +240,13 @@ curl http://pod-ip:3001/api/debug/heap-snapshot > heap.json
 ### **4. High Error Rate (5xx Errors)**
 
 **Symptoms**:
+
 - Dashboard shows 5xx rate >1%
 - Sentry reports spike in errors
 - Log analyzer shows error pattern
 
 **Investigation**:
+
 ```bash
 # Check error logs
 kubectl logs deployment/api | grep -i "error\|exception" | tail -20
@@ -241,6 +261,7 @@ kubectl logs deployment/api | grep -i "error\|exception" | tail -20
 ```
 
 **Mitigation**:
+
 1. Identify root cause from Sentry stack trace
 2. If code bug: temporary feature flag to disable feature
 3. If scaling issue: scale horizontally (more pods)
@@ -249,11 +270,13 @@ kubectl logs deployment/api | grep -i "error\|exception" | tail -20
 ### **5. Slow API Response Times**
 
 **Symptoms**:
+
 - P99 latency >5s (normally <500ms)
 - Web app feels sluggish, requests timeout
 - Specific endpoints affected or all endpoints?
 
 **Investigation**:
+
 ```bash
 # Look at request waterfall
 Datadog > APM > Traces > Filter by slow traces (duration > 5s)
@@ -270,6 +293,7 @@ Datadog > APM > Traces > Filter by slow traces (duration > 5s)
 ```
 
 **Mitigation**:
+
 1. Optimize identified bottleneck:
    - Database: Add index, use pagination, add caching
    - External API: Add retry logic, fallback to cached data
@@ -280,29 +304,32 @@ Datadog > APM > Traces > Filter by slow traces (duration > 5s)
 ### **6. Duplicate Shipment/Payment Issue**
 
 **Symptoms**:
+
 - Shipment created twice (same ID appears in DB)
 - Payment charged twice (Stripe shows 2x transactions)
 - User reporting: "I clicked once, got billed twice"
 
 **Investigation**:
+
 ```sql
 -- Find duplicate shipments
-SELECT customer_id, COUNT(*) as count FROM shipments 
+SELECT customer_id, COUNT(*) as count FROM shipments
 GROUP BY customer_id HAVING count > 1
 ORDER BY count DESC;
 
 -- Check creation timestamps (if same second → likely race condition)
-SELECT id, customer_id, created_at FROM shipments 
+SELECT id, customer_id, created_at FROM shipments
 WHERE created_at BETWEEN '2024-01-20 10:00:00' AND '2024-01-20 10:05:00'
 ORDER BY created_at;
 
 -- Check audit log for double-fire
-SELECT * FROM audit_logs 
+SELECT * FROM audit_logs
 WHERE action = 'CREATE' AND table_name = 'shipments'
 AND created_at BETWEEN '...' AND '...'
 ```
 
 **Mitigation**:
+
 1. **Check idempotency**: Was `Idempotency-Key` header used?
 2. **Rollback manual**: Delete duplicate in DB (preserve one)
 3. **Refund double charge**: If payment appears twice in Stripe
@@ -321,6 +348,7 @@ AND created_at BETWEEN '...' AND '...'
    - Logs: Last 100 lines from affected service
 
 2. **Determine scope**:
+
    ```
    Is it:
    □ All users or specific segment? (region, plan tier, user ID)
@@ -355,15 +383,15 @@ Symptom: API returning 500 errors
 
 ### **Emergency Actions (by severity)**
 
-| Action | P1 | P2 | P3 | Who | Time |
-|--------|----|----|----|----|------|
-| Page on-call | ✅ | ✅ | ⚪ | First responder | 2 min |
-| Start war room | ✅ | ✅ | ⏸️ | On-call lead | 5 min |
-| Notify customers | ✅ | ⚪ | ❌ | Product | 10 min |
-| Rollback deployment | ✅ | ⏸️ | ❌ | Tech lead | 10 min |
-| Scale up resources | ✅ | ✅ | ⚪ | DevOps | 5 min |
-| Feature flag toggle | ⏸️ | ⏸️ | ✅ | On-call | 3 min |
-| Manual data fix | ⏸️ | ⏸️ | ✅ | DB admin | 15 min |
+| Action              | P1  | P2  | P3  | Who             | Time   |
+| ------------------- | --- | --- | --- | --------------- | ------ |
+| Page on-call        | ✅  | ✅  | ⚪  | First responder | 2 min  |
+| Start war room      | ✅  | ✅  | ⏸️  | On-call lead    | 5 min  |
+| Notify customers    | ✅  | ⚪  | ❌  | Product         | 10 min |
+| Rollback deployment | ✅  | ⏸️  | ❌  | Tech lead       | 10 min |
+| Scale up resources  | ✅  | ✅  | ⚪  | DevOps          | 5 min  |
+| Feature flag toggle | ⏸️  | ⏸️  | ✅  | On-call         | 3 min  |
+| Manual data fix     | ⏸️  | ⏸️  | ✅  | DB admin        | 15 min |
 
 ### **Recovery Checklist**
 
@@ -387,42 +415,49 @@ Symptom: API returning 500 errors
 ```markdown
 # Incident: [Short Title]
 
-**Date**: Jan 20, 2024 10:30 AM UTC
-**Duration**: 45 minutes
-**Severity**: P2
+**Date**: Jan 20, 2024 10:30 AM UTC **Duration**: 45 minutes **Severity**: P2
 **Status**: RESOLVED
 
 ## Summary
+
 [2-3 sentence description of what happened]
 
 ## Impact
+
 - ~500 users affected
 - 0 data loss
 - 0 financial impact
 - ~$2K revenue impact (45 min × avg hourly revenue)
 
 ## Timeline
-10:30 - Error spike detected in Sentry
-10:35 - On-call paged, war room started
-10:45 - Root cause identified: memory leak in analytics
-10:50 - Feature flagged off
-10:55 - Services stabilized, error rate back to 0.01%
+
+10:30 - Error spike detected in Sentry 10:35 - On-call paged, war room started
+10:45 - Root cause identified: memory leak in analytics 10:50 - Feature flagged
+off 10:55 - Services stabilized, error rate back to 0.01%
 
 ## Root Cause
-New analytics collector in v2.3.1 not clearing in-memory buffers. Even though code incremented buffer counter in loop, garbage collection didn't run, causing OOMKilled.
+
+New analytics collector in v2.3.1 not clearing in-memory buffers. Even though
+code incremented buffer counter in loop, garbage collection didn't run, causing
+OOMKilled.
 
 ## Resolution
+
 - Deployed v2.3.2 with explicit buffer.clear() in finally block
 - Enabled heap snapshot on-demand monitoring
 - Added memory usage alerting at 70% threshold
 
 ## Action Items
+
 - [ ] Add memory leak tests to CI (assignee: @dev1, due: Jan 22)
-- [ ] Update code review checklist for resource management (assignee: @lead1, due: Jan 23)
+- [ ] Update code review checklist for resource management (assignee: @lead1,
+      due: Jan 23)
 - [ ] Implement memory profiling dashboard (assignee: @devops1, due: Jan 27)
-- [ ] Update on-call runbook with OOMKilled troubleshooting (assignee: @dev2, due: Jan 23)
+- [ ] Update on-call runbook with OOMKilled troubleshooting (assignee: @dev2,
+      due: Jan 23)
 
 ## Further Reading
+
 - Sentry Error Group: [link]
 - Datadog Dashboard: [link]
 - GitHub PR: [v2.3.2 fix]
@@ -478,12 +513,12 @@ stripe charges list --limit=10 # via stripe CLI
 
 ### **Escalation Contacts**
 
-| Role | Name | Slack | Phone |
-|------|------|-------|-------|
+| Role             | Name       | Slack    | Phone       |
+| ---------------- | ---------- | -------- | ----------- |
 | On-Call Engineer | [rotation] | @on-call | [PagerDuty] |
-| Tech Lead | @lead1 | @lead1 | 555-0100 |
-| CTO | @cto | @cto | 555-0101 |
-| VP Product | @vprod | @vprod | 555-0102 |
+| Tech Lead        | @lead1     | @lead1   | 555-0100    |
+| CTO              | @cto       | @cto     | 555-0101    |
+| VP Product       | @vprod     | @vprod   | 555-0102    |
 
 ---
 
@@ -499,14 +534,14 @@ stripe charges list --limit=10 # via stripe CLI
 
 ### **Common Fixes**
 
-| Issue | Fix | Time |
-|-------|-----|------|
-| Pod crashing | `kubectl logs` find error, rollback or restart | 10 min |
-| Connection pool exhausted | Increase `DATABASE_POOL_SIZE`, restart | 5 min |
-| Memory spike | Identify leaky code path, feature flag off | 15 min |
-| 5xx errors | Check Sentry for exception, deploy fix | 20 min |
-| Slow queries | Add index, enable pagination, increase replicas | 30 min |
-| Duplicate charges | Enable idempotency, refund in Stripe | 10 min |
+| Issue                     | Fix                                             | Time   |
+| ------------------------- | ----------------------------------------------- | ------ |
+| Pod crashing              | `kubectl logs` find error, rollback or restart  | 10 min |
+| Connection pool exhausted | Increase `DATABASE_POOL_SIZE`, restart          | 5 min  |
+| Memory spike              | Identify leaky code path, feature flag off      | 15 min |
+| 5xx errors                | Check Sentry for exception, deploy fix          | 20 min |
+| Slow queries              | Add index, enable pagination, increase replicas | 30 min |
+| Duplicate charges         | Enable idempotency, refund in Stripe            | 10 min |
 
 ---
 

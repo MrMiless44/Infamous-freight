@@ -4,7 +4,8 @@
 
 ## Installation Complete
 
-The `@vercel/analytics` package has been added to the web application and is ready to use.
+The `@vercel/analytics` package has been added to the web application and is
+ready to use.
 
 ## Quick Integration
 
@@ -178,5 +179,5 @@ Look for logs starting with `[analytics]`
 
 ---
 
-**Commit**: Added `@vercel/analytics` to web dependencies
-**Next**: Add Analytics component to main Next.js entry point
+**Commit**: Added `@vercel/analytics` to web dependencies **Next**: Add
+Analytics component to main Next.js entry point

@@ -6,7 +6,8 @@ Accepted
 
 ## Context
 
-The API needed an authorization system to control access to endpoints. Requirements:
+The API needed an authorization system to control access to endpoints.
+Requirements:
 
 - Protect sensitive endpoints (billing, AI commands, admin operations)
 - Support fine-grained permissions
@@ -16,7 +17,8 @@ The API needed an authorization system to control access to endpoints. Requireme
 
 Authorization strategies considered:
 
-1. **Role-Based Access Control (RBAC)**: Coarse-grained roles (admin, driver, user)
+1. **Role-Based Access Control (RBAC)**: Coarse-grained roles (admin, driver,
+   user)
 2. **Attribute-Based Access Control (ABAC)**: Complex attribute evaluation
 3. **Scope-Based RBAC**: JWT scopes with middleware validation
 4. **Policy-Based**: External policy engine (OPA, Casbin)
@@ -76,13 +78,13 @@ router.post(
 
 **Current scopes:**
 
-| Scope | Description | Used By |
-|-------|-------------|---------|
-| `ai:command` | Execute AI inference | Driver app, web dashboard |
-| `voice:ingest` | Upload voice recordings | Driver app |
-| `voice:command` | Convert voice to text commands | Driver app |
-| `billing:write` | Manage billing/subscriptions | Admin panel |
-| `billing:read` | View billing information | Users, admins |
+| Scope           | Description                    | Used By                   |
+| --------------- | ------------------------------ | ------------------------- |
+| `ai:command`    | Execute AI inference           | Driver app, web dashboard |
+| `voice:ingest`  | Upload voice recordings        | Driver app                |
+| `voice:command` | Convert voice to text commands | Driver app                |
+| `billing:write` | Manage billing/subscriptions   | Admin panel               |
+| `billing:read`  | View billing information       | Users, admins             |
 
 ## Rationale
 
@@ -121,7 +123,8 @@ router.post(
 
 **Negative:**
 
-- ❌ Token size grows with many scopes (mitigated by typical ~5-10 scopes per user)
+- ❌ Token size grows with many scopes (mitigated by typical ~5-10 scopes per
+  user)
 - ❌ Scope changes require token refresh
 - ❌ No hierarchical scopes (e.g., `admin:*` matching all admin scopes)
 - ❌ Scope assignment logic lives outside auth middleware

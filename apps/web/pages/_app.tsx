@@ -61,7 +61,7 @@ export default function App({ Component, pageProps }: AppProps) {
         initDatadogRUM();
       } else {
         // Avoid client-side errors when env is missing; log once in dev tools
-        // eslint-disable-next-line no-console
+         
         console.warn("Datadog RUM not initialized: missing NEXT_PUBLIC_DD_* configuration");
       }
     }

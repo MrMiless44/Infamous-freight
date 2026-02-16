@@ -2,7 +2,8 @@
 
 ## ✅ 100% Complete
 
-Phase 2 adds **payment gating** via Stripe Checkout. Jobs now require payment before drivers can see them.
+Phase 2 adds **payment gating** via Stripe Checkout. Jobs now require payment
+before drivers can see them.
 
 ### Job State Flow
 
@@ -44,15 +45,15 @@ Phase 2 adds **payment gating** via Stripe Checkout. Jobs now require payment be
 
 ## 📦 What's Installed
 
-| Component | Status | File |
-|-----------|--------|------|
-| Stripe SDK | ✅ Installed | `node_modules/stripe` |
-| Stripe Client | ✅ Created | [apps/api/src/lib/stripe.ts](apps/api/src/lib/stripe.ts) |
-| Pricing Logic | ✅ Ready | [apps/api/src/lib/pricing.js](apps/api/src/lib/pricing.js) |
-| Webhook Handler | ✅ Complete | [apps/api/src/marketplace/webhooks.js](apps/api/src/marketplace/webhooks.js) |
-| Checkout Endpoint | ✅ Fixed | [apps/api/src/marketplace/router.js](apps/api/src/marketplace/router.js#L217-L285) |
-| Prisma Models | ✅ Updated | [apps/api/prisma/schema.prisma](apps/api/prisma/schema.prisma) |
-| Environment Vars | ✅ Documented | [.env.example](.env.example#L88-L97) |
+| Component         | Status        | File                                                                               |
+| ----------------- | ------------- | ---------------------------------------------------------------------------------- |
+| Stripe SDK        | ✅ Installed  | `node_modules/stripe`                                                              |
+| Stripe Client     | ✅ Created    | [apps/api/src/lib/stripe.ts](apps/api/src/lib/stripe.ts)                           |
+| Pricing Logic     | ✅ Ready      | [apps/api/src/lib/pricing.js](apps/api/src/lib/pricing.js)                         |
+| Webhook Handler   | ✅ Complete   | [apps/api/src/marketplace/webhooks.js](apps/api/src/marketplace/webhooks.js)       |
+| Checkout Endpoint | ✅ Fixed      | [apps/api/src/marketplace/router.js](apps/api/src/marketplace/router.js#L217-L285) |
+| Prisma Models     | ✅ Updated    | [apps/api/prisma/schema.prisma](apps/api/prisma/schema.prisma)                     |
+| Environment Vars  | ✅ Documented | [.env.example](.env.example#L88-L97)                                               |
 
 ---
 
@@ -72,23 +73,23 @@ PUBLIC_API_URL=http://localhost:3001
 
 ## 💳 Testing with Stripe Test Card
 
-| Field | Value |
-|-------|-------|
-| Card Number | 4242 4242 4242 4242 |
-| Expiry | 12/25 |
-| CVC | 123 |
-| Cardholder Name | Any |
+| Field           | Value               |
+| --------------- | ------------------- |
+| Card Number     | 4242 4242 4242 4242 |
+| Expiry          | 12/25               |
+| CVC             | 123                 |
+| Cardholder Name | Any                 |
 
 ---
 
 ## 🚀 Core Endpoints
 
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| `POST` | `/api/marketplace/jobs` | Create job (REQUIRES_PAYMENT) |
-| `POST` | `/api/marketplace/jobs/:id/checkout` | Get Stripe Checkout URL |
-| `POST` | `/api/webhooks/stripe` | Webhook handler (webhook signature verified) |
-| `POST` | `/api/marketplace/jobs/:id/accept` | Driver accepts (only if OPEN + paid) |
+| Method | Endpoint                             | Purpose                                      |
+| ------ | ------------------------------------ | -------------------------------------------- |
+| `POST` | `/api/marketplace/jobs`              | Create job (REQUIRES_PAYMENT)                |
+| `POST` | `/api/marketplace/jobs/:id/checkout` | Get Stripe Checkout URL                      |
+| `POST` | `/api/webhooks/stripe`               | Webhook handler (webhook signature verified) |
+| `POST` | `/api/marketplace/jobs/:id/accept`   | Driver accepts (only if OPEN + paid)         |
 
 ---
 
@@ -118,7 +119,7 @@ Final Price:   $70.55  ✓
 ✅ **Database Transactions** — Atomic payment + job updates  
 ✅ **State Validation** — No invalid status transitions  
 ✅ **JWT Authentication** — Bearer tokens required  
-✅ **Scope-Based Auth** — Role-based access control  
+✅ **Scope-Based Auth** — Role-based access control
 
 ---
 
@@ -167,25 +168,25 @@ curl http://localhost:4000/api/marketplace/jobs/job-abc123 \
 
 ## 📊 Files Modified Summary
 
-| File | Changes |
-|------|---------|
+| File                                 | Changes                              |
+| ------------------------------------ | ------------------------------------ |
 | `apps/api/src/marketplace/router.js` | Fixed checkout endpoint syntax error |
-| `apps/api/.env.example` | Added Stripe env vars |
-| `apps/api/prisma/schema.prisma` | Added WebhookEvent model |
-| `apps/api/package.json` | stripe dependency already added |
+| `apps/api/.env.example`              | Added Stripe env vars                |
+| `apps/api/prisma/schema.prisma`      | Added WebhookEvent model             |
+| `apps/api/package.json`              | stripe dependency already added      |
 
 ---
 
 ## ✨ Key Improvements Over Phase 1
 
-| Aspect | Phase 1 | Phase 2 |
-|--------|---------|----------|
-| **Job Creation** | DRAFT | REQUIRES_PAYMENT |
-| **Payments** | None | Stripe Checkout |
-| **Job Visibility** | Anyone | Only after payment |
-| **Pricing** | Manual | Automated + discounts |
-| **Webhooks** | None | Complete handler |
-| **Security** | Basic | Full (signature, idempotency, transactions) |
+| Aspect             | Phase 1 | Phase 2                                     |
+| ------------------ | ------- | ------------------------------------------- |
+| **Job Creation**   | DRAFT   | REQUIRES_PAYMENT                            |
+| **Payments**       | None    | Stripe Checkout                             |
+| **Job Visibility** | Anyone  | Only after payment                          |
+| **Pricing**        | Manual  | Automated + discounts                       |
+| **Webhooks**       | None    | Complete handler                            |
+| **Security**       | Basic   | Full (signature, idempotency, transactions) |
 
 ---
 
@@ -218,18 +219,18 @@ cd apps/api && pnpm dev
 
 ## 🎯 Status Dashboard
 
-| Requirement | Status | Verification |
-|-------------|--------|--------------|
-| Stripe library installed | ✅ | `pnpm list stripe` |
-| Environment variables documented | ✅ | `.env.example` has STRIPE_* vars |
-| Prisma schema updated | ✅ | WebhookEvent model present |
-| Pricing function ready | ✅ | `apps/api/src/lib/pricing.js` exists |
-| Checkout endpoint working | ✅ | Syntax verified, returns checkoutUrl |
-| Webhook handler ready | ✅ | Idempotency + retry logic present |
-| Job state machine enforced | ✅ | validateTransition() in place |
-| All endpoints secured | ✅ | JWT + scope auth on all routes |
-| Database transactions used | ✅ | Payment + job update atomic |
-| Production-ready | ✅ | Zero breaking changes |
+| Requirement                      | Status | Verification                         |
+| -------------------------------- | ------ | ------------------------------------ |
+| Stripe library installed         | ✅     | `pnpm list stripe`                   |
+| Environment variables documented | ✅     | `.env.example` has STRIPE\_\* vars   |
+| Prisma schema updated            | ✅     | WebhookEvent model present           |
+| Pricing function ready           | ✅     | `apps/api/src/lib/pricing.js` exists |
+| Checkout endpoint working        | ✅     | Syntax verified, returns checkoutUrl |
+| Webhook handler ready            | ✅     | Idempotency + retry logic present    |
+| Job state machine enforced       | ✅     | validateTransition() in place        |
+| All endpoints secured            | ✅     | JWT + scope auth on all routes       |
+| Database transactions used       | ✅     | Payment + job update atomic          |
+| Production-ready                 | ✅     | Zero breaking changes                |
 
 ---
 
@@ -246,10 +247,13 @@ cd apps/api && pnpm dev
 
 ## 📞 Support
 
-- Full Documentation: [MARKETPLACE_PHASE_2_FINAL_SUMMARY.md](MARKETPLACE_PHASE_2_FINAL_SUMMARY.md)
-- Phase 1 Reference: [MARKETPLACE_PHASE_1_COMPLETE.md](MARKETPLACE_PHASE_1_COMPLETE.md)
+- Full Documentation:
+  [MARKETPLACE_PHASE_2_FINAL_SUMMARY.md](MARKETPLACE_PHASE_2_FINAL_SUMMARY.md)
+- Phase 1 Reference:
+  [MARKETPLACE_PHASE_1_COMPLETE.md](MARKETPLACE_PHASE_1_COMPLETE.md)
 - Stripe Docs: https://stripe.com/docs
-- Architecture: See [.github/copilot-instructions.md](.github/copilot-instructions.md)
+- Architecture: See
+  [.github/copilot-instructions.md](.github/copilot-instructions.md)
 
 ---
 

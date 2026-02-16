@@ -34,8 +34,7 @@ export function AvatarSelector({
 }: AvatarSelectorProps) {
   const [systemAvatars, setSystemAvatars] = useState<Avatar[]>([]);
   const [userAvatars, setUserAvatars] = useState<Avatar[]>([]);
-  const [currentSelection, setCurrentSelection] =
-    useState<AvatarSelection | null>(null);
+  const [currentSelection, setCurrentSelection] = useState<AvatarSelection | null>(null);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -80,7 +79,7 @@ export function AvatarSelector({
         }
       } catch (err) {
         setError(`Failed to load avatars: ${(err as Error).message}`);
-        // eslint-disable-next-line no-console
+         
         console.error(err);
       } finally {
         setLoading(false);
@@ -91,10 +90,7 @@ export function AvatarSelector({
   }, [token, apiBase]);
 
   // Handle avatar selection
-  const handleSelectAvatar = async (
-    avatarId: string,
-    type: "system" | "user",
-  ) => {
+  const handleSelectAvatar = async (avatarId: string, type: "system" | "user") => {
     if (!token) {
       setError("Authentication required to select avatar");
       return;
@@ -120,7 +116,7 @@ export function AvatarSelector({
       }
     } catch (err) {
       setError(`Error selecting avatar: ${(err as Error).message}`);
-      // eslint-disable-next-line no-console
+       
       console.error(err);
     }
   };
@@ -130,9 +126,7 @@ export function AvatarSelector({
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file || !token) return;
 
@@ -159,7 +153,7 @@ export function AvatarSelector({
       }
     } catch (err) {
       setError(`Upload error: ${(err as Error).message}`);
-      // eslint-disable-next-line no-console
+       
       console.error(err);
     } finally {
       setUploading(false);
@@ -184,7 +178,7 @@ export function AvatarSelector({
       }
     } catch (err) {
       setError(`Delete error: ${(err as Error).message}`);
-      // eslint-disable-next-line no-console
+       
       console.error(err);
     }
   };
@@ -230,8 +224,7 @@ export function AvatarSelector({
               key={avatar.id}
               style={{
                 border:
-                  currentSelection?.type === "system" &&
-                  currentSelection?.id === avatar.id
+                  currentSelection?.type === "system" && currentSelection?.id === avatar.id
                     ? "3px solid #1976d2"
                     : "1px solid #ccc",
                 borderRadius: "8px",
@@ -239,8 +232,7 @@ export function AvatarSelector({
                 textAlign: "center",
                 cursor: "pointer",
                 backgroundColor:
-                  currentSelection?.type === "system" &&
-                  currentSelection?.id === avatar.id
+                  currentSelection?.type === "system" && currentSelection?.id === avatar.id
                     ? "#e3f2fd"
                     : "#f5f5f5",
               }}
@@ -288,8 +280,7 @@ export function AvatarSelector({
                   key={avatar.id}
                   style={{
                     border:
-                      currentSelection?.type === "user" &&
-                      currentSelection?.id === avatar.id
+                      currentSelection?.type === "user" && currentSelection?.id === avatar.id
                         ? "3px solid #1976d2"
                         : "1px solid #ccc",
                     borderRadius: "8px",
@@ -297,8 +288,7 @@ export function AvatarSelector({
                     textAlign: "center",
                     position: "relative",
                     backgroundColor:
-                      currentSelection?.type === "user" &&
-                      currentSelection?.id === avatar.id
+                      currentSelection?.type === "user" && currentSelection?.id === avatar.id
                         ? "#e3f2fd"
                         : "#f5f5f5",
                   }}

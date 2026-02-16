@@ -3,8 +3,8 @@
  * User-Friendly Input Component
  */
 
-import React, { InputHTMLAttributes, ReactNode } from 'react';
-import styles from './Input.module.css';
+import React, { InputHTMLAttributes, ReactNode } from "react";
+import styles from "./Input.module.css";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -12,23 +12,11 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   hint?: string;
   icon?: ReactNode;
   required?: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  (
-    {
-      label,
-      error,
-      hint,
-      icon,
-      required,
-      size = 'md',
-      className = '',
-      ...props
-    },
-    ref
-  ) => {
+  ({ label, error, hint, icon, required, size = "md", className = "", ...props }, ref) => {
     return (
       <div className={styles.container}>
         {label && (
@@ -44,11 +32,11 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             className={`
               ${styles.input}
               ${styles[size]}
-              ${error ? styles.error : ''}
-              ${icon ? styles.withIcon : ''}
+              ${error ? styles.error : ""}
+              ${icon ? styles.withIcon : ""}
               ${className}
             `}
-            aria-label={label || props['aria-label']}
+            aria-label={label || props["aria-label"]}
             aria-describedby={error ? `${props.id}-error` : hint ? `${props.id}-hint` : undefined}
             {...props}
           />
@@ -65,9 +53,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
-Input.displayName = 'Input';
+Input.displayName = "Input";
 
 export default Input;

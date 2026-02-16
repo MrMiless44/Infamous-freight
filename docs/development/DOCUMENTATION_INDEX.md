@@ -4,7 +4,8 @@
 
 - [Project Summary](PROJECT_SUMMARY.md) - Overview of the project
 - [README](README.md) - Main project documentation
-- [Production README](../deployment/production-overview.md) - Production deployment guide
+- [Production README](../deployment/production-overview.md) - Production
+  deployment guide
 - [Environment Configuration](.env.guide.md) - Environment setup guide
 - [Consolidation Strategy](CONSOLIDATION_STRATEGY.md) - Architecture decisions
 
@@ -35,8 +36,10 @@
 
 ### Deployment Guides
 
-- [Deployment Guide](docs/deployment/DEPLOYMENT_GUIDE.md) - Complete deployment instructions
-- [Deployment Status](docs/deployment/DEPLOYMENT_STATUS.md) - Current deployment state
+- [Deployment Guide](docs/deployment/DEPLOYMENT_GUIDE.md) - Complete deployment
+  instructions
+- [Deployment Status](docs/deployment/DEPLOYMENT_STATUS.md) - Current deployment
+  state
 - [Fly.io Environment](deploy/fly-env.md)
 - [Render Environment](deploy/render-env.md)
 - [Vercel Environment](deploy/vercel-env.md)

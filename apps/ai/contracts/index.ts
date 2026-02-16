@@ -197,10 +197,7 @@ export interface RoleContract {
    * @param context - The request context
    * @returns Array of any guardrail violations detected
    */
-  checkGuardrails(
-    input: DecisionInput,
-    context: RoleContext,
-  ): Promise<GuardrailViolation[]>;
+  checkGuardrails(input: DecisionInput, context: RoleContext): Promise<GuardrailViolation[]>;
 
   /**
    * Calculate confidence score for a decision
@@ -208,10 +205,7 @@ export interface RoleContract {
    * @param context - The request context
    * @returns The confidence score with reasoning
    */
-  calculateConfidence(
-    input: DecisionInput,
-    context: RoleContext,
-  ): Promise<ConfidenceScore>;
+  calculateConfidence(input: DecisionInput, context: RoleContext): Promise<ConfidenceScore>;
 }
 
 /**

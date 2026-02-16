@@ -37,9 +37,7 @@ test.describe("Core Features", () => {
     await page.waitForLoadState("networkidle");
 
     // Check for main content
-    await expect(
-      page.locator('[data-testid="dashboard-content"]'),
-    ).toBeVisible();
+    await expect(page.locator('[data-testid="dashboard-content"]')).toBeVisible();
   });
 
   test("should display widget data correctly", async ({ page }) => {
@@ -55,12 +53,8 @@ test.describe("Core Features", () => {
 
     // Each widget should have content
     for (let i = 0; i < Math.min(count, 3); i++) {
-      await expect(
-        widgets.nth(i).locator('[data-testid="widget-title"]'),
-      ).toBeVisible();
-      await expect(
-        widgets.nth(i).locator('[data-testid="widget-data"]'),
-      ).toBeVisible();
+      await expect(widgets.nth(i).locator('[data-testid="widget-title"]')).toBeVisible();
+      await expect(widgets.nth(i).locator('[data-testid="widget-data"]')).toBeVisible();
     }
   });
 
@@ -69,9 +63,7 @@ test.describe("Core Features", () => {
     await page.waitForLoadState("networkidle");
 
     // Get initial value
-    const initialValue = await page
-      .locator('[data-testid="total-value"]')
-      .textContent();
+    const initialValue = await page.locator('[data-testid="total-value"]').textContent();
 
     // Click refresh button
     await page.locator('button[aria-label="Refresh"]').click();
@@ -80,9 +72,7 @@ test.describe("Core Features", () => {
     await page.waitForLoadState("networkidle");
 
     // Verify data was refreshed (value might be same, but request was made)
-    const newValue = await page
-      .locator('[data-testid="total-value"]')
-      .textContent();
+    const newValue = await page.locator('[data-testid="total-value"]').textContent();
     expect(newValue).toBeDefined();
   });
 
@@ -121,9 +111,7 @@ test.describe("Core Features", () => {
     // Should recover when online
     await page.locator('button[aria-label="Refresh"]').click();
     await page.waitForLoadState("networkidle");
-    await expect(
-      page.locator('[data-testid="dashboard-content"]'),
-    ).toBeVisible();
+    await expect(page.locator('[data-testid="dashboard-content"]')).toBeVisible();
   });
 
   test("should load dashboard within acceptable time", async ({ page }) => {
@@ -154,9 +142,7 @@ test.describe("Core Features", () => {
 
     // Data should eventually load
     await page.waitForLoadState("networkidle");
-    await expect(
-      page.locator('[data-testid="dashboard-content"]'),
-    ).toBeVisible();
+    await expect(page.locator('[data-testid="dashboard-content"]')).toBeVisible();
   });
 
   test("should handle 500 server errors", async ({ page }) => {
@@ -169,8 +155,8 @@ test.describe("Core Features", () => {
     await page.reload();
 
     // Should show error message
-    await expect(
-      page.locator("text=Error loading dashboard|Something went wrong"),
-    ).toBeVisible({ timeout: 5000 });
+    await expect(page.locator("text=Error loading dashboard|Something went wrong")).toBeVisible({
+      timeout: 5000,
+    });
   });
 });

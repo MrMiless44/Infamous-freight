@@ -116,7 +116,8 @@ apps/api/package.json
 
 **New Guides:**
 
-- [WEEK1-2_IMPLEMENTATION.md](./docs/WEEK1-2_IMPLEMENTATION.md) - Setup & usage guide
+- [WEEK1-2_IMPLEMENTATION.md](./docs/WEEK1-2_IMPLEMENTATION.md) - Setup & usage
+  guide
 - [DATABASE_MIGRATIONS.md](./docs/DATABASE_MIGRATIONS.md) - Migration procedures
 - [ONGOING_MONITORING.md](./docs/ONGOING_MONITORING.md) - Monitoring checklists
 

@@ -32,14 +32,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
       role="status"
       aria-label="Loading"
     >
-      <circle
-        className="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="4"
-      />
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
       <path
         className="opacity-75"
         fill="currentColor"
@@ -79,9 +72,7 @@ export const SkeletonText: React.FC<{ lines?: number; className?: string }> = ({
   );
 };
 
-export const SkeletonCard: React.FC<{ className?: string }> = ({
-  className = "",
-}) => {
+export const SkeletonCard: React.FC<{ className?: string }> = ({ className = "" }) => {
   return (
     <div className={`bg-white p-6 rounded-lg shadow-md ${className}`}>
       <div className="animate-pulse space-y-4">
@@ -133,9 +124,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
       {showLabel && (
         <div className="flex justify-between mb-1">
           <span className="text-sm font-medium text-gray-700">Progress</span>
-          <span className="text-sm font-medium text-gray-700">
-            {Math.round(percentage)}%
-          </span>
+          <span className="text-sm font-medium text-gray-700">{Math.round(percentage)}%</span>
         </div>
       )}
       <div

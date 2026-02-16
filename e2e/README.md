@@ -1,6 +1,7 @@
 # Playwright E2E Testing for Infamous Freight
 
-Complete end-to-end testing suite using Playwright for the Infamous Freight platform.
+Complete end-to-end testing suite using Playwright for the Infamous Freight
+platform.
 
 ## 🚀 Quick Start
 
@@ -169,7 +170,8 @@ Tests run automatically on:
 - Every push to main
 - Daily at 2 AM UTC
 
-See [`.github/workflows/e2e-tests.yml`](../.github/workflows/e2e-tests.yml) for CI configuration.
+See [`.github/workflows/e2e-tests.yml`](../.github/workflows/e2e-tests.yml) for
+CI configuration.
 
 ## 📈 Test Reports
 
@@ -227,18 +229,18 @@ pnpm codegen http://localhost:3000
 ### Basic Structure
 
 ```typescript
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test.describe('Feature Name', () => {
+test.describe("Feature Name", () => {
   test.beforeEach(async ({ page }) => {
     // Setup before each test
-    await page.goto('/');
+    await page.goto("/");
   });
 
-  test('should do something', async ({ page }) => {
+  test("should do something", async ({ page }) => {
     // Test implementation
-    await page.click('button');
-    await expect(page.locator('text=Success')).toBeVisible();
+    await page.click("button");
+    await expect(page.locator("text=Success")).toBeVisible();
   });
 });
 ```
@@ -256,17 +258,17 @@ test.describe('Feature Name', () => {
 ### Example with Mocking
 
 ```typescript
-test('should handle API error', async ({ page }) => {
+test("should handle API error", async ({ page }) => {
   // Mock API failure
-  await page.route('**/api/shipments', async (route) => {
+  await page.route("**/api/shipments", async (route) => {
     await route.fulfill({
       status: 500,
-      body: JSON.stringify({ error: 'Server error' })
+      body: JSON.stringify({ error: "Server error" }),
     });
   });
 
-  await page.goto('/shipments');
-  await expect(page.locator('text=Error')).toBeVisible();
+  await page.goto("/shipments");
+  await expect(page.locator("text=Error")).toBeVisible();
 });
 ```
 

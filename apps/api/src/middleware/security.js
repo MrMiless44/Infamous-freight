@@ -18,7 +18,7 @@ const { validateScope, hasScope } = require("@infamous-freight/shared");
  */
 const createLimiter = (name, options = {}) => {
   // Determine window in milliseconds (parse from minutes)
-  const windowMinutes = parseInt(options.windowMs || '15');
+  const windowMinutes = parseInt(options.windowMs || "15");
   const windowMs = windowMinutes * 60 * 1000;
 
   const limiter = rateLimit({
@@ -28,8 +28,8 @@ const createLimiter = (name, options = {}) => {
     legacyHeaders: false,
     // Skip health checks and CORS preflight by default
     skip: (req) => {
-      if (req.method === 'OPTIONS') return true;
-      if (req.path === '/api/health' || req.path === '/api/health/live') return true;
+      if (req.method === "OPTIONS") return true;
+      if (req.path === "/api/health" || req.path === "/api/health/live") return true;
       // Allow custom skip function
       return options.skip && options.skip(req);
     },
@@ -37,7 +37,7 @@ const createLimiter = (name, options = {}) => {
 
   return (req, res, next) => {
     // Final skip check
-    if (req.method === 'OPTIONS') {
+    if (req.method === "OPTIONS") {
       return next();
     }
 
@@ -48,7 +48,7 @@ const createLimiter = (name, options = {}) => {
       if (res.statusCode === 429) {
         rateLimitMetrics.recordBlocked(name, key);
         logger.warn({
-          event: 'rate_limit_exceeded',
+          event: "rate_limit_exceeded",
           limiter: name,
           key,
           ip: req.ip,
@@ -81,65 +81,65 @@ const createTunedLimiter = (name, config) => {
 };
 
 const limiters = {
-  general: createLimiter('general', {
-    windowMs: '15', // In minutes, converted to ms above
-    max: parseInt(process.env.RATE_LIMIT_GENERAL_MAX || '100'),
+  general: createLimiter("general", {
+    windowMs: "15", // In minutes, converted to ms above
+    max: parseInt(process.env.RATE_LIMIT_GENERAL_MAX || "100"),
     keyGenerator: (req) => req.user?.sub || req.ip,
-    message: { error: 'Too many requests. Please try again later.' },
+    message: { error: "Too many requests. Please try again later." },
   }),
-  auth: createLimiter('auth', {
-    windowMs: '15',
-    max: parseInt(process.env.RATE_LIMIT_AUTH_MAX || '5'),
+  auth: createLimiter("auth", {
+    windowMs: "15",
+    max: parseInt(process.env.RATE_LIMIT_AUTH_MAX || "5"),
     keyGenerator: (req) => req.ip,
     message: { error: "Too many authentication attempts. Try again later." },
   }),
-  ai: createLimiter('ai', {
-    windowMs: '1',
-    max: parseInt(process.env.RATE_LIMIT_AI_MAX || '20'),
+  ai: createLimiter("ai", {
+    windowMs: "1",
+    max: parseInt(process.env.RATE_LIMIT_AI_MAX || "20"),
     keyGenerator: (req) => req.user?.sub || req.ip,
-    message: { error: 'AI service rate limit exceeded.' },
+    message: { error: "AI service rate limit exceeded." },
   }),
-  billing: createLimiter('billing', {
-    windowMs: '15',
-    max: parseInt(process.env.RATE_LIMIT_BILLING_MAX || '30'),
+  billing: createLimiter("billing", {
+    windowMs: "15",
+    max: parseInt(process.env.RATE_LIMIT_BILLING_MAX || "30"),
     keyGenerator: (req) => req.user?.sub || req.ip,
-    message: { error: 'Billing rate limit exceeded.' },
+    message: { error: "Billing rate limit exceeded." },
   }),
-  smsUser: createLimiter('smsUser', {
-    windowMs: '60',
-    max: parseInt(process.env.RATE_LIMIT_SMS_USER_MAX || '20'),
+  smsUser: createLimiter("smsUser", {
+    windowMs: "60",
+    max: parseInt(process.env.RATE_LIMIT_SMS_USER_MAX || "20"),
     keyGenerator: (req) => req.user?.sub || req.ip,
-    message: { error: 'SMS rate limit exceeded for user.' },
+    message: { error: "SMS rate limit exceeded for user." },
   }),
-  smsOrg: createLimiter('smsOrg', {
-    windowMs: '1440', // 24 hours
-    max: parseInt(process.env.RATE_LIMIT_SMS_ORG_MAX || '200'),
-    keyGenerator: (req) => req.auth?.organizationId || req.headers['x-org-id'] || req.ip,
-    message: { error: 'SMS rate limit exceeded for organization.' },
+  smsOrg: createLimiter("smsOrg", {
+    windowMs: "1440", // 24 hours
+    max: parseInt(process.env.RATE_LIMIT_SMS_ORG_MAX || "200"),
+    keyGenerator: (req) => req.auth?.organizationId || req.headers["x-org-id"] || req.ip,
+    message: { error: "SMS rate limit exceeded for organization." },
   }),
-  voice: createLimiter('voice', {
-    windowMs: '1',
-    max: parseInt(process.env.RATE_LIMIT_VOICE_MAX || '10'),
+  voice: createLimiter("voice", {
+    windowMs: "1",
+    max: parseInt(process.env.RATE_LIMIT_VOICE_MAX || "10"),
     keyGenerator: (req) => req.user?.sub || req.ip,
-    message: { error: 'Voice processing rate limit exceeded.' },
+    message: { error: "Voice processing rate limit exceeded." },
   }),
-  export: createLimiter('export', {
-    windowMs: '60',
-    max: parseInt(process.env.RATE_LIMIT_EXPORT_MAX || '5'),
+  export: createLimiter("export", {
+    windowMs: "60",
+    max: parseInt(process.env.RATE_LIMIT_EXPORT_MAX || "5"),
     keyGenerator: (req) => req.user?.sub || req.ip,
-    message: { error: 'Export rate limit exceeded. Maximum 5 exports per hour.' },
+    message: { error: "Export rate limit exceeded. Maximum 5 exports per hour." },
   }),
-  passwordReset: createLimiter('passwordReset', {
-    windowMs: '1440',
-    max: parseInt(process.env.RATE_LIMIT_PASSWORD_RESET_MAX || '3'),
+  passwordReset: createLimiter("passwordReset", {
+    windowMs: "1440",
+    max: parseInt(process.env.RATE_LIMIT_PASSWORD_RESET_MAX || "3"),
     keyGenerator: (req) => req.body?.email || req.ip,
-    message: { error: 'Too many password reset attempts. Try again in 24 hours.' },
+    message: { error: "Too many password reset attempts. Try again in 24 hours." },
   }),
-  webhook: createLimiter('webhook', {
-    windowMs: '1',
-    max: parseInt(process.env.RATE_LIMIT_WEBHOOK_MAX || '100'),
+  webhook: createLimiter("webhook", {
+    windowMs: "1",
+    max: parseInt(process.env.RATE_LIMIT_WEBHOOK_MAX || "100"),
     keyGenerator: (req) => req.ip,
-    message: { error: 'Webhook rate limit exceeded.' },
+    message: { error: "Webhook rate limit exceeded." },
   }),
 };
 
@@ -151,11 +151,7 @@ function authenticate(req, res, next) {
       process.env.ALLOW_X_USER_ID === "true" ||
       ["development", "test"].includes(process.env.NODE_ENV);
     // Dev fallback: allow x-user-id when bearer is absent
-    if (
-      (!header || !header.startsWith("Bearer ")) &&
-      req.headers["x-user-id"] &&
-      allowXUserId
-    ) {
+    if ((!header || !header.startsWith("Bearer ")) && req.headers["x-user-id"] && allowXUserId) {
       req.user = { sub: String(req.headers["x-user-id"]), scopes: ["user:avatar"] };
       req.auth = {
         userId: req.user.sub,
@@ -197,7 +193,7 @@ function requireOrganization(req, res, next) {
   if (!orgId) {
     return res.status(401).json({
       error: "No organization",
-      message: "JWT must include org_id claim"
+      message: "JWT must include org_id claim",
     });
   }
   next();
@@ -216,11 +212,11 @@ function requireScope(required) {
   const requiredScopes = Array.isArray(required) ? required : [required];
 
   // Validate all required scopes are in the registry
-  const invalidScopes = requiredScopes.filter(scope => !validateScope(scope));
+  const invalidScopes = requiredScopes.filter((scope) => !validateScope(scope));
   if (invalidScopes.length > 0) {
-    logger.error('Invalid scopes in requireScope():', {
+    logger.error("Invalid scopes in requireScope():", {
       invalidScopes,
-      hint: 'Ensure scopes are defined in @infamous-freight/shared/src/scopes.ts',
+      hint: "Ensure scopes are defined in @infamous-freight/shared/src/scopes.ts",
     });
   }
 
@@ -229,7 +225,7 @@ function requireScope(required) {
 
     // Check if user has any of the required scopes
     if (!hasScope(userScopes, requiredScopes)) {
-      logger.warn('Scope check failed', {
+      logger.warn("Scope check failed", {
         requiredScopes,
         userScopes,
         userId: req.user?.sub,
@@ -238,8 +234,8 @@ function requireScope(required) {
       });
 
       return res.status(403).json({
-        error: 'Insufficient scope',
-        code: 'INSUFFICIENT_PERMISSIONS',
+        error: "Insufficient scope",
+        code: "INSUFFICIENT_PERMISSIONS",
         required: requiredScopes,
         correlationId: req.correlationId,
       });
@@ -255,16 +251,19 @@ function auditLog(req, res, next) {
   res.on("finish", () => {
     const duration = Date.now() - start;
     const maskedAuthorization = req.headers.authorization ? "***" : undefined;
-    logger.info({
-      method: req.method,
-      path: req.originalUrl || req.path,
-      status: res.statusCode,
-      duration,
-      user: req.user?.sub,
-      ip: req.ip,
-      correlationId: req.correlationId,
-      auth: maskedAuthorization,
-    }, 'request');
+    logger.info(
+      {
+        method: req.method,
+        path: req.originalUrl || req.path,
+        status: res.statusCode,
+        duration,
+        user: req.user?.sub,
+        ip: req.ip,
+        correlationId: req.correlationId,
+        auth: maskedAuthorization,
+      },
+      "request",
+    );
 
     try {
       const { append } = require("../lib/auditChain");
@@ -286,21 +285,21 @@ function auditLog(req, res, next) {
 }
 
 // Validate user owns resource (for routes like /users/:id, /shipments/:id)
-function validateUserOwnership(paramName = 'userId') {
+function validateUserOwnership(paramName = "userId") {
   return async (req, res, next) => {
     const resourceUserId = req.params[paramName] || req.body?.[paramName];
     const currentUserId = req.user?.sub;
 
     // Admin can bypass ownership check
-    if (req.user?.role === 'admin') {
+    if (req.user?.role === "admin") {
       return next();
     }
 
     // User can only access own resources
     if (resourceUserId && resourceUserId !== currentUserId) {
       return res.status(403).json({
-        error: 'Forbidden',
-        message: 'You do not have access to this resource',
+        error: "Forbidden",
+        message: "You do not have access to this resource",
       });
     }
 

@@ -1,22 +1,22 @@
 /**
  * Copyright © 2025 Infæmous Freight. All Rights Reserved.
  * UIKit Index & Usage Guide
- * 
+ *
  * Complete component library for user-friendly interfaces
  */
 
-export { Button, type ButtonProps } from './Button';
-export { Card, type CardProps } from './Card';
-export { Alert, type AlertProps } from './Alert';
-export { Input, type InputProps } from './Input';
-export { Tooltip, type TooltipProps } from './Tooltip';
-export { Modal, type ModalProps } from './Modal';
-export { Onboarding, type OnboardingProps, type OnboardingStep } from './Onboarding';
-export { EmptyState, type EmptyStateProps } from './EmptyState';
+export { Button, type ButtonProps } from "./Button";
+export { Card, type CardProps } from "./Card";
+export { Alert, type AlertProps } from "./Alert";
+export { Input, type InputProps } from "./Input";
+export { Tooltip, type TooltipProps } from "./Tooltip";
+export { Modal, type ModalProps } from "./Modal";
+export { Onboarding, type OnboardingProps, type OnboardingStep } from "./Onboarding";
+export { EmptyState, type EmptyStateProps } from "./EmptyState";
 
 /**
  * QUICK START EXAMPLES
- * 
+ *
  * Copy and paste these patterns into your components
  */
 
@@ -206,7 +206,7 @@ export { EmptyState, type EmptyStateProps } from './EmptyState';
 
 // In your app root (_app.tsx):
 // import { HelpProvider } from '@/context/HelpContext';
-// 
+//
 // export default function App({ Component, pageProps }) {
 //   return (
 //     <HelpProvider>
@@ -217,10 +217,10 @@ export { EmptyState, type EmptyStateProps } from './EmptyState';
 
 // In any component:
 // import { useHelp } from '@/context/HelpContext';
-// 
+//
 // function MyComponent() {
 //   const { showHelp, hideHelp, searchHelp } = useHelp();
-//   
+//
 //   return (
 //     <button onClick={() => showHelp('shipments')}>
 //       Help
@@ -230,7 +230,7 @@ export { EmptyState, type EmptyStateProps } from './EmptyState';
 
 /**
  * COMPONENT DOCUMENTATION
- * 
+ *
  * Detailed APIs and usage patterns for each component
  */
 
@@ -240,58 +240,58 @@ export interface ComponentUsageGuide {
   // Variants: primary | secondary | danger | success | ghost
   // Sizes: sm | md | lg
   button: {
-    primary: 'Use for main actions (save, submit, create)',
-    secondary: 'Use for alternate actions (cancel, back)',
-    danger: 'Use for destructive actions (delete, remove)',
-    ghost: 'Use for tertiary actions (learn more, skip)',
+    primary: "Use for main actions (save, submit, create)";
+    secondary: "Use for alternate actions (cancel, back)";
+    danger: "Use for destructive actions (delete, remove)";
+    ghost: "Use for tertiary actions (learn more, skip)";
   };
 
   // Input usage
   // Props: label, error, hint, icon, required, size, onChange, value
   // Sizes: sm | md | lg
   input: {
-    withLabel: 'Always include label prop',
-    withHint: 'Add context-specific help text',
-    withError: 'Show validation errors in real-time',
-    accessibility: 'All inputs must have labels for screen readers',
+    withLabel: "Always include label prop";
+    withHint: "Add context-specific help text";
+    withError: "Show validation errors in real-time";
+    accessibility: "All inputs must have labels for screen readers";
   };
 
   // Alert usage
   // Props: type, title, message, icon, onClose, action
   // Types: success | error | warning | info
   alert: {
-    autoClose: 'Consider auto-dismissing after 5 seconds',
-    withAction: 'Add action when user can respond',
-    stacking: 'Show multiple alerts in a stack',
-    persistence: 'Keep important alerts (errors) visible',
+    autoClose: "Consider auto-dismissing after 5 seconds";
+    withAction: "Add action when user can respond";
+    stacking: "Show multiple alerts in a stack";
+    persistence: "Keep important alerts (errors) visible";
   };
 
   // Modal usage
   // Props: isOpen, onClose, title, children, actions, closeOnBackdrop
   modal: {
-    destructive: 'Always show confirmation for destructive actions',
-    form: 'Use for complex forms in modals',
-    accessibility: 'Modal should trap focus and allow Escape key',
-    responsive: 'Modal collapses to full-screen on mobile',
+    destructive: "Always show confirmation for destructive actions";
+    form: "Use for complex forms in modals";
+    accessibility: "Modal should trap focus and allow Escape key";
+    responsive: "Modal collapses to full-screen on mobile";
   };
 
   // Onboarding usage
   // Props: steps, isOpen, onClose, onComplete
   // stepTypes: information | interactive | video
   onboarding: {
-    firstTime: 'Show for first-time users',
-    progressive: 'Guide users through 5-7 steps max',
-    interactive: 'Allow user to interact with UI during tour',
-    skipOption: 'Always allow users to skip onboarding',
+    firstTime: "Show for first-time users";
+    progressive: "Guide users through 5-7 steps max";
+    interactive: "Allow user to interact with UI during tour";
+    skipOption: "Always allow users to skip onboarding";
   };
 
   // EmptyState usage
   // Props: icon, title, description, action, illustration, hint
   emptyState: {
-    actionable: 'Always provide a clear next action',
-    helpful: 'Include pro tips or hints',
-    visual: 'Use icons or illustrations',
-    contextual: 'Different states for different scenarios',
+    actionable: "Always provide a clear next action";
+    helpful: "Include pro tips or hints";
+    visual: "Use icons or illustrations";
+    contextual: "Different states for different scenarios";
   };
 }
 
@@ -302,38 +302,38 @@ export interface ComponentUsageGuide {
 export const accessibilityChecklist = {
   button: [
     '✅ Descriptive text (not "Click here")',
-    '✅ Focus visible (blue outline)',
-    '✅ Keyboard accessible (Enter/Space)',
-    '✅ ARIA labels for icon-only buttons',
-    '✅ Disabled state prevents interaction',
+    "✅ Focus visible (blue outline)",
+    "✅ Keyboard accessible (Enter/Space)",
+    "✅ ARIA labels for icon-only buttons",
+    "✅ Disabled state prevents interaction",
   ],
   input: [
-    '✅ Label associated with input',
-    '✅ Error messages with aria-describedby',
-    '✅ Required indication',
-    '✅ Hint text associated with aria-describedby',
-    '✅ Focus visible',
+    "✅ Label associated with input",
+    "✅ Error messages with aria-describedby",
+    "✅ Required indication",
+    "✅ Hint text associated with aria-describedby",
+    "✅ Focus visible",
   ],
   alert: [
     '✅ Role="alert" for important alerts',
     '✅ aria-live="polite" for non-critical',
     '✅ aria-live="assertive" for errors',
-    '✅ Color not only indicator',
-    '✅ Icon + text combination',
+    "✅ Color not only indicator",
+    "✅ Icon + text combination",
   ],
   modal: [
     '✅ Role="dialog" and aria-modal="true"',
-    '✅ Focus trapped inside modal',
-    '✅ Close with Escape key',
-    '✅ aria-labelledby points to title',
-    '✅ Initial focus on primary action',
+    "✅ Focus trapped inside modal",
+    "✅ Close with Escape key",
+    "✅ aria-labelledby points to title",
+    "✅ Initial focus on primary action",
   ],
   form: [
-    '✅ Proper form structure with <form>',
-    '✅ All inputs labeled',
-    '✅ Error messages linked to inputs',
-    '✅ Success message after submission',
-    '✅ Proper heading hierarchy',
+    "✅ Proper form structure with <form>",
+    "✅ All inputs labeled",
+    "✅ Error messages linked to inputs",
+    "✅ Success message after submission",
+    "✅ Proper heading hierarchy",
   ],
 };
 
@@ -343,32 +343,32 @@ export const accessibilityChecklist = {
 
 export const mobileGuidelines = {
   buttons: {
-    minimumSize: '48px × 48px',
-    spacing: '8px minimum between targets',
-    fullWidth: 'Use on forms for easier tapping',
+    minimumSize: "48px × 48px",
+    spacing: "8px minimum between targets",
+    fullWidth: "Use on forms for easier tapping",
     example: '<Button fullWidth size="lg">Save</Button>',
   },
   inputs: {
-    fontSize: '16px to prevent zoom on iOS',
-    padding: 'Minimum 12px',
-    width: '100% on mobile',
+    fontSize: "16px to prevent zoom on iOS",
+    padding: "Minimum 12px",
+    width: "100% on mobile",
     example: '<Input style={{ fontSize: "16px" }} />',
   },
   forms: {
-    singleColumn: 'Stack fields vertically on mobile',
-    largeInputs: 'Bigger touch targets',
-    grouping: 'Use sections for related fields',
-    example: 'See ShipmentForm in examples',
+    singleColumn: "Stack fields vertically on mobile",
+    largeInputs: "Bigger touch targets",
+    grouping: "Use sections for related fields",
+    example: "See ShipmentForm in examples",
   },
 };
 
 export default {
-  button: 'For all clickable actions',
-  card: 'For content containers',
-  alert: 'For system messages',
-  input: 'For form fields',
-  tooltip: 'For contextual help',
-  modal: 'For important dialogs',
-  onboarding: 'For new user guidance',
-  emptyState: 'For no-data states',
+  button: "For all clickable actions",
+  card: "For content containers",
+  alert: "For system messages",
+  input: "For form fields",
+  tooltip: "For contextual help",
+  modal: "For important dialogs",
+  onboarding: "For new user guidance",
+  emptyState: "For no-data states",
 };

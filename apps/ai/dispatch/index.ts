@@ -13,24 +13,13 @@ import type {
   ConfidenceScore,
   GuardrailViolation,
 } from "../contracts";
-import {
-  logDecision,
-  logConfidence,
-  logGuardrailViolations,
-} from "../observability/logger";
+import { logDecision, logConfidence, logGuardrailViolations } from "../observability/logger";
 
 /**
  * Helper: Check if input involves billing data
  */
 function involvesBillingData(input: DecisionInput): boolean {
-  const billingFields = [
-    "payment",
-    "invoice",
-    "billing",
-    "price",
-    "rate",
-    "cost",
-  ];
+  const billingFields = ["payment", "invoice", "billing", "price", "rate", "cost"];
   const inputString = JSON.stringify(input).toLowerCase();
   return billingFields.some((field) => inputString.includes(field));
 }
@@ -129,8 +118,7 @@ async function generateRecommendation(
         recommendedDeparture: "08:00 AM",
         weatherFactor: "Clear, mild temps - optimal conditions",
         trafficConditions: "Moderate traffic expected on I-95, 10:00-11:30 AM",
-        reasoning:
-          "Route optimized for fuel efficiency, traffic patterns, and delivery window",
+        reasoning: "Route optimized for fuel efficiency, traffic patterns, and delivery window",
       };
     }
 
@@ -159,9 +147,9 @@ async function generateRecommendation(
         },
       ];
 
-      const selectedDriver = availableDrivers.find(
-        (d) => d.capacity >= requiredCapacity && d.hoursAvailable > 12,
-      ) || availableDrivers[0];
+      const selectedDriver =
+        availableDrivers.find((d) => d.capacity >= requiredCapacity && d.hoursAvailable > 12) ||
+        availableDrivers[0];
 
       return {
         assignedDriver: selectedDriver.id,
@@ -199,7 +187,8 @@ async function generateRecommendation(
         destination,
         scheduledDelivery,
         delayProbability: Math.round(delayProbability * 100),
-        estimatedDelay: estimatedDelayMinutes === 0 ? "On time" : `${estimatedDelayMinutes} minutes`,
+        estimatedDelay:
+          estimatedDelayMinutes === 0 ? "On time" : `${estimatedDelayMinutes} minutes`,
         estimatedArrival:
           estimatedDelayMinutes === 0
             ? scheduledDelivery
@@ -241,10 +230,7 @@ export const dispatchRole: RoleContract = {
   /**
    * Main decision-making function for dispatch operations
    */
-  async decide(
-    input: DecisionInput,
-    context: RoleContext,
-  ): Promise<DecisionResult> {
+  async decide(input: DecisionInput, context: RoleContext): Promise<DecisionResult> {
     const decisionId = `dispatch-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
     try {
@@ -343,15 +329,11 @@ export const dispatchRole: RoleContract = {
     }
 
     // Guardrail 2: Cannot override human decisions without approval
-    if (
-      input.action === "override-dispatch" &&
-      !input.parameters.humanApproval
-    ) {
+    if (input.action === "override-dispatch" && !input.parameters.humanApproval) {
       violations.push({
         type: "policy",
         severity: "high",
-        description:
-          "Cannot override human dispatch decisions without explicit approval",
+        description: "Cannot override human dispatch decisions without explicit approval",
         remediation: "Obtain human approval before overriding dispatch",
       });
     }
@@ -361,10 +343,8 @@ export const dispatchRole: RoleContract = {
       violations.push({
         type: "safety",
         severity: "critical",
-        description:
-          "Proposed dispatch would violate hours-of-service regulations",
-        remediation:
-          "Adjust route or select different driver within compliance limits",
+        description: "Proposed dispatch would violate hours-of-service regulations",
+        remediation: "Adjust route or select different driver within compliance limits",
       });
     }
 
@@ -373,8 +353,7 @@ export const dispatchRole: RoleContract = {
       violations.push({
         type: "data-access",
         severity: "high",
-        description:
-          "Attempted to access personal driver information beyond operational scope",
+        description: "Attempted to access personal driver information beyond operational scope",
         remediation: "Limit data access to operational information only",
       });
     }
@@ -385,10 +364,7 @@ export const dispatchRole: RoleContract = {
   /**
    * Calculate confidence score for a dispatch decision
    */
-  async calculateConfidence(
-    input: DecisionInput,
-    context: RoleContext,
-  ): Promise<ConfidenceScore> {
+  async calculateConfidence(input: DecisionInput, context: RoleContext): Promise<ConfidenceScore> {
     // Calculate confidence based on:
     // - Historical accuracy of similar decisions
     // - Data quality and completeness
@@ -447,9 +423,9 @@ export const dispatchRole: RoleContract = {
       Math.min(
         0.99,
         baseConfidence * 0.4 +
-          (dataQuality * 0.25) +
-          (historicalAccuracy * 0.2) +
-          (contextCompleteness * 0.15),
+          dataQuality * 0.25 +
+          historicalAccuracy * 0.2 +
+          contextCompleteness * 0.15,
       ) * timeContextFactor,
     );
 

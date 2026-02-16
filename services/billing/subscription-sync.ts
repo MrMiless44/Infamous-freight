@@ -41,7 +41,7 @@ async function upsertTenantBillingFromSubscription(args: {
   });
   throw new Error(
     "upsertTenantBillingFromSubscription is not implemented. " +
-      "Implement database persistence for tenant billing before using this path."
+      "Implement database persistence for tenant billing before using this path.",
   );
 }
 
@@ -59,9 +59,7 @@ export async function handleSubscriptionUpsert(subscriptionId: string) {
     subscriptionId.length === 0 ||
     !/^sub_[A-Za-z0-9]+$/.test(subscriptionId)
   ) {
-    throw new Error(
-      `Invalid Stripe subscription ID format: "${subscriptionId}"`
-    );
+    throw new Error(`Invalid Stripe subscription ID format: "${subscriptionId}"`);
   }
 
   try {
@@ -69,8 +67,7 @@ export async function handleSubscriptionUpsert(subscriptionId: string) {
       expand: ["items.data.price"],
     });
 
-    const stripeCustomerId =
-      typeof sub.customer === "string" ? sub.customer : sub.customer.id;
+    const stripeCustomerId = typeof sub.customer === "string" ? sub.customer : sub.customer.id;
 
     const items: Record<string, string> = {};
     for (const it of sub.items.data) {
@@ -94,10 +91,7 @@ export async function handleSubscriptionUpsert(subscriptionId: string) {
     // Structured error logging with context about the failed operation
     console.error("Failed to handle Stripe subscription upsert", {
       subscriptionId,
-      error:
-        err instanceof Error
-          ? { message: err.message, stack: err.stack }
-          : err,
+      error: err instanceof Error ? { message: err.message, stack: err.stack } : err,
     });
     throw err;
   }

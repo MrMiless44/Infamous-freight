@@ -2,43 +2,62 @@
 
 ## Overview
 
-This landing page provides quick access to all deployment documentation and runbooks for Infamous Freight Enterprise. The system is deployed across multiple environments and platforms, with comprehensive documentation for each.
+This landing page provides quick access to all deployment documentation and
+runbooks for Infamous Freight Enterprise. The system is deployed across multiple
+environments and platforms, with comprehensive documentation for each.
 
 ## Quick Links
 
 ### Deployment Documentation
 
-- **[Deployment Runbook](deployment/DEPLOYMENT_RUNBOOK.md)** - Complete step-by-step deployment procedures
-- **[Deployment Guide](deployment/DEPLOYMENT_GUIDE.md)** - High-level deployment strategy and architecture
-- **[Quick Deployment](deployment/QUICK_DEPLOYMENT.md)** - Fast-track deployment for experienced operators
-- **[Migration Guide](deployment/MIGRATION_GUIDE.md)** - Guide for migrating between environments or versions
+- **[Deployment Runbook](deployment/DEPLOYMENT_RUNBOOK.md)** - Complete
+  step-by-step deployment procedures
+- **[Deployment Guide](deployment/DEPLOYMENT_GUIDE.md)** - High-level deployment
+  strategy and architecture
+- **[Quick Deployment](deployment/QUICK_DEPLOYMENT.md)** - Fast-track deployment
+  for experienced operators
+- **[Migration Guide](deployment/MIGRATION_GUIDE.md)** - Guide for migrating
+  between environments or versions
 
 ### Environment-Specific Guides
 
-- **[Production Overview](deployment/production-overview.md)** - Production environment architecture and operations
-- **[Deployment Status](deployment/DEPLOYMENT_STATUS.md)** - Current deployment status and health checks
-- **[Environment Status](deployment/DEPLOYMENT_ENVIRONMENT_STATUS.md)** - Status of all environments
+- **[Production Overview](deployment/production-overview.md)** - Production
+  environment architecture and operations
+- **[Deployment Status](deployment/DEPLOYMENT_STATUS.md)** - Current deployment
+  status and health checks
+- **[Environment Status](deployment/DEPLOYMENT_ENVIRONMENT_STATUS.md)** - Status
+  of all environments
 
 ### Platform-Specific Deployment
 
 #### API Deployment
 
-- **[Render API Testing](deployment/RENDER_API_TESTING.md)** - API deployment on Render platform
-- **[Deploy Action](deployment/DEPLOY_ACTION.md)** - GitHub Actions deployment workflow
-- **[Secrets Configuration](deployment/SECRETS_CONFIGURED.md)** - Required secrets and environment variables
+- **[Render API Testing](deployment/RENDER_API_TESTING.md)** - API deployment on
+  Render platform
+- **[Deploy Action](deployment/DEPLOY_ACTION.md)** - GitHub Actions deployment
+  workflow
+- **[Secrets Configuration](deployment/SECRETS_CONFIGURED.md)** - Required
+  secrets and environment variables
 
 #### Web Deployment
 
-- **[Web Deployment on Vercel](deployment/WEB_DEPLOYMENT_VERCEL.md)** - Next.js app deployment to Vercel
-- **[Vercel Build Fixes](deployment/VERCEL_BUILD_FIXES.md)** - Common Vercel build issues and solutions
-- **[Vercel Analytics Setup](deployment/VERCEL_ANALYTICS_SETUP.md)** - Setting up analytics and monitoring
+- **[Web Deployment on Vercel](deployment/WEB_DEPLOYMENT_VERCEL.md)** - Next.js
+  app deployment to Vercel
+- **[Vercel Build Fixes](deployment/VERCEL_BUILD_FIXES.md)** - Common Vercel
+  build issues and solutions
+- **[Vercel Analytics Setup](deployment/VERCEL_ANALYTICS_SETUP.md)** - Setting
+  up analytics and monitoring
 
 ### Execution Logs and History
 
-- **[Deployment Execution Log](deployment/DEPLOYMENT_EXECUTION_LOG.md)** - Historical deployment execution records
-- **[Deployment Complete](deployment/DEPLOYMENT_COMPLETE.md)** - Post-deployment validation checklist
-- **[Deployment Summary](deployment/DEPLOYMENT_SUMMARY.md)** - Summary of recent deployments
-- **[Session Complete](deployment/DEPLOYMENT_SESSION_COMPLETE.md)** - Deployment session reports
+- **[Deployment Execution Log](deployment/DEPLOYMENT_EXECUTION_LOG.md)** -
+  Historical deployment execution records
+- **[Deployment Complete](deployment/DEPLOYMENT_COMPLETE.md)** - Post-deployment
+  validation checklist
+- **[Deployment Summary](deployment/DEPLOYMENT_SUMMARY.md)** - Summary of recent
+  deployments
+- **[Session Complete](deployment/DEPLOYMENT_SESSION_COMPLETE.md)** - Deployment
+  session reports
 
 ## Deployment Architecture
 
@@ -68,13 +87,13 @@ This landing page provides quick access to all deployment documentation and runb
 
 ### Deployment Targets
 
-| Component     | Platform | Environment | Access                                          |
-| ------------- | -------- | ----------- | ----------------------------------------------- |
+| Component     | Platform | Environment | Access                                            |
+| ------------- | -------- | ----------- | ------------------------------------------------- |
 | Web Dashboard | Vercel   | Production  | <https://infamous-freight-enterprises.vercel.app> |
 | API (Primary) | Render   | Production  | <https://infamous-freight-api.onrender.com>       |
 | API (Backup)  | Fly.io   | Production  | <https://infamous-freight-api.fly.dev>            |
-| Database      | Supabase | Production  | Managed PostgreSQL                              |
-| Redis Cache   | Upstash  | Production  | Managed Redis                                   |
+| Database      | Supabase | Production  | Managed PostgreSQL                                |
+| Redis Cache   | Upstash  | Production  | Managed Redis                                     |
 
 ## Deployment Workflows
 
@@ -229,7 +248,8 @@ pnpm prisma migrate resolve --rolled-back <migration-name>
 
 ### Required Secrets
 
-All required secrets are documented in [deployment/SECRETS_CONFIGURED.md](deployment/SECRETS_CONFIGURED.md).
+All required secrets are documented in
+[deployment/SECRETS_CONFIGURED.md](deployment/SECRETS_CONFIGURED.md).
 
 **Critical secrets:**
 
@@ -246,8 +266,8 @@ All required secrets are documented in [deployment/SECRETS_CONFIGURED.md](deploy
 vercel env add SECRET_NAME production
 ```
 
-**Update secrets on Render:**
-Via Render dashboard → Environment → Environment Variables
+**Update secrets on Render:** Via Render dashboard → Environment → Environment
+Variables
 
 ## Troubleshooting
 

@@ -93,12 +93,10 @@ describe.skip("Billing Routes - 100% Payment Processing", () => {
     });
 
     test("should require authentication", async () => {
-      const response = await request(app)
-        .post("/api/billing/create-payment-intent")
-        .send({
-          amount: "99.99",
-          currency: "usd",
-        });
+      const response = await request(app).post("/api/billing/create-payment-intent").send({
+        amount: "99.99",
+        currency: "usd",
+      });
 
       expect(response.status).toBe(401);
     });
@@ -217,9 +215,7 @@ describe.skip("Billing Routes - 100% Payment Processing", () => {
         },
       };
 
-      const response = await request(app)
-        .post("/api/billing/webhook")
-        .send(event);
+      const response = await request(app).post("/api/billing/webhook").send(event);
 
       expect(response.status).toBe(200);
       expect(response.body.received).toBe(true);
@@ -239,9 +235,7 @@ describe.skip("Billing Routes - 100% Payment Processing", () => {
       const promises = [];
       for (let i = 0; i < 5; i++) {
         promises.push(
-          request(app)
-            .get("/api/billing/revenue")
-            .set("Authorization", `Bearer ${token}`),
+          request(app).get("/api/billing/revenue").set("Authorization", `Bearer ${token}`),
         );
       }
 

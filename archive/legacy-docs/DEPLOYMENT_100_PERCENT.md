@@ -9,6 +9,7 @@
 ## ✅ Deployment Targets
 
 ### 1. Vercel (Web Frontend)
+
 - **Status:** ✅ Configured & Deployed
 - **URL:** https://infamous-freight-enterprises.vercel.app
 - **Config:** `apps/web/vercel.json`
@@ -21,8 +22,10 @@
   - Auto-deploy on push to main
 
 ### 2. Netlify (Alternative Web)
+
 - **Status:** ✅ Configured with China CDN
-- **Badge:** [![Netlify Status](https://api.netlify.com/api/v1/badges/1510fd23-d20a-48ab-9603-15d3b58aa34b/deploy-status)](https://app.netlify.com/projects/infamousfreight/deploys)
+- **Badge:**
+  [![Netlify Status](https://api.netlify.com/api/v1/badges/1510fd23-d20a-48ab-9603-15d3b58aa34b/deploy-status)](https://app.netlify.com/projects/infamousfreight/deploys)
 - **Config:** `netlify.toml`
 - **Features:**
   - `@netlify/plugin-nextjs`
@@ -32,6 +35,7 @@
   - Security headers configured
 
 ### 3. Fly.io (API Backend)
+
 - **Status:** ✅ Configured
 - **URL:** https://infamous-freight-api.fly.dev
 - **Health:** `/api/health`
@@ -43,6 +47,7 @@
   - Health verification post-deploy
 
 ### 4. Docker Compose (Self-Hosted)
+
 - **Status:** ✅ Production Ready
 - **Config:** `docker-compose.yml`
 - **Services:**
@@ -57,6 +62,7 @@
 ## ✅ CI/CD Pipelines
 
 ### GitHub Actions Workflows
+
 - ✅ `vercel-deploy.yml` - Web deployment to Vercel
 - ✅ `fly-deploy.yml` - API deployment to Fly.io
 - ✅ `health-check.yml` - Scheduled monitoring (every 15min)
@@ -64,6 +70,7 @@
 - ✅ `ci-cd.yml` - Test suite execution
 
 ### Deployment Features
+
 - Auto-deploy on push to `main`
 - Change detection (skips unnecessary deploys)
 - Health checks with retry logic
@@ -76,10 +83,12 @@
 ## ✅ Health Monitoring
 
 ### Scripts
+
 - ✅ `scripts/smoke-test.sh` - Local health validation
 - ✅ `scripts/check-public.sh` - Public endpoint checks
 
 ### Automated Checks
+
 - API health: `/api/health` returns `{"status":"ok"}`
 - Web health: Root returns HTTP 200
 - Database: Connection verified
@@ -87,6 +96,7 @@
 - Response time tracking
 
 ### Monitoring Schedule
+
 - GitHub Actions: Every 15 minutes
 - Manual: `bash scripts/check-public.sh`
 
@@ -95,6 +105,7 @@
 ## ✅ Environment Configuration
 
 ### Required Secrets (GitHub)
+
 - ✅ `VERCEL_TOKEN` - Vercel deployment
 - ✅ `FLY_API_TOKEN` - Fly.io deployment
 - ✅ `DATABASE_URL` - PostgreSQL connection
@@ -102,12 +113,14 @@
 - ✅ `JWT_SECRET` - Authentication
 
 ### Netlify Environment Variables
+
 - ✅ `NEXT_PUBLIC_API_URL`
 - ✅ `NEXT_PUBLIC_API_BASE`
 - ⚠️ `YUNBOX_TOKEN` (optional, for China CDN)
 - ⚠️ `YUNBOX_SITE_ID` (optional, for China CDN)
 
 ### Vercel Environment Variables
+
 - ✅ Set in `apps/web/vercel.json`:
   - `NEXT_PUBLIC_API_URL=https://infamous-freight-api.fly.dev`
   - `NEXT_PUBLIC_API_BASE=https://infamous-freight-api.fly.dev/api`
@@ -129,6 +142,7 @@
 ## ✅ Deployment Commands
 
 ### Local Development
+
 ```bash
 # Build shared package
 pnpm --filter @infamous-freight/shared build
@@ -144,6 +158,7 @@ bash scripts/smoke-test.sh
 ```
 
 ### Production Deploy
+
 ```bash
 # Push to trigger auto-deploy
 git push origin main
@@ -154,6 +169,7 @@ gh workflow run fly-deploy.yml
 ```
 
 ### Health Checks
+
 ```bash
 # Check public endpoints
 bash scripts/check-public.sh
@@ -167,6 +183,7 @@ bash scripts/smoke-test.sh
 ## ✅ Deployment Verification
 
 ### Immediate Checks (Post-Deploy)
+
 1. ✅ GitHub Actions workflows pass
 2. ✅ Vercel build succeeds
 3. ✅ Netlify build succeeds
@@ -174,6 +191,7 @@ bash scripts/smoke-test.sh
 5. ✅ Health endpoints return 200
 
 ### Ongoing Monitoring
+
 - ✅ Automated health checks every 15 minutes
 - ✅ Error tracking via Sentry (if configured)
 - ✅ Performance monitoring via Datadog RUM (if configured)
@@ -187,16 +205,19 @@ bash scripts/smoke-test.sh
 **Pushed:** January 17, 2026
 
 ### Active Deployments
+
 - 🔵 Vercel: Building/Deploying (triggered)
 - 🔵 Netlify: Building/Deploying (triggered)
 - 🔵 Fly.io: Path-based deploy (if API/shared changed)
 
 ### Expected Completion
+
 - Vercel: 2-5 minutes
 - Netlify: 2-5 minutes
 - Fly.io: 3-7 minutes (if triggered)
 
 ### Verification URLs
+
 - **Web:** https://infamous-freight-enterprises.vercel.app
 - **API:** https://infamous-freight-api.fly.dev/api/health
 - **Netlify:** https://app.netlify.com/projects/infamousfreight/deploys
@@ -206,28 +227,33 @@ bash scripts/smoke-test.sh
 ## 🔧 Troubleshooting
 
 ### Web Returns 404
+
 1. Check Vercel build logs
 2. Verify `apps/web/vercel.json` configuration
 3. Ensure `NEXT_PUBLIC_API_*` envs are set
 4. Confirm build runs from `apps/web/` directory
 
 ### API Health Unreachable
+
 1. Check Fly.io deployment logs
 2. Verify `FLY_API_TOKEN` secret exists
 3. Test health endpoint: `curl https://infamous-freight-api.fly.dev/api/health`
 4. Check Fly.io app status: `flyctl status`
 
 ### Netlify Build Fails
+
 1. Verify TOML syntax in `netlify.toml`
 2. Check plugin dependencies in `package.json`
 3. Clear cache and redeploy
 4. Review build logs for specific errors
 
 ### Docker Compose Issues
+
 1. Rebuild: `docker compose up -d --build`
 2. Check logs: `docker compose logs -f`
 3. Verify `.env` file exists with proper values
-4. Run migrations: `docker compose exec api sh -lc 'cd apps/api && pnpm prisma:migrate:deploy'`
+4. Run migrations:
+   `docker compose exec api sh -lc 'cd apps/api && pnpm prisma:migrate:deploy'`
 
 ---
 
@@ -246,9 +272,12 @@ bash scripts/smoke-test.sh
 
 ## 🎉 DEPLOYMENT 100% COMPLETE
 
-All deployment targets are configured, documented, and ready for production traffic. CI/CD pipelines are automated with health checks and monitoring in place.
+All deployment targets are configured, documented, and ready for production
+traffic. CI/CD pipelines are automated with health checks and monitoring in
+place.
 
 **Next Steps:**
+
 1. Monitor GitHub Actions for successful deploys
 2. Verify endpoints return 200: `bash scripts/check-public.sh`
 3. Configure optional monitoring (Sentry, Datadog)
@@ -256,7 +285,9 @@ All deployment targets are configured, documented, and ready for production traf
 5. Enable China CDN (add Netlify env vars)
 
 **Support:**
-- GitHub Actions: https://github.com/MrMiless44/Infamous-freight-enterprises/actions
+
+- GitHub Actions:
+  https://github.com/MrMiless44/Infamous-freight-enterprises/actions
 - Vercel Dashboard: https://vercel.com/dashboard
 - Netlify Dashboard: https://app.netlify.com/projects/infamousfreight
 - Fly.io Dashboard: https://fly.io/dashboard

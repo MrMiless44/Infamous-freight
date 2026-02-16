@@ -20,7 +20,8 @@
 
 ### API Service
 
-- ✅ [apps/api/.env.example](apps/api/.env.example) - API-specific template (NEWLY CREATED)
+- ✅ [apps/api/.env.example](apps/api/.env.example) - API-specific template
+  (NEWLY CREATED)
   - 148 lines covering all API configuration
   - Rate limiting configuration
   - Database pool settings
@@ -30,7 +31,8 @@
 
 ### Web Service
 
-- ✅ [apps/web/.env.example](apps/web/.env.example) - Web/Next.js template (NEWLY CREATED)
+- ✅ [apps/web/.env.example](apps/web/.env.example) - Web/Next.js template
+  (NEWLY CREATED)
   - 106 lines covering frontend configuration
   - Next.js specific settings
   - Public API endpoints
@@ -41,9 +43,12 @@
 
 ### Mobile Service
 
-- ✅ [apps/mobile/.env.example](apps/mobile/.env.example) - Mobile app template (EXISTING)
-- ✅ [apps/mobile/.env.development](apps/mobile/.env.development) - Mobile dev (NEWLY CREATED)
-- ✅ [apps/mobile/.env.production](apps/mobile/.env.production) - Mobile prod (NEWLY CREATED)
+- ✅ [apps/mobile/.env.example](apps/mobile/.env.example) - Mobile app template
+  (EXISTING)
+- ✅ [apps/mobile/.env.development](apps/mobile/.env.development) - Mobile dev
+  (NEWLY CREATED)
+- ✅ [apps/mobile/.env.production](apps/mobile/.env.production) - Mobile prod
+  (NEWLY CREATED)
 
 ---
 

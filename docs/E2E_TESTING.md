@@ -1,10 +1,13 @@
 # E2E Testing with Playwright
 
-End-to-End (E2E) tests validate complete user workflows across the entire application stack. This guide explains how to write, run, and maintain E2E tests using Playwright.
+End-to-End (E2E) tests validate complete user workflows across the entire
+application stack. This guide explains how to write, run, and maintain E2E tests
+using Playwright.
 
 ## Overview
 
-**What**: Tests that simulate real user interactions (clicking, typing, navigation)  
+**What**: Tests that simulate real user interactions (clicking, typing,
+navigation)  
 **Where**: `e2e/tests/` directory  
 **How**: Playwright test framework  
 **Why**: Catch regressions that unit tests miss, validate full workflows

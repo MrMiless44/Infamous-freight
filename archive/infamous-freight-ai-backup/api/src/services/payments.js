@@ -27,9 +27,7 @@ function getPayPalClient() {
   }
   if (!paypalClient) {
     const Environment =
-      paypalEnv === "live"
-        ? paypalSdk.core.LiveEnvironment
-        : paypalSdk.core.SandboxEnvironment;
+      paypalEnv === "live" ? paypalSdk.core.LiveEnvironment : paypalSdk.core.SandboxEnvironment;
     const environment = new Environment(paypalClientId, paypalClientSecret);
     paypalClient = new paypalSdk.core.PayPalHttpClient(environment);
   }
@@ -126,11 +124,7 @@ async function getOrCreateStripeCustomer({ email, name, metadata = {} }) {
 /**
  * Create Stripe Subscription
  */
-async function createStripeSubscription({
-  customerId,
-  priceId,
-  trialDays = 14,
-}) {
+async function createStripeSubscription({ customerId, priceId, trialDays = 14 }) {
   const client = getStripeClient();
   if (!client) {
     throw new Error("STRIPE_NOT_CONFIGURED");
@@ -155,12 +149,7 @@ function getPricingTiers() {
       name: "Starter",
       price: 149,
       interval: "month",
-      features: [
-        "10 drivers",
-        "100 shipments/month",
-        "Basic AI routing",
-        "Email support",
-      ],
+      features: ["10 drivers", "100 shipments/month", "Basic AI routing", "Email support"],
       limits: { drivers: 10, shipments: 100, aiCalls: 500 },
     },
     professional: {

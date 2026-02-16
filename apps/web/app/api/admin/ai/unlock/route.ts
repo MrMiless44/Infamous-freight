@@ -34,15 +34,11 @@ export async function POST(req: Request) {
     return jsonWithRequestId(req, { ok: true });
   } catch (error) {
     // Log the error for observability; avoid leaking details to the client
-    // eslint-disable-next-line no-console
+     
     console.error("Failed to unlock AI overage for company", {
       error,
     });
 
-    return jsonWithRequestId(
-      req,
-      { error: "Internal Server Error" },
-      { status: 500 },
-    );
+    return jsonWithRequestId(req, { error: "Internal Server Error" }, { status: 500 });
   }
 }

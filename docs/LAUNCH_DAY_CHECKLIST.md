@@ -3,7 +3,7 @@
 **Launch Date**: [TO BE SET]  
 **Launch Time**: [TO BE SET (6-8 AM recommended)]  
 **Team Lead**: [Name]  
-**On-Call**: [Name/Contact]  
+**On-Call**: [Name/Contact]
 
 ---
 
@@ -148,13 +148,13 @@
 
 **Watch these metrics every 5 minutes:**
 
-| Metric | Good | Warning | Alert |
-|--------|------|---------|-------|
-| Error Rate | < 0.05% | 0.05-0.1% | > 0.1% |
-| P95 Latency | < 200ms | 200-500ms | > 500ms |
-| CPU | < 50% | 50-75% | > 75% |
-| Memory | < 60% | 60-80% | > 80% |
-| DB Connections | 5-15 | 15-20 | > 20 |
+| Metric         | Good    | Warning   | Alert   |
+| -------------- | ------- | --------- | ------- |
+| Error Rate     | < 0.05% | 0.05-0.1% | > 0.1%  |
+| P95 Latency    | < 200ms | 200-500ms | > 500ms |
+| CPU            | < 50%   | 50-75%    | > 75%   |
+| Memory         | < 60%   | 60-80%    | > 80%   |
+| DB Connections | 5-15    | 15-20     | > 20    |
 
 ---
 
@@ -177,7 +177,8 @@
 
 ### Database Connection Pool Exhausted
 
-1. Check number of connections: `kubectl exec -it pod -- psql -c "SELECT count(*) FROM pg_stat_activity;"`
+1. Check number of connections:
+   `kubectl exec -it pod -- psql -c "SELECT count(*) FROM pg_stat_activity;"`
 2. Increase pool size in config
 3. Restart pods: `kubectl rollout restart deployment/api`
 
@@ -333,6 +334,6 @@ Launch successful!
 
 ---
 
-**Launch Coordinator**: ____________________  
+**Launch Coordinator**: ********\_\_\_\_********  
 **Date**: 2026-01-22  
 **Status**: Ready for Execution

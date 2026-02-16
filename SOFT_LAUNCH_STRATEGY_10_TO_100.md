@@ -3,22 +3,27 @@
 **Date**: February 14, 2026  
 **Status**: ✅ READY TO EXECUTE  
 **Timeline**: 4 weeks (staged rollout)  
-**Risk Level**: LOW (controlled, reversible)  
+**Risk Level**: LOW (controlled, reversible)
 
 ---
 
 ## 📋 EXECUTIVE SUMMARY
 
-This document outlines a staged rollout strategy for INFÆMOUS FREIGHT, progressively increasing user exposure from 10% to 100% over 4 weeks. This approach minimizes risk, allows for rapid iteration, and ensures infrastructure scales smoothly.
+This document outlines a staged rollout strategy for INFÆMOUS FREIGHT,
+progressively increasing user exposure from 10% to 100% over 4 weeks. This
+approach minimizes risk, allows for rapid iteration, and ensures infrastructure
+scales smoothly.
 
 **Key Benefits**:
+
 - ✅ Early issue detection with limited blast radius
 - ✅ Real-time performance validation at each stage
 - ✅ Ability to roll back quickly if problems arise
 - ✅ Data-driven decision making (metrics at each gate)
 - ✅ Smooth scaling without infrastructure surprises
 
-**Success Criteria**: Each stage must meet quality gates before progressing to next stage.
+**Success Criteria**: Each stage must meet quality gates before progressing to
+next stage.
 
 ---
 
@@ -38,21 +43,26 @@ Gate Checks: 24-48 hours between stages (metrics-driven)
 ## 🚀 STAGE 1: 10% ROLLOUT (Week 1 - Days 1-7)
 
 ### **Objectives**
+
 - Validate core user flows work in production
 - Identify any critical bugs with small user base
 - Baseline performance metrics
 - Test monitoring & alerting systems
 
 ### **Target Audience (10% = ~1,300 users)**
+
 Priority order:
+
 1. **Internal team** (50 users) - dogfooding
 2. **Beta testers** (200 users) - known contacts, willing to report issues
-3. **Grandfather pricing** (1,000 users) - existing waitlist, loyal early adopters
+3. **Grandfather pricing** (1,000 users) - existing waitlist, loyal early
+   adopters
 4. **Random sampling** (50 users) - organic traffic for unbiased feedback
 
 ### **Rollout Method**
 
 **Option A: Feature Flag (LaunchDarkly / Flagsmith)**
+
 ```typescript
 // apps/web/lib/featureFlags.ts
 import { useFlags } from 'launchdarkly-react-client-sdk';
@@ -65,28 +75,29 @@ export function useNewPricingEnabled() {
 // apps/web/pages/pricing.tsx
 export default function PricingPage() {
   const newPricingEnabled = useNewPricingEnabled();
-  
+
   if (!newPricingEnabled) {
     return <OldPricingPage />; // fallback
   }
-  
+
   return <NewPricingPage />; // 2026 pricing
 }
 ```
 
 **Option B: Percentage-Based Routing (No External Service)**
+
 ```typescript
 // apps/web/lib/rollout.ts
 export function isUserInRollout(userId: string, percentage: number): boolean {
   // Deterministic hash-based sampling
   const hash = hashUserId(userId);
-  return (hash % 100) < percentage;
+  return hash % 100 < percentage;
 }
 
 function hashUserId(userId: string): number {
   let hash = 0;
   for (let i = 0; i < userId.length; i++) {
-    hash = ((hash << 5) - hash) + userId.charCodeAt(i);
+    hash = (hash << 5) - hash + userId.charCodeAt(i);
     hash = hash & hash; // Convert to 32-bit integer
   }
   return Math.abs(hash);
@@ -104,22 +115,23 @@ if (isUserInRollout(userId, rolloutPercentage)) {
 ```
 
 **Option C: Server-Side Feature Flag (Recommended)**
+
 ```javascript
 // apps/api/src/middleware/rollout.js
 const ROLLOUT_PERCENTAGE = process.env.ROLLOUT_PERCENTAGE || 10;
 
 function checkRollout(req, res, next) {
   const userId = req.user?.id || req.session?.anonymousId;
-  
+
   if (!userId) {
     // No user ID, default to old version
     req.isInRollout = false;
     return next();
   }
-  
+
   const hash = hashUserId(userId);
-  req.isInRollout = (hash % 100) < ROLLOUT_PERCENTAGE;
-  
+  req.isInRollout = hash % 100 < ROLLOUT_PERCENTAGE;
+
   next();
 }
 
@@ -128,17 +140,18 @@ module.exports = { checkRollout };
 
 ### **Quality Gates (Must Pass to Progress)**
 
-| Metric | Target | Result | Pass? |
-|--------|--------|--------|-------|
-| **API Uptime** | ≥99.5% | ___ | ⬜ |
-| **Error Rate** | <0.5% | ___ | ⬜ |
-| **P99 Latency** | <1s | ___ | ⬜ |
-| **Free→Pro Conversion** | ≥20% | ___ | ⬜ |
-| **Support Tickets (Critical)** | <5 | ___ | ⬜ |
-| **Payment Processing** | 100% success | ___ | ⬜ |
-| **User Satisfaction (NPS)** | ≥50 | ___ | ⬜ |
+| Metric                         | Target       | Result | Pass? |
+| ------------------------------ | ------------ | ------ | ----- |
+| **API Uptime**                 | ≥99.5%       | \_\_\_ | ⬜    |
+| **Error Rate**                 | <0.5%        | \_\_\_ | ⬜    |
+| **P99 Latency**                | <1s          | \_\_\_ | ⬜    |
+| **Free→Pro Conversion**        | ≥20%         | \_\_\_ | ⬜    |
+| **Support Tickets (Critical)** | <5           | \_\_\_ | ⬜    |
+| **Payment Processing**         | 100% success | \_\_\_ | ⬜    |
+| **User Satisfaction (NPS)**    | ≥50          | \_\_\_ | ⬜    |
 
-**Decision**: If 6/7 gates pass → Proceed to Stage 2. If <6 pass → Fix issues, restart Stage 1.
+**Decision**: If 6/7 gates pass → Proceed to Stage 2. If <6 pass → Fix issues,
+restart Stage 1.
 
 ### **Stage 1 Checklist**
 
@@ -177,17 +190,20 @@ Day 6-7 (Gate Check):
 ## 🚀 STAGE 2: 25% ROLLOUT (Week 2 - Days 8-14)
 
 ### **Objectives**
+
 - Confirm infrastructure scales to 2.5x traffic
 - Validate cost projections (AWS/database/APIs)
 - Gather more user feedback for iteration
 - Test load balancer & caching performance
 
 ### **Target Audience (25% = ~3,250 users)**
+
 1. All Stage 1 users (continue access, prevent confusion)
 2. Additional waitlist members (2,000 users)
 3. Organic traffic (random sampling)
 
 ### **New Risks to Monitor**
+
 - Database query performance under higher load
 - Redis cache hit rates
 - Third-party API rate limits (Stripe, email service)
@@ -195,17 +211,18 @@ Day 6-7 (Gate Check):
 
 ### **Quality Gates (Must Pass)**
 
-| Metric | Target | Result | Pass? |
-|--------|--------|--------|-------|
-| **API Uptime** | ≥99.5% | ___ | ⬜ |
-| **Error Rate** | <0.3% | ___ | ⬜ |
-| **P99 Latency** | <1s | ___ | ⬜ |
-| **Database CPU** | <70% | ___ | ⬜ |
-| **Cache Hit Rate** | ≥80% | ___ | ⬜ |
-| **Free→Pro Conversion** | ≥25% | ___ | ⬜ |
-| **Cost per User** | <$5/month | ___ | ⬜ |
+| Metric                  | Target    | Result | Pass? |
+| ----------------------- | --------- | ------ | ----- |
+| **API Uptime**          | ≥99.5%    | \_\_\_ | ⬜    |
+| **Error Rate**          | <0.3%     | \_\_\_ | ⬜    |
+| **P99 Latency**         | <1s       | \_\_\_ | ⬜    |
+| **Database CPU**        | <70%      | \_\_\_ | ⬜    |
+| **Cache Hit Rate**      | ≥80%      | \_\_\_ | ⬜    |
+| **Free→Pro Conversion** | ≥25%      | \_\_\_ | ⬜    |
+| **Cost per User**       | <$5/month | \_\_\_ | ⬜    |
 
-**Decision**: If 6/7 gates pass → Proceed to Stage 3. If issues → Fix and re-gate.
+**Decision**: If 6/7 gates pass → Proceed to Stage 3. If issues → Fix and
+re-gate.
 
 ### **Stage 2 Checklist**
 
@@ -243,16 +260,19 @@ Day 14 (Gate Check):
 ## 🚀 STAGE 3: 50% ROLLOUT (Week 3 - Days 15-21)
 
 ### **Objectives**
+
 - Stress test infrastructure at half production load
 - Validate auto-scaling works correctly
 - Confirm monitoring catches issues proactively
 - Finalize any performance optimizations
 
 ### **Target Audience (50% = ~6,500 users)**
+
 - All Stage 1 & 2 users (maintain consistency)
 - Additional 3,250 new users (random sampling)
 
 ### **Critical Focus Areas**
+
 - **Auto-scaling**: Ensure additional API instances spin up automatically
 - **Database**: Connection pooling, query optimization, read replicas
 - **Rate Limiting**: Verify fairness across all users
@@ -260,17 +280,18 @@ Day 14 (Gate Check):
 
 ### **Quality Gates (Must Pass)**
 
-| Metric | Target | Result | Pass? |
-|--------|--------|--------|-------|
-| **API Uptime** | ≥99.7% | ___ | ⬜ |
-| **Error Rate** | <0.2% | ___ | ⬜ |
-| **P99 Latency** | <800ms | ___ | ⬜ |
-| **Auto-Scaling** | Successful (tested) | ___ | ⬜ |
-| **Database CPU** | <60% (w/ read replica) | ___ | ⬜ |
-| **Free→Pro Conversion** | ≥28% | ___ | ⬜ |
-| **Support Response Time** | <2 hours avg | ___ | ⬜ |
+| Metric                    | Target                 | Result | Pass? |
+| ------------------------- | ---------------------- | ------ | ----- |
+| **API Uptime**            | ≥99.7%                 | \_\_\_ | ⬜    |
+| **Error Rate**            | <0.2%                  | \_\_\_ | ⬜    |
+| **P99 Latency**           | <800ms                 | \_\_\_ | ⬜    |
+| **Auto-Scaling**          | Successful (tested)    | \_\_\_ | ⬜    |
+| **Database CPU**          | <60% (w/ read replica) | \_\_\_ | ⬜    |
+| **Free→Pro Conversion**   | ≥28%                   | \_\_\_ | ⬜    |
+| **Support Response Time** | <2 hours avg           | \_\_\_ | ⬜    |
 
-**Decision**: If 6/7 gates pass + no critical issues → Proceed to Stage 4 (100%).
+**Decision**: If 6/7 gates pass + no critical issues → Proceed to Stage 4
+(100%).
 
 ### **Stage 3 Checklist**
 
@@ -308,12 +329,14 @@ Day 21 (Gate Check):
 ## 🚀 STAGE 4: 100% ROLLOUT (Week 4 - Days 22-28)
 
 ### **Objectives**
+
 - Full production launch to all users
 - Celebrate successful staged rollout 🎉
 - Monitor first 48 hours closely
 - Begin focus on growth & optimization
 
 ### **Target Audience (100% = ~13,000 users Month 1)**
+
 - All users, no restrictions
 - New organic signups
 - Marketing campaigns fully activated
@@ -366,15 +389,15 @@ Day 25-28 (Week 4 Completion):
 
 ### **100% Success Criteria (7 Days Post-Launch)**
 
-| Metric | Target | Result | Status |
-|--------|--------|--------|--------|
-| **Uptime (7 days)** | ≥99.9% | ___ | ⬜ |
-| **Error Rate** | <0.12% | ___ | ⬜ |
-| **P99 Latency** | <500ms | ___ | ⬜ |
-| **Free Signups** | 2,100+ | ___ | ⬜ |
-| **Pro Conversions** | 100+ | ___ | ⬜ |
-| **Revenue** | $10K+ | ___ | ⬜ |
-| **Customer Satisfaction** | NPS ≥60 | ___ | ⬜ |
+| Metric                    | Target  | Result | Status |
+| ------------------------- | ------- | ------ | ------ |
+| **Uptime (7 days)**       | ≥99.9%  | \_\_\_ | ⬜     |
+| **Error Rate**            | <0.12%  | \_\_\_ | ⬜     |
+| **P99 Latency**           | <500ms  | \_\_\_ | ⬜     |
+| **Free Signups**          | 2,100+  | \_\_\_ | ⬜     |
+| **Pro Conversions**       | 100+    | \_\_\_ | ⬜     |
+| **Revenue**               | $10K+   | \_\_\_ | ⬜     |
+| **Customer Satisfaction** | NPS ≥60 | \_\_\_ | ⬜     |
 
 ---
 
@@ -402,6 +425,7 @@ git push origin main
 ### **Rollback Triggers (Automatic)**
 
 Set up automatic rollback if:
+
 - Error rate > 5% for 5 minutes
 - API uptime < 95% for 10 minutes
 - P99 latency > 5s for 5 minutes
@@ -409,23 +433,26 @@ Set up automatic rollback if:
 
 ```javascript
 // apps/api/src/services/autoRollback.js
-const { dogstatsd } = require('datadog-metrics');
+const { dogstatsd } = require("datadog-metrics");
 
 setInterval(async () => {
   const errorRate = await getErrorRate(); // from metrics
-  
+
   if (errorRate > 5) {
-    console.error('🚨 ERROR RATE > 5%, TRIGGERING AUTO-ROLLBACK');
-    
+    console.error("🚨 ERROR RATE > 5%, TRIGGERING AUTO-ROLLBACK");
+
     // Reduce rollout percentage by 50%
     const currentPercentage = parseInt(process.env.ROLLOUT_PERCENTAGE) || 100;
     const newPercentage = Math.max(0, currentPercentage / 2);
-    
+
     // Update environment (requires service restart or feature flag update)
     await updateRolloutPercentage(newPercentage);
-    
+
     // Alert team
-    await sendSlackAlert('#infæmous-alerts', `🚨 Auto-rollback triggered: ${currentPercentage}% → ${newPercentage}%`);
+    await sendSlackAlert(
+      "#infæmous-alerts",
+      `🚨 Auto-rollback triggered: ${currentPercentage}% → ${newPercentage}%`,
+    );
   }
 }, 60 * 1000); // Check every minute
 ```
@@ -501,24 +528,28 @@ ON TRACK FOR STAGE 3: YES (6/7 gates passing, 4 days to improve conversion)
 ## 🎯 SUCCESS PATTERNS (Learn from Each Stage)
 
 ### **Stage 1 (10%) Learnings**
+
 - Document every issue found (even minor)
 - Identify which user segments convert best
 - Note which features are most/least used
 - Collect qualitative feedback (surveys, interviews)
 
 ### **Stage 2 (25%) Optimizations**
+
 - Optimize slow database queries found in Stage 1
 - Implement caching for hot paths
 - Adjust pricing messaging based on feedback
 - Improve onboarding based on drop-off points
 
 ### **Stage 3 (50%) Scaling**
+
 - Confirm infrastructure auto-scales correctly
 - Validate cost projections match actuals
 - Test disaster recovery procedures (simulate outage)
 - Finalize support team processes
 
 ### **Stage 4 (100%) Growth**
+
 - Shift focus from stability to growth
 - Enable all marketing campaigns
 - Launch referral program (viral loop)
@@ -530,22 +561,24 @@ ON TRACK FOR STAGE 3: YES (6/7 gates passing, 4 days to improve conversion)
 
 ### **Top Risks by Stage**
 
-| Stage | Risk | Probability | Impact | Mitigation |
-|-------|------|-------------|--------|------------|
-| **1 (10%)** | Critical bug found | Medium | High | Limited users, quick rollback |
-| **2 (25%)** | Performance degradation | Medium | Medium | Load testing, auto-scaling |
-| **3 (50%)** | Database overload | Low | High | Read replicas, query optimization |
-| **4 (100%)** | Viral growth overwhelms | Low | High | Rate limiting, capacity planning |
+| Stage        | Risk                    | Probability | Impact | Mitigation                        |
+| ------------ | ----------------------- | ----------- | ------ | --------------------------------- |
+| **1 (10%)**  | Critical bug found      | Medium      | High   | Limited users, quick rollback     |
+| **2 (25%)**  | Performance degradation | Medium      | Medium | Load testing, auto-scaling        |
+| **3 (50%)**  | Database overload       | Low         | High   | Read replicas, query optimization |
+| **4 (100%)** | Viral growth overwhelms | Low         | High   | Rate limiting, capacity planning  |
 
 ### **Contingency Plans**
 
 **If conversion rate drops below target:**
+
 - A/B test pricing page variations
 - Adjust messaging/CTAs
 - Offer limited-time discount (10% off first month)
 - Conduct user interviews to understand hesitation
 
 **If infrastructure can't handle load:**
+
 - Vertical scaling (bigger database, more RAM)
 - Horizontal scaling (more API instances)
 - Implement aggressive caching
@@ -553,6 +586,7 @@ ON TRACK FOR STAGE 3: YES (6/7 gates passing, 4 days to improve conversion)
 - Consider read replicas for database
 
 **If support tickets overwhelm team:**
+
 - Hire temporary support agents (Upwork/Fiverr)
 - Create comprehensive FAQ/knowledge base
 - Implement chatbot for common questions
@@ -585,16 +619,19 @@ IF ANY UNCHECKED → FIX ISSUE(S), RE-ASSESS IN 48 HOURS
 ## 📚 REFERENCE MATERIALS
 
 ### **Feature Flag Services**
+
 - LaunchDarkly: https://launchdarkly.com/
 - Flagsmith: https://flagsmith.com/
 - Unleash: https://www.getunleash.io/
 
 ### **Load Testing Tools**
+
 - k6: https://k6.io/
 - Artillery: https://artillery.io/
 - Locust: https://locust.io/
 
 ### **Monitoring & Alerts**
+
 - Datadog: https://www.datadoghq.com/
 - PagerDuty: https://www.pagerduty.com/
 - Sentry: https://sentry.io/
@@ -631,6 +668,6 @@ LET'S GO BUILD THE FUTURE 🚀🚀🚀
 **Status**: ✅ SOFT LAUNCH STRATEGY COMPLETE  
 **Timeline**: 4 weeks (staged, reversible, low-risk)  
 **Success Rate**: High (quality gates enforce discipline)  
-**Next**: Run STAGING_DEPLOYMENT_100.sh, then begin Stage 1 (10%)  
+**Next**: Run STAGING_DEPLOYMENT_100.sh, then begin Stage 1 (10%)
 
 🎯 **Staged rollout = confident scaling = Series A success** 🚀

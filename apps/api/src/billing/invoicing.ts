@@ -1,6 +1,6 @@
 /**
  * Invoice Generation Service (Phase 20.5)
- * 
+ *
  * Generates and sends monthly invoices via Stripe
  * Runs as a scheduled BullMQ job (1st of month)
  */
@@ -34,7 +34,7 @@ function formatCurrency(cents: number): string {
  */
 export async function generateOrgInvoice(
   organizationId: string,
-  month?: string
+  month?: string,
 ): Promise<{
   invoiceId: string;
   stripeInvoiceId?: string;
@@ -64,9 +64,7 @@ export async function generateOrgInvoice(
     });
 
     if (!usage) {
-      throw new Error(
-        `No usage found for organization ${organizationId} in month ${invoiceMonth}`
-      );
+      throw new Error(`No usage found for organization ${organizationId} in month ${invoiceMonth}`);
     }
 
     const billing = usage.organization.billing;
@@ -224,7 +222,7 @@ export async function generateMonthlyInvoices(): Promise<{
         stats.failureCount++;
         console.error(
           `✗ Failed to generate invoice for org ${org.organizationId}:`,
-          (err as Error).message
+          (err as Error).message,
         );
       }
     }
@@ -242,10 +240,7 @@ export async function generateMonthlyInvoices(): Promise<{
 /**
  * Get invoice details
  */
-export async function getInvoice(
-  organizationId: string,
-  month: string
-) {
+export async function getInvoice(organizationId: string, month: string) {
   try {
     const invoice = await prisma.orgInvoice.findUnique({
       where: { organizationId_month: { organizationId, month } },
@@ -260,9 +255,7 @@ export async function getInvoice(
     });
 
     if (invoice?.stripeInvoiceId) {
-      const stripeInvoice = await stripe.invoices.retrieve(
-        invoice.stripeInvoiceId
-      );
+      const stripeInvoice = await stripe.invoices.retrieve(invoice.stripeInvoiceId);
       return {
         ...invoice,
         stripeStatus: stripeInvoice.status,
@@ -285,10 +278,7 @@ export async function getInvoice(
 /**
  * Mark invoice as paid
  */
-export async function markInvoicePaid(
-  organizationId: string,
-  month: string
-): Promise<void> {
+export async function markInvoicePaid(organizationId: string, month: string): Promise<void> {
   try {
     await prisma.orgInvoice.update({
       where: { organizationId_month: { organizationId, month } },
@@ -312,10 +302,7 @@ export async function markInvoicePaid(
 /**
  * Send invoice reminder (manual trigger)
  */
-export async function sendInvoiceReminder(
-  organizationId: string,
-  month: string
-): Promise<void> {
+export async function sendInvoiceReminder(organizationId: string, month: string): Promise<void> {
   try {
     const invoice = await prisma.orgInvoice.findUnique({
       where: { organizationId_month: { organizationId, month } },

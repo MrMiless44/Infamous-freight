@@ -5,8 +5,9 @@
 Your agent has been **fully unlocked** with maximum capacity settings:
 
 ### Configuration Changes
+
 - ⚡ Rate limits increased 50-200x
-- 🔄 Worker concurrency increased 4-20x  
+- 🔄 Worker concurrency increased 4-20x
 - 🗄️ Database pool increased 10x
 - 📁 File upload limits increased 10x
 - 🤖 AI capacity maximized (1000 req/min)
@@ -22,31 +23,37 @@ See current status: `./manage-unlock.sh status`
 ### 🔴 CRITICAL (Do Before Production)
 
 1. **Change JWT Secret** ⚠️
+
    ```bash
    # Generate secure secret
    NEW_SECRET=$(openssl rand -hex 32)
    echo "JWT_SECRET=$NEW_SECRET" >> .env
    ```
+
    **Risk**: Using default JWT secret = complete security breach
 
 2. **Configure Database Max Connections**
+
    ```sql
    -- In PostgreSQL:
    ALTER SYSTEM SET max_connections = 250;  -- Or higher
    SELECT pg_reload_conf();
    ```
+
    **Risk**: App will crash when hitting DB connection limit
 
 3. **Set Up Monitoring Alerts**
    - Deploy `monitoring-alerts.yml` to your monitoring system
-   - Configure notifications (Slack/email/PagerDuty)
-   **Risk**: Won't know when system is overloaded
+   - Configure notifications (Slack/email/PagerDuty) **Risk**: Won't know when
+     system is overloaded
 
 4. **Run Load Tests**
+
    ```bash
    # Validate system can handle the load
    k6 run --vus 100 --duration 5m load-test.k6.js
    ```
+
    **Risk**: System may crash under actual load
 
 5. **Review AI Provider Costs**
@@ -60,6 +67,7 @@ See current status: `./manage-unlock.sh status`
 ### 🟡 IMPORTANT (Do Within 1 Week)
 
 6. **Configure Redis Memory Limits**
+
    ```bash
    redis-cli CONFIG SET maxmemory 2gb
    redis-cli CONFIG SET maxmemory-policy allkeys-lru
@@ -75,6 +83,7 @@ See current status: `./manage-unlock.sh status`
    - Prevents abuse and controls costs
 
 9. **Enable Audit Logging in Production**
+
    ```bash
    # In .env
    ENABLE_AUDIT_LOGGING=true
@@ -118,13 +127,16 @@ See current status: `./manage-unlock.sh status`
 ## 📋 Environment-Specific Recommendations
 
 ### Development (Current - 100% Unlocked)
+
 ✅ **SAFE** - Use current settings for testing
+
 - All limits maxed out
 - All features enabled
 - Synthetic AI (free)
 - **Cost**: ~$20-50/month
 
 **Commands**:
+
 ```bash
 ./manage-unlock.sh validate    # Check configuration
 ./manage-unlock.sh stats        # Monitor resources
@@ -132,7 +144,9 @@ See current status: `./manage-unlock.sh status`
 ```
 
 ### Staging (Recommended: 50% Limits)
+
 ⚠️ **BEFORE MOVING TO STAGING**:
+
 ```bash
 # Scale down to recommended production limits
 ./manage-unlock.sh scale-down
@@ -145,6 +159,7 @@ cp .env.scale-temp .env.staging
 ```
 
 **Changes from 100%**:
+
 - Rate limits: 50% (still very high)
 - Workers: 50% concurrency
 - AI: OpenAI GPT-3.5 (not GPT-4)
@@ -152,11 +167,13 @@ cp .env.scale-temp .env.staging
 - **Cost**: ~$100-200/month
 
 ### Production (Recommended: 25-50% Limits)
+
 🔒 **START CONSERVATIVE, SCALE UP BASED ON METRICS**
 
 Copy from: `.env.production.recommended`
 
 **Key Differences**:
+
 - Rate limits: Start at 25%, increase based on actual traffic
 - Security mode: **strict** (not permissive)
 - Org signup: Disabled (invite-only)
@@ -170,14 +187,14 @@ Copy from: `.env.production.recommended`
 
 ### Current Configuration Costs (100% Unlocked)
 
-| Service | Development | Production | 
-|---------|-------------|------------|
-| **Infrastructure** | $30-50/mo | $200-500/mo |
-| **AI (Synthetic)** | $0 | $0 |
-| **AI (GPT-3.5)** | N/A | $120-500/hour 🔥 |
-| **AI (GPT-4)** | N/A | $1,800/hour ⚠️ |
-| **Storage** | Included | $10-50/mo |
-| **Bandwidth** | Included | $20-100/mo |
+| Service            | Development | Production       |
+| ------------------ | ----------- | ---------------- |
+| **Infrastructure** | $30-50/mo   | $200-500/mo      |
+| **AI (Synthetic)** | $0          | $0               |
+| **AI (GPT-3.5)**   | N/A         | $120-500/hour 🔥 |
+| **AI (GPT-4)**     | N/A         | $1,800/hour ⚠️   |
+| **Storage**        | Included    | $10-50/mo        |
+| **Bandwidth**      | Included    | $20-100/mo       |
 
 ### Cost Optimization Strategies
 
@@ -186,6 +203,7 @@ Copy from: `.env.production.recommended`
    - Good for testing functionality
 
 2. **Implement AI Response Caching**
+
    ```javascript
    // Cache identical requests for 5-15 minutes
    // Can reduce AI costs by 50-80%
@@ -210,6 +228,7 @@ Copy from: `.env.production.recommended`
 ## 🛠️ Management Tools Created
 
 ### Quick Commands
+
 ```bash
 # Check current configuration
 ./manage-unlock.sh status
@@ -237,6 +256,7 @@ Copy from: `.env.production.recommended`
 ```
 
 ### Files Created
+
 - ✅ `validate-unlocked-config.sh` - Configuration validator
 - ✅ `manage-unlock.sh` - Management commands
 - ✅ `monitoring-alerts.yml` - Alert definitions
@@ -248,6 +268,7 @@ Copy from: `.env.production.recommended`
 ## 🎓 Best Practices
 
 ### When to Use 100% Unlocked
+
 - ✅ Local development
 - ✅ Load testing
 - ✅ Stress testing
@@ -257,12 +278,14 @@ Copy from: `.env.production.recommended`
 - ❌ Customer demos (could fail)
 
 ### When to Scale Down
+
 - Before deploying to production
 - When costs exceed budget
 - If experiencing instability
 - During low-traffic periods
 
 ### Monitoring Checklist
+
 - [ ] Database connection pool usage
 - [ ] Redis memory usage
 - [ ] API response times (P50, P95, P99)
@@ -294,8 +317,10 @@ Watch for these indicators that limits are too high:
 ## 📚 Additional Resources
 
 - [QUICK_REFERENCE.md](QUICK_REFERENCE.md) - Development commands
-- [MONITORING_DASHBOARD_SETUP_100.md](MONITORING_DASHBOARD_SETUP_100.md) - Monitoring setup
-- [COST_PLANNING_100_UNLOCKED.md](COST_PLANNING_100_UNLOCKED.md) - Detailed cost analysis
+- [MONITORING_DASHBOARD_SETUP_100.md](MONITORING_DASHBOARD_SETUP_100.md) -
+  Monitoring setup
+- [COST_PLANNING_100_UNLOCKED.md](COST_PLANNING_100_UNLOCKED.md) - Detailed cost
+  analysis
 - [ERROR_HANDLING.md](ERROR_HANDLING.md) - Error handling strategies
 - [SECURITY.md](SECURITY.md) - Security best practices
 
@@ -304,18 +329,21 @@ Watch for these indicators that limits are too high:
 ## 🎯 Next Steps
 
 ### Immediate (Today)
+
 1. ✅ Configuration is unlocked
 2. [ ] Run `./manage-unlock.sh validate`
 3. [ ] Review cost estimates
 4. [ ] Change JWT_SECRET if needed
 
 ### This Week
+
 1. [ ] Set up monitoring alerts
 2. [ ] Run load tests
 3. [ ] Configure database connections
 4. [ ] Review AI provider costs
 
 ### Before Production
+
 1. [ ] Scale down to recommended limits
 2. [ ] Enable strict security mode
 3. [ ] Set up Sentry/Datadog
@@ -334,4 +362,4 @@ Run `./manage-unlock.sh help` for available commands.
 
 ---
 
-*Last updated: 2026-02-14 - Agent 100% Unlocked Configuration*
+_Last updated: 2026-02-14 - Agent 100% Unlocked Configuration_

@@ -11,9 +11,7 @@ export function clearToken() {
   localStorage.removeItem("token");
 }
 
-export async function getBrowserLocation(): Promise<
-  { lat: number; lng: number } | null
-> {
+export async function getBrowserLocation(): Promise<{ lat: number; lng: number } | null> {
   if (typeof window === "undefined") return null;
   if (!("geolocation" in navigator)) return null;
 

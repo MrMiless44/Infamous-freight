@@ -17,8 +17,8 @@ permissions:
   security-events: write
 
 env:
-  NODE_VERSION: '22.16.0'
-  PNPM_VERSION: '9.15.0'
+  NODE_VERSION: "22.16.0"
+  PNPM_VERSION: "9.15.0"
 
 jobs:
   # Security Scanning
@@ -33,17 +33,17 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          severity: 'CRITICAL,HIGH'
+          scan-type: "fs"
+          scan-ref: "."
+          format: "sarif"
+          output: "trivy-results.sarif"
+          severity: "CRITICAL,HIGH"
 
       - name: Upload Trivy results to GitHub Security
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: "trivy-results.sarif"
 
       - name: Check for secrets in code
         uses: trufflesecurity/trufflehog@main
@@ -243,7 +243,7 @@ jobs:
           const coverage = require('./coverage/coverage-summary.json');
           const totals = coverage.total;
           const thresholds = { branches: 80, functions: 85, lines: 88, statements: 88 };
-          
+
           let failed = false;
           for (const [key, threshold] of Object.entries(thresholds)) {
             const actual = totals[key].pct;

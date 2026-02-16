@@ -76,9 +76,7 @@ export default function PricingTable() {
       const data = await response.json();
 
       if (data.ok) {
-        alert(
-          `✅ ${data.message}\nTier: ${data.tier.name}\nPrice: $${data.tier.price}/month`,
-        );
+        alert(`✅ ${data.message}\nTier: ${data.tier.name}\nPrice: $${data.tier.price}/month`);
       } else {
         alert(`❌ Error: ${data.error}`);
       }
@@ -127,12 +125,8 @@ export default function PricingTable() {
               key={tier.id}
               style={{
                 position: "relative",
-                background: tier.popular
-                  ? "linear-gradient(135deg, #1a1a33, #0a0a1a)"
-                  : "#0a0a1a",
-                border: tier.popular
-                  ? "2px solid #ffcc33"
-                  : "1px solid rgba(255,255,255,0.1)",
+                background: tier.popular ? "linear-gradient(135deg, #1a1a33, #0a0a1a)" : "#0a0a1a",
+                border: tier.popular ? "2px solid #ffcc33" : "1px solid rgba(255,255,255,0.1)",
                 borderRadius: "16px",
                 padding: "2rem",
                 boxShadow: tier.popular
@@ -181,16 +175,12 @@ export default function PricingTable() {
                 >
                   ${tier.price}
                 </span>
-                <span
-                  style={{ fontSize: "1rem", color: "rgba(249,250,251,0.6)" }}
-                >
+                <span style={{ fontSize: "1rem", color: "rgba(249,250,251,0.6)" }}>
                   /{tier.interval}
                 </span>
               </div>
 
-              <ul
-                style={{ listStyle: "none", padding: 0, marginBottom: "2rem" }}
-              >
+              <ul style={{ listStyle: "none", padding: 0, marginBottom: "2rem" }}>
                 {tier.features.map((feature, idx) => (
                   <li
                     key={idx}
@@ -229,9 +219,7 @@ export default function PricingTable() {
                   opacity: loading && selectedTier === tier.id ? 0.6 : 1,
                 }}
               >
-                {loading && selectedTier === tier.id
-                  ? "Processing..."
-                  : "Start Free Trial"}
+                {loading && selectedTier === tier.id ? "Processing..." : "Start Free Trial"}
               </button>
             </div>
           ))}
@@ -245,9 +233,7 @@ export default function PricingTable() {
             borderRadius: "12px",
           }}
         >
-          <h3 style={{ color: "#f9fafb", marginBottom: "1rem" }}>
-            Need a custom plan?
-          </h3>
+          <h3 style={{ color: "#f9fafb", marginBottom: "1rem" }}>Need a custom plan?</h3>
           <p style={{ color: "rgba(249,250,251,0.7)", marginBottom: "1.5rem" }}>
             Contact our sales team for enterprise pricing and custom solutions.
           </p>

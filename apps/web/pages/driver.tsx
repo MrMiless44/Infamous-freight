@@ -18,9 +18,7 @@ export default function DriverDashboard() {
     try {
       const loc = await getBrowserLocation();
       if (!loc) {
-        throw new Error(
-          "Location unavailable (permission denied or unsupported).",
-        );
+        throw new Error("Location unavailable (permission denied or unsupported).");
       }
       await api("/drivers/location", { method: "POST", body: JSON.stringify(loc) }, token);
       setMsg("✅ Location updated. Proximity matching ready.");
@@ -40,8 +38,8 @@ export default function DriverDashboard() {
             Driver Dashboard
           </h1>
           <p className="section-subtitle">
-            Infæmous Freight Enterprise driver controls for live loads, Connect,
-            and location sharing.
+            Infæmous Freight Enterprise driver controls for live loads, Connect, and location
+            sharing.
           </p>
 
           {err ? (

@@ -6,7 +6,8 @@ Accepted
 
 ## Context
 
-The Infamous Freight Enterprises platform consists of multiple related applications:
+The Infamous Freight Enterprises platform consists of multiple related
+applications:
 
 - Backend REST API (Node.js/Express)
 - Web frontend (Next.js)
@@ -34,10 +35,13 @@ We chose to implement a **monorepo architecture using pnpm workspaces**.
 
 **Why pnpm over alternatives:**
 
-- **Disk efficiency**: pnpm uses a content-addressable store, saving significant disk space
+- **Disk efficiency**: pnpm uses a content-addressable store, saving significant
+  disk space
 - **Speed**: Faster installation than npm/yarn due to hard linking
-- **Strict dependency management**: Prevents phantom dependencies that plague npm/yarn
-- **Monorepo support**: First-class workspace support with filtering (`pnpm --filter`)
+- **Strict dependency management**: Prevents phantom dependencies that plague
+  npm/yarn
+- **Monorepo support**: First-class workspace support with filtering
+  (`pnpm --filter`)
 - **Drop-in replacement**: Compatible with npm package.json format
 - **Active development**: Strong community and regular updates
 
@@ -82,4 +86,5 @@ infamous-freight-enterprises/
 ## Related
 
 - [ADR-0002: Shared Package Pattern](0002-shared-package-pattern.md)
-- [MIGRATION_GUIDE.md](../../MIGRATION_GUIDE.md) - Migration from polyrepo to monorepo
+- [MIGRATION_GUIDE.md](../../MIGRATION_GUIDE.md) - Migration from polyrepo to
+  monorepo

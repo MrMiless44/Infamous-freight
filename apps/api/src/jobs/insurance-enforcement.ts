@@ -55,10 +55,10 @@ export async function runInsuranceEnforcementSweep() {
         } catch (error) {
           console.error(
             `[InsuranceEnforcement] Failed for ${org.name}:`,
-            error instanceof Error ? error.message : String(error)
+            error instanceof Error ? error.message : String(error),
           );
         }
-      })
+      }),
     );
   }
 

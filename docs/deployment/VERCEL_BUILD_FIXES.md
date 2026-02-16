@@ -11,7 +11,9 @@ npm error code 127
 npm error command sh -c husky install
 ```
 
-**Root Cause**: The `prepare` script in `package.json` runs `husky install` during npm install, but in CI/CD environments (like Vercel), husky may not be available or needed.
+**Root Cause**: The `prepare` script in `package.json` runs `husky install`
+during npm install, but in CI/CD environments (like Vercel), husky may not be
+available or needed.
 
 **Solution**: Made the prepare script optional by adding `|| true`
 
@@ -125,8 +127,10 @@ Expected Duration: ~45-60s
 
 Note:
 
-- In a monorepo, set Vercel Project "Root Directory" to `web` so Vercel detects Next.js correctly and serves `apps/web/.next` automatically.
-- You generally do not need to set `outputDirectory` for Next.js; Vercel auto-detects it.
+- In a monorepo, set Vercel Project "Root Directory" to `web` so Vercel detects
+  Next.js correctly and serves `apps/web/.next` automatically.
+- You generally do not need to set `outputDirectory` for Next.js; Vercel
+  auto-detects it.
 
 ---
 
@@ -136,7 +140,8 @@ Note:
 - `fix: optimize Vercel build configuration`
 - `fix: make husky install optional in prepare script`
 
-Exact commit SHAs may differ from local; see the repository history for the latest IDs.
+Exact commit SHAs may differ from local; see the repository history for the
+latest IDs.
 
 ---
 
@@ -187,4 +192,5 @@ Watch for:
 
 **Status**: ✅ **Ready for Deployment**
 
-All fixes are in place and committed. The next Vercel build should complete successfully.
+All fixes are in place and committed. The next Vercel build should complete
+successfully.

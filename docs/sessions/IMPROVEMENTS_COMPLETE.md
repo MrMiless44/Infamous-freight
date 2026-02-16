@@ -2,7 +2,9 @@
 
 ## Overview
 
-Successfully transformed Infamous Freight Enterprises into a modern, production-ready monorepo with improved architecture, tooling, and developer experience.
+Successfully transformed Infamous Freight Enterprises into a modern,
+production-ready monorepo with improved architecture, tooling, and developer
+experience.
 
 ---
 
@@ -250,10 +252,13 @@ pnpm test:coverage    # Generate coverage reports
 
 ## 📚 Key Documents
 
-1. **[MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)** - Complete migration instructions
-2. **[DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md)** - All documentation links
+1. **[MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)** - Complete migration
+   instructions
+2. **[DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md)** - All documentation
+   links
 3. **[.env.guide.md](.env.guide.md)** - Environment setup
-4. **[CONSOLIDATION_STRATEGY.md](CONSOLIDATION_STRATEGY.md)** - Architecture decisions
+4. **[CONSOLIDATION_STRATEGY.md](CONSOLIDATION_STRATEGY.md)** - Architecture
+   decisions
 
 ---
 

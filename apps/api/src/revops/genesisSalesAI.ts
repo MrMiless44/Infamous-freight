@@ -4,8 +4,8 @@
  * Module: Genesis Sales AI Agent - Autonomous Sales Operations
  */
 
-import { PrismaClient } from '@prisma/client';
-import { aiSyntheticClient } from '../services/aiSyntheticClient';
+import { PrismaClient } from "@prisma/client";
+import { aiSyntheticClient } from "../services/aiSyntheticClient";
 
 const prisma = new PrismaClient();
 
@@ -22,10 +22,10 @@ const prisma = new PrismaClient();
 interface LeadQualificationResult {
   dealScore: number;
   confidence: number;
-  recommendedPlan: 'STARTER' | 'GROWTH' | 'ENTERPRISE' | null;
+  recommendedPlan: "STARTER" | "GROWTH" | "ENTERPRISE" | null;
   expectedMrr: number;
-  urgency: 'low' | 'medium' | 'high' | 'urgent';
-  nextAction: 'email' | 'call' | 'demo' | 'proposal' | 'nurture' | 'ignore';
+  urgency: "low" | "medium" | "high" | "urgent";
+  nextAction: "email" | "call" | "demo" | "proposal" | "nurture" | "ignore";
   aiSummary: string;
   probability: number;
 }
@@ -33,7 +33,7 @@ interface LeadQualificationResult {
 interface CompanyIntel {
   name: string;
   domain: string;
-  estimatedSize: 'small' | 'medium' | 'large' | 'enterprise';
+  estimatedSize: "small" | "medium" | "large" | "enterprise";
   industry: string;
   likelyFleetSize: number;
   estimatedMonthlyLoads: number;
@@ -45,71 +45,76 @@ interface CompanyIntel {
  */
 async function analyzeCompany(domain: string, company: string): Promise<CompanyIntel> {
   // Extract clean domain
-  const cleanDomain = domain.toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, '').split('/')[0];
-  
+  const cleanDomain = domain
+    .toLowerCase()
+    .replace(/^(https?:\/\/)?(www\.)?/, "")
+    .split("/")[0];
+
   // Check for common logistics/freight indicators
   const isLogisticsCompany = /freight|logistics|transport|trucking|shipping|courier|delivery/.test(
-    company.toLowerCase() + ' ' + cleanDomain
+    company.toLowerCase() + " " + cleanDomain,
   );
-  
+
   // Estimate company size based on domain TLD and patterns
-  let estimatedSize: CompanyIntel['estimatedSize'] = 'small';
+  let estimatedSize: CompanyIntel["estimatedSize"] = "small";
   let trustScore = 50;
-  
-  if (cleanDomain.includes('gmail.com') || cleanDomain.includes('yahoo.com')) {
-    estimatedSize = 'small';
+
+  if (cleanDomain.includes("gmail.com") || cleanDomain.includes("yahoo.com")) {
+    estimatedSize = "small";
     trustScore = 30;
-  } else if (cleanDomain.includes('hotmail.com') || cleanDomain.includes('outlook.com')) {
-    estimatedSize = 'small';
+  } else if (cleanDomain.includes("hotmail.com") || cleanDomain.includes("outlook.com")) {
+    estimatedSize = "small";
     trustScore = 40;
   } else {
     // Custom domain = higher trust
-    estimatedSize = 'medium';
+    estimatedSize = "medium";
     trustScore = 70;
-    
+
     // Check for enterprise indicators
-    if (company.toLowerCase().includes('inc') || 
-        company.toLowerCase().includes('corp') ||
-        company.toLowerCase().includes('llc')) {
-      estimatedSize = 'large';
+    if (
+      company.toLowerCase().includes("inc") ||
+      company.toLowerCase().includes("corp") ||
+      company.toLowerCase().includes("llc")
+    ) {
+      estimatedSize = "large";
       trustScore = 80;
     }
   }
-  
+
   // Estimate fleet size and monthly loads
   let likelyFleetSize = 0;
   let estimatedMonthlyLoads = 0;
-  
+
   switch (estimatedSize) {
-    case 'small':
+    case "small":
       likelyFleetSize = 3;
       estimatedMonthlyLoads = 20;
       break;
-    case 'medium':
+    case "medium":
       likelyFleetSize = 15;
       estimatedMonthlyLoads = 100;
       break;
-    case 'large':
+    case "large":
       likelyFleetSize = 50;
       estimatedMonthlyLoads = 500;
       break;
-    case 'enterprise':
+    case "enterprise":
       likelyFleetSize = 200;
       estimatedMonthlyLoads = 2000;
       break;
   }
-  
+
   if (isLogisticsCompany) {
     likelyFleetSize *= 2;
     estimatedMonthlyLoads *= 2;
     trustScore += 10;
   }
-  
+
   return {
     name: company,
     domain: cleanDomain,
     estimatedSize,
-    industry: isLogisticsCompany ? 'Logistics' : 'General',
+    industry: isLogisticsCompany ? "Logistics" : "General",
     likelyFleetSize,
     estimatedMonthlyLoads,
     trustScore: Math.min(trustScore, 100),
@@ -121,56 +126,56 @@ async function analyzeCompany(domain: string, company: string): Promise<CompanyI
  */
 function calculateDealScore(intel: CompanyIntel, leadData: any): number {
   let score = 0;
-  
+
   // Company size (40 points)
   switch (intel.estimatedSize) {
-    case 'enterprise':
+    case "enterprise":
       score += 40;
       break;
-    case 'large':
+    case "large":
       score += 30;
       break;
-    case 'medium':
+    case "medium":
       score += 20;
       break;
-    case 'small':
+    case "small":
       score += 10;
       break;
   }
-  
+
   // Trust score (20 points)
   score += intel.trustScore * 0.2;
-  
+
   // Estimated volume (20 points)
   if (intel.estimatedMonthlyLoads > 1000) score += 20;
   else if (intel.estimatedMonthlyLoads > 500) score += 15;
   else if (intel.estimatedMonthlyLoads > 100) score += 10;
   else if (intel.estimatedMonthlyLoads > 50) score += 5;
-  
+
   // Lead source quality (10 points)
-  if (leadData.source === 'REFERRAL') score += 10;
-  else if (leadData.source?.startsWith('LANDING_PAGE')) score += 8;
-  else if (leadData.source === 'ORGANIC_SEARCH') score += 6;
-  else if (leadData.source === 'PAID_AD') score += 4;
-  
+  if (leadData.source === "REFERRAL") score += 10;
+  else if (leadData.source?.startsWith("LANDING_PAGE")) score += 8;
+  else if (leadData.source === "ORGANIC_SEARCH") score += 6;
+  else if (leadData.source === "PAID_AD") score += 4;
+
   // Lead type (10 points)
-  if (leadData.type === 'ENTERPRISE') score += 10;
-  else if (leadData.type === 'SHIPPER') score += 7;
-  else if (leadData.type === 'DRIVER') score += 3;
-  
+  if (leadData.type === "ENTERPRISE") score += 10;
+  else if (leadData.type === "SHIPPER") score += 7;
+  else if (leadData.type === "DRIVER") score += 3;
+
   return Math.min(Math.round(score), 100);
 }
 
 /**
  * Determine recommended plan based on intel
  */
-function recommendPlan(intel: CompanyIntel): 'STARTER' | 'GROWTH' | 'ENTERPRISE' {
-  if (intel.estimatedMonthlyLoads > 1000 || intel.estimatedSize === 'enterprise') {
-    return 'ENTERPRISE';
-  } else if (intel.estimatedMonthlyLoads > 100 || intel.estimatedSize === 'large') {
-    return 'GROWTH';
+function recommendPlan(intel: CompanyIntel): "STARTER" | "GROWTH" | "ENTERPRISE" {
+  if (intel.estimatedMonthlyLoads > 1000 || intel.estimatedSize === "enterprise") {
+    return "ENTERPRISE";
+  } else if (intel.estimatedMonthlyLoads > 100 || intel.estimatedSize === "large") {
+    return "GROWTH";
   }
-  return 'STARTER';
+  return "STARTER";
 }
 
 /**
@@ -182,15 +187,15 @@ function calculateExpectedMrr(plan: string, monthlyLoads: number): number {
     GROWTH: { base: 199, quota: 2500, overage: 0.08 },
     ENTERPRISE: { base: 599, quota: Infinity, overage: 0 },
   };
-  
+
   const pricing = planPricing[plan as keyof typeof planPricing] || planPricing.STARTER;
   let mrr = pricing.base;
-  
+
   if (monthlyLoads > pricing.quota) {
     const overage = monthlyLoads - pricing.quota;
     mrr += overage * pricing.overage;
   }
-  
+
   return Math.round(mrr);
 }
 
@@ -199,33 +204,33 @@ function calculateExpectedMrr(plan: string, monthlyLoads: number): number {
  */
 function determineNextAction(
   score: number,
-  intel: CompanyIntel
-): LeadQualificationResult['nextAction'] {
+  intel: CompanyIntel,
+): LeadQualificationResult["nextAction"] {
   if (score >= 70) {
     // High-value lead: immediate demo
-    return 'demo';
+    return "demo";
   } else if (score >= 50) {
     // Medium value: send proposal
-    return 'proposal';
+    return "proposal";
   } else if (score >= 30) {
     // Low-medium: nurture campaign
-    return 'nurture';
+    return "nurture";
   } else if (score >= 20) {
     // Low value: basic email
-    return 'email';
+    return "email";
   }
   // Very low value: ignore
-  return 'ignore';
+  return "ignore";
 }
 
 /**
  * Determine urgency level
  */
-function determineUrgency(score: number, intel: CompanyIntel): LeadQualificationResult['urgency'] {
-  if (score >= 80 && intel.estimatedSize === 'enterprise') return 'urgent';
-  if (score >= 70) return 'high';
-  if (score >= 40) return 'medium';
-  return 'low';
+function determineUrgency(score: number, intel: CompanyIntel): LeadQualificationResult["urgency"] {
+  if (score >= 80 && intel.estimatedSize === "enterprise") return "urgent";
+  if (score >= 70) return "high";
+  if (score >= 40) return "medium";
+  return "low";
 }
 
 /**
@@ -235,7 +240,7 @@ async function generateAISummary(
   leadData: any,
   intel: CompanyIntel,
   score: number,
-  nextAction: string
+  nextAction: string,
 ): Promise<string> {
   const prompt = `Analyze this sales lead and provide a brief summary:
 
@@ -258,23 +263,26 @@ Be concise and actionable.`;
 
   try {
     const response = await aiSyntheticClient.chat.completions.create({
-      model: 'gpt-4',
+      model: "gpt-4",
       messages: [
         {
-          role: 'system',
-          content: 'You are Genesis, an AI sales assistant for Infæmous Freight. Provide concise, actionable sales insights.',
+          role: "system",
+          content:
+            "You are Genesis, an AI sales assistant for Infæmous Freight. Provide concise, actionable sales insights.",
         },
-        { role: 'user', content: prompt },
+        { role: "user", content: prompt },
       ],
       max_tokens: 200,
       temperature: 0.7,
     });
-    
-    return response.choices[0]?.message?.content || 
-      `${intel.estimatedSize} ${intel.industry} company with ~${intel.estimatedMonthlyLoads} monthly loads. ${nextAction === 'demo' ? 'High priority - schedule demo immediately.' : nextAction === 'proposal' ? 'Good fit - send ROI proposal.' : 'Add to nurture campaign.'}`;
+
+    return (
+      response.choices[0]?.message?.content ||
+      `${intel.estimatedSize} ${intel.industry} company with ~${intel.estimatedMonthlyLoads} monthly loads. ${nextAction === "demo" ? "High priority - schedule demo immediately." : nextAction === "proposal" ? "Good fit - send ROI proposal." : "Add to nurture campaign."}`
+    );
   } catch (error) {
     // Fallback if AI fails
-    return `${intel.estimatedSize} ${intel.industry} company with ~${intel.estimatedMonthlyLoads} monthly loads. ${nextAction === 'demo' ? 'High priority - schedule demo immediately.' : nextAction === 'proposal' ? 'Good fit - send ROI proposal.' : 'Add to nurture campaign.'}`;
+    return `${intel.estimatedSize} ${intel.industry} company with ~${intel.estimatedMonthlyLoads} monthly loads. ${nextAction === "demo" ? "High priority - schedule demo immediately." : nextAction === "proposal" ? "Good fit - send ROI proposal." : "Add to nurture campaign."}`;
   }
 }
 
@@ -286,40 +294,40 @@ export async function qualifyLead(leadId: string): Promise<LeadQualificationResu
   const lead = await prisma.lead.findUnique({
     where: { id: leadId },
   });
-  
+
   if (!lead) {
     throw new Error(`Lead ${leadId} not found`);
   }
-  
+
   // Analyze company
-  const domain = lead.email.split('@')[1] || '';
-  const intel = await analyzeCompany(domain, lead.company || 'Unknown');
-  
+  const domain = lead.email.split("@")[1] || "";
+  const intel = await analyzeCompany(domain, lead.company || "Unknown");
+
   // Calculate deal score
   const dealScore = calculateDealScore(intel, lead);
-  
+
   // Make recommendations
   const recommendedPlan = recommendPlan(intel);
   const expectedMrr = calculateExpectedMrr(recommendedPlan, intel.estimatedMonthlyLoads);
   const nextAction = determineNextAction(dealScore, intel);
   const urgency = determineUrgency(dealScore, intel);
-  
+
   // Generate AI summary
   const aiSummary = await generateAISummary(lead, intel, dealScore, nextAction);
-  
+
   // Calculate close probability
   let probability = 10;
   if (dealScore >= 80) probability = 70;
   else if (dealScore >= 70) probability = 50;
   else if (dealScore >= 50) probability = 30;
   else if (dealScore >= 30) probability = 15;
-  
+
   // Determine stage based on score
-  let stage: any = 'NEW';
-  if (dealScore >= 70) stage = 'QUALIFIED';
-  else if (dealScore >= 40) stage = 'QUALIFYING';
-  else stage = 'NURTURE';
-  
+  let stage: any = "NEW";
+  if (dealScore >= 70) stage = "QUALIFIED";
+  else if (dealScore >= 40) stage = "QUALIFYING";
+  else stage = "NURTURE";
+
   // Create or update sales opportunity
   const opportunity = await prisma.salesOpportunity.upsert({
     where: {
@@ -336,7 +344,7 @@ export async function qualifyLead(leadId: string): Promise<LeadQualificationResu
       nextAction,
       urgency,
       probability,
-      metadata: JSON.stringify({ intel, analysis: 'genesis-ai' }),
+      metadata: JSON.stringify({ intel, analysis: "genesis-ai" }),
     },
     create: {
       id: `opportunity-${leadId}`,
@@ -350,12 +358,12 @@ export async function qualifyLead(leadId: string): Promise<LeadQualificationResu
       nextAction,
       urgency,
       probability,
-      metadata: JSON.stringify({ intel, analysis: 'genesis-ai' }),
+      metadata: JSON.stringify({ intel, analysis: "genesis-ai" }),
     },
   });
-  
+
   console.log(`[Genesis AI] Qualified lead ${lead.email}: Score ${dealScore}, Next: ${nextAction}`);
-  
+
   return {
     dealScore,
     confidence: intel.trustScore,
@@ -374,16 +382,16 @@ export async function qualifyLead(leadId: string): Promise<LeadQualificationResu
 export async function autoQualifyNewLeads(): Promise<number> {
   const newLeads = await prisma.lead.findMany({
     where: {
-      status: 'new',
+      status: "new",
       opportunities: {
         none: {}, // No opportunity created yet
       },
     },
     take: 50, // Process in batches
   });
-  
+
   let qualified = 0;
-  
+
   for (const lead of newLeads) {
     try {
       await qualifyLead(lead.id);
@@ -392,7 +400,7 @@ export async function autoQualifyNewLeads(): Promise<number> {
       console.error(`[Genesis AI] Failed to qualify lead ${lead.id}:`, error);
     }
   }
-  
+
   return qualified;
 }
 
@@ -403,7 +411,7 @@ export async function getTopOpportunities(limit: number = 10) {
   return prisma.salesOpportunity.findMany({
     where: {
       stage: {
-        in: ['QUALIFIED', 'DEMO_SCHEDULED', 'DEMO_COMPLETED', 'PROPOSAL_SENT'],
+        in: ["QUALIFIED", "DEMO_SCHEDULED", "DEMO_COMPLETED", "PROPOSAL_SENT"],
       },
     },
     include: {
@@ -416,10 +424,7 @@ export async function getTopOpportunities(limit: number = 10) {
         },
       },
     },
-    orderBy: [
-      { urgency: 'desc' },
-      { dealScore: 'desc' },
-    ],
+    orderBy: [{ urgency: "desc" }, { dealScore: "desc" }],
     take: limit,
   });
 }
@@ -427,18 +432,20 @@ export async function getTopOpportunities(limit: number = 10) {
 /**
  * Update opportunity stage
  */
-export async function updateOpportunityStage(
-  opportunityId: string,
-  stage: string,
-  notes?: string
-) {
+export async function updateOpportunityStage(opportunityId: string, stage: string, notes?: string) {
   return prisma.salesOpportunity.update({
     where: { id: opportunityId },
     data: {
       stage: stage as any,
       updatedAt: new Date(),
       metadata: notes
-        ? JSON.stringify({ ...JSON.parse((await prisma.salesOpportunity.findUnique({ where: { id: opportunityId } }))?.metadata || '{}'), notes })
+        ? JSON.stringify({
+            ...JSON.parse(
+              (await prisma.salesOpportunity.findUnique({ where: { id: opportunityId } }))
+                ?.metadata || "{}",
+            ),
+            notes,
+          })
         : undefined,
     },
   });
@@ -451,7 +458,7 @@ export async function markOpportunityWon(opportunityId: string, orgId: string) {
   const opportunity = await prisma.salesOpportunity.update({
     where: { id: opportunityId },
     data: {
-      stage: 'WON',
+      stage: "WON",
       wonAt: new Date(),
       probability: 100,
     },
@@ -459,19 +466,19 @@ export async function markOpportunityWon(opportunityId: string, orgId: string) {
       lead: true,
     },
   });
-  
+
   // Update lead to show conversion
   await prisma.lead.update({
     where: { id: opportunity.leadId },
     data: {
-      status: 'won',
+      status: "won",
       convertedOrgId: orgId,
       convertedAt: new Date(),
     },
   });
-  
+
   console.log(`[Genesis AI] Deal won! Lead ${opportunity.lead.email} → Org ${orgId}`);
-  
+
   return opportunity;
 }
 
@@ -482,7 +489,7 @@ export async function markOpportunityLost(opportunityId: string, reason: string)
   return prisma.salesOpportunity.update({
     where: { id: opportunityId },
     data: {
-      stage: 'LOST',
+      stage: "LOST",
       lostAt: new Date(),
       lostReason: reason,
       probability: 0,

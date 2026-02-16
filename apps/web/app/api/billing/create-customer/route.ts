@@ -30,9 +30,7 @@ export async function POST(req: Request) {
     return jsonWithRequestId(req, { ok: true, stripeCustomerId });
   } catch (error) {
     const message =
-      error instanceof Error
-        ? error.message
-        : "Failed to create or retrieve Stripe customer";
+      error instanceof Error ? error.message : "Failed to create or retrieve Stripe customer";
 
     return jsonWithRequestId(req, {
       ok: false,

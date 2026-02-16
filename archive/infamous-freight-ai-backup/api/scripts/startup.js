@@ -16,9 +16,7 @@ const runMigrationsWithRetry = () => {
       return;
     } catch (err) {
       if (attempt === attempts) throw err;
-      console.warn(
-        `Prisma migrate failed (attempt ${attempt}/${attempts}). Retrying in 3s...`,
-      );
+      console.warn(`Prisma migrate failed (attempt ${attempt}/${attempts}). Retrying in 3s...`);
       execSync("sleep 3", { stdio: "inherit", cwd });
     }
   }

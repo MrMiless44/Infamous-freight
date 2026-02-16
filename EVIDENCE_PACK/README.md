@@ -1,6 +1,7 @@
 # Evidence Pack - SOC2-lite Compliance Artifacts
 
-This folder contains operational and compliance artifacts for SOC2-lite enterprise customer audits.
+This folder contains operational and compliance artifacts for SOC2-lite
+enterprise customer audits.
 
 ## Directory Structure
 

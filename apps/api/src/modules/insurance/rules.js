@@ -22,10 +22,7 @@ function selectBestCertificate(certificates, requirement) {
     (cert) => cert.status !== "REJECTED" && cert.expirationDate,
   );
 
-  const pool =
-    nonRejectedWithExpiration.length > 0
-      ? nonRejectedWithExpiration
-      : coverageCerts;
+  const pool = nonRejectedWithExpiration.length > 0 ? nonRejectedWithExpiration : coverageCerts;
 
   const parseExpiration = (cert) =>
     cert && cert.expirationDate ? new Date(cert.expirationDate).getTime() : null;
@@ -59,9 +56,7 @@ function evaluateRequirement({ requirement, certificates, now }) {
   if (!cert) {
     return {
       state: "NON_COMPLIANT",
-      reasons: [
-        `Missing ${requirement.coverageType} certificate`,
-      ],
+      reasons: [`Missing ${requirement.coverageType} certificate`],
       daysToExpiration,
     };
   }
@@ -69,9 +64,7 @@ function evaluateRequirement({ requirement, certificates, now }) {
   if (cert.status === "REJECTED") {
     return {
       state: "NON_COMPLIANT",
-      reasons: [
-        `${requirement.coverageType} certificate was rejected`,
-      ],
+      reasons: [`${requirement.coverageType} certificate was rejected`],
       daysToExpiration,
     };
   }
@@ -79,9 +72,7 @@ function evaluateRequirement({ requirement, certificates, now }) {
   if (!cert.expirationDate) {
     return {
       state: "NON_COMPLIANT",
-      reasons: [
-        `${requirement.coverageType} certificate is missing an expiration date`,
-      ],
+      reasons: [`${requirement.coverageType} certificate is missing an expiration date`],
       daysToExpiration,
     };
   }
@@ -97,15 +88,11 @@ function evaluateRequirement({ requirement, certificates, now }) {
       );
     } else {
       state = "NON_COMPLIANT";
-      reasons.push(
-        `${requirement.coverageType} certificate expired ${daysPast} days ago`,
-      );
+      reasons.push(`${requirement.coverageType} certificate expired ${daysPast} days ago`);
     }
   } else if (daysToExpiration <= requirement.warningDays) {
     state = "WARNING";
-    reasons.push(
-      `${requirement.coverageType} certificate expires in ${daysToExpiration} days`,
-    );
+    reasons.push(`${requirement.coverageType} certificate expires in ${daysToExpiration} days`);
   }
 
   if (cert.status === "PENDING") {

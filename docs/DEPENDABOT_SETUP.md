@@ -1,10 +1,12 @@
 # Dependabot Setup Guide
 
-GitHub's Dependabot automatically scans your repository for vulnerable dependencies and can automatically create pull requests to update them.
+GitHub's Dependabot automatically scans your repository for vulnerable
+dependencies and can automatically create pull requests to update them.
 
 ## Enable Dependabot Alerts
 
-1. Go to your repository: <https://github.com/MrMiless44/Infamous-freight-enterprises>
+1. Go to your repository:
+   <https://github.com/MrMiless44/Infamous-freight-enterprises>
 2. Click **Settings** (top navigation)
 3. Navigate to **Code security and analysis** (left sidebar)
 4. Enable the following toggles:
@@ -83,7 +85,8 @@ updates:
 Your CI/CD pipeline in `.github/workflows/ci.yml` now includes:
 
 - **Security Audit**: Runs `npm audit` on all package directories before tests
-- **Test Coverage**: Automatically generates coverage reports (Codecov integration)
+- **Test Coverage**: Automatically generates coverage reports (Codecov
+  integration)
 - **Smoke Tests**: Validates API health endpoints
 - **Lint & Build**: Ensures code quality
 
@@ -94,7 +97,8 @@ These will run on:
 
 ### Uploading Test Results to Codecov
 
-To upload test results to Codecov, add the following step in your GitHub Actions workflow:
+To upload test results to Codecov, add the following step in your GitHub Actions
+workflow:
 
 ```yaml
 - name: Upload test results to Codecov
@@ -118,7 +122,8 @@ Check your project's security status:
 
 - GitHub → Security tab → Dependabot alerts
 - GitHub → Actions tab → CI workflow status
-- Codecov dashboard (if integrated): codecov.io/github/MrMiless44/Infamous-freight-enterprises
+- Codecov dashboard (if integrated):
+  codecov.io/github/MrMiless44/Infamous-freight-enterprises
 
 ## Troubleshooting
 

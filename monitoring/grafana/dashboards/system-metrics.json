@@ -141,10 +141,7 @@
       "id": 3,
       "options": {
         "legend": {
-          "calcs": [
-            "mean",
-            "lastNotNull"
-          ],
+          "calcs": ["mean", "lastNotNull"],
           "displayMode": "table",
           "placement": "right"
         },
@@ -256,9 +253,7 @@
         "reduceOptions": {
           "values": false,
           "fields": "",
-          "calcs": [
-            "lastNotNull"
-          ]
+          "calcs": ["lastNotNull"]
         },
         "text": {},
         "textMode": "auto"
@@ -278,10 +273,7 @@
   "refresh": "10s",
   "schemaVersion": 27,
   "style": "dark",
-  "tags": [
-    "system",
-    "metrics"
-  ],
+  "tags": ["system", "metrics"],
   "templating": {
     "list": []
   },

@@ -43,8 +43,7 @@ class DocuSignService {
     this.clientId = process.env.DOCUSIGN_CLIENT_ID || "";
     this.clientSecret = process.env.DOCUSIGN_CLIENT_SECRET || "";
     this.accountId = process.env.DOCUSIGN_ACCOUNT_ID || "";
-    this.baseUrl =
-      process.env.DOCUSIGN_BASE_URL || "https://demo.docusign.net/restapi";
+    this.baseUrl = process.env.DOCUSIGN_BASE_URL || "https://demo.docusign.net/restapi";
 
     if (!this.clientId || !this.clientSecret) {
       logger.warn("DocuSign credentials not configured - signing service disabled");
@@ -63,14 +62,7 @@ class DocuSignService {
     }
 
     try {
-      // TODO: Implement actual DocuSign integration
-      // 1. Authenticate with OAuth2
-      // 2. Create envelope with document
-      // 3. Add recipients (signers and CCs)
-      // 4. Send for signing
-      // 5. Return envelope ID for tracking
-
-      logger.info("DocuSign signing request created", {
+      logger.info("DocuSign mock signing request created", {
         signerEmail: request.signerEmail,
         subject: request.subject,
         status: "pending",
@@ -96,11 +88,7 @@ class DocuSignService {
     }
 
     try {
-      // TODO: Implement envelope status retrieval
-      // 1. Call DocuSign API to get envelope status
-      // 2. Parse signer statuses
-      // 3. Return structured status
-
+      logger.info("DocuSign mock status lookup", { envelopeId });
       return {
         envelopeId,
         status: "sent",
@@ -126,12 +114,7 @@ class DocuSignService {
     }
 
     try {
-      // TODO: Implement signed document retrieval
-      // 1. Retrieve combined PDF from DocuSign
-      // 2. Stream to buffer
-      // 3. Return for download/storage
-
-      logger.info("Signed document retrieved", { envelopeId });
+      logger.info("DocuSign mock document retrieved", { envelopeId });
 
       return Buffer.from("Mock PDF content");
     } catch (error) {
@@ -153,12 +136,7 @@ class DocuSignService {
     }
 
     try {
-      // TODO: Implement webhook registration
-      // 1. Register webhook endpoint with DocuSign
-      // 2. Subscribe to envelope events (sent, delivered, signed, declined)
-      // 3. Return success
-
-      logger.info("DocuSign webhook registered", { webhookUrl });
+      logger.info("DocuSign mock webhook registered", { webhookUrl });
 
       return true;
     } catch (error) {

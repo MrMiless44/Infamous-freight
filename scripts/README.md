@@ -1,6 +1,7 @@
 # 🚀 Automation Scripts
 
-This directory contains helper scripts to automate common tasks for the Infamous Freight Enterprises repository.
+This directory contains helper scripts to automate common tasks for the Infamous
+Freight Enterprises repository.
 
 ---
 
@@ -71,7 +72,8 @@ Helps set up GitHub Pages for the analytics dashboard.
 - Validates required files (dashboard, metrics)
 - Shows expected dashboard URL
 
-**Result:** Dashboard accessible at `https://mrmiless44.github.io/Infamous-freight-enterprises/workflows-dashboard.html`
+**Result:** Dashboard accessible at
+`https://mrmiless44.github.io/Infamous-freight-enterprises/workflows-dashboard.html`
 
 **Requirements:** None (provides instructions)  
 **Optional:** GitHub CLI (`gh`) for automated checks
@@ -108,7 +110,74 @@ Interactive helper for publishing custom actions to GitHub Marketplace.
 3. Show publishing checklist
 4. Exit
 
-**See also:** [MARKETPLACE_PUBLISHING_GUIDE.md](../.github/MARKETPLACE_PUBLISHING_GUIDE.md)
+**See also:**
+[MARKETPLACE_PUBLISHING_GUIDE.md](../.github/MARKETPLACE_PUBLISHING_GUIDE.md)
+
+---
+
+### 5. **setup-environments.sh**
+
+Bootstraps environment files across the repo from templates.
+
+**Usage:**
+
+```bash
+./scripts/setup-environments.sh
+```
+
+**What it does:**
+
+- Creates missing .env files from .env.example
+- Seeds placeholder secrets with random values
+- Covers root, api, web, mobile, supabase, and legacy backend
+
+---
+
+### 6. **final-go-live-verification.sh**
+
+Runs final pre-launch checks (env vars, required files, endpoints).
+
+**Usage:**
+
+```bash
+./scripts/final-go-live-verification.sh --api-url https://api.example.com --web-url https://app.example.com
+```
+
+---
+
+### 7. **production-health-monitor.sh**
+
+Continuous health monitoring for API and web endpoints.
+
+**Usage:**
+
+```bash
+API_URL=https://api.example.com WEB_URL=https://app.example.com ./scripts/production-health-monitor.sh
+```
+
+---
+
+### 8. **rollback-automation.sh**
+
+Dry-run rollback helper for Fly.io, Vercel, and optional git revert.
+
+**Usage:**
+
+```bash
+./scripts/rollback-automation.sh --target fly --confirm
+```
+
+---
+
+### 9. **verify-critical-services.sh**
+
+Checks critical public endpoints and reports pass/fail summary.
+
+**Usage:**
+
+```bash
+./scripts/verify-critical-services.sh
+```
 
 ---
 
@@ -239,8 +308,10 @@ ls -la docs/metrics/workflow-data.json
 
 - [Workflow Guide](../.github/WORKFLOW_GUIDE.md) - All workflows documented
 - [Metrics Guide](../.github/METRICS.md) - Cost tracking and metrics
-- [Marketplace Publishing Guide](../.github/MARKETPLACE_PUBLISHING_GUIDE.md) - Detailed publishing instructions
-- [Advanced Features Complete](../.github/ADVANCED_FEATURES_COMPLETE.md) - Implementation summary
+- [Marketplace Publishing Guide](../.github/MARKETPLACE_PUBLISHING_GUIDE.md) -
+  Detailed publishing instructions
+- [Advanced Features Complete](../.github/ADVANCED_FEATURES_COMPLETE.md) -
+  Implementation summary
 
 ---
 
@@ -257,4 +328,5 @@ ls -la docs/metrics/workflow-data.json
 **Last Updated:** December 31, 2025  
 **Maintained by:** DevOps Team
 
-Need help? Check the [QUICK_REFERENCE.md](../QUICK_REFERENCE.md) or create an issue using our [issue templates](../.github/ISSUE_TEMPLATE/).
+Need help? Check the [QUICK_REFERENCE.md](../QUICK_REFERENCE.md) or create an
+issue using our [issue templates](../.github/ISSUE_TEMPLATE/).

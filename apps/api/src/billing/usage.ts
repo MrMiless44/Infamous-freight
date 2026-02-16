@@ -1,6 +1,6 @@
 /**
  * Usage Metering Service (Phase 20.4)
- * 
+ *
  * Tracks job completions per organization per month
  * Calculates revenue and overage charges
  * Updates Stripe subscription items with usage
@@ -56,7 +56,7 @@ export async function recordJobCompletion(
   organizationId: string,
   jobId: string,
   vehicleType: string,
-  jobPrice: number // in dollars
+  jobPrice: number, // in dollars
 ): Promise<{
   month: string;
   totalJobs: number;
@@ -172,13 +172,11 @@ async function updateStripeUsage(organizationId: string): Promise<void> {
     // Retrieve subscription to get metered item
     const subscription = await stripe.subscriptions.retrieve(billing.stripeSubId);
     const meteredItem = subscription.items.data.find(
-      (item) => item.price.billing_scheme === "tiered"
+      (item) => item.price.billing_scheme === "tiered",
     );
 
     if (!meteredItem) {
-      console.warn(
-        `No metered billing item found in subscription for org ${organizationId}`
-      );
+      console.warn(`No metered billing item found in subscription for org ${organizationId}`);
       return;
     }
 
@@ -242,11 +240,7 @@ export async function getMonthlyUsage(organizationId: string, month?: string) {
 /**
  * Get usage summary for a date range
  */
-export async function getUsageSummary(
-  organizationId: string,
-  fromMonth: string,
-  toMonth: string
-) {
+export async function getUsageSummary(organizationId: string, fromMonth: string, toMonth: string) {
   try {
     const usageRecords = await prisma.orgUsage.findMany({
       where: {

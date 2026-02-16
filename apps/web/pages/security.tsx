@@ -5,8 +5,7 @@ import { trackEvent } from "../src/lib/analytics";
 const securityPoints = [
   {
     title: "SOC2-lite posture",
-    detail:
-      "Security-first infrastructure with audit-ready controls and operational transparency.",
+    detail: "Security-first infrastructure with audit-ready controls and operational transparency.",
   },
   {
     title: "Role-based access",
@@ -35,8 +34,8 @@ export default function SecurityPage() {
             <p className="section-subtitle">Security</p>
             <h1 className="hero-title">Security that earns enterprise trust.</h1>
             <p className="hero-copy">
-              Infæmous Freight Enterprise delivers a SOC2-lite readiness posture
-              with audit trails, RBAC, and data visibility across operations.
+              Infæmous Freight Enterprise delivers a SOC2-lite readiness posture with audit trails,
+              RBAC, and data visibility across operations.
             </p>
             <div className="hero-actions">
               <Link href="/docs" className="btn btn-tertiary">
@@ -89,8 +88,8 @@ export default function SecurityPage() {
         <div className="container callout">
           <h2 className="section-title">Need a security review?</h2>
           <p className="section-subtitle">
-            Share your questionnaire and the team will respond with governance
-            documentation, policies, and audit mappings.
+            Share your questionnaire and the team will respond with governance documentation,
+            policies, and audit mappings.
           </p>
           <div className="hero-actions" style={{ marginTop: "24px" }}>
             <Link href="/login" className="btn btn-secondary">

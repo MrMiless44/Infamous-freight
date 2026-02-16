@@ -346,7 +346,8 @@ pnpm test:e2e
 
 1. Check DEPLOYMENT_AND_TESTING_GUIDE.md for troubleshooting
 2. View logs: `flyctl logs -app infamous-freight-api`
-3. GitHub Issues: https://github.com/MrMiless44/Infamous-freight-enterprises/issues
+3. GitHub Issues:
+   https://github.com/MrMiless44/Infamous-freight-enterprises/issues
 
 **Resources**:
 

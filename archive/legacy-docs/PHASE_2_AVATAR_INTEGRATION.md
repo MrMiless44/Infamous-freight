@@ -2,7 +2,8 @@
 
 ## Summary
 
-The Phase 2 user avatar system has been **successfully integrated** into the Express API server at `/api/src/server.js`.
+The Phase 2 user avatar system has been **successfully integrated** into the
+Express API server at `/api/src/server.js`.
 
 ## What Was Added
 
@@ -17,7 +18,8 @@ app.use(
 ```
 
 - `/uploads` → Serves user-uploaded avatars from `apps/api/public/uploads/`
-- `/avatars/main` → Serves Phase 1 system defaults from `apps/web/public/avatars/main/`
+- `/avatars/main` → Serves Phase 1 system defaults from
+  `apps/web/public/avatars/main/`
 
 ### 2. **Avatar Routes** (Lines 117-118)
 
@@ -30,8 +32,8 @@ Both paths map to the same router for backwards compatibility.
 
 ### 3. **New Files Created** (5 core files)
 
-| File                        | Purpose                                |
-| --------------------------- | -------------------------------------- |
+| File                             | Purpose                                |
+| -------------------------------- | -------------------------------------- |
 | `apps/api/src/avatars/routes.ts` | Express route handlers (6 endpoints)   |
 | `apps/api/src/avatars/store.ts`  | JSON persistence layer (atomic writes) |
 | `apps/api/src/auth/userId.ts`    | JWT token extraction utilities         |
@@ -67,14 +69,12 @@ apps/api/src/config/             ← Config & env validation
 
 ## Features
 
-✅ JWT authentication via `getUserId(req)`
-✅ Scope-based authorization (`user:avatar`, `admin`)
-✅ Multer file upload with validation (5MB max, JPEG/PNG/WebP)
-✅ Per-user storage (prevents cross-user access)
-✅ Atomic JSON writes (prevents corruption)
-✅ Rate limiting (20 uploads per 15 minutes)
-✅ Auto-initialization of store on first load
-✅ Static file serving for uploads and Phase 1 defaults
+✅ JWT authentication via `getUserId(req)` ✅ Scope-based authorization
+(`user:avatar`, `admin`) ✅ Multer file upload with validation (5MB max,
+JPEG/PNG/WebP) ✅ Per-user storage (prevents cross-user access) ✅ Atomic JSON
+writes (prevents corruption) ✅ Rate limiting (20 uploads per 15 minutes) ✅
+Auto-initialization of store on first load ✅ Static file serving for uploads
+and Phase 1 defaults
 
 ## Environment Variables (in .env)
 
@@ -101,7 +101,8 @@ apps/web/public/avatars/main/
 └── main-04.png  (Genesis Oracle)
 ```
 
-The manifest at `apps/web/public/avatars/main/manifest.json` already defines these.
+The manifest at `apps/web/public/avatars/main/manifest.json` already defines
+these.
 
 ### ✏️ Phase 2: Install Dependencies
 
@@ -144,8 +145,10 @@ git push origin main
 
 ### Storage Architecture
 
-- **Phase 1:** Static files served from `apps/web/public/avatars/main/` (no auth required)
-- **Phase 2:** Dynamic uploads to `apps/api/public/uploads/{userId}/` (authenticated users)
+- **Phase 1:** Static files served from `apps/web/public/avatars/main/` (no auth
+  required)
+- **Phase 2:** Dynamic uploads to `apps/api/public/uploads/{userId}/`
+  (authenticated users)
 - **Persistence:** JSON store at `apps/api/data/avatars.json` with atomic writes
 
 ### Security
@@ -169,7 +172,8 @@ git push origin main
 - Integration guide: `apps/api/src/avatars/MOUNT_SNIPPET.ts`
 - Phase 1 manifest: `apps/web/public/avatars/main/manifest.json`
 - Server entry point: `apps/api/src/server.js` (lines 113-118)
-- Security middleware: `apps/api/src/middleware/security.js` (authenticate, requireScope)
+- Security middleware: `apps/api/src/middleware/security.js` (authenticate,
+  requireScope)
 
 ---
 

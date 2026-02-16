@@ -2,7 +2,8 @@
 
 ## Step-by-Step Instructions for Infamous Freight Enterprises
 
-Complete guide for performing zero-downtime deployments using blue-green strategy.
+Complete guide for performing zero-downtime deployments using blue-green
+strategy.
 
 ---
 
@@ -19,7 +20,8 @@ When green is verified, switch traffic instantly with zero downtime.
 
 ## Prerequisites
 
-✅ Production stack running: `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`  
+✅ Production stack running:
+`docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`  
 ✅ Both `api-blue` and `api-green` services accessible  
 ✅ Nginx reverse proxy configured and running  
 ✅ Health check scripts available in `./scripts/`

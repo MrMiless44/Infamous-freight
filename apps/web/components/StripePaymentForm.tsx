@@ -46,12 +46,7 @@ interface SubscriptionResponse {
 /**
  * Inner payment form component (must be inside Elements provider)
  */
-function PaymentFormContent({
-  amount,
-  description,
-  onSuccess,
-  onError,
-}: PaymentFormProps) {
+function PaymentFormContent({ amount, description, onSuccess, onError }: PaymentFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -59,10 +54,7 @@ function PaymentFormContent({
   const [success, setSuccess] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
 
-  const returnUrl = useMemo(
-    () => window.location.href,
-    [],
-  );
+  const returnUrl = useMemo(() => window.location.href, []);
 
   const handleExpressConfirm = async (event: any) => {
     if (!stripe || !elements) {
@@ -117,7 +109,7 @@ function PaymentFormContent({
         setSuccess(true);
         onSuccess?.(result.paymentIntent.id);
         // Payment successful - 100% to your account
-        // eslint-disable-next-line no-console
+         
         console.log("✅ Payment succeeded! 100% to your Stripe account");
       } else {
         setError("Payment processing failed. Please try again.");
@@ -135,12 +127,8 @@ function PaymentFormContent({
   if (success) {
     return (
       <div className="p-4 bg-green-50 border border-green-200 rounded">
-        <p className="text-green-800">
-          ✅ Payment successful! Thank you for your purchase.
-        </p>
-        <p className="text-sm text-green-600 mt-2">
-          (100% of your payment goes to our account)
-        </p>
+        <p className="text-green-800">✅ Payment successful! Thank you for your purchase.</p>
+        <p className="text-sm text-green-600 mt-2">(100% of your payment goes to our account)</p>
       </div>
     );
   }
@@ -150,9 +138,7 @@ function PaymentFormContent({
       <ExpressCheckoutElement onConfirm={handleExpressConfirm} />
 
       <div className="border border-gray-300 rounded p-4 space-y-4">
-        <LinkAuthenticationElement
-          onChange={(event) => setEmail(event.value.email)}
-        />
+        <LinkAuthenticationElement onChange={(event) => setEmail(event.value.email)} />
         <PaymentElement options={{ layout: "tabs" }} />
         <AddressElement options={{ mode: "billing" }} />
       </div>
@@ -204,9 +190,7 @@ export function StripePaymentForm(props: PaymentFormProps) {
 
     async function createIntent() {
       try {
-        const response = await fetch(
-          `${billingBase}/api/billing/create-payment-intent`,
-          {
+        const response = await fetch(`${billingBase}/api/billing/create-payment-intent`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -215,11 +199,9 @@ export function StripePaymentForm(props: PaymentFormProps) {
           body: JSON.stringify({
             amount: props.amount.toString(),
             currency: "usd",
-            description:
-              props.description || "Payment from Infamous Freight Enterprises",
+            description: props.description || "Payment from Infamous Freight Enterprises",
           }),
-        },
-        );
+        });
 
         if (!response.ok) {
           throw new Error("Failed to create payment intent");
@@ -297,19 +279,16 @@ export function StripeSubscriptionForm({
     setError(null);
 
     try {
-      const response = await fetch(
-        `${billingBase}/api/billing/create-subscription`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({
-            priceId,
-          }),
+      const response = await fetch(`${billingBase}/api/billing/create-subscription`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      );
+        body: JSON.stringify({
+          priceId,
+        }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to create subscription");
@@ -358,10 +337,8 @@ export function StripeSubscriptionForm({
             if (subscriptionId) {
               onSuccess?.(subscriptionId);
             }
-            // eslint-disable-next-line no-console
-            console.log(
-              "✅ Subscription active! 100% of recurring payments to your account",
-            );
+             
+            console.log("✅ Subscription active! 100% of recurring payments to your account");
           }}
           onError={onError}
         />
@@ -373,9 +350,7 @@ export function StripeSubscriptionForm({
     <div className="space-y-4">
       <div className="bg-gray-50 p-4 rounded">
         <p className="font-semibold text-lg">{planName}</p>
-        <p className="text-gray-600 text-sm">
-          Subscribe to start your recurring payments
-        </p>
+        <p className="text-gray-600 text-sm">Subscribe to start your recurring payments</p>
       </div>
 
       {error && (
@@ -414,10 +389,7 @@ function SubscriptionPaymentContent({
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
 
-  const returnUrl = useMemo(
-    () => window.location.origin,
-    [],
-  );
+  const returnUrl = useMemo(() => window.location.origin, []);
 
   const handleConfirm = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -480,9 +452,7 @@ function SubscriptionPaymentContent({
     <form onSubmit={handleConfirm} className="space-y-4">
       <div className="bg-gray-50 p-4 rounded">
         <p className="font-semibold text-lg">{planName}</p>
-        <p className="text-gray-600 text-sm">
-          Enter billing details to activate your subscription
-        </p>
+        <p className="text-gray-600 text-sm">Enter billing details to activate your subscription</p>
       </div>
 
       {error && (
@@ -494,9 +464,7 @@ function SubscriptionPaymentContent({
       <ExpressCheckoutElement onConfirm={handleExpressConfirm} />
 
       <div className="border border-gray-300 rounded p-4 space-y-4">
-        <LinkAuthenticationElement
-          onChange={(event) => setEmail(event.value.email)}
-        />
+        <LinkAuthenticationElement onChange={(event) => setEmail(event.value.email)} />
         <PaymentElement options={{ layout: "tabs" }} />
         <AddressElement options={{ mode: "billing" }} />
       </div>
@@ -537,7 +505,7 @@ export function RevenueStats() {
         setLoading(false);
       })
       .catch((err) => {
-        // eslint-disable-next-line no-console
+         
         console.error("Failed to load revenue:", err);
         setLoading(false);
       });
@@ -555,32 +523,26 @@ export function RevenueStats() {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div className="bg-blue-50 p-4 rounded border border-blue-200">
         <p className="text-gray-600 text-sm">One-Time Revenue</p>
-        <p className="text-2xl font-bold text-blue-600">
-          ${revenue.totalOneTime.toFixed(2)}
-        </p>
+        <p className="text-2xl font-bold text-blue-600">${revenue.totalOneTime.toFixed(2)}</p>
         <p className="text-xs text-gray-500 mt-2">Last 30 days</p>
       </div>
 
       <div className="bg-green-50 p-4 rounded border border-green-200">
         <p className="text-gray-600 text-sm">Transactions</p>
-        <p className="text-2xl font-bold text-green-600">
-          {revenue.totalTransactions}
-        </p>
+        <p className="text-2xl font-bold text-green-600">{revenue.totalTransactions}</p>
         <p className="text-xs text-gray-500 mt-2">Last 30 days</p>
       </div>
 
       <div className="bg-purple-50 p-4 rounded border border-purple-200">
         <p className="text-gray-600 text-sm">Active Subscriptions</p>
-        <p className="text-2xl font-bold text-purple-600">
-          {revenue.activeSubscriptions}
-        </p>
+        <p className="text-2xl font-bold text-purple-600">{revenue.activeSubscriptions}</p>
         <p className="text-xs text-gray-500 mt-2">Recurring revenue</p>
       </div>
 
       <div className="col-span-full bg-yellow-50 p-3 rounded border border-yellow-200">
         <p className="text-sm text-yellow-800">
-          💰 <strong>100% of all revenue goes to your Stripe account.</strong>{" "}
-          No fees applied by our platform.
+          💰 <strong>100% of all revenue goes to your Stripe account.</strong> No fees applied by
+          our platform.
         </p>
       </div>
     </div>

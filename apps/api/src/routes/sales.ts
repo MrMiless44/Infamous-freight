@@ -1,6 +1,6 @@
 /**
  * Sales & Marketing API Routes (Phase 21)
- * 
+ *
  * Endpoints for:
  * - Lead capture (21.2)
  * - Demo scheduling (21.3)
@@ -11,20 +11,10 @@
 
 import { Router } from "express";
 import { body, query } from "express-validator";
-import {
-  authenticate,
-  requireScope,
-  limiters,
-} from "../middleware/security";
+import { authenticate, requireScope, limiters } from "../middleware/security";
 import { handleValidationErrors } from "../middleware/validation";
 
-import {
-  createLead,
-  getLead,
-  updateLeadStatus,
-  convertLead,
-  getLeads,
-} from "../sales/leadCapture";
+import { createLead, getLead, updateLeadStatus, convertLead, getLeads } from "../sales/leadCapture";
 
 import {
   scheduleDemo,
@@ -62,10 +52,7 @@ import {
 
 const router = Router();
 
-const publicLeadCaptureAttempts = new Map<
-  string,
-  { count: number; resetAt: number }
->();
+const publicLeadCaptureAttempts = new Map<string, { count: number; resetAt: number }>();
 
 function getRequesterIp(req: any): string {
   // With `trust proxy` enabled, Express's `req.ip` / `req.ips` already
@@ -78,8 +65,7 @@ function getRequesterIp(req: any): string {
     return req.ips[0];
   }
 
-  const remoteAddress =
-    req.socket?.remoteAddress || req.connection?.remoteAddress;
+  const remoteAddress = req.socket?.remoteAddress || req.connection?.remoteAddress;
 
   return remoteAddress || "unknown";
 }
@@ -178,31 +164,26 @@ router.post(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 /**
  * GET /api/sales/leads/:email
  * Get lead by email
  */
-router.get(
-  "/leads/:email",
-  limiters.general,
-  authenticate,
-  async (req, res, next) => {
-    try {
-      const lead = await getLead(req.params.email);
+router.get("/leads/:email", limiters.general, authenticate, async (req, res, next) => {
+  try {
+    const lead = await getLead(req.params.email);
 
-      if (!lead) {
-        return res.status(404).json({ error: "Lead not found" });
-      }
-
-      res.json({ success: true, data: lead });
-    } catch (err) {
-      next(err);
+    if (!lead) {
+      return res.status(404).json({ error: "Lead not found" });
     }
+
+    res.json({ success: true, data: lead });
+  } catch (err) {
+    next(err);
   }
-);
+});
 
 /**
  * PATCH /api/sales/leads/:id
@@ -213,10 +194,7 @@ router.patch(
   limiters.general,
   authenticate,
   requireScope("admin:sales"),
-  [
-    body("status").isString().optional(),
-    body("notes").isString().optional(),
-  ],
+  [body("status").isString().optional(), body("notes").isString().optional()],
   handleValidationErrors,
   async (req, res, next) => {
     try {
@@ -226,7 +204,7 @@ router.patch(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 /**
@@ -251,7 +229,7 @@ router.get(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 // ============================================
@@ -294,30 +272,26 @@ router.post(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 /**
  * GET /api/sales/demo/:id
  * Get demo details
  */
-router.get(
-  "/demo/:id",
-  limiters.general,
-  async (req, res, next) => {
-    try {
-      const demo = await getDemo(req.params.id);
+router.get("/demo/:id", limiters.general, async (req, res, next) => {
+  try {
+    const demo = await getDemo(req.params.id);
 
-      if (!demo) {
-        return res.status(404).json({ error: "Demo not found" });
-      }
-
-      res.json({ success: true, data: demo });
-    } catch (err) {
-      next(err);
+    if (!demo) {
+      return res.status(404).json({ error: "Demo not found" });
     }
+
+    res.json({ success: true, data: demo });
+  } catch (err) {
+    next(err);
   }
-);
+});
 
 /**
  * PATCH /api/sales/demo/:id
@@ -334,14 +308,14 @@ router.patch(
         req.params.id,
         req.body.status,
         req.body.recordingUrl,
-        req.body.notes
+        req.body.notes,
       );
 
       res.json({ success: true, data: demo });
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 /**
@@ -361,7 +335,7 @@ router.get(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 // ============================================
@@ -397,7 +371,7 @@ router.post(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 /**
@@ -439,7 +413,7 @@ router.post(
         referrerEmail,
         req.body.refereeEmail,
         req.body.rewardAmount || 100,
-        req.body.rewardType || "credit"
+        req.body.rewardType || "credit",
       );
 
       res.status(201).json({
@@ -453,47 +427,38 @@ router.post(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 /**
  * GET /api/sales/referral/stats
  * Get referral stats for logged-in user
  */
-router.get(
-  "/referral/stats",
-  limiters.general,
-  authenticate,
-  async (req, res, next) => {
-    try {
-      const email = req.user.email || req.user.sub;
-      const stats = await getReferralStats(email);
+router.get("/referral/stats", limiters.general, authenticate, async (req, res, next) => {
+  try {
+    const email = req.user.email || req.user.sub;
+    const stats = await getReferralStats(email);
 
-      res.json({ success: true, data: stats });
-    } catch (err) {
-      next(err);
-    }
+    res.json({ success: true, data: stats });
+  } catch (err) {
+    next(err);
   }
-);
+});
 
 /**
  * GET /api/sales/referral/leaderboard
  * Get top referrers
  */
-router.get(
-  "/referral/leaderboard",
-  limiters.general,
-  async (req, res, next) => {
-    try {
-      const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
-      const topReferrers = await getTopReferrers(limit);
+router.get("/referral/leaderboard", limiters.general, async (req, res, next) => {
+  try {
+    const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
+    const topReferrers = await getTopReferrers(limit);
 
-      res.json({ success: true, data: topReferrers });
-    } catch (err) {
-      next(err);
-    }
+    res.json({ success: true, data: topReferrers });
+  } catch (err) {
+    next(err);
   }
-);
+});
 
 // ============================================
 // Metrics (21.8)
@@ -503,70 +468,58 @@ router.get(
  * GET /api/sales/metrics
  * Get current metrics snapshot (for dashboard)
  */
-router.get(
-  "/metrics",
-  limiters.general,
-  async (req, res, next) => {
-    try {
-      const metrics = await getMetricsSnapshot();
-      
-      // Store snapshot if requested
-      if (req.query.store === "true") {
-        await storeMetricsSnapshot(metrics);
-      }
+router.get("/metrics", limiters.general, async (req, res, next) => {
+  try {
+    const metrics = await getMetricsSnapshot();
 
-      res.json({
-        success: true,
-        data: metrics,
-      });
-    } catch (err) {
-      next(err);
+    // Store snapshot if requested
+    if (req.query.store === "true") {
+      await storeMetricsSnapshot(metrics);
     }
+
+    res.json({
+      success: true,
+      data: metrics,
+    });
+  } catch (err) {
+    next(err);
   }
-);
+});
 
 /**
  * GET /api/sales/metrics/trend
  * Get metrics trend (historical)
  */
-router.get(
-  "/metrics/trend",
-  limiters.general,
-  async (req, res, next) => {
-    try {
-      const days = req.query.days ? parseInt(req.query.days as string) : 30;
-      const trend = await getMetricsTrend(days);
+router.get("/metrics/trend", limiters.general, async (req, res, next) => {
+  try {
+    const days = req.query.days ? parseInt(req.query.days as string) : 30;
+    const trend = await getMetricsTrend(days);
 
-      res.json({
-        success: true,
-        data: trend,
-      });
-    } catch (err) {
-      next(err);
-    }
+    res.json({
+      success: true,
+      data: trend,
+    });
+  } catch (err) {
+    next(err);
   }
-);
+});
 
 /**
  * GET /api/sales/metrics/growth
  * Get growth rates
  */
-router.get(
-  "/metrics/growth",
-  limiters.general,
-  async (req, res, next) => {
-    try {
-      const growth = await getGrowthRates();
+router.get("/metrics/growth", limiters.general, async (req, res, next) => {
+  try {
+    const growth = await getGrowthRates();
 
-      res.json({
-        success: true,
-        data: growth,
-      });
-    } catch (err) {
-      next(err);
-    }
+    res.json({
+      success: true,
+      data: growth,
+    });
+  } catch (err) {
+    next(err);
   }
-);
+});
 
 /**
  * GET /api/sales/metrics/investor
@@ -588,7 +541,7 @@ router.get(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 /**
@@ -612,7 +565,7 @@ router.post(
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 
 export default router;

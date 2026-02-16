@@ -16,22 +16,22 @@ const logger = require("../middleware/logger");
  * Initialize neural network models for driver
  */
 router.post(
-    "/nn/initialize",
-    limiters.general,
-    authenticate,
-    requireScope("ai:advanced_ml"),
-    auditLog,
-    validateString("driverId"),
-    handleValidationErrors,
-    async (req, res, next) => {
-        try {
-            const { driverId } = req.body;
-            const result = await neuralNetworkService.initializeDriverModels(driverId);
-            res.status(200).json(result);
-        } catch (err) {
-            next(err);
-        }
-    },
+  "/nn/initialize",
+  limiters.general,
+  authenticate,
+  requireScope("ai:advanced_ml"),
+  auditLog,
+  validateString("driverId"),
+  handleValidationErrors,
+  async (req, res, next) => {
+    try {
+      const { driverId } = req.body;
+      const result = await neuralNetworkService.initializeDriverModels(driverId);
+      res.status(200).json(result);
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -39,36 +39,33 @@ router.post(
  * Predict load acceptance probability
  */
 router.post(
-    "/nn/load-acceptance",
-    limiters.ai,
-    authenticate,
-    requireScope("ai:prediction"),
-    auditLog,
-    async (req, res, next) => {
-        try {
-            const { driverId, load } = req.body;
+  "/nn/load-acceptance",
+  limiters.ai,
+  authenticate,
+  requireScope("ai:prediction"),
+  auditLog,
+  async (req, res, next) => {
+    try {
+      const { driverId, load } = req.body;
 
-            const probability = await neuralNetworkService.predictLoadAcceptance(
-                driverId,
-                load,
-            );
+      const probability = await neuralNetworkService.predictLoadAcceptance(driverId, load);
 
-            res.status(200).json({
-                success: true,
-                driverId,
-                loadId: load.id,
-                acceptanceProbability: probability,
-                recommendation:
-                    probability > 0.7
-                        ? "high_likelihood"
-                        : probability > 0.4
-                            ? "moderate_likelihood"
-                            : "low_likelihood",
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        driverId,
+        loadId: load.id,
+        acceptanceProbability: probability,
+        recommendation:
+          probability > 0.7
+            ? "high_likelihood"
+            : probability > 0.4
+              ? "moderate_likelihood"
+              : "low_likelihood",
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -76,35 +73,30 @@ router.post(
  * Forecast demand for next 7 days
  */
 router.post(
-    "/nn/demand-forecast",
-    limiters.general,
-    authenticate,
-    requireScope("ai:forecasting"),
-    auditLog,
-    validateString("region"),
-    handleValidationErrors,
-    async (req, res, next) => {
-        try {
-            const { region, historicalData } = req.body;
+  "/nn/demand-forecast",
+  limiters.general,
+  authenticate,
+  requireScope("ai:forecasting"),
+  auditLog,
+  validateString("region"),
+  handleValidationErrors,
+  async (req, res, next) => {
+    try {
+      const { region, historicalData } = req.body;
 
-            const forecast = await neuralNetworkService.forecastDemand(
-                region,
-                historicalData,
-            );
+      const forecast = await neuralNetworkService.forecastDemand(region, historicalData);
 
-            res.status(200).json({
-                success: true,
-                region,
-                forecast,
-                forecastLength: forecast.length,
-                averageVolume: Math.round(
-                    forecast.reduce((sum, f) => sum + f.volume, 0) / forecast.length,
-                ),
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        region,
+        forecast,
+        forecastLength: forecast.length,
+        averageVolume: Math.round(forecast.reduce((sum, f) => sum + f.volume, 0) / forecast.length),
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -112,30 +104,27 @@ router.post(
  * Detect fraudulent transaction patterns
  */
 router.post(
-    "/nn/fraud-detection",
-    limiters.ai,
-    authenticate,
-    requireScope("fraud:detection"),
-    auditLog,
-    async (req, res, next) => {
-        try {
-            const { driverId, transaction } = req.body;
+  "/nn/fraud-detection",
+  limiters.ai,
+  authenticate,
+  requireScope("fraud:detection"),
+  auditLog,
+  async (req, res, next) => {
+    try {
+      const { driverId, transaction } = req.body;
 
-            const result = await neuralNetworkService.detectFraud(
-                driverId,
-                transaction,
-            );
+      const result = await neuralNetworkService.detectFraud(driverId, transaction);
 
-            res.status(200).json({
-                success: true,
-                driverId,
-                transactionId: transaction.id,
-                ...result,
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        driverId,
+        transactionId: transaction.id,
+        ...result,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -143,31 +132,28 @@ router.post(
  * Calculate driver risk score
  */
 router.post(
-    "/nn/risk-score",
-    limiters.general,
-    authenticate,
-    requireScope("admin:risk_assessment"),
-    auditLog,
-    validateString("driverId"),
-    handleValidationErrors,
-    async (req, res, next) => {
-        try {
-            const { driverId, driverData } = req.body;
+  "/nn/risk-score",
+  limiters.general,
+  authenticate,
+  requireScope("admin:risk_assessment"),
+  auditLog,
+  validateString("driverId"),
+  handleValidationErrors,
+  async (req, res, next) => {
+    try {
+      const { driverId, driverData } = req.body;
 
-            const result = await neuralNetworkService.calculateRiskScore(
-                driverId,
-                driverData,
-            );
+      const result = await neuralNetworkService.calculateRiskScore(driverId, driverData);
 
-            res.status(200).json({
-                success: true,
-                driverId,
-                ...result,
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        driverId,
+        ...result,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -175,32 +161,28 @@ router.post(
  * Train neural network model with data
  */
 router.post(
-    "/nn/train-model",
-    limiters.general,
-    authenticate,
-    requireScope("admin:ml_training"),
-    auditLog,
-    validateString("driverId"),
-    handleValidationErrors,
-    async (req, res, next) => {
-        try {
-            const { driverId, modelType, trainingData } = req.body;
+  "/nn/train-model",
+  limiters.general,
+  authenticate,
+  requireScope("admin:ml_training"),
+  auditLog,
+  validateString("driverId"),
+  handleValidationErrors,
+  async (req, res, next) => {
+    try {
+      const { driverId, modelType, trainingData } = req.body;
 
-            const result = await neuralNetworkService.trainModel(
-                driverId,
-                modelType,
-                trainingData,
-            );
+      const result = await neuralNetworkService.trainModel(driverId, modelType, trainingData);
 
-            res.status(200).json({
-                success: true,
-                driverId,
-                ...result,
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        driverId,
+        ...result,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -208,30 +190,25 @@ router.post(
  * Get neural network status for driver
  */
 router.get(
-    "/nn/status/:driverId",
-    limiters.general,
-    authenticate,
-    requireScope("ai:view"),
-    async (req, res, next) => {
-        try {
-            const { driverId } = req.params;
+  "/nn/status/:driverId",
+  limiters.general,
+  authenticate,
+  requireScope("ai:view"),
+  async (req, res, next) => {
+    try {
+      const { driverId } = req.params;
 
-            res.status(200).json({
-                success: true,
-                driverId,
-                status: "initialized",
-                models: [
-                    "loadAcceptance",
-                    "demandForecast",
-                    "fraudDetection",
-                    "riskScoring",
-                ],
-                trainingStatus: "completed",
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        driverId,
+        status: "initialized",
+        models: ["loadAcceptance", "demandForecast", "fraudDetection", "riskScoring"],
+        trainingStatus: "completed",
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 module.exports = router;

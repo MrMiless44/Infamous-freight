@@ -1,12 +1,12 @@
 /**
  * Copyright © 2025 Infæmous Freight. All Rights Reserved.
  * Interactive Onboarding System
- * 
+ *
  * Guides new users through essential platform features
  */
 
-import React, { ReactNode, useEffect, useState } from 'react';
-import styles from './Onboarding.module.css';
+import React, { useEffect, useState } from "react";
+import styles from "./Onboarding.module.css";
 
 export interface OnboardingStep {
   id: string;
@@ -27,12 +27,7 @@ export interface OnboardingProps {
   onComplete: () => void;
 }
 
-export const Onboarding: React.FC<OnboardingProps> = ({
-  steps,
-  isOpen,
-  onClose,
-  onComplete,
-}) => {
+export const Onboarding: React.FC<OnboardingProps> = ({ steps, isOpen, onClose, onComplete }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [highlightedElement, setHighlightedElement] = useState<HTMLElement | null>(null);
 
@@ -44,7 +39,7 @@ export const Onboarding: React.FC<OnboardingProps> = ({
       const element = document.querySelector(step.target) as HTMLElement;
       if (element) {
         setHighlightedElement(element);
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     }
   }, [currentStep, isOpen, steps]);
@@ -106,11 +101,7 @@ export const Onboarding: React.FC<OnboardingProps> = ({
           {step.actions && (
             <div className={styles.actions}>
               {step.actions.map((action, idx) => (
-                <button
-                  key={idx}
-                  className={styles.actionButton}
-                  onClick={action.onClick}
-                >
+                <button key={idx} className={styles.actionButton} onClick={action.onClick}>
                   {action.label}
                 </button>
               ))}
@@ -120,10 +111,7 @@ export const Onboarding: React.FC<OnboardingProps> = ({
 
         {/* Progress bar */}
         <div className={styles.progressContainer}>
-          <div
-            className={styles.progressBar}
-            style={{ width: `${progress}%` }}
-          />
+          <div className={styles.progressBar} style={{ width: `${progress}%` }} />
         </div>
 
         {/* Footer */}
@@ -142,20 +130,16 @@ export const Onboarding: React.FC<OnboardingProps> = ({
               ← Previous
             </button>
 
-            <button
-              className={styles.skip}
-              onClick={handleComplete}
-              aria-label="Skip onboarding"
-            >
+            <button className={styles.skip} onClick={handleComplete} aria-label="Skip onboarding">
               Skip
             </button>
 
             <button
               className={styles.primaryButton}
               onClick={handleNext}
-              aria-label={currentStep === steps.length - 1 ? 'Complete' : 'Next step'}
+              aria-label={currentStep === steps.length - 1 ? "Complete" : "Next step"}
             >
-              {currentStep === steps.length - 1 ? 'Complete' : 'Next →'}
+              {currentStep === steps.length - 1 ? "Complete" : "Next →"}
             </button>
           </div>
         </div>

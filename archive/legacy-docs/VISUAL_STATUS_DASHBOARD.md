@@ -126,8 +126,10 @@
 ## 🚀 QUICK START
 
 1. **Read First:** [FINAL_STATUS_REPORT.md](./FINAL_STATUS_REPORT.md) (5 min)
-2. **For Details:** [README_COMPREHENSIVE_AUDIT.md](./README_COMPREHENSIVE_AUDIT.md) (15 min)
-3. **For Technical:** [WORKFLOW_FIXES_SUMMARY.md](./WORKFLOW_FIXES_SUMMARY.md) (20 min)
+2. **For Details:**
+   [README_COMPREHENSIVE_AUDIT.md](./README_COMPREHENSIVE_AUDIT.md) (15 min)
+3. **For Technical:** [WORKFLOW_FIXES_SUMMARY.md](./WORKFLOW_FIXES_SUMMARY.md)
+   (20 min)
 4. **Deploy:** Push to main branch and watch workflows pass
 
 ---

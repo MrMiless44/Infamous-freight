@@ -9,7 +9,8 @@
 
 ## 🎯 GET PAID 100% - YOUR COMPLETE PAYMENT & EARNINGS GUIDE
 
-Everything you need to know about how money flows through Infamous Freight Enterprises and how to maximize your earnings.
+Everything you need to know about how money flows through Infamous Freight
+Enterprises and how to maximize your earnings.
 
 ---
 
@@ -808,7 +809,8 @@ TOTAL MONTHLY:   →    Automatic        →    YOU ✅
 
 **Achievement Unlocked**: 🏆 **GET PAID 100% - COMPLETE REVENUE SYSTEM**
 
-You now have complete visibility into how money flows through your platform and how to maximize your earnings.
+You now have complete visibility into how money flows through your platform and
+how to maximize your earnings.
 
 ---
 

@@ -148,7 +148,8 @@ All service files created:
 - ✅ `apps/api/src/services/websocket.js` — WebSocket management
 - ✅ `apps/api/src/services/export.js` — Data export service
 
-Next run: `pnpm test` will pass all suites once Prisma client is fully initialized.
+Next run: `pnpm test` will pass all suites once Prisma client is fully
+initialized.
 
 ### Coverage Report
 

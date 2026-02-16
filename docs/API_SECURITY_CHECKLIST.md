@@ -2,7 +2,8 @@
 
 ## Overview
 
-This checklist ensures that all API endpoints meet security requirements before deployment to production.
+This checklist ensures that all API endpoints meet security requirements before
+deployment to production.
 
 ## Authentication & Authorization
 

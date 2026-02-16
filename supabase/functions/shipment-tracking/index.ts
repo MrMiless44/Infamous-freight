@@ -6,8 +6,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
 serve(async (req) => {
@@ -21,13 +20,10 @@ serve(async (req) => {
 
     // Validate required fields
     if (!shipmentId || !location) {
-      return new Response(
-        JSON.stringify({ error: "Missing required fields" }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
+      return new Response(JSON.stringify({ error: "Missing required fields" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     // Create Supabase client
@@ -38,7 +34,7 @@ serve(async (req) => {
         global: {
           headers: { Authorization: req.headers.get("Authorization")! },
         },
-      }
+      },
     );
 
     // Get the authenticated user
@@ -94,10 +90,7 @@ serve(async (req) => {
 
     // Update shipment status if applicable
     if (eventType === "in_transit" || eventType === "delivered") {
-      await supabaseClient
-        .from("shipments")
-        .update({ status: eventType })
-        .eq("id", shipmentId);
+      await supabaseClient.from("shipments").update({ status: eventType }).eq("id", shipmentId);
     }
 
     return new Response(
@@ -109,7 +102,7 @@ serve(async (req) => {
       {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      },
     );
   } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), {

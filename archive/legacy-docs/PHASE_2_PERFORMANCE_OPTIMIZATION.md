@@ -466,9 +466,11 @@ git push origin main
 
 ## 📞 Phase 2 Support
 
-- **Documentation**: [PHASE_2_PERFORMANCE_OPTIMIZATION.md](PHASE_2_PERFORMANCE_OPTIMIZATION.md)
+- **Documentation**:
+  [PHASE_2_PERFORMANCE_OPTIMIZATION.md](PHASE_2_PERFORMANCE_OPTIMIZATION.md)
 - **Monitoring**: Check Grafana dashboards in real-time
-- **Rollback**: `docker compose -f docker-compose.production.yml down && git revert <commit>`
+- **Rollback**:
+  `docker compose -f docker-compose.production.yml down && git revert <commit>`
 
 ---
 

@@ -6,11 +6,14 @@
 
 ## Executive Summary
 
-INFÆMOUS FREIGHT is revolutionizing the **$900B+ global logistics industry** by replacing fragmented, broker-first systems with a unified AI-powered operating system that empowers independent drivers, carriers, and freight operators.
+INFÆMOUS FREIGHT is revolutionizing the **$900B+ global logistics industry** by
+replacing fragmented, broker-first systems with a unified AI-powered operating
+system that empowers independent drivers, carriers, and freight operators.
 
 **Status**: Production-ready, 100% feature complete, globally deployed  
-**Mission**: Empowering the 90% of carriers who are small fleets or owner-operators  
-**Vision**: The AI-first operating system for global trade  
+**Mission**: Empowering the 90% of carriers who are small fleets or
+owner-operators  
+**Vision**: The AI-first operating system for global trade
 
 ---
 
@@ -19,6 +22,7 @@ INFÆMOUS FREIGHT is revolutionizing the **$900B+ global logistics industry** by
 ### The Problem We Solve
 
 **The freight industry is broken:**
+
 - Fragmented dispatch, finance, and compliance systems
 - Manual invoice audits leading to revenue leakage
 - Limited lane pricing intelligence
@@ -27,6 +31,7 @@ INFÆMOUS FREIGHT is revolutionizing the **$900B+ global logistics industry** by
 - 10-year-old legacy technology
 
 **The economic impact:**
+
 - Drivers lose 30-40% of potential earnings to inefficiency
 - Small carriers lack access to enterprise-grade tools
 - Manual processes cost logistics companies millions annually
@@ -37,7 +42,9 @@ INFÆMOUS FREIGHT is revolutionizing the **$900B+ global logistics industry** by
 **One unified AI-native platform:**  
 Dispatch. Finance. AI. Compliance. All in one system.
 
-INFÆMOUS FREIGHT unifies dispatch automation, financial intelligence, and synthetic AI avatars in a single control plane—eliminating the need for 5-10 disconnected tools.
+INFÆMOUS FREIGHT unifies dispatch automation, financial intelligence, and
+synthetic AI avatars in a single control plane—eliminating the need for 5-10
+disconnected tools.
 
 ---
 
@@ -46,6 +53,7 @@ INFÆMOUS FREIGHT unifies dispatch automation, financial intelligence, and synth
 ### 1. AI-Powered Freight Optimization
 
 **Smart Load Matching Engine**
+
 - AI scores loads from multiple sources by:
   - Profit per mile
   - Deadhead reduction
@@ -56,6 +64,7 @@ INFÆMOUS FREIGHT unifies dispatch automation, financial intelligence, and synth
 - Eliminates broker manipulation through transparent economics
 
 **Advanced Route Optimization**
+
 - Real-time routing that maximizes earnings
 - Minimizes empty miles and deadhead
 - Fuel cost modeling and efficiency
@@ -63,6 +72,7 @@ INFÆMOUS FREIGHT unifies dispatch automation, financial intelligence, and synth
 - Traffic and weather integration
 
 **Predictive Intelligence**
+
 - Margin prediction per load
 - Capacity planning and forecasting
 - Maintenance intelligence and alerts
@@ -70,6 +80,7 @@ INFÆMOUS FREIGHT unifies dispatch automation, financial intelligence, and synth
 - Lane profitability analytics
 
 **AI Decision Automation**
+
 - Autonomous dispatch recommendations
 - Risk assessment and mitigation
 - Dynamic pricing optimization
@@ -82,6 +93,7 @@ INFÆMOUS FREIGHT unifies dispatch automation, financial intelligence, and synth
 Replace 5-10 fragmented tools with one platform:
 
 #### 📦 Shipment Management
+
 - Real-time GPS tracking (Socket.IO)
 - Multi-modal support (truck, rail, air, maritime)
 - Automated status updates
@@ -90,6 +102,7 @@ Replace 5-10 fragmented tools with one platform:
 - Digital bill of lading (BOL)
 
 #### 🚚 Fleet Management
+
 - Driver performance analytics
 - Vehicle tracking and telemetry
 - Maintenance scheduling and alerts
@@ -98,6 +111,7 @@ Replace 5-10 fragmented tools with one platform:
 - Driver assignment automation
 
 #### 📊 Warehouse & Inventory
+
 - Warehouse status dashboards
 - Inventory management and control
 - Pick list optimization
@@ -106,6 +120,7 @@ Replace 5-10 fragmented tools with one platform:
 - Low stock alerts
 
 #### 🗺️ Route Intelligence
+
 - Turn-by-turn navigation
 - ETA prediction with confidence scores
 - Multi-stop optimization
@@ -114,6 +129,7 @@ Replace 5-10 fragmented tools with one platform:
 - Weather and traffic integration
 
 #### 📱 Mobile-First Experience
+
 - Native iOS and Android apps (React Native/Expo)
 - Offline mode for drivers
 - Real-time notifications
@@ -126,6 +142,7 @@ Replace 5-10 fragmented tools with one platform:
 ### 3. Financial Intelligence Engine
 
 **Automated Invoice Processing**
+
 - AI-powered invoice audits
 - Fraud detection and prevention
 - Overcharge identification
@@ -134,6 +151,7 @@ Replace 5-10 fragmented tools with one platform:
 - Tax calculation and reporting
 
 **Real-Time Profitability**
+
 - Live P&L per shipment
 - Route-level margin analysis
 - Driver earnings tracking
@@ -142,6 +160,7 @@ Replace 5-10 fragmented tools with one platform:
 - Profitability forecasting
 
 **Integrated Financial Services**
+
 - Instant carrier payouts (same-day settlement)
 - Factoring services with AI underwriting
 - Credit scoring and risk assessment
@@ -150,6 +169,7 @@ Replace 5-10 fragmented tools with one platform:
 - Payment gateway integration (Stripe, PayPal)
 
 **Billing Automation**
+
 - Automated invoice generation
 - Payment processing
 - Subscription management
@@ -162,6 +182,7 @@ Replace 5-10 fragmented tools with one platform:
 ### 4. Genesis AI Synthetic Intelligence
 
 **Voice-Driven Operations**
+
 - Natural language fleet control
 - Voice command execution
 - Conversational AI assistance
@@ -169,6 +190,7 @@ Replace 5-10 fragmented tools with one platform:
 - Hands-free driver interface
 
 **Autonomous Decision Intelligence**
+
 - AI event simulation and forecasting
 - Scenario planning and what-if analysis
 - Autonomous dispatch recommendations
@@ -177,6 +199,7 @@ Replace 5-10 fragmented tools with one platform:
 - Capacity optimization
 
 **AI Avatars**
+
 - Personalized synthetic assistants
 - Role-based intelligence (dispatcher, driver, ops)
 - Learning from user behavior
@@ -188,6 +211,7 @@ Replace 5-10 fragmented tools with one platform:
 ### 5. Enterprise-Grade Platform
 
 #### 🏢 Multi-Tenant Architecture
+
 - Organization isolation and security
 - SSO integration (SAML, OAuth, OpenID)
 - Role-based access control (RBAC)
@@ -196,6 +220,7 @@ Replace 5-10 fragmented tools with one platform:
 - Tenant data segregation
 
 #### 🔒 Security & Compliance
+
 - **SOC 2 Type II** ready
 - **GDPR** compliant (EU data residency)
 - **HIPAA** ready (healthcare logistics)
@@ -207,6 +232,7 @@ Replace 5-10 fragmented tools with one platform:
 - Vulnerability scanning
 
 #### 🌐 Global Scale Infrastructure
+
 - Multi-region deployment (55+ countries)
 - Edge caching (Cloudflare)
 - CDN distribution
@@ -217,6 +243,7 @@ Replace 5-10 fragmented tools with one platform:
 - Load balancing
 
 #### ⚡ Performance
+
 - **73% faster** than legacy competitors
 - Sub-second API response times
 - Real-time data synchronization
@@ -226,6 +253,7 @@ Replace 5-10 fragmented tools with one platform:
 - Code splitting and lazy loading
 
 #### 🔌 Integration Ecosystem
+
 - **Accounting**: QuickBooks, Xero
 - **E-commerce**: Shopify, WooCommerce
 - **Automation**: Zapier, Make
@@ -243,15 +271,15 @@ Replace 5-10 fragmented tools with one platform:
 
 ### For Independent Drivers & Owner-Operators
 
-**Benefits:**
-✅ Maximize earnings with AI load selection  
+**Benefits:** ✅ Maximize earnings with AI load selection  
 ✅ Eliminate broker manipulation  
 ✅ Access enterprise tools without enterprise costs  
 ✅ Transparent economics and fair pricing  
 ✅ Real-time profitability visibility  
-✅ Automated compliance and paperwork  
+✅ Automated compliance and paperwork
 
 **Features:**
+
 - Free tier available ($0/month, 10 shipments)
 - Mobile-first driver experience
 - Offline mode for remote areas
@@ -263,15 +291,15 @@ Replace 5-10 fragmented tools with one platform:
 
 ### For Small-to-Mid Carriers (2-50 trucks)
 
-**Benefits:**
-✅ Automate dispatch and operations  
+**Benefits:** ✅ Automate dispatch and operations  
 ✅ Real-time visibility across entire fleet  
 ✅ Reduce operational costs by 30-40%  
 ✅ Scale without adding headcount  
 ✅ Professional platform at affordable price  
-✅ Compete with large fleets  
+✅ Compete with large fleets
 
 **Features:**
+
 - Starter plan: $49/user/month
 - Pro plan: $150/user/month
 - Multi-user collaboration
@@ -283,15 +311,15 @@ Replace 5-10 fragmented tools with one platform:
 
 ### For Enterprise Logistics (50+ trucks)
 
-**Benefits:**
-✅ White-label solutions with custom branding  
+**Benefits:** ✅ White-label solutions with custom branding  
 ✅ Integration ecosystem (10+ partners)  
 ✅ Advanced analytics and ESG reporting  
 ✅ Compliance automation across jurisdictions  
 ✅ Dedicated support and SLAs  
-✅ Custom feature development  
+✅ Custom feature development
 
 **Features:**
+
 - Enterprise plan: Custom pricing
 - SSO and SAML integration
 - Custom domain and branding
@@ -305,15 +333,15 @@ Replace 5-10 fragmented tools with one platform:
 
 ### For Shippers & Brokers
 
-**Benefits:**
-✅ Carrier network access  
+**Benefits:** ✅ Carrier network access  
 ✅ Real-time freight marketplace  
 ✅ Performance analytics  
 ✅ Automated carrier matching  
 ✅ Shipment tracking portal  
-✅ Integration with existing TMS  
+✅ Integration with existing TMS
 
 **Features:**
+
 - Shipper portal
 - Carrier sourcing
 - Rate shopping
@@ -325,30 +353,32 @@ Replace 5-10 fragmented tools with one platform:
 
 ## 📊 Competitive Advantages
 
-| **Legacy Platforms** | **INFÆMOUS FREIGHT** |
-|---------------------|----------------------|
-| Broker-first | ✅ **Driver-first** |
-| Static load boards | ✅ **AI optimization** |
-| Race to the bottom | ✅ **Margin protection** |
-| Fragmented tools (5-10) | ✅ **Unified OS** |
-| Manual processes | ✅ **Autonomous workflows** |
-| 10-year-old tech | ✅ **Built for 2026+** |
-| Desktop-only | ✅ **Mobile-first** |
-| Complex UX | ✅ **Consumer-grade UX** |
-| Slow (5-10s load times) | ✅ **Fast (sub-second)** |
-| Limited integrations | ✅ **Rich ecosystem** |
-| Basic security | ✅ **SOC 2 ready** |
-| US-only | ✅ **Global (55+ countries)** |
+| **Legacy Platforms**    | **INFÆMOUS FREIGHT**          |
+| ----------------------- | ----------------------------- |
+| Broker-first            | ✅ **Driver-first**           |
+| Static load boards      | ✅ **AI optimization**        |
+| Race to the bottom      | ✅ **Margin protection**      |
+| Fragmented tools (5-10) | ✅ **Unified OS**             |
+| Manual processes        | ✅ **Autonomous workflows**   |
+| 10-year-old tech        | ✅ **Built for 2026+**        |
+| Desktop-only            | ✅ **Mobile-first**           |
+| Complex UX              | ✅ **Consumer-grade UX**      |
+| Slow (5-10s load times) | ✅ **Fast (sub-second)**      |
+| Limited integrations    | ✅ **Rich ecosystem**         |
+| Basic security          | ✅ **SOC 2 ready**            |
+| US-only                 | ✅ **Global (55+ countries)** |
 
 ### Technology Differentiators
 
 **AI-Native Architecture:**
+
 - Built with AI from the ground up (not bolted on)
 - Machine learning in core algorithms
 - Continuous learning and improvement
 - Predictive vs. reactive intelligence
 
 **Developer-First:**
+
 - RESTful API with OpenAPI docs
 - Webhooks for real-time events
 - SDKs for popular languages
@@ -356,6 +386,7 @@ Replace 5-10 fragmented tools with one platform:
 - Comprehensive documentation
 
 **Modern Stack:**
+
 - Monorepo architecture (pnpm workspaces)
 - TypeScript for type safety
 - Next.js 14 for web (React 18+)
@@ -374,6 +405,7 @@ Replace 5-10 fragmented tools with one platform:
 ### SaaS Subscription Tiers
 
 **FREE Tier** — $0/month
+
 - 10 shipments per month
 - 2 active shipments concurrent
 - 1 user
@@ -382,6 +414,7 @@ Replace 5-10 fragmented tools with one platform:
 - Perfect for getting started
 
 **STARTER Tier** — $49/user/month
+
 - 100 shipments per month
 - 10 active shipments
 - Up to 5 users
@@ -392,6 +425,7 @@ Replace 5-10 fragmented tools with one platform:
 - Mobile app access
 
 **PRO Tier** — $150/user/month
+
 - Unlimited shipments
 - Unlimited active shipments
 - Unlimited users
@@ -404,6 +438,7 @@ Replace 5-10 fragmented tools with one platform:
 - Webhooks
 
 **ENTERPRISE Tier** — Custom Pricing
+
 - Everything in Pro
 - Custom storage
 - SSO/SAML
@@ -418,12 +453,14 @@ Replace 5-10 fragmented tools with one platform:
 ### Additional Revenue Streams
 
 **AI Premium (Usage-Based)**
+
 - AI command executions: $0.10-$0.50 per call
 - Voice processing: $0.05 per minute
 - Advanced route optimization: $2-$5 per route
 - Predictive analytics: $10-$50 per report
 
 **Fintech Services**
+
 - Factoring: 2-5% of invoice value
 - Instant payout fees: 1.5% + $0.25
 - Standard payout fees: 0.25%
@@ -431,12 +468,14 @@ Replace 5-10 fragmented tools with one platform:
 - Currency conversion: 1-2% FX markup
 
 **White-Label Partnerships**
+
 - Platform licensing: $50K-$500K+ annually
 - Revenue share: 20-30% of end customer spend
 - Professional services: $150-$300/hour
 - Custom development: Project-based
 
 **Integration Marketplace**
+
 - Free integrations (retention play)
 - Premium features: $10-$50/month per integration
 - Revenue share with partners: 70/30 split
@@ -444,12 +483,14 @@ Replace 5-10 fragmented tools with one platform:
 ### Revenue Projections
 
 **2026 Targets:**
+
 - 3,000+ customers by EOY
 - $5M-$10M ARR
 - 70-73% gross margin
 - 7x LTV/CAC ratio
 
 **Growth Drivers:**
+
 - Network effects (more data = better AI)
 - Integration ecosystem stickiness
 - Fintech revenue expansion
@@ -461,6 +502,7 @@ Replace 5-10 fragmented tools with one platform:
 ## 🌟 Strategic Vision & Roadmap
 
 ### Phase 1: Foundation (✅ Complete)
+
 - Core platform MVP
 - Web, API, mobile apps
 - Basic shipment tracking
@@ -468,6 +510,7 @@ Replace 5-10 fragmented tools with one platform:
 - Database and infrastructure
 
 ### Phase 2: Intelligence Layer (✅ Complete)
+
 - AI route optimization
 - Predictive analytics
 - Performance dashboards
@@ -475,6 +518,7 @@ Replace 5-10 fragmented tools with one platform:
 - Driver/fleet management
 
 ### Phase 3: Financial Engine (✅ Complete)
+
 - Automated billing
 - Invoice processing
 - Payment integration
@@ -482,6 +526,7 @@ Replace 5-10 fragmented tools with one platform:
 - Profit/loss analytics
 
 ### Phase 4: Enterprise Scale (✅ Complete)
+
 - Multi-tenant architecture
 - SSO and SAML
 - Compliance certification (SOC 2, GDPR)
@@ -489,6 +534,7 @@ Replace 5-10 fragmented tools with one platform:
 - Global deployment
 
 ### Phase 5: AI Evolution (🚧 In Progress)
+
 - Genesis synthetic avatars
 - Voice command system
 - Advanced ML models
@@ -496,6 +542,7 @@ Replace 5-10 fragmented tools with one platform:
 - Scenario simulation
 
 ### Phase 6: Global Expansion (📋 Planned Q2-Q4 2026)
+
 - Multi-region deployment (EU, LATAM, APAC)
 - Localization (10+ languages)
 - Regional pricing models
@@ -503,6 +550,7 @@ Replace 5-10 fragmented tools with one platform:
 - Regulatory compliance per region
 
 ### Phase 7: Freight Exchange (📋 Planned 2027)
+
 - **Global AI Freight Exchange (GAFX)**
 - Liquidity pools for freight capacity
 - Freight derivatives and futures
@@ -511,6 +559,7 @@ Replace 5-10 fragmented tools with one platform:
 - AI market pricing
 
 ### Phase 8: Financial Innovation (📋 Planned 2027-2028)
+
 - **Freight Tokenization**
 - Blockchain proof-of-delivery
 - Freight-backed securities
@@ -519,6 +568,7 @@ Replace 5-10 fragmented tools with one platform:
 - AI underwriting platform
 
 ### Phase 9: Autonomous Compliance (📋 Planned 2028+)
+
 - **Self-Learning Regulatory Engine**
 - Automatic compliance across 195+ countries
 - AI-powered dispute resolution
@@ -527,6 +577,7 @@ Replace 5-10 fragmented tools with one platform:
 - Government-grade security
 
 ### Phase 10: Global Protocol (📋 Vision 2029+)
+
 - **Open AI Freight Protocol (OAFP)**
 - Industry-wide interoperability standard
 - Decentralized freight network
@@ -541,17 +592,20 @@ Replace 5-10 fragmented tools with one platform:
 ### Total Addressable Market (TAM)
 
 **Global Logistics Software Market:**
+
 - Current size: $1.3 trillion
 - CAGR: 24% (AI-driven growth)
 - Projected 2030: $3+ trillion
 
 **Target Segments:**
+
 - **Small carriers** (2-10 trucks): 500K+ companies
 - **Mid-market** (11-50 trucks): 100K+ companies
 - **Enterprise** (50+ trucks): 50K+ companies
 - **Independent drivers**: 3.5M+ owner-operators
 
 **Geographic Expansion:**
+
 - North America: $400B
 - Europe: $350B
 - Asia-Pacific: $450B
@@ -561,16 +615,19 @@ Replace 5-10 fragmented tools with one platform:
 ### Competitive Landscape
 
 **Legacy Leaders (Losing Ground):**
+
 - FreightPro: Slow, expensive, old tech
 - LogisticsMaster: Complex, enterprise-only
 - CargoCloud: Limited features, basic functionality
 
 **Modern Challengers (Horizontal Play):**
+
 - Various load boards and TMS systems
 - Fragmented point solutions
 - None are AI-native end-to-end
 
 **Our Position:**
+
 - ✅ First AI-native freight OS
 - ✅ Fastest time-to-value (<7 days)
 - ✅ Best unit economics (7x LTV/CAC)
@@ -584,6 +641,7 @@ Replace 5-10 fragmented tools with one platform:
 ### B2B Channels (Carriers, Brokers, Fleets)
 
 **Outbound:**
+
 - Cold email campaigns
 - LinkedIn outreach
 - Industry conferences
@@ -591,6 +649,7 @@ Replace 5-10 fragmented tools with one platform:
 - Webinar series
 
 **Partnerships:**
+
 - Factoring companies
 - Insurance providers
 - ELD manufacturers
@@ -598,6 +657,7 @@ Replace 5-10 fragmented tools with one platform:
 - Trucking associations
 
 **Inbound:**
+
 - SEO content marketing
 - Freight forums and communities
 - Referral program (20% commission)
@@ -607,17 +667,20 @@ Replace 5-10 fragmented tools with one platform:
 ### B2C Channels (Drivers & Owner-Operators)
 
 **App Store Optimization:**
+
 - iOS App Store
 - Google Play Store
 - Keywords: freight, trucking, logistics
 
 **Social Media:**
+
 - TikTok trucking influencers
 - YouTube Shorts demonstrations
 - Facebook trucking groups
 - Instagram stories/reels
 
 **Creator Partnerships:**
+
 - Trucking YouTubers (500K+ subs)
 - Podcast sponsorships
 - Ambassador program
@@ -626,6 +689,7 @@ Replace 5-10 fragmented tools with one platform:
 ### Lead Magnets
 
 **Free Tools:**
+
 - AI Invoice Audit Tool
 - Freight Profitability Calculator
 - Carrier Compliance Scanner
@@ -633,6 +697,7 @@ Replace 5-10 fragmented tools with one platform:
 - Fuel cost optimizer
 
 **Educational Content:**
+
 - "Why 80% of Companies Overpay on Freight"
 - "The Hidden Costs of Manual Dispatch"
 - "AI Optimization: Case Studies"
@@ -641,6 +706,7 @@ Replace 5-10 fragmented tools with one platform:
 ### Sales Motion
 
 **SMB (Self-Serve + Inside Sales):**
+
 - Sign up → Product tour → Value moment → Convert
 - Free trial (14-30 days)
 - Automated onboarding
@@ -648,6 +714,7 @@ Replace 5-10 fragmented tools with one platform:
 - Email nurture sequences
 
 **Mid-Market (Demo + Sales Rep):**
+
 - Discovery call → Custom demo → Trial → Close
 - 30-day pilot program
 - Success metrics defined upfront
@@ -655,6 +722,7 @@ Replace 5-10 fragmented tools with one platform:
 - Quarterly business reviews
 
 **Enterprise (60-90 Day Pilot):**
+
 - RFP response → Executive presentation → Pilot → Contract
 - Custom SLA and pricing
 - Dedicated implementation team
@@ -667,6 +735,7 @@ Replace 5-10 fragmented tools with one platform:
 ## 🏆 Success Metrics & KPIs
 
 ### Product Metrics
+
 - **Uptime**: 99.9% SLA
 - **API Response Time**: <200ms p95
 - **Page Load Time**: <2s
@@ -674,6 +743,7 @@ Replace 5-10 fragmented tools with one platform:
 - **Feature Adoption**: 80%+ within 30 days
 
 ### Customer Metrics
+
 - **Time to Value**: <7 days
 - **Onboarding Completion**: 90%+
 - **Daily Active Users**: 70%+
@@ -681,6 +751,7 @@ Replace 5-10 fragmented tools with one platform:
 - **Customer Satisfaction (CSAT)**: 4.5+/5
 
 ### Business Metrics
+
 - **Monthly Recurring Revenue (MRR)**: Target $500K by Q4 2026
 - **Annual Recurring Revenue (ARR)**: Target $10M by EOY 2026
 - **Customer Acquisition Cost (CAC)**: <$500
@@ -691,6 +762,7 @@ Replace 5-10 fragmented tools with one platform:
 - **Churn Rate**: <5% annually
 
 ### Growth Metrics
+
 - **New Customer Growth**: 25% MoM
 - **Revenue Growth**: 30% MoM
 - **Expansion Revenue**: 20% of total
@@ -704,30 +776,35 @@ Replace 5-10 fragmented tools with one platform:
 ### Core Values
 
 **1. Obsessive Customer Success**
+
 - Customer needs drive every decision
 - Fast response times (<2 hours)
 - Continuous feedback loops
 - Proactive support
 
 **2. Radical Transparency**
+
 - Open roadmap
 - Public incident reports
 - Honest pricing
 - Real data, no marketing fluff
 
 **3. Intellectual Honesty**
+
 - Admit limitations
 - No overselling
 - Clear about what works and what doesn't
 - Evidence-based decisions
 
 **4. Continuous Innovation**
+
 - Ship fast, iterate faster
 - Test everything
 - Learn from failures
 - Stay ahead of competition
 
 **5. Inclusive Excellence**
+
 - Diverse perspectives
 - Merit-based advancement
 - Open communication
@@ -736,18 +813,21 @@ Replace 5-10 fragmented tools with one platform:
 ### Why Join Us
 
 **For Engineers:**
+
 - Modern tech stack (TypeScript, Next.js, React, PostgreSQL)
 - Solve hard problems (AI, optimization, scale)
 - Greenfield opportunities
 - Ownership and autonomy
 
 **For Product/Design:**
+
 - Shape the future of freight
 - User-centric culture
 - Data-driven decisions
 - Direct customer access
 
 **For Sales/Marketing:**
+
 - Large TAM ($1.3T market)
 - Strong product-market fit
 - Competitive compensation
@@ -760,16 +840,19 @@ Replace 5-10 fragmented tools with one platform:
 ### Get Started Today
 
 **For Businesses:**
+
 1. **Free Trial**: Sign up at infamousfreight.com
 2. **Request Demo**: Talk to our team
 3. **Pilot Program**: 30-60 day proof of value
 
 **For Drivers:**
+
 1. **Download App**: iOS App Store or Google Play
 2. **Create Account**: Free tier available
 3. **Connect Loads**: Import or manual entry
 
 **For Partners:**
+
 1. **Integration Marketplace**: Build on our platform
 2. **White-Label**: License our technology
 3. **Reseller Program**: Earn 20-30% commission
@@ -777,16 +860,19 @@ Replace 5-10 fragmented tools with one platform:
 ### Resources
 
 **Documentation:**
+
 - Developer Docs: docs.infamousfreight.com
 - API Reference: api.infamousfreight.com
 - Help Center: support.infamousfreight.com
 
 **Social:**
+
 - LinkedIn: linkedin.com/company/infamous-freight
 - Twitter: @InfamousFreight
 - YouTube: youtube.com/InfamousFreight
 
 **Press:**
+
 - Media Kit: infamousfreight.com/press
 - Contact: press@infamousfreight.com
 
@@ -794,20 +880,24 @@ Replace 5-10 fragmented tools with one platform:
 
 ## 🎊 Conclusion
 
-INFÆMOUS FREIGHT is not just another logistics platform—it's the **AI-first operating system** that will power the future of global freight.
+INFÆMOUS FREIGHT is not just another logistics platform—it's the **AI-first
+operating system** that will power the future of global freight.
 
 **We're solving real problems:**
+
 - Empowering independent operators with enterprise intelligence
 - Eliminating inefficiency that costs the industry billions
 - Building a fairer, more transparent freight ecosystem
 
 **We're built for scale:**
+
 - 100% feature complete and production-ready
 - SOC 2 ready with global compliance
 - 827 passing tests with zero lint errors
 - Deployed across multiple regions
 
 **We're ready for the world:**
+
 - Serving drivers, carriers, and enterprise customers
 - Expanding internationally (55+ countries)
 - Building the future freight exchange

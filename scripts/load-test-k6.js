@@ -59,8 +59,7 @@ export default function () {
     const metricsRes = makeRequest("GET", `${BASE_URL}/api/metrics`);
     check(metricsRes, {
       "metrics endpoint status is 200": (r) => r.status === 200,
-      "metrics response is text format": (r) =>
-        r.headers["Content-Type"]?.includes("text/plain"),
+      "metrics response is text format": (r) => r.headers["Content-Type"]?.includes("text/plain"),
     });
 
     // Performance metrics
@@ -82,8 +81,7 @@ export default function () {
     const wsRes = makeRequest("GET", `${BASE_URL}/api/metrics/websocket`);
     check(wsRes, {
       "websocket metrics status is 200": (r) => r.status === 200,
-      "websocket metrics has connections": (r) =>
-        r.body.includes("activeConnections"),
+      "websocket metrics has connections": (r) => r.body.includes("activeConnections"),
     });
 
     sleep(1);

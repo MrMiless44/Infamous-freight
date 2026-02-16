@@ -153,6 +153,7 @@ GET /api/health/live (for Kubernetes-style probes)
 ```
 
 Expected responses:
+
 - **200**: Service healthy
 - **503**: Dependency down (DB, Redis)
 
@@ -194,7 +195,7 @@ Fly.io Configuration (`fly.toml`):
 [[services]]
   internal_port = 8080
   protocol = "tcp"
-  
+
   [services.concurrency]
     type = "requests"
     hard_limit = 20
@@ -348,12 +349,14 @@ EAS Configuration (`eas.json`):
 ### Pre-Deployment Migration
 
 1. **Create Migration**
+
    ```bash
    cd apps/api
    pnpm prisma:migrate:dev --name feature_description
    ```
 
 2. **Review Generated SQL**
+
    ```bash
    cat prisma/migrations/[timestamp]_feature_description/migration.sql
    ```
@@ -538,7 +541,7 @@ curl -H "Authorization: Bearer <token>" \
 
 ```bash
 # Logs written to /var/log/infamous-freight/
-# 
+#
 # For cloud logging:
 # - Railway: Built-in log viewer
 # - Fly.io: Loki integration

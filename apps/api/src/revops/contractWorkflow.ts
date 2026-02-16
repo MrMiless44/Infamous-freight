@@ -4,8 +4,9 @@
  * Module: Enterprise Contract Workflow - Automated Contract Generation & E-Signature
  */
 
-import { PrismaClient } from '@prisma/client';
-import { aiSyntheticClient } from '../services/aiSyntheticClient';
+import { PrismaClient } from "@prisma/client";
+import { docusignService } from "../services/docusignService";
+import { aiSyntheticClient } from "../services/aiSyntheticClient";
 
 const prisma = new PrismaClient();
 
@@ -22,7 +23,7 @@ interface ContractTerms {
   contactEmail: string;
   annualValue: number;
   contractTerm: number; // months
-  plan: 'STARTER' | 'GROWTH' | 'ENTERPRISE' | 'CUSTOM';
+  plan: "STARTER" | "GROWTH" | "ENTERPRISE" | "CUSTOM";
   customTerms?: Record<string, any>;
   startDate?: Date;
 }
@@ -44,7 +45,7 @@ Contact: ${terms.contactName} (${terms.contactEmail})
 Contract Value: $${terms.annualValue.toLocaleString()} annually
 Term: ${terms.contractTerm} months
 Plan: ${terms.plan}
-Start Date: ${terms.startDate?.toLocaleDateString() || 'Upon signature'}
+Start Date: ${terms.startDate?.toLocaleDateString() || "Upon signature"}
 
 Include:
 1. Services description (freight logistics platform)
@@ -60,21 +61,22 @@ Format as a professional MSA. Be concise but comprehensive.`;
 
   try {
     const response = await aiSyntheticClient.chat.completions.create({
-      model: 'gpt-4',
+      model: "gpt-4",
       messages: [
         {
-          role: 'system',
-          content: 'You are a legal document generator for Infæmous Freight. Generate professional, enforceable contracts.',
+          role: "system",
+          content:
+            "You are a legal document generator for Infæmous Freight. Generate professional, enforceable contracts.",
         },
-        { role: 'user', content: prompt },
+        { role: "user", content: prompt },
       ],
       max_tokens: 2000,
       temperature: 0.3, // Lower temp for legal docs
     });
-    
+
     return response.choices[0]?.message?.content || generateFallbackContract(terms);
   } catch (error) {
-    console.error('[Contract] AI generation failed, using template:', error);
+    console.error("[Contract] AI generation failed, using template:", error);
     return generateFallbackContract(terms);
   }
 }
@@ -85,7 +87,7 @@ Format as a professional MSA. Be concise but comprehensive.`;
 function generateFallbackContract(terms: ContractTerms): string {
   return `MASTER SERVICE AGREEMENT
 
-This Master Service Agreement ("Agreement") is entered into as of ${terms.startDate?.toLocaleDateString() || '[DATE]'} ("Effective Date") by and between:
+This Master Service Agreement ("Agreement") is entered into as of ${terms.startDate?.toLocaleDateString() || "[DATE]"} ("Effective Date") by and between:
 
 Infæmous Freight Enterprises, LLC ("Provider")
 123 Logistics Way, San Francisco, CA 94105
@@ -184,7 +186,7 @@ Data retained for duration of Agreement plus 90 days, unless legally required ot
 9. INTERNATIONAL TRANSFERS
 Data processed in US data centers. Standard Contractual Clauses apply for EU/UK data.
 
-Executed as of ${terms.startDate?.toLocaleDateString() || '[DATE]'}
+Executed as of ${terms.startDate?.toLocaleDateString() || "[DATE]"}
 
 Infæmous Freight Enterprises, LLC          ${terms.orgName}
 By: _____________________                  By: ${terms.contactName}
@@ -259,21 +261,13 @@ async function storeContractDocuments(
   orgId: string,
   contract: string,
   dpa: string,
-  soc2: string
+  soc2: string,
 ): Promise<ContractDocuments> {
   // In production, upload to S3/GCS/Azure Blob Storage
   // For now, return mock URLs
-  const baseUrl = process.env.CDN_URL || 'https://cdn.infamous-freight.com';
+  const baseUrl = process.env.CDN_URL || "https://cdn.infamous-freight.com";
   const contractId = `contract-${orgId}-${Date.now()}`;
-  
-  // TODO: Upload to S3
-  // await s3.putObject({
-  //   Bucket: 'infamous-contracts',
-  //   Key: `${contractId}-msa.pdf`,
-  //   Body: contract,
-  //   ContentType: 'application/pdf'
-  // });
-  
+
   return {
     contractUrl: `${baseUrl}/contracts/${contractId}-msa.pdf`,
     dpaUrl: `${baseUrl}/contracts/${contractId}-dpa.pdf`,
@@ -287,25 +281,22 @@ async function storeContractDocuments(
 async function sendForSignature(
   contract: ContractDocuments,
   signerEmail: string,
-  signerName: string
+  signerName: string,
 ): Promise<string> {
   // In production, integrate with DocuSign API
   // For now, return mock signature request ID
-  
+
   console.log(`[Contract] Sending for signature to ${signerEmail}`);
-  
-  // TODO: DocuSign integration
-  // const envelope = await docusign.createEnvelope({
-  //   documents: [
-  //     { url: contract.contractUrl, name: 'Master Service Agreement' },
-  //     { url: contract.dpaUrl, name: 'Data Processing Agreement' }
-  //   ],
-  //   signers: [{ email: signerEmail, name: signerName }]
-  // });
-  
-  // return envelope.envelopeId;
-  
-  return `sig-${Date.now()}-${signerEmail.split('@')[0]}`;
+  const envelopeId = await docusignService.sendForSigning({
+    documentUrl: contract.contractUrl,
+    signerEmail,
+    signerName,
+    subject: "Master Service Agreement",
+    message: "Please review and sign the attached documents.",
+    carbonCopyEmails: [],
+  });
+
+  return envelopeId;
 }
 
 /**
@@ -313,30 +304,25 @@ async function sendForSignature(
  */
 export async function generateEnterpriseContract(
   opportunityId: string,
-  terms: ContractTerms
+  terms: ContractTerms,
 ): Promise<string> {
   console.log(`[Contract] Generating enterprise contract for ${terms.orgName}`);
-  
+
   // 1. Generate contract documents
   const contractText = await generateContractDocument(terms);
   const dpaText = generateDPA(terms);
   const soc2Text = generateSOC2Summary();
-  
+
   // 2. Store documents
-  const documents = await storeContractDocuments(
-    terms.orgId,
-    contractText,
-    dpaText,
-    soc2Text
-  );
-  
+  const documents = await storeContractDocuments(terms.orgId, contractText, dpaText, soc2Text);
+
   // 3. Create contract record
   const contract = await prisma.enterpriseContract.create({
     data: {
       orgId: terms.orgId,
       opportunityId,
-      contractType: terms.plan === 'CUSTOM' ? 'custom' : 'standard',
-      status: 'PENDING_SIGNATURE',
+      contractType: terms.plan === "CUSTOM" ? "custom" : "standard",
+      status: "PENDING_SIGNATURE",
       annualValue: terms.annualValue,
       contractTerm: terms.contractTerm,
       paymentTerms: `Monthly: $${(terms.annualValue / terms.contractTerm).toFixed(2)}`,
@@ -346,29 +332,29 @@ export async function generateEnterpriseContract(
       startDate: terms.startDate || new Date(),
       endDate: new Date(Date.now() + terms.contractTerm * 30 * 24 * 60 * 60 * 1000),
       aiGenerated: true,
-      generatedBy: 'genesis-ai',
+      generatedBy: "genesis-ai",
       metadata: JSON.stringify({
         customTerms: terms.customTerms,
         generatedAt: new Date().toISOString(),
       }),
     },
   });
-  
+
   // 4. Send for e-signature
   const signatureRequestId = await sendForSignature(
     documents,
     terms.contactEmail,
-    terms.contactName
+    terms.contactName,
   );
-  
+
   // 5. Update contract with signature request ID
   await prisma.enterpriseContract.update({
     where: { id: contract.id },
     data: { signatureRequestId },
   });
-  
+
   console.log(`[Contract] Sent for signature: ${signatureRequestId}`);
-  
+
   return contract.id;
 }
 
@@ -378,33 +364,33 @@ export async function generateEnterpriseContract(
 export async function handleSignatureCompleted(
   signatureRequestId: string,
   signerEmail: string,
-  signerName: string
+  signerName: string,
 ) {
   // Find contract
   const contract = await prisma.enterpriseContract.findFirst({
     where: { signatureRequestId },
   });
-  
+
   if (!contract) {
     throw new Error(`Contract with signature request ${signatureRequestId} not found`);
   }
-  
+
   // Mark as signed
   await prisma.enterpriseContract.update({
     where: { id: contract.id },
     data: {
-      status: 'SIGNED',
+      status: "SIGNED",
       signedByEmail: signerEmail,
       signedByName: signerName,
       signedAt: new Date(),
     },
   });
-  
+
   console.log(`[Contract] Signed by ${signerEmail}: ${contract.id}`);
-  
+
   // Trigger post-signature workflow
   await executeContractProvisioningPostSignature(contract.id);
-  
+
   return contract;
 }
 
@@ -416,23 +402,23 @@ async function executeContractProvisioningPostSignature(contractId: string) {
     where: { id: contractId },
     include: { organization: true },
   });
-  
+
   if (!contract) return;
-  
+
   console.log(`[Contract] Provisioning resources for org ${contract.orgId}`);
-  
+
   // 1. Set up Stripe subscription
   // await stripeSync.createSubscription(contract.orgId, contract.plan);
-  
+
   // 2. Send onboarding email
   // await sendOnboardingEmail(contract.organization.email);
-  
+
   // 3. Assign customer success manager
   // await assignCSM(contract.orgId);
-  
+
   // 4. Schedule kickoff call
   // await scheduleKickoffCall(contract.organization.email);
-  
+
   console.log(`[Contract] Provisioning complete for ${contract.orgId}`);
 }
 
@@ -442,7 +428,7 @@ async function executeContractProvisioningPostSignature(contractId: string) {
 export async function getPendingContracts() {
   return prisma.enterpriseContract.findMany({
     where: {
-      status: 'PENDING_SIGNATURE',
+      status: "PENDING_SIGNATURE",
     },
     include: {
       organization: {
@@ -453,7 +439,7 @@ export async function getPendingContracts() {
       },
     },
     orderBy: {
-      createdAt: 'desc',
+      createdAt: "desc",
     },
   });
 }

@@ -4,26 +4,27 @@
 **Date**: 2026-01-11  
 **Repository**: https://github.com/MrMiless44/Infamous-freight-enterprises  
 **Commits**: 769 total  
-**Release**: v2.1.0  
+**Release**: v2.1.0
 
 ---
 
 ## 📊 Global Deployment Overview
 
-| Platform | Status | Locations | Coverage | Deploy Link |
-|----------|--------|-----------|----------|-------------|
-| **GitHub Pages** | ✅ LIVE | 1 CDN | Global | https://MrMiless44.github.io/Infamous-freight-enterprises/ |
-| **GitHub Actions** | ✅ ACTIVE | Auto | On every push | https://github.com/MrMiless44/Infamous-freight-enterprises/actions |
-| **Vercel** | 🔗 READY | 70+ Edge | 6 Continents | https://vercel.com/new/clone?repository-url=https://github.com/MrMiless44/Infamous-freight-enterprises |
-| **Netlify** | 🔗 READY | 6 CDN | Global | https://app.netlify.com/start/deploy?repository=https://github.com/MrMiless44/Infamous-freight-enterprises |
-| **Cloudflare Pages** | 🔗 READY | 310+ Cities | 120+ Countries | https://dash.cloudflare.com/pages |
-| **Render** | 🔗 READY | 5 Regions | Global | https://dashboard.render.com/ |
+| Platform             | Status    | Locations   | Coverage       | Deploy Link                                                                                                |
+| -------------------- | --------- | ----------- | -------------- | ---------------------------------------------------------------------------------------------------------- |
+| **GitHub Pages**     | ✅ LIVE   | 1 CDN       | Global         | https://MrMiless44.github.io/Infamous-freight-enterprises/                                                 |
+| **GitHub Actions**   | ✅ ACTIVE | Auto        | On every push  | https://github.com/MrMiless44/Infamous-freight-enterprises/actions                                         |
+| **Vercel**           | 🔗 READY  | 70+ Edge    | 6 Continents   | https://vercel.com/new/clone?repository-url=https://github.com/MrMiless44/Infamous-freight-enterprises     |
+| **Netlify**          | 🔗 READY  | 6 CDN       | Global         | https://app.netlify.com/start/deploy?repository=https://github.com/MrMiless44/Infamous-freight-enterprises |
+| **Cloudflare Pages** | 🔗 READY  | 310+ Cities | 120+ Countries | https://dash.cloudflare.com/pages                                                                          |
+| **Render**           | 🔗 READY  | 5 Regions   | Global         | https://dashboard.render.com/                                                                              |
 
 ---
 
 ## 🟢 Active Deployments
 
 ### 1. GitHub Pages (LIVE ✅)
+
 - **URL**: https://MrMiless44.github.io/Infamous-freight-enterprises/
 - **Status**: HTTP 200 OK
 - **Auto-Deploy**: Yes (via GitHub Actions on every push to main)
@@ -59,12 +60,15 @@ jobs:
 ## 🔵 One-Click Deploy Options
 
 ### 2. Vercel (Ready for One-Click)
+
 - **Edge Locations**: 70+
 - **Global Coverage**: 6 continents
 - **Performance**: Real-time analytics, monitoring
-- **Deploy Now**: https://vercel.com/new/clone?repository-url=https://github.com/MrMiless44/Infamous-freight-enterprises
+- **Deploy Now**:
+  https://vercel.com/new/clone?repository-url=https://github.com/MrMiless44/Infamous-freight-enterprises
 
 **Configuration File**: `vercel.json`
+
 ```json
 {
   "buildCommand": "npm run build",
@@ -74,6 +78,7 @@ jobs:
 ```
 
 **Steps to Deploy**:
+
 1. Click the Vercel link above
 2. Sign in with GitHub account
 3. Authorize repository access
@@ -84,11 +89,14 @@ jobs:
 ---
 
 ### 3. Netlify (Ready for One-Click)
+
 - **CDN**: 6 global datacenters
 - **Performance**: Built-in analytics, edge functions
-- **Deploy Now**: https://app.netlify.com/start/deploy?repository=https://github.com/MrMiless44/Infamous-freight-enterprises
+- **Deploy Now**:
+  https://app.netlify.com/start/deploy?repository=https://github.com/MrMiless44/Infamous-freight-enterprises
 
 **Configuration File**: `netlify.toml`
+
 ```toml
 [build]
   command = "npm run build"
@@ -104,6 +112,7 @@ jobs:
 ```
 
 **Steps to Deploy**:
+
 1. Click the Netlify link above
 2. Sign in with GitHub
 3. Authorize repository access
@@ -115,12 +124,14 @@ jobs:
 ---
 
 ### 4. Cloudflare Pages (Ready for One-Click)
+
 - **Global Locations**: 310+ cities
 - **Coverage**: 120+ countries
 - **Performance**: HTTP/3, global caching
 - **Deploy Dashboard**: https://dash.cloudflare.com/pages
 
 **Configuration File**: `wrangler.toml`
+
 ```toml
 name = "infamous-freight-enterprises"
 type = "javascript"
@@ -140,6 +151,7 @@ cwd = "./dist"
 ```
 
 **Steps to Deploy**:
+
 1. Go to https://dash.cloudflare.com/pages
 2. Click "Create project"
 3. Select "Connect to Git"
@@ -152,11 +164,13 @@ cwd = "./dist"
 ---
 
 ### 5. Render (Ready for One-Click)
+
 - **Global Regions**: 5 (US, EU, Asia, Australia, Canada)
 - **Performance**: Auto-scaling, built-in monitoring
 - **Deploy Dashboard**: https://dashboard.render.com/
 
 **Configuration File**: `render.yaml`
+
 ```yaml
 services:
   - type: web
@@ -175,6 +189,7 @@ services:
 ```
 
 **Steps to Deploy**:
+
 1. Go to https://dashboard.render.com/
 2. Click "New +"
 3. Select "Web Service"
@@ -191,22 +206,23 @@ services:
 
 ## 📈 Total Global Coverage After Deployment
 
-| Metric | Value |
-|--------|-------|
-| **Total Platforms Deployed** | 6 |
-| **Total Edge Locations** | 400+ |
-| **Countries Covered** | 120+ |
-| **Continents** | 6 |
-| **Global CDN Nodes** | 310+ (Cloudflare) |
-| **Regional Datacenters** | 5+ (Render) |
-| **Auto-Deploy Triggers** | Unlimited |
-| **Monitoring Points** | 70+ (Vercel) |
+| Metric                       | Value             |
+| ---------------------------- | ----------------- |
+| **Total Platforms Deployed** | 6                 |
+| **Total Edge Locations**     | 400+              |
+| **Countries Covered**        | 120+              |
+| **Continents**               | 6                 |
+| **Global CDN Nodes**         | 310+ (Cloudflare) |
+| **Regional Datacenters**     | 5+ (Render)       |
+| **Auto-Deploy Triggers**     | Unlimited         |
+| **Monitoring Points**        | 70+ (Vercel)      |
 
 ---
 
 ## 🚀 Deployment Orchestration Commands
 
 ### Build & Deploy All (Local)
+
 ```bash
 #!/bin/bash
 
@@ -233,12 +249,14 @@ echo "  🔵 Render:    https://dashboard.render.com/"
 ### Deploy to Specific Platform
 
 **GitHub Pages (Automatic)**:
+
 ```bash
 git push origin main
 # GitHub Actions automatically deploys
 ```
 
 **Vercel (CLI)**:
+
 ```bash
 # Install Vercel CLI
 pnpm add -g vercel@latest
@@ -248,6 +266,7 @@ vercel --prod
 ```
 
 **Netlify (CLI)**:
+
 ```bash
 # Install Netlify CLI
 npm i -g netlify-cli
@@ -260,6 +279,7 @@ netlify deploy --prod --dir=dist
 ```
 
 **Cloudflare Pages (Wrangler)**:
+
 ```bash
 # Install Wrangler
 npm i -g wrangler
@@ -272,6 +292,7 @@ wrangler pages deploy dist/
 ```
 
 **Render (Dashboard)**:
+
 ```bash
 # Use Render dashboard at https://dashboard.render.com/
 # No CLI deployment - use web UI for easiest setup
@@ -282,23 +303,28 @@ wrangler pages deploy dist/
 ## 📊 Deployment Status Dashboard
 
 ### Live Deployments (HTTP 200)
+
 - ✅ GitHub Pages: https://MrMiless44.github.io/Infamous-freight-enterprises/
 
 ### Ready for Instant One-Click Deploy
+
 - 🔗 Vercel: Click deploy link above (70+ edge locations)
 - 🔗 Netlify: Click deploy link above (6 CDN zones)
 - 🔗 Cloudflare: Setup at https://dash.cloudflare.com/pages (310+ cities)
 - 🔗 Render: Setup at https://dashboard.render.com/ (5 regions)
 
 ### Auto-Deploy Active
+
 - ✅ GitHub Actions: Deploys on every push to main
-  - Dashboard: https://github.com/MrMiless44/Infamous-freight-enterprises/actions
+  - Dashboard:
+    https://github.com/MrMiless44/Infamous-freight-enterprises/actions
 
 ---
 
 ## 🎯 Next Steps
 
 ### Immediate (Already Done ✅)
+
 - ✅ Configured all 5 deployment platforms
 - ✅ GitHub Pages live and operational
 - ✅ GitHub Actions auto-deploy active
@@ -306,12 +332,20 @@ wrangler pages deploy dist/
 - ✅ All configuration files created
 
 ### Quick Deploy (Click Once)
-1. **Vercel**: Visit https://vercel.com/new/clone?repository-url=https://github.com/MrMiless44/Infamous-freight-enterprises → Click "Create"
-2. **Netlify**: Visit https://app.netlify.com/start/deploy?repository=https://github.com/MrMiless44/Infamous-freight-enterprises → Click "Deploy site"
-3. **Cloudflare**: Visit https://dash.cloudflare.com/pages → Create project → Connect to Git
-4. **Render**: Visit https://dashboard.render.com/ → Create Web Service → Connect GitHub
+
+1. **Vercel**: Visit
+   https://vercel.com/new/clone?repository-url=https://github.com/MrMiless44/Infamous-freight-enterprises
+   → Click "Create"
+2. **Netlify**: Visit
+   https://app.netlify.com/start/deploy?repository=https://github.com/MrMiless44/Infamous-freight-enterprises
+   → Click "Deploy site"
+3. **Cloudflare**: Visit https://dash.cloudflare.com/pages → Create project →
+   Connect to Git
+4. **Render**: Visit https://dashboard.render.com/ → Create Web Service →
+   Connect GitHub
 
 ### Optional Customizations
+
 - Add custom domains to each platform
 - Configure environment variables
 - Enable advanced monitoring
@@ -323,6 +357,7 @@ wrangler pages deploy dist/
 ## 🔄 How Auto-Deploy Works
 
 Every time you push to main:
+
 ```bash
 git push origin main
 ```
@@ -336,6 +371,7 @@ git push origin main
 7. **Creates release** (if tagged)
 
 Then you can:
+
 - Manually deploy to Vercel/Netlify/Cloudflare/Render (one-click)
 - Or use CLI commands from above
 
@@ -343,14 +379,14 @@ Then you can:
 
 ## 📚 Configuration Files Location
 
-| File | Purpose | Path |
-|------|---------|------|
-| GitHub Actions | Auto-deploy workflow | `.github/workflows/build-deploy.yml` |
-| Vercel | Vercel deployment config | `vercel.json` |
-| Netlify | Netlify deployment config | `netlify.toml` |
-| Cloudflare | Wrangler/Pages config | `wrangler.toml` |
-| Render | Render deployment config | `render.yaml` |
-| Deploy Script | Local deployment script | `deploy.sh` |
+| File           | Purpose                   | Path                                 |
+| -------------- | ------------------------- | ------------------------------------ |
+| GitHub Actions | Auto-deploy workflow      | `.github/workflows/build-deploy.yml` |
+| Vercel         | Vercel deployment config  | `vercel.json`                        |
+| Netlify        | Netlify deployment config | `netlify.toml`                       |
+| Cloudflare     | Wrangler/Pages config     | `wrangler.toml`                      |
+| Render         | Render deployment config  | `render.yaml`                        |
+| Deploy Script  | Local deployment script   | `deploy.sh`                          |
 
 ---
 
@@ -358,14 +394,14 @@ Then you can:
 
 After deploying to all platforms:
 
-| Region | Deployment Options |
-|--------|------------------|
+| Region            | Deployment Options                                |
+| ----------------- | ------------------------------------------------- |
 | **North America** | GitHub Pages, Vercel, Netlify, Cloudflare, Render |
-| **Europe** | GitHub Pages, Vercel, Netlify, Cloudflare, Render |
-| **Asia** | GitHub Pages, Vercel, Netlify, Cloudflare, Render |
-| **Australia** | GitHub Pages, Vercel, Netlify, Cloudflare, Render |
-| **South America** | GitHub Pages, Vercel, Netlify, Cloudflare |
-| **Africa** | GitHub Pages, Netlify, Cloudflare |
+| **Europe**        | GitHub Pages, Vercel, Netlify, Cloudflare, Render |
+| **Asia**          | GitHub Pages, Vercel, Netlify, Cloudflare, Render |
+| **Australia**     | GitHub Pages, Vercel, Netlify, Cloudflare, Render |
+| **South America** | GitHub Pages, Vercel, Netlify, Cloudflare         |
+| **Africa**        | GitHub Pages, Netlify, Cloudflare                 |
 
 ---
 
@@ -387,6 +423,7 @@ After deploying to all platforms:
 ## 📞 Support
 
 For issues with any platform:
+
 - **GitHub Pages**: https://docs.github.com/pages
 - **Vercel**: https://vercel.com/docs
 - **Netlify**: https://docs.netlify.com

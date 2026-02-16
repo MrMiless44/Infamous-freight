@@ -48,13 +48,9 @@ function SubscriptionCheckoutForm({
     // its default behavior. `confirmParams` is optional per Stripe's API.
     const resolvedReturnUrl =
       returnUrl ??
-      (typeof window !== "undefined"
-        ? `${window.location.origin}/billing/return`
-        : undefined);
+      (typeof window !== "undefined" ? `${window.location.origin}/billing/return` : undefined);
 
-    const confirmParams = resolvedReturnUrl
-      ? { return_url: resolvedReturnUrl }
-      : undefined;
+    const confirmParams = resolvedReturnUrl ? { return_url: resolvedReturnUrl } : undefined;
 
     const { error: confirmError, paymentIntent } = await stripe.confirmPayment({
       elements,

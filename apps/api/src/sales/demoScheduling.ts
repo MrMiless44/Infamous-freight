@@ -1,6 +1,6 @@
 /**
  * Demo Scheduling Service (Phase 21.3)
- * 
+ *
  * Manages demo bookings:
  * - Schedule with Calendly / Google Calendar
  * - Send confirmation emails
@@ -9,6 +9,7 @@
 
 import { PrismaClient } from "@prisma/client";
 import { createLead, convertLead } from "./leadCapture";
+import { sendEmail } from "../services/emailService";
 
 const prisma = new PrismaClient();
 
@@ -92,9 +93,7 @@ export async function scheduleDemo(input: ScheduleDemoInput): Promise<any> {
       },
     });
 
-    console.log(
-      `[DemoScheduling] Demo scheduled: ${lead.email} - ${input.scheduledFor}`
-    );
+    console.log(`[DemoScheduling] Demo scheduled: ${lead.email} - ${input.scheduledFor}`);
 
     // Send confirmation email
     try {
@@ -140,7 +139,7 @@ export async function updateDemoStatus(
   demoId: string,
   status: "scheduled" | "completed" | "no_show" | "canceled",
   recordingUrl?: string,
-  notes?: string
+  notes?: string,
 ): Promise<any> {
   return prisma.demoBooking.update({
     where: { id: demoId },
@@ -156,9 +155,7 @@ export async function updateDemoStatus(
 /**
  * Get upcoming demos
  */
-export async function getUpcomingDemos(
-  days: number = 7
-): Promise<any[]> {
+export async function getUpcomingDemos(days: number = 7): Promise<any[]> {
   const now = new Date();
   const futureDate = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
 
@@ -191,11 +188,7 @@ export async function getDemoStats(): Promise<any> {
     canceled: demos.filter((d) => d.status === "canceled").length,
     conversionRate:
       demos.length > 0
-        ? (
-            (demos.filter((d) => d.lead.convertedOrgId).length /
-              demos.length) *
-            100
-          ).toFixed(2)
+        ? ((demos.filter((d) => d.lead.convertedOrgId).length / demos.length) * 100).toFixed(2)
         : "0",
   };
 
@@ -224,9 +217,7 @@ interface CalendarEventResult {
 /**
  * Create calendar event (Calendly or Google Calendar)
  */
-async function createCalendarEvent(
-  input: CalendarEventInput
-): Promise<CalendarEventResult> {
+async function createCalendarEvent(input: CalendarEventInput): Promise<CalendarEventResult> {
   const provider = process.env.CALENDAR_PROVIDER || "calendly";
 
   switch (provider) {
@@ -242,9 +233,7 @@ async function createCalendarEvent(
 /**
  * Create event via Calendly API
  */
-async function createCalendlyEvent(
-  input: CalendarEventInput
-): Promise<CalendarEventResult> {
+async function createCalendlyEvent(input: CalendarEventInput): Promise<CalendarEventResult> {
   const apiKey = process.env.CALENDLY_API_KEY;
   if (!apiKey) throw new Error("Calendly API key not configured");
 
@@ -257,23 +246,20 @@ async function createCalendlyEvent(
   const orgUri = resource.organization;
 
   // Create event
-  const eventResponse = await fetch(
-    `${orgUri.split("/").slice(0, -1).join("/")}/events`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
+  const eventResponse = await fetch(`${orgUri.split("/").slice(0, -1).join("/")}/events`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      start_time: input.scheduledFor.toISOString(),
+      invitee: {
+        name: input.attendeeName,
+        email: input.attendeeEmail,
       },
-      body: JSON.stringify({
-        start_time: input.scheduledFor.toISOString(),
-        invitee: {
-          name: input.attendeeName,
-          email: input.attendeeEmail,
-        },
-      }),
-    }
-  );
+    }),
+  });
 
   const { resource: event } = await eventResponse.json();
 
@@ -287,9 +273,7 @@ async function createCalendlyEvent(
 /**
  * Create event via Google Calendar API
  */
-async function createGoogleCalendarEvent(
-  input: CalendarEventInput
-): Promise<CalendarEventResult> {
+async function createGoogleCalendarEvent(input: CalendarEventInput): Promise<CalendarEventResult> {
   const accessToken = process.env.GOOGLE_CALENDAR_ACCESS_TOKEN;
   if (!accessToken) throw new Error("Google Calendar access token not configured");
 
@@ -301,9 +285,7 @@ async function createGoogleCalendarEvent(
       timeZone: input.timezone,
     },
     end: {
-      dateTime: new Date(
-        input.scheduledFor.getTime() + input.duration * 60000
-      ).toISOString(),
+      dateTime: new Date(input.scheduledFor.getTime() + input.duration * 60000).toISOString(),
       timeZone: input.timezone,
     },
     attendees: [{ email: input.attendeeEmail }],
@@ -326,7 +308,7 @@ async function createGoogleCalendarEvent(
         "Content-Type": "application/json",
       },
       body: JSON.stringify(event),
-    }
+    },
   );
 
   const result = await response.json();
@@ -349,15 +331,18 @@ async function createGoogleCalendarEvent(
 async function sendDemoConfirmation(
   lead: any,
   demoBooking: any,
-  calendarEvent: CalendarEventResult
+  calendarEvent: CalendarEventResult,
 ): Promise<void> {
-  // TODO: Implement email sending (Sendgrid, Mailgun, etc.)
-  // For now, log it
-  console.log(
-    `[DemoScheduling] Confirmation email would be sent to ${lead.email}`
-  );
-  console.log(`Calendar link: ${calendarEvent.calendarLink}`);
-  console.log(`Zoom link: ${calendarEvent.zoomLink}`);
+  const subject = "Your Infamous Freight demo is scheduled";
+  const text = `Hi ${lead.name || "there"},\n\nYour demo is scheduled for ${new Date(
+    demoBooking.scheduledFor,
+  ).toLocaleString()}.\n\nCalendar link: ${calendarEvent.calendarLink}\nZoom link: ${calendarEvent.zoomLink}\n\nSee you soon!`;
+
+  await sendEmail({
+    to: lead.email,
+    subject,
+    text,
+  });
 }
 
 /**
@@ -384,9 +369,7 @@ export async function sendDemoReminders(): Promise<number> {
     for (const demo of demos) {
       try {
         // Send reminder email
-        console.log(
-          `[DemoScheduling] Reminder sent to ${demo.lead.email}`
-        );
+        console.log(`[DemoScheduling] Reminder sent to ${demo.lead.email}`);
 
         // Mark as reminded (optional: add field to track)
       } catch (err) {

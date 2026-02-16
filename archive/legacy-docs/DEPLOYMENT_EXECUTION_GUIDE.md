@@ -33,7 +33,9 @@ Mark "Complete Pre-Flight Checklist" as in-progress
 
 **What**: Execute 6 mandatory steps before any deployment
 
-**Where**: See [DEPLOYMENT_PRE-FLIGHT_CHECKLIST.md](DEPLOYMENT_PRE-FLIGHT_CHECKLIST.md) for full details
+**Where**: See
+[DEPLOYMENT_PRE-FLIGHT_CHECKLIST.md](DEPLOYMENT_PRE-FLIGHT_CHECKLIST.md) for
+full details
 
 **Quick Checklist**:
 
@@ -264,12 +266,10 @@ docker-compose -f docker-compose.production.yml logs -f api
 
 ## ⚠️ CRITICAL BLOCKERS (STOP IF ANY OCCUR)
 
-❌ **Pre-deployment check fails** → Don't deploy
-❌ **Health endpoint returns error** → Don't deploy
-❌ **Database migration fails** → Don't deploy
-❌ **Error rate > 5%** → ROLLBACK immediately
-❌ **Services crashing repeatedly** → ROLLBACK immediately
-❌ **Database connection failure** → ROLLBACK immediately
+❌ **Pre-deployment check fails** → Don't deploy ❌ **Health endpoint returns
+error** → Don't deploy ❌ **Database migration fails** → Don't deploy ❌ **Error
+rate > 5%** → ROLLBACK immediately ❌ **Services crashing repeatedly** →
+ROLLBACK immediately ❌ **Database connection failure** → ROLLBACK immediately
 ❌ **Memory leak detected** → ROLLBACK immediately
 
 ---
@@ -463,7 +463,8 @@ docker-compose -f docker-compose.production.yml logs -f
 
 ---
 
-**Questions?** See [DEPLOYMENT_PRE-FLIGHT_CHECKLIST.md](DEPLOYMENT_PRE-FLIGHT_CHECKLIST.md)
+**Questions?** See
+[DEPLOYMENT_PRE-FLIGHT_CHECKLIST.md](DEPLOYMENT_PRE-FLIGHT_CHECKLIST.md)
 
 **Troubleshooting?** See [NEXT_STEPS_ROADMAP.md](NEXT_STEPS_ROADMAP.md) Phase 9
 

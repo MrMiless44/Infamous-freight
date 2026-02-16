@@ -8,7 +8,8 @@
 
 ## 🎯 What's Configured
 
-All payments flow **100% directly to your Stripe account** with zero transaction split:
+All payments flow **100% directly to your Stripe account** with zero transaction
+split:
 
 - ✅ One-time payments (payment intents)
 - ✅ Recurring subscriptions (monthly/yearly)
@@ -22,9 +23,11 @@ All payments flow **100% directly to your Stripe account** with zero transaction
 
 ## ✅ Live Pricing & Payment Links (Infæmous AI Synthetic Intelligence)
 
-Use these live links directly in the web pricing page, mobile UI, SMS upgrade flows, and in-app upgrade prompts.
+Use these live links directly in the web pricing page, mobile UI, SMS upgrade
+flows, and in-app upgrade prompts.
 
 ### Starter (per seat)
+
 - Product: Infæmous Freight Starter
 - Product ID: `prod_Tqy1by3LhxpQY6`
 - Price: **$19/mo**
@@ -32,16 +35,19 @@ Use these live links directly in the web pricing page, mobile UI, SMS upgrade fl
 - Payment Link: https://buy.stripe.com/4gM8wQ7GI2Fs38i53FcV20Q
 
 ### Pro
+
 - Price: **$49/mo**
 - Price ID: `price_1St40lJBKY4ohJDAGfM7XhLW`
 - Payment Link: https://buy.stripe.com/bJeaEYbWYcg210a9jVcV20S
 
 ### Business
+
 - Price: **$99/mo**
 - Price ID: `price_1St41jJBKY4ohJDAeXIGERrN`
 - Payment Link: https://buy.stripe.com/fZucN60egeoa6ku8fRcV20U
 
 ### Enterprise Minimum Monthly Spend
+
 - Price: **$2,500/mo**
 - Price ID: `price_1Sq3B2JBKY4ohJDAjt2se8ZR`
 - Payment Link: https://buy.stripe.com/28E5kE1ik7ZMcIS8fRcV20W
@@ -50,27 +56,33 @@ Use these live links directly in the web pricing page, mobile UI, SMS upgrade fl
 
 ## ✅ Final Step for True Metered Billing
 
-Your product **Infæmous AI Actions (metered)** (`prod_TqlbsmBT9Jw2Z0`) must have a **metered recurring price** to support true usage-based billing. The existing prices are licensed, which prevents usage records from billing properly.
+Your product **Infæmous AI Actions (metered)** (`prod_TqlbsmBT9Jw2Z0`) must have
+a **metered recurring price** to support true usage-based billing. The existing
+prices are licensed, which prevents usage records from billing properly.
 
 ### Dashboard steps (fastest, guaranteed)
+
 1. Stripe Dashboard → Products
 2. Open **Infæmous AI Actions (metered)** (`prod_TqlbsmBT9Jw2Z0`)
 3. Click **Add price**
 4. Select **Recurring**
 5. Billing period: **Monthly**
 6. Pricing model / Usage: **Metered (usage-based)**
-7. Unit price: set your preferred rate (e.g., `$0.01` per AI action or `$0.001` per token)
+7. Unit price: set your preferred rate (e.g., `$0.01` per AI action or `$0.001`
+   per token)
 8. Save
 
 ### Server-side usage reporting
 
-Once you subscribe a customer to the metered price, report usage from Genesis AI:
+Once you subscribe a customer to the metered price, report usage from Genesis
+AI:
 
 ```javascript
-await stripe.subscriptionItems.createUsageRecord(
-  stripeSubscriptionItemId,
-  { quantity, timestamp: Math.floor(Date.now() / 1000), action: "increment" }
-);
+await stripe.subscriptionItems.createUsageRecord(stripeSubscriptionItemId, {
+  quantity,
+  timestamp: Math.floor(Date.now() / 1000),
+  action: "increment",
+});
 ```
 
 ---
@@ -115,18 +127,21 @@ BILLING_CURRENCY=usd
 #### Example Products:
 
 **1. Basic Plan (Monthly)**
+
 - Name: "Basic Plan"
 - Price: $29/month
 - Billing: Recurring
 - Interval: Monthly
 
 **2. Pro Plan (Monthly)**
+
 - Name: "Pro Plan"
 - Price: $99/month
 - Billing: Recurring
 - Interval: Monthly
 
 **3. One-Time Purchase**
+
 - Name: "Premium Feature"
 - Price: $49
 - Billing: One-time
@@ -134,6 +149,7 @@ BILLING_CURRENCY=usd
 #### Production Stripe Products & Payment Links
 
 **Starter**
+
 - Product: Starter Platform Access
 - Product ID: `prod_...`
 - Price: $29/month
@@ -141,6 +157,7 @@ BILLING_CURRENCY=usd
 - Payment Link: `https://buy.stripe.com/...`
 
 **Pro**
+
 - Product: Professional Platform Access
 - Product ID: `prod_...`
 - Price: $49/user/month
@@ -148,6 +165,7 @@ BILLING_CURRENCY=usd
 - Payment Link: `https://buy.stripe.com/...`
 
 **Business**
+
 - Product: Business Platform Access
 - Product ID: `prod_...`
 - Price: $99/user/month
@@ -155,6 +173,7 @@ BILLING_CURRENCY=usd
 - Payment Link: `https://buy.stripe.com/...`
 
 **Enterprise Minimum Monthly Spend**
+
 - Product: Enterprise Minimum Monthly Spend
 - Product ID: `prod_...`
 - Price: $2,500/month minimum
@@ -193,7 +212,12 @@ Response:
 
 ```javascript
 import { loadStripe } from "@stripe/js";
-import { Elements, CardElement, useStripe, useElements } from "@stripe/react-js";
+import {
+  Elements,
+  CardElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-js";
 
 const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
@@ -208,8 +232,8 @@ function PaymentForm() {
       body: JSON.stringify({
         amount: "99.99",
         currency: "usd",
-        description: "Premium Feature"
-      })
+        description: "Premium Feature",
+      }),
     });
 
     const { clientSecret } = await response.json();
@@ -217,7 +241,7 @@ function PaymentForm() {
     const result = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
         card: elements.getElement(CardElement),
-      }
+      },
     });
 
     if (result.paymentIntent.status === "succeeded") {
@@ -264,7 +288,7 @@ async function createSubscription(priceId) {
   const response = await fetch("/api/billing/create-subscription", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ priceId })
+    body: JSON.stringify({ priceId }),
   });
 
   const { subscriptionId, status } = await response.json();
@@ -375,11 +399,13 @@ Settlement (Daily or Weekly)
 Your Bank Account
 ```
 
-**No additional fees.** All revenue after Stripe's payment processing fees goes directly to you.
+**No additional fees.** All revenue after Stripe's payment processing fees goes
+directly to you.
 
 ### Example Transaction
 
 Customer pays: **$100**
+
 - Stripe fee: **$2.90** (2.9% + $0.30 standard rate)
 - You receive: **$97.10** (100% of remainder)
 
@@ -399,8 +425,8 @@ Access real-time revenue data:
 
 ```javascript
 // Get revenue statistics
-const response = await fetch('/api/billing/revenue', {
-  headers: { 'Authorization': `Bearer ${token}` }
+const response = await fetch("/api/billing/revenue", {
+  headers: { Authorization: `Bearer ${token}` },
 });
 
 const { revenue } = await response.json();
@@ -424,7 +450,7 @@ If you want to support multiple merchants:
 
 ```javascript
 // Set in .env
-STRIPE_CONNECT_ACCOUNT_ID=acct_1A2B3C4D5E6F7G8H
+STRIPE_CONNECT_ACCOUNT_ID = acct_1A2B3C4D5E6F7G8H;
 
 // All payments route to connected account
 // With automatic settlement
@@ -438,7 +464,7 @@ To take a percentage:
 // In billing.js - NOT CURRENTLY IMPLEMENTED
 // But if you wanted to take 20% and give 80%:
 
-const applicationFee = Math.round(amountInCents * 0.20);
+const applicationFee = Math.round(amountInCents * 0.2);
 
 await stripe.paymentIntents.create({
   amount: amountInCents,
@@ -486,21 +512,25 @@ CVC: Any 3 digits
 ## 🚨 Critical Notes
 
 ⚠️ **Never commit your keys to git**
+
 - Use `.env` file (in `.gitignore`)
 - Use environment variables in production
 - Rotate keys immediately if compromised
 
 ⚠️ **Webhook verification required**
+
 - Always verify webhook signature
 - Already implemented in `billing.js`
 - Prevents unauthorized events
 
 ⚠️ **PCI Compliance**
+
 - Never store full card numbers
 - Stripe handles all card data
 - Only store Stripe payment intent IDs
 
 ⚠️ **Currency & Tax**
+
 - Default currency: USD
 - Tax calculation: Automatic (enabled)
 - Support multiple currencies: ✅
@@ -564,7 +594,7 @@ Your Stripe integration is now **100% configured** with:
 ✅ Recurring subscriptions  
 ✅ Automatic webhooks  
 ✅ Revenue analytics  
-✅ 100% revenue to your account  
+✅ 100% revenue to your account
 
 **All payments go directly to you. No splits. No complications.**
 

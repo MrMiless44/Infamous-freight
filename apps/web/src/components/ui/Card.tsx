@@ -54,11 +54,7 @@ export const Card: React.FC<CardProps> = ({
   const CardElement = onClick ? "button" : "div";
 
   return (
-    <CardElement
-      className={baseStyles}
-      onClick={onClick}
-      {...(onClick ? { type: "button" } : {})}
-    >
+    <CardElement className={baseStyles} onClick={onClick} {...(onClick ? { type: "button" } : {})}>
       {children}
     </CardElement>
   );
@@ -68,11 +64,7 @@ export const CardHeader: React.FC<{
   children: React.ReactNode;
   className?: string;
 }> = ({ children, className = "" }) => {
-  return (
-    <div className={`border-b border-gray-200 pb-3 mb-3 ${className}`}>
-      {children}
-    </div>
-  );
+  return <div className={`border-b border-gray-200 pb-3 mb-3 ${className}`}>{children}</div>;
 };
 
 export const CardBody: React.FC<{
@@ -86,11 +78,7 @@ export const CardFooter: React.FC<{
   children: React.ReactNode;
   className?: string;
 }> = ({ children, className = "" }) => {
-  return (
-    <div className={`border-t border-gray-200 pt-3 mt-3 ${className}`}>
-      {children}
-    </div>
-  );
+  return <div className={`border-t border-gray-200 pt-3 mt-3 ${className}`}>{children}</div>;
 };
 
 export default Card;

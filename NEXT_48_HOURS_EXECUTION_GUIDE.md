@@ -12,6 +12,7 @@
 ### ⏰ 6:00 AM - PRE-LAUNCH (2 hours before)
 
 **1. Final system checks** (30 min)
+
 ```bash
 # Verify all services online
 curl https://api.infamous-freight.com/health
@@ -30,6 +31,7 @@ cd apps/api && pnpm prisma:studio
 ```
 
 **2. Communications checklist** (30 min)
+
 ```
 [ ] Slack channel created: #infamus-launch
 [ ] Alert recipients added to Slack
@@ -41,6 +43,7 @@ cd apps/api && pnpm prisma:studio
 ### ⏰ 7:30 AM - PRE-SUBMISSION (30 min)
 
 **1. Product Hunt submission prep** (20 min)
+
 ```
 [ ] Title: "INFÆMOUS FREIGHT - No Credit Card Required"
 [ ] Tagline: "The Slack of freight. No payment required to start. $99/month for power users."
@@ -57,6 +60,7 @@ cd apps/api && pnpm prisma:studio
 ```
 
 **2. Final messaging review** (10 min)
+
 ```
 ✅ Competitor positioning (vs Convoy, Sennder, Loadsmart)
 ✅ Pricing explanation (why Free works)
@@ -67,6 +71,7 @@ cd apps/api && pnpm prisma:studio
 ### ⏰ 8:00 AM - LAUNCH WINDOW (30 min)
 
 **SUBMIT PRODUCT HUNT** ← THIS IS THE MOMENT
+
 ```
 1. Go to producthunt.com/products/create
 2. Fill form with hero section + gallery + description + maker's comment
@@ -75,6 +80,7 @@ cd apps/api && pnpm prisma:studio
 ```
 
 **Simultaneously**:
+
 ```
 [ ] Start Slack #infamus-launch channel
 [ ] Post: "🚀 LIVE ON PRODUCT HUNT - INFÆMOUS FREIGHT (No credit card required)"
@@ -84,16 +90,17 @@ cd apps/api && pnpm prisma:studio
 ### ⏰ 8:15 AM - EMAIL CAMPAIGN LAUNCH (30 min)
 
 **Send Email #1: Existing customers (grandfather pricing)**
+
 ```
 Audience: 1,000 existing customers
 Subject: "INFÆMOUS FREIGHT just went free (+ new $99 plan)"
-Body: 
+Body:
   "Hi [Name],
 
   We just relaunched INFÆMOUS FREIGHT with a new pricing model.
 
   Good news: You're grandfathered at your current price forever.
-  
+
   The new pricing:
   • Free: $0/month (try risk-free)
   • Pro: $99/month (power users)
@@ -102,7 +109,7 @@ Body:
   Your account: Still [current price] forever.
 
   [CTA button] See new pricing
-  
+
   Santorio"
 
 Expected: 95%+ delivery, 40%+ open rate (first 2 hours)
@@ -111,13 +118,14 @@ Expected: 95%+ delivery, 40%+ open rate (first 2 hours)
 ### ⏰ 8:30 AM - MONITOR ACTIVATION (4 hours)
 
 **Real-time dashboard monitoring**:
+
 ```
 Monitor these KPIs every 15 minutes:
 
 Metric                  Target    Alert level
 ─────────────────────────────────────────────
 Product Hunt ranking    Top 20    <#30 = warning
-Product Hunt upvotes    100+      <50 = warning  
+Product Hunt upvotes    100+      <50 = warning
 Free signups (hourly)   50+       <30 = warning
 Pricing page traffic    200/min   <150 = warning
 Email open rate         35%+      <25% = warning
@@ -127,6 +135,7 @@ Stripe revenue          $1K+/hr   $0 = alert
 ```
 
 **Commands to check metrics**:
+
 ```bash
 # Signups (check database)
 cd apps/api && pnpm prisma:studio
@@ -151,6 +160,7 @@ curl https://api.infamous-freight.com/health
 ### ⏰ 12:30 PM - MIDDAY CHECK-IN (Santorio)
 
 **Status update to team**:
+
 ```
 🎯 Metrics at 4:30 AM PT:
    • Product Hunt: [RANKING] ([UPVOTES]↑)
@@ -171,6 +181,7 @@ curl https://api.infamous-freight.com/health
 **Why now?**: US market prime time + international nighttime reached
 
 **1. LinkedIn founder post** (15 min)
+
 ```
 [Copy from PRODUCT_HUNT_LAUNCH_STRATEGY.md - LinkedIn section]
 
@@ -179,6 +190,7 @@ Expected CTR: 50-100 clicks to pricing page
 ```
 
 **2. Twitter thread launch** (15 min)
+
 ```
 [Copy from PRODUCT_HUNT_LAUNCH_STRATEGY.md - Twitter section]
 
@@ -192,6 +204,7 @@ Expected: 50-200 retweets, 200-500 likes
 ```
 
 **3. Influencer outreach** (30 min)
+
 ```
 Send DMs to 5 influencers identified in strategy:
 "Hey [Name], INFÆMOUS FREIGHT just launched on Product Hunt.
@@ -211,6 +224,7 @@ Expected: 1-2 shares, 200-500 new signups
 ### ⏰ 4:00 PM - PRESS OUTREACH (1 hour)
 
 **Send press release to media list**:
+
 ```
 Recipients (via Cision or email list):
 • TechCrunch (startup editor)
@@ -233,6 +247,7 @@ Expected: 2-5 press mentions by tomorrow
 ### ⏰ 6:00 PM - EMAIL #2 PREPARATION (30 min)
 
 **Queue Email #2: Product Hunt success celebration**
+
 ```
 Trigger: Automatic send at 10:00 PM PT (morning next day Australia/Asia)
 Audience: All Email #1 recipients who opened email
@@ -253,6 +268,7 @@ Expected impact: 20-30% CTR (high engagement email)
 ### ⏰ 10:00 PM - EOD SUMMARY (30 min)
 
 **Compile Daily Report**:
+
 ```
 📊 DAY 1 ACTUALS:
 
@@ -289,6 +305,7 @@ Revenue:
 ### ⏰ 6:00 AM - MORNING STANDUP
 
 **Check overnight metrics**:
+
 ```bash
 # Signups while US sleeping
 curl https://api.infamous-freight.com/stats/signups/last24h
@@ -311,14 +328,15 @@ cd apps/api && pnpm prisma:studio
 ### ⏰ 9:00 AM - CONTENT REPURPOSING (1 hour)
 
 **Create secondary content pieces**:
+
 ```
 1. Blog post: "Why we went freemium" (1,000 words)
    → Post to Medium, Dev.to, Hacker News
    → Link back to pricing page
-   
+
 2. Case study: "Day 1 launch results" (technical deep dive)
    → Post Monday (after 72h data)
-   
+
 3. Listicle: "5 reasons freight should be free" (800 words)
    → Distribute via LinkedIn + Twitter
 ```
@@ -326,13 +344,14 @@ cd apps/api && pnpm prisma:studio
 ### ⏰ 12:00 PM - SALES OUTREACH (2 hours)
 
 **Enterprise sales team contacts existing customers**:
+
 ```
 Email to top 50 existing customers:
 "Hi [Name],
 
 We just relaunched with new freemium pricing.
 
-I'd love to chat about how you're using INFÆMOUS FREIGHT 
+I'd love to chat about how you're using INFÆMOUS FREIGHT
 and explore our upgraded Pro ($99) and Enterprise ($999) tiers.
 
 → See what's new: [pricing link]
@@ -348,6 +367,7 @@ Expected: $100K-$200K pipeline from existing customers
 ### ⏰ 2:00 PM - PRODUCT HUNT MAINTENANCE (1 hour)
 
 **Respond to Product Hunt comments**:
+
 ```
 Strategy: Respond to top 50+ comments within 2 hours
 
@@ -361,7 +381,7 @@ Types of responses:
 Tone: Authentic, founder-led, thoughtful
 Duration: Respond until midnight PT (16-hour window)
 
-Impact: 
+Impact:
 - Increases maker.pm (maker reputation score)
 - Signals active team to potential customers
 - Prevents negative sentiment from spreading
@@ -371,13 +391,14 @@ Impact:
 ### ⏰ 6:00 PM - EMAIL #3 AUTOMATION (30 min)
 
 **Configure Email #3: Turbo-send to free signups**
+
 ```
 Trigger: Auto-send to all Free users 24 hours after signup
 Subject: "Your INFÆMOUS FREIGHT starter guide (7-day challenge)"
 Body:
   "Hi [Name],
 
-  Welcome to INFÆMOUS FREIGHT! 
+  Welcome to INFÆMOUS FREIGHT!
 
   You're now tracking [0 to X] shipments.
 
@@ -404,6 +425,7 @@ Expected:
 ### ⏰ 10:00 PM - EOD REPORT (1 hour)
 
 **Compile 48-hour summary**:
+
 ```
 📊 48-HOUR ACTUALS (Feb 14-15):
 
@@ -462,6 +484,7 @@ Series A Momentum:
 ### IF ANY OF THESE HAPPEN... 🚨
 
 **Alert: Product Hunt ranking drops below #20**
+
 ```
 Action: Post thank-you comment thread
 Tone: "Thanks for all the love. Here's what we're working on next..."
@@ -469,6 +492,7 @@ Goal: Re-engage Product Hunt community with roadmap visibility
 ```
 
 **Alert: Signups drop below 500/day (Day 2+)**
+
 ```
 Action: Check for:
 ✓ Email deliverability issues → Contact email provider
@@ -480,8 +504,9 @@ mitigation: Post "Hot fix going live" update on Product Hunt
 ```
 
 **Alert: Pro conversion rate drops below 15% (vs 30% target)**
+
 ```
-Action: 
+Action:
 ✓ Check upgrade prompt hook → Is it firing?
 ✓ Check Stripe integration → Are payments processing?
 ✓ Analyze cohorts → Which traffic sources converting poorly?
@@ -491,6 +516,7 @@ Fix time: 2-4 hours
 ```
 
 **Alert: API errors >1% or uptime <99%**
+
 ```
 Action: IMMEDIATELY page on-call engineer
 → Check Datadog alerts
@@ -502,6 +528,7 @@ Contact: #infamus-alerts (Slack)
 ```
 
 **Alert: Email delivery rate <95%**
+
 ```
 Action: Contact email provider (Klaviyo/SendGrid)
 Check:
@@ -516,6 +543,7 @@ Check:
 ## TEAM SCHEDULE
 
 ### Santorio Miles (CEO/Founder)
+
 ```
 Friday 6 AM-2 PM:  Launch day (Product Hunt + email campaigns)
 Friday 2 PM-6 PM:  Press + social blitz
@@ -526,6 +554,7 @@ Saturday evening:  48-hour summary + Series A planning
 ```
 
 ### Engineering Team
+
 ```
 Friday 6 AM-2 PM:  Monitor infrastructure (alerts + health)
 Friday 2 PM-6 PM:  Respond to support emails (1h respond time)
@@ -535,6 +564,7 @@ Saturday 2 PM:     Deep dive on any issues + performance optimization
 ```
 
 ### Marketing Team
+
 ```
 Friday 6 AM-8 AM:  Pre-launch checklist
 Friday 8 AM-12 PM: Real-time monitoring + responses
@@ -549,6 +579,7 @@ Saturday 12 PM+:   Secondary content distribution
 ## SUCCESS CRITERIA
 
 **✅ Massive Success if**:
+
 - Product Hunt: Top 5 ranking + 500+ upvotes
 - Signups: 2,500+ Free users by end of Day 1
 - Conversion: 30% Free→Pro ($4.7K+ MRR)
@@ -556,6 +587,7 @@ Saturday 12 PM+:   Secondary content distribution
 - Revenue: $10K+ Day 1 ($300K+ run-rate MRR)
 
 **⚠️ Good Success if**:
+
 - Product Hunt: Top 20 ranking + 300+ upvotes
 - Signups: 1,500+ Free users by end of Day 1
 - Conversion: 20% Free→Pro ($2K+ MRR)
@@ -563,6 +595,7 @@ Saturday 12 PM+:   Secondary content distribution
 - Revenue: $5K Day 1 ($150K+ run-rate MRR)
 
 **🟡 Acceptable if**:
+
 - Product Hunt: Top 50 ranking + 150+ upvotes
 - Signups: 1,000+ Free users
 - Conversion: 10% Free→Pro ($1K+ MRR)
@@ -574,22 +607,27 @@ Saturday 12 PM+:   Secondary content distribution
 ## LINKS & RESOURCES
 
 **Live dashboards**:
-- Real-time monitoring: https://monitoring.infamous-freight.com/launch-day (IF AVAILABLE)
+
+- Real-time monitoring: https://monitoring.infamous-freight.com/launch-day (IF
+  AVAILABLE)
 - Datadog: https://app.datadoghq.com/dashboard/list
 - Amplitude: https://amplitude.com/app/
 - Stripe dashboard: https://dashboard.stripe.com
 - Product Hunt: https://producthunt.com/posts/infamous-freight-2026
 
 **Marketing guides** (all in repo):
+
 - PRODUCT_HUNT_LAUNCH_STRATEGY.md (headlines, maker comment, strategy)
 - EMAIL_LAUNCH_SEQUENCES.md (all 7 email templates)
 - REAL_TIME_MONITORING_DASHBOARD.md (KPI targets + alerts)
 - MARKETPLACE_PARTNER_PROSPECTUS.md (if partner inquiries come)
 
 **Playbooks**:
+
 - SERIES_A_INVESTOR_TRACKER.md (for warm VC intros that come in)
 - ENTERPRISE_CUSTOMER_UPGRADE_STRATEGY.md (for enterprise sales outreach)
 
 ---
 
-**You've built world-class infrastructure. Now execute flawlessly. Let's go. 🚀**
+**You've built world-class infrastructure. Now execute flawlessly. Let's go.
+🚀**

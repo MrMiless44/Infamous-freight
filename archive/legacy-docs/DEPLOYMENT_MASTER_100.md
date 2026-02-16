@@ -1,6 +1,7 @@
 # 🚀 DEPLOYMENT MASTER GUIDE - DO ALL SAID ABOVE 100%
 
-This guide contains everything you need to deploy your payment system 100% completely.
+This guide contains everything you need to deploy your payment system 100%
+completely.
 
 ## 📋 Table of Contents
 
@@ -23,6 +24,7 @@ bash validate-deployment.sh
 ```
 
 This checks:
+
 - ✅ Repository structure (Dockerfile.api, fly.toml, etc.)
 - ✅ Required CLI tools (git, curl, flyctl)
 - ✅ Documentation completeness
@@ -43,6 +45,7 @@ bash deploy-complete-100.sh
 ```
 
 This single script handles all 5 steps:
+
 1. **Authenticate** with Fly.io (opens browser)
 2. **Deploy** API to Fly.io (5 min)
 3. **Configure** all secrets (3 min)
@@ -50,6 +53,7 @@ This single script handles all 5 steps:
 5. **Test** payment flow (1 min)
 
 The script will:
+
 - ✅ Install Fly CLI if needed
 - ✅ Authenticate with your Fly.io account
 - ✅ Build and deploy Docker image
@@ -99,9 +103,10 @@ flyctl logs --recent
 ### Step 3: Configure Environment Secrets
 
 Get your API keys first:
-- **Stripe Secret Key**: https://dashboard.stripe.com/apikeys (sk_live_...)
-- **Stripe Publishable Key**: https://dashboard.stripe.com/apikeys (pk_live_...)
-- **Stripe Webhook Secret**: https://dashboard.stripe.com/webhooks (whsec_...)
+
+- **Stripe Secret Key**: https://dashboard.stripe.com/apikeys (sk*live*...)
+- **Stripe Publishable Key**: https://dashboard.stripe.com/apikeys (pk*live*...)
+- **Stripe Webhook Secret**: https://dashboard.stripe.com/webhooks (whsec\_...)
 - **PayPal Client ID**: https://developer.paypal.com/dashboard/
 - **PayPal Client Secret**: https://developer.paypal.com/dashboard/
 - **Database URL**: postgresql://user:password@host:5432/db
@@ -144,7 +149,8 @@ flyctl ssh console
 
 1. Go to: https://dashboard.stripe.com/webhooks
 2. Click "Add endpoint"
-3. Endpoint URL: `https://infamous-freight-enterprises.fly.dev/api/billing/webhook`
+3. Endpoint URL:
+   `https://infamous-freight-enterprises.fly.dev/api/billing/webhook`
 4. Subscribe to events:
    - `payment_intent.succeeded`
    - `payment_intent.payment_failed`
@@ -157,7 +163,8 @@ flyctl ssh console
 
 1. Go to: https://developer.paypal.com/dashboard/
 2. Navigate to: Notifications > Webhooks
-3. Create webhook with URL: `https://infamous-freight-enterprises.fly.dev/api/billing/paypal-webhook`
+3. Create webhook with URL:
+   `https://infamous-freight-enterprises.fly.dev/api/billing/paypal-webhook`
 4. Subscribe to events:
    - `PAYMENT.SALE.COMPLETED`
    - `BILLING.SUBSCRIPTION.CREATED`
@@ -179,7 +186,8 @@ flyctl status
 ```
 
 Then test from web app:
-1. Visit: https://infamous-freight-enterprises-git-*.vercel.app
+
+1. Visit: https://infamous-freight-enterprises-git-\*.vercel.app
 2. Click "Subscribe" or "Upgrade"
 3. Select subscription tier
 4. Enter test card: **4242 4242 4242 4242**
@@ -195,6 +203,7 @@ Then test from web app:
 ### Issue: `flyctl: command not found`
 
 **Solution:**
+
 ```bash
 export PATH="$HOME/.fly/bin:$PATH"
 flyctl --version
@@ -203,6 +212,7 @@ flyctl --version
 ### Issue: Authentication fails
 
 **Solution:**
+
 ```bash
 # Clear old auth
 flyctl auth logout
@@ -214,6 +224,7 @@ flyctl auth login
 ### Issue: Deployment fails
 
 **Solution:**
+
 ```bash
 # Check logs
 flyctl logs --recent
@@ -229,6 +240,7 @@ flyctl deploy --remote-only
 ### Issue: Health checks failing
 
 **Solution:**
+
 ```bash
 # SSH into machine
 flyctl ssh console
@@ -246,6 +258,7 @@ exit
 ### Issue: Database connection error
 
 **Solution:**
+
 ```bash
 # Verify DATABASE_URL is correct
 flyctl secrets list
@@ -260,6 +273,7 @@ flyctl secrets set DATABASE_URL="postgresql://..."
 ### Issue: Webhooks not triggering
 
 **Solution:**
+
 ```bash
 # Verify webhook URLs in Stripe/PayPal
 # Webhook URL: https://infamous-freight-enterprises.fly.dev/api/billing/webhook
@@ -276,6 +290,7 @@ flyctl logs --follow | grep webhook
 ### Issue: Payments not processing
 
 **Solution:**
+
 ```bash
 # Verify Stripe keys are test or production (not mixed)
 flyctl secrets list | grep STRIPE
@@ -352,7 +367,7 @@ flyctl logs --follow
 
 After initial testing, switch to production:
 
-```
+````
 BEFORE GOING LIVE:
 ☐ Have tested with test Stripe keys
 ☐ Have tested with test PayPal credentials
@@ -376,7 +391,7 @@ flyctl secrets set \
   STRIPE_PUBLISHABLE_KEY="pk_live_PRODUCTION_KEY" \
   PAYPAL_CLIENT_ID="PRODUCTION_ID" \
   PAYPAL_CLIENT_SECRET="PRODUCTION_SECRET"
-```
+````
 
 ```
 AFTER GOING LIVE:
@@ -525,7 +540,7 @@ Your deployment is successful when:
 ✅ Test payment succeeds  
 ✅ Invoice received in email  
 ✅ Revenue dashboard shows transaction  
-✅ Logs show no errors  
+✅ Logs show no errors
 
 ---
 
@@ -550,7 +565,8 @@ This handles everything 100% automatically.
 - **Fly.io Dashboard**: https://fly.io/dashboard
 - **Stripe Dashboard**: https://dashboard.stripe.com
 - **PayPal Dashboard**: https://developer.paypal.com/dashboard/
-- **GitHub Repository**: https://github.com/MrMiless44/Infamous-freight-enterprises
+- **GitHub Repository**:
+  https://github.com/MrMiless44/Infamous-freight-enterprises
 
 ---
 

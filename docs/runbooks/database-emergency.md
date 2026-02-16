@@ -2,7 +2,8 @@
 
 **Duration:** 10-30 minutes (depends on root cause)  
 **Risk Level:** Medium/High (data integrity critical)  
-**Estimated Recovery:** 5-15 minutes for connection issues, longer for corruption
+**Estimated Recovery:** 5-15 minutes for connection issues, longer for
+corruption
 
 ---
 
@@ -213,10 +214,10 @@ echo "✓ INVESTIGATION MODE - Slow Query Analysis"
 
 # 1. Find slow queries
 psql $DATABASE_URL -c "
-  SELECT query_start, duration, query 
-  FROM pg_stat_statements 
+  SELECT query_start, duration, query
+  FROM pg_stat_statements
   WHERE mean_time > 5000  -- longer than 5 seconds
-  ORDER BY mean_time DESC 
+  ORDER BY mean_time DESC
   LIMIT 10;
 "
 
@@ -227,8 +228,8 @@ psql $DATABASE_URL -c "EXPLAIN ANALYZE SELECT * FROM shipment s JOIN driver d ON
 
 # 3. Check for table locks
 psql $DATABASE_URL -c "
-  SELECT blocked_locks.pid, blocked_locks.query, 
-         blocking_locks.pid, blocking_locks.query 
+  SELECT blocked_locks.pid, blocked_locks.query,
+         blocking_locks.pid, blocking_locks.query
   FROM pg_catalog.pg_locks blocked_locks
   JOIN pg_catalog.pg_locks blocking_locks ON blocking_locks.locktype = blocked_locks.locktype
 WHERE NOT blocked_locks.granted AND blocked_locks.pid != blocking_locks.pid;
@@ -419,13 +420,15 @@ After recovery, verify:
 
 ## Related Runbooks
 
-- [Emergency Rollback](emergency-rollback.md) - If issue requires deployment revert
+- [Emergency Rollback](emergency-rollback.md) - If issue requires deployment
+  revert
 - [Data Recovery](data-recovery.md) - If data corruption detected
 - [Performance Tuning](performance-tuning.md) - Long-term solutions
 - [Slow Query Investigation](slow-query-logs.md) - Deep dive analysis
 
 ---
 
-**Remember:** Database incidents are manageable. Stay calm, follow these steps, and you'll recover quickly. 💪
+**Remember:** Database incidents are manageable. Stay calm, follow these steps,
+and you'll recover quickly. 💪
 
 For questions: Slack #database or post-mortem after recovery.

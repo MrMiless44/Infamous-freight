@@ -7,23 +7,26 @@ const PERF_ERROR_THRESHOLD = parseInt(process.env.PERF_ERROR_THRESHOLD_MS || "50
 
 const logger = pino({
   level: LOG_LEVEL,
-  transport: process.env.NODE_ENV !== 'production' ? {
-    target: 'pino-pretty',
-    options: {
-      colorize: true,
-      translateTime: 'SYS:standard',
-      ignore: 'pid,hostname',
-    },
-  } : undefined,
+  transport:
+    process.env.NODE_ENV !== "production"
+      ? {
+          target: "pino-pretty",
+          options: {
+            colorize: true,
+            translateTime: "SYS:standard",
+            ignore: "pid,hostname",
+          },
+        }
+      : undefined,
 });
 
 const httpLogger = pinoHttp({
   logger,
   customAttributeKeys: {
-    req: 'request',
-    res: 'response',
-    err: 'error',
-    responseTime: 'duration_ms',
+    req: "request",
+    res: "response",
+    err: "error",
+    responseTime: "duration_ms",
   },
 });
 
@@ -41,7 +44,8 @@ function performanceMiddleware(req, res, next) {
   const start = Date.now();
   res.on("finish", () => {
     const duration = Date.now() - start;
-    const logLevel = duration > PERF_ERROR_THRESHOLD ? 'error' : duration > PERF_WARN_THRESHOLD ? 'warn' : 'info';
+    const logLevel =
+      duration > PERF_ERROR_THRESHOLD ? "error" : duration > PERF_WARN_THRESHOLD ? "warn" : "info";
 
     const logEntry = {
       method: req.method,
@@ -51,14 +55,14 @@ function performanceMiddleware(req, res, next) {
       correlationId: req.correlationId,
       user: req.user?.sub,
       ip: req.ip,
-      userAgent: req.get('user-agent')?.substring(0, 100),
+      userAgent: req.get("user-agent")?.substring(0, 100),
     };
 
     // Add performance level info
     if (duration > PERF_ERROR_THRESHOLD) {
-      logEntry.performance = 'critical';
+      logEntry.performance = "critical";
     } else if (duration > PERF_WARN_THRESHOLD) {
-      logEntry.performance = 'slow';
+      logEntry.performance = "slow";
     }
 
     logger[logLevel](logEntry, `request [${res.statusCode}]`);

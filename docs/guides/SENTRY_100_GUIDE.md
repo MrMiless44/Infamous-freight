@@ -2,7 +2,8 @@
 
 **Status:** Production-Ready | **Date:** February 2, 2026
 
-Complete end-to-end error tracking, performance monitoring, and incident management with Sentry.
+Complete end-to-end error tracking, performance monitoring, and incident
+management with Sentry.
 
 ---
 
@@ -110,7 +111,8 @@ npx @sentry/wizard@latest -i nextjs --saas --org infamous-freight-enterprise --p
 
 **Expected wizard changes:**
 
-- Creates `sentry.client.config.(js|ts)`, `sentry.server.config.(js|ts)`, and possibly `sentry.edge.config.(js|ts)`
+- Creates `sentry.client.config.(js|ts)`, `sentry.server.config.(js|ts)`, and
+  possibly `sentry.edge.config.(js|ts)`
 - Updates `next.config.*` to wrap the config with `withSentryConfig`
 - Adds a tunnel route (commonly `/monitoring`) to bypass ad blockers
 
@@ -122,8 +124,8 @@ SENTRY_ORG=infamous-freight-enterprise
 SENTRY_PROJECT=javascript-nextjs
 ```
 
-**Middleware tunnel exclusions:**
-If Next.js middleware matches all routes, exclude the Sentry tunnel path to avoid 401/403/500 errors:
+**Middleware tunnel exclusions:** If Next.js middleware matches all routes,
+exclude the Sentry tunnel path to avoid 401/403/500 errors:
 
 ```ts
 export const config = {
@@ -164,9 +166,12 @@ NODE_ENV=production
 require("./instrument.js");
 
 // 2. Enhanced config via apps/api/src/config/sentry-enhanced.js
-const { initializeSentry, attachRequestHandler } = require("./config/sentry-enhanced.js");
+const {
+  initializeSentry,
+  attachRequestHandler,
+} = require("./config/sentry-enhanced.js");
 initializeSentry();
-app.use(attachRequestHandler(app));  // Before routes
+app.use(attachRequestHandler(app)); // Before routes
 
 // 3. Error handler (after all routes)
 const { attachErrorHandler } = require("./config/sentry-enhanced.js");
@@ -303,12 +308,10 @@ function onUserLogin(user) {
 
 // Add breadcrumbs for debugging
 function onShipmentCreated(shipment) {
-  addBreadcrumb(
-    `Shipment created: ${shipment.id}`,
-    "shipment",
-    "info",
-    { shipmentId: shipment.id, driver: shipment.driverId }
-  );
+  addBreadcrumb(`Shipment created: ${shipment.id}`, "shipment", "info", {
+    shipmentId: shipment.id,
+    driver: shipment.driverId,
+  });
 }
 
 // Capture error with full context
@@ -396,8 +399,8 @@ Error in ShipmentForm.tsx line 45: "Cannot read property 'id' of null"
 
 ### Upload Source Maps Automatically
 
-**GitHub Actions Workflow:**
-Already configured in `.github/workflows/deploy.yml`:
+**GitHub Actions Workflow:** Already configured in
+`.github/workflows/deploy.yml`:
 
 ```yaml
 - name: Upload source maps to Sentry
@@ -567,7 +570,7 @@ curl -X POST https://your-api.vercel.app/api/test-error \
 **Checklist:**
 
 - [ ] Sentry DSN is set in GitHub secrets
-- [ ] Web app shows Sentry in devtools (check for "_sf_async_config")
+- [ ] Web app shows Sentry in devtools (check for "\_sf_async_config")
 - [ ] API server logs "Sentry initialized" on startup
 - [ ] Test error appears in Sentry within 30 seconds
 - [ ] Error shows correct source maps (not minified)
@@ -675,8 +678,10 @@ SENTRY_RELEASE=v1.0.0
 **Sentry Dashboard:**
 
 - Organization: <https://sentry.io/organizations/infamousfreight/>
-- Web Project: <https://sentry.io/organizations/infamousfreight/issues/?project=xxxxx>
-- API Project: <https://sentry.io/organizations/infamousfreight/issues/?project=yyyyy>
+- Web Project:
+  <https://sentry.io/organizations/infamousfreight/issues/?project=xxxxx>
+- API Project:
+  <https://sentry.io/organizations/infamousfreight/issues/?project=yyyyy>
 
 ---
 

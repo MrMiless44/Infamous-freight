@@ -8,15 +8,15 @@
 
 ## 📁 Files Created (7 Total)
 
-| File | Lines | Purpose |
-|---|---|---|
-| `apps/api/prisma/schema.prisma` | +420 | 7 models, 4 enums |
-| `apps/api/src/revops/genesisSalesAI.ts` | 520 | AI sales agent |
-| `apps/api/src/revops/dynamicPricing.ts` | 480 | Surge pricing |
-| `apps/api/src/revops/outboundEngine.ts` | 520 | Cold outreach |
-| `apps/api/src/revops/contractWorkflow.ts` | 540 | Auto-contracts |
-| `apps/api/src/revops/dashboard.ts` | 580 | RevOps BI |
-| `apps/api/src/routes/revops.js` | 480 | 25 API endpoints |
+| File                                      | Lines | Purpose           |
+| ----------------------------------------- | ----- | ----------------- |
+| `apps/api/prisma/schema.prisma`           | +420  | 7 models, 4 enums |
+| `apps/api/src/revops/genesisSalesAI.ts`   | 520   | AI sales agent    |
+| `apps/api/src/revops/dynamicPricing.ts`   | 480   | Surge pricing     |
+| `apps/api/src/revops/outboundEngine.ts`   | 520   | Cold outreach     |
+| `apps/api/src/revops/contractWorkflow.ts` | 540   | Auto-contracts    |
+| `apps/api/src/revops/dashboard.ts`        | 580   | RevOps BI         |
+| `apps/api/src/routes/revops.js`           | 480   | 25 API endpoints  |
 
 **Total**: 3,540+ lines
 
@@ -46,8 +46,8 @@ AWS_S3_BUCKET=infamous-contracts
 
 ```javascript
 // apps/api/src/server.js
-const revopsRoutes = require('./routes/revops');
-app.use('/api/revops', revopsRoutes);
+const revopsRoutes = require("./routes/revops");
+app.use("/api/revops", revopsRoutes);
 ```
 
 ### 4. Test
@@ -67,24 +67,29 @@ curl http://localhost:4000/api/revops/dashboard \
 ## 📊 Key Endpoints
 
 ### Genesis AI
+
 - `POST /api/revops/leads/:id/qualify` — Qualify single lead
 - `POST /api/revops/leads/auto-qualify` — Batch qualify all new
 - `GET /api/revops/opportunities/top` — Get hot deals
 
 ### Dynamic Pricing
+
 - `POST /api/revops/pricing/calculate` — Get quote for job
 - `GET /api/revops/pricing/surge-stats` — Surge metrics
 
 ### Outbound Campaigns
+
 - `POST /api/revops/campaigns` — Create campaign
 - `POST /api/revops/campaigns/:id/send` — Send emails
 - `GET /api/revops/campaigns/:id/performance` — Track metrics
 
 ### Contracts
+
 - `POST /api/revops/contracts/generate` — Generate MSA/DPA
 - `GET /api/revops/contracts/pending` — List unsigned
 
 ### Dashboard
+
 - `GET /api/revops/dashboard` — Full RevOps metrics
 
 ---
@@ -94,7 +99,7 @@ curl http://localhost:4000/api/revops/dashboard \
 ### Auto-Qualify Leads
 
 ```typescript
-const result = await genesisSalesAI.qualifyLead('lead_123');
+const result = await genesisSalesAI.qualifyLead("lead_123");
 // Returns: { dealScore: 77, nextAction: 'demo', urgency: 'high' }
 ```
 
@@ -113,11 +118,11 @@ const topDeals = await genesisSalesAI.getTopOpportunities(10);
 
 ```typescript
 const pricing = await dynamicPricing.calculateDynamicPrice({
-  vehicleType: 'BOX_TRUCK',
+  vehicleType: "BOX_TRUCK",
   distance: 50,
   pickupLocation: { lat: 37.7749, lng: -122.4194 },
   dropoffLocation: { lat: 37.3541, lng: -121.9552 },
-  urgency: 'urgent'
+  urgency: "urgent",
 });
 // Returns: { finalPrice: 479, strategy: 'SURGE', demandMultiplier: 1.5 }
 ```
@@ -137,9 +142,9 @@ const stats = await dynamicPricing.getSurgePricingStats(7);
 
 ```typescript
 const campaign = await outboundEngine.createCampaign({
-  name: 'Enterprise Q1 2026',
-  type: 'email',
-  callToAction: 'Book demo'
+  name: "Enterprise Q1 2026",
+  type: "email",
+  callToAction: "Book demo",
 });
 ```
 
@@ -147,7 +152,7 @@ const campaign = await outboundEngine.createCampaign({
 
 ```typescript
 await outboundEngine.addRecipientsToCampaign(campaign.id, [
-  { email: 'cfo@bigfreight.com', name: 'Sarah', company: 'BigFreight' },
+  { email: "cfo@bigfreight.com", name: "Sarah", company: "BigFreight" },
   // ... more
 ]);
 // AI generates personalized copy for each
@@ -168,15 +173,15 @@ await outboundEngine.sendCampaignMessages(campaign.id, 50);
 
 ```typescript
 const contractId = await contractWorkflow.generateEnterpriseContract(
-  'opp_acme',
+  "opp_acme",
   {
-    orgId: 'org_acme',
-    orgName: 'Acme Logistics',
-    contactEmail: 'sarah@acme.com',
+    orgId: "org_acme",
+    orgName: "Acme Logistics",
+    contactEmail: "sarah@acme.com",
     annualValue: 25000,
     contractTerm: 12,
-    plan: 'ENTERPRISE'
-  }
+    plan: "ENTERPRISE",
+  },
 );
 // Generates MSA + DPA + SOC2 → Sends to DocuSign
 ```
@@ -185,9 +190,9 @@ const contractId = await contractWorkflow.generateEnterpriseContract(
 
 ```typescript
 await contractWorkflow.handleSignatureCompleted(
-  'sig_acme_123',
-  'sarah@acme.com',
-  'Sarah Chen'
+  "sig_acme_123",
+  "sarah@acme.com",
+  "Sarah Chen",
 );
 // Auto-provisions org, billing, sends onboarding
 ```
@@ -213,24 +218,27 @@ const dashboard = await revopsDashboard.getRevOpsDashboard();
 ## 🔢 Key Formulas
 
 ### Deal Score (0-100)
+
 ```
-score = company_size (40) 
-      + trust_score (20) 
-      + volume (20) 
-      + source_quality (10) 
+score = company_size (40)
+      + trust_score (20)
+      + volume (20)
+      + source_quality (10)
       + lead_type (10)
 ```
 
 ### Dynamic Price
+
 ```
-final_price = base_price 
-            × demand_multiplier 
-            × urgency_multiplier 
-            × distance_multiplier 
+final_price = base_price
+            × demand_multiplier
+            × urgency_multiplier
+            × distance_multiplier
             × time_multiplier
 ```
 
 ### LTV:CAC Ratio
+
 ```
 ltv = avg_mrr_per_org / (monthly_churn_rate / 100)
 cac = marketing_spend / new_orgs
@@ -265,9 +273,9 @@ psql -c "SELECT COUNT(*) FROM sales_opportunities WHERE created_at > NOW() - INT
 
 ```bash
 # Surge frequency
-psql -c "SELECT 
-  COUNT(CASE WHEN strategy = 'SURGE' THEN 1 END) * 100.0 / COUNT(*) as surge_pct 
-FROM dynamic_pricing 
+psql -c "SELECT
+  COUNT(CASE WHEN strategy = 'SURGE' THEN 1 END) * 100.0 / COUNT(*) as surge_pct
+FROM dynamic_pricing
 WHERE applied_at > NOW() - INTERVAL '7 days';"
 ```
 
@@ -283,28 +291,32 @@ psql -c "SELECT name, total_sent, total_opened, total_replied FROM outbound_camp
 ## 🐛 Common Issues
 
 ### Genesis AI not qualifying leads
+
 **Fix**: Check `AI_PROVIDER` and API key
 
 ### No surge pricing
+
 **Fix**: Simulate low driver availability or adjust thresholds
 
 ### Outbound not sending
+
 **Fix**: Check SendGrid API key and cron job
 
 ### Contracts not generating
+
 **Fix**: Check S3 credentials and DocuSign API
 
 ---
 
 ## 📈 Business Impact
 
-| Metric | Before | After | Change |
-|---|---|---|---|
-| Lead qual time | 30 min | < 1 sec | 99.9% faster |
-| Revenue per job | $245 | $315 | +28% (surge) |
-| Pipeline visibility | None | Real-time | ∞ |
-| Contract close | 4-6 weeks | 24 hours | 95% faster |
-| Outbound volume | 0 | 500/day | ∞ |
+| Metric              | Before    | After     | Change       |
+| ------------------- | --------- | --------- | ------------ |
+| Lead qual time      | 30 min    | < 1 sec   | 99.9% faster |
+| Revenue per job     | $245      | $315      | +28% (surge) |
+| Pipeline visibility | None      | Real-time | ∞            |
+| Contract close      | 4-6 weeks | 24 hours  | 95% faster   |
+| Outbound volume     | 0         | 500/day   | ∞            |
 
 ---
 

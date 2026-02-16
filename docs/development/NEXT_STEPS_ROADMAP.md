@@ -45,7 +45,9 @@
 
 1. **Read** [DEPLOY_NOW.md](DEPLOY_NOW.md) (full detailed guide)
 2. **Read** [DEPLOY_ACTION.md](DEPLOY_ACTION.md) (quick reference)
-3. **Review** [PERFORMANCE_MONITORING_COMPLETE.md](PERFORMANCE_MONITORING_COMPLETE.md) (what you're deploying)
+3. **Review**
+   [PERFORMANCE_MONITORING_COMPLETE.md](PERFORMANCE_MONITORING_COMPLETE.md)
+   (what you're deploying)
 4. **Ask questions** if anything unclear
 5. **Then deploy** using the guides
 
@@ -209,7 +211,8 @@ curl https://infamous-freight-api-prod.fly.dev/api/health
    - Environment variables explained
    - Troubleshooting guide
 
-3. **[PERFORMANCE_MONITORING_COMPLETE.md](PERFORMANCE_MONITORING_COMPLETE.md)** - To understand what's deployed
+3. **[PERFORMANCE_MONITORING_COMPLETE.md](PERFORMANCE_MONITORING_COMPLETE.md)** -
+   To understand what's deployed
    - Full technical overview
    - Code examples
    - Performance expectations
@@ -265,23 +268,23 @@ curl https://infamous-freight-api-prod.fly.dev/api/health
 
 ## 📞 Common Questions
 
-**Q: Should I test locally first?**
-A: Only if you want to. Cloud deployment is faster and your code is already tested.
+**Q: Should I test locally first?** A: Only if you want to. Cloud deployment is
+faster and your code is already tested.
 
-**Q: Do I need Docker?**
-A: No. Cloud platforms handle it. Only needed for local full-stack testing.
+**Q: Do I need Docker?** A: No. Cloud platforms handle it. Only needed for local
+full-stack testing.
 
-**Q: What if deployment fails?**
-A: See troubleshooting in [DEPLOY_NOW.md](DEPLOY_NOW.md). Most issues are easy to fix.
+**Q: What if deployment fails?** A: See troubleshooting in
+[DEPLOY_NOW.md](DEPLOY_NOW.md). Most issues are easy to fix.
 
-**Q: Can I deploy from this dev container?**
-A: No, but that's fine. Code is ready, deployment happens in cloud.
+**Q: Can I deploy from this dev container?** A: No, but that's fine. Code is
+ready, deployment happens in cloud.
 
-**Q: Will my code change when I deploy?**
-A: No. Cloud platforms just build and run what's in your git repo.
+**Q: Will my code change when I deploy?** A: No. Cloud platforms just build and
+run what's in your git repo.
 
-**Q: How do I rollback if something goes wrong?**
-A: Both Vercel and Fly.io keep deployment history. Click "Redeploy" previous version.
+**Q: How do I rollback if something goes wrong?** A: Both Vercel and Fly.io keep
+deployment history. Click "Redeploy" previous version.
 
 ---
 
@@ -356,7 +359,8 @@ You'll have:
 - [x] You're ready to create Vercel account (free)
 - [x] You're ready to create Fly.io account (free)
 - [x] You have ~20 minutes available
-- [x] You're not expecting it to be super complicated (it's not, it's just 5 steps)
+- [x] You're not expecting it to be super complicated (it's not, it's just 5
+      steps)
 
 ---
 
@@ -364,17 +368,14 @@ You'll have:
 
 **Pick ONE:**
 
-**A) Go Deploy Now** (Fastest)
-→ Open <https://vercel.com> now
+**A) Go Deploy Now** (Fastest) → Open <https://vercel.com> now
 
-**B) Read the Guide First** (Safe)
-→ Open [DEPLOY_ACTION.md](DEPLOY_ACTION.md) now
+**B) Read the Guide First** (Safe) → Open [DEPLOY_ACTION.md](DEPLOY_ACTION.md)
+now
 
-**C) Ask Me Questions** (Thorough)
-→ Ask me anything unclear
+**C) Ask Me Questions** (Thorough) → Ask me anything unclear
 
-**D) Test Locally First** (Complete)
-→ Run `pnpm web:dev` now
+**D) Test Locally First** (Complete) → Run `pnpm web:dev` now
 
 ---
 
@@ -388,7 +389,8 @@ Everything is done. You're literally just 5 clicks away from being live:
 4. Fly.io: Deploy
 5. Vercel: Redeploy with API URL
 
-**That's it!** Then you're live with all the optimizations, monitoring, and performance improvements active.
+**That's it!** Then you're live with all the optimizations, monitoring, and
+performance improvements active.
 
 ---
 

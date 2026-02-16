@@ -19,7 +19,8 @@ What is the issue we're trying to solve? What are the forces at play?
 - Team context
 - Time/resource limitations
 
-Include relevant background information that helps understand why this decision was needed.
+Include relevant background information that helps understand why this decision
+was needed.
 
 ---
 

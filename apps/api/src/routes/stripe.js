@@ -54,11 +54,7 @@ const addOnCatalog = {
 };
 
 function getAppUrl() {
-  return (
-    process.env.APP_URL ||
-    process.env.PUBLIC_APP_URL ||
-    "http://localhost:3000"
-  );
+  return process.env.APP_URL || process.env.PUBLIC_APP_URL || "http://localhost:3000";
 }
 
 function buildIdempotencyKey(scope, tenantId, suffix = "") {
@@ -76,12 +72,7 @@ function resolvePlanPriceId(plan) {
   return envKey ? process.env[envKey] : null;
 }
 
-async function getOrCreateStripeCustomer({
-  stripe,
-  tenantId,
-  email,
-  name,
-}) {
+async function getOrCreateStripeCustomer({ stripe, tenantId, email, name }) {
   if (!stripe || !tenantId) return null;
 
   const entitlements = await persist.getEntitlements(tenantId);
@@ -96,7 +87,7 @@ async function getOrCreateStripeCustomer({
       name: name || undefined,
       metadata: { tenantId },
     },
-    { idempotencyKey: buildIdempotencyKey("stripe_customer", tenantId, email) }
+    { idempotencyKey: buildIdempotencyKey("stripe_customer", tenantId, email) },
   );
 
   await persist.setEntitlement(tenantId, "stripe_customer_id", customer.id);
@@ -138,18 +129,14 @@ async function resolveAiMeteredPriceId(stripe) {
   if (!aiMeteredPriceId && process.env.STRIPE_AI_METERED_LOOKUP_KEY) {
     aiMeteredPriceId = await resolvePriceIdByLookupKey(
       stripe,
-      process.env.STRIPE_AI_METERED_LOOKUP_KEY
+      process.env.STRIPE_AI_METERED_LOOKUP_KEY,
     );
   }
 
   return aiMeteredPriceId;
 }
 
-async function persistAiSubscriptionItemId({
-  stripe,
-  subscriptionId,
-  tenantId,
-}) {
+async function persistAiSubscriptionItemId({ stripe, subscriptionId, tenantId }) {
   if (!stripe || !subscriptionId || !tenantId) return;
 
   const aiMeteredPriceId = await resolveAiMeteredPriceId(stripe);
@@ -160,17 +147,11 @@ async function persistAiSubscriptionItemId({
       expand: ["items.data.price"],
     });
 
-    const aiItem = subscription?.items?.data?.find(
-      (item) => item?.price?.id === aiMeteredPriceId
-    );
+    const aiItem = subscription?.items?.data?.find((item) => item?.price?.id === aiMeteredPriceId);
 
     if (!aiItem?.id) return;
 
-    await persist.setEntitlement(
-      tenantId,
-      "stripe_ai_subscription_item_id",
-      String(aiItem.id)
-    );
+    await persist.setEntitlement(tenantId, "stripe_ai_subscription_item_id", String(aiItem.id));
   } catch (error) {
     console.error("Failed to persist AI subscription item ID", {
       tenantId,
@@ -266,237 +247,107 @@ stripeRouter.get("/plans", (_req, res) => {
 // --------------------------------------------
 // POST /api/stripe/customer
 // --------------------------------------------
-stripeRouter.post(
-  "/customer",
-  limiters.billing,
-  authenticate,
-  async (req, res) => {
-    try {
-      const Schema = z.object({
-        email: z.string().email().optional(),
-        name: z.string().optional(),
-        tenantId: z.string().optional(),
-      });
-      const body = Schema.parse(req.body);
+stripeRouter.post("/customer", limiters.billing, authenticate, async (req, res) => {
+  try {
+    const Schema = z.object({
+      email: z.string().email().optional(),
+      name: z.string().optional(),
+      tenantId: z.string().optional(),
+    });
+    const body = Schema.parse(req.body);
 
-      const stripe = stripeClient();
-      if (!stripe) {
-        return res.status(400).json({
-          ok: false,
-          error: "Stripe not configured.",
-        });
-      }
-
-      const tenantId =
-        body.tenantId || req.auth?.organizationId || req.user?.sub || "";
-      if (!tenantId) {
-        return res.status(400).json({
-          ok: false,
-          error: "Missing tenantId or authenticated user.",
-        });
-      }
-
-      const customerId = await getOrCreateStripeCustomer({
-        stripe,
-        tenantId,
-        email: body.email,
-        name: body.name,
-      });
-
-      return res.json({ ok: true, customerId });
-    } catch (err) {
-      return res.status(500).json({
+    const stripe = stripeClient();
+    if (!stripe) {
+      return res.status(400).json({
         ok: false,
-        error: err?.message || "Customer creation failed",
+        error: "Stripe not configured.",
       });
     }
+
+    const tenantId = body.tenantId || req.auth?.organizationId || req.user?.sub || "";
+    if (!tenantId) {
+      return res.status(400).json({
+        ok: false,
+        error: "Missing tenantId or authenticated user.",
+      });
+    }
+
+    const customerId = await getOrCreateStripeCustomer({
+      stripe,
+      tenantId,
+      email: body.email,
+      name: body.name,
+    });
+
+    return res.json({ ok: true, customerId });
+  } catch (err) {
+    return res.status(500).json({
+      ok: false,
+      error: err?.message || "Customer creation failed",
+    });
   }
-);
+});
 
 // --------------------------------------------
 // POST /api/stripe/subscription
 // --------------------------------------------
-stripeRouter.post(
-  "/subscription",
-  limiters.billing,
-  authenticate,
-  async (req, res) => {
-    try {
-      const Schema = z
-        .object({
-          priceId: z.string().optional(),
-          plan: z.enum(["starter", "pro", "enterprise", "business"]).optional(),
-          seats: z.number().int().min(1).max(500).optional().default(1),
-          addOns: z
-            .array(z.enum(["voice", "white_label", "analytics_export"]))
-            .optional()
-            .default([]),
-          customerEmail: z.string().email().optional(),
-          name: z.string().optional(),
-          tenantId: z.string().optional(),
-          includeAiMetered: z.boolean().optional().default(true),
-        })
-        .refine((data) => data.priceId || data.plan, {
-          message: "priceId or plan is required",
-        });
-
-      const body = Schema.parse(req.body);
-
-      const stripe = stripeClient();
-      if (!stripe) {
-        return res.status(400).json({
-          ok: false,
-          error:
-            "Stripe not configured. Set STRIPE_SECRET_KEY and price ID env vars.",
-        });
-      }
-
-      const tenantId =
-        body.tenantId || req.auth?.organizationId || req.user?.sub || "";
-      if (!tenantId) {
-        return res.status(400).json({
-          ok: false,
-          error: "Missing tenantId or authenticated user.",
-        });
-      }
-
-      const customerId = await getOrCreateStripeCustomer({
-        stripe,
-        tenantId,
-        email: body.customerEmail,
-        name: body.name,
-      });
-
-      if (!customerId) {
-        return res.status(400).json({
-          ok: false,
-          error: "Unable to resolve Stripe customer.",
-        });
-      }
-
-      const lineItems = [];
-
-      if (body.priceId) {
-        lineItems.push({ price: body.priceId, quantity: 1 });
-      } else if (body.plan) {
-        const planPriceId = resolvePlanPriceId(body.plan);
-        if (!planPriceId) {
-          return res.status(400).json({
-            ok: false,
-            error: `Missing price ID for plan ${body.plan}.`,
-          });
-        }
-
-        lineItems.push({ price: planPriceId, quantity: body.seats });
-
-        for (const addOn of body.addOns) {
-          const addOnPriceId = resolveAddOnPriceId(addOn);
-          if (!addOnPriceId) {
-            return res.status(400).json({
-              ok: false,
-              error: `Missing price ID for add-on ${addOn}.`,
-            });
-          }
-          const quantity =
-            addOnCatalog[addOn].quantity === "seats" ? body.seats : 1;
-          lineItems.push({ price: addOnPriceId, quantity });
-        }
-
-        const aiMeteredPriceId = await resolveAiMeteredPriceId(stripe);
-        if (body.includeAiMetered && aiMeteredPriceId) {
-          lineItems.push({ price: aiMeteredPriceId, quantity: 1 });
-        }
-      }
-
-      const subscription = await stripe.subscriptions.create(
-        {
-          customer: customerId,
-          items: lineItems,
-          payment_behavior: "default_incomplete",
-          expand: ["latest_invoice.payment_intent", "items.data.price"],
-          metadata: {
-            tenantId,
-            plan: body.plan || "custom",
-            seats: String(body.seats || 1),
-            addOns: body.addOns?.join(",") || "",
-          },
-        },
-        {
-          idempotencyKey: buildIdempotencyKey(
-            "stripe_subscription",
-            tenantId,
-            body.plan || body.priceId || "custom"
-          ),
-        }
-      );
-
-      const paymentIntent = subscription.latest_invoice?.payment_intent;
-      const clientSecret = paymentIntent?.client_secret || null;
-
-      await persist.upsertSubscription({
-        userId: tenantId,
-        customerId,
-        subscriptionId: subscription.id,
-        priceId: subscription.items?.data?.[0]?.price?.id,
-        status: subscription.status,
-        currentPeriodEnd: subscription.current_period_end
-          ? new Date(subscription.current_period_end * 1000)
-          : undefined,
-        cancelAtPeriodEnd: subscription.cancel_at_period_end ?? false,
-      });
-
-      await persistAiSubscriptionItemId({
-        stripe,
-        subscriptionId: subscription.id,
-        tenantId,
-      });
-
-      return res.json({
-        ok: true,
-        subscriptionId: subscription.id,
-        status: subscription.status,
-        clientSecret,
-      });
-    } catch (err) {
-      return res.status(500).json({
-        ok: false,
-        error: err?.message || "Subscription creation failed",
-      });
-    }
-  }
-);
-
-// --------------------------------------------
-// POST /api/stripe/checkout
-// --------------------------------------------
-stripeRouter.post(
-  "/checkout",
-  limiters.billing,
-  authenticate,
-  async (req, res) => {
-    try {
-      const Schema = z.object({
-        plan: z.enum(["starter", "pro", "enterprise", "business"]),
+stripeRouter.post("/subscription", limiters.billing, authenticate, async (req, res) => {
+  try {
+    const Schema = z
+      .object({
+        priceId: z.string().optional(),
+        plan: z.enum(["starter", "pro", "enterprise", "business"]).optional(),
         seats: z.number().int().min(1).max(500).optional().default(1),
         addOns: z
           .array(z.enum(["voice", "white_label", "analytics_export"]))
           .optional()
           .default([]),
         customerEmail: z.string().email().optional(),
+        name: z.string().optional(),
         tenantId: z.string().optional(),
         includeAiMetered: z.boolean().optional().default(true),
+      })
+      .refine((data) => data.priceId || data.plan, {
+        message: "priceId or plan is required",
       });
-      const body = Schema.parse(req.body);
 
-      const stripe = stripeClient();
-      if (!stripe) {
-        return res.status(400).json({
-          ok: false,
-          error:
-            "Stripe not configured. Set STRIPE_SECRET_KEY and price ID env vars.",
-        });
-      }
+    const body = Schema.parse(req.body);
 
+    const stripe = stripeClient();
+    if (!stripe) {
+      return res.status(400).json({
+        ok: false,
+        error: "Stripe not configured. Set STRIPE_SECRET_KEY and price ID env vars.",
+      });
+    }
+
+    const tenantId = body.tenantId || req.auth?.organizationId || req.user?.sub || "";
+    if (!tenantId) {
+      return res.status(400).json({
+        ok: false,
+        error: "Missing tenantId or authenticated user.",
+      });
+    }
+
+    const customerId = await getOrCreateStripeCustomer({
+      stripe,
+      tenantId,
+      email: body.customerEmail,
+      name: body.name,
+    });
+
+    if (!customerId) {
+      return res.status(400).json({
+        ok: false,
+        error: "Unable to resolve Stripe customer.",
+      });
+    }
+
+    const lineItems = [];
+
+    if (body.priceId) {
+      lineItems.push({ price: body.priceId, quantity: 1 });
+    } else if (body.plan) {
       const planPriceId = resolvePlanPriceId(body.plan);
       if (!planPriceId) {
         return res.status(400).json({
@@ -505,7 +356,7 @@ stripeRouter.post(
         });
       }
 
-      const lineItems = [{ price: planPriceId, quantity: body.seats }];
+      lineItems.push({ price: planPriceId, quantity: body.seats });
 
       for (const addOn of body.addOns) {
         const addOnPriceId = resolveAddOnPriceId(addOn);
@@ -515,38 +366,140 @@ stripeRouter.post(
             error: `Missing price ID for add-on ${addOn}.`,
           });
         }
-        const quantity =
-          addOnCatalog[addOn].quantity === "seats" ? body.seats : 1;
+        const quantity = addOnCatalog[addOn].quantity === "seats" ? body.seats : 1;
         lineItems.push({ price: addOnPriceId, quantity });
       }
 
       const aiMeteredPriceId = await resolveAiMeteredPriceId(stripe);
-
       if (body.includeAiMetered && aiMeteredPriceId) {
-        lineItems.push({
-          price: aiMeteredPriceId,
-          quantity: 1,
+        lineItems.push({ price: aiMeteredPriceId, quantity: 1 });
+      }
+    }
+
+    const subscription = await stripe.subscriptions.create(
+      {
+        customer: customerId,
+        items: lineItems,
+        payment_behavior: "default_incomplete",
+        expand: ["latest_invoice.payment_intent", "items.data.price"],
+        metadata: {
+          tenantId,
+          plan: body.plan || "custom",
+          seats: String(body.seats || 1),
+          addOns: body.addOns?.join(",") || "",
+        },
+      },
+      {
+        idempotencyKey: buildIdempotencyKey(
+          "stripe_subscription",
+          tenantId,
+          body.plan || body.priceId || "custom",
+        ),
+      },
+    );
+
+    const paymentIntent = subscription.latest_invoice?.payment_intent;
+    const clientSecret = paymentIntent?.client_secret || null;
+
+    await persist.upsertSubscription({
+      userId: tenantId,
+      customerId,
+      subscriptionId: subscription.id,
+      priceId: subscription.items?.data?.[0]?.price?.id,
+      status: subscription.status,
+      currentPeriodEnd: subscription.current_period_end
+        ? new Date(subscription.current_period_end * 1000)
+        : undefined,
+      cancelAtPeriodEnd: subscription.cancel_at_period_end ?? false,
+    });
+
+    await persistAiSubscriptionItemId({
+      stripe,
+      subscriptionId: subscription.id,
+      tenantId,
+    });
+
+    return res.json({
+      ok: true,
+      subscriptionId: subscription.id,
+      status: subscription.status,
+      clientSecret,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      ok: false,
+      error: err?.message || "Subscription creation failed",
+    });
+  }
+});
+
+// --------------------------------------------
+// POST /api/stripe/checkout
+// --------------------------------------------
+stripeRouter.post("/checkout", limiters.billing, authenticate, async (req, res) => {
+  try {
+    const Schema = z.object({
+      plan: z.enum(["starter", "pro", "enterprise", "business"]),
+      seats: z.number().int().min(1).max(500).optional().default(1),
+      addOns: z
+        .array(z.enum(["voice", "white_label", "analytics_export"]))
+        .optional()
+        .default([]),
+      customerEmail: z.string().email().optional(),
+      tenantId: z.string().optional(),
+      includeAiMetered: z.boolean().optional().default(true),
+    });
+    const body = Schema.parse(req.body);
+
+    const stripe = stripeClient();
+    if (!stripe) {
+      return res.status(400).json({
+        ok: false,
+        error: "Stripe not configured. Set STRIPE_SECRET_KEY and price ID env vars.",
+      });
+    }
+
+    const planPriceId = resolvePlanPriceId(body.plan);
+    if (!planPriceId) {
+      return res.status(400).json({
+        ok: false,
+        error: `Missing price ID for plan ${body.plan}.`,
+      });
+    }
+
+    const lineItems = [{ price: planPriceId, quantity: body.seats }];
+
+    for (const addOn of body.addOns) {
+      const addOnPriceId = resolveAddOnPriceId(addOn);
+      if (!addOnPriceId) {
+        return res.status(400).json({
+          ok: false,
+          error: `Missing price ID for add-on ${addOn}.`,
         });
       }
+      const quantity = addOnCatalog[addOn].quantity === "seats" ? body.seats : 1;
+      lineItems.push({ price: addOnPriceId, quantity });
+    }
 
-      const tenantId =
-        body.tenantId || req.auth?.organizationId || req.user?.sub || "";
+    const aiMeteredPriceId = await resolveAiMeteredPriceId(stripe);
 
-      const session = await stripe.checkout.sessions.create(
-        {
-          mode: "subscription",
-          customer_email: body.customerEmail,
-          line_items: lineItems,
-          success_url: `${getAppUrl()}/billing/success?session_id={CHECKOUT_SESSION_ID}`,
-          cancel_url: `${getAppUrl()}/billing/cancel`,
-          subscription_data: {
-            metadata: {
-              tenantId,
-              plan: body.plan,
-              seats: String(body.seats),
-              addOns: body.addOns.join(","),
-            },
-          },
+    if (body.includeAiMetered && aiMeteredPriceId) {
+      lineItems.push({
+        price: aiMeteredPriceId,
+        quantity: 1,
+      });
+    }
+
+    const tenantId = body.tenantId || req.auth?.organizationId || req.user?.sub || "";
+
+    const session = await stripe.checkout.sessions.create(
+      {
+        mode: "subscription",
+        customer_email: body.customerEmail,
+        line_items: lineItems,
+        success_url: `${getAppUrl()}/billing/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${getAppUrl()}/billing/cancel`,
+        subscription_data: {
           metadata: {
             tenantId,
             plan: body.plan,
@@ -554,59 +507,56 @@ stripeRouter.post(
             addOns: body.addOns.join(","),
           },
         },
-        {
-          idempotencyKey: buildIdempotencyKey(
-            "stripe_checkout",
-            tenantId,
-            body.plan
-          ),
-        }
-      );
+        metadata: {
+          tenantId,
+          plan: body.plan,
+          seats: String(body.seats),
+          addOns: body.addOns.join(","),
+        },
+      },
+      {
+        idempotencyKey: buildIdempotencyKey("stripe_checkout", tenantId, body.plan),
+      },
+    );
 
-      return res.json({ ok: true, url: session.url });
-    } catch (err) {
-      return res.status(500).json({
-        ok: false,
-        error: err?.message || "Checkout failed",
-      });
-    }
+    return res.json({ ok: true, url: session.url });
+  } catch (err) {
+    return res.status(500).json({
+      ok: false,
+      error: err?.message || "Checkout failed",
+    });
   }
-);
+});
 
 // --------------------------------------------
 // POST /api/stripe/portal
 // --------------------------------------------
-stripeRouter.post(
-  "/portal",
-  limiters.billing,
-  authenticate,
-  async (req, res) => {
-    try {
-      const Schema = z.object({ customerId: z.string().min(1) });
-      const body = Schema.parse(req.body);
+stripeRouter.post("/portal", limiters.billing, authenticate, async (req, res) => {
+  try {
+    const Schema = z.object({ customerId: z.string().min(1) });
+    const body = Schema.parse(req.body);
 
-      const stripe = stripeClient();
-      if (!stripe) {
-        return res.status(400).json({
-          ok: false,
-          error: "Stripe not configured.",
-        });
-      }
-
-      const session = await stripe.billingPortal.sessions.create({
-        customer: body.customerId,
-        return_url: `${getAppUrl()}/billing`,
-      });
-
-      return res.json({ ok: true, url: session.url });
-    } catch (err) {
-      return res.status(500).json({
+    const stripe = stripeClient();
+    if (!stripe) {
+      return res.status(400).json({
         ok: false,
-        error: err?.message || "Portal failed",
+        error: "Stripe not configured.",
       });
     }
+
+    const session = await stripe.billingPortal.sessions.create({
+      customer: body.customerId,
+      return_url: `${getAppUrl()}/billing`,
+    });
+
+    return res.json({ ok: true, url: session.url });
+  } catch (err) {
+    return res.status(500).json({
+      ok: false,
+      error: err?.message || "Portal failed",
+    });
   }
-);
+});
 
 // --------------------------------------------
 // POST /api/stripe/report-usage
@@ -637,14 +587,11 @@ stripeRouter.post("/report-usage", limiters.billing, async (req, res) => {
       });
     }
 
-    const usageRecord = await stripe.subscriptionItems.createUsageRecord(
-      body.subscriptionItemId,
-      {
-        quantity: body.quantity,
-        timestamp: body.timestamp || Math.floor(Date.now() / 1000),
-        action: "increment",
-      }
-    );
+    const usageRecord = await stripe.subscriptionItems.createUsageRecord(body.subscriptionItemId, {
+      quantity: body.quantity,
+      timestamp: body.timestamp || Math.floor(Date.now() / 1000),
+      action: "increment",
+    });
 
     const prisma = getPrisma();
     const tenantId = body.tenantId || req.auth?.organizationId || req.user?.sub;
@@ -683,75 +630,70 @@ stripeRouter.post("/report-usage", limiters.billing, async (req, res) => {
 // --------------------------------------------
 // POST /api/stripe/invoice
 // --------------------------------------------
-stripeRouter.post(
-  "/invoice",
-  limiters.billing,
-  authenticate,
-  async (req, res) => {
-    try {
-      const Schema = z.object({
-        customerId: z.string().min(1),
-        lines: z.array(
-          z.object({
-            amountCents: z.number().int().positive(),
-            currency: z.string().min(3),
-            description: z.string().min(1),
-          })
-        ),
-        autoAdvance: z.boolean().optional().default(true),
-      });
-      const body = Schema.parse(req.body);
+stripeRouter.post("/invoice", limiters.billing, authenticate, async (req, res) => {
+  try {
+    const Schema = z.object({
+      customerId: z.string().min(1),
+      lines: z.array(
+        z.object({
+          amountCents: z.number().int().positive(),
+          currency: z.string().min(3),
+          description: z.string().min(1),
+        }),
+      ),
+      autoAdvance: z.boolean().optional().default(true),
+    });
+    const body = Schema.parse(req.body);
 
-      const stripe = stripeClient();
-      if (!stripe) {
-        return res.status(400).json({
-          ok: false,
-          error: "Stripe not configured.",
-        });
-      }
-
-      for (const [index, line] of body.lines.entries()) {
-        await stripe.invoiceItems.create(
-          {
-            customer: body.customerId,
-            amount: line.amountCents,
-            currency: line.currency,
-            description: line.description,
-          },
-          {
-            idempotencyKey: buildIdempotencyKey(
-              "stripe_invoice_item",
-              body.customerId,
-              `${index}-${line.amountCents}`
-            ),
-          }
-        );
-      }
-
-      const invoice = await stripe.invoices.create(
-        {
-          customer: body.customerId,
-          auto_advance: body.autoAdvance,
-          collection_method: "charge_automatically",
-        },
-        {
-          idempotencyKey: buildIdempotencyKey("stripe_invoice", body.customerId),
-        }
-      );
-
-      return res.json({
-        ok: true,
-        invoiceId: invoice.id,
-        status: invoice.status,
-      });
-    } catch (err) {
-      return res.status(500).json({
+    const stripe = stripeClient();
+    if (!stripe) {
+      return res.status(400).json({
         ok: false,
-        error: err?.message || "Invoice creation failed",
+        error: "Stripe not configured.",
       });
     }
+
+    for (const [index, line] of body.lines.entries()) {
+      await stripe.invoiceItems.create(
+        {
+          customer: body.customerId,
+          amount: line.amountCents,
+          currency: line.currency,
+          description: line.description,
+        },
+        {
+          idempotencyKey: buildIdempotencyKey(
+            "stripe_invoice_item",
+            body.customerId,
+            `${index}-${line.amountCents}`,
+          ),
+        },
+      );
+    }
+
+    const invoice = await stripe.invoices.create(
+      {
+        customer: body.customerId,
+        auto_advance: body.autoAdvance,
+        collection_method: "charge_automatically",
+      },
+      {
+        idempotencyKey: buildIdempotencyKey("stripe_invoice", body.customerId),
+      },
+    );
+
+    return res.json({
+      ok: true,
+      invoiceId: invoice.id,
+      status: invoice.status,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      ok: false,
+      error: err?.message || "Invoice creation failed",
+    });
   }
-);
+});
 
 // --------------------------------------------
 // POST /api/stripe/webhook (raw body)
@@ -776,23 +718,16 @@ stripeWebhookRouter.post(
 
     let event;
     try {
-      event = stripe.webhooks.constructEvent(
-        req.body,
-        sig,
-        process.env.STRIPE_WEBHOOK_SECRET
-      );
+      event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
     } catch (err) {
-      return res
-        .status(400)
-        .send(`Webhook Error: ${err?.message || "Invalid signature"}`);
+      return res.status(400).send(`Webhook Error: ${err?.message || "Invalid signature"}`);
     }
 
     try {
       switch (event.type) {
         case "checkout.session.completed": {
           const session = event.data.object;
-          const tenantId =
-            session.metadata?.tenantId || session.client_reference_id || "";
+          const tenantId = session.metadata?.tenantId || session.client_reference_id || "";
           const plan = session.metadata?.plan || "unknown";
           const seats = session.metadata?.seats || "1";
           const addOns = session.metadata?.addOns || "";
@@ -805,12 +740,12 @@ stripeWebhookRouter.post(
             await persist.setEntitlement(
               tenantId,
               "stripe_customer_id",
-              String(session.customer || "")
+              String(session.customer || ""),
             );
             await persist.setEntitlement(
               tenantId,
               "stripe_subscription_id",
-              String(session.subscription || "")
+              String(session.subscription || ""),
             );
             await persistAiSubscriptionItemId({
               stripe,
@@ -826,17 +761,9 @@ stripeWebhookRouter.post(
           const subscription = event.data.object;
           const tenantId = subscription.metadata?.tenantId || "";
           if (tenantId) {
-            await persist.setEntitlement(
-              tenantId,
-              "stripe_status",
-              String(subscription.status)
-            );
+            await persist.setEntitlement(tenantId, "stripe_status", String(subscription.status));
             if (subscription.metadata?.plan) {
-              await persist.setEntitlement(
-                tenantId,
-                "plan",
-                String(subscription.metadata.plan)
-              );
+              await persist.setEntitlement(tenantId, "plan", String(subscription.metadata.plan));
             }
             await persistAiSubscriptionItemId({
               stripe,
@@ -852,18 +779,12 @@ stripeWebhookRouter.post(
           let tenantId = invoice.metadata?.tenantId || "";
 
           if (!tenantId && invoice.subscription) {
-            const subscription = await stripe.subscriptions.retrieve(
-              String(invoice.subscription)
-            );
+            const subscription = await stripe.subscriptions.retrieve(String(invoice.subscription));
             tenantId = subscription.metadata?.tenantId || "";
           }
 
           if (tenantId) {
-            await persist.setEntitlement(
-              tenantId,
-              "last_invoice_status",
-              String(invoice.status)
-            );
+            await persist.setEntitlement(tenantId, "last_invoice_status", String(invoice.status));
             if (invoice.status === "paid") {
               await persist.setEntitlement(tenantId, "stripe_status", "active");
             }
@@ -875,23 +796,13 @@ stripeWebhookRouter.post(
           let tenantId = invoice.metadata?.tenantId || "";
 
           if (!tenantId && invoice.subscription) {
-            const subscription = await stripe.subscriptions.retrieve(
-              String(invoice.subscription)
-            );
+            const subscription = await stripe.subscriptions.retrieve(String(invoice.subscription));
             tenantId = subscription.metadata?.tenantId || "";
           }
 
           if (tenantId) {
-            await persist.setEntitlement(
-              tenantId,
-              "stripe_status",
-              "past_due"
-            );
-            await persist.setEntitlement(
-              tenantId,
-              "last_invoice_status",
-              String(invoice.status)
-            );
+            await persist.setEntitlement(tenantId, "stripe_status", "past_due");
+            await persist.setEntitlement(tenantId, "last_invoice_status", String(invoice.status));
           }
           break;
         }
@@ -935,7 +846,7 @@ stripeWebhookRouter.post(
         error: err?.message || "Webhook handling failed",
       });
     }
-  }
+  },
 );
 
 module.exports = { stripeRouter, stripeWebhookRouter };

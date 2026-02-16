@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { PRICING_TIERS, MARKETPLACE_TIER } from '@/data/pricingTiers';
+import React, { useState } from "react";
+import { PRICING_TIERS, MARKETPLACE_TIER } from "@/data/pricingTiers";
 
 /**
  * PRICING PAGE - 2026 OPTIMIZED 4-TIER MODEL
- * 
+ *
  * Conversion targets:
  * - Free→Pro: 30% (Slack benchmark)
  * - Pro→Enterprise: 15% (industry benchmark)
@@ -11,24 +11,20 @@ import { PRICING_TIERS, MARKETPLACE_TIER } from '@/data/pricingTiers';
  */
 
 interface PricingPageProps {
-  currency?: 'USD' | 'EUR' | 'GBP';
-  billingPeriod?: 'monthly' | 'annual';
+  currency?: "USD" | "EUR" | "GBP";
 }
 
-export default function PricingPage({ currency = 'USD', billingPeriod = 'monthly' }: PricingPageProps) {
-  const [selectedBilling, setSelectedBilling] = useState<'monthly' | 'annual'>('monthly');
-  const [activeComparison, setActiveComparison] = useState<string | null>(null);
+export default function PricingPage({ currency = "USD" }: PricingPageProps) {
+  const [selectedBilling, setSelectedBilling] = useState<"monthly" | "annual">("monthly");
 
-  const currencySymbol = { USD: '$', EUR: '€', GBP: '£' }[currency];
+  const currencySymbol = { USD: "$", EUR: "€", GBP: "£" }[currency];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 text-white py-16">
       {/* Hero Section */}
       <div className="max-w-6xl mx-auto px-4 mb-16">
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-4">
-            Freight Operations, Simplified
-          </h1>
+          <h1 className="text-5xl font-bold mb-4">Freight Operations, Simplified</h1>
           <p className="text-xl text-slate-300 max-w-2xl mx-auto">
             From owner-operators to enterprise fleets, INFÆMOUS FREIGHT scales with your business.
             No credit card required to get started.
@@ -39,21 +35,21 @@ export default function PricingPage({ currency = 'USD', billingPeriod = 'monthly
         <div className="flex justify-center mb-12">
           <div className="inline-flex rounded-lg bg-slate-700 p-1">
             <button
-              onClick={() => setSelectedBilling('monthly')}
+              onClick={() => setSelectedBilling("monthly")}
               className={`px-6 py-2 rounded font-semibold transition-all ${
-                selectedBilling === 'monthly'
-                  ? 'bg-blue-500 text-white'
-                  : 'text-slate-300 hover:text-white'
+                selectedBilling === "monthly"
+                  ? "bg-blue-500 text-white"
+                  : "text-slate-300 hover:text-white"
               }`}
             >
               Monthly
             </button>
             <button
-              onClick={() => setSelectedBilling('annual')}
+              onClick={() => setSelectedBilling("annual")}
               className={`px-6 py-2 rounded font-semibold transition-all ${
-                selectedBilling === 'annual'
-                  ? 'bg-blue-500 text-white'
-                  : 'text-slate-300 hover:text-white'
+                selectedBilling === "annual"
+                  ? "bg-blue-500 text-white"
+                  : "text-slate-300 hover:text-white"
               }`}
             >
               Annual (Save 20%)
@@ -82,9 +78,7 @@ export default function PricingPage({ currency = 'USD', billingPeriod = 'monthly
             <div className="flex items-start justify-between mb-6">
               <div>
                 <h3 className="text-3xl font-bold mb-2">{MARKETPLACE_TIER.name}</h3>
-                <p className="text-slate-200 text-lg">
-                  {MARKETPLACE_TIER.description}
-                </p>
+                <p className="text-slate-200 text-lg">{MARKETPLACE_TIER.description}</p>
               </div>
               <div className="text-right">
                 <div className="text-4xl font-bold text-green-400 mb-1">15%</div>
@@ -136,45 +130,42 @@ export default function PricingPage({ currency = 'USD', billingPeriod = 'monthly
               <ComparisonRow
                 feature="Monthly Cost"
                 values={PRICING_TIERS.map((t) =>
-                  t.price === 0 ? 'Free' : `${currencySymbol}${t.price}`
+                  t.price === 0 ? "Free" : `${currencySymbol}${t.price}`,
                 )}
               />
               <ComparisonRow
                 feature="API Calls/Month"
                 values={PRICING_TIERS.map((t) =>
-                  typeof t.limits.api_calls === 'string'
+                  typeof t.limits.api_calls === "string"
                     ? t.limits.api_calls
-                    : t.limits.api_calls.toLocaleString()
+                    : t.limits.api_calls.toLocaleString(),
                 )}
               />
               <ComparisonRow
                 feature="Shipments/Month"
                 values={PRICING_TIERS.map((t) =>
-                  typeof t.limits.shipments_monthly === 'string'
+                  typeof t.limits.shipments_monthly === "string"
                     ? t.limits.shipments_monthly
-                    : t.limits.shipments_monthly.toLocaleString()
+                    : t.limits.shipments_monthly.toLocaleString(),
                 )}
               />
               <ComparisonRow
                 feature="Team Members"
                 values={PRICING_TIERS.map((t) =>
-                  typeof t.limits.users === 'string'
+                  typeof t.limits.users === "string"
                     ? t.limits.users
-                    : t.limits.users.toLocaleString()
+                    : t.limits.users.toLocaleString(),
                 )}
               />
               <ComparisonRow
                 feature="Integrations"
-                values={['1', '5+', 'Unlimited', 'Unlimited']}
+                values={["1", "5+", "Unlimited", "Unlimited"]}
               />
               <ComparisonRow
                 feature="Priority Support"
-                values={['Community', 'Email + Phone', '24/7 SLA', 'Dedicated']}
+                values={["Community", "Email + Phone", "24/7 SLA", "Dedicated"]}
               />
-              <ComparisonRow
-                feature="SLA Guarantee"
-                values={['99%', '99%', '99.9%', '99.9%']}
-              />
+              <ComparisonRow feature="SLA Guarantee" values={["99%", "99%", "99.9%", "99.9%"]} />
             </tbody>
           </table>
         </div>
@@ -237,22 +228,22 @@ function PricingCard({
   billingPeriod: string;
   isHighlighted: boolean;
 }) {
-  const price = billingPeriod === 'annual' && tier.price_id_annual ? 
-    Math.floor(tier.amount_annual / 12) : tier.amount;
+  const price =
+    billingPeriod === "annual" && tier.price_id_annual
+      ? Math.floor(tier.amount_annual / 12)
+      : tier.amount;
   const displayPrice = Math.floor(price / 100);
 
   return (
     <div
       className={`rounded-xl overflow-hidden transition-all ${
         isHighlighted
-          ? 'ring-2 ring-blue-500 transform scale-105 shadow-2xl bg-slate-700'
-          : 'bg-slate-700 hover:shadow-lg'
+          ? "ring-2 ring-blue-500 transform scale-105 shadow-2xl bg-slate-700"
+          : "bg-slate-700 hover:shadow-lg"
       }`}
     >
       {isHighlighted && (
-        <div className="bg-blue-500 text-white text-center py-2 font-semibold">
-          RECOMMENDED
-        </div>
+        <div className="bg-blue-500 text-white text-center py-2 font-semibold">RECOMMENDED</div>
       )}
 
       <div className="p-6">
@@ -265,10 +256,11 @@ function PricingCard({
           ) : (
             <>
               <div className="text-4xl font-bold">
-                {currency}{displayPrice}
+                {currency}
+                {displayPrice}
                 <span className="text-lg text-slate-300 font-normal">/mo</span>
               </div>
-              {billingPeriod === 'annual' && tier.annual_discount_percent && (
+              {billingPeriod === "annual" && tier.annual_discount_percent && (
                 <div className="text-sm text-green-400 mt-2">
                   Save {tier.annual_discount_percent}% annually
                 </div>
@@ -280,8 +272,8 @@ function PricingCard({
         <button
           className={`w-full py-2 px-4 rounded-lg font-semibold transition-all mb-6 ${
             isHighlighted
-              ? 'bg-blue-500 hover:bg-blue-600 text-white'
-              : 'bg-slate-600 hover:bg-slate-500 text-white'
+              ? "bg-blue-500 hover:bg-blue-600 text-white"
+              : "bg-slate-600 hover:bg-slate-500 text-white"
           }`}
         >
           {tier.cta}
@@ -357,13 +349,15 @@ function ROICalculator({ currency }: { currency: string }) {
         <div className="bg-slate-700 p-4 rounded-lg">
           <div className="text-slate-300 text-sm mb-1">Monthly Savings</div>
           <div className="text-3xl font-bold text-green-400">
-            {currency}{monthlySavings.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+            {currency}
+            {monthlySavings.toLocaleString(undefined, { maximumFractionDigits: 0 })}
           </div>
         </div>
         <div className="bg-slate-700 p-4 rounded-lg">
           <div className="text-slate-300 text-sm mb-1">Annual Savings</div>
           <div className="text-3xl font-bold text-green-400">
-            {currency}{annualSavings.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+            {currency}
+            {annualSavings.toLocaleString(undefined, { maximumFractionDigits: 0 })}
           </div>
         </div>
         <div className="bg-slate-700 p-4 rounded-lg">
@@ -387,7 +381,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
         className="w-full p-4 flex justify-between items-center hover:bg-slate-700 transition-colors"
       >
         <span className="font-semibold text-left">{question}</span>
-        <span className={`transition-transform ${open ? 'rotate-180' : ''}`}>▼</span>
+        <span className={`transition-transform ${open ? "rotate-180" : ""}`}>▼</span>
       </button>
       {open && <div className="p-4 border-t border-slate-600 text-slate-300">{answer}</div>}
     </div>

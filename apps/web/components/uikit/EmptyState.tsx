@@ -1,12 +1,12 @@
 /**
  * Copyright © 2025 Infæmous Freight. All Rights Reserved.
  * User-Friendly Empty State Component
- * 
+ *
  * Shows helpful messages when there's no data, with actionable next steps
  */
 
-import React, { ReactNode } from 'react';
-import styles from './EmptyState.module.css';
+import React, { ReactNode } from "react";
+import styles from "./EmptyState.module.css";
 
 export interface EmptyStateProps {
   icon?: string | ReactNode;
@@ -21,7 +21,7 @@ export interface EmptyStateProps {
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
-  icon = '📭',
+  icon = "📭",
   title,
   description,
   action,
@@ -31,15 +31,10 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   return (
     <div className={styles.container}>
       {illustration && (
-        <img
-          src={illustration}
-          alt=""
-          className={styles.illustration}
-          aria-hidden="true"
-        />
+        <img src={illustration} alt="" className={styles.illustration} aria-hidden="true" />
       )}
 
-      {typeof icon === 'string' ? (
+      {typeof icon === "string" ? (
         <div className={styles.icon} aria-hidden="true">
           {icon}
         </div>
@@ -56,9 +51,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
         </button>
       )}
 
-      {hint && (
-        <p className={styles.hint}>💡 {hint}</p>
-      )}
+      {hint && <p className={styles.hint}>💡 {hint}</p>}
     </div>
   );
 };

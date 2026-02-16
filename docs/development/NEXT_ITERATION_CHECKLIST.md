@@ -138,7 +138,8 @@ Tests will run automatically when you push to GitHub:
 
 1. Commit changes: `git commit -m "message"`
 2. Push to main: `git push origin main`
-3. GitHub Actions runs: <https://github.com/MrMiless44/Infamous-freight-enterprises/actions>
+3. GitHub Actions runs:
+   <https://github.com/MrMiless44/Infamous-freight-enterprises/actions>
 4. Check results: All workflows should show ✅ green
 
 #### Option C: Docker Environment
@@ -472,4 +473,5 @@ flyctl status -a infamous-freight-api
 
 ---
 
-**Ready to iterate?** Provide the required secrets and we'll complete the validation cycle!
+**Ready to iterate?** Provide the required secrets and we'll complete the
+validation cycle!

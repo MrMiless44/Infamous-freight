@@ -8,6 +8,7 @@
 ## 🌐 GLOBAL DEPLOYMENT PLATFORMS
 
 ### ✅ 1. GitHub Pages (LIVE)
+
 **Status**: ✅ ALREADY DEPLOYED  
 **URL**: https://MrMiless44.github.io/Infamous-freight-enterprises/  
 **Coverage**: Global via GitHub's CDN  
@@ -18,10 +19,12 @@
 ---
 
 ### 🚀 2. Vercel (Global Edge Network)
+
 **Status**: ⚙️ CONFIGURED - Ready to deploy  
 **Configuration**: `vercel.json`  
 **Coverage**: 70+ Edge locations worldwide  
 **Regions**:
+
 - 🇺🇸 North America (20+ locations)
 - 🇪🇺 Europe (25+ locations)
 - 🇦🇺 Asia-Pacific (15+ locations)
@@ -29,6 +32,7 @@
 - 🇿🇦 Africa (2+ locations)
 
 **Setup Instructions**:
+
 ```bash
 # 1. Install Vercel CLI
 pnpm add -g vercel@latest
@@ -43,6 +47,7 @@ vercel --prod
 ```
 
 **Features**:
+
 - ✅ Global CDN with automatic edge caching
 - ✅ Automatic HTTPS/SSL
 - ✅ Instant rollbacks
@@ -53,10 +58,12 @@ vercel --prod
 ---
 
 ### 🌐 3. Netlify (Global CDN)
+
 **Status**: ⚙️ CONFIGURED - Ready to deploy  
 **Configuration**: `netlify.toml`  
 **Coverage**: 6 continents, global edge network  
 **Regions**:
+
 - 🇺🇸 United States
 - 🇪🇺 Europe (multiple locations)
 - 🇸🇬 Singapore
@@ -65,6 +72,7 @@ vercel --prod
 - 🇿🇦 South Africa
 
 **Setup Instructions**:
+
 ```bash
 # 1. Install Netlify CLI
 npm install -g netlify-cli
@@ -79,6 +87,7 @@ netlify deploy --prod
 ```
 
 **Features**:
+
 - ✅ Global CDN with edge caching
 - ✅ Automatic HTTPS
 - ✅ Forms and Functions
@@ -89,15 +98,18 @@ netlify deploy --prod
 ---
 
 ### ⚡ 4. Cloudflare Pages (310+ Global PoPs)
+
 **Status**: ⚙️ CONFIGURED - Ready to deploy  
 **Configuration**: `wrangler.toml`  
 **Coverage**: 310+ cities in 120+ countries  
 **Regions**:
+
 - 🌎 Every continent
 - 🏙️ 310+ cities worldwide
 - 🌍 Edge network in 120+ countries
 
 **Setup Instructions**:
+
 ```bash
 # 1. Install Wrangler CLI
 npm install -g wrangler
@@ -112,6 +124,7 @@ wrangler pages publish client/dist
 ```
 
 **Features**:
+
 - ✅ Largest edge network (310+ locations)
 - ✅ Unlimited bandwidth
 - ✅ DDoS protection
@@ -122,21 +135,25 @@ wrangler pages publish client/dist
 ---
 
 ### 🎯 5. Render.com (Global)
+
 **Status**: ⚙️ CONFIGURED - Ready to deploy  
 **Configuration**: `render.yaml`  
 **Coverage**: Multi-region deployment  
 **Regions**:
+
 - 🇺🇸 United States (Oregon, Ohio, Virginia)
 - 🇪🇺 Europe (Frankfurt)
 - 🇸🇬 Singapore
 
 **Setup Instructions**:
+
 ```bash
 # Connect GitHub repo at: https://dashboard.render.com/
 # Render will auto-detect render.yaml configuration
 ```
 
 **Features**:
+
 - ✅ Static sites + API hosting
 - ✅ Auto-deploy from Git
 - ✅ Free SSL certificates
@@ -148,13 +165,13 @@ wrangler pages publish client/dist
 
 ## 📊 GLOBAL COVERAGE SUMMARY
 
-| Platform | Status | Edge Locations | Continents | Auto-Deploy |
-|----------|--------|----------------|------------|-------------|
-| **GitHub Pages** | ✅ LIVE | Global CDN | 6 | ✅ |
-| **Vercel** | ⚙️ Ready | 70+ | 5 | ⚙️ |
-| **Netlify** | ⚙️ Ready | 6+ regions | 6 | ⚙️ |
-| **Cloudflare** | ⚙️ Ready | 310+ | 6 | ⚙️ |
-| **Render** | ⚙️ Ready | 5+ regions | 3 | ⚙️ |
+| Platform         | Status   | Edge Locations | Continents | Auto-Deploy |
+| ---------------- | -------- | -------------- | ---------- | ----------- |
+| **GitHub Pages** | ✅ LIVE  | Global CDN     | 6          | ✅          |
+| **Vercel**       | ⚙️ Ready | 70+            | 5          | ⚙️          |
+| **Netlify**      | ⚙️ Ready | 6+ regions     | 6          | ⚙️          |
+| **Cloudflare**   | ⚙️ Ready | 310+           | 6          | ⚙️          |
+| **Render**       | ⚙️ Ready | 5+ regions     | 3          | ⚙️          |
 
 **Total Potential Coverage**: 400+ global edge locations across all platforms
 
@@ -165,12 +182,15 @@ wrangler pages publish client/dist
 ### Option 1: One-Click Deploy (Recommended)
 
 #### Vercel
+
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/MrMiless44/Infamous-freight-enterprises)
 
 #### Netlify
+
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/MrMiless44/Infamous-freight-enterprises)
 
 #### Render
+
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/MrMiless44/Infamous-freight-enterprises)
 
 ### Option 2: CLI Deployment
@@ -219,7 +239,8 @@ git push origin main
 
 ## 🌍 GLOBAL TRAFFIC ROUTING
 
-When deployed to multiple platforms, traffic is automatically routed to the nearest edge location:
+When deployed to multiple platforms, traffic is automatically routed to the
+nearest edge location:
 
 ```
 User Location → Nearest Edge Server
@@ -239,6 +260,7 @@ User Location → Nearest Edge Server
 ## 📈 PERFORMANCE BENEFITS
 
 ### Before (Single Region):
+
 ```
 🇺🇸 US Users:     20ms   ✅
 🇪🇺 EU Users:     150ms  ⚠️
@@ -247,6 +269,7 @@ User Location → Nearest Edge Server
 ```
 
 ### After (Global CDN):
+
 ```
 🇺🇸 US Users:     5ms    ✅✅✅
 🇪🇺 EU Users:     5ms    ✅✅✅
@@ -266,7 +289,7 @@ All platforms configured and ready to deploy:
 ✅ `netlify.toml` - Netlify multi-region CDN  
 ✅ `wrangler.toml` - Cloudflare 310+ locations  
 ✅ `render.yaml` - Render.com multi-region  
-✅ `.github/workflows/build-deploy.yml` - GitHub Actions  
+✅ `.github/workflows/build-deploy.yml` - GitHub Actions
 
 ---
 
@@ -290,16 +313,21 @@ All platforms configured with:
 ## 📍 DEPLOYMENT STATUS DASHBOARD
 
 ### Current Live Deployments:
-1. ✅ **GitHub Pages**: https://MrMiless44.github.io/Infamous-freight-enterprises/
+
+1. ✅ **GitHub Pages**:
+   https://MrMiless44.github.io/Infamous-freight-enterprises/
 
 ### Ready to Deploy (One-Click):
+
 2. ⚙️ **Vercel**: Connect GitHub → Auto-deploy
 3. ⚙️ **Netlify**: Connect GitHub → Auto-deploy
 4. ⚙️ **Cloudflare Pages**: Connect GitHub → Auto-deploy
 5. ⚙️ **Render**: Connect GitHub → Auto-deploy
 
 ### Total Potential Edge Locations: 400+
+
 ### Current Coverage: Global (GitHub Pages CDN)
+
 ### Maximum Possible Coverage: Worldwide (6 continents, 100+ countries)
 
 ---
@@ -307,27 +335,32 @@ All platforms configured with:
 ## 🎯 RECOMMENDED DEPLOYMENT STRATEGY
 
 ### Phase 1: Immediate (Already Complete) ✅
+
 - GitHub Pages deployed and live
 
 ### Phase 2: Primary Global CDN (5 minutes)
+
 ```bash
 # Deploy to Vercel (best for React/Next.js)
 vercel --prod
 ```
 
 ### Phase 3: Redundancy (10 minutes)
+
 ```bash
 # Add Netlify for redundancy
 netlify deploy --prod
 ```
 
 ### Phase 4: Maximum Coverage (15 minutes)
+
 ```bash
 # Add Cloudflare Pages (310+ locations)
 wrangler pages publish client/dist
 ```
 
 ### Phase 5: Multi-Region API (Optional)
+
 ```bash
 # Deploy API to Render for global API endpoints
 # Connect at https://dashboard.render.com/
@@ -345,6 +378,7 @@ Once deployed, add custom domain on each platform:
 4. **Render**: Settings → Custom Domain → Add
 
 **Recommended DNS Configuration**:
+
 ```
 Type    Name    Value
 ─────────────────────────────────────────
@@ -371,13 +405,13 @@ TXT     @       [Verification Token]
 
 ## 📞 PLATFORM SUPPORT
 
-| Platform | Documentation | Support |
-|----------|--------------|---------|
-| **Vercel** | https://vercel.com/docs | https://vercel.com/support |
-| **Netlify** | https://docs.netlify.com | https://answers.netlify.com |
-| **Cloudflare** | https://developers.cloudflare.com/pages | https://community.cloudflare.com |
-| **Render** | https://render.com/docs | https://render.com/docs/support |
-| **GitHub Pages** | https://docs.github.com/pages | https://support.github.com |
+| Platform         | Documentation                           | Support                          |
+| ---------------- | --------------------------------------- | -------------------------------- |
+| **Vercel**       | https://vercel.com/docs                 | https://vercel.com/support       |
+| **Netlify**      | https://docs.netlify.com                | https://answers.netlify.com      |
+| **Cloudflare**   | https://developers.cloudflare.com/pages | https://community.cloudflare.com |
+| **Render**       | https://render.com/docs                 | https://render.com/docs/support  |
+| **GitHub Pages** | https://docs.github.com/pages           | https://support.github.com       |
 
 ---
 
@@ -401,7 +435,7 @@ TXT     @       [Verification Token]
 ✅ **Zero Configuration**: All platforms pre-configured  
 ✅ **Free Tier**: Most platforms offer generous free plans  
 ✅ **Custom Domains**: Support for your own domain  
-✅ **SSL/HTTPS**: Automatic encryption  
+✅ **SSL/HTTPS**: Automatic encryption
 
 ---
 

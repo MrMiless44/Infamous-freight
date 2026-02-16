@@ -82,15 +82,11 @@ export default function ActiveLoadPage() {
     setErr("");
     setMsg("");
     try {
-      const res = await api(
-        `/loads/${active.loadId}/complete`,
-        { method: "POST" },
-        token,
-      );
+      const res = await api(`/loads/${active.loadId}/complete`, { method: "POST" }, token);
       setMsg(
-        `✅ Delivered. Payout created: $${(
-          res.payout.amountCents / 100
-        ).toFixed(2)} (status: ${res.payout.status})`,
+        `✅ Delivered. Payout created: $${(res.payout.amountCents / 100).toFixed(
+          2,
+        )} (status: ${res.payout.status})`,
       );
       localStorage.removeItem("active_assignment");
       setActive(null);
@@ -163,9 +159,7 @@ export default function ActiveLoadPage() {
                   alignItems: "center",
                 }}
               >
-                <strong style={{ fontSize: "1.1rem" }}>
-                  {active.reference}
-                </strong>
+                <strong style={{ fontSize: "1.1rem" }}>{active.reference}</strong>
                 <span style={{ color: "#ef4444", fontWeight: 700 }}>Æ</span>
               </div>
 
@@ -176,10 +170,7 @@ export default function ActiveLoadPage() {
                 {active.miles} mi • ${payoutDollars}
               </p>
 
-              <div
-                className="card"
-                style={{ marginTop: 16, background: "rgba(255,255,255,0.02)" }}
-              >
+              <div className="card" style={{ marginTop: 16, background: "rgba(255,255,255,0.02)" }}>
                 <strong>Proof of Delivery (POD)</strong>
                 <input
                   type="file"
@@ -195,9 +186,7 @@ export default function ActiveLoadPage() {
                 >
                   {busy ? "…" : podAttached ? "POD Attached ✅" : "Upload & Attach POD"}
                 </button>
-                <p style={{ marginTop: 8, color: "var(--muted-400)" }}>
-                  Completion requires POD.
-                </p>
+                <p style={{ marginTop: 8, color: "var(--muted-400)" }}>Completion requires POD.</p>
               </div>
 
               <button

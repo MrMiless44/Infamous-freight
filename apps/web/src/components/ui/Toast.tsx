@@ -16,13 +16,7 @@ export interface ToastProps {
   onClose: (id: string) => void;
 }
 
-export const Toast: React.FC<ToastProps> = ({
-  id,
-  type,
-  message,
-  duration = 5000,
-  onClose,
-}) => {
+export const Toast: React.FC<ToastProps> = ({ id, type, message, duration = 5000, onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -46,10 +40,7 @@ export const Toast: React.FC<ToastProps> = ({
     setTimeout(() => onClose(id), 300); // Wait for fade out animation
   };
 
-  const typeStyles: Record<
-    ToastType,
-    { bg: string; text: string; icon: string }
-  > = {
+  const typeStyles: Record<ToastType, { bg: string; text: string; icon: string }> = {
     success: {
       bg: "bg-green-50 border-green-500",
       text: "text-green-800",
@@ -107,9 +98,7 @@ export const Toast: React.FC<ToastProps> = ({
 };
 
 // Toast Container Component
-export const ToastContainer: React.FC<{ toasts: ToastProps[] }> = ({
-  toasts,
-}) => {
+export const ToastContainer: React.FC<{ toasts: ToastProps[] }> = ({ toasts }) => {
   const container = (
     <div className="fixed top-4 right-4 z-50 flex flex-col gap-3 max-w-md">
       {toasts.map((toast) => (
@@ -141,14 +130,10 @@ export function useToast() {
 
   return {
     toasts,
-    success: (message: string, duration?: number) =>
-      showToast("success", message, duration),
-    error: (message: string, duration?: number) =>
-      showToast("error", message, duration),
-    warning: (message: string, duration?: number) =>
-      showToast("warning", message, duration),
-    info: (message: string, duration?: number) =>
-      showToast("info", message, duration),
+    success: (message: string, duration?: number) => showToast("success", message, duration),
+    error: (message: string, duration?: number) => showToast("error", message, duration),
+    warning: (message: string, duration?: number) => showToast("warning", message, duration),
+    info: (message: string, duration?: number) => showToast("info", message, duration),
   };
 }
 

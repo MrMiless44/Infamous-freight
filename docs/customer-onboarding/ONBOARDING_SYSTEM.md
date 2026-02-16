@@ -10,9 +10,9 @@
 
 **Problem**: 40% of free trials never activate (no action in first 7 days)
 **Root Cause**: Confusing setup, unclear value proposition  
-**Solution**: Guided onboarding to first "aha moment" in <7 days, anchored on the AI-first Freight
-Intelligence Platform promise (dispatch + finance + AI + compliance in one
-system).
+**Solution**: Guided onboarding to first "aha moment" in <7 days, anchored on
+the AI-first Freight Intelligence Platform promise (dispatch + finance + AI +
+compliance in one system).
 
 ### Time-to-Value Timeline
 

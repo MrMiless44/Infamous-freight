@@ -64,7 +64,7 @@ export default function ValidationDashboard() {
       const data = await res.json();
       setStatus(data);
     } catch (err) {
-      // eslint-disable-next-line no-console
+       
       console.error("Failed to fetch validation status:", err);
     }
   };
@@ -75,7 +75,7 @@ export default function ValidationDashboard() {
       const data = await res.json();
       setMetrics(data);
     } catch (err) {
-      // eslint-disable-next-line no-console
+       
       console.error("Failed to fetch metrics:", err);
     }
   };
@@ -85,7 +85,7 @@ export default function ValidationDashboard() {
       await fetch("/api/validation/start", { method: "POST" });
       fetchValidationStatus();
     } catch (err) {
-      // eslint-disable-next-line no-console
+       
       console.error("Failed to start validation:", err);
     }
   };
@@ -96,11 +96,7 @@ export default function ValidationDashboard() {
     return sum / metrics.length;
   };
 
-  const getStatusColor = (
-    value: number,
-    threshold: number,
-    inverse = false,
-  ) => {
+  const getStatusColor = (value: number, threshold: number, inverse = false) => {
     const passed = inverse ? value < threshold : value > threshold;
     return passed ? "text-green-600" : "text-red-600";
   };
@@ -109,9 +105,7 @@ export default function ValidationDashboard() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">
-            72-Hour Validation Dashboard
-          </h1>
+          <h1 className="text-2xl font-bold mb-4">72-Hour Validation Dashboard</h1>
           <button
             onClick={startValidation}
             className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
@@ -160,9 +154,7 @@ export default function ValidationDashboard() {
                 >
                   {status.progress_percentage.toFixed(1)}%
                 </div>
-                <div className="text-sm text-gray-600">
-                  {status.hours_elapsed} of 72 hours
-                </div>
+                <div className="text-sm text-gray-600">{status.hours_elapsed} of 72 hours</div>
               </div>
             </div>
 
@@ -175,9 +167,7 @@ export default function ValidationDashboard() {
                 />
               </div>
               <div className="flex justify-between text-xs text-gray-600 mt-1">
-                <span>
-                  Started: {new Date(status.started_at).toLocaleString()}
-                </span>
+                <span>Started: {new Date(status.started_at).toLocaleString()}</span>
                 <span>{status.hours_remaining}h remaining</span>
               </div>
             </div>
@@ -188,14 +178,10 @@ export default function ValidationDashboard() {
             {/* Response Time */}
             <div className="bg-white rounded-lg shadow p-6">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-medium text-gray-600">
-                  Avg Response Time
-                </h3>
+                <h3 className="text-sm font-medium text-gray-600">Avg Response Time</h3>
                 <span className="text-2xl">⚡</span>
               </div>
-              <div
-                className={`text-3xl font-bold ${getStatusColor(avgResponseTime, 15, true)}`}
-              >
+              <div className={`text-3xl font-bold ${getStatusColor(avgResponseTime, 15, true)}`}>
                 {avgResponseTime.toFixed(1)}ms
               </div>
               <div className="text-sm text-gray-500 mt-1">
@@ -206,14 +192,10 @@ export default function ValidationDashboard() {
             {/* Error Rate */}
             <div className="bg-white rounded-lg shadow p-6">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-medium text-gray-600">
-                  Error Rate
-                </h3>
+                <h3 className="text-sm font-medium text-gray-600">Error Rate</h3>
                 <span className="text-2xl">🔴</span>
               </div>
-              <div
-                className={`text-3xl font-bold ${getStatusColor(errorRate, 1, true)}`}
-              >
+              <div className={`text-3xl font-bold ${getStatusColor(errorRate, 1, true)}`}>
                 {errorRate.toFixed(2)}%
               </div>
               <div className="text-sm text-gray-500 mt-1">
@@ -224,14 +206,10 @@ export default function ValidationDashboard() {
             {/* Cache Hit Rate */}
             <div className="bg-white rounded-lg shadow p-6">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-medium text-gray-600">
-                  Cache Hit Rate
-                </h3>
+                <h3 className="text-sm font-medium text-gray-600">Cache Hit Rate</h3>
                 <span className="text-2xl">📊</span>
               </div>
-              <div
-                className={`text-3xl font-bold ${getStatusColor(avgCacheHit, 80)}`}
-              >
+              <div className={`text-3xl font-bold ${getStatusColor(avgCacheHit, 80)}`}>
                 {avgCacheHit.toFixed(1)}%
               </div>
               <div className="text-sm text-gray-500 mt-1">
@@ -242,17 +220,13 @@ export default function ValidationDashboard() {
             {/* Total Requests */}
             <div className="bg-white rounded-lg shadow p-6">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-medium text-gray-600">
-                  Total Requests
-                </h3>
+                <h3 className="text-sm font-medium text-gray-600">Total Requests</h3>
                 <span className="text-2xl">📈</span>
               </div>
               <div className="text-3xl font-bold text-gray-900">
                 {totalRequests.toLocaleString()}
               </div>
-              <div className="text-sm text-gray-500 mt-1">
-                Over {status.hours_elapsed} hours
-              </div>
+              <div className="text-sm text-gray-500 mt-1">Over {status.hours_elapsed} hours</div>
             </div>
           </div>
 
@@ -281,13 +255,10 @@ export default function ValidationDashboard() {
                         <div className="font-semibold text-gray-900">
                           Hour {anomaly.hour}: {anomaly.type}
                         </div>
-                        <div className="text-sm text-gray-700 mt-1">
-                          {anomaly.message}
-                        </div>
+                        <div className="text-sm text-gray-700 mt-1">{anomaly.message}</div>
                       </div>
                       <div className="text-sm text-gray-600">
-                        Value: {anomaly.metric_value} (Threshold:{" "}
-                        {anomaly.threshold})
+                        Value: {anomaly.metric_value} (Threshold: {anomaly.threshold})
                       </div>
                     </div>
                   </div>
@@ -298,9 +269,7 @@ export default function ValidationDashboard() {
 
           {/* Metrics Chart */}
           <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
-              📊 Performance Trends
-            </h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">📊 Performance Trends</h2>
             <div className="h-64 flex items-end space-x-1">
               {metrics.slice(-24).map((metric, idx) => {
                 const height = (metric.api_response_time_ms / 30) * 100; // Scale to 30ms max
@@ -330,9 +299,7 @@ export default function ValidationDashboard() {
                     onChange={(e) => setAutoRefresh(e.target.checked)}
                     className="rounded"
                   />
-                  <span className="text-sm text-gray-700">
-                    Auto-refresh (every minute)
-                  </span>
+                  <span className="text-sm text-gray-700">Auto-refresh (every minute)</span>
                 </label>
               </div>
               <div className="space-x-3">
@@ -345,9 +312,7 @@ export default function ValidationDashboard() {
                 {status.status === "complete" && (
                   <button
                     onClick={() =>
-                      window.open(
-                        "/validation-data/reports/final_validation_report.md",
-                      )
+                      window.open("/validation-data/reports/final_validation_report.md")
                     }
                     className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
                   >

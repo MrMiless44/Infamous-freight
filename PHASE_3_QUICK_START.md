@@ -5,22 +5,21 @@
 ### 1. Machine Learning Recommendations
 
 #### Backend Setup
+
 ```javascript
 // apps/api/src/services/mlRecommendations.js (already implemented)
-const mlRecommendations = require('./services/mlRecommendations');
+const mlRecommendations = require("./services/mlRecommendations");
 
 // Get personalized recommendations
-const recommendations = await mlRecommendations.getRecommendations(
-  driverId,
-  {
-    limit: 20,
-    minScore: 70,
-    includeHazmat: false
-  }
-);
+const recommendations = await mlRecommendations.getRecommendations(driverId, {
+  limit: 20,
+  minScore: 70,
+  includeHazmat: false,
+});
 ```
 
 #### API Usage
+
 ```bash
 # Get recommendations for driver
 curl -X GET http://localhost:4000/api/ml/recommendations?limit=20 \
@@ -34,6 +33,7 @@ curl -X GET http://localhost:4000/api/ml/recommendations?limit=20 \
 ```
 
 #### Frontend Integration (React)
+
 ```typescript
 import { useEffect, useState } from 'react';
 
@@ -67,20 +67,19 @@ export function LoadRecommendations() {
 ### 2. Predictive Earnings
 
 #### Backend Setup
+
 ```javascript
-const predictiveEarnings = require('./services/predictiveEarnings');
+const predictiveEarnings = require("./services/predictiveEarnings");
 
 // Get 30-day forecast
-const forecast = await predictiveEarnings.forecastEarnings(
-  driverId,
-  {
-    days: 30,
-    includeConfidenceInterval: true
-  }
-);
+const forecast = await predictiveEarnings.forecastEarnings(driverId, {
+  days: 30,
+  includeConfidenceInterval: true,
+});
 ```
 
 #### API Usage
+
 ```bash
 # Get earnings forecast
 curl http://localhost:4000/api/ml/earnings/forecast?days=30 \
@@ -93,6 +92,7 @@ curl http://localhost:4000/api/ml/earnings/forecast?days=30 \
 ```
 
 #### Frontend Chart (using Recharts)
+
 ```typescript
 import { LineChart, Line, XAxis, YAxis } from 'recharts';
 
@@ -102,16 +102,16 @@ export function EarningsForecast({ forecast }) {
       <XAxis dataKey="date" />
       <YAxis />
       <Line type="monotone" dataKey="predicted" />
-      <Line 
-        type="monotone" 
-        dataKey="upper" 
-        stroke="#90EE90" 
+      <Line
+        type="monotone"
+        dataKey="upper"
+        stroke="#90EE90"
         strokeDasharray="5 5"
       />
-      <Line 
-        type="monotone" 
-        dataKey="lower" 
-        stroke="#FFB6C6" 
+      <Line
+        type="monotone"
+        dataKey="lower"
+        stroke="#FFB6C6"
         strokeDasharray="5 5"
       />
     </LineChart>
@@ -122,9 +122,10 @@ export function EarningsForecast({ forecast }) {
 ### 3. Geofencing & Location
 
 #### Mobile Setup (React Native)
+
 ```typescript
-import { offlineSyncService } from './services/offlineSyncService';
-import { geofencingService } from './services/geofencingService';
+import { offlineSyncService } from "./services/offlineSyncService";
+import { geofencingService } from "./services/geofencingService";
 
 // Initialize offline database
 await offlineSyncService.initializeDatabase();
@@ -137,7 +138,7 @@ await geofencingService.createGeofence(driverId, {
   radiusMeters: 500,
   type: "pickup",
   loadId: "load-123",
-  alertOnEnter: true
+  alertOnEnter: true,
 });
 
 // Start location monitoring
@@ -147,13 +148,14 @@ const subscription = Location.watchPositionAsync(
     geofencingService.updateLocation(driverId, {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
-      accuracy: location.coords.accuracy
+      accuracy: location.coords.accuracy,
     });
-  }
+  },
 );
 ```
 
 #### API Usage
+
 ```bash
 # Update driver location
 curl -X POST http://localhost:4000/api/geofencing/location \
@@ -168,8 +170,9 @@ curl http://localhost:4000/api/geofencing/nearby-loads?radius=50000 \
 ### 4. Offline Mode & Sync
 
 #### Mobile Implementation
+
 ```typescript
-import { offlineSyncService } from './services/offlineSyncService';
+import { offlineSyncService } from "./services/offlineSyncService";
 
 // 1. Initialize
 await offlineSyncService.initializeDatabase();
@@ -178,9 +181,9 @@ await offlineSyncService.initializeDatabase();
 await offlineSyncService.cacheLoads(loads);
 
 // 3. Queue actions while offline
-const actionId = await offlineSyncService.queueAction('bid_on_load', {
-  loadId: 'load-123',
-  amount: 2500
+const actionId = await offlineSyncService.queueAction("bid_on_load", {
+  loadId: "load-123",
+  amount: 2500,
 });
 
 // 4. Start background sync
@@ -195,6 +198,7 @@ console.log(`Pending sync: ${stats.pendingActions} actions`);
 ```
 
 #### UI Indicators
+
 ```typescript
 function OfflineModeIndicator() {
   const [isOnline, setIsOnline] = useState(true);
@@ -219,8 +223,9 @@ function OfflineModeIndicator() {
 ### 5. Biometric Authentication
 
 #### Mobile Setup
+
 ```typescript
-import { biometricAuthService } from './services/biometricAuthService';
+import { biometricAuthService } from "./services/biometricAuthService";
 
 // 1. Check if biometric available
 const available = await biometricAuthService.checkBiometricAvailability();
@@ -230,7 +235,7 @@ const available = await biometricAuthService.checkBiometricAvailability();
 await biometricAuthService.setupBiometric(userId, password);
 
 // 3. Setup PIN fallback
-await biometricAuthService.setupPIN(userId, '1234');
+await biometricAuthService.setupPIN(userId, "1234");
 
 // 4. Multi-factor authentication
 const result = await biometricAuthService.authenticateMultiFactor(userId);
@@ -238,6 +243,7 @@ const result = await biometricAuthService.authenticateMultiFactor(userId);
 ```
 
 #### Login Flow
+
 ```typescript
 export function BiometricLogin() {
   const [showPinInput, setShowPinInput] = useState(false);
@@ -276,8 +282,9 @@ export function BiometricLogin() {
 ### 6. Voice Search
 
 #### Mobile Setup
+
 ```typescript
-import { voiceSearchService } from './services/voiceSearchService';
+import { voiceSearchService } from "./services/voiceSearchService";
 
 // 1. Initialize
 await voiceSearchService.initializeVoiceRecognition();
@@ -300,6 +307,7 @@ await voiceSearchService.speakSearchResult(results);
 ```
 
 #### Voice Button Integration
+
 ```typescript
 export function VoiceSearchButton() {
   const [isListening, setIsListening] = useState(false);
@@ -328,6 +336,7 @@ export function VoiceSearchButton() {
 ### 7. B2B Shipper API
 
 #### Setup (Shipper Account)
+
 ```bash
 # 1. Shipper registers (admin creates account)
 POST /api/b2b/shipper
@@ -342,26 +351,30 @@ POST /api/b2b/shipper
 ```
 
 #### Usage (Shipper Backend)
+
 ```javascript
-const shipperId = 'shipper-uuid';
-const apiKey = 'your-api-key';
+const shipperId = "shipper-uuid";
+const apiKey = "your-api-key";
 
 // Post a load
 async function postLoad(loadData) {
-  const response = await fetch('https://api.infamousfreight.com/api/b2b/loads', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json'
+  const response = await fetch(
+    "https://api.infamousfreight.com/api/b2b/loads",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        pickupCity: "Denver, CO",
+        dropoffCity: "Phoenix, AZ",
+        pickupDate: "2026-02-28T08:00:00Z",
+        weight: 45000,
+        rate: 2500,
+      }),
     },
-    body: JSON.stringify({
-      pickupCity: 'Denver, CO',
-      dropoffCity: 'Phoenix, AZ',
-      pickupDate: '2026-02-28T08:00:00Z',
-      weight: 45000,
-      rate: 2500
-    })
-  });
+  );
 
   const load = await response.json();
   return load.data.id; // Save load ID
@@ -371,22 +384,22 @@ async function postLoad(loadData) {
 async function trackLoad(loadId) {
   const response = await fetch(
     `https://api.infamousfreight.com/api/b2b/loads/${loadId}`,
-    { headers: { 'Authorization': `Bearer ${apiKey}` } }
+    { headers: { Authorization: `Bearer ${apiKey}` } },
   );
 
   const load = await response.json();
-  console.log('Bids:', load.data.bids); // Track driver bids
+  console.log("Bids:", load.data.bids); // Track driver bids
 }
 
 // Create invoice
 async function createInvoice(loadId, amount) {
   const response = await fetch(
-    'https://api.infamousfreight.com/api/b2b/invoices',
+    "https://api.infamousfreight.com/api/b2b/invoices",
     {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${apiKey}` },
-      body: JSON.stringify({ loadId, amount })
-    }
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}` },
+      body: JSON.stringify({ loadId, amount }),
+    },
   );
 
   return await response.json();
@@ -396,6 +409,7 @@ async function createInvoice(loadId, amount) {
 ### 8. Fintech Integration
 
 #### Early Payment Request
+
 ```bash
 # Get payment options
 curl http://localhost:4000/api/fintech/early-pay/options?invoiceAmount=2500 \
@@ -416,6 +430,7 @@ curl -X POST http://localhost:4000/api/fintech/early-pay \
 ```
 
 #### Frontend UI
+
 ```typescript
 export function EarlyPaymentOptions({ invoiceAmount }) {
   const [options, setOptions] = useState(null);
@@ -439,7 +454,7 @@ export function EarlyPaymentOptions({ invoiceAmount }) {
   return options ? (
     <View>
       <Text>Select Payment Option</Text>
-      
+
       <Card onPress={() => requestPayment('standard')}>
         <Text>Standard: {options.standard.rate}% fee</Text>
         <Text>Net: ${options.standard.netAmount} (1 day)</Text>
@@ -460,6 +475,7 @@ export function EarlyPaymentOptions({ invoiceAmount }) {
 ```
 
 #### Fuel Card Enrollment
+
 ```typescript
 function FuelCardPrograms() {
   const [cards, setCards] = useState([]);
@@ -529,4 +545,4 @@ B2B_DEFAULT_TIER=pro
 
 ---
 
-*Phase 3 Quick Start Guide - Infamous Freight*
+_Phase 3 Quick Start Guide - Infamous Freight_

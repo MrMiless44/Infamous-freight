@@ -323,7 +323,8 @@ If you want to understand the codebase:
 
 1. **Architecture**: [README.md](README.md)
 2. **API Patterns**: [API_REFERENCE.md](API_REFERENCE.md)
-3. **Search Implementation**: [apps/api/src/routes/users.js](apps/api/src/routes/users.js#L42-L112)
+3. **Search Implementation**:
+   [apps/api/src/routes/users.js](apps/api/src/routes/users.js#L42-L112)
 4. **Testing Approach**: [API_TESTING_GUIDE.md](API_TESTING_GUIDE.md)
 5. **Operations**: [DEPLOYMENT_RUNBOOK.md](DEPLOYMENT_RUNBOOK.md)
 
@@ -389,4 +390,5 @@ If you want to understand the codebase:
 
 ---
 
-_For complete details, see [SESSION_2_COMPLETE_STATUS.md](SESSION_2_COMPLETE_STATUS.md)_
+_For complete details, see
+[SESSION_2_COMPLETE_STATUS.md](SESSION_2_COMPLETE_STATUS.md)_

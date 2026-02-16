@@ -21,52 +21,36 @@ const { handleValidationErrors } = require("../middleware/validation");
  * Get service recommendations for a shipment
  */
 router.post(
-    "/services",
-    limiters.general,
-    authenticate,
-    requireScope("recommendations:view"),
-    [
-        body("customerId")
-            .isString()
-            .notEmpty()
-            .withMessage("Customer ID is required"),
-        body("origin")
-            .isObject()
-            .withMessage("Origin is required"),
-        body("destination")
-            .isObject()
-            .withMessage("Destination is required"),
-        body("weight")
-            .isFloat({ min: 0 })
-            .withMessage("Weight must be a positive number"),
-        body("dimensions")
-            .optional()
-            .isObject()
-            .withMessage("Dimensions must be an object"),
-        body("urgency")
-            .optional()
-            .isIn(["express", "standard", "economy"])
-            .withMessage("Invalid urgency level"),
-        body("budget")
-            .optional()
-            .isFloat({ min: 0 })
-            .withMessage("Budget must be positive"),
-        handleValidationErrors,
-    ],
-    async (req, res, next) => {
-        try {
-            const recommendations =
-                await recommendationService.getServiceRecommendations(req.body);
-            res.status(200).json({
-                success: true,
-                data: recommendations,
-                count: recommendations.length,
-                message: "Service recommendations generated successfully",
-            });
-        } catch (error) {
-            next(error);
-        }
-    },
+  "/services",
+  limiters.general,
+  authenticate,
+  requireScope("recommendations:view"),
+  [
+    body("customerId").isString().notEmpty().withMessage("Customer ID is required"),
+    body("origin").isObject().withMessage("Origin is required"),
+    body("destination").isObject().withMessage("Destination is required"),
+    body("weight").isFloat({ min: 0 }).withMessage("Weight must be a positive number"),
+    body("dimensions").optional().isObject().withMessage("Dimensions must be an object"),
+    body("urgency")
+      .optional()
+      .isIn(["express", "standard", "economy"])
+      .withMessage("Invalid urgency level"),
+    body("budget").optional().isFloat({ min: 0 }).withMessage("Budget must be positive"),
+    handleValidationErrors,
+  ],
+  async (req, res, next) => {
+    try {
+      const recommendations = await recommendationService.getServiceRecommendations(req.body);
+      res.status(200).json({
+        success: true,
+        data: recommendations,
+        count: recommendations.length,
+        message: "Service recommendations generated successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 );
 
 /**
@@ -74,49 +58,35 @@ router.post(
  * Get route recommendations for a shipment
  */
 router.post(
-    "/routes",
-    limiters.general,
-    authenticate,
-    requireScope("recommendations:view"),
-    [
-        body("origin")
-            .isObject()
-            .withMessage("Origin with lat/lng is required"),
-        body("destination")
-            .isObject()
-            .withMessage("Destination with lat/lng is required"),
-        body("vehicleType")
-            .optional()
-            .isString()
-            .withMessage("Vehicle type must be a string"),
-        body("urgency")
-            .optional()
-            .isIn(["express", "standard", "economy"])
-            .withMessage("Invalid urgency level"),
-        body("avoidTolls")
-            .optional()
-            .isBoolean()
-            .withMessage("avoidTolls must be boolean"),
-        body("avoidHighways")
-            .optional()
-            .isBoolean()
-            .withMessage("avoidHighways must be boolean"),
-        handleValidationErrors,
-    ],
-    async (req, res, next) => {
-        try {
-            const recommendations =
-                await recommendationService.getRouteRecommendations(req.body);
-            res.status(200).json({
-                success: true,
-                data: recommendations,
-                count: recommendations.length,
-                message: "Route recommendations generated successfully",
-            });
-        } catch (error) {
-            next(error);
-        }
-    },
+  "/routes",
+  limiters.general,
+  authenticate,
+  requireScope("recommendations:view"),
+  [
+    body("origin").isObject().withMessage("Origin with lat/lng is required"),
+    body("destination").isObject().withMessage("Destination with lat/lng is required"),
+    body("vehicleType").optional().isString().withMessage("Vehicle type must be a string"),
+    body("urgency")
+      .optional()
+      .isIn(["express", "standard", "economy"])
+      .withMessage("Invalid urgency level"),
+    body("avoidTolls").optional().isBoolean().withMessage("avoidTolls must be boolean"),
+    body("avoidHighways").optional().isBoolean().withMessage("avoidHighways must be boolean"),
+    handleValidationErrors,
+  ],
+  async (req, res, next) => {
+    try {
+      const recommendations = await recommendationService.getRouteRecommendations(req.body);
+      res.status(200).json({
+        success: true,
+        data: recommendations,
+        count: recommendations.length,
+        message: "Route recommendations generated successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 );
 
 /**
@@ -124,53 +94,36 @@ router.post(
  * Get driver recommendations for a shipment
  */
 router.post(
-    "/drivers",
-    limiters.general,
-    authenticate,
-    requireScope("recommendations:view"),
-    [
-        body("shipmentId")
-            .optional()
-            .isString()
-            .withMessage("Shipment ID must be a string"),
-        body("origin")
-            .isObject()
-            .withMessage("Origin with lat/lng is required"),
-        body("destination")
-            .isObject()
-            .withMessage("Destination with lat/lng is required"),
-        body("vehicleType")
-            .optional()
-            .isString()
-            .withMessage("Vehicle type must be a string"),
-        body("pickupTime")
-            .optional()
-            .isISO8601()
-            .withMessage("Invalid pickup time format"),
-        body("deliveryTime")
-            .optional()
-            .isISO8601()
-            .withMessage("Invalid delivery time format"),
-        body("specialRequirements")
-            .optional()
-            .isArray()
-            .withMessage("Special requirements must be an array"),
-        handleValidationErrors,
-    ],
-    async (req, res, next) => {
-        try {
-            const recommendations =
-                await recommendationService.getDriverRecommendations(req.body);
-            res.status(200).json({
-                success: true,
-                data: recommendations,
-                count: recommendations.length,
-                message: "Driver recommendations generated successfully",
-            });
-        } catch (error) {
-            next(error);
-        }
-    },
+  "/drivers",
+  limiters.general,
+  authenticate,
+  requireScope("recommendations:view"),
+  [
+    body("shipmentId").optional().isString().withMessage("Shipment ID must be a string"),
+    body("origin").isObject().withMessage("Origin with lat/lng is required"),
+    body("destination").isObject().withMessage("Destination with lat/lng is required"),
+    body("vehicleType").optional().isString().withMessage("Vehicle type must be a string"),
+    body("pickupTime").optional().isISO8601().withMessage("Invalid pickup time format"),
+    body("deliveryTime").optional().isISO8601().withMessage("Invalid delivery time format"),
+    body("specialRequirements")
+      .optional()
+      .isArray()
+      .withMessage("Special requirements must be an array"),
+    handleValidationErrors,
+  ],
+  async (req, res, next) => {
+    try {
+      const recommendations = await recommendationService.getDriverRecommendations(req.body);
+      res.status(200).json({
+        success: true,
+        data: recommendations,
+        count: recommendations.length,
+        message: "Driver recommendations generated successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 );
 
 /**
@@ -178,49 +131,38 @@ router.post(
  * Get vehicle recommendations for a shipment
  */
 router.post(
-    "/vehicles",
-    limiters.general,
-    authenticate,
-    requireScope("recommendations:view"),
-    [
-        body("weight")
-            .isFloat({ min: 0 })
-            .withMessage("Weight must be a positive number"),
-        body("dimensions")
-            .optional()
-            .isObject()
-            .withMessage("Dimensions must be an object"),
-        body("cargoType")
-            .isString()
-            .notEmpty()
-            .withMessage("Cargo type is required"),
-        body("specialRequirements")
-            .optional()
-            .isArray()
-            .withMessage("Special requirements must be an array"),
-        body("origin")
-            .isObject()
-            .withMessage("Origin with lat/lng is required"),
-        body("preferredFuelType")
-            .optional()
-            .isString()
-            .withMessage("Preferred fuel type must be a string"),
-        handleValidationErrors,
-    ],
-    async (req, res, next) => {
-        try {
-            const recommendations =
-                await recommendationService.getVehicleRecommendations(req.body);
-            res.status(200).json({
-                success: true,
-                data: recommendations,
-                count: recommendations.length,
-                message: "Vehicle recommendations generated successfully",
-            });
-        } catch (error) {
-            next(error);
-        }
-    },
+  "/vehicles",
+  limiters.general,
+  authenticate,
+  requireScope("recommendations:view"),
+  [
+    body("weight").isFloat({ min: 0 }).withMessage("Weight must be a positive number"),
+    body("dimensions").optional().isObject().withMessage("Dimensions must be an object"),
+    body("cargoType").isString().notEmpty().withMessage("Cargo type is required"),
+    body("specialRequirements")
+      .optional()
+      .isArray()
+      .withMessage("Special requirements must be an array"),
+    body("origin").isObject().withMessage("Origin with lat/lng is required"),
+    body("preferredFuelType")
+      .optional()
+      .isString()
+      .withMessage("Preferred fuel type must be a string"),
+    handleValidationErrors,
+  ],
+  async (req, res, next) => {
+    try {
+      const recommendations = await recommendationService.getVehicleRecommendations(req.body);
+      res.status(200).json({
+        success: true,
+        data: recommendations,
+        count: recommendations.length,
+        message: "Vehicle recommendations generated successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 );
 
 /**
@@ -228,46 +170,36 @@ router.post(
  * Get pricing recommendations based on market analysis
  */
 router.post(
-    "/pricing",
-    limiters.general,
-    authenticate,
-    requireScope("recommendations:view"),
-    [
-        body("origin")
-            .isObject()
-            .withMessage("Origin with lat/lng is required"),
-        body("destination")
-            .isObject()
-            .withMessage("Destination with lat/lng is required"),
-        body("weight")
-            .isFloat({ min: 0 })
-            .withMessage("Weight must be a positive number"),
-        body("serviceType")
-            .isIn(["express", "standard", "economy"])
-            .withMessage("Invalid service type"),
-        body("urgency")
-            .optional()
-            .isIn(["express", "standard", "economy"])
-            .withMessage("Invalid urgency level"),
-        body("customerId")
-            .optional()
-            .isString()
-            .withMessage("Customer ID must be a string"),
-        handleValidationErrors,
-    ],
-    async (req, res, next) => {
-        try {
-            const recommendations =
-                await recommendationService.getPricingRecommendations(req.body);
-            res.status(200).json({
-                success: true,
-                data: recommendations,
-                message: "Pricing recommendations generated successfully",
-            });
-        } catch (error) {
-            next(error);
-        }
-    },
+  "/pricing",
+  limiters.general,
+  authenticate,
+  requireScope("recommendations:view"),
+  [
+    body("origin").isObject().withMessage("Origin with lat/lng is required"),
+    body("destination").isObject().withMessage("Destination with lat/lng is required"),
+    body("weight").isFloat({ min: 0 }).withMessage("Weight must be a positive number"),
+    body("serviceType")
+      .isIn(["express", "standard", "economy"])
+      .withMessage("Invalid service type"),
+    body("urgency")
+      .optional()
+      .isIn(["express", "standard", "economy"])
+      .withMessage("Invalid urgency level"),
+    body("customerId").optional().isString().withMessage("Customer ID must be a string"),
+    handleValidationErrors,
+  ],
+  async (req, res, next) => {
+    try {
+      const recommendations = await recommendationService.getPricingRecommendations(req.body);
+      res.status(200).json({
+        success: true,
+        data: recommendations,
+        message: "Pricing recommendations generated successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 );
 
 /**
@@ -275,31 +207,28 @@ router.post(
  * Get personalized recommendations for a customer
  */
 router.get(
-    "/personalized/:customerId",
-    limiters.general,
-    authenticate,
-    requireScope("recommendations:view"),
-    [
-        param("customerId")
-            .isString()
-            .notEmpty()
-            .withMessage("Customer ID is required"),
-        handleValidationErrors,
-    ],
-    async (req, res, next) => {
-        try {
-            const { customerId } = req.params;
-            const recommendations =
-                await recommendationService.getPersonalizedRecommendations(customerId);
-            res.status(200).json({
-                success: true,
-                data: recommendations,
-                message: "Personalized recommendations generated successfully",
-            });
-        } catch (error) {
-            next(error);
-        }
-    },
+  "/personalized/:customerId",
+  limiters.general,
+  authenticate,
+  requireScope("recommendations:view"),
+  [
+    param("customerId").isString().notEmpty().withMessage("Customer ID is required"),
+    handleValidationErrors,
+  ],
+  async (req, res, next) => {
+    try {
+      const { customerId } = req.params;
+      const recommendations =
+        await recommendationService.getPersonalizedRecommendations(customerId);
+      res.status(200).json({
+        success: true,
+        data: recommendations,
+        message: "Personalized recommendations generated successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 );
 
 /**
@@ -307,52 +236,43 @@ router.get(
  * Find similar items based on features (collaborative filtering)
  */
 router.post(
-    "/similar",
-    limiters.general,
-    authenticate,
-    requireScope("recommendations:view"),
-    [
-        body("itemType")
-            .isIn(["shipment", "customer", "driver", "vehicle"])
-            .withMessage("Invalid item type"),
-        body("itemId")
-            .isString()
-            .notEmpty()
-            .withMessage("Item ID is required"),
-        body("limit")
-            .optional()
-            .isInt({ min: 1, max: 50 })
-            .withMessage("Limit must be between 1 and 50"),
-        handleValidationErrors,
-    ],
-    async (req, res, next) => {
-        try {
-            const { itemType, itemId, limit = 10 } = req.body;
+  "/similar",
+  limiters.general,
+  authenticate,
+  requireScope("recommendations:view"),
+  [
+    body("itemType")
+      .isIn(["shipment", "customer", "driver", "vehicle"])
+      .withMessage("Invalid item type"),
+    body("itemId").isString().notEmpty().withMessage("Item ID is required"),
+    body("limit")
+      .optional()
+      .isInt({ min: 1, max: 50 })
+      .withMessage("Limit must be between 1 and 50"),
+    handleValidationErrors,
+  ],
+  async (req, res, next) => {
+    try {
+      const { itemType, itemId, limit = 10 } = req.body;
 
-            // Get similar items based on type
-            let similar = [];
-            if (itemType === "customer") {
-                similar = await recommendationService.getSimilarCustomers(
-                    itemId,
-                    limit,
-                );
-            } else if (itemType === "shipment") {
-                similar = await recommendationService.getSimilarShipments(
-                    itemId,
-                    limit,
-                );
-            }
+      // Get similar items based on type
+      let similar = [];
+      if (itemType === "customer") {
+        similar = await recommendationService.getSimilarCustomers(itemId, limit);
+      } else if (itemType === "shipment") {
+        similar = await recommendationService.getSimilarShipments(itemId, limit);
+      }
 
-            res.status(200).json({
-                success: true,
-                data: similar,
-                count: similar.length,
-                message: `Similar ${itemType}s found successfully`,
-            });
-        } catch (error) {
-            next(error);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        data: similar,
+        count: similar.length,
+        message: `Similar ${itemType}s found successfully`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 );
 
 /**
@@ -360,76 +280,51 @@ router.post(
  * Provide feedback on recommendations (for learning)
  */
 router.post(
-    "/feedback",
-    limiters.general,
-    authenticate,
-    requireScope("recommendations:update"),
-    auditLog,
-    [
-        body("recommendationId")
-            .isString()
-            .notEmpty()
-            .withMessage("Recommendation ID is required"),
-        body("recommendationType")
-            .isIn([
-                "service",
-                "route",
-                "driver",
-                "vehicle",
-                "pricing",
-                "personalized",
-            ])
-            .withMessage("Invalid recommendation type"),
-        body("itemId")
-            .isString()
-            .notEmpty()
-            .withMessage("Item ID is required"),
-        body("action")
-            .isIn(["accepted", "rejected", "modified"])
-            .withMessage("Invalid action"),
-        body("rating")
-            .optional()
-            .isInt({ min: 1, max: 5 })
-            .withMessage("Rating must be between 1 and 5"),
-        body("feedback")
-            .optional()
-            .isString()
-            .withMessage("Feedback must be a string"),
-        handleValidationErrors,
-    ],
-    async (req, res, next) => {
-        try {
-            const {
-                recommendationId,
-                recommendationType,
-                itemId,
-                action,
-                rating,
-                feedback,
-            } = req.body;
+  "/feedback",
+  limiters.general,
+  authenticate,
+  requireScope("recommendations:update"),
+  auditLog,
+  [
+    body("recommendationId").isString().notEmpty().withMessage("Recommendation ID is required"),
+    body("recommendationType")
+      .isIn(["service", "route", "driver", "vehicle", "pricing", "personalized"])
+      .withMessage("Invalid recommendation type"),
+    body("itemId").isString().notEmpty().withMessage("Item ID is required"),
+    body("action").isIn(["accepted", "rejected", "modified"]).withMessage("Invalid action"),
+    body("rating")
+      .optional()
+      .isInt({ min: 1, max: 5 })
+      .withMessage("Rating must be between 1 and 5"),
+    body("feedback").optional().isString().withMessage("Feedback must be a string"),
+    handleValidationErrors,
+  ],
+  async (req, res, next) => {
+    try {
+      const { recommendationId, recommendationType, itemId, action, rating, feedback } = req.body;
 
-            // Store feedback
-            await prisma.recommendationFeedback.create({
-                data: {
-                    recommendationId,
-                    recommendationType,
-                    itemId,
-                    action,
-                    rating: rating || null,
-                    feedback: feedback || null,
-                    userId: req.user.sub,
-                    timestamp: new Date(),
-                },
-            });
+      // Store feedback
+      await prisma.recommendationFeedback.create({
+        data: {
+          recommendationId,
+          recommendationType,
+          itemId,
+          action,
+          rating: rating || null,
+          feedback: feedback || null,
+          userId: req.user.sub,
+          timestamp: new Date(),
+        },
+      });
 
-            res.status(201).json({
-                success: true,
-                message: "Feedback recorded successfully",
-            });
-        } catch (error) {
-            next(error);
-        }
-    },
+      res.status(201).json({
+        success: true,
+        message: "Feedback recorded successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 );
 
 /**
@@ -437,89 +332,84 @@ router.post(
  * Get AI-driven insights for a customer
  */
 router.get(
-    "/insights/:customerId",
-    limiters.general,
-    authenticate,
-    requireScope("recommendations:view"),
-    [
-        param("customerId")
-            .isString()
-            .notEmpty()
-            .withMessage("Customer ID is required"),
-        query("timeRange")
-            .optional()
-            .isIn(["week", "month", "quarter", "year"])
-            .withMessage("Invalid time range"),
-        handleValidationErrors,
-    ],
-    async (req, res, next) => {
-        try {
-            const { customerId } = req.params;
-            const { timeRange = "month" } = req.query;
+  "/insights/:customerId",
+  limiters.general,
+  authenticate,
+  requireScope("recommendations:view"),
+  [
+    param("customerId").isString().notEmpty().withMessage("Customer ID is required"),
+    query("timeRange")
+      .optional()
+      .isIn(["week", "month", "quarter", "year"])
+      .withMessage("Invalid time range"),
+    handleValidationErrors,
+  ],
+  async (req, res, next) => {
+    try {
+      const { customerId } = req.params;
+      const { timeRange = "month" } = req.query;
 
-            // Calculate time range
-            const timeRanges = {
-                week: 7,
-                month: 30,
-                quarter: 90,
-                year: 365,
-            };
-            const days = timeRanges[timeRange];
-            const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+      // Calculate time range
+      const timeRanges = {
+        week: 7,
+        month: 30,
+        quarter: 90,
+        year: 365,
+      };
+      const days = timeRanges[timeRange];
+      const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
 
-            // Get customer data
-            const shipments = await prisma.shipment.findMany({
-                where: {
-                    customerId,
-                    createdAt: { gte: startDate },
-                },
-            });
+      // Get customer data
+      const shipments = await prisma.shipment.findMany({
+        where: {
+          customerId,
+          createdAt: { gte: startDate },
+        },
+      });
 
-            // Generate insights
-            const insights = {
-                totalShipments: shipments.length,
-                totalSpending: shipments.reduce((sum, s) => sum + (s.price || 0), 0),
-                averageShipmentValue:
-                    shipments.length > 0
-                        ? shipments.reduce((sum, s) => sum + (s.price || 0), 0) /
-                        shipments.length
-                        : 0,
-                preferredServices: recommendationService
-                    .getTopItems(
-                        shipments.map((s) => s.serviceType),
-                        3,
-                    )
-                    .map((item) => item.item),
-                shippingFrequency: (shipments.length / days).toFixed(2),
-                trends: {
-                    increasingVolume: shipments.length > 5,
-                    preferredDays: ["Tuesday", "Wednesday"],
-                    peakHours: ["10:00-12:00"],
-                },
-                recommendations: {
-                    suggestedService:
-                        shipments.length > 10 ? "monthly-plan" : "pay-as-you-go",
-                    potentialSavings: shipments.length > 10 ? 25 : 0,
-                    upsellOpportunities: [
-                        {
-                            service: "Express Upgrade",
-                            benefit: "50% faster delivery",
-                            discount: 15,
-                        },
-                    ],
-                },
-            };
+      // Generate insights
+      const insights = {
+        totalShipments: shipments.length,
+        totalSpending: shipments.reduce((sum, s) => sum + (s.price || 0), 0),
+        averageShipmentValue:
+          shipments.length > 0
+            ? shipments.reduce((sum, s) => sum + (s.price || 0), 0) / shipments.length
+            : 0,
+        preferredServices: recommendationService
+          .getTopItems(
+            shipments.map((s) => s.serviceType),
+            3,
+          )
+          .map((item) => item.item),
+        shippingFrequency: (shipments.length / days).toFixed(2),
+        trends: {
+          increasingVolume: shipments.length > 5,
+          preferredDays: ["Tuesday", "Wednesday"],
+          peakHours: ["10:00-12:00"],
+        },
+        recommendations: {
+          suggestedService: shipments.length > 10 ? "monthly-plan" : "pay-as-you-go",
+          potentialSavings: shipments.length > 10 ? 25 : 0,
+          upsellOpportunities: [
+            {
+              service: "Express Upgrade",
+              benefit: "50% faster delivery",
+              discount: 15,
+            },
+          ],
+        },
+      };
 
-            res.status(200).json({
-                success: true,
-                data: insights,
-                timeRange,
-                message: "Customer insights generated successfully",
-            });
-        } catch (error) {
-            next(error);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        data: insights,
+        timeRange,
+        message: "Customer insights generated successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 );
 
 /**
@@ -527,81 +417,76 @@ router.get(
  * Get trending services, routes, and features
  */
 router.get(
-    "/trending",
-    limiters.general,
-    authenticate,
-    requireScope("recommendations:view"),
-    [
-        query("category")
-            .optional()
-            .isIn(["services", "routes", "features", "all"])
-            .withMessage("Invalid category"),
-        query("limit")
-            .optional()
-            .isInt({ min: 1, max: 50 })
-            .withMessage("Limit must be between 1 and 50"),
-        handleValidationErrors,
-    ],
-    async (req, res, next) => {
-        try {
-            const { category = "all", limit = 10 } = req.query;
+  "/trending",
+  limiters.general,
+  authenticate,
+  requireScope("recommendations:view"),
+  [
+    query("category")
+      .optional()
+      .isIn(["services", "routes", "features", "all"])
+      .withMessage("Invalid category"),
+    query("limit")
+      .optional()
+      .isInt({ min: 1, max: 50 })
+      .withMessage("Limit must be between 1 and 50"),
+    handleValidationErrors,
+  ],
+  async (req, res, next) => {
+    try {
+      const { category = "all", limit = 10 } = req.query;
 
-            const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+      const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 
-            // Get recent shipments
-            const recentShipments = await prisma.shipment.findMany({
-                where: {
-                    createdAt: { gte: thirtyDaysAgo },
-                },
-                select: {
-                    serviceType: true,
-                    origin: true,
-                    destination: true,
-                    features: true,
-                },
-            });
+      // Get recent shipments
+      const recentShipments = await prisma.shipment.findMany({
+        where: {
+          createdAt: { gte: thirtyDaysAgo },
+        },
+        select: {
+          serviceType: true,
+          origin: true,
+          destination: true,
+          features: true,
+        },
+      });
 
-            const trending = {};
+      const trending = {};
 
-            if (category === "services" || category === "all") {
-                trending.services = recommendationService.getTopItems(
-                    recentShipments.map((s) => s.serviceType),
-                    parseInt(limit),
-                );
-            }
+      if (category === "services" || category === "all") {
+        trending.services = recommendationService.getTopItems(
+          recentShipments.map((s) => s.serviceType),
+          parseInt(limit),
+        );
+      }
 
-            if (category === "routes" || category === "all") {
-                trending.routes = recommendationService
-                    .getTopItems(
-                        recentShipments.map((s) => `${s.origin} → ${s.destination}`),
-                        parseInt(limit),
-                    )
-                    .map((r) => {
-                        const [origin, destination] = r.item.split(" → ");
-                        return { origin, destination, popularity: r.frequency };
-                    });
-            }
+      if (category === "routes" || category === "all") {
+        trending.routes = recommendationService
+          .getTopItems(
+            recentShipments.map((s) => `${s.origin} → ${s.destination}`),
+            parseInt(limit),
+          )
+          .map((r) => {
+            const [origin, destination] = r.item.split(" → ");
+            return { origin, destination, popularity: r.frequency };
+          });
+      }
 
-            if (category === "features" || category === "all") {
-                const allFeatures = recentShipments
-                    .flatMap((s) => s.features || [])
-                    .filter(Boolean);
-                trending.features = recommendationService.getTopItems(
-                    allFeatures,
-                    parseInt(limit),
-                );
-            }
+      if (category === "features" || category === "all") {
+        const allFeatures = recentShipments.flatMap((s) => s.features || []).filter(Boolean);
+        trending.features = recommendationService.getTopItems(allFeatures, parseInt(limit));
+      }
 
-            res.status(200).json({
-                success: true,
-                data: trending,
-                period: "Last 30 days",
-                message: "Trending data retrieved successfully",
-            });
-        } catch (error) {
-            next(error);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        data: trending,
+        period: "Last 30 days",
+        message: "Trending data retrieved successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 );
 
 /**
@@ -609,33 +494,33 @@ router.get(
  * Health check for recommendation service
  */
 router.get("/health", async (req, res) => {
-    try {
-        // Check if we can access recommendation logs
-        const recentLogs = await prisma.recommendationLog.count({
-            where: {
-                timestamp: {
-                    gte: new Date(Date.now() - 24 * 60 * 60 * 1000), // Last 24 hours
-                },
-            },
-        });
+  try {
+    // Check if we can access recommendation logs
+    const recentLogs = await prisma.recommendationLog.count({
+      where: {
+        timestamp: {
+          gte: new Date(Date.now() - 24 * 60 * 60 * 1000), // Last 24 hours
+        },
+      },
+    });
 
-        res.status(200).json({
-            success: true,
-            status: "healthy",
-            stats: {
-                recommendationsGenerated24h: recentLogs,
-                algorithmVersion: "1.0.0",
-            },
-            timestamp: new Date(),
-        });
-    } catch (error) {
-        res.status(503).json({
-            success: false,
-            status: "unhealthy",
-            error: error.message,
-            timestamp: new Date(),
-        });
-    }
+    res.status(200).json({
+      success: true,
+      status: "healthy",
+      stats: {
+        recommendationsGenerated24h: recentLogs,
+        algorithmVersion: "1.0.0",
+      },
+      timestamp: new Date(),
+    });
+  } catch (error) {
+    res.status(503).json({
+      success: false,
+      status: "unhealthy",
+      error: error.message,
+      timestamp: new Date(),
+    });
+  }
 });
 
 module.exports = router;

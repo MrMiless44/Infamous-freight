@@ -22,8 +22,7 @@ export default function DocsPage() {
             <p className="section-subtitle">Docs</p>
             <h1 className="hero-title">Operator docs, not fluff.</h1>
             <p className="hero-copy">
-              Everything needed to configure Genesis, onboard teams, and keep
-              audits clean.
+              Everything needed to configure Genesis, onboard teams, and keep audits clean.
             </p>
             <div className="hero-actions">
               <Link href="/pricing" className="btn btn-secondary">

@@ -9,7 +9,8 @@
 
 ### Phase 20 Implementation: Revenue, Enterprise Packaging & Customer-Facing Billing
 
-**Objective**: Implement a dual-revenue model (transactional + subscription) with automated invoicing, compliance documents, and a customer billing portal.
+**Objective**: Implement a dual-revenue model (transactional + subscription)
+with automated invoicing, compliance documents, and a customer billing portal.
 
 ---
 
@@ -128,40 +129,43 @@
 
 ### Transactional Fees (Per-Delivery)
 
-| Vehicle | Base | % |
-|---|---|---|
-| Car/SUV | $5 | 8% |
-| Van | $8 | 10% |
-| Box Truck | $15 | 12% |
-| Semi | $25 | 15% |
+| Vehicle   | Base | %   |
+| --------- | ---- | --- |
+| Car/SUV   | $5   | 8%  |
+| Van       | $8   | 10% |
+| Box Truck | $15  | 12% |
+| Semi      | $25  | 15% |
 
 **Formula**: `Fee = $base + (jobPrice × %)`
 
 ### Subscription Plans (Monthly)
 
-| Plan | Cost | Quota | Overage |
-|---|---|---|---|
-| Starter | $99 | 100 jobs | $1.50/job |
-| Growth | $499 | 1,000 jobs | $1.50/job |
-| Enterprise | $2,500 | Unlimited | $0 |
+| Plan       | Cost   | Quota      | Overage   |
+| ---------- | ------ | ---------- | --------- |
+| Starter    | $99    | 100 jobs   | $1.50/job |
+| Growth     | $499   | 1,000 jobs | $1.50/job |
+| Enterprise | $2,500 | Unlimited  | $0        |
 
 ---
 
 ## 🔌 Key Features
 
 ### 1. **Subscription Management**
+
 - Create subscriptions in Stripe
 - Upgrade/downgrade plans
 - Cancel with optional proration
 - Track subscription status
 
 ### 2. **Usage Metering**
+
 - Auto-track jobs per month
 - Detect overages
 - Calculate platform fees per vehicle type
 - Report metered usage to Stripe
 
 ### 3. **Invoice Generation**
+
 - Monthly batch job (1st of month)
 - Per-org invoicing
 - Stripe invoice integration
@@ -169,18 +173,21 @@
 - Auto-send via Stripe (optional)
 
 ### 4. **Customer Portal**
+
 - Stripe-hosted billing dashboard
 - Subscription management
 - Invoice history
 - Payment method management
 
 ### 5. **Compliance Documents**
+
 - Auto-generated DPA (Data Processing Agreement)
 - Auto-generated SOC2 Certificate
 - Stored in Stripe metadata
 - Available to customers
 
 ### 6. **Monitoring & Analytics**
+
 - Monthly Recurring Revenue (MRR) tracking
 - Usage analytics by plan
 - Overage detection
@@ -226,6 +233,7 @@ Customer views invoice in:
 ## 📊 Database Schema
 
 ### OrgBilling (1 per organization)
+
 ```sql
 - id: string
 - organizationId: string (unique FK)
@@ -240,6 +248,7 @@ Customer views invoice in:
 ```
 
 ### OrgUsage (1 per org per month)
+
 ```sql
 - id: string
 - organizationId: string
@@ -252,6 +261,7 @@ Customer views invoice in:
 ```
 
 ### OrgInvoice (1 per org per month)
+
 ```sql
 - id: string
 - organizationId: string
@@ -271,6 +281,7 @@ Customer views invoice in:
 ## 🚀 Deployment Steps
 
 ### 1. Stripe Setup
+
 ```bash
 # Create Stripe account (if needed)
 # Create 3 products: Starter, Growth, Enterprise
@@ -280,6 +291,7 @@ Customer views invoice in:
 ```
 
 ### 2. Environment Configuration
+
 ```bash
 # .env
 STRIPE_SECRET_KEY=sk_test_...
@@ -291,6 +303,7 @@ SEND_INVOICES=false
 ```
 
 ### 3. Database Migration
+
 ```bash
 cd apps/api
 pnpm prisma migrate deploy
@@ -298,6 +311,7 @@ pnpm prisma generate
 ```
 
 ### 4. Start Services
+
 ```bash
 # Terminal 1: API
 pnpm api:dev
@@ -310,6 +324,7 @@ redis-server
 ```
 
 ### 5. Verify Integration
+
 ```bash
 # Test create subscription
 curl -X POST http://localhost:4000/api/billing/subscribe \
@@ -329,18 +344,21 @@ curl http://localhost:4000/api/billing/pricing
 ## 🧪 Testing Coverage
 
 ### Unit Tests
+
 - `calculatePlatformFee()` — Vehicle type calculations
 - `recordJobCompletion()` — Usage tracking
 - `generateOrgInvoice()` — Invoice generation
 - `getMonthlyInvoices()` — Batch processing
 
 ### Integration Tests
+
 - Create subscription → OrgBilling record
 - Record job completion → OrgUsage updated
 - Generate invoice → OrgInvoice + Stripe linked
 - Cancel subscription → Status updated
 
 ### E2E Tests (Playwright)
+
 - Signup flow with automatic billing
 - Upgrade plan via portal
 - View invoice in portal
@@ -375,12 +393,14 @@ After Phase 20 deployment, track:
 ## 🔐 Security & Compliance
 
 ### Data Security
+
 - ✅ Stripe API keys in environment (not hardcoded)
 - ✅ Customer data encrypted at rest (Phase 19 KMS)
 - ✅ Audit logging for all billing actions
 - ✅ JWT authentication required for all endpoints
 
 ### Compliance
+
 - ✅ DPA generated automatically (GDPR)
 - ✅ SOC2 certificate provided (enterprise requirement)
 - ✅ PII redaction in exports
@@ -390,18 +410,18 @@ After Phase 20 deployment, track:
 
 ## 📁 File Manifest
 
-| File | Purpose | Lines | Status |
-|---|---|---|---|
-| `apps/api/src/billing/stripeSync.ts` | Subscription mgmt | 250+ | ✅ |
-| `apps/api/src/billing/usage.ts` | Usage tracking | 300+ | ✅ |
-| `apps/api/src/billing/invoicing.ts` | Invoice generation | 350+ | ✅ |
-| `apps/api/src/billing/documents.ts` | DPA/SOC2 PDFs | 350+ | ✅ |
-| `apps/api/src/routes/billing.ts` | API endpoints | 400+ | ✅ |
-| `apps/api/src/jobs/monthlyInvoicing.ts` | BullMQ job | 400+ | ✅ |
-| `PHASE_20_COMPLETE.md` | Full documentation | 600+ | ✅ |
-| `PHASE_20_SUMMARY.md` | Quick reference | 400+ | ✅ |
-| `PHASE_20_INTEGRATION_GUIDE.md` | Integration examples | 500+ | ✅ |
-| `.env.example` | Config template | Updated | ✅ |
+| File                                    | Purpose              | Lines   | Status |
+| --------------------------------------- | -------------------- | ------- | ------ |
+| `apps/api/src/billing/stripeSync.ts`    | Subscription mgmt    | 250+    | ✅     |
+| `apps/api/src/billing/usage.ts`         | Usage tracking       | 300+    | ✅     |
+| `apps/api/src/billing/invoicing.ts`     | Invoice generation   | 350+    | ✅     |
+| `apps/api/src/billing/documents.ts`     | DPA/SOC2 PDFs        | 350+    | ✅     |
+| `apps/api/src/routes/billing.ts`        | API endpoints        | 400+    | ✅     |
+| `apps/api/src/jobs/monthlyInvoicing.ts` | BullMQ job           | 400+    | ✅     |
+| `PHASE_20_COMPLETE.md`                  | Full documentation   | 600+    | ✅     |
+| `PHASE_20_SUMMARY.md`                   | Quick reference      | 400+    | ✅     |
+| `PHASE_20_INTEGRATION_GUIDE.md`         | Integration examples | 500+    | ✅     |
+| `.env.example`                          | Config template      | Updated | ✅     |
 
 **Total**: 3,550+ lines of production-grade code + 1,500+ lines of documentation
 
@@ -418,13 +438,14 @@ After Phase 20 deployment, track:
 ✅ **Background Jobs** — BullMQ scheduled invoicing (1st of month)  
 ✅ **Admin Analytics** — Revenue, usage, invoice dashboards  
 ✅ **Webhook Handlers** — Stripe event processing (example)  
-✅ **Documentation** — Complete integration guide + quick reference  
+✅ **Documentation** — Complete integration guide + quick reference
 
 ---
 
 ## 🚦 Next Steps (Phase 21)
 
 **Phase 21 — Sales Enablement & Go-To-Market**
+
 - Landing page with pricing
 - Pitch deck generator
 - ROI calculator

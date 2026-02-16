@@ -2,7 +2,8 @@
 
 ## Overview
 
-This guide covers PostgreSQL optimization, query performance, connection pooling, and scaling strategies for the Infamous Freight Enterprises platform.
+This guide covers PostgreSQL optimization, query performance, connection
+pooling, and scaling strategies for the Infamous Freight Enterprises platform.
 
 ---
 
@@ -10,9 +11,11 @@ This guide covers PostgreSQL optimization, query performance, connection pooling
 
 ### Current Indexes
 
-All indexes are defined in [apps/api/prisma/schema.prisma](../apps/api/prisma/schema.prisma).
+All indexes are defined in
+[apps/api/prisma/schema.prisma](../apps/api/prisma/schema.prisma).
 
 #### User Indexes
+
 ```sql
 -- ✅ Email lookup (login, unique constraint)
 CREATE UNIQUE INDEX idx_user_email ON users(email);
@@ -25,6 +28,7 @@ CREATE INDEX idx_user_created_at ON users(created_at DESC);
 ```
 
 #### Shipment Indexes
+
 ```sql
 -- ✅ User shipments (most common query)
 CREATE INDEX idx_shipment_user_id ON shipments(user_id);
@@ -47,6 +51,7 @@ CREATE INDEX idx_shipment_dest_trgm ON shipments USING GIN(destination gin_trgm_
 ```
 
 #### Payment Indexes
+
 ```sql
 -- ✅ User payment history
 CREATE INDEX idx_payment_user_id ON payments(user_id);
@@ -62,6 +67,7 @@ CREATE INDEX idx_payment_created_at ON payments(created_at DESC);
 ```
 
 #### Audit Log Indexes
+
 ```sql
 -- ✅ User activity tracking
 CREATE INDEX idx_audit_user_id ON audit_logs(user_id);
@@ -79,6 +85,7 @@ CREATE INDEX idx_audit_user_action_date ON audit_logs(user_id, action, created_a
 ### Index Maintenance
 
 #### Reindexing (Monthly)
+
 ```sql
 -- Reindex all tables to prevent index bloat
 REINDEX DATABASE "freight_db";
@@ -88,10 +95,11 @@ REINDEX TABLE shipments;
 ```
 
 #### Analyze Query Plans (When Performance Degrades)
+
 ```sql
 -- Enable query plan analysis
 EXPLAIN ANALYZE
-SELECT * FROM shipments 
+SELECT * FROM shipments
 WHERE user_id = '123e4567-e89b-12d3-a456-426614174000'
 AND status = 'in_transit';
 
@@ -99,6 +107,7 @@ AND status = 'in_transit';
 ```
 
 #### Find Missing Indexes
+
 ```sql
 -- Identify unused indexes (waste space)
 SELECT schemaname, tablename, indexname, idx_scan
@@ -111,6 +120,7 @@ ORDER BY pg_relation_size(indexrelid) DESC;
 ```
 
 #### Find Slow Queries
+
 ```sql
 -- Enable slow query log
 ALTER SYSTEM SET log_min_duration_statement = 1000; -- 1 second
@@ -127,6 +137,7 @@ SELECT pg_reload_conf();
 ### Problem: N+1 Queries
 
 **❌ Bad Pattern**:
+
 ```javascript
 // Fetches shipment, then loops and fetches each driver (N+1)
 const shipments = await prisma.shipment.findMany();
@@ -136,6 +147,7 @@ for (const s of shipments) {
 ```
 
 **✅ Good Pattern**:
+
 ```javascript
 // Fetch shipments with drivers in one query
 const shipments = await prisma.shipment.findMany({
@@ -146,30 +158,34 @@ const shipments = await prisma.shipment.findMany({
 ### Problem: Large Result Sets
 
 **❌ Bad Pattern**:
+
 ```javascript
 // Fetches all 100,000 shipments
 const all = await prisma.shipment.findMany();
 ```
 
 **✅ Good Pattern**:
+
 ```javascript
 // Paginate results
 const page = await prisma.shipment.findMany({
   skip: (pageNum - 1) * 50,
   take: 50,
-  orderBy: { createdAt: 'desc' },
+  orderBy: { createdAt: "desc" },
 });
 ```
 
 ### Problem: Unnecessary Fields
 
 **❌ Bad Pattern**:
+
 ```javascript
 // Fetches all fields including large JSONB metadata
 const users = await prisma.user.findMany();
 ```
 
 **✅ Good Pattern**:
+
 ```javascript
 // Select only needed fields
 const users = await prisma.user.findMany({
@@ -185,45 +201,49 @@ const users = await prisma.user.findMany({
 ### Common Query Patterns
 
 #### Filter by User and Status
+
 ```javascript
 // Uses index: idx_shipment_user_status
 const shipments = await prisma.shipment.findMany({
   where: {
     userId: req.user.id,
-    status: 'pending',
+    status: "pending",
   },
 });
 ```
 
 #### Recent Activity with Pagination
+
 ```javascript
 // Uses indexes: idx_shipment_created_at, idx_shipment_user_id
 const shipments = await prisma.shipment.findMany({
   where: { userId: req.user.id },
-  orderBy: { createdAt: 'desc' },
+  orderBy: { createdAt: "desc" },
   skip: 0,
   take: 50,
 });
 ```
 
 #### Full-Text Search
+
 ```javascript
 // Uses GIN indexes for fast full-text search
 const results = await prisma.shipment.findMany({
   where: {
     OR: [
-      { origin: { search: 'New York' } },
-      { destination: { search: 'Los Angeles' } },
+      { origin: { search: "New York" } },
+      { destination: { search: "Los Angeles" } },
     ],
   },
 });
 ```
 
 #### Aggregation Queries
+
 ```javascript
 // Count shipments by status
 const stats = await prisma.shipment.groupBy({
-  by: ['status'],
+  by: ["status"],
   _count: { status: true },
 });
 // Returns: [{ status: 'pending', _count: { status: 42 } }, ...]
@@ -238,7 +258,7 @@ const stats = await prisma.shipment.groupBy({
 ```javascript
 // apps/api/src/db/prisma.js
 const prisma = new PrismaClient({
-  log: ['query', 'error', 'warn'],
+  log: ["query", "error", "warn"],
 });
 
 // Connection pool configured in DATABASE_URL
@@ -267,13 +287,14 @@ console.log(poolMetrics);
 ### Connection Limit Issues
 
 **Symptom**: `too many connections` error
+
 ```bash
 # Check current connections
 SELECT count(*) FROM pg_stat_activity;
 
 # Kill idle connections
-SELECT pg_terminate_backend(pid) 
-FROM pg_stat_activity 
+SELECT pg_terminate_backend(pid)
+FROM pg_stat_activity
 WHERE state = 'idle'
 AND pid != pg_backend_pid()
 LIMIT 10;
@@ -284,11 +305,13 @@ LIMIT 10;
 ## 4. Database Scaling
 
 ### Vertical Scaling (Single Server)
+
 1. Increase RAM (more buffer cache)
 2. Upgrade CPU (faster query processing)
 3. Use NVMe SSD (faster disk I/O)
 
 **Configuration**:
+
 ```sql
 -- /etc/postgresql/postgresql.conf
 
@@ -307,6 +330,7 @@ max_wal_size = 2GB
 ### Horizontal Scaling (Read Replicas)
 
 #### Setup Replica for Read-Only Queries
+
 ```bash
 # Primary: PostgreSQL on Fly.io (production database)
 # Replica: Read-only replica for reporting queries
@@ -319,6 +343,7 @@ PRIMARY_DB_URL="postgresql://user:pass@primary.fly.dev/db"
 ```
 
 #### Route Queries to Appropriate Database
+
 ```javascript
 // Writing (shipment creation, payment processing)
 const primary = new PrismaClient({
@@ -331,7 +356,7 @@ const replica = new PrismaClient({
 });
 
 // Usage
-await primary.shipment.create({ data });      // Write to primary
+await primary.shipment.create({ data }); // Write to primary
 const list = await replica.shipment.findMany(); // Read from replica
 ```
 
@@ -342,6 +367,7 @@ const list = await replica.shipment.findMany(); // Read from replica
 ### Key Metrics to Track
 
 #### Query Performance
+
 ```sql
 -- Average query time
 SELECT mean_exec_time FROM pg_stat_statements
@@ -357,6 +383,7 @@ LIMIT 10;
 ```
 
 #### Cache Hit Ratio (Target: >99%)
+
 ```sql
 SELECT
   sum(heap_blks_read) as heap_read,
@@ -366,6 +393,7 @@ FROM pg_statio_user_tables;
 ```
 
 #### Index Hit Ratio
+
 ```sql
 SELECT
   schemaname,
@@ -377,6 +405,7 @@ ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;
 ```
 
 #### Connection Pool Usage
+
 ```sql
 SELECT
   datname,
@@ -389,40 +418,45 @@ GROUP BY datname, usename, state;
 
 ### Alerting Rules
 
-| Alert | Threshold | Action |
-|-------|-----------|--------|
-| High CPU | >80% | Scale up resources |
-| Slow Queries | >1s | Review query plan, add indexes |
-| Connection Pool Full | >90% | Increase pool size |
-| Disk Space | >80% | Archive old data, add storage |
-| Memory | >85% | Increase shared_buffers |
-| High I/O Wait | >30% | Upgrade to faster disk |
+| Alert                | Threshold | Action                         |
+| -------------------- | --------- | ------------------------------ |
+| High CPU             | >80%      | Scale up resources             |
+| Slow Queries         | >1s       | Review query plan, add indexes |
+| Connection Pool Full | >90%      | Increase pool size             |
+| Disk Space           | >80%      | Archive old data, add storage  |
+| Memory               | >85%      | Increase shared_buffers        |
+| High I/O Wait        | >30%      | Upgrade to faster disk         |
 
 ---
 
 ## 6. Maintenance Tasks
 
 ### Daily
+
 - Monitor slow query log
 - Check connection pool usage
 - Verify backups completed
 
 ### Weekly
+
 - Analyze table statistics: `ANALYZE;`
 - Vacuum tables: `VACUUM ANALYZE;`
 - Check for unused indexes
 
 ### Monthly
+
 - Full REINDEX of large tables
 - Review query performance trends
 - Update table statistics
 
 ### Quarterly
+
 - Backup integrity testing
 - Performance baseline review
 - Upgrade to latest PostgreSQL patch
 
 ### Annually
+
 - Major version upgrade (PostgreSQL)
 - Security audit
 - Capacity planning for next year
@@ -477,18 +511,20 @@ SELECT pg_wal_replay_resume();
 ### Issue: Slow Shipment List Queries
 
 **Investigation**:
+
 ```sql
 EXPLAIN ANALYZE
-SELECT * FROM shipments 
-WHERE user_id = '123' 
+SELECT * FROM shipments
+WHERE user_id = '123'
 AND status = 'pending'
 LIMIT 50;
 ```
 
 **Solution**: Verify index exists
+
 ```sql
-SELECT * FROM pg_indexes 
-WHERE tablename = 'shipments' 
+SELECT * FROM pg_indexes
+WHERE tablename = 'shipments'
 AND indexname = 'idx_shipment_user_status';
 
 -- If missing, create it:
@@ -498,6 +534,7 @@ CREATE INDEX idx_shipment_user_status ON shipments(user_id, status);
 ### Issue: "Too Many Connections" Error
 
 **Investigation**:
+
 ```sql
 SELECT datname, usename, state, count(*)
 FROM pg_stat_activity
@@ -505,6 +542,7 @@ GROUP BY datname, usename, state;
 ```
 
 **Solution**:
+
 1. Increase connection pool: `connection_limit=30` in DATABASE_URL
 2. Kill idle connections (see above)
 3. Upgrade to larger PostgreSQL plan
@@ -512,6 +550,7 @@ GROUP BY datname, usename, state;
 ### Issue: High Memory Usage
 
 **Investigation**:
+
 ```sql
 -- Check shared_buffers configuration
 SHOW shared_buffers;
@@ -521,6 +560,7 @@ SELECT * FROM pg_stat_progress_basebackup;
 ```
 
 **Solution**:
+
 1. Increase RAM on server
 2. Adjust shared_buffers up (PostgreSQL will use more cache)
 3. Implement query result caching
@@ -528,6 +568,7 @@ SELECT * FROM pg_stat_progress_basebackup;
 ### Issue: Disk Space Running Out
 
 **Investigation**:
+
 ```sql
 -- Check table sizes
 SELECT schemaname, tablename, pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename))
@@ -536,7 +577,9 @@ ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;
 ```
 
 **Solution**:
-1. Archive old data: `DELETE FROM audit_logs WHERE created_at < NOW() - INTERVAL '90 days'`
+
+1. Archive old data:
+   `DELETE FROM audit_logs WHERE created_at < NOW() - INTERVAL '90 days'`
 2. Truncate tables: `TRUNCATE audit_logs;`
 3. Add storage to PostgreSQL volume
 4. Implement table partitioning by date
@@ -545,19 +588,20 @@ ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;
 
 ## Performance Targets
 
-| Metric | Target | Critical |
-|--------|--------|----------|
-| Query Time (p95) | <50ms | >500ms |
-| Cache Hit Ratio | >99% | <95% |
-| Disk I/O Wait | <10% | >30% |
-| Connection Pool | <80% | >95% |
-| Backup Duration | <15min | >1hour |
-| Recovery Time (RTO) | <1hour | N/A |
-| Data Loss (RPO) | <1min | N/A |
+| Metric              | Target | Critical |
+| ------------------- | ------ | -------- |
+| Query Time (p95)    | <50ms  | >500ms   |
+| Cache Hit Ratio     | >99%   | <95%     |
+| Disk I/O Wait       | <10%   | >30%     |
+| Connection Pool     | <80%   | >95%     |
+| Backup Duration     | <15min | >1hour   |
+| Recovery Time (RTO) | <1hour | N/A      |
+| Data Loss (RPO)     | <1min  | N/A      |
 
 ## Contacts & References
 
 - PostgreSQL Docs: https://www.postgresql.org/docs/
-- Prisma Performance: https://www.prisma.io/docs/guide/performance-and-optimization
+- Prisma Performance:
+  https://www.prisma.io/docs/guide/performance-and-optimization
 - Query Optimization: https://wiki.postgresql.org/wiki/Performance_Optimization
 - Index Design: https://use-the-index-luke.com/

@@ -3,7 +3,7 @@
  * Real-time dashboards, predictive analytics, performance scoring, route optimization
  */
 
-const logger = require("../middleware/logger");
+const { logger } = require("../middleware/logger");
 
 class AnalyticsBIService {
     constructor() {

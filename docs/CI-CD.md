@@ -1,6 +1,7 @@
 # CI/CD Documentation
 
-Comprehensive guide to the Continuous Integration and Continuous Deployment workflows for Infamous Freight.
+Comprehensive guide to the Continuous Integration and Continuous Deployment
+workflows for Infamous Freight.
 
 ## 📋 Overview
 
@@ -14,26 +15,36 @@ The project uses GitHub Actions for CI/CD with the following workflows:
 
 ## 🤔 What Is CI/CD and Why It Matters
 
-**CI/CD** stands for **Continuous Integration** and **Continuous Deployment**. It’s the practice of automatically testing and deploying code changes so problems are caught early and releases stay consistent.
+**CI/CD** stands for **Continuous Integration** and **Continuous Deployment**.
+It’s the practice of automatically testing and deploying code changes so
+problems are caught early and releases stay consistent.
 
 ### Continuous Integration (CI)
 
-**Traditional approach**: developers work in isolation for long stretches, then merge large changes. Conflicts and bugs show up late.  
-**Continuous Integration**: developers merge changes frequently (often multiple times per day). Every merge runs automated tests to catch issues quickly.
+**Traditional approach**: developers work in isolation for long stretches, then
+merge large changes. Conflicts and bugs show up late.  
+**Continuous Integration**: developers merge changes frequently (often multiple
+times per day). Every merge runs automated tests to catch issues quickly.
 
-**Analogy**: Instead of proofreading a whole book at the end, you check each page as you write it.
+**Analogy**: Instead of proofreading a whole book at the end, you check each
+page as you write it.
 
 ### Continuous Deployment (CD)
 
-**Traditional approach**: deployments are manual (copy files, restart servers, cross fingers).  
-**Continuous Deployment**: code that passes tests automatically deploys, removing manual steps and reducing human error.
+**Traditional approach**: deployments are manual (copy files, restart servers,
+cross fingers).  
+**Continuous Deployment**: code that passes tests automatically deploys,
+removing manual steps and reducing human error.
 
-**Analogy**: Instead of manually mailing each order, the system automatically ships it as soon as it’s processed.
+**Analogy**: Instead of manually mailing each order, the system automatically
+ships it as soon as it’s processed.
 
 ### Why CI/CD Matters for Testing
 
-- **Without CI/CD**: tests are manual, easy to forget, and bugs can sit undetected.  
-- **With CI/CD**: tests run on every change, problems are caught in minutes, and deployments become predictable.
+- **Without CI/CD**: tests are manual, easy to forget, and bugs can sit
+  undetected.
+- **With CI/CD**: tests run on every change, problems are caught in minutes, and
+  deployments become predictable.
 
 ## 🧪 Autonoma in the CI/CD Pipeline
 
@@ -56,7 +67,8 @@ In the Autonoma dashboard, generate a key and record:
 
 1. In Autonoma, go to **Settings → Integrations**.
 2. Select the tests/folders you want to run and copy the generated action job.
-3. Paste into your GitHub Actions workflow (e.g., `.github/workflows/deploy.yml`).
+3. Paste into your GitHub Actions workflow (e.g.,
+   `.github/workflows/deploy.yml`).
 4. Store credentials in GitHub Secrets:
    - `AUTONOMA_CLIENT_ID`
    - `AUTONOMA_CLIENT_SECRET`
@@ -74,10 +86,10 @@ jobs:
         id: step-1
         uses: autonoma-ai/actions/test-runner@v1
         with:
-          test-id: 'cmbi807au0172xv01dqu4drhi'
+          test-id: "cmbi807au0172xv01dqu4drhi"
           client-id: ${{ secrets.AUTONOMA_CLIENT_ID }}
           client-secret: ${{ secrets.AUTONOMA_CLIENT_SECRET }}
-          max-wait-time: '10'
+          max-wait-time: "10"
       - name: Show cmbi807au0172xv01dqu4drhi results
         if: always()
         run: |
@@ -91,9 +103,9 @@ jobs:
 ```yaml
 on:
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
   push:
-    branches: [ main ]
+    branches: [main]
 ```
 
 **Example: Fail the job on a failed curl test run:**
@@ -223,8 +235,10 @@ curl -X POST \
 
 ## 🛠️ Troubleshooting
 
-- **Tests aren’t running**: verify API tokens, secret storage, and pipeline triggers.
-- **Tests always fail**: confirm tests pass in Autonoma and the environment is reachable.
+- **Tests aren’t running**: verify API tokens, secret storage, and pipeline
+  triggers.
+- **Tests always fail**: confirm tests pass in Autonoma and the environment is
+  reachable.
 - **Timeouts**: reduce test scope or increase CI timeouts.
 - **No results in CI**: check logs and confirm Autonoma received the request.
 
@@ -368,11 +382,11 @@ curl -X POST \
 
 ```yaml
 permissions:
-  contents: read         # Read repository code
-  checks: write         # Write check status
-  pull-requests: write  # Comment on PRs
+  contents: read # Read repository code
+  checks: write # Write check status
+  pull-requests: write # Comment on PRs
   security-events: write # Write security alerts (CodeQL only)
-  actions: read         # Read workflow status
+  actions: read # Read workflow status
 ```
 
 Never use: `permissions: write-all`

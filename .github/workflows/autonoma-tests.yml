@@ -13,10 +13,10 @@ jobs:
         id: step-1
         uses: autonoma-ai/actions/test-runner@v1.3
         with:
-          test-id: 'cmbi807au0172xv01dqu4drhi'
+          test-id: "cmbi807au0172xv01dqu4drhi"
           client-id: ${{ secrets.AUTONOMA_CLIENT_ID }}
           client-secret: ${{ secrets.AUTONOMA_CLIENT_SECRET }}
-          max-wait-time: '10'
+          max-wait-time: "10"
       - name: Show cmbi807au0172xv01dqu4drhi results
         if: always()
         run: |

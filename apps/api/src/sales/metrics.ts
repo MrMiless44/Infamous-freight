@@ -1,6 +1,6 @@
 /**
  * Metrics & Analytics Service (Phase 21.8)
- * 
+ *
  * Generates investor-grade metrics:
  * - MRR, GMV, Platform Take
  * - Active Users (drivers, shippers)
@@ -21,29 +21,29 @@ export interface MetricsSnapshot {
   mrr: number;
   gmv: number;
   platformTake: number;
-  
+
   // Users
   activeDrivers: number;
   activeShippers: number;
   totalOrgs: number;
-  
+
   // Activity
   jobsLast30: number;
   jobsLast7: number;
   jobsToday: number;
-  
+
   // Growth
   newOrgsLast30: number;
   churnedLast30: number;
-  
+
   // Quality
   avgJobsPerDriver: number;
   avgRevenuePerOrg: number;
-  
+
   // Engagement
   activeOrgsPercent: number;
   driverRetention: number;
-  
+
   snapshotDate: Date;
 }
 
@@ -81,7 +81,7 @@ export async function getMetricsSnapshot(): Promise<MetricsSnapshot> {
 
     // Platform Take (our commission)
     // Assuming 10% average across all jobs
-    const platformTake = gmv * 0.10;
+    const platformTake = gmv * 0.1;
 
     // ============================================
     // USER METRICS
@@ -98,7 +98,7 @@ export async function getMetricsSnapshot(): Promise<MetricsSnapshot> {
           select: { acceptedByUserId: true },
           distinct: ["acceptedByUserId"],
         })
-      ).map((j) => j.acceptedByUserId)
+      ).map((j) => j.acceptedByUserId),
     );
     const activeDrivers = activeDriverIds.size;
 
@@ -113,7 +113,7 @@ export async function getMetricsSnapshot(): Promise<MetricsSnapshot> {
           select: { createdByUserId: true },
           distinct: ["createdByUserId"],
         })
-      ).map((j) => j.createdByUserId)
+      ).map((j) => j.createdByUserId),
     );
     const activeShippers = activeShipperIds.size;
 
@@ -157,8 +157,12 @@ export async function getMetricsSnapshot(): Promise<MetricsSnapshot> {
     });
 
     // Churn: subscriptions canceled last 30 days
-    // This is a simplified calculation
-    const churnedLast30 = 0; // TODO: Track subscription cancellations
+    const churnedLast30 = await prisma.subscription.count({
+      where: {
+        status: { in: ["canceled", "cancelled"] },
+        updatedAt: { gte: last30Days },
+      },
+    });
 
     // ============================================
     // QUALITY METRICS
@@ -175,55 +179,46 @@ export async function getMetricsSnapshot(): Promise<MetricsSnapshot> {
     });
     const avgJobsPerDriver =
       driverJobCounts.length > 0
-        ? driverJobCounts.reduce((sum, d) => sum + d._count.id, 0) /
-          driverJobCounts.length
+        ? driverJobCounts.reduce((sum, d) => sum + d._count.id, 0) / driverJobCounts.length
         : 0;
 
     // Average revenue per organization
-    const orgsWithJobs = new Set(
-      jobs30.map((j) => j.organizationId)
-    );
-    const avgRevenuePerOrg =
-      orgsWithJobs.size > 0 ? gmv / orgsWithJobs.size : 0;
+    const orgsWithJobs = new Set(jobs30.map((j) => j.organizationId));
+    const avgRevenuePerOrg = orgsWithJobs.size > 0 ? gmv / orgsWithJobs.size : 0;
 
     // ============================================
     // ENGAGEMENT METRICS
     // ============================================
 
     // Active orgs as percentage of total
-    const activeOrgsPercent =
-      totalOrgs > 0 ? (orgsWithJobs.size / totalOrgs) * 100 : 0;
+    const activeOrgsPercent = totalOrgs > 0 ? (orgsWithJobs.size / totalOrgs) * 100 : 0;
 
     // Driver retention (drivers with 2+ jobs in last 30 days vs total)
-    const repeatingDrivers = driverJobCounts.filter((d) => d._count.id >= 2)
-      .length;
-    const driverRetention =
-      activeDrivers > 0
-        ? (repeatingDrivers / activeDrivers) * 100
-        : 0;
+    const repeatingDrivers = driverJobCounts.filter((d) => d._count.id >= 2).length;
+    const driverRetention = activeDrivers > 0 ? (repeatingDrivers / activeDrivers) * 100 : 0;
 
     return {
       mrr: Math.round(mrr * 100) / 100,
       gmv: Math.round(gmv * 100) / 100,
       platformTake: Math.round(platformTake * 100) / 100,
-      
+
       activeDrivers,
       activeShippers,
       totalOrgs,
-      
+
       jobsLast30,
       jobsLast7,
       jobsToday,
-      
+
       newOrgsLast30,
       churnedLast30,
-      
+
       avgJobsPerDriver: Math.round(avgJobsPerDriver * 100) / 100,
       avgRevenuePerOrg: Math.round(avgRevenuePerOrg * 100) / 100,
-      
+
       activeOrgsPercent: Math.round(activeOrgsPercent * 100) / 100,
       driverRetention: Math.round(driverRetention * 100) / 100,
-      
+
       snapshotDate: now,
     };
   } catch (err) {
@@ -235,9 +230,7 @@ export async function getMetricsSnapshot(): Promise<MetricsSnapshot> {
 /**
  * Store metrics snapshot in database
  */
-export async function storeMetricsSnapshot(
-  metrics: MetricsSnapshot
-): Promise<any> {
+export async function storeMetricsSnapshot(metrics: MetricsSnapshot): Promise<any> {
   return prisma.metricsSnapshot.create({
     data: {
       mrr: metrics.mrr,
@@ -290,31 +283,23 @@ export async function getGrowthRates(): Promise<any> {
   return {
     mrrGrowth: {
       absolute: today.mrr - previousMonth.mrr,
-      percent: (
-        ((today.mrr - previousMonth.mrr) / previousMonth.mrr) *
-        100
-      ).toFixed(2),
+      percent: (((today.mrr - previousMonth.mrr) / previousMonth.mrr) * 100).toFixed(2),
     },
     driverGrowth: {
       absolute: today.activeDrivers - previousMonth.activeDrivers,
       percent: (
-        ((today.activeDrivers - previousMonth.activeDrivers) /
-          previousMonth.activeDrivers) *
+        ((today.activeDrivers - previousMonth.activeDrivers) / previousMonth.activeDrivers) *
         100
       ).toFixed(2),
     },
     gmvGrowth: {
       absolute: today.gmv - previousMonth.gmv,
-      percent: (
-        ((today.gmv - previousMonth.gmv) / previousMonth.gmv) *
-        100
-      ).toFixed(2),
+      percent: (((today.gmv - previousMonth.gmv) / previousMonth.gmv) * 100).toFixed(2),
     },
     orgGrowth: {
       absolute: today.totalOrgs - previousMonth.totalOrgs,
       percent: (
-        ((today.totalOrgs - previousMonth.totalOrgs) /
-          previousMonth.totalOrgs) *
+        ((today.totalOrgs - previousMonth.totalOrgs) / previousMonth.totalOrgs) *
         100
       ).toFixed(2),
     },

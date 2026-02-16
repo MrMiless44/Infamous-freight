@@ -56,7 +56,6 @@ const handleShutdown = async () => {
   }
 };
 
-
 process.on("SIGINT", () => void handleShutdown());
 process.on("SIGTERM", () => void handleShutdown());
 process.on("uncaughtException", (error) => {

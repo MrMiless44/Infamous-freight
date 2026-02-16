@@ -48,24 +48,9 @@ const ShipmentChart: React.FC<ShipmentChartProps> = ({ data = [] }) => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line
-            type="monotone"
-            dataKey="shipments"
-            stroke="#8884d8"
-            name="Total Shipments"
-          />
-          <Line
-            type="monotone"
-            dataKey="delivered"
-            stroke="#82ca9d"
-            name="Delivered"
-          />
-          <Line
-            type="monotone"
-            dataKey="pending"
-            stroke="#ffc658"
-            name="Pending"
-          />
+          <Line type="monotone" dataKey="shipments" stroke="#8884d8" name="Total Shipments" />
+          <Line type="monotone" dataKey="delivered" stroke="#82ca9d" name="Delivered" />
+          <Line type="monotone" dataKey="pending" stroke="#ffc658" name="Pending" />
         </LineChart>
       </ResponsiveContainer>
     </div>

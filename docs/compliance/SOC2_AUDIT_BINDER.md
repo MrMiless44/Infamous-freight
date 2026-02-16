@@ -10,23 +10,23 @@
 
 ## Trust Principles Coverage
 
-| Principle | Status | Evidence |
-| --- | --- | --- |
-| Security | Implemented | RBAC, Audit Logs, CI Security Gates |
-| Availability | Implemented | Multi-cloud, Canary deploys |
-| Confidentiality | Implemented | Encryption, Secrets Mgmt |
-| Processing Integrity | Implemented | CI/CD, Validation Pipelines |
-| Privacy | Implemented | Data Retention, PII Controls |
+| Principle            | Status      | Evidence                            |
+| -------------------- | ----------- | ----------------------------------- |
+| Security             | Implemented | RBAC, Audit Logs, CI Security Gates |
+| Availability         | Implemented | Multi-cloud, Canary deploys         |
+| Confidentiality      | Implemented | Encryption, Secrets Mgmt            |
+| Processing Integrity | Implemented | CI/CD, Validation Pipelines         |
+| Privacy              | Implemented | Data Retention, PII Controls        |
 
 ## Control Matrix
 
-| Control | Description | Owner | Evidence |
-| --- | --- | --- | --- |
-| RBAC | Role-based access | Engineering | rbac.ts |
-| Audit Logs | Immutable logs | Platform | audit.ts |
-| Key Rotation | Quarterly | SecOps | Secrets logs |
-| Incident Response | 4hr SLA | Owner | INCIDENT_RESPONSE.md |
-| Change Mgmt | PR gated | Platform | GitHub workflows |
+| Control           | Description       | Owner       | Evidence             |
+| ----------------- | ----------------- | ----------- | -------------------- |
+| RBAC              | Role-based access | Engineering | rbac.ts              |
+| Audit Logs        | Immutable logs    | Platform    | audit.ts             |
+| Key Rotation      | Quarterly         | SecOps      | Secrets logs         |
+| Incident Response | 4hr SLA           | Owner       | INCIDENT_RESPONSE.md |
+| Change Mgmt       | PR gated          | Platform    | GitHub workflows     |
 
 ## Audit Readiness Status
 

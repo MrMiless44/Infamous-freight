@@ -12,8 +12,8 @@
 Infamous Freight - Track Shipments
 ```
 
-**Keywords**: Freight, Track, Shipments
-**Character count**: 38 → Optimize to: "Infamous Freight Tracking"
+**Keywords**: Freight, Track, Shipments **Character count**: 38 → Optimize to:
+"Infamous Freight Tracking"
 
 #### Subtitle (30 characters max)
 
@@ -21,8 +21,7 @@ Infamous Freight - Track Shipments
 Real-time Package Tracking
 ```
 
-**Keywords**: Real-time, Package, Tracking
-**Character count**: 29 ✓
+**Keywords**: Real-time, Package, Tracking **Character count**: 29 ✓
 
 #### Keywords (100 characters max)
 

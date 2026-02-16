@@ -105,11 +105,10 @@ curl --request GET "https://api.render.com/v1/services/dpg-d50s6gp5pdvs739a3g10-
 
 ## Verification
 
-✅ API returns valid JSON (not 401 Unauthorized)
-✅ Service list includes database `dpg-d50s6gp5pdvs739a3g10-a`
-✅ Backup job starts successfully
-✅ Job status progresses: pending → running → succeeded
-✅ Backup history log created: `backups/backup-history.log`
+✅ API returns valid JSON (not 401 Unauthorized) ✅ Service list includes
+database `dpg-d50s6gp5pdvs739a3g10-a` ✅ Backup job starts successfully ✅ Job
+status progresses: pending → running → succeeded ✅ Backup history log created:
+`backups/backup-history.log`
 
 ## Troubleshooting
 

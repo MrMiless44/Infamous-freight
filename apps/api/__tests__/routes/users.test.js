@@ -76,10 +76,7 @@ describe("Users Routes", () => {
     });
 
     it("should require users:read scope", async () => {
-      const noScopeToken = jwt.sign(
-        { sub: "user-123", scopes: [] },
-        process.env.JWT_SECRET,
-      );
+      const noScopeToken = jwt.sign({ sub: "user-123", scopes: [] }, process.env.JWT_SECRET);
 
       const response = await request(app)
         .get("/api/users/me")

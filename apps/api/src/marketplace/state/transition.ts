@@ -72,11 +72,7 @@ function eventTypeFor(to: JobStatus): JobEventType {
 /**
  * Assert that a condition is true; throw 403 if not (permission violation)
  */
-function requireActor(
-  condition: boolean,
-  code: string,
-  message: string
-): void {
+function requireActor(condition: boolean, code: string, message: string): void {
   if (!condition) {
     throw new JobTransitionError(code, message, 403);
   }
@@ -98,9 +94,7 @@ function require(condition: boolean, code: string, message: string): void {
  * @throws JobTransitionError if transition is illegal, actor lacks permission, or preconditions fail
  * @returns Updated Job with embedded relations
  */
-export async function transitionJob(
-  input: TransitionInput
-): Promise<{
+export async function transitionJob(input: TransitionInput): Promise<{
   jobId: string;
   from: JobStatus;
   to: JobStatus;
@@ -126,11 +120,7 @@ export async function transitionJob(
     });
 
     if (!job) {
-      throw new JobTransitionError(
-        JOB_TRANSITION_CODES.JOB_NOT_FOUND,
-        "Job not found",
-        404
-      );
+      throw new JobTransitionError(JOB_TRANSITION_CODES.JOB_NOT_FOUND, "Job not found", 404);
     }
 
     const from = job.status;
@@ -140,7 +130,7 @@ export async function transitionJob(
       throw new JobTransitionError(
         JOB_TRANSITION_CODES.ILLEGAL_TRANSITION,
         `Illegal transition: ${from} -> ${to}`,
-        400
+        400,
       );
     }
 
@@ -194,7 +184,7 @@ async function enforceActorPermissions(
   job: any,
   to: JobStatus,
   actor: Actor,
-  data: any
+  data: any,
 ): Promise<void> {
   switch (to) {
     case "REQUIRES_PAYMENT":
@@ -204,7 +194,7 @@ async function enforceActorPermissions(
           actor.role === "SYSTEM" ||
           (actor.role === UserRole.SHIPPER && actor.userId === job.shipperId),
         JOB_TRANSITION_CODES.NOT_ALLOWED,
-        "Only the shipper or admin can require payment"
+        "Only the shipper or admin can require payment",
       );
       break;
 
@@ -213,7 +203,7 @@ async function enforceActorPermissions(
       requireActor(
         actor.role === "SYSTEM" || actor.role === "ADMIN",
         JOB_TRANSITION_CODES.NOT_ALLOWED,
-        "Only system/admin can open jobs"
+        "Only system/admin can open jobs",
       );
       break;
 
@@ -222,12 +212,12 @@ async function enforceActorPermissions(
       requireActor(
         actor.role === UserRole.DRIVER,
         JOB_TRANSITION_CODES.NOT_ALLOWED,
-        "Only drivers can hold jobs"
+        "Only drivers can hold jobs",
       );
       requireActor(
         actor.userId === data?.heldByDriverId,
         JOB_TRANSITION_CODES.HOLD_ACTOR_MISMATCH,
-        "Hold must be owned by the requesting driver"
+        "Hold must be owned by the requesting driver",
       );
       break;
 
@@ -236,14 +226,14 @@ async function enforceActorPermissions(
       requireActor(
         actor.role === UserRole.DRIVER,
         JOB_TRANSITION_CODES.NOT_ALLOWED,
-        "Only drivers can accept jobs"
+        "Only drivers can accept jobs",
       );
       // If coming from HELD, must be the holder
       if (job.status === "HELD") {
         requireActor(
           actor.userId === job.heldByDriverId,
           JOB_TRANSITION_CODES.HOLD_ACTOR_MISMATCH,
-          "Only the driver holding this job can accept it"
+          "Only the driver holding this job can accept it",
         );
       }
       break;
@@ -253,7 +243,7 @@ async function enforceActorPermissions(
       requireActor(
         actor.role === UserRole.DRIVER && actor.userId === job.driverId,
         JOB_TRANSITION_CODES.NOT_ALLOWED,
-        "Only the assigned driver can mark job as picked up"
+        "Only the assigned driver can mark job as picked up",
       );
       break;
 
@@ -262,7 +252,7 @@ async function enforceActorPermissions(
       requireActor(
         actor.role === UserRole.DRIVER && actor.userId === job.driverId,
         JOB_TRANSITION_CODES.NOT_ALLOWED,
-        "Only the assigned driver can deliver"
+        "Only the assigned driver can deliver",
       );
       break;
 
@@ -271,7 +261,7 @@ async function enforceActorPermissions(
       requireActor(
         actor.role === "ADMIN" || actor.role === "SYSTEM",
         JOB_TRANSITION_CODES.NOT_ALLOWED,
-        "Only admin/system can complete jobs"
+        "Only admin/system can complete jobs",
       );
       break;
 
@@ -282,7 +272,7 @@ async function enforceActorPermissions(
           actor.role === "SYSTEM" ||
           (actor.role === UserRole.SHIPPER && actor.userId === job.shipperId),
         JOB_TRANSITION_CODES.NOT_ALLOWED,
-        "Only shipper or admin can cancel jobs"
+        "Only shipper or admin can cancel jobs",
       );
       break;
 
@@ -292,7 +282,7 @@ async function enforceActorPermissions(
         actor.role === "ADMIN" ||
           (actor.role === UserRole.SHIPPER && actor.userId === job.shipperId),
         JOB_TRANSITION_CODES.NOT_ALLOWED,
-        "Only shipper or admin can revert to draft"
+        "Only shipper or admin can revert to draft",
       );
       break;
   }
@@ -306,36 +296,23 @@ async function enforceTransitionPrerequisites(
   job: any,
   to: JobStatus,
   actor: Actor,
-  data: any
+  data: any,
 ): Promise<void> {
   switch (to) {
     case "OPEN":
       // Job must be paid before it can be opened
-      require(
-        job.payment && job.payment.status === "SUCCEEDED",
-        JOB_TRANSITION_CODES.PAYMENT_REQUIRED,
-        "Payment must be completed before opening job"
-      );
+      require(job.payment &&
+        job.payment.status ===
+          "SUCCEEDED", JOB_TRANSITION_CODES.PAYMENT_REQUIRED, "Payment must be completed before opening job");
       break;
 
     case "HELD":
       // Must provide heldUntil timestamp
-      require(
-        data?.heldUntil instanceof Date,
-        JOB_TRANSITION_CODES.MISSING_HELD_UNTIL,
-        "Missing or invalid heldUntil timestamp"
-      );
-      require(
-        data.heldByDriverId,
-        JOB_TRANSITION_CODES.MISSING_HELD_BY_DRIVER_ID,
-        "Missing heldByDriverId"
-      );
+      require(data?.heldUntil instanceof
+        Date, JOB_TRANSITION_CODES.MISSING_HELD_UNTIL, "Missing or invalid heldUntil timestamp");
+      require(data.heldByDriverId, JOB_TRANSITION_CODES.MISSING_HELD_BY_DRIVER_ID, "Missing heldByDriverId");
       // Job must not already have a holder
-      require(
-        !job.driverId,
-        JOB_TRANSITION_CODES.ALREADY_ASSIGNED,
-        "Job already assigned to a driver"
-      );
+      require(!job.driverId, JOB_TRANSITION_CODES.ALREADY_ASSIGNED, "Job already assigned to a driver");
       break;
 
     case "ACCEPTED":
@@ -344,46 +321,35 @@ async function enforceTransitionPrerequisites(
         throw new JobTransitionError(
           JOB_TRANSITION_CODES.ALREADY_ASSIGNED,
           "Job already assigned to another driver",
-          409
+          409,
         );
       }
       // Check if hold expired (if coming from HELD)
       if (job.status === "HELD" && job.heldUntil) {
-        require(
-          new Date() <= job.heldUntil,
-          JOB_TRANSITION_CODES.HOLD_EXPIRED,
-          "Hold has expired; cannot accept"
-        );
+        require(new Date() <=
+          job.heldUntil, JOB_TRANSITION_CODES.HOLD_EXPIRED, "Hold has expired; cannot accept");
       }
       break;
 
     case "PICKED_UP":
       // Verify job is actually in ACCEPTED state
-      require(
-        job.status === "ACCEPTED",
-        JOB_TRANSITION_CODES.ILLEGAL_TRANSITION,
-        "Only accepted jobs can be marked as picked up"
-      );
+      require(job.status ===
+        "ACCEPTED", JOB_TRANSITION_CODES.ILLEGAL_TRANSITION, "Only accepted jobs can be marked as picked up");
       break;
 
     case "DELIVERED":
       // Verify job is in PICKED_UP state
-      require(
-        job.status === "PICKED_UP",
-        JOB_TRANSITION_CODES.ILLEGAL_TRANSITION,
-        "Only picked-up jobs can be delivered"
-      );
+      require(job.status ===
+        "PICKED_UP", JOB_TRANSITION_CODES.ILLEGAL_TRANSITION, "Only picked-up jobs can be delivered");
       // Verify POD requirements are met
       await enforcePodRequirements(job);
       break;
 
     case "CANCELED":
       // Cannot cancel if already completed or in final state
-      require(
-        job.status !== "COMPLETED" && job.status !== "DELIVERED",
-        JOB_TRANSITION_CODES.CANCEL_NOT_ALLOWED,
-        `Cannot cancel job in ${job.status} state`
-      );
+      require(job.status !== "COMPLETED" &&
+        job.status !==
+          "DELIVERED", JOB_TRANSITION_CODES.CANCEL_NOT_ALLOWED, `Cannot cancel job in ${job.status} state`);
       break;
   }
 }
@@ -392,11 +358,7 @@ async function enforceTransitionPrerequisites(
  * Verify that all required Proof-of-Delivery (POD) assets are present
  */
 async function enforcePodRequirements(job: any): Promise<void> {
-  if (
-    !job.podRequirePhoto &&
-    !job.podRequireSignature &&
-    !job.podRequireOtp
-  ) {
+  if (!job.podRequirePhoto && !job.podRequireSignature && !job.podRequireOtp) {
     // No POD required for this job
     return;
   }
@@ -406,27 +368,15 @@ async function enforcePodRequirements(job: any): Promise<void> {
   const signatureAsset = job.podAssets?.find((a: any) => a.kind === "SIGNATURE");
 
   if (job.podRequirePhoto) {
-    require(
-      !!photoAsset,
-      JOB_TRANSITION_CODES.POD_PHOTO_REQUIRED,
-      "Proof-of-delivery photo is required but missing"
-    );
+    require(!!photoAsset, JOB_TRANSITION_CODES.POD_PHOTO_REQUIRED, "Proof-of-delivery photo is required but missing");
   }
 
   if (job.podRequireSignature) {
-    require(
-      !!signatureAsset,
-      JOB_TRANSITION_CODES.POD_SIGNATURE_REQUIRED,
-      "Proof-of-delivery signature is required but missing"
-    );
+    require(!!signatureAsset, JOB_TRANSITION_CODES.POD_SIGNATURE_REQUIRED, "Proof-of-delivery signature is required but missing");
   }
 
   if (job.podRequireOtp) {
-    require(
-      !!job.deliveryOtpHash,
-      JOB_TRANSITION_CODES.POD_OTP_REQUIRED,
-      "Delivery OTP is required but missing or unverified"
-    );
+    require(!!job.deliveryOtpHash, JOB_TRANSITION_CODES.POD_OTP_REQUIRED, "Delivery OTP is required but missing or unverified");
   }
 }
 
@@ -437,7 +387,7 @@ function buildStatusUpdatePayload(
   job: any,
   to: JobStatus,
   actor: Actor,
-  data: any
+  data: any,
 ): Record<string, any> {
   const update: Record<string, any> = { status: to };
 

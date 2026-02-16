@@ -42,12 +42,5 @@
     },
     "baseUrl": "."
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build",
-    "coverage",
-    ".next",
-    "out"
-  ]
+  "exclude": ["node_modules", "dist", "build", "coverage", ".next", "out"]
 }

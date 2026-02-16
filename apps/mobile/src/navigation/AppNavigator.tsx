@@ -9,11 +9,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import * as Haptics from "expo-haptics";
 import { Ionicons } from "@expo/vector-icons";
 
-import { DashboardScreen } from '../screens/DashboardScreen';
-import { ShipmentsScreen } from '../screens/ShipmentsScreen';
-import { MapScreen } from '../screens/MapScreen';
-import { AccountScreen } from '../screens/AccountScreen';
-import { TouchableOpacity } from 'react-native';
+import { DashboardScreen } from "../screens/DashboardScreen";
+import { ShipmentsScreen } from "../screens/ShipmentsScreen";
+import { MapScreen } from "../screens/MapScreen";
+import { AccountScreen } from "../screens/AccountScreen";
+import { TouchableOpacity } from "react-native";
 
 const Tab = createBottomTabNavigator();
 

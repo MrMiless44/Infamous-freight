@@ -1,6 +1,7 @@
 # Environment Variables Documentation
 
-This document describes all environment variables used in the Infamous Freight Enterprises project.
+This document describes all environment variables used in the Infamous Freight
+Enterprises project.
 
 ## Required Variables
 
@@ -45,11 +46,13 @@ These provide additional functionality but have sensible defaults.
 
 - `RATE_LIMIT_POINTS` - Number of points per rate limit window - default: 100
 - `RATE_LIMIT_DURATION` - Rate limit window duration in seconds - default: 60
-- `CORS_ORIGINS` - Comma-separated list of allowed CORS origins - default: <http://localhost:3000>
+- `CORS_ORIGINS` - Comma-separated list of allowed CORS origins - default:
+  <http://localhost:3000>
 
 ### AI Security
 
-- `AI_SECURITY_MODE` - AI security mode (strict, moderate, lenient) - default: moderate
+- `AI_SECURITY_MODE` - AI security mode (strict, moderate, lenient) - default:
+  moderate
 - `AI_PROVIDER` - AI provider selection (openai, anthropic) - default: openai
 - `AI_SYNTHETIC_ENGINE_URL` - URL for synthetic AI engine
 - `AI_SYNTHETIC_API_KEY` - API key for synthetic AI engine
@@ -98,7 +101,8 @@ LOG_LEVEL=warn
 1. **Never commit .env files** - Use `.env.local` which is gitignored
 2. **Use environment-specific values** - Different keys for dev/staging/prod
 3. **Rotate secrets regularly** - Change API keys quarterly
-4. **Use secrets management** - AWS Secrets Manager, HashiCorp Vault, or GitHub Secrets
+4. **Use secrets management** - AWS Secrets Manager, HashiCorp Vault, or GitHub
+   Secrets
 5. **Validate on startup** - Application validates required vars at startup
 6. **Monitor changes** - Log when sensitive env vars are accessed
 7. **Limit exposure** - Don't log API keys or secrets

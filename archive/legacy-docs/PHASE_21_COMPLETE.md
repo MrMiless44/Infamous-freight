@@ -2,13 +2,15 @@
 
 **Status**: ✅ **100% PRODUCTION READY**  
 **Date**: January 16, 2026  
-**Scope**: Complete go-to-market infrastructure for converting interest into revenue
+**Scope**: Complete go-to-market infrastructure for converting interest into
+revenue
 
 ---
 
 ## 🎯 Phase 21 Overview
 
-Phase 21 transforms Infæmous Freight from a "ready-to-sell" product into a scalable **revenue machine** with:
+Phase 21 transforms Infæmous Freight from a "ready-to-sell" product into a
+scalable **revenue machine** with:
 
 ✅ **Lead Capture Funnels** — 3 landing pages (shipper, driver, enterprise)  
 ✅ **CRM Sync** — Auto-sync to HubSpot, Salesforce, Notion, Slack  
@@ -16,14 +18,16 @@ Phase 21 transforms Infæmous Freight from a "ready-to-sell" product into a scal
 ✅ **ROI Calculator** — Self-service enterprise sales tool  
 ✅ **Referral System** — Viral growth incentives ($100+ rewards)  
 ✅ **Metrics Dashboard** — Investor-grade KPIs (MRR, GMV, growth rates)  
-✅ **Sales Pipeline** — Lead tracking from capture to conversion  
+✅ **Sales Pipeline** — Lead tracking from capture to conversion
 
 ---
 
 ## 📋 Sub-Phases Delivered
 
 ### Phase 21.1 — Public Marketing Funnel
+
 **Landing pages** (to be created in apps/web/):
+
 - `/landing/shipper` — "Move freight instantly"
 - `/landing/driver` — "Get paid for deliveries"
 - `/landing/enterprise` — "AI-powered dispatch"
@@ -32,24 +36,29 @@ Phase 21 transforms Infæmous Freight from a "ready-to-sell" product into a scal
 - `/demo` — Demo booking
 
 ### Phase 21.2 — Lead Capture & CRM
+
 **Service**: `apps/api/src/sales/leadCapture.ts` (400+ lines)
 
 Functions:
+
 - `createLead()` — Capture from landing pages
 - `syncLeadToCrm()` — Auto-sync to HubSpot/Salesforce/Notion
 - `convertLead()` — Mark as signed customer
 - `getLeads()` — Sales dashboard query
 
 **Sync Providers**:
+
 - HubSpot (create contact, set lifecycle stage)
 - Salesforce (create Lead record)
 - Notion (create database entry)
 - Slack (send notification)
 
 ### Phase 21.3 — Demo Scheduling
+
 **Service**: `apps/api/src/sales/demoScheduling.ts` (350+ lines)
 
 Functions:
+
 - `scheduleDemo()` — Book via Calendly/Google Calendar
 - `sendDemoConfirmation()` — Email confirmation
 - `updateDemoStatus()` — Mark completed/no-show
@@ -57,14 +66,17 @@ Functions:
 - `getDemoStats()` — Conversion tracking
 
 **Calendar Providers**:
+
 - Calendly API integration
 - Google Calendar integration
 - Zoom link generation
 
 ### Phase 21.4 — ROI Calculator
+
 **Service**: `apps/api/src/sales/roiCalculator.ts` (250+ lines)
 
 **Formula**:
+
 ```
 Current Cost = (Broker Fee % + Dispatch Cost + Driver Pay %)
 Infamous Cost = (Platform Fee + Driver Pay %)
@@ -74,15 +86,18 @@ ROI = Annual Savings / Implementation Cost
 ```
 
 **Example**:
+
 - 500 loads/month @ $500 average
 - Current: 10% broker + $8 dispatch + 70% driver = $429/load
 - Infamous (Growth): $3.50 + 70% driver = $373/load
 - **Savings: $28,000/month = $336,000/year**
 
 ### Phase 21.5 — Sales CRM Sync
+
 **Service**: `apps/api/src/sales/leadCapture.ts` with CRM adapter
 
 **Sync Events**:
+
 - Lead created → HubSpot contact
 - Demo scheduled → Pipeline update
 - Org created → Opportunity created
@@ -90,9 +105,11 @@ ROI = Annual Savings / Implementation Cost
 - Job volume milestone → Upsell alert
 
 ### Phase 21.6 — Affiliate & Referral System
+
 **Service**: `apps/api/src/sales/referrals.ts` (350+ lines)
 
 **Referral Flow**:
+
 1. Referrer gets unique code (e.g., `REF_ABC123_XYZ789`)
 2. Shares link: `yourapp.com/signup?ref=REF_ABC123_XYZ789`
 3. Referee signs up with code
@@ -100,6 +117,7 @@ ROI = Annual Savings / Implementation Cost
 5. **Referrer paid** $100 credit or cash
 
 Functions:
+
 - `generateReferralCode()` — Create unique code
 - `getReferralLink()` — Generate shareable link
 - `trackReferralSignup()` — When referee signs up
@@ -109,32 +127,36 @@ Functions:
 - `getTopReferrers()` — Leaderboard
 
 ### Phase 21.7 — Stripe Checkout Funnels
+
 **Integration**: Landing pages deep-link to:
+
 - `/stripe/checkout?plan=starter` → $99/month
 - `/stripe/checkout?plan=growth` → $499/month
 - `/stripe/checkout?plan=enterprise` → $2,500/month + demo
 
 ### Phase 21.8 — Investor-Grade Metrics
+
 **Service**: `apps/api/src/sales/metrics.ts` (400+ lines)
 
 **Metrics Tracked**:
 
-| Metric | Formula | Purpose |
-|---|---|---|
-| **MRR** | Sum of all subscriptions | Revenue |
-| **GMV** | Sum of all job prices | Gross volume |
-| **Platform Take** | GMV × 10% (avg commission) | Our revenue |
-| **Active Drivers** | Drivers with 1+ job in last 30 days | Engagement |
-| **Active Shippers** | Shippers with 1+ job in last 30 days | Engagement |
-| **Jobs (30/7/1)** | Completed jobs in time period | Activity |
-| **New Orgs** | Organizations created last 30 days | Growth |
-| **Churn** | Subscriptions canceled | Retention |
-| **Avg Jobs/Driver** | Jobs ÷ Drivers | Productivity |
-| **Avg Revenue/Org** | GMV ÷ Active Orgs | ARPU |
-| **Active Org %** | Active Orgs ÷ Total | Engagement |
-| **Driver Retention** | Repeat drivers (2+ jobs) | Quality |
+| Metric               | Formula                              | Purpose      |
+| -------------------- | ------------------------------------ | ------------ |
+| **MRR**              | Sum of all subscriptions             | Revenue      |
+| **GMV**              | Sum of all job prices                | Gross volume |
+| **Platform Take**    | GMV × 10% (avg commission)           | Our revenue  |
+| **Active Drivers**   | Drivers with 1+ job in last 30 days  | Engagement   |
+| **Active Shippers**  | Shippers with 1+ job in last 30 days | Engagement   |
+| **Jobs (30/7/1)**    | Completed jobs in time period        | Activity     |
+| **New Orgs**         | Organizations created last 30 days   | Growth       |
+| **Churn**            | Subscriptions canceled               | Retention    |
+| **Avg Jobs/Driver**  | Jobs ÷ Drivers                       | Productivity |
+| **Avg Revenue/Org**  | GMV ÷ Active Orgs                    | ARPU         |
+| **Active Org %**     | Active Orgs ÷ Total                  | Engagement   |
+| **Driver Retention** | Repeat drivers (2+ jobs)             | Quality      |
 
 **Example Dashboard**:
+
 ```json
 {
   "mrr": 8421,
@@ -154,6 +176,7 @@ Functions:
 ## 🗄️ Database Models Added
 
 ### Lead Model
+
 ```prisma
 model Lead {
   id                  String
@@ -161,75 +184,78 @@ model Lead {
   name                String
   company             String?
   phone               String?
-  
+
   type                LeadType      // SHIPPER | DRIVER | ENTERPRISE
   source              LeadSource    // LANDING_PAGE_*, AD, REFERRAL
-  
+
   status              String        // new | qualified | contacted | demo_scheduled | won | lost
   estimatedMonthlyVolume Int?
   estimatedMonthlyBudget Decimal?
-  
+
   demoScheduledAt     DateTime?
   convertedOrgId      String?       // If they signed up
   convertedAt         DateTime?
-  
+
   createdAt           DateTime
 }
 ```
 
 ### DemoBooking Model
+
 ```prisma
 model DemoBooking {
   id                  String
   leadId              String @unique
   lead                Lead
-  
+
   calendarEventId     String?
   calendarProvider    String?       // calendly | google
-  
+
   scheduledFor        DateTime
   duration            Int           // minutes
   status              String        // scheduled | completed | no_show | canceled
-  
+
   zoomLink            String?
   recordingUrl        String?
-  
+
   createdAt           DateTime
 }
 ```
 
 ### Referral Model
+
 ```prisma
 model Referral {
   id                  String
   referrerId          String        // Email of referrer
   refereeEmail        String
-  
+
   rewardAmount        Decimal       // $100 typically
   rewardType          String        // credit | cash | percentage
-  
+
   status              String        // PENDING | COMPLETED | PAID | FAILED
-  
+
   refereeOrgId        String?       // When they sign up
   refereeSignupAt     DateTime?
-  
+
   conditionMet        DateTime?     // When milestone reached
   paidAt              DateTime?
-  
+
   createdAt           DateTime
 }
 ```
 
 ### CrmSync Model
+
 ```prisma
 model CrmSync {
   id                  String
   entityType          String        // lead | org | subscription
   entityId            String
-  
+
   provider            String        // hubspot | salesforce | notion
   syncedId            String        // Their ID for this entity
-  
+
   status              String        // synced | failed | pending
   lastError           String?
   syncedAt            DateTime
@@ -237,6 +263,7 @@ model CrmSync {
 ```
 
 ### MetricsSnapshot Model
+
 ```prisma
 model MetricsSnapshot {
   id                  String
@@ -305,6 +332,7 @@ POST   /api/sales/metrics/snapshot   # Force store snapshot
 ## 🚀 Integration Points
 
 ### 1. Org Signup → Lead Conversion
+
 ```typescript
 // In org creation route:
 const lead = await getLead(email);
@@ -314,6 +342,7 @@ if (lead) {
 ```
 
 ### 2. Job Completion → Referral Milestone
+
 ```typescript
 // When job completed:
 await checkReferralMilestone(organizationId, 10);
@@ -321,6 +350,7 @@ await checkReferralMilestone(organizationId, 10);
 ```
 
 ### 3. Daily Metrics Snapshot
+
 ```typescript
 // Add to cron job (daily):
 const metrics = await getMetricsSnapshot();
@@ -328,6 +358,7 @@ await storeMetricsSnapshot(metrics);
 ```
 
 ### 4. Demo Reminders
+
 ```typescript
 // Cron job (daily):
 await sendDemoReminders();
@@ -340,11 +371,12 @@ await sendDemoReminders();
 ### Example 1: Lead Signup on Landing Page
 
 **Frontend Form**:
+
 ```html
 <form action="/api/sales/leads" method="POST">
-  <input name="name" placeholder="Your name">
-  <input name="email" placeholder="your@email.com">
-  <input name="company" placeholder="Company name">
+  <input name="name" placeholder="Your name" />
+  <input name="email" placeholder="your@email.com" />
+  <input name="company" placeholder="Company name" />
   <select name="type">
     <option>SHIPPER</option>
     <option>DRIVER</option>
@@ -355,6 +387,7 @@ await sendDemoReminders();
 ```
 
 **Backend Response**:
+
 ```json
 {
   "success": true,
@@ -369,6 +402,7 @@ await sendDemoReminders();
 ```
 
 **Automatic Actions**:
+
 1. Lead created in database
 2. Synced to HubSpot (new contact)
 3. Notification sent to Slack
@@ -377,6 +411,7 @@ await sendDemoReminders();
 ### Example 2: ROI Calculator
 
 **Request**:
+
 ```bash
 POST /api/sales/roi-calculate
 {
@@ -389,16 +424,17 @@ POST /api/sales/roi-calculate
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
   "data": {
     "currentCostPerLoad": 429,
     "currentMonthlyTotalCost": 214500,
-    
+
     "infamousCostPerLoad": 373,
     "infamousMonthlyTotalCost": 186500,
-    
+
     "monthlySavings": 28000,
     "annualSavings": 336000,
     "savingsPercent": 13.05,
@@ -410,6 +446,7 @@ POST /api/sales/roi-calculate
 ### Example 3: Schedule Demo
 
 **Request**:
+
 ```bash
 POST /api/sales/demo
 {
@@ -422,6 +459,7 @@ POST /api/sales/demo
 ```
 
 **Automatic Actions**:
+
 1. Lead created if doesn't exist
 2. Calendar event created (Calendly/Google)
 3. Zoom link generated
@@ -432,6 +470,7 @@ POST /api/sales/demo
 ### Example 4: Referral Tracking
 
 **Referrer**:
+
 ```bash
 POST /api/sales/referral
 {
@@ -447,11 +486,13 @@ POST /api/sales/referral
 ```
 
 **When Referee Signs Up**:
+
 - Link includes `?ref=REF_ABC123_XYZ789`
 - `trackReferralSignup()` called
 - Referral status → "PENDING"
 
 **When Referee Completes 10 Jobs**:
+
 - `checkReferralMilestone()` triggered
 - Referral status → "COMPLETED"
 - $100 credit added to referrer's account
@@ -461,11 +502,13 @@ POST /api/sales/referral
 ### Example 5: Metrics Dashboard
 
 **Request**:
+
 ```bash
 GET /api/sales/metrics
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -533,19 +576,19 @@ pnpm prisma generate
 Add to `apps/api/src/app.js`:
 
 ```typescript
-import salesRoutes from './routes/sales';
+import salesRoutes from "./routes/sales";
 
 // Mount sales routes
-app.use('/api/sales', salesRoutes);
+app.use("/api/sales", salesRoutes);
 
 // Schedule daily metrics snapshots
-schedule.scheduleJob('0 0 * * *', async () => {
+schedule.scheduleJob("0 0 * * *", async () => {
   const metrics = await getMetricsSnapshot();
   await storeMetricsSnapshot(metrics);
 });
 
 // Schedule demo reminders (9 AM daily)
-schedule.scheduleJob('0 9 * * *', async () => {
+schedule.scheduleJob("0 9 * * *", async () => {
   await sendDemoReminders();
 });
 ```
@@ -575,7 +618,7 @@ After Phase 21 deployment:
 ✅ Referral tracking & payout automation  
 ✅ ROI calculator engine  
 ✅ Investor KPI dashboard  
-✅ Audit logging on all actions  
+✅ Audit logging on all actions
 
 ---
 
@@ -586,7 +629,7 @@ After Phase 21 deployment:
 ✅ Rate limiting on lead capture (prevent spam)  
 ✅ CRM API keys stored in environment only  
 ✅ Audit trail for all lead conversions  
-✅ GDPR-compliant (leads can be deleted)  
+✅ GDPR-compliant (leads can be deleted)
 
 ---
 
@@ -608,13 +651,15 @@ These pages leverage the backend services:
 **Status**: 100% PRODUCTION READY
 
 All backend infrastructure for sales enablement is complete and ready for:
+
 - Lead generation campaigns
 - Demo scheduling
 - Sales pipeline management
 - Investor reporting
 - Referral growth
 
-**Next**: Phase 22 — Scale & Automation (auto-sales agents, outbound campaigns, AI scoring)
+**Next**: Phase 22 — Scale & Automation (auto-sales agents, outbound campaigns,
+AI scoring)
 
 ---
 

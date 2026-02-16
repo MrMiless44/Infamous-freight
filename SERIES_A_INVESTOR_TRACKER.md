@@ -13,32 +13,32 @@
 
 ### TIER 1: Likely/Ready (VCs with logistics portfolio)
 
-| VC Name | Fund | Logistics Focus | Contact | Status | Notes |
-|---------|------|-----------------|---------|--------|-------|
-| **[Partner name]** | **GV (Google Ventures)** | **Logistics tech, AI/ML** | **[Google for Startups]** | **PRIORITY** | **Backed Uber, Lime, Convoy - logistics thesis + AI focus** |
-| **[Partner name]** | **CapitalG (Google Growth)** | **Growth equity, SaaS** | **[Warm intro via Google]** | **PRIORITY** | **Growth-stage fund, $1M-$10M checks, enterprise SaaS focus** |
-| [Partner name] | Sapphire Ventures | Portfolio: Sennder, Convoy | [Warm intro via] | OUTREACH | Often leads Series A in logistics |
-| [Partner name] | Insight Partners | Infrastructure | [Advisor connection] | OUTREACH | Strong in B2B SaaS, enterprise infrastructure |
-| [Partner name] | TCV (Menlo Park) | Growth-stage SaaS | [Existing relationship] | OUTREACH | Backed Stripe, Slack |
-| [Partner name] | Sequoia Capital | Generalist, SF-based | [Warm intro via] | OUTREACH | Top-tier tier firm, worth warm intro |
-| [Partner name] | Greylock Partners | SaaS infrastructure | [Contact via advisor] | RESEARCH | Consider for later |
+| VC Name            | Fund                         | Logistics Focus            | Contact                     | Status       | Notes                                                         |
+| ------------------ | ---------------------------- | -------------------------- | --------------------------- | ------------ | ------------------------------------------------------------- |
+| **[Partner name]** | **GV (Google Ventures)**     | **Logistics tech, AI/ML**  | **[Google for Startups]**   | **PRIORITY** | **Backed Uber, Lime, Convoy - logistics thesis + AI focus**   |
+| **[Partner name]** | **CapitalG (Google Growth)** | **Growth equity, SaaS**    | **[Warm intro via Google]** | **PRIORITY** | **Growth-stage fund, $1M-$10M checks, enterprise SaaS focus** |
+| [Partner name]     | Sapphire Ventures            | Portfolio: Sennder, Convoy | [Warm intro via]            | OUTREACH     | Often leads Series A in logistics                             |
+| [Partner name]     | Insight Partners             | Infrastructure             | [Advisor connection]        | OUTREACH     | Strong in B2B SaaS, enterprise infrastructure                 |
+| [Partner name]     | TCV (Menlo Park)             | Growth-stage SaaS          | [Existing relationship]     | OUTREACH     | Backed Stripe, Slack                                          |
+| [Partner name]     | Sequoia Capital              | Generalist, SF-based       | [Warm intro via]            | OUTREACH     | Top-tier tier firm, worth warm intro                          |
+| [Partner name]     | Greylock Partners            | SaaS infrastructure        | [Contact via advisor]       | RESEARCH     | Consider for later                                            |
 
 ### TIER 2: Logistics-specific VCs (50+ firms)
 
-| Category | Example VCs | Typical check | Notes |
-|----------|-------------|---------------|-------|
-| **Logistics VC** | Plug & Play Ventures, 500 Global | $250K-$1M | Accelerator-led, sometimes do Series A |
-| **B2B SaaS** | Emergence Capital, Redpoint, Bessemer | $1M-$3M | Prefer later stage |
-| **Growth equity** | Accel, GGV, Khosla Impact | $500K-$2M | Could lead Series A |
-| **Angel investors** | Existing customers + advisors | $50K-$500K | Great for closing $1.5M raise |
+| Category            | Example VCs                           | Typical check | Notes                                  |
+| ------------------- | ------------------------------------- | ------------- | -------------------------------------- |
+| **Logistics VC**    | Plug & Play Ventures, 500 Global      | $250K-$1M     | Accelerator-led, sometimes do Series A |
+| **B2B SaaS**        | Emergence Capital, Redpoint, Bessemer | $1M-$3M       | Prefer later stage                     |
+| **Growth equity**   | Accel, GGV, Khosla Impact             | $500K-$2M     | Could lead Series A                    |
+| **Angel investors** | Existing customers + advisors         | $50K-$500K    | Great for closing $1.5M raise          |
 
 ### TIER 3: Angel/Strategic (10+ names)
 
-| Investor | Industry | Investment History | Warm intro path |
-|----------|----------|-------------------|-----------------|
-| [Past founder at 3PL] | Logistics | $100K-$500K | LinkedIn connection |
-| [Stripe executive] | Payments | $250K | Through advisor |
-| [Senior logistics executive] | Mid-market carrier | $50K-$100K | Working group intro |
+| Investor                     | Industry           | Investment History | Warm intro path     |
+| ---------------------------- | ------------------ | ------------------ | ------------------- |
+| [Past founder at 3PL]        | Logistics          | $100K-$500K        | LinkedIn connection |
+| [Stripe executive]           | Payments           | $250K              | Through advisor     |
+| [Senior logistics executive] | Mid-market carrier | $50K-$100K         | Working group intro |
 
 ---
 
@@ -47,11 +47,13 @@
 ### WEEK 1: Build Warm Intro List (Feb 13-19)
 
 **Action items**:
+
 1. Compile 20 warm intro paths (advisors, investors, founders)
 2. Draft 3-5 warm intro emails (personalized per VC)
 3. Schedule coffee chats with advisors to request intros
 
 **Warm intro email template**:
+
 ```
 Subject: Intro to [VC name] - INFÆMOUS FREIGHT (logistics OS)
 
@@ -59,8 +61,8 @@ Hi [Advisor],
 
 I'd love an intro to [VC partner] at [Fund].
 
-We just launched INFÆMOUS FREIGHT - the Slack of freight. 
-$8.2M Month 1 ARR projected (freemium model). 
+We just launched INFÆMOUS FREIGHT - the Slack of freight.
+$8.2M Month 1 ARR projected (freemium model).
 Raising $1.5M Series A now.
 
 [2-3 sentences of traction + why VC is good fit]
@@ -76,6 +78,7 @@ Santorio
 **Target**: 5-10 VC intro meetings scheduled
 
 **Meeting format**:
+
 - Duration: 30 minutes
 - Format: Zoom or coffee (investor preference)
 - Attendees: Santorio + CFO/advisor (optional)
@@ -83,6 +86,7 @@ Santorio
 - Goal: "Get to coffee" (not close)
 
 **Talking points**:
+
 1. Problem: $60B inefficiency in $900B freight market
 2. Solution: Freemium OS (Free + Pro $99 + Enterprise $999 + Marketplace 15%)
 3. Traction: $8.2M Month 1 ARR, 30% Free→Pro conversion (Slack benchmark)
@@ -90,6 +94,7 @@ Santorio
 5. Ask: $1.5M Series A to scale to $121M+ ARR by Month 6
 
 **Expected outcomes**:
+
 - 3-5 meetings with follow-up interest
 - 1-2 requests for data room access
 - 1-2 requests for deep dive on unit economics
@@ -99,6 +104,7 @@ Santorio
 **For investors showing strong interest**:
 
 **Data room contents**:
+
 - [ ] Financial model (36 months, detailed)
 - [ ] Customer contracts (anonymized)
 - [ ] Cap table (fully diluted)
@@ -124,6 +130,7 @@ VC interest levels:
 **For VCs with term sheet interest**:
 
 **Key terms to negotiate**:
+
 - Valuation: Target $5M-$8M post-money (implies 60-67% equity)
 - Check size: $1.5M Series A (can negotiate $1M-$2M if multiple leads)
 - Board seat: Request 1 board seat + observer rights
@@ -139,24 +146,29 @@ VC interest levels:
 ### Why GV is the Perfect Fit
 
 **GV's Investment Thesis Alignment:**
-1. **AI/ML Focus**: GV actively invests in AI-native companies (we're AI-first freight OS)
-2. **Logistics Portfolio**: Backed Uber, Lime, Convoy - clear logistics infrastructure thesis
+
+1. **AI/ML Focus**: GV actively invests in AI-native companies (we're AI-first
+   freight OS)
+2. **Logistics Portfolio**: Backed Uber, Lime, Convoy - clear logistics
+   infrastructure thesis
 3. **Enterprise SaaS**: Strong track record with B2B SaaS at scale
 4. **Freemium Models**: Invested in companies using product-led growth
-5. **Unit Economics**: Known for backing companies with exceptional LTV:CAC (our 10-15x)
+5. **Unit Economics**: Known for backing companies with exceptional LTV:CAC (our
+   10-15x)
 
 ### GV's Previous Logistics Investments
 
-| Company | Investment Stage | What They Do | Why Relevant |
-|---------|-----------------|--------------|-------------|
-| **Uber** | Early-stage | On-demand logistics | Freight marketplace parallel |
-| **Convoy** | Series B+ | Digital freight network | Direct logistics tech validation |
-| **Lime** | Growth | Micro-mobility logistics | Asset-light logistics platform |
-| **Flexport** | Growth | Freight forwarding tech | Enterprise logistics SaaS |
+| Company      | Investment Stage | What They Do             | Why Relevant                     |
+| ------------ | ---------------- | ------------------------ | -------------------------------- |
+| **Uber**     | Early-stage      | On-demand logistics      | Freight marketplace parallel     |
+| **Convoy**   | Series B+        | Digital freight network  | Direct logistics tech validation |
+| **Lime**     | Growth           | Micro-mobility logistics | Asset-light logistics platform   |
+| **Flexport** | Growth           | Freight forwarding tech  | Enterprise logistics SaaS        |
 
 ### What Makes INFÆMOUS FREIGHT Attractive to GV
 
-1. **AI Differentiation**: Genesis AI + autonomous operations (GV loves AI infrastructure)
+1. **AI Differentiation**: Genesis AI + autonomous operations (GV loves AI
+   infrastructure)
 2. **Exceptional Metrics**: 10-15x LTV:CAC (top 1% of SaaS)
 3. **Freemium GTM**: 30% Free→Pro conversion (proven product-led growth)
 4. **Massive TAM**: $900B freight market (GV invests in large markets)
@@ -171,23 +183,28 @@ VC interest levels:
 **WEEK 1: Google Ecosystem Entry**
 
 **Path 1: Google for Startups Program**
+
 - Apply to Google for Startups (immediate)
 - Leverage Google Cloud credits ($100K potential)
 - Get intro to GV through program manager
 - Timeline: 1-2 weeks for intro
 
 **Path 2: Direct GV Partner Outreach**
+
 - Target partner: [Find logistics/AI-focused partner on GV website]
-- Email subject: "INFÆMOUS FREIGHT - AI-first logistics OS (Convoy meets ChatGPT)"
+- Email subject: "INFÆMOUS FREIGHT - AI-first logistics OS (Convoy meets
+  ChatGPT)"
 - Emphasize: AI-native, exceptional metrics, Google Cloud customer
 
 **Path 3: Google Cloud Partnership**
+
 - Become Google Cloud reference customer
 - Feature in Google Cloud for Startups case study
 - Leverage Google Cloud sales team for GV intro
 - Timeline: 2-3 weeks
 
 **Path 4: Warm Intro via Portfolio Companies**
+
 - Reach out to Convoy/Uber/Flexport founders (LinkedIn)
 - Ask for GV partner intro
 - Reference their success + how we're complementary
@@ -195,13 +212,17 @@ VC interest levels:
 
 ### GV Pitch Angle
 
-**"We're building the AI operating system for freight - combining Convoy's network effects with ChatGPT's intelligence."**
+**"We're building the AI operating system for freight - combining Convoy's
+network effects with ChatGPT's intelligence."**
 
 **Key talking points for GV:**
+
 1. **AI Infrastructure**: Genesis AI is the Copilot for freight operators
-2. **Google Synergies**: Built on Google Cloud, integrates Google Maps, potential for Workspace plugins
+2. **Google Synergies**: Built on Google Cloud, integrates Google Maps,
+   potential for Workspace plugins
 3. **Network Effects**: Marketplace creates data moat (more users = better AI)
-4. **Proven Traction**: $8.2M ARR Month 1 (faster than most GV portfolio at this stage)
+4. **Proven Traction**: $8.2M ARR Month 1 (faster than most GV portfolio at this
+   stage)
 5. **Unit Economics**: 10-15x LTV:CAC (top quartile of GV portfolio)
 
 ### GV-Specific Email Template
@@ -211,7 +232,7 @@ Subject: INFÆMOUS FREIGHT - AI-first freight OS (Convoy meets ChatGPT)
 
 Hi [GV Partner Name],
 
-I'm reaching out because GV's work with Convoy and Uber makes you 
+I'm reaching out because GV's work with Convoy and Uber makes you
 the perfect partner for what we're building.
 
 INFÆMOUS FREIGHT is the AI-first operating system for freight:
@@ -233,7 +254,7 @@ The opportunity:
 • No incumbent owns freemium channel
 • Network effects via marketplace
 
-Raising $1.5M Series A. Would love to share how we're different 
+Raising $1.5M Series A. Would love to share how we're different
 from Convoy (whom you backed) and why GV is our dream partner.
 
 20-minute call this week?
@@ -242,7 +263,7 @@ Santorio Miles
 CEO, INFÆMOUS FREIGHT
 Google Cloud customer since Day 1
 
-P.S. - Happy to do a live demo of Genesis AI. It's ChatGPT meets 
+P.S. - Happy to do a live demo of Genesis AI. It's ChatGPT meets
 freight dispatch.
 ```
 
@@ -251,15 +272,17 @@ freight dispatch.
 **When to approach**: After hitting $20M+ ARR (Month 2-3)
 
 **CapitalG Focus**: Growth-stage companies ($50M+ ARR trajectory)
+
 - Typical check: $1M-$10M
 - Target companies: Enterprise SaaS with proven traction
 - Portfolio: Stripe, Airbnb, Snapchat, UiPath, Duolingo
 
-**CapitalG Pitch Angle:**
-"We're at $20M ARR with a clear path to $100M+ ARR by year-end. 
-CapitalG can help us scale to enterprise dominance through Google's ecosystem."
+**CapitalG Pitch Angle:** "We're at $20M ARR with a clear path to $100M+ ARR by
+year-end. CapitalG can help us scale to enterprise dominance through Google's
+ecosystem."
 
 **Value CapitalG Brings:**
+
 1. Google's enterprise relationships (Google Cloud sales team)
 2. Technical resources (Google's AI/ML expertise)
 3. Operational support (scaling infrastructure)
@@ -272,16 +295,19 @@ CapitalG can help us scale to enterprise dominance through Google's ecosystem."
 ### PROFILE 1: "Logistics VC" (Best fit)
 
 **Why they're good fit**:
+
 - Already understand freight market
 - Portfolio companies (Sennder, Convoy) validate TAM
 - Can make decisions fast (know the space)
 
 **What attracts them**:
+
 - Product-market fit + freemium model
 - 30% Free→Pro conversion (proven)
 - Unit economics (10-15x LTV:CAC)
 
 **How to pitch**:
+
 - Open with market size ($900B TAM)
 - Show traction vs competitors (we're growing 3-4x faster due to Free tier)
 - Emphasize unit economics as defensible moat
@@ -289,6 +315,7 @@ CapitalG can help us scale to enterprise dominance through Google's ecosystem."
 **Expected check**: $500K-$1M
 
 **VCs in this category**:
+
 - Sapphire Ventures, Insight Partners, Forge (logistics-focused)
 
 ---
@@ -296,16 +323,19 @@ CapitalG can help us scale to enterprise dominance through Google's ecosystem."
 ### PROFILE 2: "Growth SaaS VC" (Good fit)
 
 **Why they're good fit**:
+
 - Understand SaaS unit economics
 - Back multiple $1B+ companies (Stripe, Slack)
 - Can lead Series A with confidence
 
 **What attracts them**:
+
 - Clear path to $100M+ ARR
 - Freemium acquisition model (proven at Slack)
 - Viral coefficient (1.2-1.5x)
 
 **How to pitch**:
+
 - Open with SaaS metrics (LTV:CAC 10-15x, >60% margin)
 - Show cohort analysis (Free→Pro conversion sustaining)
 - Emphasize path to profitability (Month 6)
@@ -313,6 +343,7 @@ CapitalG can help us scale to enterprise dominance through Google's ecosystem."
 **Expected check**: $500K-$1.5M (can lead round)
 
 **VCs in this category**:
+
 - Accel, Redpoint, Greylock, Benchmark
 
 ---
@@ -320,16 +351,19 @@ CapitalG can help us scale to enterprise dominance through Google's ecosystem."
 ### PROFILE 3: "Generalist / Early-stage" (Stretch)
 
 **Why they're good fit**:
+
 - Invest in founders/markets with huge potential
 - Less constrained by existing market theses
 - Can write checks quickly
 
 **What attracts them**:
+
 - Founder quality + execution capability
 - First-mover advantage in freight OS (no competitor has freemium)
 - Massive TAM (logistics is least tech-enabled industry)
 
 **How to pitch**:
+
 - Lead with team (serialize this company's success)
 - Show market gap (nobody else doing freemium in logistics)
 - Emphasize option value (could be $5B+ company in 5 years)
@@ -337,6 +371,7 @@ CapitalG can help us scale to enterprise dominance through Google's ecosystem."
 **Expected check**: $250K-$1M (often co-invest in syndicate)
 
 **VCs in this category**:
+
 - Sequoia Capital, Khosla Ventures, Founders Fund
 
 ---
@@ -354,6 +389,7 @@ Advisor #2             → Insight Partners   Status: MEETING SCHEDULED (2/18)
 ```
 
 ### Call tracking:
+
 - Day of intro sent: [DATE]
 - Partner response: [AUTOMATED REPLY / SCHEDULED MEETING]
 - Meeting date: [CALENDAR]
@@ -366,6 +402,7 @@ Advisor #2             → Insight Partners   Status: MEETING SCHEDULED (2/18)
 ### Series A Term Sheet Components
 
 **Standard SAFE for Pre-Series A**:
+
 ```
 Amount: $1.5M
 Valuation cap: $5M (post-money)
@@ -374,6 +411,7 @@ Pro-rata: Yes
 ```
 
 **Preferred Stock for Series A**:
+
 ```
 Price per share: [Determined by Series A]
 Liquidation preference: 1x non-participating
@@ -383,6 +421,7 @@ Voting rights: Class A common + Class A preferred (standard)
 ```
 
 ### Closing process timeline:
+
 1. Term sheet signed: Day 1
 2. Definitive agreements drafted: Days 2-3
 3. Due diligence begins: Days 1-7
@@ -454,22 +493,34 @@ Assumption: Marketplace revenue grows to $7.5M MRR by Month 6
 ## INVESTOR DUE DILIGENCE QUESTIONS (Prepare answers)
 
 **Business model**:
-- "Why freemium when competitors charge upfront?" → 30% Free→Pro conversion justifies 3-4x acquisition funnel
-- "What's the moat?" → Unit economics (10-15x LTV:CAC) + viral loops + marketplace ecosystem
-- "Can you scale founder-led sales?" → Yes, enterprise sales team in place immediately month 1
+
+- "Why freemium when competitors charge upfront?" → 30% Free→Pro conversion
+  justifies 3-4x acquisition funnel
+- "What's the moat?" → Unit economics (10-15x LTV:CAC) + viral loops +
+  marketplace ecosystem
+- "Can you scale founder-led sales?" → Yes, enterprise sales team in place
+  immediately month 1
 
 **Financials**:
-- "How will you be profitable?" → Month 6 operating profit positive (stated clearly)
+
+- "How will you be profitable?" → Month 6 operating profit positive (stated
+  clearly)
 - "What's your gross margin?" → 73% (excellent for SaaS)
 - "How will you spend $1.5M?" → Use of proceeds detailed above
 
 **Market**:
-- "Isn't freight too fragmented?" → Exactly - no player owns 5% of TAM. Beachhead: owner-operators (4.2M untapped)
-- "Can you defend against Convoy/Sennder?" → They're SaaS-only (charge upfront). We own freemium. Different business model.
+
+- "Isn't freight too fragmented?" → Exactly - no player owns 5% of TAM.
+  Beachhead: owner-operators (4.2M untapped)
+- "Can you defend against Convoy/Sennder?" → They're SaaS-only (charge upfront).
+  We own freemium. Different business model.
 
 **Team**:
-- "Why should we bet on you?" → Series of successful exits + prior $50M ARR platform built
-- "Can you hire sales talent?" → Team already identified (3 AEs ready to start Month 1)
+
+- "Why should we bet on you?" → Series of successful exits + prior $50M ARR
+  platform built
+- "Can you hire sales talent?" → Team already identified (3 AEs ready to start
+  Month 1)
 
 ---
 
@@ -477,19 +528,19 @@ Assumption: Marketplace revenue grows to $7.5M MRR by Month 6
 
 **Series A Success = Closed by Month 4 (April 2026)**
 
-| Milestone | Target date | Status |
-|-----------|------------|--------|
-| 20 VC meetings | By Mar 5 | |
-| Term sheet offer(s) | By Mar 15 | |
-| Lead investor committed | By Mar 20 | |
-| Legal documents signed | By Apr 1 | |
-| Funds received | By Apr 5 | |
+| Milestone               | Target date | Status |
+| ----------------------- | ----------- | ------ |
+| 20 VC meetings          | By Mar 5    |        |
+| Term sheet offer(s)     | By Mar 15   |        |
+| Lead investor committed | By Mar 20   |        |
+| Legal documents signed  | By Apr 1    |        |
+| Funds received          | By Apr 5    |        |
 
 ---
 
 **Fundraising lead**: Santorio Miles  
 **Advisor support**: [Name] (existing investor/board member)  
-**CFO point**: [Name] (financial modeling, due diligence)  
+**CFO point**: [Name] (financial modeling, due diligence)
 
 **Contact**: investors@infamous-freight.com  
 **Meeting calendar**: https://calendly.com/infamous/series-a
@@ -529,6 +580,7 @@ Assumption: Marketplace revenue grows to $7.5M MRR by Month 6
 ### Week 1: Google Ecosystem Entry (Feb 14-21, 2026)
 
 **Day 1-2: Google for Startups Application**
+
 ```
 Action: Apply to Google for Startups program
 URL: https://startup.google.com/
@@ -541,6 +593,7 @@ Timeline: 1-2 weeks for acceptance
 ```
 
 **Day 3-5: Become Google Cloud Reference Customer**
+
 ```
 Action: Contact Google Cloud sales team
 Pitch: "We're a fast-growing logistics SaaS on GCP - can we be a case study?"
@@ -552,33 +605,36 @@ Benefits:
 ```
 
 **Day 6-7: LinkedIn Outreach to GV Partners**
+
 ```
 Target Partners (research on GV website):
   1. [AI/ML-focused partner]
-  2. [Logistics-focused partner] 
+  2. [Logistics-focused partner]
   3. [Enterprise SaaS partner]
 
 Message Template:
-"Hi [Name], saw GV's work with Convoy. We're building the AI layer 
-for freight - $8.2M ARR in Month 1. Would love 15 minutes to show 
+"Hi [Name], saw GV's work with Convoy. We're building the AI layer
+for freight - $8.2M ARR in Month 1. Would love 15 minutes to show
 you what we're building. [Include metrics]"
 ```
 
 ### Week 2: Build Google Connections (Feb 22-28)
 
 **Portfolio Company Intros**
+
 ```
 Convoy founder → GV partner intro
 Uber logistics lead → GV intro
 Flexport team → CapitalG intro
 
-LinkedIn message: "Hi [Founder], congrats on your GV partnership. 
-I'm building INFÆMOUS FREIGHT (AI freight OS) - similar market, 
-complementary approach. Any chance you could intro me to your GV 
+LinkedIn message: "Hi [Founder], congrats on your GV partnership.
+I'm building INFÆMOUS FREIGHT (AI freight OS) - similar market,
+complementary approach. Any chance you could intro me to your GV
 partner? Happy to explain how we're different."
 ```
 
 **Google Maps Partnership Exploration**
+
 ```
 Action: Apply for Google Maps Platform partnership
 Benefit: Direct relationship with Google product teams
@@ -589,6 +645,7 @@ Outcome: Potential intro to GV through product team
 ### Week 3: Create Google Buzz (Mar 1-7)
 
 **Technical Content Marketing**
+
 ```
 Publish on Medium/LinkedIn:
   - "How We Built AI-First Freight OS on Google Cloud"
@@ -600,6 +657,7 @@ Goal: Get Google's attention organically
 ```
 
 **Product Hunt Follow-Up**
+
 ```
 If we hit Top 3-5 on Product Hunt:
   - Email GV: "Top 5 on Product Hunt - built on Google Cloud"
@@ -610,6 +668,7 @@ If we hit Top 3-5 on Product Hunt:
 ### Week 4: Direct GV Outreach (Mar 8-14)
 
 **Send Customized GV Email**
+
 ```
 To: [GV Partner 1], [GV Partner 2], [GV Partner 3]
 Subject: INFÆMOUS FREIGHT - AI-first freight OS (Convoy meets ChatGPT)
@@ -618,6 +677,7 @@ Follow-up: 3 days if no response
 ```
 
 **Request Demo Meeting**
+
 ```
 Offer: "30-minute live demo of Genesis AI"
 Angle: "You backed Convoy - we're the AI layer on top"
@@ -627,6 +687,7 @@ Hook: "Fastest-growing logistics SaaS you'll see this quarter"
 ### Backup Strategies if GV Doesn't Respond
 
 **Option 1: Google Cloud Amplification**
+
 ```
 - Increase Google Cloud spending (shows commitment)
 - Request enterprise support tier
@@ -635,6 +696,7 @@ Hook: "Fastest-growing logistics SaaS you'll see this quarter"
 ```
 
 **Option 2: Alphabet-Adjacent Investors**
+
 ```
 If GV passes, target:
   - Ex-Google executives who are now angel investors
@@ -643,6 +705,7 @@ If GV passes, target:
 ```
 
 **Option 3: Prove Out and Return**
+
 ```
 - Hit $20M ARR (Month 2-3)
 - Approach CapitalG instead (growth-stage focus)
@@ -661,12 +724,14 @@ If GV passes, target:
 **"We're built for the Google ecosystem"**
 
 **Current Google Integration:**
+
 - Google Cloud Platform (infrastructure from Day 1)
 - Google Maps API (routing & optimization)
 - Firebase (mobile backend)
 - Google OAuth (enterprise authentication)
 
 **Future Integration Opportunities:**
+
 - **Google Workspace**: Gmail plugin for freight emails, Calendar integration
 - **Google Pay**: Payment processing for marketplace
 - **Android**: Mobile-first strategy for driver demographic
@@ -674,6 +739,7 @@ If GV passes, target:
 - **Google Cloud Sales**: Enterprise co-selling motion
 
 **Strategic Value to Google:**
+
 - Reference customer for Google Cloud in logistics vertical
 - Case study: "How freight OS scaled on GCP"
 - Validation of Google's AI infrastructure for enterprise
@@ -688,22 +754,31 @@ If GV passes, target:
 ### Questions GV Will Ask (Pre-Prepare Answers)
 
 **Q: "Why are you better than Convoy?" (GV portfolio company)**  
-**A:** "Convoy is a freight network (marketplace play). We're infrastructure (OS play). Different business models:
+**A:** "Convoy is a freight network (marketplace play). We're infrastructure (OS
+play). Different business models:
+
 - Convoy: Broker model, takes cut of freight
 - INFÆMOUS: SaaS + AI, recurring revenue
 - We're complementary - Convoy could be a marketplace partner"
 
 **Q: "How are you leveraging Google's technology?"**  
-**A:** "Day 1: Google Cloud + Maps API + Firebase. Month 3: Vertex AI for autonomous dispatch. Month 6: Exploring Google Workspace integrations. We're the most Google-native freight platform built to date."
+**A:** "Day 1: Google Cloud + Maps API + Firebase. Month 3: Vertex AI for
+autonomous dispatch. Month 6: Exploring Google Workspace integrations. We're the
+most Google-native freight platform built to date."
 
 **Q: "What makes you defensible against Google building this?"**  
-**A:** "Domain expertise + network effects. Google builds infrastructure, we build domain applications. We'd love to partner - imagine Google Workspace for Freight."
+**A:** "Domain expertise + network effects. Google builds infrastructure, we
+build domain applications. We'd love to partner - imagine Google Workspace for
+Freight."
 
 **Q: "What's your relationship with Google Cloud?"**  
-**A:** "Direct customer since Day 1. Already in discussions for Google for Startups. Potential enterprise support tier customer as we scale. Would love GV intro to accelerate partnership."
+**A:** "Direct customer since Day 1. Already in discussions for Google for
+Startups. Potential enterprise support tier customer as we scale. Would love GV
+intro to accelerate partnership."
 
 **Q: "How will you use Google's network?"**  
-**A:** 
+**A:**
+
 1. Google Cloud sales team for enterprise deals
 2. Google Maps API improvements (feedback loop)
 3. Potential Android-exclusive features
@@ -718,7 +793,7 @@ If GV passes, target:
 **Week 2 Goal**: 3 GV partners contacted (LinkedIn or email)  
 **Week 3 Goal**: 1 GV partner responds with interest  
 **Week 4 Goal**: Demo scheduled with GV partner  
-**Month 2 Goal**: Term sheet from GV OR clear next steps  
+**Month 2 Goal**: Term sheet from GV OR clear next steps
 
 **Fallback**: If GV passes, pivot to CapitalG at $20M+ ARR
 

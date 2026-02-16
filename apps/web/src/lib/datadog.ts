@@ -19,7 +19,7 @@ export function initDatadogRUM() {
 
   // Only initialize in production with valid credentials
   if (!isProduction || !appId || !clientToken) {
-    // eslint-disable-next-line no-console
+     
     console.info("[Datadog RUM] Skipping initialization (not production or credentials missing)");
     return;
   }
@@ -57,14 +57,14 @@ export function initDatadogRUM() {
     // Start tracking views automatically
     datadogRum.startSessionReplayRecording();
 
-    // eslint-disable-next-line no-console
+     
     console.info("[Datadog RUM] Initialized successfully", {
       service,
       env,
       site,
     });
   } catch (error) {
-    // eslint-disable-next-line no-console
+     
     console.error("[Datadog RUM] Failed to initialize:", error);
   }
 }
@@ -87,7 +87,6 @@ export function setDatadogUser(user: { id: string; email?: string; name?: string
     });
   } catch (error) {
      
-    // eslint-disable-next-line no-console
     console.error("[Datadog RUM] Failed to set user:", error);
   }
 }
@@ -103,7 +102,7 @@ export function clearDatadogUser() {
   try {
     datadogRum.clearUser();
   } catch (error) {
-    // eslint-disable-next-line no-console
+     
     console.error("[Datadog RUM] Failed to clear user:", error);
   }
 }
@@ -119,7 +118,7 @@ export function addDatadogContext(key: string, value: any) {
   try {
     datadogRum.setGlobalContextProperty(key, value);
   } catch (error) {
-    // eslint-disable-next-line no-console
+     
     console.error("[Datadog RUM] Failed to add context:", error);
   }
 }
@@ -135,7 +134,7 @@ export function trackDatadogAction(name: string, context?: Record<string, any>) 
   try {
     datadogRum.addAction(name, context);
   } catch (error) {
-    // eslint-disable-next-line no-console
+     
     console.error("[Datadog RUM] Failed to track action:", error);
   }
 }

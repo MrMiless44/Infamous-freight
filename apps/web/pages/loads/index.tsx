@@ -66,9 +66,7 @@ export default function LoadsPage() {
           </h1>
 
           {!getTrucknEnabled ? (
-            <div className="card">
-              Get Truck’N marketplace is currently disabled.
-            </div>
+            <div className="card">Get Truck’N marketplace is currently disabled.</div>
           ) : null}
           {err ? (
             <div

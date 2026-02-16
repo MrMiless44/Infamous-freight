@@ -18,9 +18,7 @@ import { logDecision } from "../observability/logger";
 /**
  * Helper: Generate fleet recommendation
  */
-async function generateFleetRecommendation(
-  input: DecisionInput,
-): Promise<Record<string, unknown>> {
+async function generateFleetRecommendation(input: DecisionInput): Promise<Record<string, unknown>> {
   // Implement actual fleet intelligence logic
   const { action, parameters } = input;
   const vehicleData = parameters?.vehicleData || {};
@@ -118,7 +116,7 @@ async function generateFleetRecommendation(
 
       // Calculate optimization potential
       const industryBenchmark = 7.2;
-      const efficiencyGap = ((industryBenchmark - averageMPG) / averageMPG * 100).toFixed(1);
+      const efficiencyGap = (((industryBenchmark - averageMPG) / averageMPG) * 100).toFixed(1);
       const potentialSavings = (fuelConsumption * 0.1 * 3.5 * 365).toFixed(0); // 10% improvement
 
       return {
@@ -127,7 +125,7 @@ async function generateFleetRecommendation(
         currentMPG: averageMPG.toFixed(1),
         industryBenchmark: industryBenchmark,
         efficiencyGap: `${efficiencyGap}% below benchmark`,
-        currentAnnualFuelCost: `$${(totalFuelCost * 12 / tripsCount * 100).toFixed(0)}`,
+        currentAnnualFuelCost: `$${(((totalFuelCost * 12) / tripsCount) * 100).toFixed(0)}`,
         recommendations: [
           "Schedule regular tire pressure checks - improves MPG by 2-3%",
           "Driver training - smooth acceleration can improve MPG by 5-10%",
@@ -164,7 +162,9 @@ async function generateFleetRecommendation(
             ? "Continue current fleet management practices"
             : "Implement predictive maintenance to reduce downtime",
         potentialRevenueIncrease:
-          utilizationRate < "80" ? "$50,000-100,000/year with 5% improvement" : "Minimal opportunity",
+          utilizationRate < "80"
+            ? "$50,000-100,000/year with 5% improvement"
+            : "Minimal opportunity",
       };
     }
 
@@ -184,8 +184,7 @@ async function generateFleetRecommendation(
 export const fleetIntelRole: RoleContract = {
   name: "fleet-intel",
   version: "1.0.0",
-  description:
-    "AI role for fleet intelligence, predictive maintenance, and asset optimization",
+  description: "AI role for fleet intelligence, predictive maintenance, and asset optimization",
   confidenceThreshold: 0.9,
   capabilities: [
     "predictive-maintenance",
@@ -195,10 +194,7 @@ export const fleetIntelRole: RoleContract = {
     "procurement-planning",
   ],
 
-  async decide(
-    input: DecisionInput,
-    context: RoleContext,
-  ): Promise<DecisionResult> {
+  async decide(input: DecisionInput, context: RoleContext): Promise<DecisionResult> {
     const decisionId = `fleet-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
     const violations = await this.checkGuardrails(input, context);
@@ -227,10 +223,7 @@ export const fleetIntelRole: RoleContract = {
     };
   },
 
-  async checkGuardrails(
-    input: DecisionInput,
-    context: RoleContext,
-  ): Promise<GuardrailViolation[]> {
+  async checkGuardrails(input: DecisionInput, context: RoleContext): Promise<GuardrailViolation[]> {
     const violations: GuardrailViolation[] = [];
 
     // Cannot approve expenditures
@@ -238,8 +231,7 @@ export const fleetIntelRole: RoleContract = {
       violations.push({
         type: "policy",
         severity: "high",
-        description:
-          "Fleet Intel AI cannot approve expenditures or make purchases",
+        description: "Fleet Intel AI cannot approve expenditures or make purchases",
         remediation: "Escalate to fleet manager for approval",
       });
     }
@@ -257,10 +249,7 @@ export const fleetIntelRole: RoleContract = {
     return violations;
   },
 
-  async calculateConfidence(
-    input: DecisionInput,
-    context: RoleContext,
-  ): Promise<ConfidenceScore> {
+  async calculateConfidence(input: DecisionInput, context: RoleContext): Promise<ConfidenceScore> {
     // Calculate confidence based on vehicle telemetry and maintenance history
     const { action, parameters } = input;
     const telemetry = parameters?.telemetry || {};

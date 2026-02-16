@@ -24,7 +24,8 @@ cd Infamous-freight-enterprises
 pnpm install
 ```
 
-This will install dependencies for all workspaces (api, web, mobile, packages/shared).
+This will install dependencies for all workspaces (api, web, mobile,
+packages/shared).
 
 ### 3. Environment Setup
 
@@ -34,7 +35,8 @@ Copy the example environment file:
 cp .env.example .env
 ```
 
-Edit `.env` and configure the required environment variables. See [Environment Variables](ENVIRONMENT_VARIABLES.md) for details.
+Edit `.env` and configure the required environment variables. See
+[Environment Variables](ENVIRONMENT_VARIABLES.md) for details.
 
 ### 4. Start the Development Environment
 
@@ -134,7 +136,8 @@ pnpm --filter web build
 
 ## Working with the Shared Package
 
-The `packages/shared` directory contains shared TypeScript types, constants, and utilities that are used across all workspaces.
+The `packages/shared` directory contains shared TypeScript types, constants, and
+utilities that are used across all workspaces.
 
 **Important**: After making changes to the shared package, you must rebuild it:
 
@@ -243,7 +246,8 @@ pnpm web
 
 ## CI/CD
 
-The project uses GitHub Actions for continuous integration. See `.github/workflows/` for workflow definitions.
+The project uses GitHub Actions for continuous integration. See
+`.github/workflows/` for workflow definitions.
 
 ### Workflows
 
@@ -315,7 +319,8 @@ docker-compose up -d
 
 ### Automated Repository Fixes
 
-If you're experiencing multiple issues (lint errors, test failures, dependency problems), use the automated fix script:
+If you're experiencing multiple issues (lint errors, test failures, dependency
+problems), use the automated fix script:
 
 ```bash
 # Download from GitHub Actions artifact (if available)
@@ -335,7 +340,8 @@ This script will:
 - Rebuild all projects
 - Run tests to verify fixes
 
-**Note**: The script is also available as a GitHub Actions artifact when the CI workflow detects test failures.
+**Note**: The script is also available as a GitHub Actions artifact when the CI
+workflow detects test failures.
 
 ## Additional Resources
 

@@ -1,7 +1,7 @@
 # 🚀 Complete Deployment & Monitoring Guide
 
-**Status:** Phase 3 Complete - All 15 Advanced Features Implemented
-**Updated:** January 15, 2026
+**Status:** Phase 3 Complete - All 15 Advanced Features Implemented **Updated:**
+January 15, 2026
 
 ---
 
@@ -19,6 +19,7 @@
 ## Pre-Deployment Checklist
 
 ### Phase 1+2 Verification (Core + Security)
+
 - [ ] All endpoints tested and working (11 endpoints)
 - [ ] JWT authentication configured
 - [ ] Rate limiting rules verified
@@ -27,6 +28,7 @@
 - [ ] CORS origins configured correctly
 
 ### Phase 3 Features Verification (Advanced)
+
 - [ ] Redis connection verified
 - [ ] Circuit breaker configured for Stripe
 - [ ] Winston logging output checked
@@ -44,6 +46,7 @@
 - [ ] No linting errors
 
 ### Infrastructure Verification
+
 - [ ] PostgreSQL database accessible
 - [ ] Redis server running
 - [ ] Stripe API keys valid
@@ -59,6 +62,7 @@
 ## Staging Deployment
 
 ### Prerequisites
+
 ```bash
 # Install dependencies
 pnpm install
@@ -71,6 +75,7 @@ cd apps/api && pnpm prisma migrate deploy && cd ..
 ```
 
 ### Automated Staging Deployment
+
 ```bash
 # Make script executable
 chmod +x deploy/staging.sh
@@ -85,6 +90,7 @@ export STAGING_USER=deploy
 ```
 
 ### Manual Staging Deployment
+
 ```bash
 # 1. Build Docker images
 docker build -f apps/api/Dockerfile -t infamous-api:staging ./apps/api
@@ -105,6 +111,7 @@ curl http://localhost:3000/api/health
 ```
 
 ### Post-Deployment Tests
+
 ```bash
 # Run smoke tests
 npm run test:smoke
@@ -129,6 +136,7 @@ curl -X GET http://localhost:4000/api/health \
 ## Production Deployment
 
 ### Pre-Production Checklist
+
 - [ ] All staging tests passed
 - [ ] Feature flags configured
 - [ ] Secrets stored in environment variables
@@ -141,6 +149,7 @@ curl -X GET http://localhost:4000/api/health \
 ### Production Deployment Strategy
 
 #### Blue-Green Deployment
+
 ```bash
 # 1. Deploy to green environment
 docker-compose -f docker-compose.prod-green.yml up -d
@@ -161,6 +170,7 @@ mv docker-compose.prod-green.yml docker-compose.prod-blue.yml
 ```
 
 #### Canary Deployment
+
 ```bash
 # 1. Deploy new version to canary environment
 docker-compose -f docker-compose.prod-canary.yml up -d
@@ -179,6 +189,7 @@ docker-compose -f docker-compose.prod-blue.yml down
 ```
 
 ### Production Environment Variables
+
 ```bash
 # Critical Production Settings
 export NODE_ENV=production
@@ -221,6 +232,7 @@ export FIREBASE_CREDENTIALS='{...json...}'
 ## Monitoring & Alerting
 
 ### Health Check Endpoint
+
 ```bash
 # API Health
 curl http://localhost:4000/api/health
@@ -238,6 +250,7 @@ curl http://localhost:4000/api/health
 ### Key Metrics to Monitor
 
 #### API Performance
+
 - **Request Count:** `/metrics/requests.total`
 - **Response Time (P50/P95/P99):** `/metrics/requests.duration_ms`
 - **Error Rate:** `/metrics/requests.errors`
@@ -246,6 +259,7 @@ curl http://localhost:4000/api/health
   - Critical: > 10%
 
 #### Database
+
 - **Query Duration:** Monitor slow queries
   - Target: < 100ms
   - Alert: > 500ms
@@ -254,18 +268,21 @@ curl http://localhost:4000/api/health
 - **Replication Lag (if applicable):** < 100ms
 
 #### Redis
+
 - **Cache Hit Rate:** Target > 80%
 - **Connection Count:** Target < 50
 - **Memory Usage:** Target < 80%
 - **Eviction Rate:** Should be 0
 
 #### Webhooks
+
 - **Success Rate:** Target > 99%
 - **Failure Rate:** Alert if > 5%
 - **Retry Count:** Monitor exponential backoff
 - **Processing Duration:** Target < 5 seconds
 
 #### Business Metrics
+
 - **Jobs Created/Day:** Monitor trends
 - **Acceptance Rate:** Target > 60%
 - **Average Delivery Time:** Monitor trends
@@ -274,6 +291,7 @@ curl http://localhost:4000/api/health
 - **Subscription Churn:** Monitor retention
 
 ### Datadog Dashboard Setup
+
 ```bash
 # Example Datadog JSON configuration
 {
@@ -306,18 +324,21 @@ curl http://localhost:4000/api/health
 ### Alert Rules
 
 #### Critical Alerts
+
 1. **API Down** - Health check fails for > 5 min
 2. **Database Down** - Connection fails for > 1 min
 3. **Error Rate > 10%** - Too many failures
 4. **Webhook Failure Rate > 5%** - Payment processing at risk
 
 #### Warning Alerts
+
 1. **Response Time P95 > 2s** - Performance degradation
 2. **Database Slow Queries > 5%** - Query optimization needed
 3. **Redis Memory > 80%** - Eviction starting
 4. **Disk Space < 10%** - Running out of space
 
 ### Sentry Configuration
+
 ```javascript
 // Automatic error tracking
 Sentry.init({
@@ -326,11 +347,11 @@ Sentry.init({
   tracesSampleRate: 1.0,
   beforeSend(event, hint) {
     // Filter out low-priority errors
-    if (event.level === 'warning') {
+    if (event.level === "warning") {
       return event;
     }
     return event;
-  }
+  },
 });
 ```
 
@@ -341,6 +362,7 @@ Sentry.init({
 ### Common Issues
 
 #### 1. Database Connection Failed
+
 ```bash
 # Check PostgreSQL is running
 docker ps | grep postgres
@@ -359,6 +381,7 @@ docker exec infamous-api-prod npx prisma migrate deploy
 ```
 
 #### 2. Redis Connection Failed
+
 ```bash
 # Check Redis is running
 docker ps | grep redis
@@ -374,6 +397,7 @@ redis-cli FLUSHALL
 ```
 
 #### 3. High Memory Usage
+
 ```bash
 # Check Node.js memory usage
 docker stats infamous-api-prod
@@ -389,6 +413,7 @@ docker restart infamous-api-prod
 ```
 
 #### 4. Slow Database Queries
+
 ```bash
 # Enable slow query log
 psql $DATABASE_URL -c "SET log_min_duration_statement = 1000;"
@@ -404,6 +429,7 @@ EXPLAIN ANALYZE SELECT ...;
 ```
 
 #### 5. Webhook Failures
+
 ```bash
 # Check webhook event status
 curl http://localhost:4000/admin/webhooks?status=FAILED
@@ -420,6 +446,7 @@ curl -X POST http://localhost:4000/admin/webhooks/retry-all
 ## Rollback Procedures
 
 ### Quick Rollback (Last 15 minutes)
+
 ```bash
 # Switch back to previous version
 git revert HEAD
@@ -434,6 +461,7 @@ docker logs -f infamous-api-prod
 ```
 
 ### Database Rollback (if needed)
+
 ```bash
 # Restore from backup
 docker exec infamous-postgres-prod \
@@ -444,6 +472,7 @@ psql $DATABASE_URL -c "SELECT COUNT(*) FROM jobs;"
 ```
 
 ### Full System Rollback
+
 ```bash
 # 1. Stop current version
 docker-compose -f docker-compose.prod-green.yml down
@@ -466,6 +495,7 @@ docker-compose -f docker-compose.prod-blue.yml up -d
 ## Post-Deployment Verification
 
 ### Day 1 Verification
+
 - [ ] All endpoints responding normally
 - [ ] Error rate < 1%
 - [ ] Response times acceptable
@@ -478,6 +508,7 @@ docker-compose -f docker-compose.prod-blue.yml up -d
 - [ ] No security alerts
 
 ### Week 1 Verification
+
 - [ ] All features working as expected
 - [ ] Performance metrics stable
 - [ ] No memory leaks
@@ -487,6 +518,7 @@ docker-compose -f docker-compose.prod-blue.yml up -d
 - [ ] Support tickets minimal
 
 ### Monthly Verification
+
 - [ ] Regular capacity planning
 - [ ] Performance optimization opportunities
 - [ ] Security patches applied
@@ -498,17 +530,20 @@ docker-compose -f docker-compose.prod-blue.yml up -d
 ## 📞 Support & Escalation
 
 ### During Deployment
+
 - **Slack:** #marketplace-deployment
 - **On-Call:** Check PagerDuty for assigned engineer
 - **Escalation:** VP Engineering if critical issue
 
 ### Post-Deployment Issues
+
 1. Check logs: `docker logs infamous-api-prod`
 2. Check metrics: Datadog dashboard
 3. Check status page: status.infamous-freight.app
 4. File incident ticket if > 15 min downtime
 
 ### Rollback Decision
+
 - **Automatic Rollback:** If error rate > 10% for 5 min
 - **Manual Decision:** If error rate 5-10% or response time degraded
 - **Wait and Monitor:** If < 1% error rate and response times normal
@@ -517,11 +552,11 @@ docker-compose -f docker-compose.prod-blue.yml up -d
 
 ## 🎯 Deployment Summary
 
-| Environment | API Port | Web Port | Database | Redis | Status |
-|-------------|----------|----------|----------|-------|--------|
-| **Development** | 4000 | 3000 | Local | Local | Running |
-| **Staging** | 4000 | 3000 | RDS | ElastiCache | Ready |
-| **Production** | 4000 | 3000 | RDS Multi-AZ | ElastiCache | Ready |
+| Environment     | API Port | Web Port | Database     | Redis       | Status  |
+| --------------- | -------- | -------- | ------------ | ----------- | ------- |
+| **Development** | 4000     | 3000     | Local        | Local       | Running |
+| **Staging**     | 4000     | 3000     | RDS          | ElastiCache | Ready   |
+| **Production**  | 4000     | 3000     | RDS Multi-AZ | ElastiCache | Ready   |
 
 **All Phase 1, 2, and 3 features are fully deployed and monitored.**
 

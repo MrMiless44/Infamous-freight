@@ -238,8 +238,7 @@ File content should include:
 - [ ] Example response provided
 - [ ] Error cases documented
 
-**TOTAL SCORE: \_\_ / 100**
-**GRADE: \_\_** (A=95+, B=85+, C=75+)
+**TOTAL SCORE: \_\_ / 100** **GRADE: \_\_** (A=95+, B=85+, C=75+)
 
 ## Performance Metrics
 

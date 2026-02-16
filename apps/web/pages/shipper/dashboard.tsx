@@ -3,10 +3,10 @@
  * Allows shippers to post loads, track drivers, and manage billing
  */
 
-import React, { useState, useEffect } from 'react';
-import { GetServerSideProps } from 'next';
-import Head from 'next/head';
-import Image from 'next/image';
+import React, { useState } from "react";
+import { GetServerSideProps } from "next";
+import Head from "next/head";
+import { useRouter } from "next/router";
 import {
   Box,
   Button,
@@ -15,7 +15,6 @@ import {
   Container,
   Flex,
   Grid,
-  GridItem,
   Heading,
   HStack,
   Icon,
@@ -30,7 +29,7 @@ import {
   Text,
   VStack,
   useToast,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 import {
   MdAdd,
   MdLocalShipping,
@@ -39,8 +38,8 @@ import {
   MdCheckCircle,
   MdWarning,
   MdAccessTime,
-} from 'react-icons/md';
-import { ApiResponse, SHIPMENT_STATUSES } from '@infamous-freight/shared';
+} from "react-icons/md";
+import { SHIPMENT_STATUSES } from "@infamous-freight/shared";
 
 interface ShipmentStats {
   activeLoads: number;
@@ -65,28 +64,20 @@ interface ShipperPortalProps {
   recentLoads: RecentLoad[];
 }
 
-const ShipperPortal: React.FC<ShipperPortalProps> = ({ stats, recentLoads }) => {
+const ShipperPortal: React.FC<ShipperPortalProps> = ({ stats, recentLoads: _recentLoads }) => {
   const toast = useToast();
-  const [loads, setLoads] = useState<RecentLoad[]>(recentLoads);
+  const router = useRouter();
   const [selectedTab, setSelectedTab] = useState(0);
 
   const handlePostLoad = () => {
-    // TODO: Open modal or navigate to load posting form
-    toast({
-      title: 'Post New Load',
-      description:
-        'Load posting form coming soon',
-      status: 'info',
-      duration: 3000,
-      isClosable: true,
-    });
+    router.push("/shipper/post-load");
   };
 
   const handleEditLoad = (loadId: string) => {
     toast({
-      title: 'Edit Load',
+      title: "Edit Load",
       description: `Edit load ${loadId} (coming soon)`,
-      status: 'info',
+      status: "info",
       duration: 3000,
       isClosable: true,
     });
@@ -94,9 +85,9 @@ const ShipperPortal: React.FC<ShipperPortalProps> = ({ stats, recentLoads }) => 
 
   const handleViewTracking = (loadId: string) => {
     toast({
-      title: 'Real-time Tracking',
+      title: "Real-time Tracking",
       description: `Live tracking for load ${loadId} (coming soon)`,
-      status: 'info',
+      status: "info",
       duration: 3000,
       isClosable: true,
     });
@@ -105,15 +96,15 @@ const ShipperPortal: React.FC<ShipperPortalProps> = ({ stats, recentLoads }) => 
   const getStatusBadgeColor = (status: string) => {
     switch (status.toUpperCase()) {
       case SHIPMENT_STATUSES.COMPLETED:
-        return 'green';
+        return "green";
       case SHIPMENT_STATUSES.IN_TRANSIT:
-        return 'blue';
+        return "blue";
       case SHIPMENT_STATUSES.CREATED:
-        return 'gray';
+        return "gray";
       case SHIPMENT_STATUSES.PICKED_UP:
-        return 'orange';
+        return "orange";
       default:
-        return 'gray';
+        return "gray";
     }
   };
 
@@ -134,10 +125,7 @@ const ShipperPortal: React.FC<ShipperPortalProps> = ({ stats, recentLoads }) => 
     <>
       <Head>
         <title>Shipper Portal - Infamous Freight</title>
-        <meta
-          name="description"
-          content="Post loads, track drivers, manage billing"
-        />
+        <meta name="description" content="Post loads, track drivers, manage billing" />
       </Head>
 
       <Box minH="100vh" bg="gray.50">
@@ -146,17 +134,11 @@ const ShipperPortal: React.FC<ShipperPortalProps> = ({ stats, recentLoads }) => 
           <Container maxW="container.xl">
             <Flex justify="space-between" align="center" mb={4}>
               <Heading size="lg">Shipper Portal</Heading>
-              <Button
-                leftIcon={<MdAdd />}
-                colorScheme="blue"
-                onClick={handlePostLoad}
-              >
+              <Button leftIcon={<MdAdd />} colorScheme="blue" onClick={handlePostLoad}>
                 Post New Load
               </Button>
             </Flex>
-            <Text color="gray.600">
-              Manage your freight loads and track real-time delivery
-            </Text>
+            <Text color="gray.600">Manage your freight loads and track real-time delivery</Text>
           </Container>
         </Box>
 
@@ -165,9 +147,9 @@ const ShipperPortal: React.FC<ShipperPortalProps> = ({ stats, recentLoads }) => 
           {/* Stats Grid */}
           <Grid
             templateColumns={{
-              base: '1fr',
-              md: 'repeat(2, 1fr)',
-              lg: 'repeat(4, 1fr)',
+              base: "1fr",
+              md: "repeat(2, 1fr)",
+              lg: "repeat(4, 1fr)",
             }}
             gap={6}
             mb={8}
@@ -253,14 +235,14 @@ const ShipperPortal: React.FC<ShipperPortalProps> = ({ stats, recentLoads }) => 
                   <TabPanel>
                     <VStack spacing={4} mt={4}>
                       {loads
-                        .filter(load => load.status !== SHIPMENT_STATUSES.COMPLETED)
-                        .map(load => (
+                        .filter((load) => load.status !== SHIPMENT_STATUSES.COMPLETED)
+                        .map((load) => (
                           <Card key={load.id} w="100%" variant="elevated">
                             <CardBody>
                               <Grid
                                 templateColumns={{
-                                  base: '1fr',
-                                  md: '1fr 1fr 1fr 1fr 1fr',
+                                  base: "1fr",
+                                  md: "1fr 1fr 1fr 1fr 1fr",
                                 }}
                                 gap={4}
                                 align="center"
@@ -272,7 +254,7 @@ const ShipperPortal: React.FC<ShipperPortalProps> = ({ stats, recentLoads }) => 
                                   <Text fontWeight="bold">{load.origin}</Text>
                                 </Box>
 
-                                <Box display={{ base: 'none', md: 'flex' }} justify="center">
+                                <Box display={{ base: "none", md: "flex" }} justify="center">
                                   <Icon as={MdLocalShipping} boxSize={5} color="blue.500" />
                                 </Box>
 
@@ -294,7 +276,7 @@ const ShipperPortal: React.FC<ShipperPortalProps> = ({ stats, recentLoads }) => 
 
                                 <Box>
                                   <HStack spacing={2}>
-                                    {load.status === 'active' && (
+                                    {load.status === "active" && (
                                       <>
                                         <Button
                                           size="sm"
@@ -312,7 +294,7 @@ const ShipperPortal: React.FC<ShipperPortalProps> = ({ stats, recentLoads }) => 
                                         </Button>
                                       </>
                                     )}
-                                    {load.status === 'assigned' && (
+                                    {load.status === "assigned" && (
                                       <Button
                                         size="sm"
                                         colorScheme="blue"
@@ -325,7 +307,13 @@ const ShipperPortal: React.FC<ShipperPortalProps> = ({ stats, recentLoads }) => 
                                 </Box>
                               </Grid>
 
-                              <Flex justify="space-between" mt={4} pt={4} borderTop="1px" borderColor="gray.200">
+                              <Flex
+                                justify="space-between"
+                                mt={4}
+                                pt={4}
+                                borderTop="1px"
+                                borderColor="gray.200"
+                              >
                                 <Box>
                                   <Text fontSize="xs" color="gray.600">
                                     Status
@@ -367,15 +355,11 @@ const ShipperPortal: React.FC<ShipperPortalProps> = ({ stats, recentLoads }) => 
                           </Card>
                         ))}
 
-                      {loads.filter(load => load.status !== SHIPMENT_STATUSES.COMPLETED).length === 0 && (
+                      {loads.filter((load) => load.status !== SHIPMENT_STATUSES.COMPLETED)
+                        .length === 0 && (
                         <Card w="100%" variant="elevated" bg="gray.50">
                           <CardBody textAlign="center" py={12}>
-                            <Icon
-                              as={MdLocalShipping}
-                              boxSize={16}
-                              color="gray.300"
-                              mb={4}
-                            />
+                            <Icon as={MdLocalShipping} boxSize={16} color="gray.300" mb={4} />
                             <Text fontSize="lg" color="gray.600">
                               No active loads yet
                             </Text>
@@ -423,56 +407,93 @@ const ShipperPortal: React.FC<ShipperPortalProps> = ({ stats, recentLoads }) => 
   );
 };
 
-export const getServerSideProps: GetServerSideProps<ShipperPortalProps> = async (
-  context
-) => {
+export const getServerSideProps: GetServerSideProps<ShipperPortalProps> = async (context) => {
   try {
-    const { API_BASE_URL = 'http://localhost:4000' } = process.env;
+    const { API_BASE_URL = "http://localhost:4000" } = process.env;
+    const authHeader = context.req.headers.authorization || "";
+    const cookieToken = context.req.cookies?.token || "";
+    const authToken = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : cookieToken;
 
-    // TODO: Get actual shipper data from API with user's auth token
-    // const res = await fetch(`${API_BASE_URL}/api/shipper/stats`, {
-    //   headers: { Authorization: `Bearer ${authToken}` },
-    // });
-    // const result: ApiResponse<ShipmentStats> = await res.json();
+    let stats: ShipmentStats | null = null;
+    let recentLoads: RecentLoad[] | null = null;
 
-    // Mock data for now
-    const stats: ShipmentStats = {
+    if (authToken) {
+      try {
+        const statsRes = await fetch(`${API_BASE_URL}/api/analytics/shipper/dashboard`, {
+          headers: { Authorization: `Bearer ${authToken}` },
+        });
+
+        if (statsRes.ok) {
+          const statsResult = await statsRes.json();
+          if (statsResult?.success && statsResult.data) {
+            stats = {
+              activeLoads: statsResult.data.activeLoads || 0,
+              completedToday: statsResult.data.completedToday || 0,
+              totalRevenue: statsResult.data.totalRevenue || 0,
+              pendingPayments: statsResult.data.pendingPayments || 0,
+            };
+          }
+        }
+
+        const loadsRes = await fetch(`${API_BASE_URL}/api/shipments`, {
+          headers: { Authorization: `Bearer ${authToken}` },
+        });
+
+        if (loadsRes.ok) {
+          const loadsResult = await loadsRes.json();
+          if (loadsResult?.ok && Array.isArray(loadsResult.shipments)) {
+            recentLoads = loadsResult.shipments.slice(0, 6).map((shipment: any) => ({
+              id: shipment.reference || shipment.trackingId || shipment.id,
+              origin: shipment.origin,
+              destination: shipment.destination,
+              rate: shipment.rate || shipment.priceUsd || 0,
+              status: shipment.status,
+              driver: shipment.driver?.name,
+              postedAt: shipment.createdAt,
+            }));
+          }
+        }
+      } catch {
+        // API unavailable, using fallback mock data
+      }
+    }
+    const fallbackStats: ShipmentStats = {
       activeLoads: 12,
       completedToday: 5,
       totalRevenue: 45230,
       pendingPayments: 8750,
     };
 
-    const recentLoads: RecentLoad[] = [
+    const fallbackLoads: RecentLoad[] = [
       {
-        id: 'LOAD-001',
-        origin: 'Dallas, TX',
-        destination: 'Houston, TX',
+        id: "LOAD-001",
+        origin: "Dallas, TX",
+        destination: "Houston, TX",
         rate: 850,
         status: SHIPMENT_STATUSES.IN_TRANSIT,
-        driver: 'John Smith',
-        postedAt: '2025-02-14T10:00:00Z',
-        eta: '2025-02-14T16:30:00Z',
+        driver: "John Smith",
+        postedAt: "2025-02-14T10:00:00Z",
+        eta: "2025-02-14T16:30:00Z",
       },
       {
-        id: 'LOAD-002',
-        origin: 'Houston, TX',
-        destination: 'Austin, TX',
+        id: "LOAD-002",
+        origin: "Houston, TX",
+        destination: "Austin, TX",
         rate: 650,
         status: SHIPMENT_STATUSES.CREATED,
-        postedAt: '2025-02-14T11:00:00Z',
+        postedAt: "2025-02-14T11:00:00Z",
       },
     ];
 
     return {
       props: {
-        stats,
-        recentLoads,
+        stats: stats || fallbackStats,
+        recentLoads: recentLoads || fallbackLoads,
       },
       revalidate: 60, // ISR: revalidate every 60 seconds
     };
-  } catch (error) {
-    console.error('Error loading shipper data:', error);
+  } catch {
+    // Error loading shipper data - return 404
     return {
       notFound: true,
     };

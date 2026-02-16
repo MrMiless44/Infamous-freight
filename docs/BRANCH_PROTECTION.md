@@ -1,12 +1,14 @@
 # Branch Protection Rules Setup
 
-This guide enables branch protection to enforce code quality standards on the `main` branch.
+This guide enables branch protection to enforce code quality standards on the
+`main` branch.
 
 ## Steps to Enable Branch Protection
 
 ### 1. Navigate to Repository Settings
 
-- Go to: **<https://github.com/MrMiless44/Infamous-freight-enterprises/settings/branches>**
+- Go to:
+  **<https://github.com/MrMiless44/Infamous-freight-enterprises/settings/branches>**
 - Or: Repository → Settings → Branches (left sidebar)
 
 ### 2. Add Branch Protection Rule
@@ -178,7 +180,8 @@ Only for emergency situations:
 git commit --no-verify -m "your message"
 ```
 
-**⚠️ Warning:** This skips quality checks and should only be used for urgent fixes.
+**⚠️ Warning:** This skips quality checks and should only be used for urgent
+fixes.
 
 ---
 

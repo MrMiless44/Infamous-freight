@@ -84,10 +84,7 @@ describe("Billing Routes", () => {
     });
 
     it("should require billing:read scope", async () => {
-      const noScopeToken = jwt.sign(
-        { sub: "user-123", scopes: [] },
-        process.env.JWT_SECRET,
-      );
+      const noScopeToken = jwt.sign({ sub: "user-123", scopes: [] }, process.env.JWT_SECRET);
 
       const response = await request(app)
         .get("/api/billing/subscriptions")

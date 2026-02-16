@@ -19,6 +19,7 @@
 ### Real-time Metrics (Updating every 30 seconds)
 
 **Acquisition**:
+
 - [ ] Free signups (cumulative): 2,100
 - [ ] Free signup rate (last hour): 47/hour
 - [ ] Free→Pro conversion rate: 7% (target: 30%)
@@ -30,6 +31,7 @@
 - [ ] Email clicks: 62 (15% CTR)
 
 **Product Health**:
+
 - [ ] API uptime: 99.98% (alert if <99%)
 - [ ] Pricing page load time: 1.2s (alert if >3s)
 - [ ] Signup completion rate: 87% (alert if <70%)
@@ -37,6 +39,7 @@
 - [ ] Database latency: 142ms (alert if >500ms)
 
 **Revenue**:
+
 - [ ] Pro tier revenue (today): $4,700 (47 customers × $99 avg)
 - [ ] Enterprise revenue (today): $0 (no deals closed yet)
 - [ ] Projected Day 1 MRR: $42,000
@@ -52,17 +55,20 @@
 ### Cohort Tracking
 
 **Feb 13 Cohort** (Day 1):
+
 - Free signups: 2,100
 - Days to conversion: Ongoing
 - Pro conversion rate: 7% (target: 30%)
 - Revenue: $4,700 MRR
 
 **Feb 14 Cohort** (Day 2):
+
 - Free signups: 1,400
 - Pro conversion rate: 4% (early, expect to rise)
 - Revenue: $2,100 MRR
 
 **Retention by Day**:
+
 - Day 1 retention: 100% (cohort active)
 - Day 2 retention: 78% (2nd day login rate)
 - Day 7 retention target: 60%
@@ -265,7 +271,8 @@ Month 1 Target:
 - [ ] **Acquisition**: Free signups, Free→Pro conversion rate today
 - [ ] **Revenue**: MRR achieved vs target, by tier
 - [ ] **Product health**: API uptime, critical errors, performance
-- [ ] **Marketing**: Email open/click rates, Product Hunt ranking, social engagement
+- [ ] **Marketing**: Email open/click rates, Product Hunt ranking, social
+      engagement
 - [ ] **Sales**: Demo books, closed deals, pipeline
 - [ ] **Marketplace**: Partner applications received, signed deals
 - [ ] **Risk**: Any critical issues, alerts triggered
@@ -279,21 +286,22 @@ Month 1 Target:
 
 ## ALERT THRESHOLDS
 
-| Metric | Alert Threshold | Escalation |
-|--------|-----------------|------------|
-| API uptime | <99% | VP Eng + CEO |
-| Email delivery failure | >10% | Head of Marketing + CEO |
-| Stripe errors | >1% | VP Eng + CFO |
-| Free→Pro conversion | <2% (after 48h) | Product + CEO |
-| Daily signups | <1K (after Day 1) | CEO + Growth |
-| Website latency | >3 seconds | VP Eng |
-| Database latency | >500ms | VP Eng |
+| Metric                 | Alert Threshold   | Escalation              |
+| ---------------------- | ----------------- | ----------------------- |
+| API uptime             | <99%              | VP Eng + CEO            |
+| Email delivery failure | >10%              | Head of Marketing + CEO |
+| Stripe errors          | >1%               | VP Eng + CFO            |
+| Free→Pro conversion    | <2% (after 48h)   | Product + CEO           |
+| Daily signups          | <1K (after Day 1) | CEO + Growth            |
+| Website latency        | >3 seconds        | VP Eng                  |
+| Database latency       | >500ms            | VP Eng                  |
 
 ---
 
 ## REAL-TIME DASHBOARD TOOLS
 
 **Primary monitoring**:
+
 - Datadog: Application performance, infrastructure
 - Stripe Dashboard: Real-time revenue, payment success
 - Google Analytics: Website traffic, funnel
@@ -302,6 +310,7 @@ Month 1 Target:
 - Hotjar: User behavior on pricing page
 
 **Integration**:
+
 - All tools feed into custom dashboard (https://monitoring.infamous-freight.com)
 - Slack integrations trigger alerts in #infamus-alerts
 - Daily summary auto-generated at 6 PM PT
@@ -311,6 +320,7 @@ Month 1 Target:
 ## SUCCESS CRITERIA (Day 1)
 
 ✅ **Launch Day Success** = All of the following:
+
 - [ ] Pricing page live and performant (<3s load)
 - [ ] Free signup form 100% operational
 - [ ] Pro checkout 100% operational (Stripe integration)
@@ -321,9 +331,9 @@ Month 1 Target:
 - [ ] Pro conversions 30+
 - [ ] No critical alerts
 
-🟢 **If all criteria met**: Launch successful, proceed to Week 1 plan
-🟡 **If 1-2 criteria missed**: Minor issues, monitor closely
-🔴 **If 3+ criteria missed**: Serious issue, pause marketing spend, investigate
+🟢 **If all criteria met**: Launch successful, proceed to Week 1 plan 🟡 **If
+1-2 criteria missed**: Minor issues, monitor closely 🔴 **If 3+ criteria
+missed**: Serious issue, pause marketing spend, investigate
 
 ---
 

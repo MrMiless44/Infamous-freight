@@ -392,8 +392,7 @@ serverless invoke local -f batchAI
 - GB-seconds: 300,000 × 1 = 300,000
 - Cost: $5.00 + $6.00 = **$11.00/month**
 
-**Total Lambda costs**: ~$15-20/month
-**vs. EC2 t3.medium**: ~$30/month
+**Total Lambda costs**: ~$15-20/month **vs. EC2 t3.medium**: ~$30/month
 
 **Savings**: 33-50%
 

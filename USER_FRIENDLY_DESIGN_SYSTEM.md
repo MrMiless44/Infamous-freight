@@ -2,29 +2,33 @@
 
 ## 100% User-First Platform
 
-This document describes the complete user-friendly design system for Infamous Freight, built for maximum accessibility, clarity, and ease of use.
+This document describes the complete user-friendly design system for Infamous
+Freight, built for maximum accessibility, clarity, and ease of use.
 
 ---
 
 ## 1. CORE UX PRINCIPLES
 
 ### 1.1 Clarity First
+
 Every element should be immediately understandable. No jargon, no confusion.
 
 **Implementation:**
+
 - ✅ Clear labels on all inputs
 - ✅ Descriptive button text ("Delete Shipment" not "Delete")
 - ✅ Helpful hints under form fields
 - ✅ Error messages that explain the problem AND solution
 
 **Example:**
+
 ```tsx
 // ❌ BAD
 <input placeholder="Ship ID" />
 <button>Go</button>
 
 // ✅ GOOD
-<Input 
+<Input
   label="Shipment ID"
   hint="Find your shipment by its tracking number"
   placeholder="SHIP-2026-001234"
@@ -33,18 +37,22 @@ Every element should be immediately understandable. No jargon, no confusion.
 ```
 
 ### 1.2 Progressive Disclosure
+
 Show only what's needed now. Advanced options hidden until requested.
 
 **Implementation:**
+
 - ✅ Basic form fields visible by default
 - ✅ "Advanced Options" toggle for power users
 - ✅ Context-sensitive help (? icons)
 - ✅ Tooltips for complex features
 
 ### 1.3 Feedback & Reassurance
+
 Every action should show immediate feedback.
 
 **Implementation:**
+
 - ✅ Success toast messages
 - ✅ Loading states with spinner + text
 - ✅ Disabled buttons during submission
@@ -52,9 +60,11 @@ Every action should show immediate feedback.
 - ✅ Undo options when possible
 
 ### 1.4 Consistency
+
 Same patterns everywhere. Users learn once, apply everywhere.
 
 **Implementation:**
+
 - ✅ Button variants: primary, secondary, danger, success, ghost
 - ✅ Form field styling consistent across app
 - ✅ Icons from single icon library
@@ -66,16 +76,16 @@ Same patterns everywhere. Users learn once, apply everywhere.
 
 ### 2.1 Available Components
 
-| Component | Purpose | Usage |
-|-----------|---------|-------|
-| `<Button>` | Clickable actions | Forms, navigation, CTAs |
-| `<Card>` | Content container | Dashboard, lists |
-| `<Alert>` | Messages/warnings | Error display, confirmations |
-| `<Input>` | Text input | Forms |
-| `<Tooltip>` | Contextual help | Hover to learn |
-| `<Modal>` | Important dialogs | Confirmations, forms |
-| `<Onboarding>` | First-time UX tour | New users |
-| `<EmptyState>` | No data messaging | Empty lists |
+| Component      | Purpose            | Usage                        |
+| -------------- | ------------------ | ---------------------------- |
+| `<Button>`     | Clickable actions  | Forms, navigation, CTAs      |
+| `<Card>`       | Content container  | Dashboard, lists             |
+| `<Alert>`      | Messages/warnings  | Error display, confirmations |
+| `<Input>`      | Text input         | Forms                        |
+| `<Tooltip>`    | Contextual help    | Hover to learn               |
+| `<Modal>`      | Important dialogs  | Confirmations, forms         |
+| `<Onboarding>` | First-time UX tour | New users                    |
+| `<EmptyState>` | No data messaging  | Empty lists                  |
 
 ### 2.2 Button Variants
 
@@ -143,6 +153,7 @@ Same patterns everywhere. Users learn once, apply everywhere.
 ## 4. ACCESSIBILITY (WCAG AA)
 
 ### 4.1 Keyboard Navigation
+
 - ✅ All interactive elements accessible via Tab key
 - ✅ Buttons activatable with Enter/Space
 - ✅ Escape key closes modals
@@ -150,6 +161,7 @@ Same patterns everywhere. Users learn once, apply everywhere.
 - ✅ Skip links for navigation
 
 ### 4.2 Screen Reader Support
+
 - ✅ Semantic HTML (`<button>`, `<input>`, `<label>`)
 - ✅ ARIA labels on all inputs
 - ✅ ARIA roles for custom components
@@ -157,6 +169,7 @@ Same patterns everywhere. Users learn once, apply everywhere.
 - ✅ Alt text on all images
 
 ### 4.3 Visual Accessibility
+
 - ✅ Color contrast minimum 4.5:1
 - ✅ Don't rely on color alone (use icons + text)
 - ✅ Readable fonts (16px minimum on mobile)
@@ -164,6 +177,7 @@ Same patterns everywhere. Users learn once, apply everywhere.
 - ✅ Supports zoom up to 200%
 
 ### 4.4 Motion & Animation
+
 - ✅ Respects `prefers-reduced-motion`
 - ✅ No auto-playing video
 - ✅ No flashing content
@@ -200,6 +214,7 @@ Same patterns everywhere. Users learn once, apply everywhere.
 ```
 
 ### 5.2 Touch-Friendly Interface
+
 - ✅ Buttons minimum 48px × 48px (on mobile)
 - ✅ Tap targets spaced ≥ 8px apart
 - ✅ Easy horizontal scrolling
@@ -207,6 +222,7 @@ Same patterns everywhere. Users learn once, apply everywhere.
 - ✅ Long-press for context menu
 
 ### 5.3 Network Connectivity
+
 - ✅ Offline detection with clear messaging
 - ✅ Queue actions for when online
 - ✅ Retry button on failed requests
@@ -222,12 +238,12 @@ Same patterns everywhere. Users learn once, apply everywhere.
 export function ShipmentForm() {
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({});
-  
+
   return (
     <form onSubmit={handleSubmit}>
       {/* Clear section headers */}
       <h2>Shipment Details</h2>
-      
+
       {/* Required indication */}
       <Input
         label="Origin City"
@@ -235,23 +251,23 @@ export function ShipmentForm() {
         error={errors.origin}
         hint="Where the shipment starts"
       />
-      
+
       {/* Help for complex fields */}
       <Tooltip content="Use ISO format YYYY-MM-DD">
         <Input label="Ship Date" type="date" required />
       </Tooltip>
-      
+
       {/* Clear error handling */}
       {Object.keys(errors).length > 0 && (
         <Alert
           type="error"
           title="Please fix these errors:"
-          message={Object.keys(errors).join(', ')}
+          message={Object.keys(errors).join(", ")}
         />
       )}
-      
+
       {/* Clear actions */}
-      <div style={{ display: 'flex', gap: '1rem' }}>
+      <div style={{ display: "flex", gap: "1rem" }}>
         <Button variant="secondary" onClick={() => history.back()}>
           Cancel
         </Button>
@@ -298,7 +314,7 @@ export function ShipmentForm() {
   message="The destination city is unavailable in your region."
   action={{
     label: "Choose different destination",
-    onClick: () => scrollToField('destination')
+    onClick: () => scrollToField("destination"),
   }}
   onClose={() => clearError()}
 />
@@ -356,6 +372,7 @@ export function ShipmentForm() {
 ```
 
 ### 9.2 Skeleton Screens
+
 - ✅ Placeholder while loading
 - ✅ Mimics final layout
 - ✅ Animated pulse effect
@@ -378,11 +395,11 @@ export function ShipmentForm() {
 ```tsx
 const helpArticles = [
   {
-    id: 'shipments',
-    title: 'Creating shipments',
-    content: '1. Click New Shipment\n2. Enter details...',
-    category: 'Shipments'
-  }
+    id: "shipments",
+    title: "Creating shipments",
+    content: "1. Click New Shipment\n2. Enter details...",
+    category: "Shipments",
+  },
 ];
 ```
 
@@ -391,6 +408,7 @@ const helpArticles = [
 ## 11. MOBILE-SPECIFIC UX
 
 ### 11.1 Touch Optimization
+
 - ✅ 48px minimum button size
 - ✅ Bottom navigation for main actions
 - ✅ Avoid hover-dependent interactions
@@ -398,6 +416,7 @@ const helpArticles = [
 - ✅ Vertical scrolling, not horizontal
 
 ### 11.2 Performance on Mobile
+
 - ✅ < 3s first load on 4G
 - ✅ < 5MB total bundle
 - ✅ Lazy loading for images
@@ -405,11 +424,13 @@ const helpArticles = [
 - ✅ Optimize for offline usage
 
 ### 11.3 iOS-Specific
+
 - ✅ Safe area insets for notch
 - ✅ 16px input to prevent zoom
 - ✅ Native keyboard for inputs
 
 ### 11.4 Android-Specific
+
 - ✅ Back button navigation support
 - ✅ System bottom navigation integration
 - ✅ Haptic feedback for actions
@@ -419,11 +440,13 @@ const helpArticles = [
 ## 12. PERFORMANCE METRICS
 
 ### 12.1 Core Web Vitals
+
 - **LCP (Largest Contentful Paint)**: < 2.5s ✅
 - **FID (First Input Delay)**: < 100ms ✅
 - **CLS (Cumulative Layout Shift)**: < 0.1 ✅
 
 ### 12.2 Engagement Metrics
+
 - **Onboarding completion**: Target 85%+
 - **Help article views**: Target 40%+ of users
 - **First action time**: Target < 5 minutes
@@ -504,19 +527,21 @@ export function ShipmentsPage() {
 ## 14. DESIGN SYSTEM TOKENS
 
 ### 14.1 Colors
+
 ```css
---color-primary: #2563eb;      /* Actions */
---color-success: #10b981;      /* Success */
---color-warning: #f59e0b;      /* Caution */
---color-error: #ef4444;        /* Errors */
---color-info: #3b82f6;         /* Information */
+--color-primary: #2563eb; /* Actions */
+--color-success: #10b981; /* Success */
+--color-warning: #f59e0b; /* Caution */
+--color-error: #ef4444; /* Errors */
+--color-info: #3b82f6; /* Information */
 --color-text-primary: #1f2937; /* Main text */
 --color-text-secondary: #6b7280; /* Supporting text */
---color-bg-primary: #ffffff;   /* Main background */
+--color-bg-primary: #ffffff; /* Main background */
 --color-bg-secondary: #f9fafb; /* Secondary background */
 ```
 
 ### 14.2 Spacing Scale
+
 ```
 4px   - Extra small gaps
 8px   - Small gaps
@@ -527,6 +552,7 @@ export function ShipmentsPage() {
 ```
 
 ### 14.3 Typography
+
 ```
 h1: 2rem (32px), weight 700
 h2: 1.5rem (24px), weight 700
@@ -540,6 +566,7 @@ small: 0.875rem (14px), weight 400
 ## 15. TESTING USER-FRIENDLINESS
 
 ### 15.1 Accessibility Testing
+
 ```bash
 # Check WCAG compliance
 npx axe-core analyze
@@ -552,6 +579,7 @@ Tab through entire app
 ```
 
 ### 15.2 Usability Testing
+
 - Recruit 5-10 new users
 - Have them complete key tasks
 - Collect feedback on clarity
@@ -559,6 +587,7 @@ Tab through entire app
 - Note confusion points
 
 ### 15.3 Mobile Testing
+
 - Test on iPhone 13 (Safari)
 - Test on Pixel 6 (Chrome)
 - Test on 4G network (throttled)
@@ -591,18 +620,21 @@ Before shipping, verify:
 ## 17. MAINTENANCE & UPDATES
 
 **Monthly Review:**
+
 - Check support tickets for UX issues
 - Review analytics for confusion points
 - Test new features for accessibility
 - Update help articles with FAQs
 
 **Quarterly Updates:**
+
 - User research with 10+ users
 - Update design system if needed
 - Review and improve empty states
 - Audit onboarding flows
 
 **Annually:**
+
 - Full accessibility audit (WCAG AAA target)
 - Performance audit
 - Mobile user testing

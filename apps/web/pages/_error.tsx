@@ -55,16 +55,12 @@ function CustomErrorPage({ statusCode, err, eventId }: ErrorPageProps) {
             <summary style={{ cursor: "pointer", fontWeight: "bold" }}>
               Error Details (Development Only)
             </summary>
-            <pre style={{ marginTop: "10px", whiteSpace: "pre-wrap" }}>
-              {String(err)}
-            </pre>
+            <pre style={{ marginTop: "10px", whiteSpace: "pre-wrap" }}>{String(err)}</pre>
           </details>
         )}
 
         {eventId && process.env.NODE_ENV !== "production" && (
-          <p style={{ marginTop: "20px", fontSize: "12px", color: "#999" }}>
-            Error ID: {eventId}
-          </p>
+          <p style={{ marginTop: "20px", fontSize: "12px", color: "#999" }}>Error ID: {eventId}</p>
         )}
 
         <div style={{ marginTop: "30px" }}>

@@ -720,4 +720,5 @@ $ curl -s http://localhost:9090/api/v1/rules | jq '.data.groups[].rules[] | {nam
 
 **OPTION A READY FOR OPTION B PRODUCTION DEPLOYMENT** ✅
 
-All local validation complete. All systems confirmed operational. Proceeding to Option B.
+All local validation complete. All systems confirmed operational. Proceeding to
+Option B.

@@ -92,8 +92,7 @@ flyctl logs -a api-app-name
 # Should show: New deployment scaling up
 ```
 
-**Tab 4 - Status:**
-Monitor in Vercel Dashboard:
+**Tab 4 - Status:** Monitor in Vercel Dashboard:
 
 - Deployments tab shows: "Deployment ready"
 - No red error badges
@@ -295,9 +294,9 @@ Schedule within 24 hours:
 
 **Deployment Completed!** ✅
 
-Time taken: _____ minutes  
-Deployed by: _____  
+Time taken: **\_** minutes  
+Deployed by: **\_**  
 Issues encountered: None / [describe]  
-Follow-up actions: None / [describe]  
+Follow-up actions: None / [describe]
 
 **Celebrate! 🎉 Your code is live!**

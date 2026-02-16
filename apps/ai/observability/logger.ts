@@ -7,12 +7,34 @@
  */
 
 import { logger } from "../utils/logger";
-import type {
-  DecisionLog,
-  ConfidenceScore,
-  HumanOverride,
-  GuardrailViolation,
-} from "../contracts";
+import type { DecisionLog, ConfidenceScore, HumanOverride, GuardrailViolation } from "../contracts";
+
+const MAX_LOG_ENTRIES = 1000;
+const decisionLogStore: DecisionLog[] = [];
+const confidenceLogStore: Array<{
+  decisionId: string;
+  role: string;
+  confidence: ConfidenceScore;
+  timestamp: Date;
+}> = [];
+const overrideLogStore: Array<{
+  decisionId: string;
+  role: string;
+  override: HumanOverride;
+}> = [];
+const guardrailLogStore: Array<{
+  decisionId: string;
+  role: string;
+  violation: GuardrailViolation;
+  timestamp: Date;
+}> = [];
+
+function addToStore<T>(store: T[], entry: T) {
+  store.push(entry);
+  if (store.length > MAX_LOG_ENTRIES) {
+    store.splice(0, store.length - MAX_LOG_ENTRIES);
+  }
+}
 
 /**
  * Log an AI decision to the audit trail
@@ -37,9 +59,6 @@ import type {
  * ```
  */
 export async function logDecision(log: DecisionLog): Promise<void> {
-  // TODO: Implement actual logging to audit database or log aggregation service
-  // For now, this is a placeholder that logs to console
-
   const logEntry = {
     timestamp: log.timestamp.toISOString(),
     level: "info",
@@ -58,6 +77,8 @@ export async function logDecision(log: DecisionLog): Promise<void> {
 
   // Write to structured log aggregation (Elasticsearch, CloudWatch, Datadog)
   logger.aiDecision(logEntry);
+
+  addToStore(decisionLogStore, log);
 }
 
 /**
@@ -86,8 +107,6 @@ export async function logConfidence(
   role: string,
   confidence: ConfidenceScore,
 ): Promise<void> {
-  // TODO: Implement confidence tracking for model performance monitoring
-
   const logEntry = {
     timestamp: new Date().toISOString(),
     level: "debug",
@@ -101,6 +120,13 @@ export async function logConfidence(
 
   // Track confidence distributions and monitor for drift
   logger.aiConfidence(logEntry);
+
+  addToStore(confidenceLogStore, {
+    decisionId,
+    role,
+    confidence,
+    timestamp: new Date(),
+  });
 }
 
 /**
@@ -127,8 +153,6 @@ export async function flagOverride(
   role: string,
   override: HumanOverride,
 ): Promise<void> {
-  // TODO: Implement override tracking for model improvement
-
   const logEntry = {
     timestamp: override.timestamp.toISOString(),
     level: "warn",
@@ -142,6 +166,8 @@ export async function flagOverride(
 
   // Track override rates and flag for model improvement
   logger.aiOverride(logEntry);
+
+  addToStore(overrideLogStore, { decisionId, role, override });
 
   // If this override should inform training, queue it for review
   if (override.feedbackForTraining) {
@@ -162,15 +188,10 @@ export async function logGuardrailViolations(
   role: string,
   violations: GuardrailViolation[],
 ): Promise<void> {
-  // TODO: Implement guardrail violation tracking and alerting
-
   for (const violation of violations) {
     const logEntry = {
       timestamp: new Date().toISOString(),
-      level:
-        violation.severity === "critical" || violation.severity === "high"
-          ? "error"
-          : "warn",
+      level: violation.severity === "critical" || violation.severity === "high" ? "error" : "warn",
       type: "ai-guardrail-violation",
       decisionId,
       role,
@@ -182,6 +203,13 @@ export async function logGuardrailViolations(
 
     // Alert and track guardrail violations
     logger.aiGuardrail(logEntry);
+
+    addToStore(guardrailLogStore, {
+      decisionId,
+      role,
+      violation,
+      timestamp: new Date(),
+    });
 
     // Critical violations should trigger immediate alerts
     if (violation.severity === "critical") {
@@ -251,7 +279,32 @@ export async function queryDecisionLogs(
     endTime: endTime.toISOString(),
     filters,
   });
-  return [];
+  return decisionLogStore.filter((log) => {
+    const timestamp = log.timestamp instanceof Date ? log.timestamp : new Date(log.timestamp);
+
+    if (timestamp < startTime || timestamp > endTime) return false;
+    if (filters?.role && log.role !== filters.role) return false;
+    if (filters?.userId && log.userId !== filters.userId) return false;
+    if (
+      typeof filters?.requiresHumanReview === "boolean" &&
+      log.requiresHumanReview !== filters.requiresHumanReview
+    ) {
+      return false;
+    }
+    if (
+      typeof filters?.minConfidence === "number" &&
+      log.confidence.value < filters.minConfidence
+    ) {
+      return false;
+    }
+    if (
+      typeof filters?.maxConfidence === "number" &&
+      log.confidence.value > filters.maxConfidence
+    ) {
+      return false;
+    }
+    return true;
+  });
 }
 
 /**
@@ -275,16 +328,42 @@ export async function getDecisionStats(
   logger.debug("Decision statistics", {
     type: "decision-stats",
     role,
-    timeRange: timeRange ? {
-      start: timeRange.start.toISOString(),
-      end: timeRange.end.toISOString(),
-    } : undefined,
+    timeRange: timeRange
+      ? {
+          start: timeRange.start.toISOString(),
+          end: timeRange.end.toISOString(),
+        }
+      : undefined,
   });
+  const filtered = decisionLogStore.filter((log) => {
+    if (role && log.role !== role) return false;
+    if (timeRange) {
+      const timestamp = log.timestamp instanceof Date ? log.timestamp : new Date(log.timestamp);
+      if (timestamp < timeRange.start || timestamp > timeRange.end) return false;
+    }
+    return true;
+  });
+
+  const totalDecisions = filtered.length;
+  const averageConfidence = totalDecisions
+    ? filtered.reduce((sum, log) => sum + log.confidence.value, 0) / totalDecisions
+    : 0;
+
+  const overrides = overrideLogStore.filter((entry) => !role || entry.role === role);
+
+  const guardrails = guardrailLogStore.filter((entry) => !role || entry.role === role);
+
+  const byOutcome = filtered.reduce<Record<string, number>>((acc, log) => {
+    const key = log.outcome?.status || "unknown";
+    acc[key] = (acc[key] || 0) + 1;
+    return acc;
+  }, {});
+
   return {
-    totalDecisions: 0,
-    averageConfidence: 0,
-    overrideRate: 0,
-    guardrailViolations: 0,
-    byOutcome: {},
+    totalDecisions,
+    averageConfidence,
+    overrideRate: totalDecisions ? overrides.length / totalDecisions : 0,
+    guardrailViolations: guardrails.length,
+    byOutcome,
   };
 }

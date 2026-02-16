@@ -53,29 +53,21 @@ test.describe("End-to-End: Freight Management Platform", () => {
     await page.click('button:has-text("Create Shipment")');
 
     // Verify shipment created
-    await expect(
-      page.locator("text=Shipment created successfully"),
-    ).toBeVisible();
+    await expect(page.locator("text=Shipment created successfully")).toBeVisible();
     await expect(page.locator("text=TRACK")).toBeVisible();
   });
 
-  test("Shipment updates in real-time via WebSocket", async ({
-    page,
-    context,
-  }) => {
+  test("Shipment updates in real-time via WebSocket", async ({ page, context }) => {
     // Login and navigate to shipments
     await loginUser(page);
     await page.goto(`${APP_URL}/shipments/TRACK001`);
 
     // Open second tab to simulate status update
     const page2 = await context.newPage();
-    const response = await page2.request.post(
-      `${API_URL}/api/shipments/TRACK001`,
-      {
-        data: { status: "in_transit" },
-        headers: { Authorization: `Bearer ${getAuthToken()}` },
-      },
-    );
+    const response = await page2.request.post(`${API_URL}/api/shipments/TRACK001`, {
+      data: { status: "in_transit" },
+      headers: { Authorization: `Bearer ${getAuthToken()}` },
+    });
 
     expect(response.status()).toBe(200);
 

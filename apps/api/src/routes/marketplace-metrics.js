@@ -38,28 +38,23 @@ router.get("/", authenticate, requireScope("admin"), async (req, res) => {
  * Get dashboard-friendly metrics summary with success rates
  * Requires admin scope
  */
-router.get(
-  "/dashboard",
-  authenticate,
-  requireScope("admin"),
-  async (req, res) => {
-    try {
-      const metricsService = getMetricsService();
-      const summary = metricsService.getDashboardSummary();
+router.get("/dashboard", authenticate, requireScope("admin"), async (req, res) => {
+  try {
+    const metricsService = getMetricsService();
+    const summary = metricsService.getDashboardSummary();
 
-      res.status(200).json({
-        success: true,
-        data: summary,
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        error: "Failed to retrieve dashboard metrics",
-        message: error.message,
-      });
-    }
-  },
-);
+    res.status(200).json({
+      success: true,
+      data: summary,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: "Failed to retrieve dashboard metrics",
+      message: error.message,
+    });
+  }
+});
 
 /**
  * GET /api/marketplace/metrics/prometheus

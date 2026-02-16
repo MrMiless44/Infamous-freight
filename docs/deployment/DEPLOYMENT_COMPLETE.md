@@ -7,7 +7,8 @@
 
 ### Production Deployments
 
-- **Web (Vercel)**: <https://infamous-freight-enterprises-e1mn358un-santorio-miles-projects.vercel.app>
+- **Web (Vercel)**:
+  <https://infamous-freight-enterprises-e1mn358un-santorio-miles-projects.vercel.app>
   - Status: ✅ Live (SSO-protected)
   - Framework: Next.js 14.2.35
   - Build: Standalone output
@@ -99,7 +100,8 @@ corsOrigins: [
 
 **To disable for public testing:**
 
-1. Go to: <https://vercel.com/santorio-miles-projects/infamous-freight-enterprises/settings/deployment-protection>
+1. Go to:
+   <https://vercel.com/santorio-miles-projects/infamous-freight-enterprises/settings/deployment-protection>
 2. Toggle off "Vercel Authentication"
 3. Test publicly: `curl -i https://<vercel-domain>/api/health`
 
@@ -122,7 +124,8 @@ corsOrigins: [
 
 - **Speed Insights**: Enabled in `apps/web/pages/_app.tsx`
 - **Analytics**: Enabled via `@vercel/analytics`
-- **Dashboard**: <https://vercel.com/santorio-miles-projects/infamous-freight-enterprises/analytics>
+- **Dashboard**:
+  <https://vercel.com/santorio-miles-projects/infamous-freight-enterprises/analytics>
 
 ## 🐛 Known Issues & Fixes
 
@@ -211,7 +214,8 @@ flyctl apps errors -a infamous-freight-ai
 - [README.md](README.md) - Project overview
 - [QUICK_REFERENCE.md](QUICK_REFERENCE.md) - Command cheat sheet
 - [API_REFERENCE.md](API_REFERENCE.md) - API endpoints
-- [.github/copilot-instructions.md](.github/copilot-instructions.md) - Development guidelines
+- [.github/copilot-instructions.md](.github/copilot-instructions.md) -
+  Development guidelines
 
 ---
 

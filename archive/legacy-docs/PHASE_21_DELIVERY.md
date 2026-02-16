@@ -44,6 +44,7 @@
 ### API Routes (300+ Lines)
 
 **`apps/api/src/routes/sales.ts`** — 20+ endpoints
+
 - Lead capture + management
 - Demo scheduling + tracking
 - ROI calculations
@@ -53,6 +54,7 @@
 ### Database Models (Prisma Schema)
 
 Added 5 new models:
+
 - `Lead` — Lead tracking
 - `DemoBooking` — Demo scheduling
 - `Referral` — Referral tracking
@@ -60,41 +62,45 @@ Added 5 new models:
 - `MetricsSnapshot` — Historical metrics
 
 Added 3 enums:
+
 - `LeadType` (SHIPPER, DRIVER, ENTERPRISE, OTHER)
-- `LeadSource` (LANDING_PAGE_*, AD, REFERRAL, etc.)
+- `LeadSource` (LANDING*PAGE*\*, AD, REFERRAL, etc.)
 - `ReferralStatus` (PENDING, COMPLETED, PAID, FAILED)
 
 ---
 
 ## 🎯 Phase 21 Sub-Phases
 
-| Phase | Feature | Status | Lines |
-|---|---|---|---|
-| 21.1 | Marketing Funnel (landing pages) | Ready | TBD (frontend) |
-| 21.2 | Lead Capture + CRM Sync | ✅ Complete | 400+ |
-| 21.3 | Demo Scheduling | ✅ Complete | 350+ |
-| 21.4 | ROI Calculator | ✅ Complete | 250+ |
-| 21.5 | Sales CRM Sync | ✅ Complete | Integrated |
-| 21.6 | Affiliate + Referral System | ✅ Complete | 350+ |
-| 21.7 | Stripe Checkout Funnels | ✅ Ready | Integration ready |
-| 21.8 | Investor Metrics | ✅ Complete | 400+ |
+| Phase | Feature                          | Status      | Lines             |
+| ----- | -------------------------------- | ----------- | ----------------- |
+| 21.1  | Marketing Funnel (landing pages) | Ready       | TBD (frontend)    |
+| 21.2  | Lead Capture + CRM Sync          | ✅ Complete | 400+              |
+| 21.3  | Demo Scheduling                  | ✅ Complete | 350+              |
+| 21.4  | ROI Calculator                   | ✅ Complete | 250+              |
+| 21.5  | Sales CRM Sync                   | ✅ Complete | Integrated        |
+| 21.6  | Affiliate + Referral System      | ✅ Complete | 350+              |
+| 21.7  | Stripe Checkout Funnels          | ✅ Ready    | Integration ready |
+| 21.8  | Investor Metrics                 | ✅ Complete | 400+              |
 
 ---
 
 ## 🔌 Integrations
 
 ### CRM Systems
+
 - ✅ HubSpot API
 - ✅ Salesforce API
 - ✅ Notion API
 - ✅ Slack Webhooks
 
 ### Calendar Providers
+
 - ✅ Calendly API
 - ✅ Google Calendar API
 - ✅ Zoom link generation
 
 ### Payment & Checkout
+
 - ✅ Stripe integration (ready)
 - ✅ Plan-specific pricing links
 - ✅ Referral reward processing
@@ -104,21 +110,25 @@ Added 3 enums:
 ## 📊 Metrics Tracked
 
 ### Revenue Metrics
+
 - MRR (Monthly Recurring Revenue)
 - GMV (Gross Merchandise Value)
 - Platform Take (Our commission)
 
 ### User Metrics
+
 - Active Drivers (1+ job/30 days)
 - Active Shippers (1+ job/30 days)
 - Total Organizations
 
 ### Activity Metrics
+
 - Jobs (30-day, 7-day, daily)
 - New Organizations
 - Churn Rate
 
 ### Quality Metrics
+
 - Average Jobs Per Driver
 - Average Revenue Per Organization
 - Active Organization %
@@ -129,6 +139,7 @@ Added 3 enums:
 ## 🚀 API Endpoints Delivered
 
 ### Lead Management (5 endpoints)
+
 ```
 POST   /api/sales/leads              Create lead
 GET    /api/sales/leads/:email       Get single lead
@@ -137,6 +148,7 @@ GET    /api/sales/leads              List all (admin)
 ```
 
 ### Demo Scheduling (4 endpoints)
+
 ```
 POST   /api/sales/demo               Schedule demo
 GET    /api/sales/demo/:id           Get details
@@ -145,12 +157,14 @@ GET    /api/sales/demo/stats         View stats
 ```
 
 ### ROI Calculator (2 endpoints)
+
 ```
 POST   /api/sales/roi-calculate      Calculate ROI
 GET    /api/sales/roi-defaults       Get defaults
 ```
 
 ### Referrals (3 endpoints)
+
 ```
 POST   /api/sales/referral           Create referral code
 GET    /api/sales/referral/stats     Get referrer stats
@@ -158,6 +172,7 @@ GET    /api/sales/referral/leaderboard Top referrers
 ```
 
 ### Metrics (5 endpoints)
+
 ```
 GET    /api/sales/metrics            Current snapshot
 GET    /api/sales/metrics/trend      Historical data
@@ -211,12 +226,14 @@ Viral loop continues
 ## 🛠️ Technical Stack
 
 ### Backend
+
 - TypeScript (type-safe)
 - Express.js
 - Prisma ORM
 - PostgreSQL
 
 ### External APIs
+
 - HubSpot (CRM)
 - Salesforce (CRM)
 - Notion (Database)
@@ -226,6 +243,7 @@ Viral loop continues
 - Stripe (Payments)
 
 ### Services
+
 - Auth: JWT + scopes
 - Rate Limiting: Per endpoint
 - Audit Logging: All lead actions
@@ -236,6 +254,7 @@ Viral loop continues
 ## 📈 Usage Patterns
 
 ### Pattern 1: Landing Page Lead Capture
+
 ```
 User fills form on landing page
     ↓
@@ -251,6 +270,7 @@ Email confirmation sent to user
 ```
 
 ### Pattern 2: Enterprise ROI Self-Serve
+
 ```
 Prospect visits /roi-calculator
     ↓
@@ -266,6 +286,7 @@ POST /api/sales/demo
 ```
 
 ### Pattern 3: Referral Viral Loop
+
 ```
 Customer gets: REF_ABC123_XYZ789
     ↓
@@ -292,7 +313,7 @@ processReferralPayout() pays referrer $100
 ✅ API keys stored in environment only  
 ✅ CRM credentials never logged  
 ✅ Audit trail on all lead conversions  
-✅ GDPR-compliant (leads can be exported/deleted)  
+✅ GDPR-compliant (leads can be exported/deleted)
 
 ---
 
@@ -332,30 +353,30 @@ pnpm prisma generate
 
 Track these KPIs to measure Phase 21 impact:
 
-| Metric | Target | Measurement |
-|---|---|---|
-| Leads/Week | 20-50 | Analytics |
-| Demo Rate | 30-40% | CRM |
-| Close Rate | 50-70% | CRM |
-| Referral % | 10-15% | Database |
-| Sales Cycle | < 30 days | CRM |
-| Lead Value | $2k+ MRR | Subscriptions |
-| Referral ROI | 3:1 | Revenue |
+| Metric       | Target    | Measurement   |
+| ------------ | --------- | ------------- |
+| Leads/Week   | 20-50     | Analytics     |
+| Demo Rate    | 30-40%    | CRM           |
+| Close Rate   | 50-70%    | CRM           |
+| Referral %   | 10-15%    | Database      |
+| Sales Cycle  | < 30 days | CRM           |
+| Lead Value   | $2k+ MRR  | Subscriptions |
+| Referral ROI | 3:1       | Revenue       |
 
 ---
 
 ## 📁 Files Created
 
-| File | Purpose | Lines |
-|---|---|---|
-| `apps/api/src/sales/leadCapture.ts` | Lead capture + CRM | 400+ |
-| `apps/api/src/sales/demoScheduling.ts` | Demo booking | 350+ |
-| `apps/api/src/sales/referrals.ts` | Referral tracking | 350+ |
-| `apps/api/src/sales/roiCalculator.ts` | ROI calculation | 250+ |
-| `apps/api/src/sales/metrics.ts` | Metrics collection | 400+ |
-| `apps/api/src/routes/sales.ts` | API routes | 300+ |
-| `apps/api/prisma/schema.prisma` | Database models | +100 lines |
-| `PHASE_21_COMPLETE.md` | Full documentation | 500+ |
+| File                                   | Purpose            | Lines      |
+| -------------------------------------- | ------------------ | ---------- |
+| `apps/api/src/sales/leadCapture.ts`    | Lead capture + CRM | 400+       |
+| `apps/api/src/sales/demoScheduling.ts` | Demo booking       | 350+       |
+| `apps/api/src/sales/referrals.ts`      | Referral tracking  | 350+       |
+| `apps/api/src/sales/roiCalculator.ts`  | ROI calculation    | 250+       |
+| `apps/api/src/sales/metrics.ts`        | Metrics collection | 400+       |
+| `apps/api/src/routes/sales.ts`         | API routes         | 300+       |
+| `apps/api/prisma/schema.prisma`        | Database models    | +100 lines |
+| `PHASE_21_COMPLETE.md`                 | Full documentation | 500+       |
 
 **Total**: 2,650+ lines of production-grade code
 
@@ -370,13 +391,14 @@ Track these KPIs to measure Phase 21 impact:
 ✅ Track referrals and pay rewards  
 ✅ Monitor real-time metrics (MRR, GMV, growth)  
 ✅ View sales pipeline (lead → contact → demo → won)  
-✅ Generate investor reports  
+✅ Generate investor reports
 
 ---
 
 ## 🚀 Next Phase: Phase 22
 
 **Scale & Automation** (optional):
+
 - Auto-sales agents (AI outreach)
 - Outbound campaigns (email, SMS)
 - AI lead scoring

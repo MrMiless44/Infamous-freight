@@ -2,11 +2,10 @@
 // Reduces churn by 20-30% = $15K-23K saved revenue annually
 // Automates onboarding, engagement, and retention workflows
 
-const { PrismaClient } = require('@prisma/client');
-const { sendEmail } = require('./emailService');
-const { logger } = require('../middleware/logger');
+const { sendEmail } = require("./emailService");
+const { logger } = require("../middleware/logger");
 
-const prisma = new PrismaClient();
+const prisma = require("../lib/prisma");
 
 class CustomerSuccessAutomation {
   constructor(config = {}) {
@@ -14,9 +13,9 @@ class CustomerSuccessAutomation {
       healthScoreThreshold: config.healthScoreThreshold || 30,
       inactivityDays: config.inactivityDays || 7,
       retentionOffers: config.retentionOffers || [
-        { type: 'discount', value: 30, duration: 3 },
-        { type: 'pause', duration: 2 },
-        { type: 'downgrade', tier: 'starter' },
+        { type: "discount", value: 30, duration: 3 },
+        { type: "pause", duration: 2 },
+        { type: "downgrade", tier: "starter" },
       ],
     };
   }
@@ -25,38 +24,38 @@ class CustomerSuccessAutomation {
    * Run daily customer health monitoring
    */
   async monitorCustomerHealth() {
-    logger.info('Running customer health check...');
-    
+    logger.info("Running customer health check...");
+
     try {
       const customers = await prisma.customer.findMany({
-        where: { status: 'active' },
+        where: { status: "active" },
         include: {
           subscription: true,
-          usage: { orderBy: { createdAt: 'desc' }, take: 30 },
-          supportTickets: { orderBy: { createdAt: 'desc' }, take: 10 },
+          usage: { orderBy: { createdAt: "desc" }, take: 30 },
+          supportTickets: { orderBy: { createdAt: "desc" }, take: 10 },
         },
       });
 
       for (const customer of customers) {
         const healthScore = await this.calculateHealthScore(customer);
-        
+
         // Store health score
         await this.updateHealthScore(customer.id, healthScore);
-        
+
         // Take action based on health score
         if (healthScore < this.config.healthScoreThreshold) {
           await this.handleUnhealthyCustomer(customer, healthScore);
         }
-        
+
         // Check for cancellation intent
         if (customer.subscription?.cancelAt) {
           await this.handleCancellationIntent(customer);
         }
       }
-      
-      logger.info({ customersAnalyzed: customers.length }, 'Analyzed customers');
+
+      logger.info({ customersAnalyzed: customers.length }, "Analyzed customers");
     } catch (error) {
-      logger.error({ error }, 'Error monitoring customer health');
+      logger.error({ error }, "Error monitoring customer health");
       throw error;
     }
   }
@@ -74,13 +73,12 @@ class CustomerSuccessAutomation {
     };
 
     // Weighted scoring (total = 100)
-    const score = (
+    const score =
       factors.loginFrequency * 0.25 +
       factors.featureUsage * 0.25 +
-      factors.supportTickets * 0.20 +
-      factors.paymentHistory * 0.20 +
-      factors.tenure * 0.10
-    );
+      factors.supportTickets * 0.2 +
+      factors.paymentHistory * 0.2 +
+      factors.tenure * 0.1;
 
     return Math.max(0, Math.min(100, Math.round(score)));
   }
@@ -90,20 +88,20 @@ class CustomerSuccessAutomation {
    */
   async getLoginFrequency(customerId) {
     const last30Days = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-    
+
     const loginCount = await prisma.auditLog.count({
       where: {
         userId: customerId,
-        action: 'login',
+        action: "login",
         createdAt: { gte: last30Days },
       },
     });
 
     // Score based on login frequency
     if (loginCount >= 20) return 100; // Daily user
-    if (loginCount >= 10) return 75;  // Weekly user
-    if (loginCount >= 4) return 50;   // Bi-weekly user
-    if (loginCount >= 1) return 25;   // Monthly user
+    if (loginCount >= 10) return 75; // Weekly user
+    if (loginCount >= 4) return 50; // Bi-weekly user
+    if (loginCount >= 1) return 25; // Monthly user
     return 0; // Inactive
   }
 
@@ -112,7 +110,7 @@ class CustomerSuccessAutomation {
    */
   async getFeatureUsage(customerId) {
     const last30Days = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-    
+
     const usage = await prisma.usage.aggregate({
       where: {
         customerId,
@@ -122,7 +120,7 @@ class CustomerSuccessAutomation {
     });
 
     const totalUsage = usage._sum.count || 0;
-    
+
     // Score based on usage volume
     if (totalUsage >= 1000) return 100;
     if (totalUsage >= 500) return 75;
@@ -136,11 +134,11 @@ class CustomerSuccessAutomation {
    */
   getSupportTicketScore(tickets) {
     const recentTickets = tickets.filter(
-      t => t.createdAt > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+      (t) => t.createdAt > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
     );
 
-    const openTickets = recentTickets.filter(t => t.status === 'open').length;
-    
+    const openTickets = recentTickets.filter((t) => t.status === "open").length;
+
     // More open tickets = lower score
     if (openTickets === 0) return 100;
     if (openTickets === 1) return 80;
@@ -155,21 +153,21 @@ class CustomerSuccessAutomation {
   async getPaymentHistory(customerId) {
     const payments = await prisma.payment.findMany({
       where: { customerId },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
       take: 10,
     });
 
     if (payments.length === 0) return 50; // New customer
 
-    const successfulPayments = payments.filter(p => p.status === 'succeeded').length;
-    const failedPayments = payments.filter(p => p.status === 'failed').length;
-    
+    const successfulPayments = payments.filter((p) => p.status === "succeeded").length;
+    const failedPayments = payments.filter((p) => p.status === "failed").length;
+
     // Score based on success rate
     const successRate = successfulPayments / payments.length;
-    
+
     if (failedPayments >= 3) return 20; // Multiple failures
     if (failedPayments >= 1) return 60; // Some failures
-    if (successRate === 1) return 100;  // Perfect record
+    if (successRate === 1) return 100; // Perfect record
     return 80;
   }
 
@@ -178,12 +176,12 @@ class CustomerSuccessAutomation {
    */
   getTenureScore(createdAt) {
     const daysActive = Math.floor((Date.now() - createdAt.getTime()) / (24 * 60 * 60 * 1000));
-    
+
     // Longer tenure = more invested
     if (daysActive >= 365) return 100; // 1+ year
-    if (daysActive >= 180) return 80;  // 6+ months
-    if (daysActive >= 90) return 60;   // 3+ months
-    if (daysActive >= 30) return 40;   // 1+ month
+    if (daysActive >= 180) return 80; // 6+ months
+    if (daysActive >= 90) return 60; // 3+ months
+    if (daysActive >= 30) return 40; // 1+ month
     return 20; // New customer
   }
 
@@ -208,8 +206,8 @@ class CustomerSuccessAutomation {
    * Handle unhealthy customer (low health score)
    */
   async handleUnhealthyCustomer(customer, healthScore) {
-    logger.warn({ customerEmail: customer.email, healthScore }, 'Unhealthy customer detected');
-    
+    logger.warn({ customerEmail: customer.email, healthScore }, "Unhealthy customer detected");
+
     // Check last engagement attempt
     const lastContact = await this.getLastEngagementContact(customer.id);
     const daysSinceContact = lastContact
@@ -221,13 +219,13 @@ class CustomerSuccessAutomation {
 
     // Send re-engagement email
     await this.sendReengagementEmail(customer, healthScore);
-    
+
     // Log engagement attempt
     await prisma.engagementLog.create({
       data: {
         customerId: customer.id,
-        type: 'reengagement',
-        reason: 'low_health_score',
+        type: "reengagement",
+        reason: "low_health_score",
         healthScore,
       },
     });
@@ -237,13 +235,13 @@ class CustomerSuccessAutomation {
    * Handle customer with cancellation intent
    */
   async handleCancellationIntent(customer) {
-    logger.warn({ customerEmail: customer.email }, 'Cancellation intent detected');
-    
+    logger.warn({ customerEmail: customer.email }, "Cancellation intent detected");
+
     // Check if we've already offered retention
     const existingOffer = await prisma.retentionOffer.findFirst({
       where: {
         customerId: customer.id,
-        status: 'pending',
+        status: "pending",
       },
     });
 
@@ -251,14 +249,14 @@ class CustomerSuccessAutomation {
 
     // Create retention offer
     const offer = this.config.retentionOffers[0]; // Start with best offer
-    
+
     await prisma.retentionOffer.create({
       data: {
         customerId: customer.id,
         type: offer.type,
         value: offer.value,
         duration: offer.duration,
-        status: 'pending',
+        status: "pending",
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
       },
     });
@@ -273,7 +271,7 @@ class CustomerSuccessAutomation {
   async sendOnboardingEmail(customer, day = 1) {
     const templates = {
       1: {
-        subject: 'Welcome to Infamous Freight! 🚀',
+        subject: "Welcome to Infamous Freight! 🚀",
         body: `
           Hi ${customer.name},
           
@@ -292,7 +290,7 @@ class CustomerSuccessAutomation {
         `,
       },
       3: {
-        subject: 'Quick check-in - How are things going?',
+        subject: "Quick check-in - How are things going?",
         body: `
           Hi ${customer.name},
           
@@ -310,7 +308,7 @@ class CustomerSuccessAutomation {
         `,
       },
       7: {
-        subject: 'Advanced tips to maximize your plan',
+        subject: "Advanced tips to maximize your plan",
         body: `
           Hi ${customer.name},
           
@@ -340,7 +338,7 @@ class CustomerSuccessAutomation {
       body: template.body,
     });
 
-    logger.info({ customerEmail: customer.email, day }, 'Sent onboarding email');
+    logger.info({ customerEmail: customer.email, day }, "Sent onboarding email");
   }
 
   /**
@@ -349,7 +347,7 @@ class CustomerSuccessAutomation {
   async sendReengagementEmail(customer, healthScore) {
     await sendEmail({
       to: customer.email,
-      subject: 'We miss you! Here\'s 20% off your next month',
+      subject: "We miss you! Here's 20% off your next month",
       body: `
         Hi ${customer.name},
         
@@ -364,7 +362,7 @@ class CustomerSuccessAutomation {
       `,
     });
 
-    logger.info({ customerEmail: customer.email }, 'Sent re-engagement email');
+    logger.info({ customerEmail: customer.email }, "Sent re-engagement email");
   }
 
   /**
@@ -379,7 +377,7 @@ class CustomerSuccessAutomation {
 
     await sendEmail({
       to: customer.email,
-      subject: 'Before you go... let\'s talk',
+      subject: "Before you go... let's talk",
       body: `
         Hi ${customer.name},
         
@@ -398,7 +396,7 @@ class CustomerSuccessAutomation {
       `,
     });
 
-    logger.info({ customerEmail: customer.email }, 'Sent retention offer');
+    logger.info({ customerEmail: customer.email }, "Sent retention offer");
   }
 
   /**
@@ -407,7 +405,7 @@ class CustomerSuccessAutomation {
   async sendPaymentRetryEmail(customer) {
     await sendEmail({
       to: customer.email,
-      subject: '⚠️ Payment Failed - Update Your Card',
+      subject: "⚠️ Payment Failed - Update Your Card",
       body: `
         Hi ${customer.name},
         
@@ -424,7 +422,7 @@ class CustomerSuccessAutomation {
       `,
     });
 
-    logger.info({ customerEmail: customer.email }, 'Sent payment retry email');
+    logger.info({ customerEmail: customer.email }, "Sent payment retry email");
   }
 
   /**
@@ -433,7 +431,7 @@ class CustomerSuccessAutomation {
   async getLastEngagementContact(customerId) {
     const log = await prisma.engagementLog.findFirst({
       where: { customerId },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
 
     return log?.createdAt || null;
@@ -455,8 +453,8 @@ class CustomerSuccessAutomation {
     // Schedule future emails
     setTimeout(() => this.sendOnboardingEmail(customer, 3), 3 * 24 * 60 * 60 * 1000);
     setTimeout(() => this.sendOnboardingEmail(customer, 7), 7 * 24 * 60 * 60 * 1000);
-    
-    logger.info({ customerEmail: customer.email }, 'Scheduled onboarding');
+
+    logger.info({ customerEmail: customer.email }, "Scheduled onboarding");
   }
 }
 
@@ -464,16 +462,16 @@ class CustomerSuccessAutomation {
  * Schedule automated customer success checks
  */
 function scheduleCustomerSuccess(config = {}) {
-  const cron = require('node-cron');
+  const cron = require("node-cron");
   const automation = new CustomerSuccessAutomation(config);
 
   // Daily health check at 10 AM
-  cron.schedule('0 10 * * *', async () => {
-    logger.info('Running scheduled customer health check...');
+  cron.schedule("0 10 * * *", async () => {
+    logger.info("Running scheduled customer health check...");
     await automation.monitorCustomerHealth();
   });
 
-  logger.info('Customer success automation scheduled');
+  logger.info("Customer success automation scheduled");
   return automation;
 }
 

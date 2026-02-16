@@ -22,15 +22,10 @@ export async function POST(req: Request) {
       .select("name")
       .eq("id", activeCompanyId)
       .single();
-    const customerId = await ensureStripeCustomer(
-      activeCompanyId,
-      company?.name ?? "Company",
-    );
+    const customerId = await ensureStripeCustomer(activeCompanyId, company?.name ?? "Company");
 
     const priceId =
-      plan === "operator"
-        ? process.env.STRIPE_PRICE_OPERATOR!
-        : process.env.STRIPE_PRICE_FLEET!;
+      plan === "operator" ? process.env.STRIPE_PRICE_OPERATOR! : process.env.STRIPE_PRICE_FLEET!;
     const appUrl = process.env.NEXT_PUBLIC_APP_URL!;
 
     const session = await stripe.checkout.sessions.create({
@@ -47,14 +42,11 @@ export async function POST(req: Request) {
 
     return jsonWithRequestId(req, { ok: true, url: session.url });
   } catch (error) {
-    // eslint-disable-next-line no-console
+     
     console.error("Error creating billing checkout session", error);
-    return new Response(
-      JSON.stringify({ ok: false, error: "Internal Server Error" }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      },
-    );
+    return new Response(JSON.stringify({ ok: false, error: "Internal Server Error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }

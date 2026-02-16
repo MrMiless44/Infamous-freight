@@ -36,9 +36,7 @@ export default function Dashboard() {
         color: "#f9fafb",
       }}
     >
-      <h1 style={{ fontSize: "1.8rem", marginBottom: "1rem" }}>
-        Control Tower
-      </h1>
+      <h1 style={{ fontSize: "1.8rem", marginBottom: "1rem" }}>Control Tower</h1>
       {loading && <p>Loading status…</p>}
       {!loading && status && (
         <pre

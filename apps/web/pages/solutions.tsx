@@ -5,8 +5,7 @@ import { trackEvent } from "../src/lib/analytics";
 const solutionBlocks = [
   {
     title: "Dispatch",
-    description:
-      "Suggested match and reroute decisions with Genesis AI confidence and impact.",
+    description: "Suggested match and reroute decisions with Genesis AI confidence and impact.",
     bullets: [
       "Map + list view for full coverage",
       "One-click assign, reroute, message driver",
@@ -15,8 +14,7 @@ const solutionBlocks = [
   },
   {
     title: "Fleet",
-    description:
-      "Live availability, health, and safety monitoring without noisy dashboards.",
+    description: "Live availability, health, and safety monitoring without noisy dashboards.",
     bullets: [
       "Driver status pills and readiness",
       "Maintenance visibility",
@@ -25,8 +23,7 @@ const solutionBlocks = [
   },
   {
     title: "Billing",
-    description:
-      "Auto-invoicing, disputes queue, and Stripe metering summary in one view.",
+    description: "Auto-invoicing, disputes queue, and Stripe metering summary in one view.",
     bullets: [
       "Time-to-invoice acceleration",
       "Exception handling workflows",
@@ -35,8 +32,7 @@ const solutionBlocks = [
   },
   {
     title: "Insurance",
-    description:
-      "Transparent coverage workflows with step-based claims and risk scoring.",
+    description: "Transparent coverage workflows with step-based claims and risk scoring.",
     bullets: [
       "Coverage status at load level",
       "Claims workflow stepper",
@@ -58,8 +54,8 @@ export default function SolutionsPage() {
             <p className="section-subtitle">Solutions</p>
             <h1 className="hero-title">Every operations team, unified.</h1>
             <p className="hero-copy">
-              Dispatch, fleet, billing, and insurance all run on the same
-              intelligence layer—Genesis AI.
+              Dispatch, fleet, billing, and insurance all run on the same intelligence layer—Genesis
+              AI.
             </p>
             <div className="hero-actions">
               <Link href="/pricing" className="btn btn-secondary">
@@ -77,8 +73,8 @@ export default function SolutionsPage() {
           <div className="hero-card">
             <h3>Genesis Recommendations</h3>
             <p>
-              Every suggestion ships with reasoning, impact, and action buttons
-              that keep operators in control.
+              Every suggestion ships with reasoning, impact, and action buttons that keep operators
+              in control.
             </p>
             <div className="metric-grid">
               <div className="metric-card">

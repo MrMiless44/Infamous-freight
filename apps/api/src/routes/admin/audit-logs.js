@@ -19,9 +19,7 @@ router.get(
     try {
       const client = getPrisma?.() || prisma;
       if (!client) {
-        const error = new Error(
-          "Audit log unavailable (database not initialized)",
-        );
+        const error = new Error("Audit log unavailable (database not initialized)");
         error.status = 503;
         throw error;
       }

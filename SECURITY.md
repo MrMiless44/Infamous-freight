@@ -132,12 +132,12 @@ pnpm licenses
 
 **Severity Response:**
 
-| Severity | Action | Timeline | Block Merge? |
-|----------|--------|----------|--------------|
-| 🔴 Critical | Immediate response team | 1 hour | ✅ YES |
-| 🟠 High | Fix + test + deploy | 24 hours | ✅ YES |
-| 🟡 Moderate | Plan fix | 1 week | ❌ NO |
-| 🔵 Low | Track in backlog | 30 days | ❌ NO |
+| Severity    | Action                  | Timeline | Block Merge? |
+| ----------- | ----------------------- | -------- | ------------ |
+| 🔴 Critical | Immediate response team | 1 hour   | ✅ YES       |
+| 🟠 High     | Fix + test + deploy     | 24 hours | ✅ YES       |
+| 🟡 Moderate | Plan fix                | 1 week   | ❌ NO        |
+| 🔵 Low      | Track in backlog        | 30 days  | ❌ NO        |
 
 **Dependabot Auto-Merge:**
 
@@ -165,8 +165,7 @@ pnpm licenses
 }
 ```
 
-Generated: Automatically on each workflow run
-Location: GitHub Actions artifacts
+Generated: Automatically on each workflow run Location: GitHub Actions artifacts
 Retention: 90 days
 
 **Secret Detection:**
@@ -219,11 +218,11 @@ Day 28: Public disclosure (if not critical)
 
 ## Supported Versions
 
-| Version | Branch | Status | Security Updates |
-|---------|--------|--------|------------------|
-| main | main | ✅ Supported | ✅ Yes |
-| develop | develop | 🔄 Testing | ✅ Yes |
-| v1.x | v1.x | 🔴 EOL | ❌ No |
+| Version | Branch  | Status       | Security Updates |
+| ------- | ------- | ------------ | ---------------- |
+| main    | main    | ✅ Supported | ✅ Yes           |
+| develop | develop | 🔄 Testing   | ✅ Yes           |
+| v1.x    | v1.x    | 🔴 EOL       | ❌ No            |
 
 **Security Patch Policy:**
 
@@ -249,7 +248,7 @@ updates:
       - dependency-type: "all"
     reviewers:
       - "security-team"
-    auto-merge: true  # For critical security updates
+    auto-merge: true # For critical security updates
 ```
 
 ### Manual Update Procedure
@@ -364,7 +363,8 @@ LOW (CVSS 0-3)
 
 - [SECURITY.md](SECURITY.md) - This file
 - [.github/workflows/codeql.yml](.github/workflows/codeql.yml) - CodeQL workflow
-- [.github/codeql/codeql-config.yml](.github/codeql/codeql-config.yml) - CodeQL configuration
+- [.github/codeql/codeql-config.yml](.github/codeql/codeql-config.yml) - CodeQL
+  configuration
 
 ### GitHub Security Features
 

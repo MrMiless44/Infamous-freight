@@ -340,7 +340,8 @@ curl http://localhost:4000/api/health  # No auth needed
 
 Once local testing 100% passes all checkpoints above:
 
-**Next Step**: [PRODUCTION_DEPLOYMENT_EXECUTION.md](PRODUCTION_DEPLOYMENT_EXECUTION.md)
+**Next Step**:
+[PRODUCTION_DEPLOYMENT_EXECUTION.md](PRODUCTION_DEPLOYMENT_EXECUTION.md)
 
 **Timeline**: 2 hours from green light
 

@@ -98,16 +98,14 @@ serve(async (req) => {
     return new Response("OpenAI returned empty summary", { status: 500 });
   }
 
-  const { error: upsertError } = await supabase
-    .from("thread_summaries")
-    .upsert(
-      {
-        thread_id: payload.thread_id,
-        summary,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "thread_id" },
-    );
+  const { error: upsertError } = await supabase.from("thread_summaries").upsert(
+    {
+      thread_id: payload.thread_id,
+      summary,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "thread_id" },
+  );
 
   if (upsertError) {
     console.error("Failed to store summary", upsertError);

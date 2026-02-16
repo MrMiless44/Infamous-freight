@@ -674,7 +674,8 @@ tail -f apps/api/logs/combined.log | grep "resource"
 
 ## ✨ Perfect Route Example: Shipments Endpoint
 
-See [apps/api/src/routes/shipments.js](./apps/api/src/routes/shipments.js) for a production-ready example implementing all 13 recommendations.
+See [apps/api/src/routes/shipments.js](./apps/api/src/routes/shipments.js) for a
+production-ready example implementing all 13 recommendations.
 
 ---
 

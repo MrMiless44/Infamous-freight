@@ -2,8 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import type { Request, Response } from "express";
 import { DISPUTE_STATUS } from "@infamous-freight/shared";
 
-export type DisputeStatus =
-  (typeof DISPUTE_STATUS)[keyof typeof DISPUTE_STATUS];
+export type DisputeStatus = (typeof DISPUTE_STATUS)[keyof typeof DISPUTE_STATUS];
 
 export interface DisputeRecord {
   id: string;
@@ -55,10 +54,7 @@ function parseProcessor(value: unknown): AllowedProcessor | null {
   return ALLOWED_PROCESSORS.includes(normalized) ? normalized : null;
 }
 
-export async function createDispute(
-  req: Request,
-  res: Response,
-): Promise<void> {
+export async function createDispute(req: Request, res: Response): Promise<void> {
   const userId = sanitizeString(req.body?.userId);
   const transactionId = sanitizeString(req.body?.transactionId);
   const processor = parseProcessor(req.body?.processor);

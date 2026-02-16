@@ -2,7 +2,8 @@
 
 **Live Production API**: `https://infamous-freight-api.fly.dev`
 
-This guide provides step-by-step instructions for testing the API endpoints manually using curl.
+This guide provides step-by-step instructions for testing the API endpoints
+manually using curl.
 
 ---
 

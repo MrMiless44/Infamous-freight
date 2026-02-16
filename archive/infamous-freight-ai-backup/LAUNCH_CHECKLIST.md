@@ -277,7 +277,8 @@ docker compose restart nginx
 
 - **Deploy Issues:** DEPLOYMENT_PRODUCTION.md
 - **Revenue Strategy:** MONETIZATION_GUIDE.md
-- **GitHub Issues:** https://github.com/MrMiless44/Infamous-Freight-Enterprises/issues
+- **GitHub Issues:**
+  https://github.com/MrMiless44/Infamous-Freight-Enterprises/issues
 - **Render Docs:** https://render.com/docs
 - **Fly.io Docs:** https://fly.io/docs
 
@@ -285,8 +286,7 @@ docker compose restart nginx
 
 ## 🎊 You're Ready!
 
-**Your freight AI platform has:**
-✅ Complete codebase  
+**Your freight AI platform has:** ✅ Complete codebase  
 ✅ Billing system integrated  
 ✅ Production configs ready  
 ✅ Documentation complete  

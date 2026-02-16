@@ -8,29 +8,29 @@ This is the definitive state your platform should operate in.
 
 ### Core SaaS (Access Layer)
 
-| Product | Purpose |
-| --- | --- |
-| Starter Platform Access | Entry tier, limited automation |
-| Professional Platform Access | SMB tier |
-| Enterprise Platform Access | High-security + SLA |
+| Product                      | Purpose                        |
+| ---------------------------- | ------------------------------ |
+| Starter Platform Access      | Entry tier, limited automation |
+| Professional Platform Access | SMB tier                       |
+| Enterprise Platform Access   | High-security + SLA            |
 
 ### Seat-Based SaaS (Primary Revenue)
 
-| Product | Price | Purpose |
-| --- | --- | --- |
-| Pro (per seat) | $49/user/mo | Core multi-user SaaS |
+| Product             | Price       | Purpose              |
+| ------------------- | ----------- | -------------------- |
+| Pro (per seat)      | $49/user/mo | Core multi-user SaaS |
 | Business (per seat) | $99/user/mo | AI + automation tier |
 
 These are your true SaaS anchors.
 
 ### Enterprise Revenue Enforcement
 
-| Product | Purpose |
-| --- | --- |
+| Product                                      | Purpose                     |
+| -------------------------------------------- | --------------------------- |
 | Enterprise Minimum Monthly Spend ($2,500/mo) | Forces enterprise ARR floor |
-| White Label (optional) | Premium branding |
-| Satellite / Weather Intelligence | Operational intelligence |
-| Real-Time Tracking (per truck) | Asset-based billing |
+| White Label (optional)                       | Premium branding            |
+| Satellite / Weather Intelligence             | Operational intelligence    |
+| Real-Time Tracking (per truck)               | Asset-based billing         |
 
 ---
 
@@ -131,14 +131,14 @@ All others → Archive.
 
 This prevents broken deployments and enables CI/CD-safe billing.
 
-| Product | Lookup Key |
-| --- | --- |
-| AI Metered | `iff_ai_action_metered` |
-| Pro Seat | `iff_pro_seat_monthly` |
-| Business Seat | `iff_business_seat_monthly` |
+| Product            | Lookup Key                       |
+| ------------------ | -------------------------------- |
+| AI Metered         | `iff_ai_action_metered`          |
+| Pro Seat           | `iff_pro_seat_monthly`           |
+| Business Seat      | `iff_business_seat_monthly`      |
 | Enterprise Minimum | `iff_enterprise_minimum_monthly` |
-| Satellite | `iff_satellite_weather_monthly` |
-| Tracking | `iff_tracking_per_truck_monthly` |
+| Satellite          | `iff_satellite_weather_monthly`  |
+| Tracking           | `iff_tracking_per_truck_monthly` |
 
 ---
 
@@ -225,12 +225,12 @@ This is how Snowflake, Datadog, Twilio monetize usage.
 
 ### Recommended Limits
 
-| Tier | AI Actions / Month |
-| --- | --- |
-| Starter | 0 |
-| Pro | 50 free |
-| Business | 5,000 |
-| Enterprise | Custom |
+| Tier       | AI Actions / Month |
+| ---------- | ------------------ |
+| Starter    | 0                  |
+| Pro        | 50 free            |
+| Business   | 5,000              |
+| Enterprise | Custom             |
 
 Once limit exceeded → Stripe bills via metered AI.
 
@@ -262,21 +262,21 @@ Enable:
 
 ### SaaS Core
 
-| Stripe Product | Enables |
-| --- | --- |
-| Starter Access | Dashboard, basic dispatch |
-| Pro Seat | Multi-user, automation |
-| Business Seat | AI routing, voice, billing AI |
-| Enterprise Access | RBAC, SLA, audit logs |
+| Stripe Product    | Enables                       |
+| ----------------- | ----------------------------- |
+| Starter Access    | Dashboard, basic dispatch     |
+| Pro Seat          | Multi-user, automation        |
+| Business Seat     | AI routing, voice, billing AI |
+| Enterprise Access | RBAC, SLA, audit logs         |
 
 ### AI Layer
 
-| Stripe Product | Enables |
-| --- | --- |
-| AI Metered | All AI actions |
-| AI Event SKUs | Enterprise premium AI |
-| Satellite | Weather-aware AI routing |
-| Tracking | Real-time asset AI |
+| Stripe Product | Enables                  |
+| -------------- | ------------------------ |
+| AI Metered     | All AI actions           |
+| AI Event SKUs  | Enterprise premium AI    |
+| Satellite      | Weather-aware AI routing |
+| Tracking       | Real-time asset AI       |
 
 ---
 

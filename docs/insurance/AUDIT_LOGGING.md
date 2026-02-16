@@ -1,6 +1,7 @@
 # Audit Logging
 
-All insurance actions write to the insurance event log for compliance and investor due diligence.
+All insurance actions write to the insurance event log for compliance and
+investor due diligence.
 
 ## Event Types
 

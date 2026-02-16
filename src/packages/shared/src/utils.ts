@@ -7,10 +7,7 @@ export function formatDate(date: Date | string): string {
   return d.toISOString().split("T")[0];
 }
 
-export function formatCurrency(
-  amount: number,
-  currency: string = "USD",
-): string {
+export function formatCurrency(amount: number, currency: string = "USD"): string {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency,

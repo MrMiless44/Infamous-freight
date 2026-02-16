@@ -399,12 +399,12 @@ CAMPAIGN: LOGISTICS PROFESSIONALS
     • Job titles: Operations Manager, Logistics Manager, Supply Chain Manager
     • Industries: Logistics, Manufacturing, E-commerce, 3PL
     • Company size: 50-1,000 employees
-  
+
   Ad Formats:
     • Sponsored content (blog posts, case studies)
     • Sponsored InMail (personalized outreach)
     • Text ads (CTAs to trial)
-  
+
   Budget: $3,000/month
   Goal: 5% CTR, <$300 CAC
 

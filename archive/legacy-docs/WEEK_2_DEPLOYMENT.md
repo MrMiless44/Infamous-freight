@@ -9,7 +9,8 @@
 
 ## 🎯 OBJECTIVE
 
-Containerize application, set up CI/CD pipelines, and deploy to production platforms.
+Containerize application, set up CI/CD pipelines, and deploy to production
+platforms.
 
 ---
 
@@ -434,9 +435,7 @@ jobs:
         env:
           POSTGRES_PASSWORD: postgres
         options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s
           --health-retries 5
 
     steps:

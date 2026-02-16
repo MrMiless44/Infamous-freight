@@ -286,7 +286,8 @@ registerInstrumentations({
 });
 ```
 
-**Benefit:** Debug slow requests, identify bottlenecks (e.g., "Why did shipment #1234 take 5 seconds to load?")
+**Benefit:** Debug slow requests, identify bottlenecks (e.g., "Why did shipment
+#1234 take 5 seconds to load?")
 
 ---
 
@@ -871,4 +872,6 @@ Before calling this "100% production-ready":
 
 ---
 
-**Questions?** Review [PRODUCTION_DEPLOYMENT_CHECKLIST.md](PRODUCTION_DEPLOYMENT_CHECKLIST.md) for detailed deployment steps.
+**Questions?** Review
+[PRODUCTION_DEPLOYMENT_CHECKLIST.md](PRODUCTION_DEPLOYMENT_CHECKLIST.md) for
+detailed deployment steps.

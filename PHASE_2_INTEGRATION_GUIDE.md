@@ -1,4 +1,5 @@
 # PHASE 2 INTEGRATION GUIDE
+
 ## How Phase 2 Components Work Together
 
 **Date:** February 15, 2026  
@@ -59,6 +60,7 @@
 ### Scenario: Driver Searching & Bidding on Loads
 
 **Step 1: Driver Opens App → Search Loads**
+
 ```
 Mobile App
   ↓
@@ -91,6 +93,7 @@ Mobile App UI
 ```
 
 **Step 2: Driver Views Load Details**
+
 ```
 Mobile App (load card click)
   ↓
@@ -107,6 +110,7 @@ Mobile App
 ```
 
 **Step 3: Driver Places Bid**
+
 ```
 Mobile App (bid button click)
   ↓
@@ -138,6 +142,7 @@ Mobile App
 ```
 
 **Step 4: Shipper Receives Notification (Webhook)**
+
 ```
 Webhook Service
   ├─ Queue event: 'bid:received'
@@ -160,6 +165,7 @@ Shipper's Dashboard or App
 ```
 
 **Step 5: Analytics Updated**
+
 ```
 Database Events
   ├─ New bid recorded
@@ -190,6 +196,7 @@ Web App Analytics Page (NEW - Phase 2)
 ## 🔐 Security Architecture
 
 ### Auth Flow (5 Layers)
+
 ```
 ┌─────────────────────────────────────────────────┐
 │ Layer 1: TLS/HTTPS                              │
@@ -222,6 +229,7 @@ Web App Analytics Page (NEW - Phase 2)
 ```
 
 ### Database Security
+
 ```
 User Role         Can Access
 ─────────────────────────────────────
@@ -239,6 +247,7 @@ admin             ├─ All data
 ```
 
 ### Webhook Security
+
 ```
 External App (Webhook Subscriber)
         ↓
@@ -272,6 +281,7 @@ App Processes Webhook
 Each load board (DAT, TruckStop, Convoy, **Uber**) follows the same pattern:
 
 ### Service Implementation Pattern
+
 ```javascript
 class LoadboardService {
   // 1. Authentication
@@ -310,19 +320,20 @@ class LoadboardService {
 ```
 
 ### Adding a New Load Board (Future: 5th Board)
+
 ```javascript
 // 1. Create service: apps/api/src/services/newloadboardService.js
 // 2. Implement same interface as others
 // 3. Add OAuth credentials to .env.example
 // 4. Update loadboard.js routes:
 
-if (source === 'all' || source === 'newloadboard') {
+if (source === "all" || source === "newloadboard") {
   const loads = await newLoadboardService.search(filters);
   loads = loads.concat(loads);
 }
 
 // 5. Add to bid route:
-else if (id.startsWith('new-')) {
+else if (id.startsWith("new-")) {
   bidResult = await newLoadboardService.placeBid(id, bidData);
 }
 
@@ -336,6 +347,7 @@ else if (id.startsWith('new-')) {
 ### How KPIs Are Calculated
 
 **Daily Metrics (Computed Each Night)**
+
 ```sql
 INSERT INTO analytics_daily_metrics
 SELECT
@@ -355,6 +367,7 @@ GROUP BY u.id;
 ```
 
 **Monthly Revenue Trends**
+
 ```sql
 INSERT INTO analytics_revenue_history
 SELECT
@@ -373,14 +386,15 @@ GROUP BY u.id, to_char(b.createdAt, 'YYYY-MM');
 ```
 
 **AI Scoring Algorithm (Applied at Load Fetch)**
+
 ```javascript
 function calculateScore(load, driverPreferences) {
-  let score = 60;  // Base score
+  let score = 60; // Base score
 
   // Rate premium: +20 if above $1.50/mile
   const ratePerMile = load.rate / load.miles;
-  if (ratePerMile > 1.50) score += 20;
-  else if (ratePerMile > 1.20) score += 10;
+  if (ratePerMile > 1.5) score += 20;
+  else if (ratePerMile > 1.2) score += 10;
 
   // Distance optimization: +15 if 200-600 miles
   if (load.miles >= 200 && load.miles <= 600) score += 15;
@@ -407,6 +421,7 @@ function calculateScore(load, driverPreferences) {
 ## 🚨 Error Handling & Resilience
 
 ### Cascading Failure Pattern
+
 ```
 Load Search Request
   ├─ DAT API fails                    → Continue with others
@@ -425,6 +440,7 @@ Load Search Request
 ```
 
 ### Webhook Resilience
+
 ```
 Webhook Event Queued
   ├─ Attempt 1 (immediate)            → Failed (timeout)
@@ -447,6 +463,7 @@ If all 5 attempts fail:
 ## 🧪 Phase 2 Test Coverage
 
 ### What's Tested
+
 ```
 ✓ Load Search
   ├─ Multi-source aggregation
@@ -485,6 +502,7 @@ If all 5 attempts fail:
 ```
 
 ### Running Tests
+
 ```bash
 cd apps/api
 
@@ -509,37 +527,41 @@ pnpm test -- -u
 ## 📈 Performance Benchmarks
 
 ### API Response Times (Real-world, 99th percentile)
-| Endpoint | Time | Notes |
-|----------|------|-------|
-| `/api/loads/search` | 450ms | 4 APIs in parallel |
-| `/api/loads/:id` | 200ms | Single source |
-| `/api/loads/:id/bid` | 300ms | Bid placement |
-| `/api/analytics/driver/dashboard` | 250ms | Cached |
-| `/api/analytics/leaderboard` | 180ms | Cached |
-| `/api/webhooks/subscribe` | 150ms | Immediate |
+
+| Endpoint                          | Time  | Notes              |
+| --------------------------------- | ----- | ------------------ |
+| `/api/loads/search`               | 450ms | 4 APIs in parallel |
+| `/api/loads/:id`                  | 200ms | Single source      |
+| `/api/loads/:id/bid`              | 300ms | Bid placement      |
+| `/api/analytics/driver/dashboard` | 250ms | Cached             |
+| `/api/analytics/leaderboard`      | 180ms | Cached             |
+| `/api/webhooks/subscribe`         | 150ms | Immediate          |
 
 ### Database Query Times
-| Query | Time |
-|-------|------|
-| Search with indexes | 45ms |
-| Analytics aggregation | 890ms |
-| Webhook event insert | 8ms |
+
+| Query                  | Time  |
+| ---------------------- | ----- |
+| Search with indexes    | 45ms  |
+| Analytics aggregation  | 890ms |
+| Webhook event insert   | 8ms   |
 | Leaderboard generation | 250ms |
 
 ### Scalability
-| Metric | Capacity |
-|--------|----------|
-| Concurrent users | 1,000+ |
-| Loads per day | 100K+ |
-| API calls per minute | 50K+ |
-| Webhook events per day | 1M+ |
-| Database throughput | 10K ops/sec |
+
+| Metric                 | Capacity    |
+| ---------------------- | ----------- |
+| Concurrent users       | 1,000+      |
+| Loads per day          | 100K+       |
+| API calls per minute   | 50K+        |
+| Webhook events per day | 1M+         |
+| Database throughput    | 10K ops/sec |
 
 ---
 
 ## 🛠️ Operational Tasks
 
 ### Daily Standup Checklist
+
 ```
 □ API health checks passing
   curl https://api.infamous-freight.com/api/health
@@ -567,6 +589,7 @@ pnpm test -- -u
 ```
 
 ### Weekly Maintenance
+
 ```
 Monday:
   □ Review analytics trends
@@ -589,14 +612,16 @@ Friday:
 ## 📞 Support & Escalation
 
 ### Issue Classification
-| Severity | Example | Response Time |
-|----------|---------|---|
-| Critical | API completely down | 15 min |
-| High | 1 load board failing | 1 hour |
-| Medium | Analytics cache stale | 4 hours |
-| Low | UI bug on dashboard | Next sprint |
+
+| Severity | Example               | Response Time |
+| -------- | --------------------- | ------------- |
+| Critical | API completely down   | 15 min        |
+| High     | 1 load board failing  | 1 hour        |
+| Medium   | Analytics cache stale | 4 hours       |
+| Low      | UI bug on dashboard   | Next sprint   |
 
 ### Escalation Contacts
+
 - **Engineering Lead:** engineering@infamous-freight.com
 - **On-Call:** Pagerduty alert system
 - **Customer Support:** support@infamous-freight.com
@@ -606,6 +631,7 @@ Friday:
 ## 🎯 Success Metrics
 
 ### Business KPIs (Phase 2)
+
 - ✅ 4 load boards live (DAT, TruckStop, Convoy, **Uber** new)
 - ✅ 100+ loads per driver per day (aggregated)
 - ✅ < 500ms average search response
@@ -614,6 +640,7 @@ Friday:
 - ✅ $1,500+ average load value
 
 ### Technical KPIs (Phase 2)
+
 - ✅ Test coverage 85%+
 - ✅ Zero critical bugs in Phase 2 code
 - ✅ Database response time < 100ms
@@ -623,6 +650,6 @@ Friday:
 
 ---
 
-*Integration Guide - Complete*  
-*Last Updated: February 15, 2026*  
-*Version: 2.0 (Phase 2)*
+_Integration Guide - Complete_  
+_Last Updated: February 15, 2026_  
+_Version: 2.0 (Phase 2)_

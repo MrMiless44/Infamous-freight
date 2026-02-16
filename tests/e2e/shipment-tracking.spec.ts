@@ -6,13 +6,10 @@
 import { test, expect } from "@playwright/test";
 
 const API_URL = process.env.API_URL || "https://infamous-freight-api.fly.dev";
-const WEB_URL =
-  process.env.WEB_URL || "https://infamous-freight-enterprises.vercel.app";
+const WEB_URL = process.env.WEB_URL || "https://infamous-freight-enterprises.vercel.app";
 
 test.describe("Shipment Tracking", () => {
-  test("customer can track shipment with valid tracking number", async ({
-    page,
-  }) => {
+  test("customer can track shipment with valid tracking number", async ({ page }) => {
     await page.goto(WEB_URL);
 
     // Enter tracking number
@@ -28,9 +25,7 @@ test.describe("Shipment Tracking", () => {
     const status = await page.textContent('[data-testid="shipment-status"]');
     expect(status).toBeTruthy();
 
-    const estimatedDelivery = await page.locator(
-      '[data-testid="estimated-delivery"]',
-    );
+    const estimatedDelivery = await page.locator('[data-testid="estimated-delivery"]');
     await expect(estimatedDelivery).toBeVisible();
 
     // Check for map/location if in transit
@@ -100,9 +95,7 @@ test.describe("Shipment Creation", () => {
 
     // Should show success message and tracking number
     await page.waitForSelector('[data-testid="success-message"]');
-    const trackingNumber = await page.textContent(
-      '[data-testid="tracking-number"]',
-    );
+    const trackingNumber = await page.textContent('[data-testid="tracking-number"]');
     expect(trackingNumber).toMatch(/IFE-\d+/);
   });
 });

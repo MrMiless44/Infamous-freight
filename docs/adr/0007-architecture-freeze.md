@@ -12,25 +12,32 @@
 
 ## Context
 
-The repository has experienced repeated structural churn (package moves, layering shifts, and tooling pivots) that slows delivery and increases review overhead. The current architecture is documented and stable, and the immediate priority is to stop architectural thrash while allowing incremental, product-focused work to continue.
+The repository has experienced repeated structural churn (package moves,
+layering shifts, and tooling pivots) that slows delivery and increases review
+overhead. The current architecture is documented and stable, and the immediate
+priority is to stop architectural thrash while allowing incremental,
+product-focused work to continue.
 
 ---
 
 ## Decision
 
-We will **freeze the architecture** and introduce explicit change control for any structural modifications.
+We will **freeze the architecture** and introduce explicit change control for
+any structural modifications.
 
 **Frozen elements (default no-change):**
 
 - Monorepo layout and workspace boundaries.
 - Layer responsibilities documented in `docs/architecture.md`.
 - API/Web/Mobile app boundaries and shared package structure.
-- Deployment topology (API, web, mobile, data stores) unless a business-critical exception is approved.
+- Deployment topology (API, web, mobile, data stores) unless a business-critical
+  exception is approved.
 
 **Permitted changes without an ADR:**
 
 - Feature work that stays within existing modules.
-- Refactors that do not move ownership boundaries (packages/apps remain where they are).
+- Refactors that do not move ownership boundaries (packages/apps remain where
+  they are).
 - Dependency upgrades that do not require moving files across layers.
 - Performance or reliability fixes that preserve the existing architecture.
 

@@ -1,8 +1,7 @@
-/*
+/\*
 
-* Prisma Database Migration Guide
-* For Infamous Freight Enterprises
- */
+- Prisma Database Migration Guide
+- For Infamous Freight Enterprises \*/
 
 # Prerequisites
 
@@ -80,24 +79,27 @@ pnpm prisma:migrate:status
 ## Current Indexes (as of schema update)
 
 ### High-Priority Indexes (Hot Paths)
-* `shipments`: status, driverId, createdAt, trackingId
-* `payments`: userId, status, createdAt
-* `subscriptions`: userId, status
-* `users`: email, role
+
+- `shipments`: status, driverId, createdAt, trackingId
+- `payments`: userId, status, createdAt
+- `subscriptions`: userId, status
+- `users`: email, role
 
 ### Composite Indexes (Query Optimization)
-* `shipments(status, createdAt DESC)` - for filtered listings
-* `payments(userId, status, createdAt DESC)` - for user revenue reports
+
+- `shipments(status, createdAt DESC)` - for filtered listings
+- `payments(userId, status, createdAt DESC)` - for user revenue reports
 
 ### Foreign Key Indexes
-* `shipments.driverId` - automatically indexed
-* All user references - see User model relationships
+
+- `shipments.driverId` - automatically indexed
+- All user references - see User model relationships
 
 ## Index Size Monitoring
 
 ```sql
 -- Check index sizes
-SELECT 
+SELECT
   schemaname,
   tablename,
   indexname,
@@ -106,7 +108,7 @@ FROM pg_stat_user_indexes
 ORDER BY pg_relation_size(indexrelid) DESC;
 
 -- Check slow queries (enable log_statement = 'all')
-SELECT 
+SELECT
   query,
   calls,
   total_time,
@@ -123,9 +125,9 @@ ORDER BY mean_time DESC;
 ```sql
 -- Before optimization
 EXPLAIN (ANALYZE, BUFFERS)
-SELECT * FROM shipments 
-WHERE status = 'pending' 
-ORDER BY createdAt DESC 
+SELECT * FROM shipments
+WHERE status = 'pending'
+ORDER BY createdAt DESC
 LIMIT 10;
 
 -- Should use index: shipments_status_createdAt_idx
@@ -146,7 +148,8 @@ VACUUM ANALYZE; -- Reclaims space + analyzes
 
 ## Monitoring Replication Lag (if applicable)
 
-For replicated databases, ensure migrations are applied to all replicas before code deployment.
+For replicated databases, ensure migrations are applied to all replicas before
+code deployment.
 
 # Troubleshooting
 
@@ -188,12 +191,13 @@ Increase `DATABASE_URL` pool size if needed.
 # Integration with CI/CD
 
 See [.github/workflows/ci.yml](.github/workflows/ci.yml):
-* Migrations applied before tests
-* Shared package built first
-* All type checks pass before build
+
+- Migrations applied before tests
+- Shared package built first
+- All type checks pass before build
 
 # References
 
-* [Prisma Documentation](https://www.prisma.io/docs/)
-* [PostgreSQL Query Planner](https://www.postgresql.org/docs/current/sql-explain.html)
-* [Index Design Best Practices](https://www.postgresql.org/docs/current/indexes.html)
+- [Prisma Documentation](https://www.prisma.io/docs/)
+- [PostgreSQL Query Planner](https://www.postgresql.org/docs/current/sql-explain.html)
+- [Index Design Best Practices](https://www.postgresql.org/docs/current/indexes.html)

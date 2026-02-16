@@ -35,10 +35,7 @@ export function getRequiredEnv(key: string): string {
   return value as string;
 }
 
-export function getOptionalEnv(
-  key: string,
-  defaultValue?: string,
-): string | undefined {
+export function getOptionalEnv(key: string, defaultValue?: string): string | undefined {
   const value = process.env[key];
   if (isValueMissing(value)) {
     return defaultValue;

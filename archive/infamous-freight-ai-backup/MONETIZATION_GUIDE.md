@@ -158,8 +158,8 @@ git push
 
    ```
 
-Track shipments, optimize routes, manage drivers with AI copilot.
-Free 14-day trial. DM me for demo."
+Track shipments, optimize routes, manage drivers with AI copilot. Free 14-day
+trial. DM me for demo."
 
 ```
 
@@ -211,11 +211,9 @@ Free 14-day trial. DM me for demo."
 ### Cost Structure (Monthly)
 ```
 
-Hosting (Render/Fly): $200
-Database (PostgreSQL): $50
-Stripe fees (2.9% + $0.30): ~$500 at $20K MRR
-Support tools: $100
-Total: ~$850/month fixed + 2.9% variable
+Hosting (Render/Fly): $200 Database (PostgreSQL): $50 Stripe fees (2.9% +
+$0.30): ~$500 at $20K MRR Support tools: $100 Total: ~$850/month fixed + 2.9%
+variable
 
 ```
 

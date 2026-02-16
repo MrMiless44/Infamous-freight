@@ -18,7 +18,7 @@ export async function runInsuranceExpirationSweep() {
     } catch (error) {
       console.error(
         `[InsuranceExpiration] Failed for ${org.name}:`,
-        error instanceof Error ? error.message : String(error)
+        error instanceof Error ? error.message : String(error),
       );
     }
   }

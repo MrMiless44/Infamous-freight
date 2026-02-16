@@ -3,13 +3,13 @@
  * User-Friendly Tooltip Component
  */
 
-import React, { ReactNode, useState } from 'react';
-import styles from './Tooltip.module.css';
+import React, { ReactNode, useState } from "react";
+import styles from "./Tooltip.module.css";
 
 export interface TooltipProps {
   children: ReactNode;
   content: string;
-  position?: 'top' | 'right' | 'bottom' | 'left';
+  position?: "top" | "right" | "bottom" | "left";
   delay?: number;
   maxWidth?: number;
 }
@@ -17,7 +17,7 @@ export interface TooltipProps {
 export const Tooltip: React.FC<TooltipProps> = ({
   children,
   content,
-  position = 'top',
+  position = "top",
   delay = 0,
   maxWidth = 200,
 }) => {

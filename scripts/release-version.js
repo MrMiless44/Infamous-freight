@@ -2,7 +2,9 @@ import { execSync } from "node:child_process";
 import fs from "node:fs";
 
 function sh(cmd) {
-  return execSync(cmd, { stdio: ["ignore", "pipe", "pipe"] }).toString().trim();
+  return execSync(cmd, { stdio: ["ignore", "pipe", "pipe"] })
+    .toString()
+    .trim();
 }
 
 function lastTag() {

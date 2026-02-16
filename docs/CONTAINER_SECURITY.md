@@ -1,6 +1,7 @@
 # Container Security and Scanning
 
-This guide explains how container vulnerability scanning works and what to do when vulnerabilities are detected.
+This guide explains how container vulnerability scanning works and what to do
+when vulnerabilities are detected.
 
 ## Overview
 
@@ -188,7 +189,8 @@ Scans run:
 - **On PR**: When code changes to validate security before merge
 - **Daily**: 2 AM UTC to catch new vulnerabilities
 
-View schedule in [`.github/workflows/container-security.yml`](.github/workflows/container-security.yml)
+View schedule in
+[`.github/workflows/container-security.yml`](.github/workflows/container-security.yml)
 
 ## Performance
 
@@ -405,4 +407,5 @@ Keep record of:
 
 **Last Updated**: December 13, 2025  
 **Status**: Production-ready  
-**Maintenance**: Monitor daily for new vulnerabilities, update dependencies monthly
+**Maintenance**: Monitor daily for new vulnerabilities, update dependencies
+monthly

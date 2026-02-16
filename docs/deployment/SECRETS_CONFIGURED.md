@@ -292,4 +292,5 @@ flyctl status -a infamous-freight-api
 
 ---
 
-_For complete details, see [SESSION_2_COMPLETE_STATUS.md](SESSION_2_COMPLETE_STATUS.md)_
+_For complete details, see
+[SESSION_2_COMPLETE_STATUS.md](SESSION_2_COMPLETE_STATUS.md)_

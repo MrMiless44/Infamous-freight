@@ -9,7 +9,8 @@
 
 ## 📋 Executive Summary
 
-This roadmap covers complete execution from initial deployment through advanced global scaling:
+This roadmap covers complete execution from initial deployment through advanced
+global scaling:
 
 - **Phase 1 (Days 1-1)**: Production deployment and validation
 - **Phase 2 (Days 2-3)**: Performance optimization and team enablement
@@ -398,8 +399,8 @@ async function predictDriverAvailability(
 }
 ```
 
-**Training data**: Use historical driver session data
-**Model**: Decision tree or gradient boosting  
+**Training data**: Use historical driver session data **Model**: Decision tree
+or gradient boosting  
 **Validation**: Test against actual driver availability
 
 #### Task 3.2: Multi-Destination Route Optimization (2 days)
@@ -825,7 +826,8 @@ class DemandPredictor:
         return self.model.predict(recent_data)
 ```
 
-**Features**: Time, day of week, weather, holidays, promotions, competitor activity
+**Features**: Time, day of week, weather, holidays, promotions, competitor
+activity
 
 #### Task 4.4: Dynamic Pricing Engine (2 days)
 
@@ -928,7 +930,8 @@ async function calculateFraudRisk(
 
 #### Task 4.6: Executive Analytics Platform (2 days)
 
-**Create**: `dashboards/executive-analytics.json` + `src/services/analyticsEngine.ts`
+**Create**: `dashboards/executive-analytics.json` +
+`src/services/analyticsEngine.ts`
 
 ```typescript
 interface ExecutiveDashboard {
@@ -1092,7 +1095,8 @@ resource "aws_cloudwatch_metric_alarm" "cpu_high" {
 ### Phase 3 Risks
 
 - **Risk**: ML models perform poorly
-  - **Mitigation**: Start with conservative thresholds, gradual increase, continuous monitoring
+  - **Mitigation**: Start with conservative thresholds, gradual increase,
+    continuous monitoring
 
 ### Phase 4 Risks
 

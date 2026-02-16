@@ -77,7 +77,7 @@ export class OfflineSyncService {
         await this.db.runAsync(
           `INSERT OR REPLACE INTO cached_loads (id, data, cached_at, expiry, source)
            VALUES (?, ?, ?, ?, ?)`,
-          [load.id, JSON.stringify(load), now, expiry, "api"]
+          [load.id, JSON.stringify(load), now, expiry, "api"],
         );
       }
 
@@ -104,7 +104,7 @@ export class OfflineSyncService {
 
       const results = await this.db.getAllAsync(query, params);
 
-      const loads = results.map(r => JSON.parse(r.data));
+      const loads = results.map((r) => JSON.parse(r.data));
       console.log(`✅ Retrieved ${loads.length} cached loads`);
 
       return loads;
@@ -124,7 +124,7 @@ export class OfflineSyncService {
       await this.db.runAsync(
         `INSERT INTO sync_queue (id, action, data, created_at, status)
          VALUES (?, ?, ?, ?, ?)`,
-        [id, action, JSON.stringify(data), Date.now(), "pending"]
+        [id, action, JSON.stringify(data), Date.now(), "pending"],
       );
 
       this.syncQueue.push({ id, action, data });
@@ -143,10 +143,10 @@ export class OfflineSyncService {
   async getPendingActions() {
     try {
       const results = await this.db.getAllAsync(
-        `SELECT id, action, data FROM sync_queue WHERE status = 'pending'`
+        `SELECT id, action, data FROM sync_queue WHERE status = 'pending'`,
       );
 
-      return results.map(r => ({
+      return results.map((r) => ({
         id: r.id,
         action: r.action,
         data: JSON.parse(r.data),
@@ -200,7 +200,7 @@ export class OfflineSyncService {
           // Increment retry count
           await this.db.runAsync(
             `UPDATE sync_queue SET retry_count = retry_count + 1 WHERE id = ?`,
-            [action.id]
+            [action.id],
           );
         }
       }
@@ -217,7 +217,8 @@ export class OfflineSyncService {
    */
   async syncAction(action) {
     try {
-      const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:4000";
+      const API_BASE =
+        process.env.EXPO_PUBLIC_API_URL || process.env.API_BASE_URL || "http://localhost:4000";
 
       const response = await fetch(`${API_BASE}/api/sync`, {
         method: "POST",
@@ -230,10 +231,7 @@ export class OfflineSyncService {
       }
 
       // Mark as synced
-      await this.db.runAsync(
-        `UPDATE sync_queue SET status = 'synced' WHERE id = ?`,
-        [action.id]
-      );
+      await this.db.runAsync(`UPDATE sync_queue SET status = 'synced' WHERE id = ?`, [action.id]);
 
       console.log(`✅ Synced: ${action.id}`);
       return true;
@@ -250,7 +248,7 @@ export class OfflineSyncService {
       await this.db.runAsync(
         `INSERT OR REPLACE INTO user_profile (user_id, data, cached_at)
          VALUES (?, ?, ?)`,
-        [userId, JSON.stringify(profile), Date.now()]
+        [userId, JSON.stringify(profile), Date.now()],
       );
 
       console.log("✅ User profile cached");
@@ -264,10 +262,9 @@ export class OfflineSyncService {
    */
   async getCachedUserProfile(userId) {
     try {
-      const results = await this.db.getAllAsync(
-        `SELECT data FROM user_profile WHERE user_id = ?`,
-        [userId]
-      );
+      const results = await this.db.getAllAsync(`SELECT data FROM user_profile WHERE user_id = ?`, [
+        userId,
+      ]);
 
       return results.length > 0 ? JSON.parse(results[0].data) : null;
     } catch (err) {
@@ -281,10 +278,9 @@ export class OfflineSyncService {
    */
   async clearExpiredCache() {
     try {
-      const deleted = await this.db.runAsync(
-        `DELETE FROM cached_loads WHERE expiry < ?`,
-        [Date.now()]
-      );
+      const deleted = await this.db.runAsync(`DELETE FROM cached_loads WHERE expiry < ?`, [
+        Date.now(),
+      ]);
 
       console.log(`✅ Cleared expired cache: ${deleted.changes} items`);
       return deleted.changes;
@@ -300,15 +296,15 @@ export class OfflineSyncService {
     try {
       const loads = await this.db.getFirstAsync(
         `SELECT COUNT(*) as count FROM cached_loads WHERE expiry > ?`,
-        [Date.now()]
+        [Date.now()],
       );
 
       const synced = await this.db.getFirstAsync(
-        `SELECT COUNT(*) as count FROM sync_queue WHERE status = 'synced'`
+        `SELECT COUNT(*) as count FROM sync_queue WHERE status = 'synced'`,
       );
 
       const pending = await this.db.getFirstAsync(
-        `SELECT COUNT(*) as count FROM sync_queue WHERE status = 'pending'`
+        `SELECT COUNT(*) as count FROM sync_queue WHERE status = 'pending'`,
       );
 
       return {

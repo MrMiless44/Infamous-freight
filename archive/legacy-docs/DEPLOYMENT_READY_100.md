@@ -121,14 +121,17 @@ This creates:
 #### Stripe Webhook
 
 1. Go to https://dashboard.stripe.com/webhooks
-2. Add endpoint: `https://infamous-freight-enterprises.fly.dev/api/billing/webhook`
-3. Subscribe to events: `payment_intent.succeeded`, `customer.subscription.updated`
+2. Add endpoint:
+   `https://infamous-freight-enterprises.fly.dev/api/billing/webhook`
+3. Subscribe to events: `payment_intent.succeeded`,
+   `customer.subscription.updated`
 4. Copy signing secret to `STRIPE_WEBHOOK_SECRET`
 
 #### PayPal Webhook
 
 1. Go to PayPal Developer Dashboard
-2. Add webhook: `https://infamous-freight-enterprises.fly.dev/api/billing/paypal-webhook`
+2. Add webhook:
+   `https://infamous-freight-enterprises.fly.dev/api/billing/paypal-webhook`
 3. Subscribe to: `PAYMENT.SALE.COMPLETED`, `BILLING_SUBSCRIPTION.UPDATED`
 
 ---

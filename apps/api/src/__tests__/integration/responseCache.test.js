@@ -3,126 +3,131 @@
  * Verifies org/user-scoped cache isolation and TTL.
  */
 
-const { cacheResponseMiddleware, invalidateCacheForUser, invalidateCacheForOrg, clearAllCache } = require('../../../src/middleware/responseCache');
+const {
+  cacheResponseMiddleware,
+  invalidateCacheForUser,
+  invalidateCacheForOrg,
+  clearAllCache,
+} = require("../../../src/middleware/responseCache");
 
-describe('Response cache middleware', () => {
-    let mockReq;
-    let mockRes;
-    let nextCalled;
+describe("Response cache middleware", () => {
+  let mockReq;
+  let mockRes;
+  let nextCalled;
 
-    beforeEach(() => {
-        clearAllCache();
-        nextCalled = false;
+  beforeEach(() => {
+    clearAllCache();
+    nextCalled = false;
 
-        mockRes = {
-            statusCode: 200,
-            _headers: {},
-            set: jest.fn(function (key, val) {
-                this._headers[key] = val;
-                return this;
-            }),
-            json: jest.fn(function (data) {
-                return data;
-            }),
-            on: jest.fn(),
-        };
+    mockRes = {
+      statusCode: 200,
+      _headers: {},
+      set: jest.fn(function (key, val) {
+        this._headers[key] = val;
+        return this;
+      }),
+      json: jest.fn(function (data) {
+        return data;
+      }),
+      on: jest.fn(),
+    };
+  });
+
+  test("caches successful GET responses", () => {
+    mockReq = {
+      method: "GET",
+      originalUrl: "/api/test",
+      user: { sub: "user-1" },
+      auth: { organizationId: "org-1" },
+    };
+
+    const mockNext = jest.fn(() => {
+      nextCalled = true;
     });
 
-    test('caches successful GET responses', () => {
-        mockReq = {
-            method: 'GET',
-            originalUrl: '/api/test',
-            user: { sub: 'user-1' },
-            auth: { organizationId: 'org-1' },
-        };
+    cacheResponseMiddleware(mockReq, mockRes, mockNext);
 
-        const mockNext = jest.fn(() => {
-            nextCalled = true;
-        });
+    // Call json to trigger caching
+    const data = { id: 1, name: "test" };
+    mockRes.json(data);
 
-        cacheResponseMiddleware(mockReq, mockRes, mockNext);
+    expect(mockNext).toHaveBeenCalled();
+    expect(nextCalled).toBe(true);
+  });
 
-        // Call json to trigger caching
-        const data = { id: 1, name: 'test' };
-        mockRes.json(data);
+  test("does not cache non-GET requests", () => {
+    mockReq = {
+      method: "POST",
+      originalUrl: "/api/test",
+      user: { sub: "user-1" },
+      auth: { organizationId: "org-1" },
+    };
 
-        expect(mockNext).toHaveBeenCalled();
-        expect(nextCalled).toBe(true);
-    });
+    const mockNext = jest.fn();
+    cacheResponseMiddleware(mockReq, mockRes, mockNext);
 
-    test('does not cache non-GET requests', () => {
-        mockReq = {
-            method: 'POST',
-            originalUrl: '/api/test',
-            user: { sub: 'user-1' },
-            auth: { organizationId: 'org-1' },
-        };
+    mockRes.json({ id: 1 });
 
-        const mockNext = jest.fn();
-        cacheResponseMiddleware(mockReq, mockRes, mockNext);
+    expect(mockNext).toHaveBeenCalled();
+  });
 
-        mockRes.json({ id: 1 });
+  test("does not cache error responses (status >= 400)", () => {
+    mockReq = {
+      method: "GET",
+      originalUrl: "/api/test",
+      user: { sub: "user-1" },
+      auth: { organizationId: "org-1" },
+    };
+    mockRes.statusCode = 404;
 
-        expect(mockNext).toHaveBeenCalled();
-    });
+    const mockNext = jest.fn();
+    cacheResponseMiddleware(mockReq, mockRes, mockNext);
 
-    test('does not cache error responses (status >= 400)', () => {
-        mockReq = {
-            method: 'GET',
-            originalUrl: '/api/test',
-            user: { sub: 'user-1' },
-            auth: { organizationId: 'org-1' },
-        };
-        mockRes.statusCode = 404;
+    mockRes.json({ error: "Not found" });
 
-        const mockNext = jest.fn();
-        cacheResponseMiddleware(mockReq, mockRes, mockNext);
+    expect(mockNext).toHaveBeenCalled();
+  });
 
-        mockRes.json({ error: 'Not found' });
+  test("invalidates cache for specific user", () => {
+    clearAllCache();
 
-        expect(mockNext).toHaveBeenCalled();
-    });
+    // Cache a response
+    mockReq = {
+      method: "GET",
+      originalUrl: "/api/shipments",
+      user: { sub: "user-1" },
+      auth: { organizationId: "org-1" },
+    };
 
-    test('invalidates cache for specific user', () => {
-        clearAllCache();
+    const mockNext = jest.fn();
+    cacheResponseMiddleware(mockReq, mockRes, mockNext);
+    mockRes.json({ shipments: [] });
 
-        // Cache a response
-        mockReq = {
-            method: 'GET',
-            originalUrl: '/api/shipments',
-            user: { sub: 'user-1' },
-            auth: { organizationId: 'org-1' },
-        };
+    // Invalidate for that user
+    invalidateCacheForUser("user-1", "org-1");
 
-        const mockNext = jest.fn();
-        cacheResponseMiddleware(mockReq, mockRes, mockNext);
-        mockRes.json({ shipments: [] });
+    // Should return empty now (no cache hit)
+    expect(mockNext).toHaveBeenCalled();
+  });
 
-        // Invalidate for that user
-        invalidateCacheForUser('user-1', 'org-1');
+  test("invalidates cache for entire org", () => {
+    clearAllCache();
 
-        // Should return empty now (no cache hit)
-        expect(mockNext).toHaveBeenCalled();
-    });
+    // Cache responses for two users in same org
+    mockReq = {
+      method: "GET",
+      originalUrl: "/api/shipments",
+      user: { sub: "user-1" },
+      auth: { organizationId: "org-1" },
+    };
 
-    test('invalidates cache for entire org', () => {
-        clearAllCache();
+    const mockNext = jest.fn();
+    cacheResponseMiddleware(mockReq, mockRes, mockNext);
+    mockRes.json({ shipments: [] });
 
-        // Cache responses for two users in same org
-        mockReq = {
-            method: 'GET',
-            originalUrl: '/api/shipments',
-            user: { sub: 'user-1' },
-            auth: { organizationId: 'org-1' },
-        };
+    // Invalidate entire org
+    invalidateCacheForOrg("org-1");
 
-        const mockNext = jest.fn();
-        cacheResponseMiddleware(mockReq, mockRes, mockNext);
-        mockRes.json({ shipments: [] });
-
-        // Invalidate entire org
-        invalidateCacheForOrg('org-1');
-
-        expect(mockNext).toHaveBeenCalled();
-    });
+    expect(mockNext).toHaveBeenCalled();
+  });
 });

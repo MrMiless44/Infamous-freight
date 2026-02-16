@@ -505,7 +505,8 @@ cd apps/api && pnpm prisma:migrate:resolve --rollback
 
 ## Root Cause
 
-Database migration script contained syntax error that wasn't caught in staging due to different PostgreSQL version.
+Database migration script contained syntax error that wasn't caught in staging
+due to different PostgreSQL version.
 
 ## Impact
 
@@ -529,7 +530,8 @@ Database migration script contained syntax error that wasn't caught in staging d
 
 ## Action Items
 
-- [ ] Upgrade staging PostgreSQL to match production (Owner: DevOps, Due: Jan 20)
+- [ ] Upgrade staging PostgreSQL to match production (Owner: DevOps, Due:
+      Jan 20)
 - [ ] Add migration validation to CI/CD (Owner: Engineering, Due: Jan 18)
 - [ ] Implement blue-green deployments (Owner: DevOps, Due: Feb 1)
 - [ ] Database version check in pre-flight (Owner: Engineering, Due: Jan 17)
@@ -551,7 +553,8 @@ Database migration script contained syntax error that wasn't caught in staging d
 
 **Good Post-Mortem**:
 
-> "Our deployment process allowed untested database migrations to reach production. We need automated validation."
+> "Our deployment process allowed untested database migrations to reach
+> production. We need automated validation."
 
 **3. Prevention Strategies (15 min)**
 

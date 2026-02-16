@@ -49,16 +49,12 @@ describe("getOptionalEnv", () => {
 
   it("should return default value if variable is missing", () => {
     delete process.env.OPTIONAL_VAR;
-    expect(getOptionalEnv("OPTIONAL_VAR", "default-value")).toBe(
-      "default-value",
-    );
+    expect(getOptionalEnv("OPTIONAL_VAR", "default-value")).toBe("default-value");
   });
 
   it("should return default value if variable is empty", () => {
     process.env.OPTIONAL_VAR = "";
-    expect(getOptionalEnv("OPTIONAL_VAR", "default-value")).toBe(
-      "default-value",
-    );
+    expect(getOptionalEnv("OPTIONAL_VAR", "default-value")).toBe("default-value");
   });
 
   it("should return undefined if no default provided and variable missing", () => {

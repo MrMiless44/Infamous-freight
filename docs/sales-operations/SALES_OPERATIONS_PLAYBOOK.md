@@ -1,6 +1,7 @@
 # 💼 SALES OPERATIONS & PLAYBOOK SYSTEM
 
-**Purpose**: Build scalable, repeatable sales process to convert leads → customers  
+**Purpose**: Build scalable, repeatable sales process to convert leads →
+customers  
 **Current State**: Founder-led sales, informal process  
 **Goal**: Scale to dedicated sales team with predictable pipeline  
 **Timeline**: Q1-Q4 2026
@@ -11,7 +12,8 @@
 
 **Positioning Statement**
 
-Infæmous Freight is the AI-first Freight Intelligence Platform — dispatch, finance, AI, and compliance in one system. We are not another TMS.
+Infæmous Freight is the AI-first Freight Intelligence Platform — dispatch,
+finance, AI, and compliance in one system. We are not another TMS.
 
 **Outbound Email (B2B)**
 
@@ -19,15 +21,19 @@ Subject: Cut freight leakage with AI-first audits + dispatch
 
 Hi {{FirstName}},
 
-Infæmous Freight replaces fragmented dispatch, finance, and compliance tools with one AI-first Freight Intelligence Platform. We automate dispatch optimization and invoice audits while surfacing real-time profitability.
+Infæmous Freight replaces fragmented dispatch, finance, and compliance tools
+with one AI-first Freight Intelligence Platform. We automate dispatch
+optimization and invoice audits while surfacing real-time profitability.
 
-Would a 15-minute walkthrough help you see where AI can recover margin this quarter?
+Would a 15-minute walkthrough help you see where AI can recover margin this
+quarter?
 
 – {{SenderName}}
 
 **LinkedIn Connection Note (B2B)**
 
-Hi {{FirstName}} — we built an AI-first freight intelligence platform that unifies dispatch + finance + compliance. Open to share a 3-minute AI audit demo?
+Hi {{FirstName}} — we built an AI-first freight intelligence platform that
+unifies dispatch + finance + compliance. Open to share a 3-minute AI audit demo?
 
 **Call Talk Track (Discovery)**
 

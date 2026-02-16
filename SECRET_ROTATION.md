@@ -14,9 +14,11 @@ Guide for rotating secrets and API keys securely without service downtime.
 
 ## Overview
 
-Secret rotation reduces the blast radius if credentials are compromised. Follow these procedures carefully to maintain security and availability.
+Secret rotation reduces the blast radius if credentials are compromised. Follow
+these procedures carefully to maintain security and availability.
 
 **Rotation Frequency**:
+
 - JWT_SECRET: Quarterly (or immediately if suspected compromise)
 - API Keys: Quarterly
 - Database passwords: Annually
@@ -31,6 +33,7 @@ JWT secrets can be rotated with gradual migration since tokens have expiration.
 #### Phase 1: Prepare (48 hours before)
 
 1. **Generate new secret**:
+
    ```bash
    node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
    ```
@@ -46,11 +49,12 @@ JWT secrets can be rotated with gradual migration since tokens have expiration.
 #### Phase 2: Dual Support (1-7 days)
 
 1. **Update API** to accept both secrets:
+
    ```javascript
    // apps/api/src/middleware/security.js
-   const secrets = (process.env.JWT_VALID_SECRETS || '')
-     .split(',')
-     .map(s => s.trim());
+   const secrets = (process.env.JWT_VALID_SECRETS || "")
+     .split(",")
+     .map((s) => s.trim());
 
    // Try validating with each secret
    let payload;
@@ -74,9 +78,11 @@ JWT secrets can be rotated with gradual migration since tokens have expiration.
 
 #### Phase 3: Complete Migration (After 7 days)
 
-1. **Rotate users to new token** (if using refresh tokens, new tokens auto-generated)
+1. **Rotate users to new token** (if using refresh tokens, new tokens
+   auto-generated)
 
 2. **Update primary secret**:
+
    ```bash
    JWT_SECRET=new-secret
    JWT_VALID_SECRETS=new-secret,old-secret
@@ -89,6 +95,7 @@ JWT secrets can be rotated with gradual migration since tokens have expiration.
 #### Phase 4: Cleanup (After 14 days)
 
 1. **Remove old secret** from valid list:
+
    ```bash
    JWT_VALID_SECRETS=new-secret
    JWT_SECRET=new-secret
@@ -104,15 +111,17 @@ JWT secrets can be rotated with gradual migration since tokens have expiration.
 ### Emergency JWT Rotation (Suspected Compromise)
 
 1. **Immediate action**:
+
    ```bash
    # Generate new secret
    NEW_SECRET=$(node -e "console.log(require('crypto').randomBytes(32).toString('hex'))")
-   
+
    # Update in secrets manager
    # Railway/Vercel will auto-redeploy
    ```
 
 2. **Revoke all existing tokens** (if header-based token blacklist available):
+
    ```sql
    -- Pseudocode - implement based on your schema
    UPDATE jwt_tokens SET revoked = true WHERE issued_at < NOW();
@@ -167,6 +176,7 @@ pnpm test --testNamePattern="stripe|openai|sendgrid"
 #### Step 4: Monitor (24 hours)
 
 Watch for auth errors:
+
 ```bash
 logs: ("401" OR "401 Unauthorized" OR "api_key_invalid") over 24h
 ```
@@ -237,10 +247,12 @@ DROP ROLE old_api_user;
 For managed databases, use provider's rotation features:
 
 **Railway**:
+
 - Data tab → PostgreSQL → Settings → Rotate credentials
 - Auto-creates new password and updates connection string
 
 **AWS RDS**:
+
 - RDS Dashboard → Modify → Master password → Apply immediately
 - Use AWS Secrets Manager for automatic rotation
 
@@ -331,6 +343,7 @@ Maintain log of secret rotations:
 # Secret Rotation Log
 
 ## 2026-02-14
+
 - **Secret**: JWT_SECRET
 - **Rotation Type**: Scheduled
 - **Reason**: Quarterly policy

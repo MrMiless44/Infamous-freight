@@ -4,7 +4,8 @@
 
 ### 1. **Unified CI/CD Pipeline**
 
-- **`.github/workflows/auto-deploy.yml`** - Smart deployment with change detection
+- **`.github/workflows/auto-deploy.yml`** - Smart deployment with change
+  detection
 - **`.github/workflows/cd.yml`** - Enhanced with CI checks before deployment
 - **`.github/workflows/ci.yml`** - Upgraded to Node 20, supports workflow_call
 
@@ -250,8 +251,7 @@ Add to README.md:
 
 ### Deployment Notifications
 
-**Option 1: Slack**
-Add to workflow:
+**Option 1: Slack** Add to workflow:
 
 ```yaml
 - name: Notify Slack
@@ -336,5 +336,4 @@ gh run view --log
 
 ---
 
-**Status**: ✅ Auto-deployment configured and ready
-**Last Updated**: 2026-01-01
+**Status**: ✅ Auto-deployment configured and ready **Last Updated**: 2026-01-01

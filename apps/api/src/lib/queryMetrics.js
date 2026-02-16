@@ -2,37 +2,37 @@ const DEFAULT_THRESHOLD = parseInt(process.env.SLOW_QUERY_THRESHOLD_MS || "100",
 let slowQueries = [];
 
 function recordQuery({ model, action, duration, args, error }) {
-    const entry = {
-        model,
-        action,
-        duration,
-        args,
-        error: error ? error.message : undefined,
-        timestamp: Date.now(),
-    };
+  const entry = {
+    model,
+    action,
+    duration,
+    args,
+    error: error ? error.message : undefined,
+    timestamp: Date.now(),
+  };
 
-    if (duration >= DEFAULT_THRESHOLD || error) {
-        slowQueries.unshift(entry);
-        slowQueries = slowQueries.slice(0, 100);
-    }
+  if (duration >= DEFAULT_THRESHOLD || error) {
+    slowQueries.unshift(entry);
+    slowQueries = slowQueries.slice(0, 100);
+  }
 }
 
 function getSlowQueries(limit = 50) {
-    return slowQueries.slice(0, limit);
+  return slowQueries.slice(0, limit);
 }
 
 function clearSlowQueries() {
-    slowQueries = [];
+  slowQueries = [];
 }
 
 function clear() {
-    slowQueries = [];
+  slowQueries = [];
 }
 
 module.exports = {
-    recordQuery,
-    getSlowQueries,
-    clearSlowQueries,
-    clear,
-    DEFAULT_THRESHOLD,
+  recordQuery,
+  getSlowQueries,
+  clearSlowQueries,
+  clear,
+  DEFAULT_THRESHOLD,
 };

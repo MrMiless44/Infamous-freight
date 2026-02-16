@@ -3,7 +3,7 @@
  * Automated insurance claims, compliance tracking, FMCSA monitoring, document management
  */
 
-const logger = require("../middleware/logger");
+const { logger } = require("../middleware/logger");
 
 class ComplianceInsuranceService {
     constructor() {

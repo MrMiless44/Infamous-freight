@@ -1,6 +1,7 @@
 # Infæmous Freight Intelligence Platform – Pitch Deck
 
-Below is production-ready content for PDF export. Slides are structured so design can be applied directly.
+Below is production-ready content for PDF export. Slides are structured so
+design can be applied directly.
 
 ---
 
@@ -26,7 +27,8 @@ Freight operators struggle with:
 
 **Dispatch. Finance. AI. Compliance. All in one system.**
 
-Infæmous Freight unifies dispatch automation, financial intelligence, and synthetic AI avatars in a single control plane.
+Infæmous Freight unifies dispatch automation, financial intelligence, and
+synthetic AI avatars in a single control plane.
 
 ---
 
@@ -71,7 +73,8 @@ Infæmous Freight unifies dispatch automation, financial intelligence, and synth
 
 - B2B: cold email, LinkedIn outbound, factoring + insurance partners
 - B2C: app stores, creator-driven content, referral bonuses
-- Lead magnets: AI Invoice Audit Tool, Profitability Calculator, Compliance Scanner
+- Lead magnets: AI Invoice Audit Tool, Profitability Calculator, Compliance
+  Scanner
 - Funnel: landing page → demo → trial → AI wow moment → paid → expansion
 
 ---
@@ -104,5 +107,6 @@ Build the Bloomberg Terminal of Freight AI.
 ## PDF Export Notes
 
 - Brand with Infæmous Freight palette.
-- Add AI audit dashboard, profitability engine visuals, and Genesis avatar mockups.
+- Add AI audit dashboard, profitability engine visuals, and Genesis avatar
+  mockups.
 - Export in investor-ready format (print-safe margins, selectable text).

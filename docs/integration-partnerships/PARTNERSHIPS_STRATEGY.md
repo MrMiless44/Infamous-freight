@@ -272,16 +272,13 @@ TOTAL PARTNERSHIP PERFORMANCE (2026):
 
 ## Success Metrics (EOY 2026)
 
-✅ 5+ strategic partnerships active
-✅ 1,000+/month leads from partnerships
-✅ 200+ customers acquired via partnerships
-✅ $2M+ ARR from partnership customers
-✅ 4.5+ partner satisfaction (NPS)
-✅ 50%+ partnership leads close (vs 25% cold)
+✅ 5+ strategic partnerships active ✅ 1,000+/month leads from partnerships ✅
+200+ customers acquired via partnerships ✅ $2M+ ARR from partnership customers
+✅ 4.5+ partner satisfaction (NPS) ✅ 50%+ partnership leads close (vs 25% cold)
 
 ---
 
 **Status**: ✅ INTEGRATION PARTNERSHIPS STRATEGY READY
 
-Strategic partnerships with NetSuite, Shopify, QuickBooks, and others to
-drive 1,000+ warm leads/month and $2M+ partnership revenue by EOY 2026.
+Strategic partnerships with NetSuite, Shopify, QuickBooks, and others to drive
+1,000+ warm leads/month and $2M+ partnership revenue by EOY 2026.

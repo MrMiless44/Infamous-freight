@@ -3,13 +3,14 @@
 **Document**: Production Deployment Guide  
 **Last Updated**: February 12, 2026  
 **Audience**: DevOps, Release Engineers, Administrators  
-**Severity**: Critical  
+**Severity**: Critical
 
 ---
 
 ## Pre-Deployment Checklist
 
 ### Code Quality ✅
+
 - [ ] All tests passing (`pnpm test`)
 - [ ] No TypeScript errors (`pnpm check:types`)
 - [ ] Linting clean (`pnpm lint`)
@@ -17,12 +18,14 @@
 - [ ] Security scan passed (`npm audit`)
 
 ### Database ✅
+
 - [ ] Migration tested in staging
 - [ ] Backup created
 - [ ] Rollback plan documented
 - [ ] Database performance verified
 
 ### Infrastructure ✅
+
 - [ ] Production environment variables ready
 - [ ] SSL certificates valid (>30 days)
 - [ ] Database capacity verified
@@ -33,6 +36,7 @@
 - [ ] DocuSign OAuth2 tokens fresh
 
 ### Monitoring ✅
+
 - [ ] Sentry project created and configured
 - [ ] Datadog/New Relic dashboard ready
 - [ ] Alerting rules configured
@@ -40,6 +44,7 @@
 - [ ] Performance baselines established
 
 ### Documentation ✅
+
 - [ ] Release notes prepared
 - [ ] Runbooks updated
 - [ ] Team briefed on changes
@@ -181,6 +186,7 @@ $ Post to #incidents Slack channel
 ## Database Migration Checklist
 
 ### Before Migration
+
 - [ ] Backup created and tested
 - [ ] Migrations validated locally
 - [ ] No long-running queries
@@ -188,6 +194,7 @@ $ Post to #incidents Slack channel
 - [ ] Maintenance window scheduled (if needed)
 
 ### During Migration
+
 - [ ] Monitor query performance
 - [ ] Watch for locks
 - [ ] Check disk space
@@ -195,6 +202,7 @@ $ Post to #incidents Slack channel
 - [ ] Have rollback ready
 
 ### After Migration
+
 - [ ] Verify data integrity
 - [ ] Update database statistics
 - [ ] Monitor performance
@@ -206,6 +214,7 @@ $ Post to #incidents Slack channel
 ## Common Issues & Solutions
 
 ### Issue: Deployment timeout
+
 ```bash
 # Check pod status
 $ kubectl describe pod -l app=api
@@ -218,6 +227,7 @@ $ kubectl rollout restart deployment/api
 ```
 
 ### Issue: Database connection errors
+
 ```bash
 # Check database
 $ pg_isready -h $DB_HOST
@@ -230,6 +240,7 @@ $ curl -v telnet://$DB_HOST:5432
 ```
 
 ### Issue: CDN not updating
+
 ```bash
 # Clear CloudFront cache
 $ aws cloudfront create-invalidation --distribution-id $DIST_ID --paths "/*"
@@ -239,6 +250,7 @@ $ nslookup infamous-freight.com
 ```
 
 ### Issue: Email service not working
+
 ```bash
 # Check SendGrid API key
 $ curl -X GET https://api.sendgrid.com/v3/mail_settings \
@@ -256,6 +268,7 @@ $ curl -X POST https://api.sendgrid.com/v3/mail/send \
 ## Monitoring During Deployment
 
 ### Metrics to Watch
+
 - ✅ Error rate (should stay < 0.1%)
 - ✅ Response time (p95 should stay < 500ms)
 - ✅ CPU usage (should not exceed 80%)
@@ -263,6 +276,7 @@ $ curl -X POST https://api.sendgrid.com/v3/mail/send \
 - ✅ Database connections (should not max out)
 
 ### Dashboards to Check
+
 1. Datadog Application Performance
 2. Sentry Error Tracking
 3. Kubernetes Pod Status
@@ -274,12 +288,14 @@ $ curl -X POST https://api.sendgrid.com/v3/mail/send \
 ## Deployment Windows
 
 ### Standard Window (Low Impact)
+
 - **When**: Tuesdays, 2-4 AM UTC
 - **Duration**: 30-60 minutes
 - **Communication**: Announce 48 hours in advance
 - **Users Affected**: None (designed for zero downtime)
 
 ### Maintenance Window (With Downtime)
+
 - **When**: Quarterly (database major version upgrades)
 - **Duration**: 2-4 hours
 - **Communication**: Announce 1 week in advance
@@ -294,19 +310,15 @@ If rollback needed:
 1. **Immediate** (0 min):
    - Trigger rollback
    - Assess impact
-   
 2. **5 minutes**:
    - Verify service recovered
    - Post to #incidents
-   
 3. **10 minutes**:
    - Send email to team@infamous-freight.com
    - Update status page
-   
 4. **30 minutes**:
    - Post-incident call with team
    - Document root cause
-   
 5. **1 hour**:
    - Write incident report
    - Schedule remediation work
@@ -331,11 +343,10 @@ After successful deployment:
 **On-Call**: `@on-call-engineer` (Slack)  
 **Tech Lead**: `@tech-lead` (Slack)  
 **DevOps**: `@devops-team` (Slack)  
-**CTO**: `cto@infamous-freight.com`  
+**CTO**: `cto@infamous-freight.com`
 
 ---
 
 **Deployment Runbook Owner**: DevOps Team  
 **Last Updated**: February 12, 2026  
-**Review Schedule**: Quarterly  
-
+**Review Schedule**: Quarterly

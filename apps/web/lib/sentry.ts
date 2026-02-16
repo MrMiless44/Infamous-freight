@@ -34,7 +34,7 @@ export function logError(
 
   // Log to console in development
   if (process.env.NODE_ENV === "development") {
-    // eslint-disable-next-line no-console
+     
     console.error("[Sentry]", error, context);
   }
 
@@ -61,7 +61,7 @@ export function logMessage(
   });
 
   if (process.env.NODE_ENV === "development") {
-    // eslint-disable-next-line no-console
+     
     console.debug(`[Sentry ${level}]`, message, context);
   }
 
@@ -88,7 +88,7 @@ export function setUser(user: {
   });
 
   if (process.env.NODE_ENV === "development") {
-    // eslint-disable-next-line no-console
+     
     console.debug("[Sentry] User set:", user.id);
   }
 }
@@ -104,7 +104,7 @@ export function clearUser(): void {
   Sentry.setUser(null);
 
   if (process.env.NODE_ENV === "development") {
-    // eslint-disable-next-line no-console
+     
     console.debug("[Sentry] User cleared");
   }
 }
@@ -297,7 +297,7 @@ export async function safeExecute<T>(
         ...context,
       });
     } else {
-      // eslint-disable-next-line no-console
+       
       console.error(error);
     }
     return null;

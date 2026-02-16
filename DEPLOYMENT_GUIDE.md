@@ -1,14 +1,14 @@
 # DEPLOYMENT GUIDE - INFAMOUS FREIGHT PLATFORM
 
-**Generated**: Feb 14, 2025
-**Version**: 1.0.0
-**For**: Netlify (Web), Fly.io (API), EAS (Mobile)
+**Generated**: Feb 14, 2025 **Version**: 1.0.0 **For**: Netlify (Web), Fly.io
+(API), EAS (Mobile)
 
 ---
 
 ## 🚀 QUICK START (5 MINUTES)
 
 ### 1. Local Development
+
 ```bash
 # Install dependencies
 pnpm install
@@ -27,11 +27,12 @@ pnpm dev
 
 # Or individually:
 cd apps/api && pnpm dev        # API on :4000
-cd apps/web && pnpm dev        # Web on :3000  
+cd apps/web && pnpm dev        # Web on :3000
 cd apps/mobile && pnpm start   # Mobile with Expo
 ```
 
 ### 2. Database Setup
+
 ```bash
 # Create and run migrations
 cd apps/api
@@ -42,6 +43,7 @@ npx prisma studio
 ```
 
 ### 3. Test the Platform
+
 - **Mobile**: Scan Expo QR code on your phone
 - **Web (Shipper)**: http://localhost:3000/shipper/dashboard
 - **API**: http://localhost:4000/api/health
@@ -54,12 +56,14 @@ npx prisma studio
 ### Option 1: Fly.io (API)
 
 #### Prerequisites
+
 ```bash
 npm i -g flyctl
 flyctl auth login
 ```
 
 #### Deploy API
+
 ```bash
 # From project root
 flyctl apps create infamous-freight-api-prod
@@ -82,6 +86,7 @@ flyctl logs
 ```
 
 #### Health Check
+
 ```bash
 curl https://infamous-freight-api-prod.fly.dev/api/health
 ```
@@ -91,12 +96,14 @@ curl https://infamous-freight-api-prod.fly.dev/api/health
 ### Option 2: Netlify (Web)
 
 #### Prerequisites
+
 ```bash
 npm i -g netlify-cli
 netlify login
 ```
 
 #### Deploy Shipper Portal
+
 ```bash
 # From apps/web directory
 cd apps/web
@@ -113,6 +120,7 @@ netlify deploy --prod --dir=.next
 ```
 
 #### Environment Variables (Set in Netlify UI)
+
 ```
 NEXT_PUBLIC_API_BASE_URL=https://infamous-freight-api-prod.fly.dev
 NEXT_PUBLIC_ENV=production
@@ -126,6 +134,7 @@ NEXT_PUBLIC_DD_SITE=datadoghq.com
 ### Option 3: EAS (Mobile App)
 
 #### Prerequisites
+
 ```bash
 # Install EAS CLI
 npm i -g eas-cli
@@ -135,6 +144,7 @@ eas login
 ```
 
 #### Build App
+
 ```bash
 cd apps/mobile
 
@@ -147,6 +157,7 @@ eas build --platform ios --profile production
 ```
 
 #### Submit to App Stores
+
 ```bash
 # Android
 eas submit --platform android --latest
@@ -160,6 +171,7 @@ eas submit --platform ios --latest
 ## 📋 ENVIRONMENT VARIABLES CHECKLIST
 
 ### API (.env in apps/api/)
+
 ```bash
 # Server
 NODE_ENV=production
@@ -197,6 +209,7 @@ DD_ENV=production
 ```
 
 ### Web (.env.local in apps/web/)
+
 ```bash
 # API
 NEXT_PUBLIC_API_BASE_URL=https://api.infamous-freight.com
@@ -211,6 +224,7 @@ NEXT_PUBLIC_DD_SITE=datadoghq.com
 ```
 
 ### Mobile (.env in apps/mobile/)
+
 ```bash
 # API
 EXPO_PUBLIC_API_BASE_URL=https://api.infamous-freight.com
@@ -282,6 +296,7 @@ EXPO_PUBLIC_SEGMENT_WRITE_KEY=xxxxx
 ## 🔍 MONITORING & DEBUGGING
 
 ### API Health CheckService
+
 ```bash
 # Check API status
 curl https://api.infamous-freight.com/api/health
@@ -296,12 +311,13 @@ curl https://api.infamous-freight.com/api/health
 ```
 
 ### View Logs
+
 ```bash
 # Fly.io
 flyctl logs
 flyctl logs --app infamous-freight-api-prod
 
-# Netlify  
+# Netlify
 netlify logs:functions
 
 # Mobile (via Expo)
@@ -309,6 +325,7 @@ eas logs --platform android --latest
 ```
 
 ### Database Debugging
+
 ```bash
 # Connect to production database
 psql $DATABASE_URL
@@ -318,12 +335,13 @@ SELECT * FROM jobs LIMIT 10;
 SELECT COUNT(*) FROM job_offers;
 
 # Check recent errors
-SELECT * FROM org_audit_logs 
-WHERE created_at > NOW() - INTERVAL '1 hour' 
+SELECT * FROM org_audit_logs
+WHERE created_at > NOW() - INTERVAL '1 hour'
 ORDER BY created_at DESC;
 ```
 
 ### API Metrics Dashboard
+
 ```
 POST /api/status
 # Returns queue status, worker heartbeat, etc
@@ -334,6 +352,7 @@ POST /api/status
 ## 🚨 TROUBLESHOOTING
 
 ### API Not Starting
+
 ```bash
 # Check environment
 echo $DATABASE_URL
@@ -350,6 +369,7 @@ pnpm dev --log-level=debug
 ```
 
 ### Mobile App Can't Reach API
+
 ```bash
 # 1. Check EXPO_PUBLIC_API_BASE_URL in .env
 # 2. Verify API is running: curl <API_URL>/api/health
@@ -358,6 +378,7 @@ pnpm dev --log-level=debug
 ```
 
 ### Shipper Portal 404
+
 ```bash
 # 1. Verify file exists at apps/web/pages/shipper/dashboard.tsx
 # 2. Clear Next.js cache: rm -rf .next
@@ -366,6 +387,7 @@ pnpm dev --log-level=debug
 ```
 
 ### Load Board API Errors
+
 ```bash
 # 1. Check API credentials
 cat apps/api/.env | grep DAT
@@ -446,6 +468,7 @@ As traffic grows:
 ## 📞 RUNBOOK FOR COMMON TASKS
 
 ### Deploying a New Feature
+
 ```bash
 # 1. Merge PR to main
 # 2. Pull latest
@@ -470,6 +493,7 @@ flyctl logs -n 50
 ```
 
 ### Rolling Back a Deployment
+
 ```bash
 # View deployment history
 flyctl history
@@ -479,6 +503,7 @@ flyctl releases rollback
 ```
 
 ### Database Migration
+
 ```bash
 # Create migration
 cd apps/api
@@ -492,6 +517,7 @@ npx prisma migrate deploy --environment-production
 ```
 
 ### Manual Database Backup
+
 ```bash
 # Connect to production
 psql $DATABASE_URL PRODUCTION_URL
@@ -527,15 +553,15 @@ During production incident:
 
 ---
 
-**Deployment Guide Version**: 1.0.0
-**Last Updated**: Feb 14, 2025
-**Next Review**: May 14, 2025
+**Deployment Guide Version**: 1.0.0 **Last Updated**: Feb 14, 2025 **Next
+Review**: May 14, 2025
 
 ---
 
 ## Support
 
 For deployment issues:
+
 1. Check this guide's troubleshooting section
 2. Review service logs
 3. Check Sentry for errors

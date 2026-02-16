@@ -16,20 +16,20 @@ const logger = require("../middleware/logger");
  * Initialize blockchain network
  */
 router.post(
-    "/initialize",
-    limiters.general,
-    authenticate,
-    requireScope("admin:blockchain"),
-    auditLog,
-    async (req, res, next) => {
-        try {
-            const result = blockchainAuditService.initialize();
+  "/initialize",
+  limiters.general,
+  authenticate,
+  requireScope("admin:blockchain"),
+  auditLog,
+  async (req, res, next) => {
+    try {
+      const result = blockchainAuditService.initialize();
 
-            res.status(200).json(result);
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json(result);
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -37,36 +37,29 @@ router.post(
  * Record transaction to blockchain
  */
 router.post(
-    "/record-transaction",
-    limiters.general,
-    authenticate,
-    requireScope("blockchain:write"),
-    auditLog,
-    async (req, res, next) => {
-        try {
-            const {
-                type,
-                sender,
-                receiver,
-                amount,
-                loadId,
-                status,
-            } = req.body;
+  "/record-transaction",
+  limiters.general,
+  authenticate,
+  requireScope("blockchain:write"),
+  auditLog,
+  async (req, res, next) => {
+    try {
+      const { type, sender, receiver, amount, loadId, status } = req.body;
 
-            const result = await blockchainAuditService.recordTransaction({
-                type,
-                sender,
-                receiver,
-                amount,
-                loadId,
-                status,
-            });
+      const result = await blockchainAuditService.recordTransaction({
+        type,
+        sender,
+        receiver,
+        amount,
+        loadId,
+        status,
+      });
 
-            res.status(200).json(result);
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json(result);
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -74,20 +67,20 @@ router.post(
  * Mine new block with pending transactions
  */
 router.post(
-    "/mine",
-    limiters.general,
-    authenticate,
-    requireScope("admin:blockchain"),
-    auditLog,
-    async (req, res, next) => {
-        try {
-            const result = await blockchainAuditService.mineBlock();
+  "/mine",
+  limiters.general,
+  authenticate,
+  requireScope("admin:blockchain"),
+  auditLog,
+  async (req, res, next) => {
+    try {
+      const result = await blockchainAuditService.mineBlock();
 
-            res.status(200).json(result);
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json(result);
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -95,30 +88,30 @@ router.post(
  * Create escrow smart contract
  */
 router.post(
-    "/escrow/create",
-    limiters.general,
-    authenticate,
-    requireScope("blockchain:contracts"),
-    auditLog,
-    validateString("shipper", "driver", "loadId"),
-    handleValidationErrors,
-    async (req, res, next) => {
-        try {
-            const { shipper, driver, amount, loadId, releaseCondition } = req.body;
+  "/escrow/create",
+  limiters.general,
+  authenticate,
+  requireScope("blockchain:contracts"),
+  auditLog,
+  validateString("shipper", "driver", "loadId"),
+  handleValidationErrors,
+  async (req, res, next) => {
+    try {
+      const { shipper, driver, amount, loadId, releaseCondition } = req.body;
 
-            const result = await blockchainAuditService.createEscrowContract({
-                shipper,
-                driver,
-                amount,
-                loadId,
-                releaseCondition,
-            });
+      const result = await blockchainAuditService.createEscrowContract({
+        shipper,
+        driver,
+        amount,
+        loadId,
+        releaseCondition,
+      });
 
-            res.status(200).json(result);
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json(result);
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -126,31 +119,28 @@ router.post(
  * Confirm delivery and release escrow funds
  */
 router.post(
-    "/escrow/confirm-delivery",
-    limiters.general,
-    authenticate,
-    requireScope("blockchain:contracts"),
-    auditLog,
-    validateString("escrowId"),
-    handleValidationErrors,
-    async (req, res, next) => {
-        try {
-            const { escrowId, driver, proofOfDelivery, driverSignature } = req.body;
+  "/escrow/confirm-delivery",
+  limiters.general,
+  authenticate,
+  requireScope("blockchain:contracts"),
+  auditLog,
+  validateString("escrowId"),
+  handleValidationErrors,
+  async (req, res, next) => {
+    try {
+      const { escrowId, driver, proofOfDelivery, driverSignature } = req.body;
 
-            const result = await blockchainAuditService.confirmDeliveryAndRelease(
-                escrowId,
-                {
-                    driver,
-                    proofOfDelivery,
-                    driverSignature,
-                },
-            );
+      const result = await blockchainAuditService.confirmDeliveryAndRelease(escrowId, {
+        driver,
+        proofOfDelivery,
+        driverSignature,
+      });
 
-            res.status(200).json(result);
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json(result);
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -158,28 +148,28 @@ router.post(
  * Initiate escrow dispute
  */
 router.post(
-    "/escrow/dispute",
-    limiters.general,
-    authenticate,
-    requireScope("blockchain:contracts"),
-    auditLog,
-    validateString("escrowId", "reason"),
-    handleValidationErrors,
-    async (req, res, next) => {
-        try {
-            const { escrowId, reason, initiator, respondent } = req.body;
+  "/escrow/dispute",
+  limiters.general,
+  authenticate,
+  requireScope("blockchain:contracts"),
+  auditLog,
+  validateString("escrowId", "reason"),
+  handleValidationErrors,
+  async (req, res, next) => {
+    try {
+      const { escrowId, reason, initiator, respondent } = req.body;
 
-            const result = await blockchainAuditService.disputeEscrow(escrowId, {
-                reason,
-                initiator,
-                respondent,
-            });
+      const result = await blockchainAuditService.disputeEscrow(escrowId, {
+        reason,
+        initiator,
+        respondent,
+      });
 
-            res.status(200).json(result);
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json(result);
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -187,25 +177,23 @@ router.post(
  * Verify audit trail for transaction
  */
 router.post(
-    "/verify-audit-trail",
-    limiters.general,
-    authenticate,
-    requireScope("blockchain:read"),
-    validateString("transactionId"),
-    handleValidationErrors,
-    async (req, res, next) => {
-        try {
-            const { transactionId } = req.body;
+  "/verify-audit-trail",
+  limiters.general,
+  authenticate,
+  requireScope("blockchain:read"),
+  validateString("transactionId"),
+  handleValidationErrors,
+  async (req, res, next) => {
+    try {
+      const { transactionId } = req.body;
 
-            const result = await blockchainAuditService.verifyAuditTrail(
-                transactionId,
-            );
+      const result = await blockchainAuditService.verifyAuditTrail(transactionId);
 
-            res.status(200).json(result);
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json(result);
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -213,22 +201,22 @@ router.post(
  * Export blockchain state
  */
 router.get(
-    "/state",
-    limiters.general,
-    authenticate,
-    requireScope("blockchain:read"),
-    async (req, res, next) => {
-        try {
-            const state = blockchainAuditService.exportChainState();
+  "/state",
+  limiters.general,
+  authenticate,
+  requireScope("blockchain:read"),
+  async (req, res, next) => {
+    try {
+      const state = blockchainAuditService.exportChainState();
 
-            res.status(200).json({
-                success: true,
-                state,
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        state,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 /**
@@ -236,22 +224,22 @@ router.get(
  * Get blockchain statistics
  */
 router.get(
-    "/statistics",
-    limiters.general,
-    authenticate,
-    requireScope("blockchain:read"),
-    async (req, res, next) => {
-        try {
-            const stats = blockchainAuditService.getStatistics();
+  "/statistics",
+  limiters.general,
+  authenticate,
+  requireScope("blockchain:read"),
+  async (req, res, next) => {
+    try {
+      const stats = blockchainAuditService.getStatistics();
 
-            res.status(200).json({
-                success: true,
-                statistics: stats,
-            });
-        } catch (err) {
-            next(err);
-        }
-    },
+      res.status(200).json({
+        success: true,
+        statistics: stats,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 );
 
 module.exports = router;

@@ -2,7 +2,10 @@
 
 ## Purpose
 
-Infæmous Freight is engineered as a civilization-aligned institution. This protocol is a binding internal doctrine that governs why we exist, what we protect, how we adapt across generations, when we restrain ourselves, and how we dissolve safely if necessary.
+Infæmous Freight is engineered as a civilization-aligned institution. This
+protocol is a binding internal doctrine that governs why we exist, what we
+protect, how we adapt across generations, when we restrain ourselves, and how we
+dissolve safely if necessary.
 
 ## 1) Core System Law (Legacy Protocol)
 
@@ -15,13 +18,15 @@ Infæmous Freight is engineered as a civilization-aligned institution. This prot
 **We will never compromise:**
 
 - Human safety and human rights.
-- Transparency obligations for decisions that impact people, markets, or institutions.
+- Transparency obligations for decisions that impact people, markets, or
+  institutions.
 - The integrity of governance controls that constrain AI behavior.
 
 **We adapt across generations by:**
 
 - Preserving institutional memory as immutable, human-readable artifacts.
-- Requiring each new AI generation to inherit and exceed prior safety constraints.
+- Requiring each new AI generation to inherit and exceed prior safety
+  constraints.
 - Using multi-stakeholder oversight to approve governance or mission changes.
 
 **We restrain ourselves when:**
@@ -39,11 +44,14 @@ Infæmous Freight is engineered as a civilization-aligned institution. This prot
 ## 2) Eternal Mission Lock
 
 **Mission Statement:**
-> “To optimize the movement of value across the world in ways that are fair, sustainable, transparent, and beneficial to civilization.”
+
+> “To optimize the movement of value across the world in ways that are fair,
+> sustainable, transparent, and beneficial to civilization.”
 
 **Binding safeguards:**
 
-- Mission changes require multi-stakeholder approval (board, public-interest trustees, and independent ethics auditors).
+- Mission changes require multi-stakeholder approval (board, public-interest
+  trustees, and independent ethics auditors).
 - Mission text is cryptographically signed and embedded in governance records.
 - Mission updates must pass civilizational-impact tests and human rights review.
 
@@ -69,11 +77,13 @@ Institutional memory is:
 
 ## 4) Infæmous Human–AI Covenant
 
-A permanent agreement between humanity, Infæmous Freight AI, and governing institutions.
+A permanent agreement between humanity, Infæmous Freight AI, and governing
+institutions.
 
 **The covenant defines:**
 
-- AI rights and limits, including strict prohibitions on coercion or manipulation.
+- AI rights and limits, including strict prohibitions on coercion or
+  manipulation.
 - Human override conditions and escalation paths.
 - Emergency shutdown authority with due process and audit trails.
 - Dispute resolution mechanisms between humans and AI systems.
@@ -146,6 +156,5 @@ This protocol is enforced through:
 
 ## Status
 
-**Version:** v1
-**Adoption:** Pending board and public-interest trustee approval.
-**Review cadence:** Annual, with emergency review triggers.
+**Version:** v1 **Adoption:** Pending board and public-interest trustee
+approval. **Review cadence:** Annual, with emergency review triggers.

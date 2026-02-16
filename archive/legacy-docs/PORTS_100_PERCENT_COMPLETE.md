@@ -8,7 +8,10 @@
 
 ## 📋 Executive Summary
 
-All ports are fully configured, documented, and production-ready across all services and deployment environments. This document provides a comprehensive reference for all network ports used in the Infamous Freight Enterprises platform.
+All ports are fully configured, documented, and production-ready across all
+services and deployment environments. This document provides a comprehensive
+reference for all network ports used in the Infamous Freight Enterprises
+platform.
 
 ---
 
@@ -40,7 +43,8 @@ REDIS_PORT=6379        # Redis cache
 - API: `http://localhost:4000`
 - Web: `http://localhost:3000`
 - API Health: `http://localhost:4000/api/health`
-- PostgreSQL: `postgresql://infamous:infamouspass@localhost:5432/infamous_freight`
+- PostgreSQL:
+  `postgresql://infamous:infamouspass@localhost:5432/infamous_freight`
 - Redis: `redis://:redispass@localhost:6379`
 
 #### Docker Compose
@@ -82,7 +86,8 @@ services:
 
 **Access URLs:**
 
-- Web: `https://infamous-freight-enterprises-git-f34b9b-santorio-miles-projects.vercel.app`
+- Web:
+  `https://infamous-freight-enterprises-git-f34b9b-santorio-miles-projects.vercel.app`
 - API: `https://api.infamousfreight.com` (when deployed)
 
 ---
@@ -509,7 +514,8 @@ spec:
 - [.env.example](/.env.example) - Environment variables template
 - [docker-compose.yml](/docker-compose.yml) - Docker Compose configuration
 - [apps/api/src/server.js](/api/src/server.js) - API server initialization
-- [CONTAINER_REBUILD_100_PERCENT.md](/CONTAINER_REBUILD_100_PERCENT.md) - **Container rebuild guide**
+- [CONTAINER_REBUILD_100_PERCENT.md](/CONTAINER_REBUILD_100_PERCENT.md) -
+  **Container rebuild guide**
 - [DEPLOYMENT_STATUS_100.md](/DEPLOYMENT_STATUS_100.md) - Deployment overview
 - [QUICK_REFERENCE.md](/QUICK_REFERENCE.md) - Command cheat sheet
 

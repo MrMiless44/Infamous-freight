@@ -5,7 +5,8 @@
 The project currently has duplicate structures:
 
 - Root level: `/api`, `/web`, `/e2e`
-- Nested duplicate: `/infamous-freight-ai` with its own `apps/api/`, `apps/web/`, and `apps/mobile/`
+- Nested duplicate: `/infamous-freight-ai` with its own `apps/api/`,
+  `apps/web/`, and `apps/mobile/`
 
 ## Recommended Approach
 
@@ -28,9 +29,11 @@ Merge unique features from `/infamous-freight-ai` into the root-level services:
    - Hybrid auth middleware
    - Synthetic AI client services
 3. **Web Features**: Merge any unique features from infamous-freight-ai/web
-4. **Documentation**: Merge MONETIZATION_GUIDE.md and other unique docs to `/docs`
+4. **Documentation**: Merge MONETIZATION_GUIDE.md and other unique docs to
+   `/docs`
 5. **Scripts**: Consolidate deployment scripts
-6. **Archive**: Move `/infamous-freight-ai` to `/archive/infamous-freight-ai-backup`
+6. **Archive**: Move `/infamous-freight-ai` to
+   `/archive/infamous-freight-ai-backup`
 
 ### Option 2: Use Infamous-Freight-AI Structure
 

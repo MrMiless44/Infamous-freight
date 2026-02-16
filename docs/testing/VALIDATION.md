@@ -2,7 +2,9 @@
 
 ## Overview
 
-This document describes all input validation implemented across the Infamous Freight Enterprises API. Validation is enforced at the middleware level using `express-validator` before handlers execute.
+This document describes all input validation implemented across the Infamous
+Freight Enterprises API. Validation is enforced at the middleware level using
+`express-validator` before handlers execute.
 
 ## Validation Layers
 
@@ -19,7 +21,8 @@ Request → Rate Limit → Auth → Scope Check → Audit Log → Validators →
 
 - **Pattern**: RFC 5322 compliant email format
 - **Usage**: `body("email").isEmail()`
-- **Invalid Examples**: `user@`, `@example.com`, `user@.com`, `user @example.com`
+- **Invalid Examples**: `user@`, `@example.com`, `user@.com`,
+  `user @example.com`
 - **Valid Examples**: `user@example.com`, `test.user+tag@sub.example.co.uk`
 
 ### String Validation
@@ -140,8 +143,8 @@ Submits AI commands for processing.
 
 Creates Stripe payment session.
 
-**Auth Required**: `billing:write` scope
-**Validation**: Session data validation on backend
+**Auth Required**: `billing:write` scope **Validation**: Session data validation
+on backend
 
 ---
 
@@ -188,11 +191,11 @@ All validation errors follow a consistent format:
 ### Protected Against
 
 ✅ **SQL Injection** - Email/name validated to RFC standards, no raw DB queries
-✅ **NoSQL Injection** - Role enum-validated, prevents `{$ne: null}` attacks
-✅ **XSS** - String values trimmed and validated, HTML encoding in responses
-✅ **Buffer Overflow** - Max lengths enforced (1-100 chars typical)
-✅ **CRLF Injection** - HTTP headers validated by Node.js/Express
-✅ **Type Confusion** - Strict type checking with `isString()`, `isEmail()`, etc.
+✅ **NoSQL Injection** - Role enum-validated, prevents `{$ne: null}` attacks ✅
+**XSS** - String values trimmed and validated, HTML encoding in responses ✅
+**Buffer Overflow** - Max lengths enforced (1-100 chars typical) ✅ **CRLF
+Injection** - HTTP headers validated by Node.js/Express ✅ **Type Confusion** -
+Strict type checking with `isString()`, `isEmail()`, etc.
 
 ### Test Coverage
 
@@ -259,12 +262,11 @@ async (req, res, next) => {
 
 ## Best Practices
 
-✅ **Always validate at entry** - Catch bad data before business logic
-✅ **Use validators library** - Don't regex-validate email manually
-✅ **Provide clear errors** - Help clients understand what failed
-✅ **Test edge cases** - Whitespace, null, undefined, type mismatches
-✅ **Trim user input** - Remove unintended whitespace
-✅ **Enforce enums** - Use `.isIn()` for fixed value sets
+✅ **Always validate at entry** - Catch bad data before business logic ✅ **Use
+validators library** - Don't regex-validate email manually ✅ **Provide clear
+errors** - Help clients understand what failed ✅ **Test edge cases** -
+Whitespace, null, undefined, type mismatches ✅ **Trim user input** - Remove
+unintended whitespace ✅ **Enforce enums** - Use `.isIn()` for fixed value sets
 ✅ **Log validation failures** - Track attack patterns
 
 ---

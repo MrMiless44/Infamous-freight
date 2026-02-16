@@ -1,16 +1,5 @@
-export type UserRole =
-  | "admin"
-  | "dispatcher"
-  | "shipper"
-  | "carrier"
-  | "owner_operator";
-export type LoadStatus =
-  | "draft"
-  | "open"
-  | "booked"
-  | "in_transit"
-  | "delivered"
-  | "cancelled";
+export type UserRole = "admin" | "dispatcher" | "shipper" | "carrier" | "owner_operator";
+export type LoadStatus = "draft" | "open" | "booked" | "in_transit" | "delivered" | "cancelled";
 export type BidStatus = "pending" | "accepted" | "rejected" | "withdrawn";
 
 export type Profile = {

@@ -2,7 +2,8 @@
 
 # Infamous Freight Enterprises - 100% Production Ready
 
-This guide provides everything needed to deploy and operate Infamous Freight Enterprises in production.
+This guide provides everything needed to deploy and operate Infamous Freight
+Enterprises in production.
 
 ## 📋 Table of Contents
 
@@ -626,7 +627,8 @@ flyctl secrets set REDIS_URL="redis://..." --app infamous-freight-api
 
 ## 🎉 Success
 
-Your production environment is now fully configured and ready to operate at scale.
+Your production environment is now fully configured and ready to operate at
+scale.
 
 ### Quick Links
 
@@ -639,7 +641,8 @@ Your production environment is now fully configured and ready to operate at scal
 ### Support
 
 - **Documentation**: See [DOCUMENTATION_INDEX.md](../DOCUMENTATION_INDEX.md)
-- **Issues**: <https://github.com/MrMiless44/Infamous-freight-enterprises/issues>
+- **Issues**:
+  <https://github.com/MrMiless44/Infamous-freight-enterprises/issues>
 - **Security**: <security@infamous-freight.com>
 
 ---

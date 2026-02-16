@@ -76,7 +76,7 @@ export default MyApp;
 In user login handler:
 
 ```typescript
-import { setDatadogUserContext } from '../lib/datadog-rum';
+import { setDatadogUserContext } from "../lib/datadog-rum";
 
 // After successful login
 setDatadogUserContext({
@@ -92,17 +92,17 @@ setDatadogUserContext({
 Throughout your application:
 
 ```typescript
-import { trackDatadogAction, trackDatadogError } from '../lib/datadog-rum';
+import { trackDatadogAction, trackDatadogError } from "../lib/datadog-rum";
 
 // Track action
-trackDatadogAction('shipment_created', {
+trackDatadogAction("shipment_created", {
   shipmentId: shipment.id,
   status: shipment.status,
   origin: shipment.origin,
 });
 
 // Track error
-trackDatadogError('API Error', {
+trackDatadogError("API Error", {
   statusCode: error.response?.status,
   message: error.message,
   endpoint: error.config?.url,
@@ -163,6 +163,7 @@ Alert: If P95 duration > 3s
 ## What Gets Tracked
 
 ### **Automatically Captured**
+
 - ✅ Page views and navigation
 - ✅ Web Vitals (LCP, FID, CLS)
 - ✅ JavaScript errors with stack traces
@@ -172,6 +173,7 @@ Alert: If P95 duration > 3s
 - ✅ Session replays (20% of sessions)
 
 ### **Performance Monitoring**
+
 ```javascript
 {
   "view": {
@@ -192,6 +194,7 @@ Alert: If P95 duration > 3s
 ```
 
 ### **Error Tracking**
+
 ```javascript
 {
   "error": {
@@ -244,8 +247,8 @@ datadogRum.startSessionReplay();
 
 ```typescript
 // Adjust based on traffic
-const sessionSampleRate = process.env.NODE_ENV === 'production' ? 50 : 100;
-const replaySampleRate = process.env.NODE_ENV === 'production' ? 10 : 50;
+const sessionSampleRate = process.env.NODE_ENV === "production" ? 50 : 100;
+const replaySampleRate = process.env.NODE_ENV === "production" ? 10 : 50;
 ```
 
 ---
@@ -274,12 +277,13 @@ const replaySampleRate = process.env.NODE_ENV === 'production' ? 10 : 50;
 **Symptoms**: No replay data in Datadog
 
 **Solutions**:
+
 ```typescript
 // Check if new sessions are being created
 console.log(datadogRum.getSessionId());
 
 // Verify sampling rate
-console.log('Replay sampled:', datadogRum.getSessionReplaySampleRate());
+console.log("Replay sampled:", datadogRum.getSessionReplaySampleRate());
 
 // Check privacy settings
 // May be masking too much content
@@ -290,6 +294,7 @@ console.log('Replay sampled:', datadogRum.getSessionReplaySampleRate());
 **Symptoms**: API requests not showing in RUM
 
 **Solutions**:
+
 ```typescript
 // Ensure API domain is in allowedTracingUrls
 datadogRum.init({
@@ -302,12 +307,13 @@ datadogRum.init({
 **Symptoms**: Browser becomes slow
 
 **Solutions**:
+
 ```typescript
 // Reduce session replay sampling
-NEXT_PUBLIC_DD_SESSION_REPLAY_SAMPLE_RATE=5  // Lower from 20
+NEXT_PUBLIC_DD_SESSION_REPLAY_SAMPLE_RATE = 5; // Lower from 20
 
 // Reduce session sampling
-NEXT_PUBLIC_DD_SESSION_SAMPLE_RATE=50  // Lower from 100
+NEXT_PUBLIC_DD_SESSION_SAMPLE_RATE = 50; // Lower from 100
 ```
 
 ---
@@ -316,17 +322,19 @@ NEXT_PUBLIC_DD_SESSION_SAMPLE_RATE=50  // Lower from 100
 
 RUM and Sentry work together for complete observability:
 
-| Tool | Captures | Use For |
-|------|----------|---------|
+| Tool        | Captures                                            | Use For                             |
+| ----------- | --------------------------------------------------- | ----------------------------------- |
 | Datadog RUM | Browser performance, user sessions, frontend events | User experience, performance trends |
-| Sentry | JavaScript errors, stack traces, release versions | Error tracking, debugging |
+| Sentry      | JavaScript errors, stack traces, release versions   | Error tracking, debugging           |
 
 **Both receive and show**:
+
 - JavaScript errors
 - User context
 - Release information
 
-**Recommendation**: Use both. Datadog RUM for performance, Sentry for error tracking.
+**Recommendation**: Use both. Datadog RUM for performance, Sentry for error
+tracking.
 
 ---
 
@@ -335,6 +343,7 @@ RUM and Sentry work together for complete observability:
 ### **Create Datadog Monitors**
 
 **Monitor 1: High Error Rate**
+
 ```
 Alert if: error.count > 100 in 5min windows
 Notify: #infrastructure Slack channel
@@ -342,6 +351,7 @@ Severity: High
 ```
 
 **Monitor 2: Slow Page Load**
+
 ```
 Alert if: @view.largest_contentful_paint > 3000 for 15min
 Notify: #performance Slack channel
@@ -349,6 +359,7 @@ Severity: Medium
 ```
 
 **Monitor 3: High CLS**
+
 ```
 Alert if: @view.cumulative_layout_shift > 0.1 for 10min
 Notify: #frontend Slack channel
@@ -371,6 +382,7 @@ const sampleRate = offPeakHours.includes(new Date().getHours()) ? 10 : 50;
 ```
 
 **Estimated Monthly Cost**:
+
 - Development: $0 (free tier)
 - Staging: $100-200/mo (5% sampling)
 - Production: $500-1000/mo (20-50% sampling, 100K-200K daily page views)
@@ -379,12 +391,15 @@ const sampleRate = offPeakHours.includes(new Date().getHours()) ? 10 : 50;
 
 ## References
 
-- 📖 [Datadog RUM Documentation](https://docs.datadoghq.com/real_user_monitoring)
+- 📖
+  [Datadog RUM Documentation](https://docs.datadoghq.com/real_user_monitoring)
 - 📖 [Web Vitals Guide](https://web.dev/vitals)
-- 📖 [Session Replay Documentation](https://docs.datadoghq.com/real_user_monitoring/session_replay)
-- 📖 [Error Tracking](https://docs.datadoghq.com/real_user_monitoring/error_tracking)
+- 📖
+  [Session Replay Documentation](https://docs.datadoghq.com/real_user_monitoring/session_replay)
+- 📖
+  [Error Tracking](https://docs.datadoghq.com/real_user_monitoring/error_tracking)
 
 ---
 
 **Status**: ✅ Ready for deployment  
-**Next Step**: Integrate into _app.tsx and test in staging
+**Next Step**: Integrate into \_app.tsx and test in staging

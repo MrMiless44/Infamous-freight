@@ -1,7 +1,7 @@
 /**
  * Tenant-scoped Prisma Client (Phase 19.2)
  * Enforces row-level security via Prisma query extension
- * 
+ *
  * Every tenant only sees their own data:
  * - Jobs filtered by organizationId
  * - JobEvents filtered through Job relationship
@@ -15,10 +15,7 @@ import { PrismaClient, Prisma } from "@prisma/client";
  * Create a tenant-scoped Prisma client
  * All queries are automatically filtered by organizationId
  */
-export function tenantPrisma(
-  prisma: PrismaClient,
-  organizationId: string
-): PrismaClient {
+export function tenantPrisma(prisma: PrismaClient, organizationId: string): PrismaClient {
   return prisma.$extends({
     query: {
       // Job queries scoped to tenant
@@ -184,12 +181,12 @@ export function tenantPrisma(
 
 /**
  * Usage in routes:
- * 
+ *
  * const orgId = req.auth?.organizationId;
  * if (!orgId) return res.status(401).json({ error: "No organization" });
- * 
+ *
  * const tprisma = tenantPrisma(prisma, orgId);
- * 
+ *
  * // Now all queries are automatically scoped to orgId
  * const jobs = await tprisma.job.findMany();
  * const users = await tprisma.user.findMany();

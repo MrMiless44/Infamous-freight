@@ -2,7 +2,9 @@
 
 ## Overview
 
-This document outlines the comprehensive testing strategy for Infamous Freight Enterprises, ensuring high code quality, security, and reliability across all services.
+This document outlines the comprehensive testing strategy for Infamous Freight
+Enterprises, ensuring high code quality, security, and reliability across all
+services.
 
 ## Testing Pyramid
 
@@ -18,7 +20,8 @@ This document outlines the comprehensive testing strategy for Infamous Freight E
 
 ### Distribution
 
-- **Unit Tests (75%)**: Fast, isolated tests for individual functions and modules
+- **Unit Tests (75%)**: Fast, isolated tests for individual functions and
+  modules
 - **Integration Tests (20%)**: Test interactions between components and services
 - **E2E Tests (5%)**: Complete user workflows through the UI
 
@@ -31,7 +34,8 @@ This document outlines the comprehensive testing strategy for Infamous Freight E
 | Functions  | 80%     | 90%    | 82.9% ✅ |
 | Lines      | 84%     | 90%    | 86.9% ✅ |
 
-**Note**: All minimum thresholds are enforced in CI/CD. PRs that decrease coverage will be rejected.
+**Note**: All minimum thresholds are enforced in CI/CD. PRs that decrease
+coverage will be rejected.
 
 ## Test Categories
 
@@ -217,14 +221,9 @@ pnpm test:coverage                   # Coverage check
 ### CI/CD Pipeline
 
 ```yaml
-1. Install dependencies
-2. Run linter (fail fast)
-3. Run type checking
-4. Run unit tests
-5. Run integration tests
-6. Check coverage thresholds
-7. Run security scans
-8. Run E2E tests (on staging)
+1. Install dependencies 2. Run linter (fail fast) 3. Run type checking 4. Run
+unit tests 5. Run integration tests 6. Check coverage thresholds 7. Run security
+scans 8. Run E2E tests (on staging)
 ```
 
 ## Mocking Strategy

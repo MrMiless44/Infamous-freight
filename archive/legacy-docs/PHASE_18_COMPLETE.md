@@ -14,18 +14,22 @@ Phase 18 completes the operational and compliance loop by adding:
 3. **Audit Chain Verification** - Detects tampering in immutable logs
 4. **Evidence Pack** - Policies, logs, and compliance artifacts for auditors
 
-This phase transforms "secure" infrastructure into **"provable" enterprise-ready** infrastructure.
+This phase transforms "secure" infrastructure into **"provable"
+enterprise-ready** infrastructure.
 
 ---
 
 ## Phase 18.1 — Sentry Integration ✓
 
 ### Installed
+
 - `@sentry/node` - Error tracking SDK
 - `@sentry/profiling-node` - Performance profiling
 
 ### Created
+
 **File:** `apps/api/src/observability/sentry.js`
+
 - Initializes Sentry with environment config
 - Captures exceptions and messages with context
 - Starts transactions for performance tracing
@@ -35,6 +39,7 @@ This phase transforms "secure" infrastructure into **"provable" enterprise-ready
 ### Integration Points
 
 **API Server** (`apps/api/src/server.js`)
+
 ```javascript
 // Early initialization (before routes)
 const { initSentry, Sentry } = require("./observability/sentry");
@@ -47,6 +52,7 @@ app.use(Sentry.Handlers.errorHandler());
 ```
 
 **Automatic Capture:**
+
 - ✅ Unhandled exceptions
 - ✅ Promise rejections
 - ✅ HTTP error responses
@@ -57,6 +63,7 @@ app.use(Sentry.Handlers.errorHandler());
 ### Configuration
 
 **Environment Variables:**
+
 ```env
 SENTRY_DSN=https://xxxxx@o1234567.ingest.sentry.io/5678901
 SENTRY_ENVIRONMENT=production
@@ -66,11 +73,13 @@ RELEASE_SHA=abc123def456             # Build identifier
 ```
 
 **Behavior:**
+
 - If `SENTRY_DSN` not set: Gracefully disabled (development mode)
 - Fail-open: Missing Sentry doesn't crash app
 - Sampling: Configurable to control costs
 
 ### Dashboard Access
+
 - URL: https://sentry.io/organizations/infamous-freight/
 - Alerts configured for P0/P1 errors
 - Performance bottleneck identification
@@ -83,6 +92,7 @@ RELEASE_SHA=abc123def456             # Build identifier
 ### New Endpoints
 
 **`GET /api/status`** - Operational snapshot
+
 ```json
 {
   "ok": true,
@@ -101,6 +111,7 @@ RELEASE_SHA=abc123def456             # Build identifier
 ```
 
 **Use Cases:**
+
 - Uptime monitoring services (check every 60 seconds)
 - Load balancer health checks
 - Internal ops dashboards
@@ -109,17 +120,20 @@ RELEASE_SHA=abc123def456             # Build identifier
 ### Worker Heartbeat
 
 **File:** `apps/api/src/worker/heartbeat.js`
+
 - Periodically writes timestamp to Redis
 - TTL: 30 seconds (expires if worker dies)
 - Interval: 10 seconds (safe margin)
 - Called from API server startup
 
 **Status Endpoint Integration:**
+
 - Returns last heartbeat timestamp
 - Null if worker not responding
 - Used to detect stuck/crashed workers
 
 **Monitoring:**
+
 ```bash
 # Check if worker is alive
 curl http://localhost:4000/api/status | jq '.worker.heartbeat'
@@ -134,8 +148,8 @@ curl http://localhost:4000/api/status | jq '.worker.heartbeat'
 
 ### File: `apps/api/src/audit/verify.js`
 
-**Purpose:**
-Detects tampering in immutable audit logs by:
+**Purpose:** Detects tampering in immutable audit logs by:
+
 - Validating previous hash linkage
 - Recomputing expected hashes
 - Reporting first mismatch
@@ -144,6 +158,7 @@ Detects tampering in immutable audit logs by:
 ### Key Functions
 
 **`verifyChain(events, salt)`**
+
 - Takes array of events
 - Returns: `{ ok, checked, firstError?, tampering? }`
 - Tampering types:
@@ -151,11 +166,13 @@ Detects tampering in immutable audit logs by:
   - `DATA_MODIFIED` - event data changed
 
 **`verifyJobAuditChain(jobId, prisma)`**
+
 - Fetches all events for a job
 - Runs chain verification
 - Returns detailed result with event index
 
 **`verifyBulkJobChains(jobIds, prisma, batchSize)`**
+
 - Verifies multiple jobs in parallel batches
 - Returns summary: total, verified, failed, compromised
 - Identifies all tampered jobs
@@ -180,10 +197,7 @@ if (result.ok) {
 }
 
 // Bulk verify
-const bulk = await verifyBulkJobChains(
-  ["job-1", "job-2", "job-3"],
-  prisma
-);
+const bulk = await verifyBulkJobChains(["job-1", "job-2", "job-3"], prisma);
 console.log(`Verified: ${bulk.verified}/${bulk.total}`);
 if (bulk.compromised > 0) {
   console.log(`⚠ Compromised jobs: ${bulk.tamperedJobs.length}`);
@@ -260,11 +274,13 @@ EVIDENCE_PACK/
 ### Auditor Tools
 
 **verify.sh** - Comprehensive verification script
+
 ```bash
 ./artifacts/verify.sh production [job-id]
 ```
 
 Checks:
+
 - ✅ API health
 - ✅ Security headers (HSTS, CSP, X-Frame-Options)
 - ✅ Status endpoint
@@ -312,6 +328,7 @@ All added to [apps/api/.env.example](apps/api/.env.example)
 ## Monitoring Setup for Operations
 
 ### Daily Checks
+
 ```bash
 # Health check
 curl https://api.infamous-freight.com/api/health
@@ -324,6 +341,7 @@ curl https://api.infamous-freight.com/api/status | jq '.worker.heartbeat'
 ```
 
 ### Weekly Tasks
+
 ```bash
 # Run verification script
 cd EVIDENCE_PACK/artifacts
@@ -334,6 +352,7 @@ cd EVIDENCE_PACK/artifacts
 ```
 
 ### Monthly Compliance
+
 ```bash
 # Verify random sample of audit chains
 node -e "
@@ -355,6 +374,7 @@ curl -H 'Authorization: Bearer $TOKEN' \
 ## Handoff for Enterprise Customers
 
 **Deliverables:**
+
 1. ✅ EVIDENCE_PACK/ folder (policies + logs + screenshots)
 2. ✅ Security audit trail (sample)
 3. ✅ Verification script for independent validation
@@ -362,6 +382,7 @@ curl -H 'Authorization: Bearer $TOKEN' \
 5. ✅ Compliance certificate (signed)
 
 **Typical Customer Handoff:**
+
 ```bash
 tar -czf infamous-freight-evidence-pack-2026-Q1.tar.gz EVIDENCE_PACK/
 # Share with customer's auditors
@@ -372,16 +393,19 @@ tar -czf infamous-freight-evidence-pack-2026-Q1.tar.gz EVIDENCE_PACK/
 ## Next Steps (Future Phases)
 
 **Phase 19 — OpenTelemetry (Optional)**
+
 - Vendor-neutral tracing
 - Distributed tracing across services
 - Standardized metrics export
 
 **Phase 20 — Continuous Compliance**
+
 - Automated evidence collection
 - Policy violation detection
 - Quarterly re-certification
 
 **Phase 21 — Full SOC2 Type II**
+
 - Extended monitoring period (6-12 months)
 - Third-party auditor engagement
 - Formal Type II attestation
@@ -393,13 +417,15 @@ tar -czf infamous-freight-evidence-pack-2026-Q1.tar.gz EVIDENCE_PACK/
 **Phase 18 Status: 🟢 100% PRODUCTION READY**
 
 Infamous Freight's monitoring and compliance infrastructure is now:
+
 - ✅ **Enterprise-grade:** Error tracking, performance monitoring, health checks
 - ✅ **Verifiable:** Audit chain verification detects tampering
 - ✅ **Auditable:** Evidence Pack for customer auditors
 - ✅ **Compliant:** SOC2-lite controls documented and demonstrated
 - ✅ **Observable:** Sentry dashboards, status endpoints, worker heartbeats
 
-The infrastructure can now pass SOC2-lite audits and serve enterprise customers with confidence. 🎉
+The infrastructure can now pass SOC2-lite audits and serve enterprise customers
+with confidence. 🎉
 
 ---
 

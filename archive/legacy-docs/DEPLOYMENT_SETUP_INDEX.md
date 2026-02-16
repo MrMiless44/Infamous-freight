@@ -28,7 +28,8 @@ bash scripts/deploy-all-phases-orchestrator.sh <<< "5"
 - [Execution Procedures](DEPLOYMENT_EXECUTION_PROCEDURES.md) - 15KB, 2000+ lines
 - [Summary Document](ALL_PHASES_DEPLOYMENT_SETUP_COMPLETE.md) - 14KB
 - [Master Execution Plan](ALL_4_PHASES_MASTER_EXECUTION_PLAN.md) - 3000+ lines
-- [Implementation Checklist](COMPLETE_IMPLEMENTATION_CHECKLIST.md) - 155+ checkpoints
+- [Implementation Checklist](COMPLETE_IMPLEMENTATION_CHECKLIST.md) - 155+
+  checkpoints
 
 ---
 
@@ -167,11 +168,14 @@ bash scripts/deploy-phase4-setup.sh
 
 ### Step 1: Review Documentation (5 minutes)
 
-Start with [ALL_PHASES_DEPLOYMENT_SETUP_COMPLETE.md](ALL_PHASES_DEPLOYMENT_SETUP_COMPLETE.md) for quick overview.
+Start with
+[ALL_PHASES_DEPLOYMENT_SETUP_COMPLETE.md](ALL_PHASES_DEPLOYMENT_SETUP_COMPLETE.md)
+for quick overview.
 
 ### Step 2: Read Setup Guide (30 minutes)
 
-Read [PHASE_ALL_DEPLOYMENT_SETUP.md](PHASE_ALL_DEPLOYMENT_SETUP.md) for complete procedures.
+Read [PHASE_ALL_DEPLOYMENT_SETUP.md](PHASE_ALL_DEPLOYMENT_SETUP.md) for complete
+procedures.
 
 ### Step 3: Execute Phase 1 (45 minutes)
 
@@ -290,7 +294,8 @@ January 29, 2025
 - **Uptime**: 99.9%
 - **Error Rate**: < 0.5%
 - **Response Time p95**: < 2 seconds
-- **Services Running**: All 7 (PostgreSQL, Redis, API, Web, Prometheus, Grafana, Jaeger)
+- **Services Running**: All 7 (PostgreSQL, Redis, API, Web, Prometheus, Grafana,
+  Jaeger)
 
 ### Phase 2 Targets
 
@@ -319,13 +324,17 @@ January 29, 2025
 
 ### Quick Help
 
-- **Setup Guide**: [PHASE_ALL_DEPLOYMENT_SETUP.md](PHASE_ALL_DEPLOYMENT_SETUP.md)
-- **Procedures**: [DEPLOYMENT_EXECUTION_PROCEDURES.md](DEPLOYMENT_EXECUTION_PROCEDURES.md)
-- **Checklist**: [COMPLETE_IMPLEMENTATION_CHECKLIST.md](COMPLETE_IMPLEMENTATION_CHECKLIST.md)
+- **Setup Guide**:
+  [PHASE_ALL_DEPLOYMENT_SETUP.md](PHASE_ALL_DEPLOYMENT_SETUP.md)
+- **Procedures**:
+  [DEPLOYMENT_EXECUTION_PROCEDURES.md](DEPLOYMENT_EXECUTION_PROCEDURES.md)
+- **Checklist**:
+  [COMPLETE_IMPLEMENTATION_CHECKLIST.md](COMPLETE_IMPLEMENTATION_CHECKLIST.md)
 
 ### Dashboard Access (After Phase 1)
 
-- **Grafana**: http://localhost:3002 (username: admin, password: in .env.production)
+- **Grafana**: http://localhost:3002 (username: admin, password: in
+  .env.production)
 - **Prometheus**: http://localhost:9090
 - **Jaeger**: http://localhost:16686
 

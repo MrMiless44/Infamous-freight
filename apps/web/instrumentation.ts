@@ -15,10 +15,10 @@ export async function register() {
     try {
       const { initSentryServer } = await import("./sentry.server.config");
       initSentryServer();
-      // eslint-disable-next-line no-console
+       
       console.debug("✅ Sentry server-side initialized for Node.js runtime");
     } catch (error) {
-      // eslint-disable-next-line no-console
+       
       console.debug("❌ Failed to initialize Sentry for Node.js runtime:", error);
     }
   }
@@ -27,10 +27,10 @@ export async function register() {
     // Initialize Sentry for Edge runtime (Vercel Edge Functions, etc.)
     try {
       await import("./sentry.edge.config");
-      // eslint-disable-next-line no-console
+       
       console.debug("✅ Sentry edge runtime initialized");
     } catch (error) {
-      // eslint-disable-next-line no-console
+       
       console.debug("❌ Failed to initialize Sentry for edge runtime:", error);
     }
   }
@@ -40,10 +40,10 @@ export async function register() {
     try {
       const { initSentryServer } = await import("./sentry.server.config");
       initSentryServer();
-      // eslint-disable-next-line no-console
+       
       console.debug("✅ Sentry server-side initialized (default Node.js)");
     } catch (error) {
-      // eslint-disable-next-line no-console
+       
       console.debug("❌ Failed to initialize Sentry (default):", error);
     }
   }

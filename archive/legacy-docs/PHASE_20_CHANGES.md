@@ -81,6 +81,7 @@
 **Added Models**:
 
 1. **BillingPlan Enum**
+
    ```prisma
    enum BillingPlan {
      STARTER
@@ -91,6 +92,7 @@
    ```
 
 2. **OrgBilling Model** (45 lines)
+
    ```prisma
    model OrgBilling {
      id                String   @id @default(cuid())
@@ -112,6 +114,7 @@
    ```
 
 3. **OrgUsage Model** (25 lines)
+
    ```prisma
    model OrgUsage {
      id              String   @id @default(cuid())
@@ -149,6 +152,7 @@
    ```
 
 **Added Relations to Organization**:
+
 - `billing OrgBilling?`
 - `usage OrgUsage[]`
 - `invoices OrgInvoice[]`
@@ -194,15 +198,21 @@
 ## 🔄 Integration Points
 
 ### 1. Organization Creation Flow
+
 **Location**: `apps/api/src/routes/orgs.js` (example in INTEGRATION_GUIDE)
 
 ```typescript
 // When org created:
-const sub = await createStripeSubscription(orgId, orgName, 'STARTER');
-const docs = await storeComplianceDocuments(orgId, orgName, sub.stripeCustomerId);
+const sub = await createStripeSubscription(orgId, orgName, "STARTER");
+const docs = await storeComplianceDocuments(
+  orgId,
+  orgName,
+  sub.stripeCustomerId,
+);
 ```
 
 ### 2. Job Completion Flow
+
 **Location**: `apps/api/src/routes/jobs.js` (example in INTEGRATION_GUIDE)
 
 ```typescript
@@ -211,6 +221,7 @@ await recordJobCompletion(orgId, jobId, vehicleType, finalPrice);
 ```
 
 ### 3. Monthly Invoicing (Scheduled)
+
 **Location**: `apps/api/src/jobs/monthlyInvoicing.ts` (fully implemented)
 
 ```typescript
@@ -219,34 +230,36 @@ await generateMonthlyInvoices();
 ```
 
 ### 4. Admin Analytics
+
 **Location**: `apps/api/src/routes/admin.js` (example in INTEGRATION_GUIDE)
 
 ```typescript
 // NEW endpoints:
-GET /api/admin/billing/revenue       // MRR by plan
-GET /api/admin/billing/usage         // Usage analytics
-GET /api/admin/billing/invoices      // Invoice status
+GET / api / admin / billing / revenue; // MRR by plan
+GET / api / admin / billing / usage; // Usage analytics
+GET / api / admin / billing / invoices; // Invoice status
 ```
 
 ---
 
 ## 📊 Code Statistics
 
-| Category | Files | Lines | Status |
-|---|---|---|---|
-| **Billing Services** | 4 | 1,250+ | ✅ New |
-| **API Routes** | 1 | 400+ | ✅ New |
-| **Background Jobs** | 1 | 400+ | ✅ New |
-| **Database Schema** | Prisma | 100+ | ✅ Updated |
-| **Configuration** | .env.example | 50+ | ✅ Updated |
-| **Documentation** | 4 files | 2,000+ | ✅ New |
-| **TOTAL** | **10+ files** | **4,200+** | ✅ **Complete** |
+| Category             | Files         | Lines      | Status          |
+| -------------------- | ------------- | ---------- | --------------- |
+| **Billing Services** | 4             | 1,250+     | ✅ New          |
+| **API Routes**       | 1             | 400+       | ✅ New          |
+| **Background Jobs**  | 1             | 400+       | ✅ New          |
+| **Database Schema**  | Prisma        | 100+       | ✅ Updated      |
+| **Configuration**    | .env.example  | 50+        | ✅ Updated      |
+| **Documentation**    | 4 files       | 2,000+     | ✅ New          |
+| **TOTAL**            | **10+ files** | **4,200+** | ✅ **Complete** |
 
 ---
 
 ## 🎯 Key Features Added
 
 ### ✅ Subscription Management
+
 - Create subscriptions (STARTER/GROWTH/ENTERPRISE)
 - Upgrade/downgrade plans
 - Cancel with optional proration
@@ -254,12 +267,14 @@ GET /api/admin/billing/invoices      // Invoice status
 - Customer portal access (Stripe)
 
 ### ✅ Usage Metering
+
 - Auto-track job completions
 - Calculate platform fees per vehicle type
 - Detect monthly overages
 - Report to Stripe metered billing
 
 ### ✅ Invoice Generation
+
 - Monthly batch processing (BullMQ, 1st of month)
 - Per-organization invoicing
 - Stripe invoice integration
@@ -267,6 +282,7 @@ GET /api/admin/billing/invoices      // Invoice status
 - Auto-send via Stripe (configurable)
 
 ### ✅ Compliance Documents
+
 - DPA (Data Processing Agreement) PDF
 - SOC2 Type II Certificate
 - Auto-generated on signup
@@ -274,6 +290,7 @@ GET /api/admin/billing/invoices      // Invoice status
 - Available to customers
 
 ### ✅ Customer Billing Portal
+
 - Stripe-hosted dashboard
 - Subscription management
 - Invoice history
@@ -281,6 +298,7 @@ GET /api/admin/billing/invoices      // Invoice status
 - Billing address changes
 
 ### ✅ Admin Analytics
+
 - Monthly Recurring Revenue (MRR)
 - Usage analytics by plan
 - Overage tracking
@@ -305,18 +323,21 @@ GET /api/admin/billing/invoices      // Invoice status
 ## 🧪 Testing Coverage
 
 ### Unit Tests (Ready to implement)
+
 - Vehicle fee calculations
 - Monthly usage aggregation
 - Overage detection
 - Invoice generation logic
 
 ### Integration Tests (Ready to implement)
+
 - Subscription creation workflow
 - Job completion → usage tracking
 - Invoice generation → Stripe sync
 - Cancel subscription → status update
 
 ### E2E Tests (Ready to implement)
+
 - Signup → billing portal access
 - Plan upgrade workflow
 - View invoice in portal
@@ -364,7 +385,7 @@ GET /api/admin/billing/invoices      // Invoice status
 ✅ Rate limiting configured  
 ✅ Audit logging integrated  
 ✅ No breaking changes to existing code  
-✅ Backward compatible with Phase 19  
+✅ Backward compatible with Phase 19
 
 ---
 
@@ -374,23 +395,24 @@ GET /api/admin/billing/invoices      // Invoice status
 ✅ Existing routes unchanged  
 ✅ New routes don't conflict with existing  
 ✅ Optional: Billing not required to use platform  
-✅ Phase 19 (multi-tenancy) fully integrated  
+✅ Phase 19 (multi-tenancy) fully integrated
 
 ---
 
 ## 📈 Performance Characteristics
 
-| Operation | Complexity | Notes |
-|---|---|---|
-| Create subscription | O(1) | Stripe API call |
-| Record job completion | O(1) | Upsert with index |
-| Get monthly usage | O(1) | Single query, indexed |
-| Generate single invoice | O(1) | Stripe invoice creation |
-| Generate monthly invoices | O(N) | N = # of active orgs |
-| Get usage summary | O(M) | M = # of months |
-| Stripe webhook | O(1) | Lookup + update |
+| Operation                 | Complexity | Notes                   |
+| ------------------------- | ---------- | ----------------------- |
+| Create subscription       | O(1)       | Stripe API call         |
+| Record job completion     | O(1)       | Upsert with index       |
+| Get monthly usage         | O(1)       | Single query, indexed   |
+| Generate single invoice   | O(1)       | Stripe invoice creation |
+| Generate monthly invoices | O(N)       | N = # of active orgs    |
+| Get usage summary         | O(M)       | M = # of months         |
+| Stripe webhook            | O(1)       | Lookup + update         |
 
-**Scaling**: Monthly invoicing job designed to handle 10k+ organizations (parallelizable with queue workers)
+**Scaling**: Monthly invoicing job designed to handle 10k+ organizations
+(parallelizable with queue workers)
 
 ---
 
@@ -412,6 +434,7 @@ After Phase 20 deployment, you can now measure:
 ## 📞 Support & Troubleshooting
 
 See documentation for common issues:
+
 - Subscription creation failures
 - Invoice generation delays
 - Stripe webhook problems
@@ -425,6 +448,7 @@ See documentation for common issues:
 **Status**: 100% Ready for Production
 
 **What was delivered**:
+
 - ✅ 6 new service modules (1,650 lines)
 - ✅ 1 API routes file (400 lines)
 - ✅ 1 background job (400 lines)

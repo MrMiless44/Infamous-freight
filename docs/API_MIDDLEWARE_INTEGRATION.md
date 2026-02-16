@@ -4,7 +4,9 @@
 
 ## Overview
 
-All API routes implement a comprehensive middleware stack for security, validation, rate limiting, and observability. This guide documents the complete integration patterns used throughout the API.
+All API routes implement a comprehensive middleware stack for security,
+validation, rate limiting, and observability. This guide documents the complete
+integration patterns used throughout the API.
 
 ## Middleware Stack Architecture
 
@@ -38,13 +40,13 @@ The global error handler is registered **last** in server.js:
 
 ```javascript
 // All routes...
-app.use('/api', healthRoutes);
-app.use('/api', shipmentsRoutes);
+app.use("/api", healthRoutes);
+app.use("/api", shipmentsRoutes);
 // ... more routes
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ error: 'Route not found' });
+  res.status(404).json({ error: "Route not found" });
 });
 
 // Global error handler (MUST BE LAST)
@@ -57,21 +59,21 @@ app.use(errorHandler);
 
 From `apps/api/src/middleware/security.js`:
 
-| Limiter | Window | Max Requests | Use Case |
-|---------|--------|--------------|----------|
-| `limiters.general` | 15 min | 100 | General API operations |
-| `limiters.auth` | 15 min | 5 | Login/authentication endpoints |
-| `limiters.ai` | 1 min | 20 | AI commands, voice processing |
-| `limiters.billing` | 15 min | 30 | Billing/payment operations |
+| Limiter            | Window | Max Requests | Use Case                       |
+| ------------------ | ------ | ------------ | ------------------------------ |
+| `limiters.general` | 15 min | 100          | General API operations         |
+| `limiters.auth`    | 15 min | 5            | Login/authentication endpoints |
+| `limiters.ai`      | 1 min  | 20           | AI commands, voice processing  |
+| `limiters.billing` | 15 min | 30           | Billing/payment operations     |
 
 ### Rate Limiter Configuration
 
 ```javascript
 const limiters = {
   general: rateLimit({
-    windowMs: 15 * 60 * 1000,    // 15 minutes
-    max: 100,                     // 100 requests per window
-    standardHeaders: true,        // Return rate limit info in headers
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // 100 requests per window
+    standardHeaders: true, // Return rate limit info in headers
     legacyHeaders: false,
     keyGenerator: (req) => req.user?.sub || req.ip, // Per-user or per-IP
   }),
@@ -96,14 +98,15 @@ X-RateLimit-Reset: 1609459200
 All protected routes require JWT bearer token:
 
 ```javascript
-const { authenticate, requireScope } = require('../middleware/security');
+const { authenticate, requireScope } = require("../middleware/security");
 
-router.get('/protected',
-  authenticate,           // Extracts JWT, sets req.user
-  requireScope('scope:name'), // Checks req.user.scopes
+router.get(
+  "/protected",
+  authenticate, // Extracts JWT, sets req.user
+  requireScope("scope:name"), // Checks req.user.scopes
   async (req, res) => {
     console.log(req.user); // { sub, email, role, scopes: [...] }
-  }
+  },
 );
 ```
 
@@ -114,12 +117,7 @@ router.get('/protected',
   "sub": "user-id-123",
   "email": "user@example.com",
   "role": "admin",
-  "scopes": [
-    "shipments:read",
-    "shipments:write",
-    "ai:command",
-    "metrics:read"
-  ],
+  "scopes": ["shipments:read", "shipments:write", "ai:command", "metrics:read"],
   "iat": 1609459200,
   "exp": 1609545600
 }
@@ -127,27 +125,27 @@ router.get('/protected',
 
 ### Required Scopes by Route
 
-| Route | Method | Scopes Required |
-|-------|--------|-----------------|
-| `/api/health/*` | GET | *None (public)* |
-| `/api/shipments` | GET | `shipments:read` |
-| `/api/shipments` | POST | `shipments:write` |
-| `/api/shipments/:id` | PATCH | `shipments:write` |
-| `/api/shipments/:id` | DELETE | `shipments:write` |
-| `/api/shipments/export/:format` | GET | `shipments:read` |
-| `/api/metrics/revenue/live` | GET | `metrics:read` |
-| `/api/metrics/revenue/export` | GET | `metrics:export` |
-| `/api/metrics/revenue/clear-cache` | POST | `admin` |
-| `/api/ai/command` | POST | `ai:command` |
-| `/api/ai/history` | GET | `ai:history` |
-| `/api/billing/create-subscription` | POST | `billing:write` |
-| `/api/billing/subscriptions` | GET | `billing:read` |
-| `/api/billing/cancel-subscription/:id` | POST | `billing:write` |
-| `/api/voice/ingest` | POST | `voice:ingest` |
-| `/api/voice/command` | POST | `voice:command` |
-| `/api/users/me` | GET | `users:read` |
-| `/api/users/me` | PATCH | `users:write` |
-| `/api/users` | GET | `admin` |
+| Route                                  | Method | Scopes Required   |
+| -------------------------------------- | ------ | ----------------- |
+| `/api/health/*`                        | GET    | _None (public)_   |
+| `/api/shipments`                       | GET    | `shipments:read`  |
+| `/api/shipments`                       | POST   | `shipments:write` |
+| `/api/shipments/:id`                   | PATCH  | `shipments:write` |
+| `/api/shipments/:id`                   | DELETE | `shipments:write` |
+| `/api/shipments/export/:format`        | GET    | `shipments:read`  |
+| `/api/metrics/revenue/live`            | GET    | `metrics:read`    |
+| `/api/metrics/revenue/export`          | GET    | `metrics:export`  |
+| `/api/metrics/revenue/clear-cache`     | POST   | `admin`           |
+| `/api/ai/command`                      | POST   | `ai:command`      |
+| `/api/ai/history`                      | GET    | `ai:history`      |
+| `/api/billing/create-subscription`     | POST   | `billing:write`   |
+| `/api/billing/subscriptions`           | GET    | `billing:read`    |
+| `/api/billing/cancel-subscription/:id` | POST   | `billing:write`   |
+| `/api/voice/ingest`                    | POST   | `voice:ingest`    |
+| `/api/voice/command`                   | POST   | `voice:command`   |
+| `/api/users/me`                        | GET    | `users:read`      |
+| `/api/users/me`                        | PATCH  | `users:write`     |
+| `/api/users`                           | GET    | `admin`           |
 
 ### Scope Enforcement Examples
 
@@ -184,7 +182,7 @@ const {
   validatePhone,
   validateUUID,
   handleValidationErrors,
-} = require('../middleware/validation');
+} = require("../middleware/validation");
 ```
 
 ### Validation Examples
@@ -304,31 +302,29 @@ Structured logs include:
 
 ```javascript
 // No auth, just audit logging
-router.get('/health',
-  auditLog,
-  async (req, res) => {
-    res.json({ status: 'ok', uptime: process.uptime() });
-  }
-);
+router.get("/health", auditLog, async (req, res) => {
+  res.json({ status: "ok", uptime: process.uptime() });
+});
 ```
 
 ### Example 2: Protected Read Operation
 
 ```javascript
 // Auth + scope + rate limiting + audit
-router.get('/shipments',
+router.get(
+  "/shipments",
   limiters.general,
   authenticate,
-  requireScope('shipments:read'),
+  requireScope("shipments:read"),
   auditLog,
   async (req, res, next) => {
     try {
       const shipments = await prisma.shipment.findMany();
       res.json({ ok: true, shipments });
     } catch (err) {
-      next(err);  // Delegate to global error handler
+      next(err); // Delegate to global error handler
     }
-  }
+  },
 );
 ```
 
@@ -336,14 +332,15 @@ router.get('/shipments',
 
 ```javascript
 // Auth + scope + validation + rate limiting + audit
-router.post('/shipments',
+router.post(
+  "/shipments",
   limiters.general,
   authenticate,
-  requireScope('shipments:write'),
+  requireScope("shipments:write"),
   [
-    validateString('reference'),
-    validateString('origin'),
-    validateString('destination'),
+    validateString("reference"),
+    validateString("origin"),
+    validateString("destination"),
     handleValidationErrors,
   ],
   auditLog,
@@ -351,13 +348,13 @@ router.post('/shipments',
     try {
       const { reference, origin, destination } = req.body;
       const shipment = await prisma.shipment.create({
-        data: { reference, origin, destination, status: 'created' }
+        data: { reference, origin, destination, status: "created" },
       });
       res.status(201).json({ ok: true, shipment });
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 ```
 
@@ -365,14 +362,12 @@ router.post('/shipments',
 
 ```javascript
 // AI-specific rate limiter (20/min) + auth + scope + validation + audit
-router.post('/ai/command',
-  limiters.ai,           // More aggressive rate limit
+router.post(
+  "/ai/command",
+  limiters.ai, // More aggressive rate limit
   authenticate,
-  requireScope('ai:command'),
-  [
-    validateString('command', { maxLength: 500 }),
-    handleValidationErrors,
-  ],
+  requireScope("ai:command"),
+  [validateString("command", { maxLength: 500 }), handleValidationErrors],
   auditLog,
   async (req, res, next) => {
     try {
@@ -382,7 +377,7 @@ router.post('/ai/command',
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 ```
 
@@ -390,51 +385,53 @@ router.post('/ai/command',
 
 ```javascript
 // Admin scope + auth + rate limiting + audit
-router.post('/metrics/revenue/clear-cache',
+router.post(
+  "/metrics/revenue/clear-cache",
   limiters.general,
   authenticate,
-  requireScope('admin'),  // Only users with 'admin' scope
+  requireScope("admin"), // Only users with 'admin' scope
   auditLog,
   async (req, res, next) => {
     try {
       metricsCache.clear();
-      res.json({ ok: true, message: 'Cache cleared' });
+      res.json({ ok: true, message: "Cache cleared" });
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 ```
 
 ### Example 6: File Upload with Multer
 
 ```javascript
-const multer = require('multer');
+const multer = require("multer");
 const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
   fileFilter: (req, file, cb) => {
-    const allowed = ['audio/mpeg', 'audio/wav'];
+    const allowed = ["audio/mpeg", "audio/wav"];
     cb(null, allowed.includes(file.mimetype));
-  }
+  },
 });
 
-router.post('/voice/ingest',
+router.post(
+  "/voice/ingest",
   limiters.ai,
   authenticate,
-  requireScope('voice:ingest'),
-  upload.single('audio'),  // Multer before auditLog
+  requireScope("voice:ingest"),
+  upload.single("audio"), // Multer before auditLog
   auditLog,
   async (req, res, next) => {
     try {
       if (!req.file) {
-        return res.status(400).json({ ok: false, error: 'No file uploaded' });
+        return res.status(400).json({ ok: false, error: "No file uploaded" });
       }
       const result = await processAudio(req.file);
       res.json({ ok: true, result });
     } catch (err) {
       next(err);
     }
-  }
+  },
 );
 ```
 
@@ -447,9 +444,9 @@ From `apps/api/src/middleware/errorHandler.js`:
 ```javascript
 function errorHandler(err, req, res, next) {
   const status = err.status || err.statusCode || 500;
-  
+
   // Structured logging
-  console.error('Request failed', {
+  console.error("Request failed", {
     method: req.method,
     path: req.path,
     status,
@@ -468,7 +465,7 @@ function errorHandler(err, req, res, next) {
 
   // Return error to client
   res.status(status).json({
-    error: err.message || 'Internal Server Error',
+    error: err.message || "Internal Server Error",
   });
 }
 ```
@@ -478,17 +475,17 @@ function errorHandler(err, req, res, next) {
 Always delegate errors with `next(err)`:
 
 ```javascript
-router.get('/data', async (req, res, next) => {
+router.get("/data", async (req, res, next) => {
   try {
     const data = await fetchData();
     res.json({ ok: true, data });
   } catch (err) {
-    next(err);  // ✅ CORRECT: Delegate to global handler
+    next(err); // ✅ CORRECT: Delegate to global handler
   }
 });
 
 // ❌ WRONG: Don't handle errors manually
-router.get('/data', async (req, res) => {
+router.get("/data", async (req, res) => {
   try {
     const data = await fetchData();
     res.json({ ok: true, data });
@@ -503,21 +500,21 @@ router.get('/data', async (req, res) => {
 Set `err.status` or `err.statusCode` for specific HTTP codes:
 
 ```javascript
-router.get('/shipments/:id', async (req, res, next) => {
+router.get("/shipments/:id", async (req, res, next) => {
   try {
     const shipment = await prisma.shipment.findUnique({
-      where: { id: req.params.id }
+      where: { id: req.params.id },
     });
-    
+
     if (!shipment) {
-      const err = new Error('Shipment not found');
+      const err = new Error("Shipment not found");
       err.status = 404;
       throw err;
     }
-    
+
     res.json({ ok: true, shipment });
   } catch (err) {
-    next(err);  // Will return 404 if shipment not found
+    next(err); // Will return 404 if shipment not found
   }
 });
 ```
@@ -618,7 +615,7 @@ VOICE_MAX_FILE_SIZE_MB=10
    try {
      // logic
    } catch (err) {
-     next(err);  // ✅ Delegate
+     next(err); // ✅ Delegate
    }
    ```
 
@@ -632,24 +629,25 @@ VOICE_MAX_FILE_SIZE_MB=10
 
    ```javascript
    [
-     validateString('field'),
-     handleValidationErrors,  // ✅ Always include
-   ]
+     validateString("field"),
+     handleValidationErrors, // ✅ Always include
+   ];
    ```
 
 4. **Add audit logging to all routes:**
 
    ```javascript
-   router.METHOD('/path', auditLog, handler);  // ✅ Observability
+   router.METHOD("/path", auditLog, handler); // ✅ Observability
    ```
 
 5. **Enforce scopes on protected routes:**
 
    ```javascript
-   router.get('/data',
+   router.get(
+     "/data",
      authenticate,
-     requireScope('data:read'),  // ✅ Explicit scope
-     handler
+     requireScope("data:read"), // ✅ Explicit scope
+     handler,
    );
    ```
 
@@ -667,23 +665,23 @@ VOICE_MAX_FILE_SIZE_MB=10
 
    ```javascript
    [
-     validateString('field'),
+     validateString("field"),
      // ❌ Missing handleValidationErrors - validation will pass through
-   ]
+   ];
    ```
 
 3. **Don't use weak scopes:**
 
    ```javascript
-   requireScope('admin')  // ❌ Too broad
-   requireScope('shipments:write')  // ✅ Specific
+   requireScope("admin"); // ❌ Too broad
+   requireScope("shipments:write"); // ✅ Specific
    ```
 
 4. **Don't skip rate limiting on expensive operations:**
 
    ```javascript
-   router.post('/ai/command', handler);  // ❌ No rate limiting
-   router.post('/ai/command', limiters.ai, handler);  // ✅ Appropriate limiter
+   router.post("/ai/command", handler); // ❌ No rate limiting
+   router.post("/ai/command", limiters.ai, handler); // ✅ Appropriate limiter
    ```
 
 ## Summary
@@ -691,26 +689,35 @@ VOICE_MAX_FILE_SIZE_MB=10
 Complete middleware stack for all routes:
 
 ```javascript
-const { limiters, authenticate, requireScope, auditLog } = require('../middleware/security');
-const { validateString, handleValidationErrors } = require('../middleware/validation');
+const {
+  limiters,
+  authenticate,
+  requireScope,
+  auditLog,
+} = require("../middleware/security");
+const {
+  validateString,
+  handleValidationErrors,
+} = require("../middleware/validation");
 
-router.METHOD('/path',
-  limiters.TYPE,              // Rate limiting (general/auth/ai/billing)
-  authenticate,               // JWT auth (if protected)
-  requireScope('scope:name'), // Scope enforcement (if protected)
+router.METHOD(
+  "/path",
+  limiters.TYPE, // Rate limiting (general/auth/ai/billing)
+  authenticate, // JWT auth (if protected)
+  requireScope("scope:name"), // Scope enforcement (if protected)
   [
-    validateString('field'),  // Validation (if needed)
+    validateString("field"), // Validation (if needed)
     handleValidationErrors,
   ],
-  auditLog,                   // Audit logging (always)
+  auditLog, // Audit logging (always)
   async (req, res, next) => {
     try {
       // Business logic
       res.json({ ok: true, data });
     } catch (err) {
-      next(err);              // Error delegation (always)
+      next(err); // Error delegation (always)
     }
-  }
+  },
 );
 ```
 
@@ -723,4 +730,5 @@ router.METHOD('/path',
 - ✅ Global error handler with Sentry integration
 - ✅ Consistent error response format
 
-For questions or issues, see [QUICK_REFERENCE.md](../QUICK_REFERENCE.md) or contact the development team.
+For questions or issues, see [QUICK_REFERENCE.md](../QUICK_REFERENCE.md) or
+contact the development team.

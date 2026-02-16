@@ -91,9 +91,7 @@ export const PinchZoom: React.FC<PinchZoomProps> = ({
 
   return (
     <GestureDetector gesture={pinchGesture}>
-      <View style={[styles.container, { transform: [{ scale }] }]}>
-        {children}
-      </View>
+      <View style={[styles.container, { transform: [{ scale }] }]}>{children}</View>
     </GestureDetector>
   );
 };
@@ -103,12 +101,9 @@ export const HapticFeedback = {
   light: () => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),
   medium: () => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium),
   heavy: () => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy),
-  success: () =>
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success),
-  warning: () =>
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning),
-  error: () =>
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error),
+  success: () => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success),
+  warning: () => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning),
+  error: () => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error),
   selection: () => Haptics.selectionAsync(),
 };
 

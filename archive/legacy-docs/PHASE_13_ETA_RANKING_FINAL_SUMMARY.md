@@ -4,13 +4,18 @@
 
 ## Overview
 
-Phase 13 upgrades driver matching from **distance-only** to **ETA-to-pickup** ranking using the Mapbox Matrix API. Key features:
+Phase 13 upgrades driver matching from **distance-only** to **ETA-to-pickup**
+ranking using the Mapbox Matrix API. Key features:
 
-- **Batched requests:** Respects 25-coordinate limits for `mapbox/driving` (10 for traffic)
+- **Batched requests:** Respects 25-coordinate limits for `mapbox/driving` (10
+  for traffic)
 - **In-memory caching:** 30-second TTL cache to avoid redundant API calls
-- **Asymmetric matrix:** 1 pickup destination + N driver sources (most efficient shape)
-- **Fallback:** Gracefully falls back to distance ranking if Mapbox is unavailable
-- **Cost-effective:** Coarse location rounding (0.01° ≈ 1km) improves cache hit rate
+- **Asymmetric matrix:** 1 pickup destination + N driver sources (most efficient
+  shape)
+- **Fallback:** Gracefully falls back to distance ranking if Mapbox is
+  unavailable
+- **Cost-effective:** Coarse location rounding (0.01° ≈ 1km) improves cache hit
+  rate
 
 ---
 
@@ -29,10 +34,14 @@ MAPBOX_ETA_MAX_CANDIDATES=50
 ```
 
 **Defaults:**
-- `MAPBOX_MATRIX_PROFILE=mapbox/driving` — Standard profile with 25-coordinate limit
+
+- `MAPBOX_MATRIX_PROFILE=mapbox/driving` — Standard profile with 25-coordinate
+  limit
 - `MAPBOX_ETA_CACHE_TTL_SECONDS=30` — Cache entries expire after 30 seconds
-- `MAPBOX_ETA_MAX_CANDIDATES=50` — Pre-filter distance-first, then ETA-rank top 50
-- Optional: Set `MAPBOX_MATRIX_PROFILE=mapbox/driving-traffic` for traffic-aware ETAs (tighter limits: 10 coords, 30 req/min)
+- `MAPBOX_ETA_MAX_CANDIDATES=50` — Pre-filter distance-first, then ETA-rank top
+  50
+- Optional: Set `MAPBOX_MATRIX_PROFILE=mapbox/driving-traffic` for traffic-aware
+  ETAs (tighter limits: 10 coords, 30 req/min)
 
 ---
 
@@ -43,6 +52,7 @@ Created: `apps/api/src/lib/cache.js`
 **Export:** `TinyTTLCache` class
 
 **Usage:**
+
 ```javascript
 const { TinyTTLCache } = require("../lib/cache");
 
@@ -61,6 +71,7 @@ cache.clear(); // Flush all
 ```
 
 **Features:**
+
 - Automatic expiration on access
 - Coarse-grained (no background cleanup needed)
 - Perfect for short-lived data like ETAs
@@ -72,8 +83,10 @@ cache.clear(); // Flush all
 Created: `apps/api/src/mapbox/eta.js`
 
 **Exports:**
+
 - `etaToPickupSeconds(params)` — Main entry point
-- `getEtaSeconds(driverLat, driverLng, pickupLat, pickupLng)` — Single-driver convenience
+- `getEtaSeconds(driverLat, driverLng, pickupLat, pickupLng)` — Single-driver
+  convenience
 - `cache` — Exported for testing/diagnostics
 
 **Algorithm:**
@@ -82,11 +95,14 @@ Created: `apps/api/src/mapbox/eta.js`
 2. **Batching:** Split drivers into chunks respecting coordinate limits:
    - `mapbox/driving`: max 24 drivers per request
    - `mapbox/driving-traffic`: max 9 drivers per request
-3. **API Call:** Async fetch to `api.mapbox.com/directions-matrix/v1/{profile}/{coords}`
-4. **Response Parsing:** Extract durations from asymmetric matrix (drivers→pickup)
+3. **API Call:** Async fetch to
+   `api.mapbox.com/directions-matrix/v1/{profile}/{coords}`
+4. **Response Parsing:** Extract durations from asymmetric matrix
+   (drivers→pickup)
 5. **Cache Store:** Save result for 30 seconds
 
 **Matrix Shape:**
+
 ```
 Driver 1  ──\
 Driver 2  ──┤──→ Pickup (destination)
@@ -105,6 +121,7 @@ Updated: `apps/api/src/marketplace/offers.js`
 **Changes:**
 
 1. **Import ETA service:**
+
    ```javascript
    const { etaToPickupSeconds } = require("../mapbox/eta");
    ```
@@ -114,10 +131,11 @@ Updated: `apps/api/src/marketplace/offers.js`
    - **Stage 2 (new):** ETA re-rank using Mapbox (if enabled + token provided)
 
 3. **Control via env vars:**
+
    ```env
    # Enable/disable ETA ranking (defaults to true)
    MAPBOX_USE_ETA_RANKING=true
-   
+
    # Max drivers to send to Mapbox (avoid excessive costs)
    MAPBOX_ETA_MAX_CANDIDATES=50
    ```
@@ -127,7 +145,8 @@ Updated: `apps/api/src/marketplace/offers.js`
    - If token missing → skip ETA, use distance
    - Logged to console for debugging
 
-5. **Result:** Driver offers now ranked by "who can arrive fastest" instead of "who is closest"
+5. **Result:** Driver offers now ranked by "who can arrive fastest" instead of
+   "who is closest"
 
 ---
 
@@ -135,12 +154,13 @@ Updated: `apps/api/src/marketplace/offers.js`
 
 ### Request Limits
 
-| Profile | Max Coords | Max Req/Min | Billing |
-|---------|-----------|-----------|---------|
-| `mapbox/driving` | 25 | 600 | $0.01 per element |
-| `mapbox/driving-traffic` | 10 | 30 | $0.02 per element |
+| Profile                  | Max Coords | Max Req/Min | Billing           |
+| ------------------------ | ---------- | ----------- | ----------------- |
+| `mapbox/driving`         | 25         | 600         | $0.01 per element |
+| `mapbox/driving-traffic` | 10         | 30          | $0.02 per element |
 
-**Elements** = sources × destinations. For 24 drivers + 1 pickup = 24 elements per request.
+**Elements** = sources × destinations. For 24 drivers + 1 pickup = 24 elements
+per request.
 
 ### Cost Example
 
@@ -152,12 +172,13 @@ Updated: `apps/api/src/marketplace/offers.js`
 ### Coordinate Format
 
 Mapbox uses **lon,lat** (opposite of common convention):
+
 ```javascript
 // Our convention: { lat, lng }
-const driver = { lat: 40.7128, lng: -74.0060 };
+const driver = { lat: 40.7128, lng: -74.006 };
 
 // Mapbox format: "lon,lat"
-const mapboxString = `${driver.lng},${driver.lat}`;  // "-74.0060,40.7128"
+const mapboxString = `${driver.lng},${driver.lat}`; // "-74.0060,40.7128"
 ```
 
 ---
@@ -167,11 +188,13 @@ const mapboxString = `${driver.lng},${driver.lat}`;  // "-74.0060,40.7128"
 ### Scenario: 50 drivers eligible for a $100 job
 
 **Phase 10 (Old):**
+
 1. Compute distance from each driver to pickup
 2. Rank by distance
 3. Send offers to top 10 closest
 
 **Phase 13 (New):**
+
 1. Compute distance from each driver to pickup
 2. Pre-filter: keep top 50 by distance
 3. Call Mapbox Matrix: get ETAs for those 50 drivers
@@ -182,13 +205,15 @@ const mapboxString = `${driver.lng},${driver.lat}`;  // "-74.0060,40.7128"
 5. Send offers to top 10 fastest drivers
 6. Cache result: if another job opens nearby in 30 seconds, reuse
 
-**Result:** Drivers who are close AND can navigate fast accept first. Faster turnover.
+**Result:** Drivers who are close AND can navigate fast accept first. Faster
+turnover.
 
 ---
 
 ## Configuration Examples
 
 ### Example 1: ETA Ranking Enabled (Production)
+
 ```env
 MAPBOX_ACCESS_TOKEN=pk_live_xxx
 MAPBOX_MATRIX_PROFILE=mapbox/driving
@@ -196,28 +221,35 @@ MAPBOX_USE_ETA_RANKING=true
 MAPBOX_ETA_MAX_CANDIDATES=50
 MAPBOX_ETA_CACHE_TTL_SECONDS=30
 ```
+
 → Full ETA ranking with generous candidate pool
 
 ### Example 2: Distance Ranking Only (Testing/Budget)
+
 ```env
 MAPBOX_USE_ETA_RANKING=false
 ```
+
 → Skips Mapbox entirely, falls back to distance (Phase 10 behavior)
 
 ### Example 3: Traffic-Aware (Premium)
+
 ```env
 MAPBOX_ACCESS_TOKEN=pk_live_xxx
 MAPBOX_MATRIX_PROFILE=mapbox/driving-traffic
 MAPBOX_ETA_MAX_CANDIDATES=25  # Smaller pool due to 10-coord limit
 ```
+
 → Accounts for traffic, but more expensive and slower batches
 
 ### Example 4: Tight Rate Limiting (Busy Region)
+
 ```env
 MAPBOX_USE_ETA_RANKING=true
 MAPBOX_ETA_MAX_CANDIDATES=20  # Limit API calls
 MAPBOX_ETA_CACHE_TTL_SECONDS=60  # Longer cache
 ```
+
 → Reduces API usage by 60% at cost of slightly stale data
 
 ---
@@ -260,17 +292,20 @@ MAPBOX_ETA_CACHE_TTL_SECONDS=60  # Longer cache
 ## Performance Notes
 
 ### Cache Hit Rate Optimization
+
 - Coarse rounding (0.01° precision) rounds driver locations to ~1km granularity
 - Same pickup + drivers within 1km = cache hit
 - Typical hit rate: 30-50% on busy routes (many jobs in same area)
 
 ### Latency
+
 - Cache hit: <1ms
 - Cache miss (Mapbox call): 200-500ms (depends on location)
 - Batched calls: 3 drivers per 50 = 3 × 300ms = ~900ms total
 - Fallback to distance: instant
 
 ### Cost Control
+
 - `MAPBOX_ETA_MAX_CANDIDATES=50` caps to ~2 API calls per job
 - 30-second cache limits repeats
 - Example: 100 jobs/hour × 2 calls × 24 elements × $0.01 = $48/hour
@@ -280,22 +315,31 @@ MAPBOX_ETA_CACHE_TTL_SECONDS=60  # Longer cache
 ## Troubleshooting
 
 **Problem:** "Missing required env var: MAPBOX_ACCESS_TOKEN"
-- **Solution:** Add `MAPBOX_ACCESS_TOKEN=pk_live_xxx` to `.env` or disable ETA ranking
+
+- **Solution:** Add `MAPBOX_ACCESS_TOKEN=pk_live_xxx` to `.env` or disable ETA
+  ranking
 
 **Problem:** Offers are slow to fetch
-- **Solution:** Check Mapbox network latency; enable `MAPBOX_USE_ETA_RANKING=false` temporarily
+
+- **Solution:** Check Mapbox network latency; enable
+  `MAPBOX_USE_ETA_RANKING=false` temporarily
 
 **Problem:** Cache seems ineffective
-- **Solution:** Check cache size with `cache.size()`; increase `MAPBOX_ETA_CACHE_TTL_SECONDS` if jobs are far apart
+
+- **Solution:** Check cache size with `cache.size()`; increase
+  `MAPBOX_ETA_CACHE_TTL_SECONDS` if jobs are far apart
 
 **Problem:** High Mapbox costs
-- **Solution:** Reduce `MAPBOX_ETA_MAX_CANDIDATES` or increase `MAPBOX_ETA_CACHE_TTL_SECONDS`
+
+- **Solution:** Reduce `MAPBOX_ETA_MAX_CANDIDATES` or increase
+  `MAPBOX_ETA_CACHE_TTL_SECONDS`
 
 ---
 
 ## Key Constraints (Mapbox Limits)
 
 ✅ **Respected by implementation:**
+
 - Max 25 input coordinates for `mapbox/driving` (auto-batch)
 - Max 10 input coordinates for `mapbox/driving-traffic` (auto-batch)
 - 60 req/min for driving (rarely hit with caching)
@@ -315,4 +359,7 @@ MAPBOX_ETA_CACHE_TTL_SECONDS=60  # Longer cache
 
 ## Summary
 
-Phase 13 adds **intelligent, cost-effective ETA ranking** to driver matching. It seamlessly upgrades Phase 10's distance-only matching while respecting Mapbox's API limits through smart batching and caching. Deployment requires only adding a Mapbox token; all features are backwards-compatible.
+Phase 13 adds **intelligent, cost-effective ETA ranking** to driver matching. It
+seamlessly upgrades Phase 10's distance-only matching while respecting Mapbox's
+API limits through smart batching and caching. Deployment requires only adding a
+Mapbox token; all features are backwards-compatible.

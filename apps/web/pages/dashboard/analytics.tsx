@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/useAuth";
-import { ApiResponse, HTTP_STATUS } from "@infamous-freight/shared";
+import { ApiResponse } from "@infamous-freight/shared";
 import logger from "@/utils/logger";
 
 interface DriverMetrics {
@@ -57,7 +57,7 @@ export default function AnalyticsDashboard() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [trends, setTrends] = useState<RevenueTrend[]>([]);
   const [selectedMetric, setSelectedMetric] = useState<"earnings" | "rating" | "loads">("earnings");
-  const [loadingData, setLoadingData] = useState(true);
+  const [_loadingData, setLoadingData] = useState(true);
   const [daysBack, setDaysBack] = useState(7);
 
   useEffect(() => {
@@ -188,9 +188,7 @@ export default function AnalyticsDashboard() {
               <div>
                 <p className="text-sm font-medium text-gray-600">Completed Loads</p>
                 <p className="text-3xl font-bold text-gray-900 mt-2">{metrics.loads.completed}</p>
-                <p className="text-sm text-gray-600 mt-1">
-                  Pending: {metrics.loads.pending}
-                </p>
+                <p className="text-sm text-gray-600 mt-1">Pending: {metrics.loads.pending}</p>
               </div>
               <div className="text-4xl">📦</div>
             </div>
@@ -201,7 +199,9 @@ export default function AnalyticsDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Driver Rating</p>
-                <p className="text-3xl font-bold text-gray-900 mt-2">{metrics.performance.rating} ⭐</p>
+                <p className="text-3xl font-bold text-gray-900 mt-2">
+                  {metrics.performance.rating} ⭐
+                </p>
                 <p className="text-sm text-gray-600 mt-1">
                   {metrics.performance.onTimePercentage}% on-time
                 </p>
@@ -286,7 +286,9 @@ export default function AnalyticsDashboard() {
                     style={{ width: `${metrics.performance.onTimePercentage}%` }}
                   ></div>
                 </div>
-                <p className="text-sm text-gray-600 mt-1">{metrics.performance.onTimePercentage}%</p>
+                <p className="text-sm text-gray-600 mt-1">
+                  {metrics.performance.onTimePercentage}%
+                </p>
               </div>
 
               <div>
@@ -330,12 +332,18 @@ export default function AnalyticsDashboard() {
               <thead>
                 <tr className="border-b border-gray-200">
                   <th className="px-4 py-2 text-left text-sm font-semibold text-gray-900">Rank</th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-900">Driver</th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-900">
+                    Driver
+                  </th>
                   <th className="px-4 py-2 text-right text-sm font-semibold text-gray-900">
                     Earnings
                   </th>
-                  <th className="px-4 py-2 text-right text-sm font-semibold text-gray-900">Loads</th>
-                  <th className="px-4 py-2 text-right text-sm font-semibold text-gray-900">Rating</th>
+                  <th className="px-4 py-2 text-right text-sm font-semibold text-gray-900">
+                    Loads
+                  </th>
+                  <th className="px-4 py-2 text-right text-sm font-semibold text-gray-900">
+                    Rating
+                  </th>
                   <th className="px-4 py-2 text-right text-sm font-semibold text-gray-900">
                     On-Time
                   </th>
@@ -350,7 +358,9 @@ export default function AnalyticsDashboard() {
                       ${entry.earnings.toLocaleString()}
                     </td>
                     <td className="px-4 py-3 text-sm text-right text-gray-900">{entry.loads}</td>
-                    <td className="px-4 py-3 text-sm text-right text-gray-900">{entry.rating} ⭐</td>
+                    <td className="px-4 py-3 text-sm text-right text-gray-900">
+                      {entry.rating} ⭐
+                    </td>
                     <td className="px-4 py-3 text-sm text-right text-gray-900">
                       {entry.onTimePercentage}%
                     </td>

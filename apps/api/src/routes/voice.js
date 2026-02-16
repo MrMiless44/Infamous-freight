@@ -1,36 +1,20 @@
 const express = require("express");
 const multer = require("multer");
-const {
-  limiters,
-  authenticate,
-  requireScope,
-  auditLog,
-} = require("../middleware/security");
-const {
-  validateString,
-  handleValidationErrors,
-} = require("../middleware/validation");
+const { limiters, authenticate, requireScope, auditLog } = require("../middleware/security");
+const { validateString, handleValidationErrors } = require("../middleware/validation");
 const aiVoiceService = require("../services/aiVoiceService");
 const { logger } = require("../middleware/logger");
 
 const router = express.Router();
 
 // Configure Multer for audio uploads
-const VOICE_MAX_FILE_SIZE_MB = parseInt(
-  process.env.VOICE_MAX_FILE_SIZE_MB || "10",
-  10,
-);
+const VOICE_MAX_FILE_SIZE_MB = parseInt(process.env.VOICE_MAX_FILE_SIZE_MB || "10", 10);
 const upload = multer({
   limits: {
     fileSize: VOICE_MAX_FILE_SIZE_MB * 1024 * 1024, // MB to bytes
   },
   fileFilter: (req, file, cb) => {
-    const allowedMimeTypes = [
-      "audio/mpeg",
-      "audio/wav",
-      "audio/ogg",
-      "audio/webm",
-    ];
+    const allowedMimeTypes = ["audio/mpeg", "audio/wav", "audio/ogg", "audio/webm"];
     if (allowedMimeTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
@@ -80,24 +64,24 @@ router.post(
       }
 
       // Speech-to-text processing
-      const language = req.body.language || 'en';
+      const language = req.body.language || "en";
       const transcription = await aiVoiceService.speechToText(req.file.buffer, language);
 
-      logger.info('Voice transcribed', {
+      logger.info("Voice transcribed", {
         userId: req.user.sub,
         text: transcription.text.substring(0, 50),
-        confidence: transcription.confidence
+        confidence: transcription.confidence,
       });
 
       // Analyze command
       const context = {
         userId: req.user.sub,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
       const command = await aiVoiceService.analyzeCommand(
         transcription.text,
         req.user.sub,
-        context
+        context,
       );
 
       // Execute command
@@ -105,12 +89,12 @@ router.post(
 
       // Generate voice response (optional)
       let audioResponse = null;
-      if (req.body.generateVoiceResponse === 'true' && executionResult.message) {
-        logger.info('Generating voice response', { userId: req.user.sub });
+      if (req.body.generateVoiceResponse === "true" && executionResult.message) {
+        logger.info("Generating voice response", { userId: req.user.sub });
         audioResponse = await aiVoiceService.textToSpeech(
           executionResult.message,
-          req.body.voiceType || 'alloy',
-          language
+          req.body.voiceType || "alloy",
+          language,
         );
       }
 
@@ -124,19 +108,21 @@ router.post(
         transcription: {
           text: transcription.text,
           confidence: transcription.confidence,
-          language: transcription.language
+          language: transcription.language,
         },
         command: {
           intent: command.intent,
           confidence: command.confidence,
-          entities: command.entities
+          entities: command.entities,
         },
         execution: executionResult,
-        audioResponse: audioResponse ? {
-          available: true,
-          format: 'mp3',
-          size: audioResponse.length
-        } : null,
+        audioResponse: audioResponse
+          ? {
+              available: true,
+              format: "mp3",
+              size: audioResponse.length,
+            }
+          : null,
         timestamp: new Date().toISOString(),
         processingTime: Date.now() - startTime,
       };
@@ -144,10 +130,10 @@ router.post(
       // If audio response generated, send as attachment
       if (audioResponse) {
         res.set({
-          'Content-Type': 'application/json',
-          'X-Audio-Response': 'true'
+          "Content-Type": "application/json",
+          "X-Audio-Response": "true",
         });
-        result.audioResponseBase64 = audioResponse.toString('base64');
+        result.audioResponseBase64 = audioResponse.toString("base64");
       }
 
       res.json(result);
@@ -174,32 +160,32 @@ router.post(
     try {
       const { text } = req.body;
 
-      logger.info('Processing voice command', {
+      logger.info("Processing voice command", {
         userId: req.user.sub,
-        command: text.substring(0, 50)
+        command: text.substring(0, 50),
       });
 
       // Analyze command intent and entities
       const context = {
         userId: req.user.sub,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
       const command = await aiVoiceService.analyzeCommand(text, req.user.sub, context);
 
       // Execute the command
       const executionResult = await aiVoiceService.executeCommand(command);
 
-      logger.info('Voice command executed', {
+      logger.info("Voice command executed", {
         userId: req.user.sub,
         intent: command.intent,
-        success: executionResult.success
+        success: executionResult.success,
       });
 
       // Generate voice response if requested
       let audioResponse = null;
-      if (req.body.generateVoiceResponse === 'true' && executionResult.message) {
-        const language = req.body.language || 'en';
-        const voice = req.body.voiceType || 'alloy';
+      if (req.body.generateVoiceResponse === "true" && executionResult.message) {
+        const language = req.body.language || "en";
+        const voice = req.body.voiceType || "alloy";
         audioResponse = await aiVoiceService.textToSpeech(executionResult.message, voice, language);
       }
 
@@ -209,15 +195,17 @@ router.post(
           originalText: text,
           intent: command.intent,
           confidence: command.confidence,
-          entities: command.entities
+          entities: command.entities,
         },
         execution: executionResult,
-        audioResponse: audioResponse ? {
-          available: true,
-          format: 'mp3',
-          size: audioResponse.length,
-          base64: audioResponse.toString('base64')
-        } : null,
+        audioResponse: audioResponse
+          ? {
+              available: true,
+              format: "mp3",
+              size: audioResponse.length,
+              base64: audioResponse.toString("base64"),
+            }
+          : null,
         timestamp: new Date().toISOString(),
       };
 

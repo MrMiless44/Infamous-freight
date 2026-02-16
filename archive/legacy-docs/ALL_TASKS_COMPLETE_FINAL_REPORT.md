@@ -41,7 +41,9 @@
 #### Issue 1: Pricing Module Tests
 
 - **Error**: `expect(received).toBe(expected) // Expected: 15, Received: NaN`
-- **Cause**: Tests calling `computePriceUsd(miles, minutes)` with positional arguments; function expects object `{ estimatedMiles, estimatedMinutes, shipperPlanTier }`
+- **Cause**: Tests calling `computePriceUsd(miles, minutes)` with positional
+  arguments; function expects object
+  `{ estimatedMiles, estimatedMinutes, shipperPlanTier }`
 - **Fix**: Updated 16 test cases to use correct object signature
 - **Result**: All pricing tests now pass with proper calculation validation
 
@@ -58,8 +60,10 @@
 
 #### Issue 3: API Test Suite
 
-- **Error**: `ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL - Your test suite must contain at least one test`
-- **Cause**: Test file contained standalone assertions with direct `process.exit()` calls, not Jest-compatible format
+- **Error**:
+  `ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL - Your test suite must contain at least one test`
+- **Cause**: Test file contained standalone assertions with direct
+  `process.exit()` calls, not Jest-compatible format
 - **Fix**:
   - Wrapped test logic in Jest `describe()` block
   - Converted assertions to `expect()` statements

@@ -86,7 +86,8 @@ async function generateCoachingRecommendation(
           "Eliminate distractions - focus on road at all times",
           "Plan routes - leave extra time to avoid rushed driving",
         ],
-        potentialImpact: "Reducing risk score by 1 point = $500-1000/year savings (insurance + safety bonuses)",
+        potentialImpact:
+          "Reducing risk score by 1 point = $500-1000/year savings (insurance + safety bonuses)",
       };
     },
 
@@ -123,7 +124,7 @@ async function generateCoachingRecommendation(
       };
     },
 
-    "general": () => {
+    general: () => {
       return {
         coachingType: "general-development",
         severity: "low",
@@ -170,10 +171,7 @@ export const driverCoachRole: RoleContract = {
     "training-suggestions",
   ],
 
-  async decide(
-    input: DecisionInput,
-    context: RoleContext,
-  ): Promise<DecisionResult> {
+  async decide(input: DecisionInput, context: RoleContext): Promise<DecisionResult> {
     const decisionId = `coach-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
     const violations = await this.checkGuardrails(input, context);
@@ -202,17 +200,11 @@ export const driverCoachRole: RoleContract = {
     };
   },
 
-  async checkGuardrails(
-    input: DecisionInput,
-    context: RoleContext,
-  ): Promise<GuardrailViolation[]> {
+  async checkGuardrails(input: DecisionInput, context: RoleContext): Promise<GuardrailViolation[]> {
     const violations: GuardrailViolation[] = [];
 
     // Cannot initiate disciplinary actions
-    if (
-      input.action.includes("discipline") ||
-      input.action.includes("terminate")
-    ) {
+    if (input.action.includes("discipline") || input.action.includes("terminate")) {
       violations.push({
         type: "policy",
         severity: "critical",
@@ -223,11 +215,7 @@ export const driverCoachRole: RoleContract = {
 
     // Cannot access personal driver information beyond performance data
     const personalFields = ["ssn", "address", "medical", "salary", "personal"];
-    if (
-      personalFields.some((field) =>
-        JSON.stringify(input).toLowerCase().includes(field),
-      )
-    ) {
+    if (personalFields.some((field) => JSON.stringify(input).toLowerCase().includes(field))) {
       violations.push({
         type: "data-access",
         severity: "high",
@@ -239,10 +227,7 @@ export const driverCoachRole: RoleContract = {
     return violations;
   },
 
-  async calculateConfidence(
-    input: DecisionInput,
-    context: RoleContext,
-  ): Promise<ConfidenceScore> {
+  async calculateConfidence(input: DecisionInput, context: RoleContext): Promise<ConfidenceScore> {
     // Calculate confidence based on driving data quality and coaching history
     const { parameters } = input;
     const drivingData = parameters?.drivingData || {};
@@ -253,10 +238,10 @@ export const driverCoachRole: RoleContract = {
       "fuel-efficiency": 0.89, // Telemetry data is reliable
       "safety-compliance": 0.91, // Event data is objective
       "performance-optimization": 0.83, // Depends on various factors
-      "general": 0.78,
+      general: 0.78,
     };
 
-    let baseConfidence = baseScores[coachingType] || 0.80;
+    let baseConfidence = baseScores[coachingType] || 0.8;
 
     // Data quality assessment
     let dataQuality = 0.75;
@@ -270,8 +255,10 @@ export const driverCoachRole: RoleContract = {
     let recencyFactor = 0.8;
     const lastTelemetryUpdate = parameters?.lastTelemetryUpdate || Date.now();
     const hoursSinceUpdate = (Date.now() - lastTelemetryUpdate) / (1000 * 60 * 60);
-    if (hoursSinceUpdate < 24) recencyFactor = 0.95; // Today's data
-    else if (hoursSinceUpdate < 72) recencyFactor = 0.85; // Last 3 days
+    if (hoursSinceUpdate < 24)
+      recencyFactor = 0.95; // Today's data
+    else if (hoursSinceUpdate < 72)
+      recencyFactor = 0.85; // Last 3 days
     else if (hoursSinceUpdate < 168) recencyFactor = 0.7; // Last week
 
     // Coaching history impact
@@ -281,9 +268,10 @@ export const driverCoachRole: RoleContract = {
     // Driving history completeness
     let drivingHistoryCompleteness = 0.75;
     const tripsAnalyzed = drivingData.tripsCompleted || 0;
-    if (tripsAnalyzed > 100) drivingHistoryCompleteness = 0.95; // Statistically significant
+    if (tripsAnalyzed > 100)
+      drivingHistoryCompleteness = 0.95; // Statistically significant
     else if (tripsAnalyzed > 50) drivingHistoryCompleteness = 0.88;
-    else if (tripsAnalyzed > 20) drivingHistoryCompleteness = 0.80;
+    else if (tripsAnalyzed > 20) drivingHistoryCompleteness = 0.8;
 
     // Calculate final confidence
     const finalConfidence = Math.max(
@@ -291,10 +279,10 @@ export const driverCoachRole: RoleContract = {
       Math.min(
         0.99,
         baseConfidence * 0.35 +
-          (dataQuality * 0.25) +
-          (recencyFactor * 0.2) +
-          (coachingHistoryFactor * 0.12) +
-          (drivingHistoryCompleteness * 0.08),
+          dataQuality * 0.25 +
+          recencyFactor * 0.2 +
+          coachingHistoryFactor * 0.12 +
+          drivingHistoryCompleteness * 0.08,
       ),
     );
 

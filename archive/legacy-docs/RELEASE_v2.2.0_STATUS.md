@@ -49,7 +49,8 @@
 
 ### Changes in v2.2.0
 
-- **Documentation**: Updated `LOGISTICS_SYSTEM_GUIDE.md` with refined sections and examples
+- **Documentation**: Updated `LOGISTICS_SYSTEM_GUIDE.md` with refined sections
+  and examples
 - **No runtime code changes**: Documentation-only release for clarity
 - **Backwards compatible**: No API or schema changes
 
@@ -90,7 +91,8 @@ docker-compose -f docker-compose.prod.yml up -d
 
 ### GitHub Actions Status
 
-- **Recommended**: Create a workflow file `.github/workflows/test-on-tag.yml` to:
+- **Recommended**: Create a workflow file `.github/workflows/test-on-tag.yml`
+  to:
   1. Run `pnpm test` when a tag is pushed
   2. Generate coverage reports
   3. Deploy on success
@@ -98,7 +100,8 @@ docker-compose -f docker-compose.prod.yml up -d
 ### Vercel Production
 
 - **Current**: Automatic deployment on main push
-- **Deployed URL**: https://infamous-freight-enterprises-git-f34b9b-santorio-miles-projects.vercel.app
+- **Deployed URL**:
+  https://infamous-freight-enterprises-git-f34b9b-santorio-miles-projects.vercel.app
 
 ---
 

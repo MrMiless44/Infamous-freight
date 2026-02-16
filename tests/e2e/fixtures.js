@@ -12,9 +12,7 @@ export const test = base.extend({
     const testPassword = process.env.TEST_PASSWORD;
 
     if (!testEmail || !testPassword) {
-      throw new Error(
-        "TEST_EMAIL and TEST_PASSWORD environment variables are required",
-      );
+      throw new Error("TEST_EMAIL and TEST_PASSWORD environment variables are required");
     }
 
     // Navigate to login

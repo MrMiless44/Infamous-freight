@@ -35,9 +35,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const errorId = `${inputId}-error`;
     const hintId = `${inputId}-hint`;
 
-    const containerStyles = ["relative", fullWidth ? "w-full" : "w-auto"].join(
-      " ",
-    );
+    const containerStyles = ["relative", fullWidth ? "w-full" : "w-auto"].join(" ");
 
     const inputStyles = [
       "block",
@@ -55,9 +53,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       error
         ? "border-red-500 focus:ring-red-500 focus:border-red-500"
         : "border-gray-300 focus:ring-blue-500 focus:border-blue-500",
-      disabled
-        ? "bg-gray-100 cursor-not-allowed text-gray-500"
-        : "bg-white text-gray-900",
+      disabled ? "bg-gray-100 cursor-not-allowed text-gray-500" : "bg-white text-gray-900",
       leftIcon ? "pl-10" : "",
       rightIcon ? "pr-10" : "",
       className,
@@ -66,10 +62,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className={containerStyles}>
         {label && (
-          <label
-            htmlFor={inputId}
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label htmlFor={inputId} className="block text-sm font-medium text-gray-700 mb-1">
             {label}
             {required && (
               <span className="text-red-500 ml-1" aria-label="required">
@@ -81,9 +74,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
         <div className="relative">
           {leftIcon && (
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              {leftIcon}
-            </div>
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">{leftIcon}</div>
           )}
 
           <input

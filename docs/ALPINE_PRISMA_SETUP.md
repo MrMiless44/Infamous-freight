@@ -2,7 +2,9 @@
 
 ## Problem
 
-Alpine Linux 3.22+ uses OpenSSL 3.x, but Prisma's query engine binaries are compiled against OpenSSL 1.1.x. This causes runtime errors when trying to load the Prisma client:
+Alpine Linux 3.22+ uses OpenSSL 3.x, but Prisma's query engine binaries are
+compiled against OpenSSL 1.1.x. This causes runtime errors when trying to load
+the Prisma client:
 
 ```
 Error: Error loading shared library libssl.so.1.1: No such file or directory
@@ -17,7 +19,8 @@ This issue commonly occurs in:
 
 ## Solution
 
-Update your `prisma/schema.prisma` to include the Alpine-compatible binary target:
+Update your `prisma/schema.prisma` to include the Alpine-compatible binary
+target:
 
 ```prisma
 generator client {

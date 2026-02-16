@@ -11,11 +11,7 @@ export enum EnforcementLevel {
   Termination = "termination",
 }
 
-export type ShipmentStatus =
-  | 'CREATED'
-  | 'IN_TRANSIT'
-  | 'DELIVERED'
-  | 'CANCELLED';
+export type ShipmentStatus = "CREATED" | "IN_TRANSIT" | "DELIVERED" | "CANCELLED";
 
 export interface Shipment {
   id: string;
@@ -40,10 +36,9 @@ export interface ChargebackPayload {
   [key: string]: unknown;
 }
 
-export type PaymentEvent =
-  | {
-      id: string;
-      type: PaymentEventType.CHARGEBACK;
-      userId: string;
-      payload: ChargebackPayload;
-    };
+export type PaymentEvent = {
+  id: string;
+  type: PaymentEventType.CHARGEBACK;
+  userId: string;
+  payload: ChargebackPayload;
+};

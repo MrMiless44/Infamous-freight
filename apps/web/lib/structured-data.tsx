@@ -46,14 +46,15 @@ export interface SoftwareApplication {
 
 export function getOrganizationData(): Organization {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://infamous-freight-as-3gw.fly.dev";
-  
+
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Infamous Freight Enterprises",
     url: baseUrl,
     logo: `${baseUrl}/logo.png`,
-    description: "AI-powered enterprise logistics and fleet management platform with real-time tracking, autonomous dispatch, and comprehensive revenue optimization.",
+    description:
+      "AI-powered enterprise logistics and fleet management platform with real-time tracking, autonomous dispatch, and comprehensive revenue optimization.",
     sameAs: [
       // Add social media URLs when available
     ],
@@ -68,7 +69,7 @@ export function getOrganizationData(): Organization {
 
 export function getWebSiteData(): WebSite {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://infamous-freight-as-3gw.fly.dev";
-  
+
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -105,14 +106,9 @@ export function getSoftwareApplicationData(): SoftwareApplication {
 export function StructuredData({ data }: { data: Organization | WebSite | SoftwareApplication }) {
   // Escape HTML special characters to prevent XSS
   const jsonLd = JSON.stringify(data)
-    .replace(/</g, '\u003c')
-    .replace(/>/g, '\u003e')
-    .replace(/&/g, '\u0026');
-  
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: jsonLd }}
-    />
-  );
+    .replace(/</g, "\u003c")
+    .replace(/>/g, "\u003e")
+    .replace(/&/g, "\u0026");
+
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />;
 }

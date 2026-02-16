@@ -9,7 +9,7 @@ import { stripe } from "./stripe";
  */
 export async function createPortalSession(
   stripeCustomerId: string,
-  returnUrl: string
+  returnUrl: string,
 ): Promise<string> {
   // Basic validation for Stripe customer ID format (e.g. "cus_XXXXXXXX")
   const customerIdPattern = /^cus_[A-Za-z0-9]+$/;

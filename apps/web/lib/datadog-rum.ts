@@ -20,28 +20,28 @@ export interface DatadogConfig {
  */
 export function initializeDatadogRum(config: DatadogConfig) {
   // Only initialize in browser
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
   // Check if config is valid
   if (!config.applicationId || !config.clientToken) {
-    console.warn('Datadog RUM config incomplete, skipping initialization');
+    console.warn("Datadog RUM config incomplete, skipping initialization");
     return;
   }
 
   // Dynamic import to avoid issues with SSR
-  import('@datadog/browser-rum').then(({ datadogRum }) => {
+  import("@datadog/browser-rum").then(({ datadogRum }) => {
     datadogRum.init({
       applicationId: config.applicationId,
       clientToken: config.clientToken,
-      site: config.site || 'datadoghq.com',
+      site: config.site || "datadoghq.com",
       service: config.service,
       env: config.env,
       version: config.version,
       sessionSampleRate: 100, // Track all sessions
       sessionReplaySampleRate: 20, // Record 20% ofessions with replay
       trackUserInteractions: true,
-      defaultPrivacyLevel: 'mask-user-input', // Mask sensitive data
-      enableExperimentalFeatures: ['resource_timings'],
+      defaultPrivacyLevel: "mask-user-input", // Mask sensitive data
+      enableExperimentalFeatures: ["resource_timings"],
     });
 
     // Start RUM
@@ -52,13 +52,10 @@ export function initializeDatadogRum(config: DatadogConfig) {
 /**
  * Add custom actions to track user interactions
  */
-export function trackAction(
-  name: string,
-  context?: Record<string, unknown>
-) {
-  if (typeof window === 'undefined') return;
+export function trackAction(name: string, context?: Record<string, unknown>) {
+  if (typeof window === "undefined") return;
 
-  import('@datadog/browser-rum').then(({ datadogRum }) => {
+  import("@datadog/browser-rum").then(({ datadogRum }) => {
     datadogRum.addAction(name, context);
   });
 }
@@ -66,13 +63,10 @@ export function trackAction(
 /**
  * Track errors manually
  */
-export function trackError(
-  error: Error,
-  context?: Record<string, unknown>
-) {
-  if (typeof window === 'undefined') return;
+export function trackError(error: Error, context?: Record<string, unknown>) {
+  if (typeof window === "undefined") return;
 
-  import('@datadog/browser-rum').then(({ datadogRum }) => {
+  import("@datadog/browser-rum").then(({ datadogRum }) => {
     datadogRum.addError(error, context);
   });
 }
@@ -81,9 +75,9 @@ export function trackError(
  * Set user context
  */
 export function setUserContext(userId: string, metadata?: Record<string, unknown>) {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
-  import('@datadog/browser-rum').then(({ datadogRum }) => {
+  import("@datadog/browser-rum").then(({ datadogRum }) => {
     datadogRum.setUserAction({
       id: userId,
       ...metadata,
@@ -95,9 +89,9 @@ export function setUserContext(userId: string, metadata?: Record<string, unknown
  * Track page views
  */
 export function trackPageView(name: string, context?: Record<string, unknown>) {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
-  import('@datadog/browser-rum').then(({ datadogRum }) => {
+  import("@datadog/browser-rum").then(({ datadogRum }) => {
     datadogRum.addViewAction(name, context);
   });
 }
@@ -107,10 +101,10 @@ export function trackPageView(name: string, context?: Record<string, unknown>) {
  * Use in useEffect to track route changes
  */
 export function useDatadogRouteTracking(routeName: string) {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
-  import('@datadog/browser-rum').then(({ datadogRum }) => {
-    datadogRum.addAction('page_view', {
+  import("@datadog/browser-rum").then(({ datadogRum }) => {
+    datadogRum.addAction("page_view", {
       route: routeName,
       timestamp: new Date().toISOString(),
     });

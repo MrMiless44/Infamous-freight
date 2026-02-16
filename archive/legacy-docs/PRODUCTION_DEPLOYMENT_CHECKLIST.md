@@ -372,7 +372,8 @@ If deployment fails:
 - [AUTO_DEPLOY_READY.md](AUTO_DEPLOY_READY.md) - Auto-deployment guide
 - [DEPLOYMENT_STATUS.md](DEPLOYMENT_STATUS.md) - Live status dashboard
 - [DOCKER_COMPLETE.md](DOCKER_COMPLETE.md) - Docker guide
-- [deploy/100_PERCENT_AUTO_DEPLOY.md](deploy/100_PERCENT_AUTO_DEPLOY.md) - Complete guide
+- [deploy/100_PERCENT_AUTO_DEPLOY.md](deploy/100_PERCENT_AUTO_DEPLOY.md) -
+  Complete guide
 
 ---
 

@@ -108,9 +108,7 @@ export async function getUserAvatars(userId: string): Promise<UserAvatar[]> {
 /**
  * Get selected avatar for a user
  */
-export async function getSelectedAvatar(
-  userId: string,
-): Promise<UserAvatar | null> {
+export async function getSelectedAvatar(userId: string): Promise<UserAvatar | null> {
   await ensureInitialized();
   const avatars = store!.avatars.filter((a) => a.userId === userId);
   return avatars.find((a) => a.selected) || null;
@@ -138,16 +136,11 @@ export async function addAvatar(avatar: UserAvatar): Promise<void> {
 /**
  * Select an avatar (deselect others for same user)
  */
-export async function selectAvatar(
-  userId: string,
-  fileName: string,
-): Promise<UserAvatar | null> {
+export async function selectAvatar(userId: string, fileName: string): Promise<UserAvatar | null> {
   await ensureInitialized();
 
   // Find avatar
-  const avatar = store!.avatars.find(
-    (a) => a.userId === userId && a.fileName === fileName,
-  );
+  const avatar = store!.avatars.find((a) => a.userId === userId && a.fileName === fileName);
 
   if (!avatar) return null;
 
@@ -168,15 +161,10 @@ export async function selectAvatar(
 /**
  * Delete avatar from store
  */
-export async function deleteAvatar(
-  userId: string,
-  fileName: string,
-): Promise<boolean> {
+export async function deleteAvatar(userId: string, fileName: string): Promise<boolean> {
   await ensureInitialized();
 
-  const index = store!.avatars.findIndex(
-    (a) => a.userId === userId && a.fileName === fileName,
-  );
+  const index = store!.avatars.findIndex((a) => a.userId === userId && a.fileName === fileName);
 
   if (index === -1) return false;
 

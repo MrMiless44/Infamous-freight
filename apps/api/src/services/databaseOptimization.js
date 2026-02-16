@@ -1,6 +1,6 @@
 /**
  * Database Optimization & Indexing Strategy
- * 
+ *
  * Goals:
  * - Reduce query latency (< 100ms p95)
  * - Minimize N+1 queries
@@ -14,12 +14,12 @@
 // ============================================
 
 const performanceTargets = {
-    singleRecordQuery: '< 10ms',
-    listQuery: '< 50ms',
-    aggregation: '< 200ms',
-    connectionPoolUtilization: '< 70%',
-    tableBloom: '< 30%',
-    transactionsPerSecond: '> 1000',
+  singleRecordQuery: "< 10ms",
+  listQuery: "< 50ms",
+  aggregation: "< 200ms",
+  connectionPoolUtilization: "< 70%",
+  tableBloom: "< 30%",
+  transactionsPerSecond: "> 1000",
 };
 
 // ============================================
@@ -27,7 +27,7 @@ const performanceTargets = {
 // ============================================
 
 // ✅ User: email, role, createdAt
-// ✅ Driver: email, status, createdAt  
+// ✅ Driver: email, status, createdAt
 // ✅ Shipment: trackingId, userId, status, driverId, createdAt, updatedAt, [userId, status]
 // ✅ Payment: userId, status, stripePaymentIntentId, createdAt
 // ✅ AiEvent: userId, provider, createdAt
@@ -38,45 +38,43 @@ const performanceTargets = {
 // ============================================
 
 async function exampleQueryPatterns(prismaClient) {
-    // ❌ BAD: Fetches all shipments, then filters in memory
-    const shipments = await prismaClient.shipment.findMany();
-    const pendingFromAll = shipments
-        .filter((shipment) => shipment.status === "pending")
-        .slice(0, 10);
+  // ❌ BAD: Fetches all shipments, then filters in memory
+  const shipments = await prismaClient.shipment.findMany();
+  const pendingFromAll = shipments.filter((shipment) => shipment.status === "pending").slice(0, 10);
 
-    // ✅ GOOD: Filter in database
-    const pendingFromDb = await prismaClient.shipment.findMany({
-        where: { status: "pending" },
-        take: 10,
-        orderBy: { createdAt: "desc" },
-    });
+  // ✅ GOOD: Filter in database
+  const pendingFromDb = await prismaClient.shipment.findMany({
+    where: { status: "pending" },
+    take: 10,
+    orderBy: { createdAt: "desc" },
+  });
 
-    // ❌ BAD: Multiple queries (N+1)
-    const drivers = await prismaClient.driver.findMany();
-    const driversWithCounts = await Promise.all(
-        drivers.map(async (driver) => ({
-            ...driver,
-            shipmentCount: await prismaClient.shipment.count({
-                where: { driverId: driver.id },
-            }),
-        })),
-    );
+  // ❌ BAD: Multiple queries (N+1)
+  const drivers = await prismaClient.driver.findMany();
+  const driversWithCounts = await Promise.all(
+    drivers.map(async (driver) => ({
+      ...driver,
+      shipmentCount: await prismaClient.shipment.count({
+        where: { driverId: driver.id },
+      }),
+    })),
+  );
 
-    // ✅ GOOD: Single query with aggregation
-    const driversWithAggregate = await prismaClient.driver.findMany({
-        include: {
-            _count: {
-                select: { shipments: true },
-            },
-        },
-    });
+  // ✅ GOOD: Single query with aggregation
+  const driversWithAggregate = await prismaClient.driver.findMany({
+    include: {
+      _count: {
+        select: { shipments: true },
+      },
+    },
+  });
 
-    return {
-        pendingFromAll,
-        pendingFromDb,
-        driversWithCounts,
-        driversWithAggregate,
-    };
+  return {
+    pendingFromAll,
+    pendingFromDb,
+    driversWithCounts,
+    driversWithAggregate,
+  };
 }
 
 // QUERY OPTIMIZATION CHECKLIST:
@@ -85,80 +83,80 @@ async function exampleQueryPatterns(prismaClient) {
  * 1. Use select() to fetch only needed fields
  */
 async function getShipmentHeaders(prismaClient) {
-    return prismaClient.shipment.findMany({
-        select: {
-            id: true,
-            trackingId: true,
-            status: true,
-            origin: true,
-            destination: true,
-            createdAt: true,
-        },
-        take: 100,
-    });
+  return prismaClient.shipment.findMany({
+    select: {
+      id: true,
+      trackingId: true,
+      status: true,
+      origin: true,
+      destination: true,
+      createdAt: true,
+    },
+    take: 100,
+  });
 }
 
 /**
  * 2. Use include() for related data (not separate queries)
  */
 async function getShipmentWithDriver(prismaClient, id) {
-    return prismaClient.shipment.findUnique({
-        where: { id },
-        include: {
-            driver: true,
-            user: { select: { email: true, name: true } },
-        },
-    });
+  return prismaClient.shipment.findUnique({
+    where: { id },
+    include: {
+      driver: true,
+      user: { select: { email: true, name: true } },
+    },
+  });
 }
 
 /**
  * 3. Pagination for large datasets
  */
 async function getPaginatedShipments(prismaClient, cursor, limit = 20) {
-    return prismaClient.shipment.findMany({
-        take: limit,
-        skip: cursor ? 1 : 0,
-        cursor: cursor ? { id: cursor } : undefined,
-        orderBy: { createdAt: 'desc' },
-    });
+  return prismaClient.shipment.findMany({
+    take: limit,
+    skip: cursor ? 1 : 0,
+    cursor: cursor ? { id: cursor } : undefined,
+    orderBy: { createdAt: "desc" },
+  });
 }
 
 /**
  * 4. Use findFirst for single row queries
  */
 async function getLatestShipment(prismaClient, userId) {
-    return prismaClient.shipment.findFirst({
-        where: { userId },
-        orderBy: { createdAt: 'desc' },
-    });
+  return prismaClient.shipment.findFirst({
+    where: { userId },
+    orderBy: { createdAt: "desc" },
+  });
 }
 
 /**
  * 5. Batch operations
  */
 async function updateManyShipments(prismaClient, ids, updateData) {
-    return Promise.all(
-        ids.map((id) =>
-            prismaClient.shipment.update({
-                where: { id },
-                data: updateData,
-            })
-        )
-    );
+  return Promise.all(
+    ids.map((id) =>
+      prismaClient.shipment.update({
+        where: { id },
+        data: updateData,
+      }),
+    ),
+  );
 }
 
 /**
  * 6. Aggregation queries
  */
 async function getShipmentStatistics(prismaClient, userId) {
-    const [total, pending, inTransit, delivered] = await Promise.all([
-        prismaClient.shipment.count({ where: { userId } }),
-        prismaClient.shipment.count({ where: { userId, status: "pending" } }),
-        prismaClient.shipment.count({ where: { userId, status: "in_transit" } }),
-        prismaClient.shipment.count({ where: { userId, status: "delivered" } }),
-    ]);
+  const [total, pending, inTransit, delivered] = await Promise.all([
+    prismaClient.shipment.count({ where: { userId } }),
+    prismaClient.shipment.count({ where: { userId, status: "pending" } }),
+    prismaClient.shipment.count({ where: { userId, status: "in_transit" } }),
+    prismaClient.shipment.count({ where: { userId, status: "delivered" } }),
+  ]);
 
-    return { total, pending, inTransit, delivered };
+  return { total, pending, inTransit, delivered };
 }
 
 /**
@@ -173,35 +171,35 @@ async function getShipmentStatistics(prismaClient, userId) {
 const cache = new Map();
 
 async function getCachedShipments(prismaClient, userId, ttl = 3600000) {
-    const key = `shipments:${userId}`;
+  const key = `shipments:${userId}`;
 
-    if (cache.has(key)) {
-        return cache.get(key);
-    }
+  if (cache.has(key)) {
+    return cache.get(key);
+  }
 
-    const shipments = await prismaClient.shipment.findMany({
-        where: { userId },
-        include: { driver: true },
-    });
+  const shipments = await prismaClient.shipment.findMany({
+    where: { userId },
+    include: { driver: true },
+  });
 
-    cache.set(key, shipments);
-    setTimeout(() => cache.delete(key), ttl);
+  cache.set(key, shipments);
+  setTimeout(() => cache.delete(key), ttl);
 
-    return shipments;
+  return shipments;
 }
 
 /**
  * 9. Lazy loading for large relations
  */
 async function getDriver(prismaClient, id, includeShipments = false) {
-    const driver = await prismaClient.driver.findUnique({
-        where: { id },
-        include: {
-            shipments: includeShipments ? { take: 10 } : false,
-        },
-    });
+  const driver = await prismaClient.driver.findUnique({
+    where: { id },
+    include: {
+      shipments: includeShipments ? { take: 10 } : false,
+    },
+  });
 
-    return driver;
+  return driver;
 }
 
 /**
@@ -209,49 +207,50 @@ async function getDriver(prismaClient, id, includeShipments = false) {
  * Enable query logging:
  */
 // prisma/seed.js or middleware
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const prisma = require("../lib/prisma");
 
-const prismaWithLogging = prisma.$extends({
+const prismaWithLogging = typeof prisma.$extends === "function"
+  ? prisma.$extends({
     query: {
-        async $allOperations({ operation, model, args, query }) {
-            const start = Date.now();
-            const result = await query(args);
-            const duration = Date.now() - start;
+      async $allOperations({ operation, model, args, query }) {
+        const start = Date.now();
+        const result = await query(args);
+        const duration = Date.now() - start;
 
-            if (duration > 100) {
-                console.warn(`Slow query (${duration}ms): ${model}.${operation}`);
-            }
+        if (duration > 100) {
+          console.warn(`Slow query (${duration}ms): ${model}.${operation}`);
+        }
 
-            return result;
-        },
+        return result;
+      },
     },
-});
+  })
+  : prisma;
 
 module.exports = {
-    performanceTargets,
-    exampleQueryPatterns,
-    getShipmentHeaders,
-    getShipmentWithDriver,
-    getPaginatedShipments,
-    getLatestShipment,
-    updateManyShipments,
-    getShipmentStatistics,
-    getCachedShipments,
-    getDriver,
-    prismaWithLogging,
+  performanceTargets,
+  exampleQueryPatterns,
+  getShipmentHeaders,
+  getShipmentWithDriver,
+  getPaginatedShipments,
+  getLatestShipment,
+  updateManyShipments,
+  getShipmentStatistics,
+  getCachedShipments,
+  getDriver,
+  prismaWithLogging,
 };
 
 /**
  * PERFORMANCE TARGETS:
- * 
+ *
  * ✅ Simple queries: < 50ms
  * ✅ Join queries: < 100ms
  * ✅ Aggregations: < 200ms
  * ✅ Pagination: < 100ms
- * 
+ *
  * MONITORING:
- * 
+ *
  * - PostgreSQL slow_query_log (log_min_duration_statement = 100)
  * - Application-level query timing (Datadog, New Relic)
  * - Periodic EXPLAIN ANALYZE on hot queries

@@ -10,14 +10,17 @@
 
 **Infæmous Freight has been upgraded from SaaS to Enterprise Platform.**
 
-Phase 19 implements multi-tenant data isolation, per-tenant encryption, and comprehensive audit trails required by Fortune-500 procurement and security teams.
+Phase 19 implements multi-tenant data isolation, per-tenant encryption, and
+comprehensive audit trails required by Fortune-500 procurement and security
+teams.
 
 ### What Fortune-500 Buyers See
+
 ✅ **Multi-tenancy** — Complete data isolation (not just conventions)  
 ✅ **Encryption at Rest** — Per-tenant AES-256 keys with master key protection  
 ✅ **Audit Trail** — Customer-visible, exportable, tamper-evident logs  
 ✅ **Compliance Automation** — SOC2/DPA report generation  
-✅ **Row-Level Security** — Enforced at code level, not SQL  
+✅ **Row-Level Security** — Enforced at code level, not SQL
 
 ---
 
@@ -30,6 +33,7 @@ Phase 19 implements multi-tenant data isolation, per-tenant encryption, and comp
 **What Was Added**:
 
 1. **Organization Model**
+
    ```prisma
    model Organization {
      id          String   @id @default(cuid())
@@ -38,17 +42,19 @@ Phase 19 implements multi-tenant data isolation, per-tenant encryption, and comp
      isActive    Boolean  @default(true)
      dataKeyEnc  String?  // Encrypted data key
      createdAt   DateTime @default(now())
-     
+
      users       User[]
      jobs        Job[]
      auditLogs   OrgAuditLog[]
    }
    ```
+
    - Every customer is an Organization
    - One org can have many users, jobs, audit logs
    - `dataKeyEnc`: Org's data key encrypted by MASTER_KEY
 
 2. **OrgAuditLog Model** (separate from JobEvent)
+
    ```prisma
    model OrgAuditLog {
      id             String   @id @default(cuid())
@@ -59,15 +65,17 @@ Phase 19 implements multi-tenant data isolation, per-tenant encryption, and comp
      entityId       String?
      metadata       Json?
      createdAt      DateTime @default(now())
-     
+
      organization   Organization @relation(...)
    }
    ```
+
    - Customer-visible compliance trail
    - Indexed by organizationId + createdAt for fast queries
    - Supports filtering by action, entity, date range
 
 3. **Extended User Model**
+
    ```prisma
    model User {
      // Existing fields...
@@ -75,6 +83,7 @@ Phase 19 implements multi-tenant data isolation, per-tenant encryption, and comp
      organization   Organization? @relation(...)
    }
    ```
+
    - Each user belongs to one org
    - Index on organizationId for tenant scoping
 
@@ -86,10 +95,12 @@ Phase 19 implements multi-tenant data isolation, per-tenant encryption, and comp
      organization   Organization @relation(...)
    }
    ```
+
    - Every job belongs to shipper's org
    - Enforced via foreign key constraint
 
-**Migration**: `cd apps/api && pnpm prisma migrate deploy && pnpm prisma generate`
+**Migration**:
+`cd apps/api && pnpm prisma migrate deploy && pnpm prisma generate`
 
 ---
 
@@ -102,7 +113,10 @@ Phase 19 implements multi-tenant data isolation, per-tenant encryption, and comp
 **Implementation**:
 
 ```typescript
-export function tenantPrisma(prisma: PrismaClient, organizationId: string): PrismaClient {
+export function tenantPrisma(
+  prisma: PrismaClient,
+  organizationId: string,
+): PrismaClient {
   return prisma.$extends({
     query: {
       job: {
@@ -112,21 +126,30 @@ export function tenantPrisma(prisma: PrismaClient, organizationId: string): Pris
         },
         // ... all other operations automatically scoped
       },
-      user: { /* same pattern */ },
-      jobEvent: { /* filters through Job.organizationId */ },
-      orgAuditLog: { /* scoped to organizationId */ },
+      user: {
+        /* same pattern */
+      },
+      jobEvent: {
+        /* filters through Job.organizationId */
+      },
+      orgAuditLog: {
+        /* scoped to organizationId */
+      },
     },
   }) as PrismaClient;
 }
 ```
 
 **Key Features**:
+
 - **Automatic filtering**: Every query adds `organizationId` to WHERE clause
 - **Transitive filtering**: JobEvent filtered through Job relationship
 - **No manual checks**: Developers can't forget to filter
-- **100% coverage**: Covers findMany, findUnique, update, delete, count, aggregate
+- **100% coverage**: Covers findMany, findUnique, update, delete, count,
+  aggregate
 
 **Usage in Routes**:
+
 ```javascript
 const orgId = req.auth.organizationId;
 const tprisma = tenantPrisma(prisma, orgId);
@@ -142,12 +165,13 @@ const jobs = await tprisma.job.findMany(); // ← Org's jobs only
 **What Changed**:
 
 1. **Enhanced authenticate() function**
+
    ```javascript
    function authenticate(req, res, next) {
      // ... JWT decode ...
      const payload = jwt.verify(token, secret);
      req.user = payload;
-     
+
      // NEW: Extract organization claim
      req.auth = {
        userId: payload.sub,
@@ -161,13 +185,14 @@ const jobs = await tprisma.job.findMany(); // ← Org's jobs only
    ```
 
 2. **New requireOrganization() middleware**
+
    ```javascript
    function requireOrganization(req, res, next) {
      const orgId = req.auth?.organizationId;
      if (!orgId) {
        return res.status(401).json({
          error: "No organization",
-         message: "JWT must include org_id claim"
+         message: "JWT must include org_id claim",
        });
      }
      next();
@@ -183,6 +208,7 @@ const jobs = await tprisma.job.findMany(); // ← Org's jobs only
    ```
 
 **JWT Claim Expected**:
+
 ```json
 {
   "sub": "user_123",
@@ -194,15 +220,16 @@ const jobs = await tprisma.job.findMany(); // ← Org's jobs only
 ```
 
 **Middleware Order in Routes**:
+
 ```javascript
 router.get(
   "/jobs",
-  authenticate,             // ← Decode JWT, extract org_id
-  requireOrganization,      // ← Block if no org_id
-  limiters.general,         // ← Rate limit
+  authenticate, // ← Decode JWT, extract org_id
+  requireOrganization, // ← Block if no org_id
+  limiters.general, // ← Rate limit
   async (req, res, next) => {
     // req.auth.organizationId is guaranteed here
-  }
+  },
 );
 ```
 
@@ -253,12 +280,14 @@ PLAINTEXT FIELDS (SSN, bank account, tokens)
    - Fails if MASTER_KEY not set
 
 **Security Properties**:
+
 - **MASTER_KEY never leaves server memory**: Only used in KMS module
 - **Authenticated encryption**: GCM mode detects tampering
 - **Random IV per value**: Same plaintext encrypts differently each time
 - **256-bit encryption**: AES-256, industry standard
 
 **Integration Pattern**:
+
 ```typescript
 // Org creation
 const dataKeyEnc = generateDataKey();
@@ -304,21 +333,34 @@ const encryptedSSN = encryptField(dataKey, ssn);
    - Columns: Timestamp, Actor, Action, Entity, EntityId, Details
 
 5. **Constants for Type Safety**:
+
    ```typescript
    AUDIT_ACTIONS = {
-     JOB_CREATED, JOB_ACCEPTED, JOB_COMPLETED,
-     PAYMENT_INITIATED, PAYMENT_SUCCEEDED, PAYMENT_FAILED,
-     USER_INVITED, USER_PERMISSIONS_CHANGED,
-     AUDIT_EXPORTED, DATA_EXPORTED,
-     AUTH_FAILED, SCOPE_VIOLATION,
-   }
-   
+     JOB_CREATED,
+     JOB_ACCEPTED,
+     JOB_COMPLETED,
+     PAYMENT_INITIATED,
+     PAYMENT_SUCCEEDED,
+     PAYMENT_FAILED,
+     USER_INVITED,
+     USER_PERMISSIONS_CHANGED,
+     AUDIT_EXPORTED,
+     DATA_EXPORTED,
+     AUTH_FAILED,
+     SCOPE_VIOLATION,
+   };
+
    AUDIT_ENTITIES = {
-     JOB, PAYMENT, USER, ORGANIZATION, API_KEY,
-   }
+     JOB,
+     PAYMENT,
+     USER,
+     ORGANIZATION,
+     API_KEY,
+   };
    ```
 
 **Usage**:
+
 ```typescript
 await logAuditEvent(prisma, {
   organizationId: "org_123",
@@ -366,22 +408,23 @@ await logAuditEvent(prisma, {
 
 **Export Formats**:
 
-| Format | Use Case | Sample |
-|--------|----------|--------|
-| **JSON** | Structured, searchable | `{ export: {...}, logs: [...] }` |
-| **CSV** | Excel/Sheets compatible | `Timestamp,Actor,Action,...` |
-| **JSONL** | Streaming, one-per-line | `{"id": "...", ...}\n` |
+| Format    | Use Case                | Sample                           |
+| --------- | ----------------------- | -------------------------------- |
+| **JSON**  | Structured, searchable  | `{ export: {...}, logs: [...] }` |
+| **CSV**   | Excel/Sheets compatible | `Timestamp,Actor,Action,...`     |
+| **JSONL** | Streaming, one-per-line | `{"id": "...", ...}\n`           |
 
-**Redaction Rules**:
-Sensitive fields automatically masked:
-- password → ***REDACTED***
-- token → ***REDACTED***
-- ssn → ***REDACTED***
-- creditCard → ***REDACTED***
-- bankAccount → ***REDACTED***
-- apiKey → ***REDACTED***
+**Redaction Rules**: Sensitive fields automatically masked:
+
+- password → **_REDACTED_**
+- token → **_REDACTED_**
+- ssn → **_REDACTED_**
+- creditCard → **_REDACTED_**
+- bankAccount → **_REDACTED_**
+- apiKey → **_REDACTED_**
 
 **Usage**:
+
 ```typescript
 const result = await exportOrgAudit(prisma, {
   organizationId: "org_123",
@@ -400,23 +443,23 @@ console.log(report.summary.totalEvents); // "42 events logged"
 
 ## Files Created
 
-| File | Lines | Purpose |
-|------|-------|---------|
-| `apps/api/src/db/tenant.ts` | 195 | Tenant-scoped Prisma client (RLS) |
-| `apps/api/src/security/kms.ts` | 315 | AES-256-GCM key manager + field encryption |
-| `apps/api/src/audit/orgAuditLog.ts` | 325 | Audit logging, queries, CSV export |
-| `apps/api/src/admin/auditExport.ts` | 425 | Audit export (JSON/CSV/JSONL), DPA report |
-| `apps/api/.env.phase19` | 6 | MASTER_KEY configuration |
-| `PHASE_19_COMPLETE.md` | 550+ | Comprehensive implementation guide |
-| `PHASE_19_SUMMARY.md` | 350+ | Quick reference & deployment guide |
+| File                                | Lines | Purpose                                    |
+| ----------------------------------- | ----- | ------------------------------------------ |
+| `apps/api/src/db/tenant.ts`         | 195   | Tenant-scoped Prisma client (RLS)          |
+| `apps/api/src/security/kms.ts`      | 315   | AES-256-GCM key manager + field encryption |
+| `apps/api/src/audit/orgAuditLog.ts` | 325   | Audit logging, queries, CSV export         |
+| `apps/api/src/admin/auditExport.ts` | 425   | Audit export (JSON/CSV/JSONL), DPA report  |
+| `apps/api/.env.phase19`             | 6     | MASTER_KEY configuration                   |
+| `PHASE_19_COMPLETE.md`              | 550+  | Comprehensive implementation guide         |
+| `PHASE_19_SUMMARY.md`               | 350+  | Quick reference & deployment guide         |
 
 **Total New Code**: ~1,700 lines of production-grade TypeScript/JavaScript
 
 ## Files Modified
 
-| File | Changes | Impact |
-|------|---------|--------|
-| `apps/api/prisma/schema.prisma` | +35 lines | Organization, OrgAuditLog, extended User/Job |
+| File                                  | Changes   | Impact                                         |
+| ------------------------------------- | --------- | ---------------------------------------------- |
+| `apps/api/prisma/schema.prisma`       | +35 lines | Organization, OrgAuditLog, extended User/Job   |
 | `apps/api/src/middleware/security.js` | +30 lines | Enhanced authenticate(), requireOrganization() |
 
 ---
@@ -426,6 +469,7 @@ console.log(report.summary.totalEvents); // "42 events logged"
 **Migration Name**: `phase19_multitenant`
 
 **SQL Changes** (auto-generated by Prisma):
+
 - CREATE TABLE organizations
 - CREATE TABLE org_audit_logs
 - ALTER TABLE users ADD organizationId
@@ -442,32 +486,35 @@ console.log(report.summary.totalEvents); // "42 events logged"
 
 ## Security Guarantees
 
-| Control | Mechanism | Verified |
-|---------|-----------|----------|
-| **Tenant Isolation** | Prisma $extends() with auto-filtering | ✅ Row-level security enforced in code |
-| **Data Encryption** | AES-256-GCM (per-tenant keys + master key) | ✅ NIST-approved algorithm |
-| **Audit Completeness** | OrgAuditLog captured on all sensitive actions | ✅ Queryable + exportable |
-| **Key Management** | Master key from environment only | ✅ Never stored on disk |
-| **Tampering Detection** | GCM authentication tags | ✅ Can't decrypt corrupted data |
-| **PII Redaction** | Automatic filtering in exports | ✅ No accidental exposure in reports |
+| Control                 | Mechanism                                     | Verified                               |
+| ----------------------- | --------------------------------------------- | -------------------------------------- |
+| **Tenant Isolation**    | Prisma $extends() with auto-filtering         | ✅ Row-level security enforced in code |
+| **Data Encryption**     | AES-256-GCM (per-tenant keys + master key)    | ✅ NIST-approved algorithm             |
+| **Audit Completeness**  | OrgAuditLog captured on all sensitive actions | ✅ Queryable + exportable              |
+| **Key Management**      | Master key from environment only              | ✅ Never stored on disk                |
+| **Tampering Detection** | GCM authentication tags                       | ✅ Can't decrypt corrupted data        |
+| **PII Redaction**       | Automatic filtering in exports                | ✅ No accidental exposure in reports   |
 
 ---
 
 ## Enterprise Features
 
 ### ✅ SOC2-Ready
+
 - Audit trail with timestamps and actors
 - Exportable evidence for auditors
 - Tamper detection via GCM
 - DPA compliance reporting
 
 ### ✅ GDPR-Ready
+
 - Data isolation per tenant
 - Audit logs for data processing
 - Encryption for data in transit + at rest
 - Capability for per-org data deletion
 
 ### ✅ HIPAA-Ready (with field encryption)
+
 - Per-org encryption keys
 - Audit trail of access
 - Field-level encryption for PII
@@ -489,6 +536,7 @@ console.log(report.summary.totalEvents); // "42 events logged"
 - [x] Error handling implemented (fail-safe patterns)
 
 **To Deploy**:
+
 ```bash
 # 1. Generate MASTER_KEY
 export MASTER_KEY=$(openssl rand -base64 32)
@@ -510,6 +558,7 @@ cd apps/api && pnpm prisma migrate deploy && pnpm prisma generate
 ## Monitoring & Alerting
 
 **Set Alerts For**:
+
 1. `AUTH_FAILED` audit events (spike = potential breach)
 2. `SCOPE_VIOLATION` events (unauthorized access attempts)
 3. KMS decryption errors (key corruption)
@@ -517,6 +566,7 @@ cd apps/api && pnpm prisma migrate deploy && pnpm prisma generate
 5. Audit log creation failures (compliance risk)
 
 **Metrics to Track**:
+
 - Audit log volume per org (detect anomalies)
 - Data key generation frequency (unusual = red flag)
 - Export request latency (optimize for large exports)
@@ -527,16 +577,19 @@ cd apps/api && pnpm prisma migrate deploy && pnpm prisma generate
 ## Next Steps (Phase 20+)
 
 **Immediate** (Phase 20):
+
 - [ ] SSO/SAML identity federation
 - [ ] Per-org API keys
 - [ ] Advanced RBAC with custom roles
 
 **Short-term** (Phase 21-22):
+
 - [ ] Scheduled audit chain verification
 - [ ] Automated breach response playbooks
 - [ ] Policy-as-code enforcement
 
 **Long-term** (Phase 23+):
+
 - [ ] OpenTelemetry distributed tracing
 - [ ] Kubernetes-native deployment
 - [ ] Multi-region failover
@@ -545,9 +598,12 @@ cd apps/api && pnpm prisma migrate deploy && pnpm prisma generate
 
 ## Technical Debt & Future Optimization
 
-1. **Key Rotation**: Currently one key per org. Could add rotation schedule (re-encrypt).
-2. **Audit Retention**: Currently unlimited. Could add 90-day hot / 1-year cold archival.
-3. **Export Performance**: Stream function could use Prisma batch queries for even larger exports.
+1. **Key Rotation**: Currently one key per org. Could add rotation schedule
+   (re-encrypt).
+2. **Audit Retention**: Currently unlimited. Could add 90-day hot / 1-year cold
+   archival.
+3. **Export Performance**: Stream function could use Prisma batch queries for
+   even larger exports.
 4. **RBAC Integration**: OrgAuditLog could be scoped to specific roles per org.
 
 ---
@@ -557,6 +613,7 @@ cd apps/api && pnpm prisma migrate deploy && pnpm prisma generate
 **Phase 19 transforms Infæmous Freight into an enterprise platform.**
 
 Fortune-500 companies now see:
+
 - ✅ Complete data isolation (proven at code level)
 - ✅ Industry-standard encryption (AES-256-GCM)
 - ✅ Compliance automation (SOC2/DPA/GDPR)
@@ -564,10 +621,10 @@ Fortune-500 companies now see:
 
 **Status**: Production Ready  
 **Risk Level**: Low (no breaking API changes, backward compatible)  
-**Deployment Ready**: YES  
+**Deployment Ready**: YES
 
 ---
 
 **Generated**: 2026-01-16 | Phase 19 Complete | Status: ✅ 100% ENTERPRISE READY
 
-*For questions or issues, see PHASE_19_SUMMARY.md for quick reference.*
+_For questions or issues, see PHASE_19_SUMMARY.md for quick reference._

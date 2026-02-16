@@ -62,7 +62,7 @@ const GEO_BOUNDS = {
  * Feedback System Constants
  */
 const FEEDBACK = {
-  ID_PREFIX: 'fb_',
+  ID_PREFIX: "fb_",
   ID_SUBSTRING_START: 9,
   MAX_LENGTH: 5000,
   CRITICAL_RATING_THRESHOLD: 2, // Ratings <= 2 are critical
@@ -72,7 +72,7 @@ const FEEDBACK = {
  * Bonuses & Referrals
  */
 const BONUSES = {
-  REFERRAL_CODE_PREFIX: 'REF-',
+  REFERRAL_CODE_PREFIX: "REF-",
   REFERRAL_EXPIRY_MS: 365 * 24 * 60 * 60 * 1000, // 1 year
 };
 
@@ -93,17 +93,17 @@ const METRICS = {
 /**
  * Shipment Priorities
  */
-const SHIPMENT_PRIORITIES = ['low', 'standard', 'high', 'urgent'];
+const SHIPMENT_PRIORITIES = ["low", "standard", "high", "urgent"];
 
 /**
  * Shipment Statuses
  */
 const SHIPMENT_STATUSES = {
-  PENDING: 'pending',
-  IN_TRANSIT: 'in_transit',
-  DELIVERED: 'delivered',
-  CANCELLED: 'cancelled',
-  FAILED: 'failed',
+  PENDING: "pending",
+  IN_TRANSIT: "in_transit",
+  DELIVERED: "delivered",
+  CANCELLED: "cancelled",
+  FAILED: "failed",
 };
 
 /**
@@ -130,15 +130,15 @@ const HTTP_STATUS = {
  * Error Messages
  */
 const ERROR_MESSAGES = {
-  INVALID_INPUT: 'Invalid input provided',
-  UNAUTHORIZED: 'Authentication required',
-  FORBIDDEN: 'Insufficient permissions',
-  NOT_FOUND: 'Resource not found',
-  RATE_LIMIT_EXCEEDED: 'Too many requests',
-  INTERNAL_ERROR: 'An internal error occurred',
-  VALIDATION_FAILED: 'Validation failed',
-  INVALID_TOKEN: 'Invalid or expired token',
-  INVALID_COORDINATES: 'Invalid geographic coordinates',
+  INVALID_INPUT: "Invalid input provided",
+  UNAUTHORIZED: "Authentication required",
+  FORBIDDEN: "Insufficient permissions",
+  NOT_FOUND: "Resource not found",
+  RATE_LIMIT_EXCEEDED: "Too many requests",
+  INTERNAL_ERROR: "An internal error occurred",
+  VALIDATION_FAILED: "Validation failed",
+  INVALID_TOKEN: "Invalid or expired token",
+  INVALID_COORDINATES: "Invalid geographic coordinates",
 };
 
 /**
@@ -157,11 +157,11 @@ const VALIDATION = {
 const FILE_UPLOAD = {
   VOICE: {
     MAX_SIZE_BYTES: 10 * 1024 * 1024, // 10 MB
-    ALLOWED_TYPES: ['audio/mpeg', 'audio/wav', 'audio/ogg', 'audio/webm'],
+    ALLOWED_TYPES: ["audio/mpeg", "audio/wav", "audio/ogg", "audio/webm"],
   },
   DOCUMENT: {
     MAX_SIZE_BYTES: 50 * 1024 * 1024, // 50 MB
-    ALLOWED_TYPES: ['application/pdf', 'image/jpeg', 'image/png'],
+    ALLOWED_TYPES: ["application/pdf", "image/jpeg", "image/png"],
   },
 };
 

@@ -14,7 +14,13 @@ export default function InsuranceDashboard() {
 
       <section style={{ marginBottom: 24 }}>
         <h2>Compliance Summary</h2>
-        <div style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))" }}>
+        <div
+          style={{
+            display: "grid",
+            gap: 12,
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+          }}
+        >
           {[
             { label: "Compliant", value: 12 },
             { label: "Warning", value: 3 },
@@ -51,10 +57,16 @@ export default function InsuranceDashboard() {
       <section>
         <h2>Quick Actions</h2>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          <a href="/insurance/requirements" style={{ padding: 12, border: "1px solid #0f172a", borderRadius: 8 }}>
+          <a
+            href="/insurance/requirements"
+            style={{ padding: 12, border: "1px solid #0f172a", borderRadius: 8 }}
+          >
             Set Requirements
           </a>
-          <a href="/insurance/carriers/sample" style={{ padding: 12, border: "1px solid #0f172a", borderRadius: 8 }}>
+          <a
+            href="/insurance/carriers/sample"
+            style={{ padding: 12, border: "1px solid #0f172a", borderRadius: 8 }}
+          >
             Review Certificates
           </a>
         </div>
