@@ -30,20 +30,20 @@ function initSentry(app) {
           : process.env.NODE_ENV === "production"
             ? 0.1  // 10% sampling in production (optimized)
             : 0.2, // 20% in staging
-        
+
         // Only attach stack traces for errors (not warnings)
         attachStacktrace: true,
-        
+
         // Reduce local variables in production to save quota
         includeLocalVariables: process.env.NODE_ENV !== "production",
-        
+
         // Ignore low-priority routes to save quota
         denyUrls: [
           /\/api\/health/,
           /\/favicon\.ico/,
           /\/robots\.txt/,
         ],
-        
+
         // Cost optimization: Filter out non-critical errors
         beforeSend(event, hint) {
           // Only send errors (5xx), not warnings or info
@@ -54,7 +54,7 @@ function initSentry(app) {
           // Filter out specific error types to conserve quota
           if (event.exception) {
             const error = hint.originalException;
-            
+
             // Ignore specific error messages
             const ignorePatterns = [
               /Ignored/i,
@@ -63,12 +63,12 @@ function initSentry(app) {
               /NetworkError/i, // Client-side network issues
               /timeout/i, // Timeout errors (often external)
             ];
-            
+
             if (error?.message && ignorePatterns.some(pattern => pattern.test(error.message))) {
               return null;
             }
           }
-          
+
           // Rate limit: Drop events if quota exceeded
           // This prevents runaway costs
           if (event.tags?.rateLimit) {
@@ -78,7 +78,7 @@ function initSentry(app) {
           return event;
         },
       });
-      
+
       logger.info("Sentry initialized with cost-optimized configuration", {
         environment: process.env.NODE_ENV,
         tracesSampleRate: Sentry.getCurrentHub().getClient()?.getOptions().tracesSampleRate,
@@ -106,10 +106,10 @@ function attachErrorHandler(app) {
           user: req.user ? { id: req.user.sub } : undefined,
         });
       }
-      
+
       next(err);
     });
-    
+
     app.use(Sentry.Handlers.errorHandler());
   } catch (err) {
     logger.warn("Failed to attach Sentry error handler", { error: err.message });

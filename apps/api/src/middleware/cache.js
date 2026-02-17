@@ -9,6 +9,15 @@ const { logger } = require("./logger");
 
 let redisClient = null;
 
+// Cache statistics
+let cacheStats = {
+  hits: 0,
+  misses: 0,
+  errors: 0,
+  totalRequests: 0,
+  lastReset: new Date().toISOString(),
+};
+
 // Initialize Redis client
 async function initRedis() {
   if (redisClient) return redisClient;
@@ -45,14 +54,19 @@ function cacheMiddleware(ttl = 300) {
 
     const cacheKey = `cache:${req.originalUrl || req.path}:${req.user?.sub || "anonymous"}`;
 
+    cacheStats.totalRequests++;
+
     try {
       // Try to get from cache
       const cached = await client.get(cacheKey);
       if (cached) {
+        cacheStats.hits++;
         res.set("X-Cache", "HIT");
         return res.json(JSON.parse(cached));
       }
+      cacheStats.misses++;
     } catch (err) {
+      cacheStats.errors++;
       logger.warn({ err: err.message }, "Cache read error");
       // Continue on cache miss/error
     }
@@ -89,8 +103,36 @@ async function invalidateCache(pattern = "*") {
   }
 }
 
+// Get cache statistics
+function getCacheStats() {
+  const hitRate =
+    cacheStats.totalRequests > 0
+      ? ((cacheStats.hits / cacheStats.totalRequests) * 100).toFixed(2)
+      : 0;
+
+  return {
+    ...cacheStats,
+    hitRate: parseFloat(hitRate),
+    enabled: redisClient !== null,
+  };
+}
+
+// Reset cache statistics
+function resetCacheStats() {
+  cacheStats = {
+    hits: 0,
+    misses: 0,
+    errors: 0,
+    totalRequests: 0,
+    lastReset: new Date().toISOString(),
+  };
+  return getCacheStats();
+}
+
 module.exports = {
   initRedis,
   cacheMiddleware,
   invalidateCache,
+  getCacheStats,
+  resetCacheStats,
 };
