@@ -18,7 +18,7 @@ if [[ ! -f firebase.json ]]; then
   "emulators": {
     "auth": { "port": 9099 },
     "firestore": { "port": 8080 },
-    "ui": { "enabled": true, "port": 4000 }
+    "ui": { "enabled": true, "port": 4001 }
   }
 }
 JSON
