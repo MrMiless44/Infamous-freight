@@ -102,11 +102,13 @@ Optional: embed analytics views in the web dashboard.
 
 - **Apigee** for external partner integration (ERP/TMS/WMS)
 - **Cloud Functions / Zenphi** for cross-system process automation
-- **Firebase Hosting** for dashboard/mobile web delivery
+- **Firebase Hosting** for optional/staging dashboard & mobile web delivery,
+  supplementing the primary Netlify (production) and secondary Vercel hosting
 
 ## 9) Deployment Sequence
 
-1. Deploy dashboard/mobile web:
+1. Deploy Firebase-hosted dashboard/mobile web environments (e.g., staging,
+   regional PoCs, or Firebase-native previews that run alongside Netlify/Vercel):
 
 ```bash
 firebase deploy --only hosting
