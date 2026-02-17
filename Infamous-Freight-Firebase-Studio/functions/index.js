@@ -22,10 +22,15 @@ exports.updateShipmentLocation = onDocumentUpdated('shipments/{shipmentId}', asy
 
   const before = beforeSnap.data();
   const after = afterSnap.data();
-  const beforeLocation = JSON.stringify(before.currentLocation || {});
-  const afterLocation = JSON.stringify(after.currentLocation || {});
+  const beforeLocation = before.currentLocation || null;
+  const afterLocation = after.currentLocation || null;
 
-  if (beforeLocation === afterLocation) {
+  const beforeLat = beforeLocation ? beforeLocation.lat : undefined;
+  const beforeLng = beforeLocation ? beforeLocation.lng : undefined;
+  const afterLat = afterLocation ? afterLocation.lat : undefined;
+  const afterLng = afterLocation ? afterLocation.lng : undefined;
+
+  if (beforeLat === afterLat && beforeLng === afterLng) {
     logger.info('Shipment location unchanged.', {shipmentId});
     return;
   }
