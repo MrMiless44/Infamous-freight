@@ -1,9 +1,16 @@
 # Infæmous Freight – Firebase + Google Cloud Deployment & Implementation Guide
 
-This guide provides an end-to-end implementation path for deploying Infæmous
-Freight on Firebase Console and Google Cloud with real-time tracking, AI-assisted
-optimization, and operational analytics.
+This document describes an **alternative deployment option** for Infæmous Freight
+using Firebase and Google Cloud Platform (GCP).
 
+It is intended for experimental/staging environments and future migration
+evaluation. It does **not** replace the current production architecture, which
+runs the API on Fly.io with PostgreSQL (via Prisma) and the web frontend on
+Netlify/Vercel.
+
+The sections below provide an end-to-end implementation path for deploying
+Infæmous Freight on Firebase Studio and Google Cloud with real-time tracking,
+AI-assisted optimization, and operational analytics.
 ## 1) Project Setup in Firebase Console
 
 1. Open Firebase Console for the project workspace:
