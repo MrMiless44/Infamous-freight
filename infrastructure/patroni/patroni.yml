@@ -1,0 +1,115 @@
+scope: infamous-freight
+namespace: /db/
+
+name: postgres1
+log:
+  level: INFO
+  dir: /var/log/patroni
+  static_fields:
+    app_id: patroni
+
+restapi:
+  listen: 0.0.0.0:8008
+  connect_address: postgres1:8008
+  authentication:
+    username: admin
+    password: ${PATRONI_RESTAPI_PASSWORD}
+
+etcd:
+  hosts:
+    - etcd1:2379
+    - etcd2:2379
+    - etcd3:2379
+  use_proxies: false
+  ttl: 30
+  loop_wait: 10
+  maximum_lag_on_failover: 1048576
+  retry_timeout: 10
+
+bootstrap:
+  dcs:
+    ttl: 30
+    loop_wait: 10
+    retry_timeout: 10
+    maximum_lag_on_failover: 1048576
+
+    postgresql:
+      use_pg_rewind: true
+      use_slots: true
+      parameters:
+        max_connections: 200
+        max_prepared_transactions: 100
+        shared_buffers: 256MB
+        wal_level: replica
+        max_wal_senders: 10
+        max_replication_slots: 10
+        hot_standby: "on"
+        hot_standby_feedback: "on"
+        wal_keep_size: 1GB
+        wal_log_hints: "on"
+        archive_mode: "on"
+        archive_command: "test ! -f /wal_archive/%f && cp %p /wal_archive/%f"
+
+  initdb:
+    - encoding: UTF8
+    - data-checksums
+    - locale: en_US.UTF-8
+    - waldir: /var/lib/postgresql/wal
+
+  pg_hba:
+    - local: replication
+      user: replicator
+      auth_method: trust
+    - host: replication
+      user: replicator
+      cidr: 0.0.0.0/0
+      auth_method: md5
+    - host: all
+      user: all
+      cidr: 0.0.0.0/0
+      auth_method: md5
+    - local: all
+      user: all
+      auth_method: trust
+
+  users:
+    admin:
+      password: ${PATRONI_ADMIN_PASSWORD}
+      options:
+        - createrole
+        - createdb
+
+    replicator:
+      password: ${PATRONI_REPLICATOR_PASSWORD}
+      options:
+        - replication
+
+postgresql:
+  listen: 0.0.0.0:5432
+  connect_address: postgres1:5432
+  config_dir: /etc/postgresql
+  data_dir: /var/lib/postgresql/data
+  pgpass: /var/lib/postgresql/.pgpass
+  bin_dir: /usr/lib/postgresql/15/bin
+
+  authentication:
+    replication:
+      username: replicator
+      password: ${PATRONI_REPLICATOR_PASSWORD}
+    superuser:
+      username: postgres
+      password: ${PATRONI_POSTGRES_PASSWORD}
+
+  parameters:
+    shared_preload_libraries: "pg_stat_statements"
+
+tags:
+  nofailover: false
+  noloadbalance: false
+  clonefrom: false
+  replicaaffinitylabel: zone
+
+watchdog:
+  mode: automatic
+  device: /dev/watchdog
+  safety_margin: 5

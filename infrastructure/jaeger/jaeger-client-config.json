@@ -1,0 +1,14 @@
+{
+    "sampler": {
+        "type": "const",
+        "param": 1,
+        "samplingServerURL": "http://jaeger-agent:5778/sampling"
+    },
+    "serviceName": "infamous-freight-api",
+    "logSpans": true,
+    "localAgentHostPort": "jaeger-agent:6831",
+    "reporter_logSpans": true,
+    "reporterLogSpans": true,
+    "gen128Bit": true,
+    "traceIdHeader": "uber-trace-id"
+}

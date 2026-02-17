@@ -1,0 +1,149 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  # API logs
+  - job_name: api
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: api
+          env: production
+          __path__: /var/log/api/*.log
+    pipeline_stages:
+      - json:
+          expressions:
+            timestamp: timestamp
+            level: level
+            message: message
+            error: error
+            request_id: request_id
+      - timestamp:
+          source: timestamp
+          format: Unix
+      - labels:
+          level:
+          request_id:
+      - output:
+          source: message
+
+  # Web logs
+  - job_name: web
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: web
+          env: production
+          __path__: /var/log/web/*.log
+    pipeline_stages:
+      - json:
+          expressions:
+            timestamp: timestamp
+            level: level
+            message: message
+      - timestamp:
+          source: timestamp
+          format: Unix
+      - labels:
+          level:
+      - output:
+          source: message
+
+  # Nginx logs
+  - job_name: nginx
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: nginx
+          env: production
+          __path__: /var/log/nginx/access.log
+    pipeline_stages:
+      - regex:
+          expression: '(?P<ip>\S+) (?P<ident>\S+) (?P<user>\S+) \[(?P<timestamp>[^\]]*)\] "(?P<method>\w+) (?P<path>\S+) (?P<protocol>\S+)" (?P<status>\d+) (?P<bytes>\S+) "(?P<referer>\S+)" "(?P<user_agent>\S+)" rt=(?P<response_time>\S+)'
+      - timestamp:
+          source: timestamp
+          format: "02/Jan/2006:15:04:05 -0700"
+      - labels:
+          method:
+          status:
+          path:
+      - metrics:
+          response_time_seconds:
+            type: gauge
+            description: "Response time in seconds"
+            source: response_time
+          response_size_bytes:
+            type: gauge
+            description: "Response size in bytes"
+            source: bytes
+
+  # PostgreSQL logs
+  - job_name: postgresql
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: postgresql
+          env: production
+          __path__: /var/log/postgresql/*.log
+    pipeline_stages:
+      - multiline:
+          line_start_pattern: '^\d{4}-\d{2}-\d{2}'
+      - regex:
+          expression: '(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) \[(?P<level>\w+)\] (?P<message>.*)'
+      - timestamp:
+          source: timestamp
+          format: "2006-01-02 15:04:05"
+      - labels:
+          level:
+      - output:
+          source: message
+
+  # Redis logs
+  - job_name: redis
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: redis
+          env: production
+          __path__: /var/log/redis/redis-server.log
+    pipeline_stages:
+      - multiline:
+          line_start_pattern: '^\d+:[MISX]'
+      - regex:
+          expression: '^\d+:(?P<level>[MISX])\s+(?P<timestamp>.*?) \*(?P<level>\w+)\*\s+(?P<message>.*)'
+      - timestamp:
+          source: timestamp
+          format: "02 Jan 2006 15:04:05"
+      - labels:
+          level:
+      - output:
+          source: message
+
+  # Docker container logs
+  - job_name: docker
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: docker
+          env: production
+          __path__: /var/lib/docker/containers/*/*.log
+    pipeline_stages:
+      - json:
+          expressions:
+            log: log
+            stream: stream
+      - output:
+          source: log

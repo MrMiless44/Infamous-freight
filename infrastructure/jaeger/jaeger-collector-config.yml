@@ -1,0 +1,31 @@
+collector:
+  zipkin:
+    host_port: :9411
+  otlp:
+    enabled: true
+    grpc:
+      host_port: :4317
+    http:
+      host_port: :4318
+
+storage:
+  type: badger
+  badger:
+    ephemeral: false
+    directory_value: /badger/data
+    directory_key: /badger/key
+
+sampler:
+  type: const
+  param: 1
+
+logging:
+  level: info
+
+query:
+  base_url: http://localhost:16686
+  serve_frontend: true
+  ui_config: /etc/jaeger/ui.json
+  static_root: /etc/jaeger/static
+
+reporter_loggers: true
