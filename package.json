@@ -55,8 +55,8 @@
     "go-live:verify": "bash scripts/genesis-go-live-verify.sh",
     "prepare": "husky",
     "deploy:production": "bash deploy/production-vercel-railway.sh",
-    "firebase:setup": "bash scripts/firebase-setup.sh",
-    "firebase:emulator": "bash scripts/start-firebase-emulator.sh"
+    "firebase:setup": "firebase login && firebase use --add",
+    "firebase:emulator": "firebase emulators:start"
   },
   "dependencies": {
     "@vercel/analytics": "^1.6.1"
