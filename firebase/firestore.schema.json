@@ -1,49 +1,59 @@
 {
   "collections": {
     "shipments": {
-      "documentId": "<shipmentId>",
-      "fields": {
-      "origin": "string",
-      "destination": "string",
-      "status": {
-        "type": "string",
-        "enum": ["CREATED", "IN_TRANSIT", "DELIVERED", "CANCELLED"]
-      },
-      "driverId": "string",
-      "currentLocation": {
-        "lat": "number",
-        "lng": "number"
-        },
-        "estimatedArrival": "timestamp",
-        "proofOfDeliveryUrl": "string",
-        "lastUpdated": "timestamp"
-      }
-    },
-    "drivers": {
-      "documentId": "<driverId>",
-      "fields": {
-        "name": "string",
-        "email": "string",
-        "phone": "string",
-        "currentLocation": {
-          "lat": "number",
-          "lng": "number"
-        },
-        "activeShipment": "string"
-      }
-    },
-    "events": {
-      "documentId": "<eventId>",
-      "fields": {
-        "shipmentId": "string",
-        "type": "string",
-        "timestamp": "timestamp",
-        "location": {
-          "lat": "number",
-          "lng": "number"
-        },
-        "notes": "string"
-      }
-    }
-  }
-}
+        {
+          "metadata": {
+            "sourceOfTruth": "postgresql",
+            "syncStrategy": "api-write-through",
+            "description": "PostgreSQL (via Prisma, see apps/api/prisma/schema.prisma Shipment model) is the system of record for shipments. Firestore collections defined here are a read-optimized projection/cache used for real-time tracking in web/mobile clients. All canonical writes to shipments must go through the Express API, which is responsible for synchronizing changes from PostgreSQL into Firestore (e.g., via write-through logic, background workers, or functions). Firestore MUST NOT be treated as the authoritative source for shipment data.",
+            "collectionsRole": {
+              "shipments": "Cached projection of Shipment entities from PostgreSQL for low-latency reads and live updates.",
+              "drivers": "Real-time driver state associated to shipments; driver identifiers must correspond to drivers referenced from PostgreSQL where applicable.",
+              "events": "Time-ordered tracking and telemetry events linked to shipments; shipmentId must reference a Shipment that exists in PostgreSQL."
+            }
+          },
+          "collections": {
+            "shipments": {
+              "documentId": "<shipmentId>",
+              "fields": {
+                "origin": "string",
+                "destination": "string",
+                "status": "string",
+                "driverId": "string",
+                "currentLocation": {
+                  "lat": "number",
+                  "lng": "number"
+                },
+                "estimatedArrival": "timestamp",
+                "proofOfDeliveryUrl": "string",
+                "lastUpdated": "timestamp"
+              }
+            },
+            "drivers": {
+              "documentId": "<driverId>",
+              "fields": {
+                "name": "string",
+                "email": "string",
+                "phone": "string",
+                "currentLocation": {
+                  "lat": "number",
+                  "lng": "number"
+                },
+                "activeShipment": "string"
+              }
+            },
+            "events": {
+              "documentId": "<eventId>",
+              "fields": {
+                "shipmentId": "string",
+                "type": "string",
+                "timestamp": "timestamp",
+                "location": {
+                  "lat": "number",
+                  "lng": "number"
+                },
+                "notes": "string"
+              }
+            }
+          }
+        }
