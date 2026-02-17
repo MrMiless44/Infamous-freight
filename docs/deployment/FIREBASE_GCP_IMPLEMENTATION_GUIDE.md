@@ -1,13 +1,13 @@
 # Infæmous Freight – Firebase + Google Cloud Deployment & Implementation Guide
 
 This guide provides an end-to-end implementation path for deploying Infæmous
-Freight on Firebase Studio and Google Cloud with real-time tracking, AI-assisted
+Freight on Firebase Console and Google Cloud with real-time tracking, AI-assisted
 optimization, and operational analytics.
 
-## 1) Project Setup in Firebase Studio
+## 1) Project Setup in Firebase Console
 
-1. Open Firebase Studio for the project workspace:
-   - <https://studio.firebase.google.com/infamous-freight-85082765>
+1. Open Firebase Console for the project workspace:
+   - <https://console.firebase.google.com/project/infamous-freight-85082765>
 2. Create or open the project workspace.
 3. Authenticate and target the Firebase project:
 
