@@ -71,7 +71,6 @@
     }
   },
   "devDependencies": {
-    "firebase-tools": "^14.24.0",
     "husky": "^9.1.7",
     "typescript": "^5.9.3"
   }
