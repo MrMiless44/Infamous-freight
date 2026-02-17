@@ -313,7 +313,7 @@ worldwide:
 - ✅ [Launch Checklist](LAUNCH_CHECKLIST_100.md)
 - 📋 [What Was Created](DEPLOYMENT_100_SUMMARY.md)
 - ☁️
-  [Firebase + Google Cloud Implementation Guide](docs/deployment/FIREBASE_GCP_IMPLEMENTATION_GUIDE.md)
+  [Alternative: Firebase + Google Cloud Implementation (non-production)](docs/deployment/FIREBASE_GCP_IMPLEMENTATION_GUIDE.md)
 - 🔐 [GitHub Secrets Setup](GITHUB_ACTIONS_SECRETS_SETUP.md)
 
 ### Current Status
