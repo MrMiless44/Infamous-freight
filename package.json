@@ -55,7 +55,7 @@
     "go-live:verify": "bash scripts/genesis-go-live-verify.sh",
     "prepare": "husky",
     "deploy:production": "bash deploy/production-vercel-railway.sh",
-    "firebase:setup": "firebase login && firebase use --add",
+    "firebase:setup": "firebase use --add \"$FIREBASE_PROJECT_ID\"",
     "firebase:emulator": "firebase emulators:start"
   },
   "dependencies": {
