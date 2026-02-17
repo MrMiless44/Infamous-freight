@@ -190,20 +190,20 @@
 
 ## 🎯 Key Performance Indicators (Must Pass)
 
-| Metric | Target | Current | Status |
-|--------|--------|---------|--------|
-| API p50 Latency | <50ms | 35ms | ✅ PASS |
-| API p95 Latency | <150ms | 100ms | ✅ PASS |
-| API p99 Latency | <255ms | 185ms | ✅ PASS |
-| Error Rate | <0.1% | 0.02% | ✅ PASS |
-| Uptime (24h) | >99.9% | 99.98% | ✅ PASS |
-| DB Query p99 | <100ms | 34ms | ✅ PASS |
-| DB Replication Lag | <1s | 0.2s | ✅ PASS |
-| CPU Utilization | <70% | 34% | ✅ PASS |
-| Memory Utilization | <80% | 52% | ✅ PASS |
-| Disk Utilization | <85% | 67% | ✅ PASS |
-| Security Incidents | 0 | 0 | ✅ PASS |
-| GDPR Compliance | 100% | 100% | ✅ PASS |
+| Metric             | Target | Current | Status |
+| ------------------ | ------ | ------- | ------ |
+| API p50 Latency    | <50ms  | 35ms    | ✅ PASS |
+| API p95 Latency    | <150ms | 100ms   | ✅ PASS |
+| API p99 Latency    | <255ms | 185ms   | ✅ PASS |
+| Error Rate         | <0.1%  | 0.02%   | ✅ PASS |
+| Uptime (24h)       | >99.9% | 99.98%  | ✅ PASS |
+| DB Query p99       | <100ms | 34ms    | ✅ PASS |
+| DB Replication Lag | <1s    | 0.2s    | ✅ PASS |
+| CPU Utilization    | <70%   | 34%     | ✅ PASS |
+| Memory Utilization | <80%   | 52%     | ✅ PASS |
+| Disk Utilization   | <85%   | 67%     | ✅ PASS |
+| Security Incidents | 0      | 0       | ✅ PASS |
+| GDPR Compliance    | 100%   | 100%    | ✅ PASS |
 
 ---
 
@@ -296,13 +296,13 @@ curl http://localhost:4000/api/health
 
 ## 📋 Sign-Off
 
-| Role | Name | Signature | Date |
-|------|------|-----------|------|
-| Engineering Lead | | ☐ Approved | 2026-02-17 |
-| DevOps Engineer | | ☐ Approved | 2026-02-17 |
-| QA Lead | | ☐ Approved | 2026-02-17 |
-| Security Officer | | ☐ Approved | 2026-02-17 |
-| Product Manager | | ☐ Approved | 2026-02-17 |
+| Role             | Name | Signature  | Date       |
+| ---------------- | ---- | ---------- | ---------- |
+| Engineering Lead |      | ☐ Approved | 2026-02-17 |
+| DevOps Engineer  |      | ☐ Approved | 2026-02-17 |
+| QA Lead          |      | ☐ Approved | 2026-02-17 |
+| Security Officer |      | ☐ Approved | 2026-02-17 |
+| Product Manager  |      | ☐ Approved | 2026-02-17 |
 
 ---
 
