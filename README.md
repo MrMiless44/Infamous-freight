@@ -6,15 +6,18 @@
 
 ## GENESIS / GENIUS Avatar Governance
 
-The authoritative system definition for the GENESIS intelligence layer and GENIUS Avatar governance model is locked in:
+The authoritative system definition for the GENESIS intelligence layer and
+GENIUS Avatar governance model is locked in:
 
 - [`GENESIS_GENIUS_SYSTEM_OF_RECORD.md`](./GENESIS_GENIUS_SYSTEM_OF_RECORD.md)
 
-This document is the system of record for `/E-LAW` approval requirements and deployment posture.
+This document is the system of record for `/E-LAW` approval requirements and
+deployment posture.
 
 ## Deployment Architecture
 
-Infamous Freight operates a multi-platform, enterprise-grade CI/CD pipeline designed for reliability, scalability, and zero-drift builds.
+Infamous Freight operates a multi-platform, enterprise-grade CI/CD pipeline
+designed for reliability, scalability, and zero-drift builds.
 
 ### 🌐 Web Frontend (Netlify primary, Vercel secondary)
 
@@ -23,7 +26,8 @@ Infamous Freight operates a multi-platform, enterprise-grade CI/CD pipeline desi
 - Locked dependency installs via `pnpm install --frozen-lockfile`
 - Shared packages build before web app
 - Next.js runtime with Edge + Functions support
-- Deployed to Netlify as the primary frontend, with Vercel used for preview/secondary environments
+- Deployed to Netlify as the primary frontend, with Vercel used for
+  preview/secondary environments
 - Cache-safe builds using Corepack + pinned pnpm
 
 ### 🔌 API (Fly.io)
@@ -47,18 +51,23 @@ Infamous Freight operates a multi-platform, enterprise-grade CI/CD pipeline desi
 
 # Infæmous Freight
 
-**Version: v2.0.0** | **Proprietary Software** | **© 2025 Infæmous Freight. All Rights Reserved.**
+**Version: v2.0.0** | **Proprietary Software** | **© 2025 Infæmous Freight. All
+Rights Reserved.**
 
 ---
 
 ## 🌍 What We Offer
 
-INFÆMOUS FREIGHT is the **AI-Native Freight Intelligence Platform** transforming the **$900B+ global logistics industry** by empowering independent drivers, small carriers, and freight operators with enterprise-grade technology.
+INFÆMOUS FREIGHT is the **AI-Native Freight Intelligence Platform** transforming
+the **$900B+ global logistics industry** by empowering independent drivers,
+small carriers, and freight operators with enterprise-grade technology.
 
 ### The Problem We Solve
 
 **The freight industry is broken:**
-- Independent operators lose **30-40% of earnings** to inefficiency, broker manipulation, and fragmented tools
+
+- Independent operators lose **30-40% of earnings** to inefficiency, broker
+  manipulation, and fragmented tools
 - Manual invoice audits expose companies to revenue leakage
 - Legacy 10-year-old technology dominates despite massive operational waste
 - **$270 billion lost annually** to inefficiency across global logistics
@@ -69,31 +78,40 @@ INFÆMOUS FREIGHT is the **AI-Native Freight Intelligence Platform** transformin
 **One unified AI-native platform** replacing 5-10 disconnected tools:
 
 **Core Capabilities:**
-- 🤖 **AI-Powered Optimization**: Smart dispatch scoring by profit/mile, route intelligence, predictive analytics, autonomous recommendations
-- 💼 **Unified Freight OS**: Dispatch, finance, tracking, compliance, fleet management, inventory—all integrated
-- 💰 **Financial Intelligence**: Automated invoice audits, real-time P&L per shipment, overcharge detection, integrated fintech
-- 🎤 **Genesis AI Avatars**: Voice-driven fleet operations, conversational AI, hands-free driver interface across 12+ languages
-- 🔒 **Enterprise-Grade**: SOC 2 ready, GDPR/HIPAA compliant, multi-tenant architecture, 55+ country deployment
+
+- 🤖 **AI-Powered Optimization**: Smart dispatch scoring by profit/mile, route
+  intelligence, predictive analytics, autonomous recommendations
+- 💼 **Unified Freight OS**: Dispatch, finance, tracking, compliance, fleet
+  management, inventory—all integrated
+- 💰 **Financial Intelligence**: Automated invoice audits, real-time P&L per
+  shipment, overcharge detection, integrated fintech
+- 🎤 **Genesis AI Avatars**: Voice-driven fleet operations, conversational AI,
+  hands-free driver interface across 12+ languages
+- 🔒 **Enterprise-Grade**: SOC 2 ready, GDPR/HIPAA compliant, multi-tenant
+  architecture, 55+ country deployment
 
 ### Complete Platform Features
 
-| Category | Capabilities |
-|----------|--------------|
-| **Shipment Management** | GPS tracking, multi-modal support, automated status updates, POD capture, digital BOL |
-| **Fleet Management** | Driver analytics, vehicle tracking, maintenance scheduling, compliance (HOS), asset utilization |
-| **Route Intelligence** | Real-time optimization, ETA prediction, geofencing, traffic/weather integration, historical analytics |
-| **Financial Engine** | Invoice audits, profitability tracking, automated GL entry, factoring services, payment integration |
-| **Mobile-First** | iOS/Android native apps, offline mode, real-time notifications, voice commands |
-| **AI Decision Making** | Load scoring, dispatch automation, risk prediction, scenario simulation, capacity optimization |
+| Category                | Capabilities                                                                                          |
+| ----------------------- | ----------------------------------------------------------------------------------------------------- |
+| **Shipment Management** | GPS tracking, multi-modal support, automated status updates, POD capture, digital BOL                 |
+| **Fleet Management**    | Driver analytics, vehicle tracking, maintenance scheduling, compliance (HOS), asset utilization       |
+| **Route Intelligence**  | Real-time optimization, ETA prediction, geofencing, traffic/weather integration, historical analytics |
+| **Financial Engine**    | Invoice audits, profitability tracking, automated GL entry, factoring services, payment integration   |
+| **Mobile-First**        | iOS/Android native apps, offline mode, real-time notifications, voice commands                        |
+| **AI Decision Making**  | Load scoring, dispatch automation, risk prediction, scenario simulation, capacity optimization        |
 
 ### Business Model & Financial Metrics
 
 **Revenue Streams:**
+
 - **SaaS**: Free / Pro $99 / Enterprise $999 (tiered by company size)
-- **Fintech**: Factoring services, same-day settlement payouts, insurance products
+- **Fintech**: Factoring services, same-day settlement payouts, insurance
+  products
 - **Enterprise**: Custom pricing for 50+ truck operations
 
 **Financial Performance:**
+
 - **LTV/CAC Ratio**: 7x (highly profitable enterprise model)
 - **Gross Margins**: 60% (industry-leading SaaS metrics)
 - **Target ARR**: $10M by end of 2026
@@ -103,25 +121,25 @@ INFÆMOUS FREIGHT is the **AI-Native Freight Intelligence Platform** transformin
 
 **Total Addressable Market**: **$900B+ global logistics**
 
-| Segment | Size | Annual Spend |
-|---------|------|--------------|
-| **Owner-Operators** | 4.2M drivers (US alone) | $50K/driver |
-| **Small Carriers** | 300K+ companies | $100K-500K |
-| **Mid-Market** | 25K companies | $500K-2M |
-| **Enterprise Fleets** | 10K+ companies | $2M-10M+ |
+| Segment               | Size                    | Annual Spend |
+| --------------------- | ----------------------- | ------------ |
+| **Owner-Operators**   | 4.2M drivers (US alone) | $50K/driver  |
+| **Small Carriers**    | 300K+ companies         | $100K-500K   |
+| **Mid-Market**        | 25K companies           | $500K-2M     |
+| **Enterprise Fleets** | 10K+ companies          | $2M-10M+     |
 
 ### Competitive Advantages
 
-| Aspect | INFÆMOUS FREIGHT | Legacy Competitors |
-|--------|------------------|-------------------|
-| **Technology Era** | Cloud-native 2026 AI | Desktop-era 2010 |
-| **Speed** | 73% faster | Legacy TMS |
-| **AI Integration** | Native & autonomous | Bolted-on/minimal |
-| **UX** | Modern, mobile-first | Outdated, desktop-only |
-| **Pricing** | Small-business friendly | Enterprise-only |
-| **Global** | 55+ countries | Single region |
-| **Integration** | 100+ APIs | Limited |
-| **Support** | AI + human hybrid | Phone queues |
+| Aspect             | INFÆMOUS FREIGHT        | Legacy Competitors     |
+| ------------------ | ----------------------- | ---------------------- |
+| **Technology Era** | Cloud-native 2026 AI    | Desktop-era 2010       |
+| **Speed**          | 73% faster              | Legacy TMS             |
+| **AI Integration** | Native & autonomous     | Bolted-on/minimal      |
+| **UX**             | Modern, mobile-first    | Outdated, desktop-only |
+| **Pricing**        | Small-business friendly | Enterprise-only        |
+| **Global**         | 55+ countries           | Single region          |
+| **Integration**    | 100+ APIs               | Limited                |
+| **Support**        | AI + human hybrid       | Phone queues           |
 
 ### Technology Stack
 
@@ -132,6 +150,7 @@ INFÆMOUS FREIGHT is the **AI-Native Freight Intelligence Platform** transformin
 **Real-time**: Socket.io for live GPS tracking & updates
 
 **Production Metrics:**
+
 - ✅ Sub-second API response (P95 < 1s)
 - ✅ 99.9% uptime SLA
 - ✅ 827+ unit tests (86%+ coverage)
@@ -139,12 +158,18 @@ INFÆMOUS FREIGHT is the **AI-Native Freight Intelligence Platform** transformin
 - ✅ Multi-region failover active
 
 **Quick Links:**
-- 📖 **[Complete Platform Offering](docs/PLATFORM_OFFERING.md)** - Deep dive into all features
-- 🚀 **[Elevator Pitches](docs/ELEVATOR_PITCH.md)** - For investors, customers, media
-- 📊 **[Monitoring Dashboard Setup](MONITORING_DASHBOARD_SETUP_100.md)** - Production monitoring & observability
-- 🎯 **[Launch Strategy](SOFT_LAUNCH_STRATEGY_10_TO_100.md)** - 4-week rollout plan to 100% production
 
-**Status**: ✅ 100% Production Ready | 827 Tests Passing | Zero Lint Errors | Globally Deployed
+- 📖 **[Complete Platform Offering](docs/PLATFORM_OFFERING.md)** - Deep dive
+  into all features
+- 🚀 **[Elevator Pitches](docs/ELEVATOR_PITCH.md)** - For investors, customers,
+  media
+- 📊 **[Monitoring Dashboard Setup](MONITORING_DASHBOARD_SETUP_100.md)** -
+  Production monitoring & observability
+- 🎯 **[Launch Strategy](SOFT_LAUNCH_STRATEGY_10_TO_100.md)** - 4-week rollout
+  plan to 100% production
+
+**Status**: ✅ 100% Production Ready | 827 Tests Passing | Zero Lint Errors |
+Globally Deployed
 
 ---
 
@@ -159,15 +184,31 @@ INFÆMOUS FREIGHT is the **AI-Native Freight Intelligence Platform** transformin
 
 ## 🎯 Quick Elevator Pitches
 
-**30-Second:** "INFÆMOUS FREIGHT replaces 5-10 fragmented logistics tools with one AI-native platform. We help carriers, drivers, and freight operators maximize profitability through smart dispatch, automated billing, and real-time intelligence. 73% faster than legacy competitors."
+**30-Second:** "INFÆMOUS FREIGHT replaces 5-10 fragmented logistics tools with
+one AI-native platform. We help carriers, drivers, and freight operators
+maximize profitability through smart dispatch, automated billing, and real-time
+intelligence. 73% faster than legacy competitors."
 
-**60-Second (Investors):** "The $900B freight industry runs on 10-year-old technology. Independent operators lose 30-40% of earnings to inefficiency. INFÆMOUS FREIGHT is the first AI-native freight OS unifying dispatch, finance, tracking, and compliance. We're targeting 3,000+ customers and $10M ARR by EOY 2026 with clear profitability path, 7x LTV/CAC, and 70-73% gross margins."
+**60-Second (Investors):** "The $900B freight industry runs on 10-year-old
+technology. Independent operators lose 30-40% of earnings to inefficiency.
+INFÆMOUS FREIGHT is the first AI-native freight OS unifying dispatch, finance,
+tracking, and compliance. We're targeting 3,000+ customers and $10M ARR by EOY
+2026 with clear profitability path, 7x LTV/CAC, and 70-73% gross margins."
 
-**For Drivers/Owner-Operators:** "Tired of brokers taking 30% and giving you bad loads? INFÆMOUS FREIGHT uses AI to find you the best-paying loads—no broker needed. Our app tells you exactly what you'll profit per mile, optimizes your route, and handles all paperwork. Thousands earning 40% more already."
+**For Drivers/Owner-Operators:** "Tired of brokers taking 30% and giving you bad
+loads? INFÆMOUS FREIGHT uses AI to find you the best-paying loads—no broker
+needed. Our app tells you exactly what you'll profit per mile, optimizes your
+route, and handles all paperwork. Thousands earning 40% more already."
 
-**For Carriers:** "Managing a fleet with spreadsheets? INFÆMOUS FREIGHT gives you enterprise logistics at small-business pricing. One platform for dispatch, tracking, billing, compliance. Our AI automates what used to take hours. From $0/month (Free tier)."
+**For Carriers:** "Managing a fleet with spreadsheets? INFÆMOUS FREIGHT gives
+you enterprise logistics at small-business pricing. One platform for dispatch,
+tracking, billing, compliance. Our AI automates what used to take hours. From
+$0/month (Free tier)."
 
-**For Investors:** "We're building the operating system for the $900B freight industry. Massive TAM, proven product-market fit, experienced team, multi-billion dollar exit potential. Infrastructure for global trade—once we own freight OS, we expand to freight exchange, then financial markets."
+**For Investors:** "We're building the operating system for the $900B freight
+industry. Massive TAM, proven product-market fit, experienced team,
+multi-billion dollar exit potential. Infrastructure for global trade—once we own
+freight OS, we expand to freight exchange, then financial markets."
 
 ---
 
@@ -180,22 +221,30 @@ INFÆMOUS FREIGHT is the **AI-Native Freight Intelligence Platform** transformin
 [![Supabase](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/deploy-supabase.yml/badge.svg)](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/deploy-supabase.yml)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/ea96723a-5981-4a9b-a2fc-9c5a367e0313/deploy-status)](https://app.netlify.com/projects/infamousfreight/deploys)
 
-**Recommendation:** Aim for 100% completion across deployment checks, monitoring, and validation before go-live to keep the release path predictable and auditable.
+**Recommendation:** Aim for 100% completion across deployment checks,
+monitoring, and validation before go-live to keep the release path predictable
+and auditable.
 
 **Live Deployments:**
 
-- 🌐 **Web**: [infamous-freight-enterprises.vercel.app](https://infamous-freight-enterprises.vercel.app) | Netlify: [infamousfreight](https://app.netlify.com/projects/infamousfreight/deploys)
-- 🔌 **API**: [infamous-freight-api.fly.dev](https://infamous-freight-api.fly.dev/api/health)
+- 🌐 **Web**:
+  [infamous-freight-enterprises.vercel.app](https://infamous-freight-enterprises.vercel.app)
+  | Netlify:
+  [infamousfreight](https://app.netlify.com/projects/infamousfreight/deploys)
+- 🔌 **API**:
+  [infamous-freight-api.fly.dev](https://infamous-freight-api.fly.dev/api/health)
 - 🛤️ **Database**: Railway (Postgres + Prisma migrations)
 - 🧩 **Backend Services**: Supabase (Edge Functions + Database)
 - 📱 **Mobile**: [Expo EAS](https://expo.dev/@infamous-freight/mobile)
 
 **China CDN Integration (Netlify):**
 
-- Adds `@21yunbox/netlify-plugin-21yunbox-deploy-to-china-cdn` to publish static assets to a mainland China CDN.
+- Adds `@21yunbox/netlify-plugin-21yunbox-deploy-to-china-cdn` to publish static
+  assets to a mainland China CDN.
 - Configure required env vars in Netlify:
   - `YUNBOX_TOKEN` and `YUNBOX_SITE_ID` (per plugin docs)
-  - Optionally set `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_API_BASE` to your public API.
+  - Optionally set `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_API_BASE` to your
+    public API.
 
 ### 🗄️ Netlify + Neon Database Access
 
@@ -203,13 +252,15 @@ INFÆMOUS FREIGHT is the **AI-Native Freight Intelligence Platform** transformin
 - Example query using the Netlify Neon client:
 
 ```js
-import { neon } from '@netlify/neon';
+import { neon } from "@netlify/neon";
 const sql = neon(); // automatically uses env NETLIFY_DATABASE_URL
 
 const [post] = await sql`SELECT * FROM posts WHERE id = ${postId}`;
 ```
 
-> **🎉 100% MULTI-PLATFORM AUTO-DEPLOYMENT!** Automated deployment to Fly.io, Vercel, Railway, and Supabase with smoke tests. Push to `main` to deploy automatically!
+> **🎉 100% MULTI-PLATFORM AUTO-DEPLOYMENT!** Automated deployment to Fly.io,
+> Vercel, Railway, and Supabase with smoke tests. Push to `main` to deploy
+> automatically!
 
 **Quick Deployment:**
 
@@ -229,6 +280,7 @@ gh run watch
 ```
 
 **Deployment Features:**
+
 - ✅ Parallel deployment to 4 platforms
 - ✅ Automated health checks (API + Web)
 - ✅ Smoke tests with response time measurement
@@ -237,28 +289,35 @@ gh run watch
 - 🔔 Optional Slack/Discord notifications
 
 **Documentation:**
+
 - [5-Minute Deploy Guide](QUICK_DEPLOY.md)
 - [Secrets Setup](GITHUB_ACTIONS_SECRETS_SETUP.md)
 - [Deployment Status](DEPLOYMENT_100_COMPLETE.md)
 
 ## 🌍 100% Worldwide Deployment
 
-**NEW!** Complete deployment automation to get Infamous Freight to 100% worldwide:
+**NEW!** Complete deployment automation to get Infamous Freight to 100%
+worldwide:
 
 ### Quick Deploy (10 minutes)
+
 ```bash
 ./deploy-to-world-100.sh
 ```
 
 ### Documentation
+
 - 🚀 [**QUICKSTART (5 min)**](QUICKSTART_100.md) - Start here!
 - 📖 [Complete Deployment Guide](DEPLOY_TO_WORLD_100_GUIDE.md)
 - 📊 [Deployment Status Dashboard](DEPLOYMENT_STATUS_100.md)
 - ✅ [Launch Checklist](LAUNCH_CHECKLIST_100.md)
 - 📋 [What Was Created](DEPLOYMENT_100_SUMMARY.md)
+- ☁️
+  [Firebase + Google Cloud Implementation Guide](docs/deployment/FIREBASE_GCP_IMPLEMENTATION_GUIDE.md)
 - 🔐 [GitHub Secrets Setup](GITHUB_ACTIONS_SECRETS_SETUP.md)
 
 ### Current Status
+
 ```
 ✅ Web App (Vercel)     100% ████████████████████
 🎯 API (Fly.io)           0% ░░░░░░░░░░░░░░░░░░░░
@@ -274,14 +333,16 @@ gh run watch
 - 📝 [Quick Start Guide](AUTO_DEPLOY_READY.md) - 3 steps to deploy
 - 🔍 [Deployment Dashboard](DEPLOYMENT_STATUS.md) - Live status & monitoring
 - 📚 [Complete Guide](deploy/100_PERCENT_AUTO_DEPLOY.md) - Full documentation
-- ✅ [Vercel Project Settings](deploy/vercel-project-settings.md) - Execution plan checklist
+- ✅ [Vercel Project Settings](deploy/vercel-project-settings.md) - Execution
+  plan checklist
 - 🐛 [Troubleshooting](deploy/FLY_TROUBLESHOOTING.md) - Debug issues
 
 ## 🐳 Docker - 100% Production-Ready
 
 [![Docker Build](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/docker-build.yml/badge.svg)](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/docker-build.yml)
 
-> **✅ OPTIMIZED!** All Dockerfiles hardened with multi-stage builds, security best practices, and monorepo support.
+> **✅ OPTIMIZED!** All Dockerfiles hardened with multi-stage builds, security
+> best practices, and monorepo support.
 
 **Quick Commands:**
 
@@ -308,7 +369,8 @@ gh run watch
 - ✅ Optimized caching (pnpm store mounts)
 - ✅ Production-ready (PostgreSQL 16, Redis 7, Alpine Linux)
 
-**Documentation:** [DOCKER_COMPLETE.md](DOCKER_COMPLETE.md) - Complete Docker guide
+**Documentation:** [DOCKER_COMPLETE.md](DOCKER_COMPLETE.md) - Complete Docker
+guide
 
 ## �📊 Workflow Status
 
@@ -324,38 +386,55 @@ gh run watch
 [![GHCR Build](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/docker-ghcr.yml/badge.svg?branch=main)](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/docker-ghcr.yml)
 [![Prod Deploy](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/deploy-docker-compose.yml/badge.svg?branch=main)](https://github.com/MrMiless44/Infamous-freight-enterprises/actions/workflows/deploy-docker-compose.yml)
 
-A modern full-stack freight management platform with AI-powered features, real-time voice capabilities, and integrated billing system.
+A modern full-stack freight management platform with AI-powered features,
+real-time voice capabilities, and integrated billing system.
 
-**Company**: Infæmous Freight | **Owner**: Santorio Djuan Miles | **Jurisdiction**: Oklahoma, USA
+**Company**: Infæmous Freight | **Owner**: Santorio Djuan Miles |
+**Jurisdiction**: Oklahoma, USA
 
 ## 🏆 Platform Architecture
 
-Infæmous Freight operates as a unified global logistics + fintech + AI SaaS platform. The complete production architecture and deployment guides are available in [MONITORING_DASHBOARD_SETUP_100.md](MONITORING_DASHBOARD_SETUP_100.md) and [STAGING_DEPLOYMENT_100.sh](STAGING_DEPLOYMENT_100.sh).
+Infæmous Freight operates as a unified global logistics + fintech + AI SaaS
+platform. The complete production architecture and deployment guides are
+available in
+[MONITORING_DASHBOARD_SETUP_100.md](MONITORING_DASHBOARD_SETUP_100.md) and
+[STAGING_DEPLOYMENT_100.sh](STAGING_DEPLOYMENT_100.sh).
 
 ## 📌 Production Deployment Status
 
-The platform is 100% production-ready with comprehensive monitoring, staging environments, and automated deployment pipelines. See [100_FINAL_EXECUTION_REPORT.md](100_FINAL_EXECUTION_REPORT.md) for complete implementation status.
+The platform is 100% production-ready with comprehensive monitoring, staging
+environments, and automated deployment pipelines. See
+[100_FINAL_EXECUTION_REPORT.md](100_FINAL_EXECUTION_REPORT.md) for complete
+implementation status.
 
 ## 📋 Project Overview
 
-**INFÆMOUS FREIGHT** is a comprehensive, enterprise-grade logistics and fleet management solution built as a production-ready monorepo serving the $900B+ global logistics industry.
+**INFÆMOUS FREIGHT** is a comprehensive, enterprise-grade logistics and fleet
+management solution built as a production-ready monorepo serving the $900B+
+global logistics industry.
 
 ### Tech Stack
-- `apps/api/` – Express.js backend (CommonJS, Fly.io/Docker compatible, PostgreSQL via Prisma)
-- `apps/web/` – Next.js 14 frontend (TypeScript/ESM, Netlify/Vercel/Edge Functions, Turbopack)
+
+- `apps/api/` – Express.js backend (CommonJS, Fly.io/Docker compatible,
+  PostgreSQL via Prisma)
+- `apps/web/` – Next.js 14 frontend (TypeScript/ESM, Netlify/Vercel/Edge
+  Functions, Turbopack)
 - `apps/mobile/` – React Native / Expo mobile app (iOS/Android, offline-first)
-- `packages/shared/` – Shared TypeScript domain types, constants, utilities (`@infamous-freight/shared`)
+- `packages/shared/` – Shared TypeScript domain types, constants, utilities
+  (`@infamous-freight/shared`)
 - `e2e/` – Playwright end-to-end test suite with comprehensive coverage
 
 ### Market Positioning
 
 **Served Segments:**
+
 - 🚗 **Owner-Operators** (1-truck operations) - 4.2M drivers, $50K annual spend
 - 🚚 **Small Carriers** (2-50 trucks) - 300K+ companies, $100K-$500K spend
 - 📦 **Mid-Market Logistics** (50-500 trucks) - 25K companies, $500K-$2M spend
 - 🏢 **Enterprise Fleets** (500+ trucks) - 10K+ companies, $2M-$10M+ spend
 
 **Go-to-Market:**
+
 - SaaS subscriptions (Free / Pro $99 / Enterprise $999)
 - Enterprise custom pricing
 - Fintech revenue (factoring, payouts, insurance)
@@ -371,21 +450,29 @@ The platform is 100% production-ready with comprehensive monitoring, staging env
 
 ## 🌍 Global Scale Vision
 
-Infæmous Freight is positioned as a planetary-scale logistics and AI infrastructure platform, targeting the $900B+ global logistics market with capabilities spanning:
+Infæmous Freight is positioned as a planetary-scale logistics and AI
+infrastructure platform, targeting the $900B+ global logistics market with
+capabilities spanning:
 
-- **Logistics Operations**: Fleet management, shipment tracking, route optimization
+- **Logistics Operations**: Fleet management, shipment tracking, route
+  optimization
 - **Fintech Integration**: Factoring, payouts, insurance, payment processing
 - **AI Platform**: GenAI commands, predictive analytics, autonomous operations
-- **Enterprise Scale**: Multi-tenant SaaS architecture serving 4.5M+ potential customers
+- **Enterprise Scale**: Multi-tenant SaaS architecture serving 4.5M+ potential
+  customers
 
 ## 🚀 Production Deployment
 
 The platform is globally deployed and production-ready. Key operational guides:
 
-- **[Master Launch Orchestrator](MASTER_LAUNCH_ORCHESTRATOR.sh)** - Automated deployment pipeline
-- **[Staging Deployment](STAGING_DEPLOYMENT_100.sh)** - Week 1 staging environment setup
-- **[Soft Launch Strategy](SOFT_LAUNCH_STRATEGY_10_TO_100.md)** - 4-week rollout plan (10% → 100%)
-- **[Final Execution Report](100_FINAL_EXECUTION_REPORT.md)** - Complete implementation status
+- **[Master Launch Orchestrator](MASTER_LAUNCH_ORCHESTRATOR.sh)** - Automated
+  deployment pipeline
+- **[Staging Deployment](STAGING_DEPLOYMENT_100.sh)** - Week 1 staging
+  environment setup
+- **[Soft Launch Strategy](SOFT_LAUNCH_STRATEGY_10_TO_100.md)** - 4-week rollout
+  plan (10% → 100%)
+- **[Final Execution Report](100_FINAL_EXECUTION_REPORT.md)** - Complete
+  implementation status
 
 ## ✨ Latest Updates (v2.0.0 - December 30, 2025)
 
@@ -436,22 +523,22 @@ The platform is globally deployed and production-ready. Key operational guides:
 Comprehensive workflow documentation and guides:
 
 - **[Workflow Index](./.github/INDEX.md)** - Complete navigation guide
-- **[Workflow Guide](./.github/WORKFLOW_GUIDE.md)** - All 13 workflows explained in detail
-- **[Decision Tree](./.github/WORKFLOW_DECISION_TREE.md)** - When and why workflows trigger
+- **[Workflow Guide](./.github/WORKFLOW_GUIDE.md)** - All 13 workflows explained
+  in detail
+- **[Decision Tree](./.github/WORKFLOW_DECISION_TREE.md)** - When and why
+  workflows trigger
 - **[Security Guide](./.github/SECURITY.md)** - Secrets rotation & compliance
 - **[Performance](./.github/PERFORMANCE.md)** - Performance budgets & monitoring
 - **[Metrics](./.github/METRICS.md)** - Cost tracking & monthly reviews
 
-See [.github/INDEX.md](./.github/INDEX.md) for quick navigation to all workflow documentation.
+See [.github/INDEX.md](./.github/INDEX.md) for quick navigation to all workflow
+documentation.
 
 ## �🚀 Quick Start
 
 # Response
 
-"timestamp": 1702756800000,
-"status": "ok",
-"database": "connected"
-}
+"timestamp": 1702756800000, "status": "ok", "database": "connected" }
 
 ````
 
@@ -700,7 +787,8 @@ docker pull ghcr.io/<owner>/infamous-freight-enterprises-api:latest
 docker pull ghcr.io/<owner>/infamous-freight-enterprises-web:latest
 ```
 
-`docker-compose.prod.yml` consumes GHCR images; set `GHCR_OWNER` env to override the default owner.
+`docker-compose.prod.yml` consumes GHCR images; set `GHCR_OWNER` env to override
+the default owner.
 
 ## 🚢 Deployment
 
@@ -810,19 +898,24 @@ npm install
 
 ## 📞 Support
 
-For issues or questions, please open a GitHub issue or contact the development team.
+For issues or questions, please open a GitHub issue or contact the development
+team.
 
 ## 🔐 Required Secrets
 
 - `GHCR_USERNAME`, `GHCR_TOKEN`: GHCR login for deploy hosts (read:packages).
-- `SSH_HOST`, `SSH_USER`, `SSH_KEY`, `[SSH_PORT]`: Production SSH access for compose deploys.
-- `SSH_HOST_STAGING`, `SSH_USER_STAGING`, `SSH_KEY_STAGING`, `[SSH_PORT_STAGING]`: Staging SSH access.
+- `SSH_HOST`, `SSH_USER`, `SSH_KEY`, `[SSH_PORT]`: Production SSH access for
+  compose deploys.
+- `SSH_HOST_STAGING`, `SSH_USER_STAGING`, `SSH_KEY_STAGING`,
+  `[SSH_PORT_STAGING]`: Staging SSH access.
 - `CODECOV_TOKEN`: For code coverage uploads (if used in CI).
 - `FLY_API_TOKEN`: For Fly.io deployment workflow.
 - `VERCEL_TOKEN`: For Vercel deployment workflow.
 - `TEST_EMAIL`, `TEST_PASSWORD`: For e2e tests gated by secrets.
-- `[optional] SLACK_WEBHOOK_URL`: To receive deploy/promotion/rollback notifications in Slack.
-- `[optional] TEAMS_WEBHOOK_URL`: To receive deploy/promotion/rollback notifications in Microsoft Teams.
+- `[optional] SLACK_WEBHOOK_URL`: To receive deploy/promotion/rollback
+  notifications in Slack.
+- `[optional] TEAMS_WEBHOOK_URL`: To receive deploy/promotion/rollback
+  notifications in Microsoft Teams.
 
 See docs/ENVIRONMENT_PROTECTION_CHECKLIST.md for environment-scoped setup.
 
