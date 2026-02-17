@@ -3,13 +3,16 @@
     "shipments": {
       "documentId": "<shipmentId>",
       "fields": {
-        "origin": "string",
-        "destination": "string",
-        "status": "string",
-        "driverId": "string",
-        "currentLocation": {
-          "lat": "number",
-          "lng": "number"
+      "origin": "string",
+      "destination": "string",
+      "status": {
+        "type": "string",
+        "enum": ["CREATED", "IN_TRANSIT", "DELIVERED", "CANCELLED"]
+      },
+      "driverId": "string",
+      "currentLocation": {
+        "lat": "number",
+        "lng": "number"
         },
         "estimatedArrival": "timestamp",
         "proofOfDeliveryUrl": "string",
