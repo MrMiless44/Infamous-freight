@@ -715,6 +715,6 @@ export default function Home() {
 export async function getStaticProps() {
   return {
     props: {},
-    revalidate: 3600, // Regenerate page every hour
+    revalidate: process.env.BUILD_TARGET === "firebase" ? false : 3600,
   };
 }

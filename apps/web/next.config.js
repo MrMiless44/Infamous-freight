@@ -19,7 +19,7 @@ const nextConfig = {
     ignoreBuildErrors: process.env.NODE_ENV === "production" && process.env.CI !== "true",
   },
   reactStrictMode: true,
-  output: "standalone",
+  output: process.env.BUILD_TARGET === "firebase" ? "export" : "standalone",
   compress: true,
   poweredByHeader: false,
   productionBrowserSourceMaps: false,

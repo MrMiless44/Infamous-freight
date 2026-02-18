@@ -222,6 +222,6 @@ export async function getStaticProps() {
     },
     // Regenerate page every hour (3600 seconds)
     // Adjust based on how often your homepage data changes
-    revalidate: 3600,
+    revalidate: process.env.BUILD_TARGET === "firebase" ? false : 3600,
   };
 }
