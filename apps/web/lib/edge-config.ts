@@ -78,16 +78,16 @@ export const DEFAULT_FEATURE_FLAGS: FeatureFlags = {
   enabledRegions: ["US", "CA", "GB", "AU"],
   maintenanceMode: false,
 
-  // Experiments
+  // Experiments - AI FEATURES 100% ENABLED
   experiments: {
     newDashboard: {
-      enabled: false,
-      rolloutPercentage: 0,
+      enabled: true,
+      rolloutPercentage: 100,
       variants: ["control", "variant-a"],
     },
     aiAssistant: {
-      enabled: false,
-      rolloutPercentage: 0,
+      enabled: true,
+      rolloutPercentage: 100,
       variants: ["control", "variant-a", "variant-b"],
     },
   },
