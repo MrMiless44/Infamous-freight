@@ -217,7 +217,7 @@ app.use("/api/analytics", analyticsRoutes);
 app.use("/api/ml", mlRoutes);
 app.use("/api/geofencing", geofencingRoutes);
 app.use("/api/notifications", notificationsRoutes);
-app.use("/api/push-notifications", firebaseNotificationsRoutes);
+app.use("/api/firebase/notifications", firebaseNotificationsRoutes);
 // Phase 3 Routes
 app.use("/api/b2b", b2bShipperRoutes);
 app.use("/api/fintech", fintechRoutes);
