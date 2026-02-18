@@ -1,10 +1,5 @@
 {
-    "projects": {
-        "default": "infamous-freight-prod",
-        "development": "infamous-freight-dev",
-        "staging": "infamous-freight-staging",
-        "production": "infamous-freight-prod"
-    },
-    "targets": {},
-    "etags": {}
+  "projects": {
+    "default": "infamous-freight-85082765"
+  }
 }
