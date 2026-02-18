@@ -67,5 +67,6 @@
       "enabled": true,
       "port": 4001
     }
-  }
+  },
+  "_deployment": "Option B Hybrid - Fly.io API + Firebase Hosting"
 }
