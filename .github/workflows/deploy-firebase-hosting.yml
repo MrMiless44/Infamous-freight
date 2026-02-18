@@ -12,6 +12,7 @@ on:
       - "packages/shared/**"
       - "firebase.json"
       - ".firebaserc"
+      - ".github/workflows/deploy-firebase-hosting.yml"
   workflow_dispatch: # Manual trigger
 
 env:
@@ -56,33 +57,64 @@ jobs:
       - name: Build Next.js for Firebase
         run: |
           echo "Building Next.js application..."
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          
+          # Debug: Show environment variables
+          echo "📋 Environment:"
+          echo "  BUILD_TARGET: ${BUILD_TARGET:-not set}"
+          echo "  NODE_ENV: ${NODE_ENV:-not set}"
+          echo "  SKIP_PREBUILD: ${SKIP_PREBUILD:-not set}"
+          echo "  Node version: $(node --version)"
+          echo "  npm version: $(npm --version)"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           
           # Use --prefix to isolate build to apps/web only
           # No workspace resolution, no recursion, no prebuild issues
+          echo "🔨 Starting build..."
           BUILD_TARGET=firebase NODE_ENV=production SKIP_PREBUILD=true npm --prefix apps/web run build
+          BUILD_EXIT_CODE=$?
+          
+          if [ $BUILD_EXIT_CODE -ne 0 ]; then
+            echo "❌ Build failed with exit code $BUILD_EXIT_CODE"
+            echo "Listing apps/web directory:"
+            ls -la apps/web/
+            exit $BUILD_EXIT_CODE
+          fi
           
           # Verify out directory was created
           if [ ! -d "apps/web/out" ]; then
-            echo "ERROR: out directory not created!"
+            echo "❌ ERROR: out directory not created!"
+            echo "Listing apps/web directory:"
+            ls -la apps/web/
             exit 1
           fi
           
-          echo "✓ Build successful"
-          du -sh apps/web/out/
+          echo "✅ Build successful"
+          echo "📦 Build size: $(du -sh apps/web/out/ | cut -f1)"
+          echo "📄 Files generated: $(find apps/web/out -type f | wc -l)"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
       - name: Verify export
         run: |
+          echo "🔍 Verifying static export..."
           cd apps/web/out
-          test -f index.html && echo "✓ index.html"
-          test -f sitemap.xml && echo "✓ sitemap.xml"
-          test -f robots.txt && echo "✓ robots.txt"
+          test -f index.html && echo "  ✅ index.html exists"
+          test -f sitemap.xml && echo "  ✅ sitemap.xml exists"
+          test -f robots.txt && echo "  ✅ robots.txt exists"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📂 Generated files (first 20):"
           ls -lh | head -20
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
       - name: Deploy to Firebase Hosting
-        run: firebase deploy --only hosting --project infamous-freight-85082765
+        run: |
+          echo "🚀 Deploying to Firebase Hosting..."
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          firebase deploy --only hosting --project infamous-freight-85082765
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
@@ -99,9 +131,14 @@ jobs:
 
       - name: Post deployment check
         run: |
-          echo "Waiting 30s for deployment to propagate..."
+          echo "⏳ Waiting 30s for deployment to propagate..."
           sleep 30
-          curl -I https://infamousfreight.web.app || echo "Site not yet accessible"
+          echo "🌐 Testing deployed site..."
+          if curl -I https://infamousfreight.web.app 2>/dev/null | head -1; then
+            echo "✅ Site is accessible!"
+          else
+            echo "⚠️  Site not yet accessible (may need more time)"
+          fi
 
       - name: Notify on failure
         if: failure()
