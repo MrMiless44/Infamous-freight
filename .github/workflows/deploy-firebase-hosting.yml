@@ -39,17 +39,37 @@ jobs:
         run: npm install -g pnpm@9
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: |
+          echo "Installing with pnpm..."
+          pnpm install --no-frozen-lockfile || {
+            echo "pnpm install failed, trying npm install..."
+            npm install
+          }
 
       - name: Build shared package
-        run: pnpm --filter @infamous-freight/shared build
+        run: |
+          echo "Building shared package..."
+          pnpm --filter @infamous-freight/shared build || {
+            echo "pnpm build failed, attempting with npm..."
+            cd packages/shared && npm run build && cd ../..
+          }
 
       - name: Build Next.js for Firebase
         run: |
+          echo "Building Next.js application..."
           cd apps/web
-          BUILD_TARGET=firebase NODE_ENV=production pnpm build
+          BUILD_TARGET=firebase NODE_ENV=production pnpm build || {
+            echo "pnpm build failed, trying npm..."
+            npm run build
+          }
           # Verify out directory was created
+          if [ ! -d "out" ]; then
+            echo "ERROR: out directory not created!"
+            ls -la
+            exit 1
+          fi
           ls -lh out/ | head -20
+          echo "✓ Build successful"
 
       - name: Verify export
         run: |
