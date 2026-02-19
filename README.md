@@ -1,40 +1,17 @@
-# Infamous Freight
+# INFÆMOUS FREIGHT
 
-## Project Overview
-Infamous Freight is a robust project aimed at enhancing logistics and freight management solutions, utilizing innovative technology for optimal efficiency.
+Dispatcher SaaS platform for small and mid-sized carriers (1–10 trucks).
 
-## Installation Instructions
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/MrMiless44/Infamous-freight.git
-   ```
-2. Navigate into the project directory:
-   ```bash
-   cd Infamous-freight
-   ```
-3. Install the required dependencies:
+## Strategic docs
+- 90-day execution blueprint: [`docs/INFAMOUS-FREIGHT-90-DAY-EXECUTION-PLAN.md`](docs/INFAMOUS-FREIGHT-90-DAY-EXECUTION-PLAN.md)
+
+## Quick start
+1. Clone repository.
+2. Install dependencies:
    ```bash
    npm install
    ```
-
-## Usage Examples
-### Example 1
-```bash
-node freight.js --load
-```
-
-### Example 2
-```bash
-node freight.js --track
-```
-
-## Badges
-![CI Status](https://img.shields.io/circleci/build/github/MrMiless44/Infamous-freight?style=flat-square)  
-![Coverage](https://img.shields.io/codecov/c/github/MrMiless44/Infamous-freight?style=flat-square)  
-![Community Health](https://img.shields.io/discord/1234567890?style=flat-square)  
-
----
-
+3. Run the app/services for your target workspace (web/api/mobile) based on package scripts.
 
 ## Contributing
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
+Contributions are welcome via issues and pull requests.
