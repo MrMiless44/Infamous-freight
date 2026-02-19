@@ -23,10 +23,10 @@ environments and platforms, with comprehensive documentation for each.
 
 - **[Production Overview](deployment/production-overview.md)** - Production
   environment architecture and operations
-- **[Deployment Status](deployment/DEPLOYMENT_STATUS.md)** - Current deployment
-  status and health checks
-- **[Environment Status](deployment/DEPLOYMENT_ENVIRONMENT_STATUS.md)** - Status
-  of all environments
+- **[Environment Configuration](ENVIRONMENT-SETUP-RECOMMENDED.md)** - Configuration
+  for all environments
+- **[Infrastructure & Monitoring](OBSERVABILITY-RECOMMENDED.md)** - System health
+  and performance monitoring
 
 ### Platform-Specific Deployment
 
@@ -50,14 +50,12 @@ environments and platforms, with comprehensive documentation for each.
 
 ### Execution Logs and History
 
-- **[Deployment Execution Log](deployment/DEPLOYMENT_EXECUTION_LOG.md)** -
-  Historical deployment execution records
-- **[Deployment Complete](deployment/DEPLOYMENT_COMPLETE.md)** - Post-deployment
-  validation checklist
-- **[Deployment Summary](deployment/DEPLOYMENT_SUMMARY.md)** - Summary of recent
-  deployments
-- **[Session Complete](deployment/DEPLOYMENT_SESSION_COMPLETE.md)** - Deployment
-  session reports
+- **[Observability Setup](OBSERVABILITY-RECOMMENDED.md)** - Monitoring and 
+  observability for deployments
+- **[Production Checklist](PRODUCTION-CHECKLIST-RECOMMENDED.md)** - Pre-deployment
+  validation and verification
+- **[Incident Response](INCIDENT-RESPONSE-RECOMMENDED.md)** - Handling production
+  incidents and rollbacks
 
 ## Deployment Architecture
 

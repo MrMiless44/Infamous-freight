@@ -36,13 +36,12 @@
 
 ### Deployment Guides
 
-- [Deployment Guide](docs/deployment/DEPLOYMENT_GUIDE.md) - Complete deployment
+- [Deployment Guide](../../DEPLOYMENT-RECOMMENDED.md) - Complete deployment
   instructions
-- [Deployment Status](docs/deployment/DEPLOYMENT_STATUS.md) - Current deployment
-  state
-- [Fly.io Environment](deploy/fly-env.md)
-- [Render Environment](deploy/render-env.md)
-- [Vercel Environment](deploy/vercel-env.md)
+- [Observability & Monitoring](../../OBSERVABILITY-RECOMMENDED.md) - Monitoring
+  and alerting setup
+- [Incident Response](../../INCIDENT-RESPONSE-RECOMMENDED.md) - Handling production
+  incidents
 
 ### Infrastructure
 

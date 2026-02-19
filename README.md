@@ -309,12 +309,12 @@ worldwide:
 
 ### Documentation
 
-- 🚀 [**QUICKSTART (5 min)**](QUICKSTART_100.md) - Start here!
-- 📖 [Complete Deployment Guide](DEPLOY_TO_WORLD_100_GUIDE.md)
-- 📊 [Deployment Status Dashboard](DEPLOYMENT_STATUS_100.md)
-- ✅ [Launch Checklist](LAUNCH_CHECKLIST_100.md)
-- 📋 [What Was Created](DEPLOYMENT_100_SUMMARY.md)
-- 🔐 [GitHub Secrets Setup](GITHUB_ACTIONS_SECRETS_SETUP.md)
+- 🚀 [**QUICKSTART (5 min)**](DEPLOYMENT-RECOMMENDED.md) - Start here!
+- 📖 [Complete Deployment Guide](DEPLOYMENT-RECOMMENDED.md)
+- 📖 [Architecture & Tech Stack](REPOSITORY-INSPECTION-RECOMMENDED.md)
+- 🔐 [Security & Secret Rotation](SECURITY-RECOMMENDED.md)
+- 📚 [API Documentation](API-DOCUMENTATION-RECOMMENDED.md)
+- ✅ [Contributing Guidelines](CONTRIBUTING.md)
 
 ### Current Status
 
@@ -328,14 +328,13 @@ worldwide:
 
 **Run:** `./deploy-to-world-100.sh` to reach 100%!
 
-**Existing Documentation:**
+**Deployment Resources:**
 
-- 📝 [Quick Start Guide](AUTO_DEPLOY_READY.md) - 3 steps to deploy
-- 🔍 [Deployment Dashboard](DEPLOYMENT_STATUS.md) - Live status & monitoring
-- 📚 [Complete Guide](deploy/100_PERCENT_AUTO_DEPLOY.md) - Full documentation
-- ✅ [Vercel Project Settings](deploy/vercel-project-settings.md) - Execution
-  plan checklist
-- 🐛 [Troubleshooting](deploy/FLY_TROUBLESHOOTING.md) - Debug issues
+- 📝 [Quick Reference](QUICK-REFERENCE-RECOMMENDED.md) - Commands & common tasks
+- 🔍 [Observability](OBSERVABILITY-RECOMMENDED.md) - Monitoring & alerting setup
+- 📚 [Database Setup](PRISMA-SETUP-RECOMMENDED.md) - Database migrations & management
+- 🛡️ [Production Checklist](PRODUCTION-CHECKLIST-RECOMMENDED.md) - Pre-deployment verification
+- 🐛 [Incident Response](INCIDENT-RESPONSE-RECOMMENDED.md) - Handling production issues
 
 ## 🐳 Docker - 100% Production-Ready
 

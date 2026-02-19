@@ -558,11 +558,11 @@ Web/Mobile → API (REST + JWT) → PostgreSQL (Prisma)
 
 ### Documentation
 - [README.md](README.md) - Project overview
-- [AI_ACTIONS_100_ENABLED.md](AI_ACTIONS_100_ENABLED.md) - AI features guide
-- [SCRIPTS_EXECUTION_REPORT.md](SCRIPTS_EXECUTION_REPORT.md) - System verification
-- [API_DOCUMENTATION.md](API_DOCUMENTATION.md) - Complete API reference
+- [QUICK-REFERENCE-RECOMMENDED.md](QUICK-REFERENCE-RECOMMENDED.md) - Commands & common tasks
+- [SCRIPTS-EXECUTION-RECOMMENDED.md](SCRIPTS-EXECUTION-RECOMMENDED.md) - System verification
+- [API-DOCUMENTATION-RECOMMENDED.md](API-DOCUMENTATION-RECOMMENDED.md) - Complete API reference
 - [CONTRIBUTING.md](CONTRIBUTING.md) - Contribution guidelines
-- [DEPLOYMENT.md](DEPLOYMENT.md) - Deployment guide
+- [DEPLOYMENT-RECOMMENDED.md](DEPLOYMENT-RECOMMENDED.md) - Deployment guide
 
 ### Scripts
 - `bash scripts/verify-ai-enabled.sh` - Verify AI features
