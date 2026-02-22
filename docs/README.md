@@ -11,8 +11,6 @@ you find the information you need.
   features, benefits, roadmap, and market opportunity
 - **[Elevator Pitches](ELEVATOR_PITCH.md)** - Quick pitches for investors,
   customers, press, and talent (10s to 90s versions)
-- **[Launch Strategy](../SOFT_LAUNCH_STRATEGY_10_TO_100.md)** - 4-week
-  production rollout plan
 
 ### Business & Market
 
@@ -73,10 +71,9 @@ you find the information you need.
 
 ## API Documentation
 
-- **[API Reference](apps/api/API_REFERENCE.md)** - Complete API endpoint
+- **[API Reference](api/API_REFERENCE.md)** - Complete API endpoint
   documentation
-- **[API Testing Guide](apps/api/API_TESTING_GUIDE.md)** - How to test API
-  endpoints
+- **[API Testing Guide](api/API_TESTING_GUIDE.md)** - How to test API endpoints
 - **[API Security Checklist](API_SECURITY_CHECKLIST.md)** - Security best
   practices
 

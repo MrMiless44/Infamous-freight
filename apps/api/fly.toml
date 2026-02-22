@@ -17,7 +17,7 @@ primary_region = "ord"
   gru = true  # São Paulo (South America)
 
 [build]
-  dockerfile = "api/Dockerfile"
+  dockerfile = "apps/api/Dockerfile"
 
 [http_service]
   internal_port = 3001

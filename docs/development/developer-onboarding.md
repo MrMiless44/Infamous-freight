@@ -7,8 +7,8 @@ commands.
 ## Repository Layout
 
 - **Applications**: `apps/{api,web,mobile}`
-- **Shared packages**: `src/packages/shared`
-- **End-to-end tests**: `tests/e2e` (Playwright)
+- **Shared packages**: `packages/shared`
+- **End-to-end tests**: `e2e` (Playwright)
 - **Configuration**:
   - Docker: `configs/docker`
   - CI/CD: `configs/ci-cd`
@@ -29,9 +29,9 @@ pnpm test:e2e          # Playwright suite (requires running app stack)
 
 ### Running Applications
 
-- **Web**: `pnpm --filter infamous-freight-web dev`
-- **API**: `pnpm --filter infamous-freight-api dev`
-- **Mobile**: `pnpm --filter infamous-freight-mobile start`
+- **Web**: `pnpm --filter web dev`
+- **API**: `pnpm --filter api dev`
+- **Mobile**: `pnpm --filter mobile start`
 
 ### Docker Compose
 

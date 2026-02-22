@@ -1,7 +1,0 @@
-{
-    "version": "5.22.0",
-    "dialect": "postgresql",
-    "hash": "0b8f8e7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f",
-    "name": "0_init",
-    "steps": []
-}

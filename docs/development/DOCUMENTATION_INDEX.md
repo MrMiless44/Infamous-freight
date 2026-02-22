@@ -2,11 +2,11 @@
 
 ## Getting Started
 
-- [Project Summary](PROJECT_SUMMARY.md) - Overview of the project
-- [README](README.md) - Main project documentation
+- [Project Summary](../PROJECT_SUMMARY.md) - Overview of the project
+- [README](../../README.md) - Main project documentation
 - [Production README](../deployment/production-overview.md) - Production
   deployment guide
-- [Environment Configuration](.env.guide.md) - Environment setup guide
+- [Environment Configuration](../ENVIRONMENT_VARIABLES.md) - Environment setup guide
 - [Consolidation Strategy](CONSOLIDATION_STRATEGY.md) - Architecture decisions
 
 ## Development Guides
@@ -22,8 +22,8 @@
   - `/apps/api` - REST API backend service
   - `/apps/web` - Next.js frontend application
   - `/apps/mobile` - React Native mobile app (Expo)
-  - `/src/packages/shared` - Shared types, utilities, and constants
-  - `/tests/e2e` - End-to-end tests with Playwright
+  - `/packages/shared` - Shared types, utilities, and constants
+  - `/e2e` - End-to-end tests with Playwright
 
 ### Code Quality
 
@@ -36,42 +36,41 @@
 
 ### Deployment Guides
 
-- [Deployment Guide](../../DEPLOYMENT-RECOMMENDED.md) - Complete deployment
+- [Deployment Runbook](../deployment/DEPLOYMENT_RUNBOOK.md) - Complete deployment
   instructions
-- [Observability & Monitoring](../../OBSERVABILITY-RECOMMENDED.md) - Monitoring
+- [Observability & Monitoring](../MONITORING_OBSERVABILITY_SETUP.md) - Monitoring
   and alerting setup
-- [Incident Response](../../INCIDENT-RESPONSE-RECOMMENDED.md) - Handling production
-  incidents
+- [Incident Response](../INCIDENT_RESPONSE.md) - Handling production incidents
 
 ### Infrastructure
 
-- [Branch Protection](docs/BRANCH_PROTECTION.md)
-- [Container Security](docs/CONTAINER_SECURITY.md)
-- [Database Migrations](docs/DATABASE_MIGRATIONS.md)
-- [Dependabot Setup](docs/DEPENDABOT_SETUP.md)
+- [Branch Protection](../BRANCH_PROTECTION.md)
+- [Container Security](../CONTAINER_SECURITY.md)
+- [Database Migrations](../DATABASE_MIGRATIONS.md)
+- [Dependabot Setup](../DEPENDABOT_SETUP.md)
 
 ## Testing
 
 ### Testing Documentation
 
-- [E2E Testing](docs/E2E_TESTING.md) - Playwright end-to-end tests
-- [Smoke Tests](docs/smoke-health.md) - Health check documentation
+- [E2E Testing](../E2E_TESTING.md) - Playwright end-to-end tests
+- [Smoke Tests](../smoke-health.md) - Health check documentation
 - Unit tests for all services
 
 ### Quality Assurance
 
-- [Quality Enforcement](docs/QUALITY_ENFORCEMENT_SUMMARY.md)
-- [Ongoing Monitoring](docs/ONGOING_MONITORING.md)
+- [Quality Enforcement](../QUALITY_ENFORCEMENT_SUMMARY.md)
+- [Ongoing Monitoring](../ONGOING_MONITORING.md)
 - Code coverage with Codecov
 
 ## Project History
 
 ### Implementation Timeline
 
-- [Week 1-2 Implementation](docs/history/WEEK1-2_COMPLETE.md)
-- [Week 3-4 Implementation](docs/history/WEEK3-4_IMPLEMENTATION.md)
-- [Implementation Summary](docs/history/IMPLEMENTATION_SUMMARY.md)
-- [Infrastructure Complete](docs/history/INFRASTRUCTURE_COMPLETE.md)
+- [Week 1-2 Implementation](../history/WEEK1-2_COMPLETE.md)
+- [Week 3-4 Implementation](../history/WEEK3-4_IMPLEMENTATION.md)
+- [Implementation Summary](../history/IMPLEMENTATION_SUMMARY.md)
+- [Infrastructure Complete](../history/INFRASTRUCTURE_COMPLETE.md)
 
 ## Scripts & Tools
 
@@ -82,8 +81,8 @@ From the root directory:
 ```bash
 # Development
 pnpm dev              # Start all services in development mode
-pnpm api:dev          # Start only API service
-pnpm web:dev          # Start only web service
+pnpm dev:api          # Start only API service
+pnpm dev:web          # Start only web service
 
 # Building
 pnpm build            # Build all services
@@ -93,10 +92,7 @@ pnpm lint             # Lint all services
 pnpm lint:fix         # Fix linting issues
 
 # E2E Testing
-pnpm e2e              # Run Playwright tests
-
-# Cleanup
-pnpm clean            # Remove all node_modules
+pnpm test:e2e         # Run Playwright tests
 ```
 
 ## Contributing

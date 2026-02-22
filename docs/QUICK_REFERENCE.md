@@ -17,8 +17,8 @@ pnpm --filter @infamous-freight/shared build
 
 ```bash
 pnpm dev              # All services
-pnpm api:dev          # API only (port 3001)
-pnpm web:dev          # Web only (port 3000)
+pnpm dev:api          # API only (port 3001)
+pnpm dev:web          # Web only (port 3000)
 ```
 
 ### Testing
@@ -26,7 +26,7 @@ pnpm web:dev          # Web only (port 3000)
 ````bash
 pnpm test             # All tests
 pnpm test:coverage    # With coverage
-pnpm e2e              # E2E tests
+pnpm test:e2e         # E2E tests
 
 ### Codex CLI
 
@@ -57,7 +57,7 @@ pnpm format           # Format code
 pnpm build            # Build all
 pnpm --filter api build      # API only
 pnpm --filter web build      # Web only
-pnpm --filter shared build   # Shared only
+pnpm --filter @infamous-freight/shared build   # Shared only
 ```
 
 ## 📦 Shared Package Usage
@@ -127,9 +127,9 @@ pnpm add -w prettier
 ## 📚 Documentation
 
 - [Main README](README.md) - Project overview
-- [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md) - Migration instructions
-- [IMPROVEMENTS_COMPLETE.md](IMPROVEMENTS_COMPLETE.md) - What changed
-- [DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md) - All docs
+- [Migration Guide](deployment/MIGRATION_GUIDE.md) - Migration instructions
+- [Improvements Complete](sessions/IMPROVEMENTS_COMPLETE.md) - What changed
+- [Documentation Index](README.md) - All docs
 
 ## 🐛 Troubleshooting
 
@@ -172,7 +172,7 @@ cp .env.example .env.local
 # Edit .env.local with your values
 ```
 
-See [.env.guide.md](.env.guide.md) for all variables.
+See [ENVIRONMENT_VARIABLES.md](ENVIRONMENT_VARIABLES.md) for all variables.
 
 ## 🎯 Pre-commit Checks
 

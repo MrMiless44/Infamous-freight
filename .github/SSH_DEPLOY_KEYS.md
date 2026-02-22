@@ -83,8 +83,8 @@ ssh-keygen -lf <(echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4SMMA68UAAJNIkuMHN
 
 ## Related Documentation
 
-- [DEPLOYMENT.md](DEPLOYMENT.md) - Complete deployment guide
-- [DEPLOYMENT_100_PERCENT.md](DEPLOYMENT_100_PERCENT.md) - Deployment status
+- [docs/deployment/DEPLOYMENT_RUNBOOK.md](../docs/deployment/DEPLOYMENT_RUNBOOK.md) - Deployment guide
+- [docs/README.md](../docs/README.md) - Documentation index
 - `.github/workflows/` - CI/CD pipelines using SSH
 
 ## Support

@@ -29,7 +29,7 @@ mkdirSync(distDir, { recursive: true });
 process.env.NODE_ENV = "production";
 try {
   // Build shared package first (if needed)
-  const sharedDir = join(rootDir, "src/packages/shared");
+  const sharedDir = join(rootDir, "packages/shared");
   if (existsSync(join(sharedDir, "package.json"))) {
     console.log("📦 Building shared package...");
     execSync("pnpm run build", {

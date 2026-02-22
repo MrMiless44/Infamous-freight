@@ -22,7 +22,7 @@ WORKDIR /app
 
 # Copy workspace files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY api/package.json ./api/package.json
+COPY apps/api/package.json ./apps/api/package.json
 COPY packages/shared/package.json ./packages/shared/package.json
 
 # Install dependencies with frozen lockfile
@@ -47,7 +47,7 @@ WORKDIR /app
 
 # Copy dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/api/node_modules ./api/node_modules
+COPY --from=deps /app/apps/api/node_modules ./apps/api/node_modules
 
 # Copy built shared package
 COPY --from=shared-builder /app/packages/shared/dist ./packages/shared/dist
@@ -55,10 +55,10 @@ COPY --from=shared-builder /app/packages/shared/package.json ./packages/shared/p
 
 # Copy source files
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY api ./api
+COPY apps/api ./apps/api
 
 # Generate Prisma client and build
-WORKDIR /app/api
+WORKDIR /app/apps/api
 RUN pnpm run prisma:generate
 
 # Stage 4: Production runtime
@@ -87,9 +87,9 @@ RUN addgroup -g 1001 -S nodejs && \
     chown -R nodejs:nodejs /app
 
 # Copy only necessary files for production
-COPY --from=builder --chown=nodejs:nodejs /app/api/src ./src
-COPY --from=builder --chown=nodejs:nodejs /app/api/prisma ./prisma
-COPY --from=builder --chown=nodejs:nodejs /app/api/package.json ./package.json
+COPY --from=builder --chown=nodejs:nodejs /app/apps/api/src ./src
+COPY --from=builder --chown=nodejs:nodejs /app/apps/api/prisma ./prisma
+COPY --from=builder --chown=nodejs:nodejs /app/apps/api/package.json ./package.json
 
 # Copy built shared package
 COPY --from=shared-builder --chown=nodejs:nodejs /app/packages/shared/dist ./node_modules/@infamous-freight/shared/dist

@@ -221,26 +221,17 @@ docker-compose down
 
 ### Essential Guides
 
-- 📖 [**Complete Documentation Index**](DOCUMENTATION_INDEX.md) - Central hub for all docs
-- 🚀 [**Quick Reference**](QUICK-REFERENCE-RECOMMENDED.md) - Common commands and operations
-- 🤝 [**Contributing Guide**](CONTRIBUTING.md) - Development workflow and standards
-- 📡 [**API Documentation**](API-DOCUMENTATION-RECOMMENDED.md) - Complete API reference
-- 🔒 [**Security Guide**](SECURITY-RECOMMENDED.md) - Security best practices
-- 🚢 [**Deployment Guide**](DEPLOYMENT-RECOMMENDED.md) - Production deployment instructions
+- 📖 [**Documentation Index**](docs/README.md) - Central hub for docs
+- 🚀 [**Quick Reference**](docs/QUICK_REFERENCE.md) - Common commands and tips
+- 📡 [**API Reference**](docs/api/API_REFERENCE.md) - REST endpoints
+- 🔒 [**Security Guide**](docs/security.md) - Security practices
+- 🚢 [**Deployment Runbook**](docs/deployment/DEPLOYMENT_RUNBOOK.md) - Production deployment
 
-### Development- [Architecture Decisions](ARCHITECTURE_DECISIONS.md)
-- [Database Setup (Prisma)](PRISMA-SETUP-RECOMMENDED.md)
-- [Error Handling Standards](ERROR-HANDLING-RECOMMENDED.md)
+### Development
+- [Architecture Decisions](ARCHITECTURE_DECISIONS.md)
+- [Architecture Overview](docs/architecture.md)
+- [Database Migrations](docs/DATABASE_MIGRATIONS.md)
 - [Middleware Integration](MIDDLEWARE_INTEGRATION_GUIDE.md)
-- [Performance Optimization](PERFORMANCE-OPTIMIZATION-ROADMAP-RECOMMENDED.md)
-
-### Operations
-
-- [Operations Runbook](OPERATIONS-RUNBOOK-RECOMMENDED.md)
-- [Incident Response](INCIDENT-RESPONSE-RUNBOOK-RECOMMENDED.md)
-- [Backup & Recovery](BACKUP-AND-RECOVERY-PROCEDURES-RECOMMENDED.md)
-- [Disaster Recovery](DISASTER-RECOVERY-PLAN-RECOMMENDED.md)
-- [Load Testing Strategy](LOAD-TESTING-STRATEGY-RECOMMENDED.md)
 
 ### Team Resources
 
@@ -342,16 +333,16 @@ pnpm logs:fly               # View Fly.io logs
 
 Key configuration variables (see [.env.example](.env.example) for complete list):
 
-| Variable | Description | Example |
-| -------- | ----------- | ------- |
-| `NODE_ENV` | Environment mode | `development` |
-| `API_PORT` | API server port | `4000` |
-| `WEB_PORT` | Web server port | `3000` |
+| Variable       | Description                  | Example                               |
+| -------------- | ---------------------------- | ------------------------------------- |
+| `NODE_ENV`     | Environment mode             | `development`                         |
+| `API_PORT`     | API server port              | `4000`                                |
+| `WEB_PORT`     | Web server port              | `3000`                                |
 | `DATABASE_URL` | PostgreSQL connection string | `postgresql://user:pass@host:5432/db` |
-| `JWT_SECRET` | Authentication signing key | Generate 32+ char random string |
-| `AI_PROVIDER` | AI service provider | `synthetic`, `openai`, `anthropic` |
-| `REDIS_URL` | Redis connection string | `redis://localhost:6379` |
-| `SENTRY_DSN` | Error tracking endpoint | From Sentry dashboard |
+| `JWT_SECRET`   | Authentication signing key   | Generate 32+ char random string       |
+| `AI_PROVIDER`  | AI service provider          | `synthetic`, `openai`, `anthropic`    |
+| `REDIS_URL`    | Redis connection string      | `redis://localhost:6379`              |
+| `SENTRY_DSN`   | Error tracking endpoint      | From Sentry dashboard                 |
 
 **Important**: Never commit actual secrets. Use the `.env` file locally (gitignored) and secret managers in production.
 
