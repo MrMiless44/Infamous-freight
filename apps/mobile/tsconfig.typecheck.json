@@ -21,7 +21,10 @@
         "allowJs": true,
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "typeRoots": ["./node_modules/@types"]
+        "types": [
+            "react",
+            "react-native"
+        ]
     },
     "include": [
         "src",
