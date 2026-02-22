@@ -122,9 +122,9 @@ See: SECURITY.md, VULNERABILITY-AUDIT-REPORT.md, Q1-2026-REMEDIATION-PLAN.md
 
 ### 7. Recent Security Fixes Applied
 
-| Fix | Version | Status | Date |
-|-----|---------|--------|------|
-| axios data exposure | 1.13.4 → 1.13.5 | ✅ Applied | Feb 22 |
+| Fix                    | Version         | Status    | Date   |
+| ---------------------- | --------------- | --------- | ------ |
+| axios data exposure    | 1.13.4 → 1.13.5 | ✅ Applied | Feb 22 |
 | Firebase undici HTTP/2 | 10.8.0 → 12.9.0 | ✅ Applied | Feb 22 |
 
 ---
@@ -133,14 +133,14 @@ See: SECURITY.md, VULNERABILITY-AUDIT-REPORT.md, Q1-2026-REMEDIATION-PLAN.md
 
 ### Infrastructure Requirements
 
-| Component | Status | Requirement | Notes |
-|-----------|--------|-------------|-------|
-| Node.js | ✅ | 20.11.1+ | Running in container |
-| PostgreSQL | ✅ | 15+ | Via Docker, auto-migrations ready |
-| Redis | ✅ | 7+ | Optional, for session cache |
-| Docker | ✅ | Latest | docker-compose orchestration ready |
-| S3-compatible | ✅ | AWS SDK 2.1693 ready | Includes XXE mitigations |
-| Firebase | ✅ | Admin SDK 12.9.0 | Updated Feb 22 |
+| Component     | Status | Requirement          | Notes                              |
+| ------------- | ------ | -------------------- | ---------------------------------- |
+| Node.js       | ✅      | 20.11.1+             | Running in container               |
+| PostgreSQL    | ✅      | 15+                  | Via Docker, auto-migrations ready  |
+| Redis         | ✅      | 7+                   | Optional, for session cache        |
+| Docker        | ✅      | Latest               | docker-compose orchestration ready |
+| S3-compatible | ✅      | AWS SDK 2.1693 ready | Includes XXE mitigations           |
+| Firebase      | ✅      | Admin SDK 12.9.0     | Updated Feb 22                     |
 
 ### Environment Configuration
 
