@@ -176,8 +176,8 @@ importers:
         specifier: ^11.0.0
         version: 11.0.0
       plaid:
-        specifier: ^29.0.0
-        version: 29.0.0
+        specifier: ^41.3.0
+        version: 41.3.0
       rate-limiter-flexible:
         specifier: ^9.1.0
         version: 9.1.0
@@ -8657,8 +8657,8 @@ packages:
   pkg-types@2.3.0:
     resolution: {integrity: sha512-SIqCzDRg0s9npO5XQ3tNZioRY1uK06lA41ynBC1YmFTmnY6FjUjVt6s4LoADmwoig1qqD0oK8h1p/8mlMx8Oig==}
 
-  plaid@29.0.0:
-    resolution: {integrity: sha512-bDcLcRkJxd6rI+fYsxYhSvaMvFY/k/yDlcF4KqWLQEIDXSgDtViMw59URIOfAWK+ohRTPnzQ8RAucGltLoCYKA==}
+  plaid@41.3.0:
+    resolution: {integrity: sha512-P5r7YdvXYv+prYtj+s7ODPftg8rIYHPmA7NFn2a7K3B0QL8GouhbNPfa6BHU2pYBr3cKVZDVJRm4fTv+KgUUxg==}
     engines: {node: '>=10.0.0'}
 
   playwright-core@1.58.0:
@@ -21824,7 +21824,7 @@ snapshots:
       exsolve: 1.0.8
       pathe: 2.0.3
 
-  plaid@29.0.0:
+  plaid@41.3.0:
     dependencies:
       axios: 1.13.5
     transitivePeerDependencies:
