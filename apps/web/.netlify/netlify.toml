@@ -79,7 +79,7 @@ Cache-Control = "no-store, max-age=0"
 from = "/api/supabase/*"
 to = "https://supabase.com/:splat"
 status = 200.0
-force = true
+force = false
 
 [redirects.query]
 
