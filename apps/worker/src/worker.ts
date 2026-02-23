@@ -2,8 +2,11 @@ import AWS from "aws-sdk";
 import { Worker } from "bullmq";
 import IORedis from "ioredis";
 import PDFDocument from "pdfkit";
-import { pool } from "../../api/src/lib/db";
+import { Pool } from "pg";
 
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
 const connection = new IORedis(process.env.REDIS_URL);
 
 new Worker(
