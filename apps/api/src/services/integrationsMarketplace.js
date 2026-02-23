@@ -13,11 +13,11 @@
  * @module services/integrationsMarketplace
  */
 
-const { PrismaClient } = require('@prisma/client');
+const { getPrisma } = require('../db/prisma');
 const { logger } = require('../middleware/logger');
 const crypto = require('crypto');
 
-const prisma = new PrismaClient();
+const prisma = getPrisma();
 
 /**
  * Integration categories
@@ -197,7 +197,7 @@ class IntegrationsMarketplaceService {
    */
   getIntegrationById(integrationId) {
     const integration = this.catalog.find(i => i.id === integrationId);
-    
+
     if (!integration) {
       throw new Error(`Integration not found: ${integrationId}`);
     }
@@ -243,7 +243,7 @@ class IntegrationsMarketplaceService {
     // await prisma.integration.create({ data: installation });
 
     logger.info('Integration installed', { organizationId, integrationId, installationId: installation.id });
-    
+
     return {
       ...installation,
       config: undefined, // Don't expose encrypted config
@@ -313,7 +313,7 @@ class IntegrationsMarketplaceService {
       };
     } catch (error) {
       logger.error('Integration test failed', { error: error.message, integrationId });
-      
+
       return {
         success: false,
         status: 'error',

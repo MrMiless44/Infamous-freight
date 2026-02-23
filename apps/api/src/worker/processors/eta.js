@@ -1,8 +1,8 @@
-const { PrismaClient } = require("@prisma/client");
+const { getPrisma } = require("../../db/prisma");
 const { etaToPickupSeconds } = require("../../mapbox/eta");
 const { redisConnection } = require("../../queue/redis");
 
-const prisma = new PrismaClient();
+const prisma = getPrisma();
 const redis = redisConnection();
 
 async function processEta(job) {

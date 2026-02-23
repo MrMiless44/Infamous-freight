@@ -4,6 +4,7 @@
  */
 
 const rateLimit = require("express-rate-limit");
+const { ipKeyGenerator } = require("express-rate-limit");
 const RedisStore = require("rate-limit-redis");
 const redis = require("redis");
 const db = require("../db/prisma");
@@ -88,7 +89,7 @@ class EnhancedRateLimitingService {
 
       // Cache for 1 hour
       if (this.redisClient) {
-        await this.redisClient.setEx(cacheKey, 3600, tier).catch(() => {});
+        await this.redisClient.setEx(cacheKey, 3600, tier).catch(() => { });
       }
 
       return tier;
@@ -104,17 +105,17 @@ class EnhancedRateLimitingService {
   createUserRateLimiter(tierConfig, windowMs, max) {
     const store = this.redisClient
       ? new RedisStore({
-          client: this.redisClient,
-          prefix: "ratelimit:",
-          expiry: Math.ceil(windowMs / 1000),
-        })
+        client: this.redisClient,
+        prefix: "ratelimit:",
+        expiry: Math.ceil(windowMs / 1000),
+      })
       : undefined;
 
     return rateLimit({
       store,
       windowMs,
       max,
-      keyGenerator: (req) => req.user?.id || req.ip,
+      keyGenerator: (req) => req.user?.id || ipKeyGenerator(req),
       handler: (req, res) => {
         res.status(429).json({
           error: "Too many requests",
@@ -141,7 +142,7 @@ class EnhancedRateLimitingService {
       auth: rateLimit({
         windowMs: 15 * 60 * 1000,
         max: 5,
-        keyGenerator: (req) => req.ip,
+        keyGenerator: (req) => ipKeyGenerator(req),
         message: "Too many authentication attempts, try again later",
       }),
 
@@ -149,28 +150,28 @@ class EnhancedRateLimitingService {
       ai: rateLimit({
         windowMs: 1 * 60 * 1000,
         max: 20,
-        keyGenerator: (req) => req.user?.id || req.ip,
+        keyGenerator: (req) => req.user?.id || ipKeyGenerator(req),
       }),
 
       // Billing operations
       billing: rateLimit({
         windowMs: 15 * 60 * 1000,
         max: 30,
-        keyGenerator: (req) => req.user?.id || req.ip,
+        keyGenerator: (req) => req.user?.id || ipKeyGenerator(req),
       }),
 
       // File uploads
       upload: rateLimit({
         windowMs: 60 * 60 * 1000,
         max: 50,
-        keyGenerator: (req) => req.user?.id || req.ip,
+        keyGenerator: (req) => req.user?.id || ipKeyGenerator(req),
       }),
 
       // Exports/Reports (expensive operations)
       export: rateLimit({
         windowMs: 60 * 60 * 1000,
         max: 10,
-        keyGenerator: (req) => req.user?.id || req.ip,
+        keyGenerator: (req) => req.user?.id || ipKeyGenerator(req),
       }),
     };
   }

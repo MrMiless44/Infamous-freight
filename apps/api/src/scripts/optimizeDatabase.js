@@ -5,8 +5,8 @@
  * Run with: npx ts-node apps/api/src/scripts/optimizeDatabase.js
  */
 
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const { createPrismaClient } = require("../db/prisma");
+const prisma = createPrismaClient();
 
 const logger = console; // Use simple console for scripts
 

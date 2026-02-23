@@ -358,6 +358,8 @@ model User {
   securityEvents       SecurityEvent[]
   anomalyDetections    AnomalyDetection[]
   usageMetrics         UsageMetric[]
+  dashboardWidgets     DashboardWidget[]
+  analyticsPredictions AnalyticsPrediction[]
   referralsCreated     Referral[] @relation("referralsCreated")
   referralsReceived    Referral[] @relation("referralsReceived")
 

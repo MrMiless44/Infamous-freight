@@ -1,10 +1,10 @@
 const { Job: _BullJob } = require("bullmq");
-const { PrismaClient } = require("@prisma/client");
+const { getPrisma } = require("../../db/prisma");
 const { runWave, waveConfig } = require("../../marketplace/waves");
 const { enqueueWave } = require("../../queue/schedule");
 const { notifier } = require("../../notify/index");
 
-const prisma = new PrismaClient();
+const prisma = getPrisma();
 
 async function processDispatch(job /** @type {BullJob} */) {
   const { jobId, wave } = job.data;

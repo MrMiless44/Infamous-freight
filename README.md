@@ -16,6 +16,13 @@
 
 **Infamous Freight Enterprises** is a comprehensive, enterprise-grade freight and logistics automation platform powered by AI. Built as a modern monorepo with TypeScript, it provides end-to-end shipment management, real-time tracking, AI-powered command processing, and multi-tenant support.
 
+### 🆕 What’s New (Feb 2026)
+
+- ✅ **Web Platform Upgrade** - Next.js 16 + React 19 for faster builds and improved routing
+- ✅ **API Modernization** - Express 5.2 + Prisma 7.3 for improved performance and stability
+- ✅ **Version Alignment** - API/Web at v2.2.0 with shared types via workspace packages
+- ✅ **Docs Consolidation** - Expanded deployment, security, and testing runbooks
+
 ### 🎯 Key Highlights
 
 - 🤖 **AI-Powered Commands** - Natural language processing for operational commands
@@ -105,8 +112,8 @@ infamous-freight-enterprises/
 #### Backend (API)
 
 - **Runtime:** Node.js 20+ (CommonJS)
-- **Framework:** Express.js 4.x
-- **Database:** PostgreSQL 16 with Prisma ORM
+- **Framework:** Express.js 5.2
+- **Database:** PostgreSQL 16 with Prisma ORM (Prisma 7.3)
 - **Cache:** Redis 7.x
 - **Authentication:** JWT (jsonwebtoken)
 - **Validation:** express-validator
@@ -114,16 +121,16 @@ infamous-freight-enterprises/
 
 #### Frontend (Web)
 
-- **Framework:** Next.js 14 (TypeScript, ESM)
-- **UI Framework:** React 18
-- **Styling:** CSS Modules / Tailwind CSS
-- **State Management:** React Context / Zustand
+- **Framework:** Next.js 16 (TypeScript, ESM)
+- **UI Framework:** React 19
+- **Styling:** Chakra UI + Emotion
+- **State Management:** React Context
 - **Analytics:** Vercel Analytics, Datadog RUM
-- **Testing:** Jest, React Testing Library
+- **Testing:** Vitest, React Testing Library
 
 #### Mobile
 
-- **Framework:** React Native with Expo
+- **Framework:** React Native with Expo (Expo 50)
 - **Push Notifications:** Firebase Cloud Messaging (FCM)
 - **Storage:** AsyncStorage
 - **Navigation:** React Navigation
@@ -212,6 +219,7 @@ docker-compose down
 ### Verify Installation
 
 - **API Health Check:** <http://localhost:4000/api/health>
+- **API Health Check (Docker):** <http://localhost:3001/api/health>
 - **Web Application:** <http://localhost:3000>
 - **API Documentation:** <http://localhost:4000/api/docs> (if Swagger enabled)
 
@@ -221,23 +229,23 @@ docker-compose down
 
 ### Essential Guides
 
-- 📖 [**Documentation Index**](docs/README.md) - Central hub for docs
-- 🚀 [**Quick Reference**](docs/QUICK_REFERENCE.md) - Common commands and tips
+- 📖 [**Documentation Index**](DOCUMENTATION_INDEX.md) - Central hub for docs
+- 🚀 [**Quick Reference**](QUICK_REFERENCE.md) - Common commands and tips
 - 📡 [**API Reference**](docs/api/API_REFERENCE.md) - REST endpoints
 - 🔒 [**Security Guide**](docs/security.md) - Security practices
 - 🚢 [**Deployment Runbook**](docs/deployment/DEPLOYMENT_RUNBOOK.md) - Production deployment
 
 ### Development
 - [Architecture Decisions](ARCHITECTURE_DECISIONS.md)
-- [Architecture Overview](docs/architecture.md)
+- [Architecture Overview](docs/ARCHITECTURE.md)
 - [Database Migrations](docs/DATABASE_MIGRATIONS.md)
-- [Middleware Integration](MIDDLEWARE_INTEGRATION_GUIDE.md)
+- [Middleware Integration](docs/API_MIDDLEWARE_INTEGRATION.md)
 
 ### Team Resources
 
-- [Team Onboarding](TEAM-ONBOARDING-GUIDE-RECOMMENDED.md)
+- [Developer Onboarding](docs/development/developer-onboarding.md)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
-- [Changelog](CHANGELOG-RECOMMENDED.md)
+- [Project Summary](docs/PROJECT_SUMMARY.md)
 
 ---
 
@@ -354,7 +362,7 @@ See [.env.example](.env.example) for complete list with descriptions.
 
 ### Test Coverage
 
-Current coverage thresholds:
+Coverage targets:
 
 - **API**: Lines 75%, Functions 80%, Branches 70%, Statements 75%
 - **Web**: Lines 70%, Functions 75%, Branches 65%, Statements 70%
@@ -402,7 +410,7 @@ k6 run load-test-enhanced.k6.js
 
 - **API**: Fly.io (multi-region: San Jose, Ashburn, London)
 - **Web**: Vercel (edge network, automatic SSL)
-- **Database**: PostgreSQL on Fly.io / Supabase
+- **Database**: PostgreSQL (Fly.io / Supabase / Railway)
 - **Cache**: Redis on Fly.io / Upstash
 - **Storage**: AWS S3 / Cloudflare R2
 
@@ -472,9 +480,9 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ### Current Version
 
-- **API**: v2.0.0
-- **Web**: v2.0.0
-- **Mobile**: v1.5.0
+- **API**: v2.2.0
+- **Web**: v2.2.0
+- **Mobile**: v1.0.0
 
 ### Roadmap
 

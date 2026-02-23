@@ -13,11 +13,11 @@
  * @module services/advancedReporting
  */
 
-const { PrismaClient } = require('@prisma/client');
+const { getPrisma } = require('../db/prisma');
 const { Parser } = require('@json2csv/node');
 const { logger } = require('../middleware/logger');
 
-const prisma = new PrismaClient();
+const prisma = getPrisma();
 
 /**
  * Report types enumeration
@@ -62,7 +62,6 @@ class AdvancedReportingService {
 
   /**
    * Get date range for time period
-   * @param {string} period - Time period constant
    * @param {Date} startDate - Custom start date
    * @param {Date} endDate - Custom end date
    * @returns {Object} Date range with startDate and endDate
@@ -76,51 +75,51 @@ class AdvancedReportingService {
         start = new Date(now.setHours(0, 0, 0, 0));
         end = new Date(now.setHours(23, 59, 59, 999));
         break;
-      
+
       case TIME_PERIODS.YESTERDAY:
         start = new Date(now.setDate(now.getDate() - 1));
         start.setHours(0, 0, 0, 0);
         end = new Date(start);
         end.setHours(23, 59, 59, 999);
         break;
-      
+
       case TIME_PERIODS.LAST_7_DAYS:
         end = new Date();
         start = new Date(now.setDate(now.getDate() - 7));
         break;
-      
+
       case TIME_PERIODS.LAST_30_DAYS:
         end = new Date();
         start = new Date(now.setDate(now.getDate() - 30));
         break;
-      
+
       case TIME_PERIODS.LAST_90_DAYS:
         end = new Date();
         start = new Date(now.setDate(now.getDate() - 90));
         break;
-      
+
       case TIME_PERIODS.THIS_MONTH:
         start = new Date(now.getFullYear(), now.getMonth(), 1);
         end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
         break;
-      
+
       case TIME_PERIODS.LAST_MONTH:
         start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
         end = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
         break;
-      
+
       case TIME_PERIODS.THIS_QUARTER: {
         const quarter = Math.floor(now.getMonth() / 3);
         start = new Date(now.getFullYear(), quarter * 3, 1);
         end = new Date(now.getFullYear(), (quarter + 1) * 3, 0, 23, 59, 59, 999);
         break;
       }
-      
+
       case TIME_PERIODS.THIS_YEAR:
         start = new Date(now.getFullYear(), 0, 1);
         end = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
         break;
-      
+
       case TIME_PERIODS.CUSTOM:
         if (!startDate || !endDate) {
           throw new Error('Custom period requires startDate and endDate');
@@ -128,7 +127,7 @@ class AdvancedReportingService {
         start = new Date(startDate);
         end = new Date(endDate);
         break;
-      
+
       default:
         throw new Error(`Invalid time period: ${period}`);
     }
@@ -167,40 +166,40 @@ class AdvancedReportingService {
     ] = await Promise.all([
       // Total shipments
       prisma.shipment.count({ where }),
-      
+
       // Delivered shipments
       prisma.shipment.count({ where: { ...where, status: 'DELIVERED' } }),
-      
+
       // In transit
       prisma.shipment.count({ where: { ...where, status: 'IN_TRANSIT' } }),
-      
+
       // Pending
       prisma.shipment.count({ where: { ...where, status: 'PENDING' } }),
-      
+
       // Cancelled
       prisma.shipment.count({ where: { ...where, status: 'CANCELLED' } }),
-      
+
       // Total revenue (placeholder - add revenue field to schema)
       prisma.shipment.aggregate({
         where: { ...where, status: 'DELIVERED' },
         _sum: { weight: true },
       }),
-      
+
       // Average delivery time
       this._calculateAvgDeliveryTime(where),
-      
+
       // On-time delivery rate
       this._calculateOnTimeRate(where),
-      
+
       // Top customers
       this._getTopCustomers(where, 10),
-      
+
       // Top routes
       this._getTopRoutes(where, 10),
     ]);
 
-    const completionRate = totalShipments > 0 
-      ? ((deliveredShipments / totalShipments) * 100).toFixed(2) 
+    const completionRate = totalShipments > 0
+      ? ((deliveredShipments / totalShipments) * 100).toFixed(2)
       : 0;
 
     return {
@@ -208,7 +207,7 @@ class AdvancedReportingService {
       period,
       dateRange: { startDate, endDate },
       generatedAt: new Date().toISOString(),
-      
+
       kpis: {
         totalShipments,
         deliveredShipments,
@@ -220,13 +219,13 @@ class AdvancedReportingService {
         avgDeliveryTime: avgDeliveryTime || 0,
         onTimeDeliveryRate: onTimeDeliveries || 0,
       },
-      
+
       insights: {
         topCustomers,
         topRoutes,
         trends: await this._calculateTrends(where),
       },
-      
+
       performance: {
         utilizationRate: await this._calculateUtilizationRate(where),
         efficiency: await this._calculateEfficiency(where),
@@ -267,7 +266,7 @@ class AdvancedReportingService {
       period,
       dateRange: { startDate, endDate },
       generatedAt: new Date().toISOString(),
-      
+
       statusBreakdown,
       volumeTrend,
       geography: {
@@ -303,7 +302,7 @@ class AdvancedReportingService {
     const driverStats = await Promise.all(
       drivers.map(async (driver) => {
         const driverWhere = { ...where, driverId: driver.driverId };
-        
+
         const [delivered, onTime, avgDeliveryTime] = await Promise.all([
           prisma.shipment.count({ where: { ...driverWhere, status: 'DELIVERED' } }),
           this._calculateOnTimeDeliveries(driverWhere),
@@ -361,12 +360,12 @@ class AdvancedReportingService {
         fields = ['date', 'totalShipments', 'delivered', 'inTransit', 'pending', 'cancelled'];
         records = data.volumeTrend || [];
         break;
-      
+
       case REPORT_TYPES.DRIVER_PERFORMANCE:
         fields = ['driverId', 'totalShipments', 'deliveredShipments', 'onTimeRate', 'avgDeliveryTime', 'performanceScore'];
         records = data.drivers || [];
         break;
-      
+
       default:
         fields = Object.keys(data.kpis || data);
         records = [data.kpis || data];
@@ -516,10 +515,10 @@ class AdvancedReportingService {
    */
   async _calculateUtilizationRate(where) {
     const total = await prisma.shipment.count({ where });
-    const active = await prisma.shipment.count({ 
-      where: { ...where, status: { in: ['IN_TRANSIT', 'PENDING'] } } 
+    const active = await prisma.shipment.count({
+      where: { ...where, status: { in: ['IN_TRANSIT', 'PENDING'] } }
     });
-    
+
     return total > 0 ? ((active / total) * 100).toFixed(2) : 0;
   }
 
@@ -529,10 +528,10 @@ class AdvancedReportingService {
    */
   async _calculateEfficiency(where) {
     const total = await prisma.shipment.count({ where });
-    const delivered = await prisma.shipment.count({ 
-      where: { ...where, status: 'DELIVERED' } 
+    const delivered = await prisma.shipment.count({
+      where: { ...where, status: 'DELIVERED' }
     });
-    
+
     return total > 0 ? ((delivered / total) * 100).toFixed(2) : 0;
   }
 
@@ -606,10 +605,10 @@ class AdvancedReportingService {
   _calculatePerformanceScore({ totalShipments, delivered, onTimeRate, avgDeliveryTime }) {
     const deliveryRate = totalShipments > 0 ? (delivered / totalShipments) * 100 : 0;
     const timeScore = avgDeliveryTime > 0 ? Math.max(0, 100 - avgDeliveryTime) : 50;
-    
+
     // Weighted scoring: 40% delivery rate, 40% on-time rate, 20% time efficiency
     const score = (deliveryRate * 0.4) + (parseFloat(onTimeRate) * 0.4) + (timeScore * 0.2);
-    
+
     return Math.min(100, Math.max(0, score)).toFixed(2);
   }
 }

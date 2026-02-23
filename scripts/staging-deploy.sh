@@ -7,6 +7,8 @@
 
 set -e
 
+ROOT_DIR=$(cd "$(dirname "$0")/.." && pwd)
+
 echo "🚀 INFAMOUS FREIGHT STAGING DEPLOYMENT"
 echo "======================================"
 echo "Starting at: $(date)"
@@ -39,14 +41,14 @@ echo "Web server will run on port $WEB_PORT"
 echo ""
 
 # Start the API server
-cd apps/api && pnpm dev &
+cd "$ROOT_DIR/apps/api" && pnpm dev &
 API_PID=$!
 
 echo "✅ API server started (PID: $API_PID)"
 sleep 3
 
-# Start the Web server  
-cd ../web && pnpm dev &
+# Start the Web server
+cd "$ROOT_DIR/apps/web" && pnpm dev &
 WEB_PID=$!
 
 echo "✅ Web server started (PID: $WEB_PID)"

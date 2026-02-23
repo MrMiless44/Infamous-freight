@@ -17,12 +17,13 @@ const {
 const { body, param } = require("express-validator");
 const { logger } = require("../middleware/logger");
 const { ApiResponse, HTTP_STATUS } = require("@infamous-freight/shared");
+const { ipKeyGenerator } = require("express-rate-limit");
 
 // B2B specific limiter
 const b2bRateLimiter = require("express-rate-limit")({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: process.env.B2B_RATE_LIMIT || 100,
-  keyGenerator: (req) => req.user?.sub || req.ip,
+  keyGenerator: (req) => req.user?.sub || ipKeyGenerator(req),
 });
 
 /**

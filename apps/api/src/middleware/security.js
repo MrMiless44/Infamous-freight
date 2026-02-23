@@ -5,6 +5,7 @@
  */
 
 const rateLimit = require("express-rate-limit");
+const { ipKeyGenerator } = require("express-rate-limit");
 const jwt = require("jsonwebtoken");
 const { authenticateWithRotation } = require("./advancedSecurity");
 const { env } = require("../config/env");
@@ -41,7 +42,7 @@ const createLimiter = (name, options = {}) => {
       return next();
     }
 
-    const key = options.keyGenerator ? options.keyGenerator(req) : req.ip;
+    const key = options.keyGenerator ? options.keyGenerator(req) : ipKeyGenerator(req);
     rateLimitMetrics.recordHit(name, key);
 
     res.on("finish", () => {
@@ -74,7 +75,7 @@ const createTunedLimiter = (name, config) => {
   return createLimiter(name, {
     windowMs: config.windowMinutes || 60,
     max: config.maxRequests || 10,
-    keyGenerator: config.keyGenerator || ((req) => req.user?.sub || req.ip),
+    keyGenerator: config.keyGenerator || ((req) => req.user?.sub || ipKeyGenerator(req)),
     message: config.message || { error: `Rate limit exceeded for ${name}` },
     skip: config.skip,
   });
@@ -84,61 +85,61 @@ const limiters = {
   general: createLimiter("general", {
     windowMs: "15", // In minutes, converted to ms above
     max: parseInt(process.env.RATE_LIMIT_GENERAL_MAX || "100"),
-    keyGenerator: (req) => req.user?.sub || req.ip,
+    keyGenerator: (req) => req.user?.sub || ipKeyGenerator(req),
     message: { error: "Too many requests. Please try again later." },
   }),
   auth: createLimiter("auth", {
     windowMs: "15",
     max: parseInt(process.env.RATE_LIMIT_AUTH_MAX || "5"),
-    keyGenerator: (req) => req.ip,
+    keyGenerator: (req) => ipKeyGenerator(req),
     message: { error: "Too many authentication attempts. Try again later." },
   }),
   ai: createLimiter("ai", {
     windowMs: "1",
     max: parseInt(process.env.RATE_LIMIT_AI_MAX || "20"),
-    keyGenerator: (req) => req.user?.sub || req.ip,
+    keyGenerator: (req) => req.user?.sub || ipKeyGenerator(req),
     message: { error: "AI service rate limit exceeded." },
   }),
   billing: createLimiter("billing", {
     windowMs: "15",
     max: parseInt(process.env.RATE_LIMIT_BILLING_MAX || "30"),
-    keyGenerator: (req) => req.user?.sub || req.ip,
+    keyGenerator: (req) => req.user?.sub || ipKeyGenerator(req),
     message: { error: "Billing rate limit exceeded." },
   }),
   smsUser: createLimiter("smsUser", {
     windowMs: "60",
     max: parseInt(process.env.RATE_LIMIT_SMS_USER_MAX || "20"),
-    keyGenerator: (req) => req.user?.sub || req.ip,
+    keyGenerator: (req) => req.user?.sub || ipKeyGenerator(req),
     message: { error: "SMS rate limit exceeded for user." },
   }),
   smsOrg: createLimiter("smsOrg", {
     windowMs: "1440", // 24 hours
     max: parseInt(process.env.RATE_LIMIT_SMS_ORG_MAX || "200"),
-    keyGenerator: (req) => req.auth?.organizationId || req.headers["x-org-id"] || req.ip,
+    keyGenerator: (req) => req.auth?.organizationId || req.headers["x-org-id"] || ipKeyGenerator(req),
     message: { error: "SMS rate limit exceeded for organization." },
   }),
   voice: createLimiter("voice", {
     windowMs: "1",
     max: parseInt(process.env.RATE_LIMIT_VOICE_MAX || "10"),
-    keyGenerator: (req) => req.user?.sub || req.ip,
+    keyGenerator: (req) => req.user?.sub || ipKeyGenerator(req),
     message: { error: "Voice processing rate limit exceeded." },
   }),
   export: createLimiter("export", {
     windowMs: "60",
     max: parseInt(process.env.RATE_LIMIT_EXPORT_MAX || "5"),
-    keyGenerator: (req) => req.user?.sub || req.ip,
+    keyGenerator: (req) => req.user?.sub || ipKeyGenerator(req),
     message: { error: "Export rate limit exceeded. Maximum 5 exports per hour." },
   }),
   passwordReset: createLimiter("passwordReset", {
     windowMs: "1440",
     max: parseInt(process.env.RATE_LIMIT_PASSWORD_RESET_MAX || "3"),
-    keyGenerator: (req) => req.body?.email || req.ip,
+    keyGenerator: (req) => req.body?.email || ipKeyGenerator(req),
     message: { error: "Too many password reset attempts. Try again in 24 hours." },
   }),
   webhook: createLimiter("webhook", {
     windowMs: "1",
     max: parseInt(process.env.RATE_LIMIT_WEBHOOK_MAX || "100"),
-    keyGenerator: (req) => req.ip,
+    keyGenerator: (req) => ipKeyGenerator(req),
     message: { error: "Webhook rate limit exceeded." },
   }),
 };

@@ -11,12 +11,13 @@ const { body, param } = require("express-validator");
 const logger = require("../middleware/logger");
 const { ApiResponse, HTTP_STATUS } = require("@infamous-freight/shared");
 const fintechService = require("../services/fintechService");
+const { ipKeyGenerator } = require("express-rate-limit");
 
 // Fintech rate limiter
 const fintechRateLimiter = require("express-rate-limit")({
   windowMs: 15 * 60 * 1000,
   max: 50,
-  keyGenerator: (req) => req.user?.sub || req.ip,
+  keyGenerator: (req) => req.user?.sub || ipKeyGenerator(req),
 });
 
 /**

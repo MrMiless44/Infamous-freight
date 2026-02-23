@@ -14,11 +14,11 @@
  * @module services/whiteLabelConfig
  */
 
-const { PrismaClient } = require('@prisma/client');
+const { getPrisma } = require('../db/prisma');
 const { logger } = require('../middleware/logger');
 const crypto = require('crypto');
 
-const prisma = new PrismaClient();
+const prisma = getPrisma();
 
 /**
  * Default branding configuration
@@ -43,13 +43,13 @@ const AVAILABLE_FEATURES = {
   SHIPMENT_MANAGEMENT: { key: 'shipment_management', default: true, tier: 'basic' },
   DRIVER_MANAGEMENT: { key: 'driver_management', default: true, tier: 'basic' },
   BASIC_ANALYTICS: { key: 'basic_analytics', default: true, tier: 'basic' },
-  
+
   // Advanced Features
   AI_COMMANDS: { key: 'ai_commands', default: false, tier: 'professional' },
   VOICE_COMMANDS: { key: 'voice_commands', default: false, tier: 'professional' },
   ADVANCED_ANALYTICS: { key: 'advanced_analytics', default: false, tier: 'professional' },
   REAL_TIME_TRACKING: { key: 'real_time_tracking', default: false, tier: 'professional' },
-  
+
   // Enterprise Features
   GRAPHQL_API: { key: 'graphql_api', default: false, tier: 'enterprise' },
   WEBHOOK_SUPPORT: { key: 'webhook_support', default: false, tier: 'enterprise' },
@@ -123,8 +123,8 @@ class WhiteLabelConfigService {
     // Cache configuration
     this.configCache.set(organizationId, whiteLabelConfig);
 
-    logger.info('White-label configuration created', { 
-      organizationId, 
+    logger.info('White-label configuration created', {
+      organizationId,
       configId: whiteLabelConfig.id,
       tier: whiteLabelConfig.tier,
     });
@@ -485,7 +485,7 @@ class WhiteLabelConfigService {
   _validateFeatures(features, tier) {
     Object.entries(features).forEach(([key, enabled]) => {
       const feature = Object.values(AVAILABLE_FEATURES).find(f => f.key === key);
-      
+
       if (!feature) {
         throw new Error(`Unknown feature: ${key}`);
       }

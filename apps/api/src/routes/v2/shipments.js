@@ -10,13 +10,13 @@
 
 const express = require('express');
 const router = express.Router();
-const { PrismaClient } = require('@prisma/client');
+const { getPrisma } = require('../../db/prisma');
 const { ApiResponse } = require('@infamous-freight/shared');
 const { authenticate, requireScope } = require('../../middleware/security');
 const { validateString, handleValidationErrors } = require('../../middleware/validation');
 const { HTTP_STATUS } = require('@infamous-freight/shared');
 
-const prisma = new PrismaClient();
+const prisma = getPrisma();
 
 /**
  * @swagger

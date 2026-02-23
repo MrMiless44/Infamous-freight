@@ -1,6 +1,6 @@
-const { PrismaClient } = require("@prisma/client");
+const { getPrisma } = require("../../db/prisma");
 
-const prisma = new PrismaClient();
+const prisma = getPrisma();
 
 async function processExpireOffers(job) {
   const now = new Date();

@@ -10,11 +10,11 @@ const { graphqlHTTP } = require('express-graphql');
 const { buildSchema } = require('graphql');
 const { authenticate, requireScope } = require('../middleware/security');
 const { limiters } = require('../middleware/security');
-const { PrismaClient } = require('@prisma/client');
+const { getPrisma } = require('../db/prisma');
 const { ApiResponse } = require('@infamous-freight/shared');
 
 const router = express.Router();
-const prisma = new PrismaClient();
+const prisma = getPrisma();
 
 /**
  * GraphQL Schema Definition

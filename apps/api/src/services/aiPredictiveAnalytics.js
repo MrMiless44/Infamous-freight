@@ -14,10 +14,10 @@
  * @module services/aiPredictiveAnalytics
  */
 
-const { PrismaClient } = require('@prisma/client');
+const { getPrisma } = require('../db/prisma');
 const { logger } = require('../middleware/logger');
 
-const prisma = new PrismaClient();
+const prisma = getPrisma();
 
 /**
  * Prediction types
@@ -343,7 +343,7 @@ class AIPredictiveAnalyticsService {
     for (let i = 0; i < days; i++) {
       const date = new Date(startDate);
       date.setDate(date.getDate() + i);
-      
+
       data.push({
         date,
         volume: Math.floor(45 + Math.random() * 15 + Math.sin(i / 7) * 10),
@@ -387,20 +387,20 @@ class AIPredictiveAnalyticsService {
 
       // Weighted ensemble of different models
       let volume = baseVolume;
-      
+
       // Trend component (40% weight)
       volume += features.trend.dailyChange * i * 0.4;
-      
+
       // Seasonal component (30% weight)
       if (features.seasonality) {
         volume *= (features.seasonality[date.getMonth()] * 0.3 + 0.7);
       }
-      
+
       // Weekly pattern (20% weight)
       if (features.weeklyPattern) {
         volume *= (features.weeklyPattern[date.getDay()] * 0.2 + 0.8);
       }
-      
+
       // Momentum component (10% weight)
       volume *= (1 + features.momentum * 0.1);
 
@@ -421,14 +421,14 @@ class AIPredictiveAnalyticsService {
   _calculateTrend(data) {
     const n = data.length;
     const volumes = data.map(d => d.volume);
-    
+
     const sumX = (n * (n - 1)) / 2;
     const sumY = volumes.reduce((a, b) => a + b, 0);
     const sumXY = volumes.reduce((sum, y, x) => sum + x * y, 0);
     const sumX2 = (n * (n - 1) * (2 * n - 1)) / 6;
-    
+
     const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
-    
+
     return {
       current: sumY / n,
       dailyChange: slope,
@@ -517,7 +517,7 @@ class AIPredictiveAnalyticsService {
 
   _calculateWinProbability(ourPrice, avgCompetitorPrice) {
     const priceDiff = (avgCompetitorPrice - ourPrice) / avgCompetitorPrice;
-    
+
     if (priceDiff > 0.1) return 0.85; // 10% cheaper
     if (priceDiff > 0.05) return 0.70; // 5% cheaper
     if (priceDiff > 0) return 0.55; // Slightly cheaper

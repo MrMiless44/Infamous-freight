@@ -3,6 +3,7 @@
 // Implements OWASP Top 10 security best practices
 
 const rateLimit = require("express-rate-limit");
+const { ipKeyGenerator } = require("express-rate-limit");
 const { body, validationResult } = require("express-validator");
 const xss = require("xss");
 const sqlstring = require("sqlstring");
@@ -23,8 +24,8 @@ const createAdvancedLimiter = (config) => {
   return rateLimit({
     windowMs,
     keyGenerator: (req) => {
-      // Use user ID if authenticated, otherwise IP
-      return req.user?.sub || req.ip;
+      // Use user ID if authenticated, otherwise normalized IP
+      return req.user?.sub || ipKeyGenerator(req);
     },
     max: (req) => {
       // Tier-based rate limits

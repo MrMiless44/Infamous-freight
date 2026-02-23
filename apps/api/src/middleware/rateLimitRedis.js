@@ -7,6 +7,7 @@
  */
 
 const rateLimit = require("express-rate-limit");
+const { ipKeyGenerator } = require("express-rate-limit");
 const RedisStore = require("rate-limit-redis");
 const { createClient } = require("redis");
 
@@ -84,8 +85,8 @@ module.exports.rateLimiters = {
     standardHeaders: true,
     legacyHeaders: false,
     keyGenerator: (req) => {
-      // Rate limit by username if available, otherwise by IP
-      return req.body?.email || req.ip;
+      // Rate limit by username if available, otherwise by normalized IP
+      return req.body?.email || ipKeyGenerator(req);
     },
   }),
 
@@ -169,7 +170,7 @@ module.exports.rateLimiters = {
     legacyHeaders: false,
     keyGenerator: (req) => {
       // Rate limit by email address
-      return req.body?.email || req.ip;
+      return req.body?.email || ipKeyGenerator(req);
     },
   }),
 

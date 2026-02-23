@@ -173,7 +173,7 @@ app.use(correlationMiddleware);
 app.use(performanceMiddleware);
 app.use(bodyLoggingMiddleware); // Log request/response bodies with sensitive data redacted
 app.use(metricsRecorderMiddleware);
-app.use(smartCacheMiddleware()); // Smart response caching (before rate limit)
+app.use(smartCacheMiddleware); // Smart response caching (before rate limit)
 app.use(cacheInvalidationMiddleware); // Auto-invalidate cache on mutations
 app.use(compressionMiddleware); // Add compression for all responses
 app.use(httpLogger);

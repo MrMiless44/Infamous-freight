@@ -6,10 +6,9 @@
  */
 
 const DataLoader = require('dataloader');
-const { PrismaClient } = require('@prisma/client');
+const { getPrisma } = require('../db/prisma');
 
-// Use global Prisma instance if available, otherwise create new
-const prisma = global.prisma || new PrismaClient();
+const prisma = getPrisma();
 
 /**
  * Batch loader for shipments with related data
