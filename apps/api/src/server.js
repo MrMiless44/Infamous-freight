@@ -96,6 +96,7 @@ const analyticsBIRoutes = require("./routes/analytics-bi");
 const complianceInsuranceRoutes = require("./routes/compliance-insurance");
 const phase9AdvancedRoutes = require("./routes/phase9.advanced");
 const graphqlRoutes = require("./routes/graphql");
+const recommendationsRoutes = require("./routes/recommendations");
 
 const marketplaceEnabled =
   String(
@@ -258,6 +259,7 @@ app.use("/api/v4/analytics", analyticsBIRoutes);
 app.use("/api/v4/compliance", complianceInsuranceRoutes);
 app.use("/api", phase9AdvancedRoutes);
 app.use("/api/graphql", graphqlRoutes);
+app.use("/api/recommendations", recommendationsRoutes);
 app.use("/api", metricsRoutes);
 app.use("/api", adminFeatureFlagsRoutes);
 app.use("/api", adminOpsRoutes);
