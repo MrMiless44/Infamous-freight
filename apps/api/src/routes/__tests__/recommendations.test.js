@@ -9,8 +9,8 @@ const jwt = require("jsonwebtoken");
 // Mock dependencies
 jest.mock("../../middleware/logger");
 
-// Create global prisma mock (used by recommendations.js without explicit import)
-global.prisma = {
+// Mock Prisma
+const mockPrisma = {
   shipment: {
     findMany: jest.fn(),
   },
@@ -22,9 +22,8 @@ global.prisma = {
   },
 };
 
-// Mock Prisma
-jest.mock("@prisma/client", () => ({
-  PrismaClient: jest.fn().mockImplementation(() => global.prisma),
+jest.mock("../../db/prisma", () => ({
+  prisma: mockPrisma,
 }));
 
 // Mock recommendationService
@@ -451,7 +450,7 @@ describe("Recommendations Routes", () => {
     const token = createToken(["recommendations:update"]);
 
     it("should record feedback successfully", async () => {
-      global.prisma.recommendationFeedback.create.mockResolvedValue({
+      mockPrisma.recommendationFeedback.create.mockResolvedValue({
         id: "feedback-123",
         recommendationId: "rec-123",
       });
@@ -506,7 +505,7 @@ describe("Recommendations Routes", () => {
     const token = createToken(["recommendations:view"]);
 
     it("should return customer insights", async () => {
-      global.prisma.shipment.findMany.mockResolvedValue([
+      mockPrisma.shipment.findMany.mockResolvedValue([
         { id: "shipment-1", customerId: "customer-123", price: 100, serviceType: "express" },
         { id: "shipment-2", customerId: "customer-123", price: 150, serviceType: "express" },
       ]);
@@ -524,7 +523,7 @@ describe("Recommendations Routes", () => {
     });
 
     it("should accept custom time range", async () => {
-      global.prisma.shipment.findMany.mockResolvedValue([]);
+      mockPrisma.shipment.findMany.mockResolvedValue([]);
       mockRecommendationService.getTopItems.mockReturnValue([]);
 
       const response = await request(app)
@@ -557,7 +556,7 @@ describe("Recommendations Routes", () => {
     const token = createToken(["recommendations:view"]);
 
     it("should return trending data for all categories", async () => {
-      global.prisma.shipment.findMany.mockResolvedValue([
+      mockPrisma.shipment.findMany.mockResolvedValue([
         { serviceType: "express", origin: "NYC", destination: "LA", features: ["insurance"] },
         { serviceType: "express", origin: "NYC", destination: "LA", features: ["tracking"] },
       ]);
@@ -576,7 +575,7 @@ describe("Recommendations Routes", () => {
     });
 
     it("should filter by category", async () => {
-      global.prisma.shipment.findMany.mockResolvedValue([
+      mockPrisma.shipment.findMany.mockResolvedValue([
         { serviceType: "express", origin: "NYC", destination: "LA" },
       ]);
 
@@ -611,7 +610,7 @@ describe("Recommendations Routes", () => {
 
   describe("GET /api/recommendations/health", () => {
     it("should return healthy status", async () => {
-      global.prisma.recommendationLog.count.mockResolvedValue(150);
+      mockPrisma.recommendationLog.count.mockResolvedValue(150);
 
       const response = await request(app).get("/api/recommendations/health");
 
@@ -621,7 +620,7 @@ describe("Recommendations Routes", () => {
     });
 
     it("should return unhealthy status on error", async () => {
-      global.prisma.recommendationLog.count.mockRejectedValue(
+      mockPrisma.recommendationLog.count.mockRejectedValue(
         new Error("Database connection failed"),
       );
 
@@ -632,7 +631,7 @@ describe("Recommendations Routes", () => {
     });
 
     it("should not require authentication", async () => {
-      global.prisma.recommendationLog.count.mockResolvedValue(100);
+      mockPrisma.recommendationLog.count.mockResolvedValue(100);
 
       const response = await request(app).get("/api/recommendations/health");
 
@@ -656,7 +655,7 @@ describe("Recommendations Routes", () => {
 
     it("should apply audit logging to feedback", async () => {
       const token = createToken(["recommendations:update"]);
-      global.prisma.recommendationFeedback.create.mockResolvedValue({
+      mockPrisma.recommendationFeedback.create.mockResolvedValue({
         id: "feedback-123",
       });
 
