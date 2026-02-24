@@ -157,6 +157,36 @@ jobs:
     steps:
       - name: Canary health check
         run: |
-          curl -fsS "$CANARY_URL/health"
+          set -u
+          MAX_RETRIES=3
+          RETRY_DELAY_SECONDS=10
+          EXPECTED_BODY_SUBSTRING='"status":"ok"'
+
+          attempt=1
+          while [ "$attempt" -le "$MAX_RETRIES" ]; do
+            echo "Canary health check attempt $attempt/$MAX_RETRIES..."
+
+            # Perform health check with explicit timeout; do not fail the script automatically on curl error
+            RESPONSE="$(curl --fail --show-error --silent --max-time 30 "$CANARY_URL/health" 2>&1)"
+            CURL_EXIT_CODE=$?
+
+            if [ "$CURL_EXIT_CODE" -eq 0 ] && echo "$RESPONSE" | grep -q "$EXPECTED_BODY_SUBSTRING"; then
+              echo "Canary health check passed with expected response."
+              exit 0
+            fi;
+
+            echo "Canary attempt $attempt failed (exit code: $CURL_EXIT_CODE). Response:"
+            echo "$RESPONSE"
+
+            if [ "$attempt" -lt "$MAX_RETRIES" ]; then
+              echo "Retrying in ${RETRY_DELAY_SECONDS}s..."
+              sleep "$RETRY_DELAY_SECONDS"
+            fi
+
+            attempt=$((attempt + 1))
+          done
+
+          echo "::error::Canary health check failed after ${MAX_RETRIES} attempts for ${CANARY_URL}/health"
+          exit 1
         env:
           CANARY_URL: ${{ secrets.API_CANARY_URL }}
