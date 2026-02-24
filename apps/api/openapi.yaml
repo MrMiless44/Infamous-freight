@@ -65,3 +65,22 @@ paths:
       responses:
         '201':
           description: Checkout session URL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      checkoutUrl:
+                        type: string
+                        format: uri
+                      sessionId:
+                        type: string
+                required:
+                  - success
+                  - data
+                additionalProperties: false
