@@ -1,5 +1,5 @@
 export interface ELDProvider {
-  fetchDriverData(driverId: string): Promise<unknown>;
+  fetchDriverData(driverId: string): Promise<NormalizedTelemetryEvent[]>;
 }
 
 export type NormalizedTelemetryEvent = {
