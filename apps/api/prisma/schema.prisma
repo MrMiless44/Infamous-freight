@@ -2243,3 +2243,45 @@ model RestoreLog {
   @@index([initiatedAt])
   @@map("restore_logs")
 }
+
+// ============================================
+// RECOMMENDATION ENGINE
+// ============================================
+
+model RecommendationLog {
+  id                  String   @id @default(cuid())
+
+  // Context
+  customerId          String?
+  shipmentId          String?
+  recommendationType  String   // service | route | driver | vehicle | pricing | personalized
+
+  // Payload
+  context             Json     @default("{}")
+  recommendations     Json     @default("[]")
+
+  timestamp           DateTime @default(now())
+
+  @@index([customerId])
+  @@index([recommendationType])
+  @@index([timestamp])
+  @@map("recommendation_logs")
+}
+
+model RecommendationFeedback {
+  id                  String   @id @default(cuid())
+
+  recommendationId    String
+  recommendationType  String   // service | route | driver | vehicle | pricing | personalized
+  itemId              String
+  action              String   // accepted | rejected | modified
+  rating              Int?
+  feedback            String?
+  userId              String
+  timestamp           DateTime @default(now())
+
+  @@index([recommendationId])
+  @@index([userId])
+  @@index([timestamp])
+  @@map("recommendation_feedback")
+}

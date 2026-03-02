@@ -1030,8 +1030,8 @@ class RecommendationService {
       await prisma.recommendationLog.create({
         data: {
           ...data,
-          context: JSON.stringify(data.context || {}),
-          recommendations: JSON.stringify(data.recommendations || []),
+          context: data.context || {},
+          recommendations: data.recommendations || [],
           timestamp: new Date(),
         },
       });
