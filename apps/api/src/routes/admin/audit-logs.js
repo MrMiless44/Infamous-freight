@@ -120,7 +120,8 @@ router.get(
       const isAdmin = role === "ADMIN";
 
       const format = String(req.query.format || "csv").toLowerCase();
-      const limit = Math.min(Number(req.query.limit || 5000), 20000);
+      const rawLimit = Number(req.query.limit);
+      const limit = Number.isFinite(rawLimit) ? Math.min(rawLimit, 20000) : 5000;
 
       const where = { organizationId: req.auth.organizationId };
       if (!isAdmin && req.auth?.userId) where.actorUserId = req.auth.userId;
