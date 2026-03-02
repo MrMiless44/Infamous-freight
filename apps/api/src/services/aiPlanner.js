@@ -47,4 +47,9 @@ function planFromCommand(commandRaw) {
   return { tools };
 }
 
-module.exports = { planFromCommand };
+module.exports = {
+  planFromCommand,
+  parseCreateShipment,
+  parseUpdateShipment,
+  parseNotify,
+};
