@@ -18,6 +18,9 @@ async function notifyUserTool(ctx, args) {
     clickTarget: args?.clickTarget ? String(args.clickTarget) : "/shipments",
   };
 
+  // NOTE: sendToDriver is currently the only push send method and is used for all
+  // user notifications (drivers and non-drivers). If pushNotificationService
+  // gains a generic sendToUser (or similar), update this call to use it.
   const result = await pushNotificationService.sendToDriver(userId, notification);
   return { userId, notification, result };
 }
