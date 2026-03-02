@@ -157,8 +157,8 @@ router.post(
         });
       }
 
-      await client.aiCommand.update({ where: { id }, data: { status: "QUEUED" } });
       await aiCommandQueue.add("execute", { aiCommandId: id });
+      await client.aiCommand.update({ where: { id }, data: { status: "QUEUED" } });
 
       return res.json({ ok: true, id, status: "QUEUED" });
     } catch (error) {
