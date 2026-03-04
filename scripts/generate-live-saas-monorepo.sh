@@ -279,6 +279,17 @@ cat > apps/web/app/lib/api.ts <<'TS'
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 export const apiFetch = (path: string, init?: RequestInit) => fetch(`${API_URL}${path}`, init);
 TS
+cat > apps/web/app/layout.tsx <<'TSX'
+import type { ReactNode } from 'react';
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+TSX
 cat > apps/web/app/page.tsx <<'TSX'
 export default function Page() { return <main style={{ padding: 20 }}>INFAMOUS FREIGHT web app is ready.</main>; }
 TSX
