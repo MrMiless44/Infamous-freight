@@ -1,7 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_NAME="${1:-infamous-freight}"
+FORCE=0
+
+if [[ "${1-}" == "--force" ]]; then
+  FORCE=1
+  REPO_NAME="${2:-infamous-freight}"
+else
+  REPO_NAME="${1:-infamous-freight}"
+fi
+
+if [[ -d "$REPO_NAME" && $FORCE -ne 1 ]]; then
+  if [[ -n "$(ls -A "$REPO_NAME" 2>/dev/null || true)" ]]; then
+    echo "Error: Directory '$REPO_NAME' already exists and is not empty. Re-run with --force to overwrite." >&2
+    exit 1
+  fi
+fi
 mkdir -p "$REPO_NAME"
 cd "$REPO_NAME"
 
