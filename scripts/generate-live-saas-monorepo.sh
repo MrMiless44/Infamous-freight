@@ -199,20 +199,30 @@ import { env } from '../env.js';
 
 export const authRoutes = Router();
 
-authRoutes.post('/register', async (req, res) => {
-  const { orgName, email, password } = req.body ?? {};
-  const org = await prisma.organization.create({ data: { name: orgName } });
-  const user = await prisma.user.create({ data: { orgId: org.id, email, role: 'OWNER', passwordHash: await bcrypt.hash(password, 12) } });
-  const token = jwt.sign({ sub: user.id, orgId: org.id, role: user.role, email: user.email }, env.JWT_SECRET, { expiresIn: '7d' });
-  res.json({ org, user: { id: user.id, email: user.email, role: user.role }, token });
+authRoutes.post('/register', async (req, res, next) => {
+  try {
+    const { orgName, email, password } = req.body ?? {};
+    const org = await prisma.organization.create({ data: { name: orgName } });
+    const user = await prisma.user.create({ data: { orgId: org.id, email, role: 'OWNER', passwordHash: await bcrypt.hash(password, 12) } });
+    const token = jwt.sign({ sub: user.id, orgId: org.id, role: user.role, email: user.email }, env.JWT_SECRET, { expiresIn: '7d' });
+    res.json({ org, user: { id: user.id, email: user.email, role: user.role }, token });
+  } catch (err) {
+    next(err);
+  }
 });
 
-authRoutes.post('/login', async (req, res) => {
-  const { orgId, email, password } = req.body ?? {};
-  const user = await prisma.user.findFirst({ where: { orgId, email } });
-  if (!user || !(await bcrypt.compare(password, user.passwordHash))) return res.status(401).json({ error: 'Invalid credentials' });
-  const token = jwt.sign({ sub: user.id, orgId: user.orgId, role: user.role, email: user.email }, env.JWT_SECRET, { expiresIn: '7d' });
-  res.json({ token, user: { id: user.id, email: user.email, role: user.role } });
+authRoutes.post('/login', async (req, res, next) => {
+  try {
+    const { orgId, email, password } = req.body ?? {};
+    const user = await prisma.user.findFirst({ where: { orgId, email } });
+    if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    const token = jwt.sign({ sub: user.id, orgId: user.orgId, role: user.role, email: user.email }, env.JWT_SECRET, { expiresIn: '7d' });
+    res.json({ token, user: { id: user.id, email: user.email, role: user.role } });
+  } catch (err) {
+    next(err);
+  }
 });
 TS
 
