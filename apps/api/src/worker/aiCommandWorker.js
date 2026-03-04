@@ -106,7 +106,9 @@ async function executeAiCommand({ aiCommandId }) {
     results.push(await executeToolCall(ctx, tc));
   }
 
-  const ok = results.length > 0 && results.every((r) => r.ok);
+  const ok = results.length === 0
+    ? cmd2.toolCalls.every((tc) => String(tc.status) === "executed")
+    : results.every((r) => r.ok);
 
   await client.aiCommand.update({
     where: { id: aiCommandId },
