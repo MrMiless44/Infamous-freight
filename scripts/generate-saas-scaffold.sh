@@ -64,7 +64,7 @@ volumes:
   pgdata:
 YAML
 
-mkdir -p apps/api/src/{middleware,routes,services,workers/jobs,integrations/stripe,lib} apps/api/prisma
+mkdir -p apps/api/src/{middleware,routes,services,worker,jobs,queue,integrations/stripe,lib} apps/api/prisma
 mkdir -p packages/shared/src apps/web apps/mobile
 
 cat > packages/shared/package.json <<'JSON'
