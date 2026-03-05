@@ -146,18 +146,18 @@ cleanly:
 
 ## 5) Multi-tenant isolation (non-negotiable)
 
-Every query must be scoped by `orgId`.
+Every query must be scoped by the tenant identifier from auth (`req.auth.organizationId`, derived from JWT claim `org_id`).
 
 Best practices:
 
-- `orgId` present on every row of every tenant-owned table.
-- Composite uniqueness includes `orgId` (for example, `(orgId, email)`).
-- DB indexes include `orgId` for performance.
+- `org_id` present on every row of every tenant-owned table (DB column corresponding to `req.auth.organizationId`).
+- Composite uniqueness includes `org_id` (for example, `(org_id, email)`).
+- DB indexes include `org_id` for performance.
 
 Defense in depth:
 
-- API middleware enforces `orgId` scope.
-- Prisma/ORM helpers enforce `orgId` in every call.
+- API middleware enforces tenant scope via `req.auth.organizationId`.
+- Prisma/ORM helpers require and enforce `req.auth.organizationId` in every call.
 - Optional hard backstop: Postgres RLS in later phases.
 
 ## 6) Real-time tracking architecture
