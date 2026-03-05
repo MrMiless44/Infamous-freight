@@ -32,7 +32,7 @@ Infamous Freight is an AI-powered logistics SaaS platform.
 
 - All code must be written in TypeScript where applicable.
 - No hardcoded secrets.
-- All APIs require authentication middleware.
+- All non-public API endpoints must use the standard middleware stack: limiters → authenticate → requireOrganization → requireScope → auditLog → validators → handleValidationErrors.
 - Prisma must be used for database access.
 - All new endpoints require unit tests.
 - Domain types, constants, and shared helpers must be imported from `@infamous-freight/shared` (do not redefine them locally in API, web, or mobile apps).
