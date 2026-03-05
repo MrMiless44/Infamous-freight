@@ -64,7 +64,7 @@ Infrastructure + Data Layer
 
 - **Stack**: Node.js + Express + TypeScript
 - **Responsibilities**:
-  - JWT (RS256) authentication and role authorization
+  - JWT authentication and role authorization (HMAC via `JWT_SECRET` by default; optional RS256 via JWKS middleware)
   - Request routing to domain services
   - Rate limiting and abuse prevention
   - Structured logging and audit IDs
