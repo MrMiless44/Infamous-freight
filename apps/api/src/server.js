@@ -79,6 +79,7 @@ const complianceRoutes = require("./routes/compliance");
 const documentsRoutes = require("./routes/documents");
 const loadboardRoutes = require("./routes/loadboard");
 const webhookRoutes = require("./routes/webhooks");
+const githubWebhookRoutes = require("./routes/github-webhook");
 const analyticsRoutesPhase2 = require("./routes/analytics.routes");
 const mlRoutes = require("./routes/ml.routes");
 const geofencingRoutes = require("./routes/geofencing.routes");
@@ -200,6 +201,7 @@ if (marketplaceEnabled && marketplaceWebhooks) {
 if (stripeWebhookRouter) {
   app.use("/api/stripe", stripeWebhookRouter);
 }
+app.use("/api/github", githubWebhookRoutes);
 
 app.use(express.json({ limit: "12mb" }));
 app.use(express.urlencoded({ extended: true }));
