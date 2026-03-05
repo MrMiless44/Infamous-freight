@@ -26,7 +26,6 @@ Infamous Freight is an AI-powered logistics SaaS platform.
 - `apps/web`
 - `apps/mobile`
 - `packages/shared`
-- `packages/ui`
 
 ## Coding Standards
 
