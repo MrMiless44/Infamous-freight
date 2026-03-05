@@ -16,7 +16,7 @@ import { documentsRoutes } from './routes/documents.routes.js';
 import { realtimeRoutes } from './routes/realtime.routes.js';
 import { stripeRoutes } from './routes/stripe.routes.js';
 
-import { prisma } from './lib/prisma.js';
+import prisma from './lib/prisma.js';
 
 const app = express();
 
