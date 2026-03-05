@@ -1,9 +1,12 @@
 import { assignIssueToCopilot } from "./copilotAssign.js";
 import { getInstallationOctokit } from "./githubAppAuth.js";
 
-const TARGET_OWNER = "MrMiless44";
-const TARGET_REPO = "Infamous-freight";
+const TARGET_OWNER = process.env.TARGET_OWNER || "MrMiless44";
+const TARGET_REPO = process.env.TARGET_REPO || "Infamous-freight";
 
+if (!TARGET_OWNER || !TARGET_REPO) {
+  throw new Error("TARGET_OWNER and TARGET_REPO must be configured (via environment variables or defaults).");
+}
 function hasLabel(payload, expectedLabel) {
   return (payload.issue?.labels || []).some((label) => {
     if (typeof label === "string") return label === expectedLabel;
