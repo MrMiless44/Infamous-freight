@@ -14,7 +14,7 @@ Infamous Freight is an AI-powered logistics SaaS platform.
 - Express
 - Prisma ORM
 - PostgreSQL
-- JWT authentication (RS256)
+- JWT authentication (HMAC via `JWT_SECRET` by default, optional RS256 via JWKS middleware)
 
 ### Mobile
 - React Native
