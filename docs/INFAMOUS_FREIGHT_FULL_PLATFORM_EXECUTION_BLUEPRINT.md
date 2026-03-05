@@ -278,35 +278,13 @@ Administrative controls manage org-level policies, access, and configuration.
 
 ```text
 /apps
-   /mobile
+   /api
    /web
+   /mobile
+   /worker
 
 /packages
-   /ai
-   /logistics
-   /loadboard
-   /routing
-   /tracking
-   /analytics
-
-/components
-   Avatar
-   Dashboard
-   ShipmentCard
-   RouteMap
-   LoadBoardCard
-
-/modules
-   aiEngine
-   shipmentManager
-   loadBoardManager
-   routingEngine
-   notificationEngine
-   analyticsEngine
-
-/assets
-   /avatars
-   /icons
+   /shared
 ```
 
 ---
