@@ -29,7 +29,14 @@ app.post("/github/webhook", express.raw({ type: "application/json" }), async (re
 
   const event = req.get("X-GitHub-Event") || "";
   const delivery = req.get("X-GitHub-Delivery") || "";
-  const payload = JSON.parse(req.body.toString("utf8"));
+
+  let payload;
+  try {
+    payload = JSON.parse(req.body.toString("utf8"));
+  } catch (error) {
+    console.error("invalid JSON payload", { event, delivery, error });
+    return res.status(400).send("invalid JSON payload");
+  }
 
   try {
     await handleWebhookEvent({ event, delivery, payload });
