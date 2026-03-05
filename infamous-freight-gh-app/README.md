@@ -17,13 +17,7 @@ This service receives GitHub App webhook events and orchestrates Copilot assignm
 2. Install dependencies:
 
    ```bash
-   npm install
-   ```
-
-3. Run locally:
-
-   ```bash
-   npm run start
+   pnpm install
    ```
 
 ## Endpoints
