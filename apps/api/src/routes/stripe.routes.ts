@@ -15,7 +15,11 @@ stripeRoutes.post(
   requireRole(['OWNER', 'ADMIN', 'FINANCE', 'SHIPPER', 'BROKER']),
   async (req, res) => {
     try {
-      const out = await createPaymentIntentForInvoice(req.orgId!, req.params.invoiceId);
+      const orgId = (req as any).auth?.organizationId;
+      if (!orgId) {
+        throw new Error('Missing organization context');
+      }
+      const out = await createPaymentIntentForInvoice(orgId, req.params.invoiceId);
       res.json(out);
     } catch (e: any) {
       res.status(400).json({ error: e.message ?? 'Failed' });
