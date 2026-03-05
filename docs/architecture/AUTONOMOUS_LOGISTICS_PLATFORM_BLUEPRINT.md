@@ -72,7 +72,7 @@ Infrastructure + Data Layer
 
 ### Reference endpoint
 
-- `POST /api/load/create` creates a new load and emits `shipment_created`
+- `POST /api/shipments` creates a new shipment and emits `shipment_created`
 
 ## 5) AI Command Engine (Decision Brain)
 
