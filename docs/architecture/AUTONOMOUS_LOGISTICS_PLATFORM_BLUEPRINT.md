@@ -39,7 +39,7 @@ Infrastructure + Data Layer
 
 ## Web Client (Shipper / Broker / Carrier)
 
-- **Stack**: Next.js + React + Tailwind + GraphQL
+- **Stack**: Next.js + React + Chakra UI + Emotion + GraphQL
 - **Primary roles**:
   - **Shippers** create shipments and monitor service levels
   - **Brokers** supervise matching, pricing, and exception handling
