@@ -31,7 +31,13 @@ documentsRoutes.post(
   requireRole(['OWNER', 'ADMIN', 'BROKER', 'SHIPPER', 'CARRIER_ADMIN', 'DRIVER']),
   upload.single('file'),
   async (req, res) => {
-    const orgId = req.orgId!;
+    const orgId =
+      // Prefer organization context set by auth middleware, fall back to any legacy `req.orgId`
+      ((req as any).auth && (req as any).auth.organizationId) || (req as any).orgId;
+
+    if (!orgId) {
+      return res.status(400).json({ error: 'Missing organization context' });
+    }
     const shipmentId = String(req.body.shipmentId || '');
     const type = String(req.body.type || 'OTHER');
 
