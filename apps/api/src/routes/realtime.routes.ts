@@ -1,10 +1,9 @@
 import { Router } from 'express';
-import { requireAuth } from '../middleware/auth.js';
-import { requireTenant } from '../middleware/tenant.js';
-import prisma from '../lib/prisma.js';
+import { authenticate } from '../middleware/security.js';
+import { prisma } from '../lib/prisma.js';
 
 export const realtimeRoutes = Router();
-realtimeRoutes.use(requireAuth, requireTenant);
+realtimeRoutes.use(authenticate);
 
 // Server-Sent Events stream for a shipment: emits last ping + last events every few seconds.
 // Works in browsers without websocket infra.
