@@ -57,7 +57,7 @@ body:
       placeholder: |
         - [ ] All shipment route tests pass
         - [ ] Duplicate shipment returns HTTP 409
-        - [ ] `pnpm test -- --runInBand` passes locally for affected package(s)
+        - [ ] `pnpm test` passes locally for affected package(s)
     validations:
       required: true
 
