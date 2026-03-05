@@ -57,7 +57,7 @@ Before approval, do a quick diff sanity pass:
 ## CI Failure Summarizer
 
 `PR Checks` includes a `summarize-on-fail` job that posts a PR comment with next steps whenever validation fails.
-Use that comment as the next Copilot task target.
+Use that comment as the next Copilot task target and rerun tests locally with the same commands used in CI (for example, `pnpm test` at the repo root or a per-package run such as `pnpm --filter apps/web test`).
 
 ## Operating Procedure (Tests Failing)
 
