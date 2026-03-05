@@ -22,12 +22,26 @@ Express, Prisma, PostgreSQL, REST APIs.
 ## Example API Pattern
 
 ```ts
-router.post('/shipments', authenticate, async (req, res, next) => {
-  try {
-    const shipment = await shipmentService.create(req.body)
-    res.json(shipment)
-  } catch (err) {
-    next(err)
-  }
-})
+router.post(
+  "/shipments",
+  limiters.general,
+  authenticate,
+  requireScope("shipments:create"),
+  auditLog,
+  [
+    validateString("origin"),
+    validateString("destination"),
+    handleValidationErrors,
+  ],
+  async (req, res, next) => {
+    try {
+      const shipment = await shipmentService.create(req.body);
+      res
+        .status(HTTP_STATUS.CREATED)
+        .json(new ApiResponse({ success: true, data: shipment }));
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 ```
