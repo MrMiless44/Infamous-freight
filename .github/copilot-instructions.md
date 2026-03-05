@@ -35,6 +35,8 @@ Infamous Freight is an AI-powered logistics SaaS platform.
 - All APIs require authentication middleware.
 - Prisma must be used for database access.
 - All new endpoints require unit tests.
+- Domain types, constants, and shared helpers must be imported from `@infamous-freight/shared` (do not redefine them locally in API, web, or mobile apps).
+- When shared types/constants change, rebuild the shared package before running the API or tests: `pnpm --filter @infamous-freight/shared build` (this updates `packages/shared/dist`).
 
 ## Feature Delivery Order
 
