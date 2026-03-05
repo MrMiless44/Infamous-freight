@@ -63,7 +63,11 @@ export async function handleWebhookEvent({ event, payload }) {
     const body = payload.comment?.body || "";
     if (!body.trim().startsWith(CONFIG.runCommand)) return;
 
-    const issueNumber = payload.issue?.number;
+    const issue = payload.issue;
+    // Ignore comments on pull requests; this handler is for issues only.
+    if (!issue || issue.pull_request) return;
+
+    const issueNumber = issue.number;
     if (!issueNumber) return;
 
     await octokit.request("POST /repos/{owner}/{repo}/issues/{issue_number}/comments", {
