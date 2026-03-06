@@ -36,7 +36,7 @@ fi
 echo "==> Formatting staged files with Prettier"
 PRETTIER_TARGETS="$(echo "$STAGED_FILES" | grep -E '\.(js|jsx|ts|tsx|json|md|yml|yaml|css|scss|html)$' || true)"
 if [ -n "$PRETTIER_TARGETS" ]; then
-  echo "$PRETTIER_TARGETS" | tr '\n' '\0' | xargs -0 pnpm exec prettier --write
+  echo "$PRETTIER_TARGETS" | tr '\n' '\0' | xargs -0 pnpm exec prettier --write --
   echo "$PRETTIER_TARGETS" | tr '\n' '\0' | xargs -0 git add
 fi
 
