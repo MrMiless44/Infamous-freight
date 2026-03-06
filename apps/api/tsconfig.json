@@ -8,21 +8,5 @@
     "skipLibCheck": true,
     "outDir": "dist"
   },
-  "files": [
-    "src/index.ts",
-    "src/env.ts",
-    "src/db/prisma.ts",
-    "src/auth/jwt.ts",
-    "src/auth/middleware.ts",
-    "src/routes/health.ts",
-    "src/routes/tenants.ts",
-    "src/routes/shipments.ts",
-    "src/routes/loadboard.ts",
-    "src/routes/ai.ts",
-    "src/services/ai.service.ts",
-    "src/services/loadboard.service.ts",
-    "src/services/shipments.service.ts",
-    "src/utils/errors.ts",
-    "src/utils/validate.ts"
-  ]
+  "include": ["src/**/*"]
 }
