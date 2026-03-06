@@ -16,17 +16,30 @@ export function createPostgresSessionStore(pg: PgClientLike, opts?: { maxRecent?
       `insert into genesis_sessions (k, tenant_id, user_id, payload, updated_at)
        values ($1,$2,$3,$4,now())
        on conflict (k) do update set payload=$4, updated_at=now()`,
-      [key(mem.tenantId, mem.userId), mem.tenantId, mem.userId ?? null, mem],
+      [key(mem.tenantId, mem.userId), mem.tenantId, mem.userId ?? null, JSON.stringify(mem)],
     );
   }
 
   return {
     async get(tenantId, userId) {
-      const r = await pg.query<{ payload: GenesisSessionMemory }>(
+      const r = await pg.query<{ payload: unknown }>(
         `select payload from genesis_sessions where k=$1`,
         [key(tenantId, userId)],
       );
-      if (r.rows[0]?.payload) return r.rows[0].payload;
+      const rawPayload = r.rows[0]?.payload;
+      if (rawPayload != null) {
+        let mem: GenesisSessionMemory | undefined;
+        if (typeof rawPayload === "string") {
+          try {
+            mem = JSON.parse(rawPayload) as GenesisSessionMemory;
+          } catch {
+            // fall through to fresh session
+          }
+        } else if (typeof rawPayload === "object") {
+          mem = rawPayload as GenesisSessionMemory;
+        }
+        if (mem) return mem;
+      }
 
       const fresh: GenesisSessionMemory = {
         tenantId,
