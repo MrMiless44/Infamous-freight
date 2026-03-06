@@ -1,4 +1,4 @@
-name: Uptime Check
+nme: Uptime Check
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
     - cron: "*/5 * * * *"
 
   # Allow manual trigger
-  workflow_dispatch:
+
 
 jobs:
   health-check:
