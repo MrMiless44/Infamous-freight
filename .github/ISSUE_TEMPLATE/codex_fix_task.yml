@@ -1,8 +1,8 @@
-name: Codex Fix Task
-description: Deterministic tasking for AI coding and review work
-title: "[Codex Fix]: "
+name: Internal Codex Fix Task
+description: Internal deterministic tasking for AI coding and review work
+title: "[Internal Codex Task]: "
 labels:
-  - ai-task
+  - ai-task-internal
 
 body:
   - type: textarea
