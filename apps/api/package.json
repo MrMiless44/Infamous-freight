@@ -1,26 +1,22 @@
 {
-  "name": "@infamous/api",
+  "name": "api",
   "private": true,
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node --watch --loader ts-node/esm src/index.ts",
+    "dev": "tsx watch src/server.ts",
     "build": "tsc -p tsconfig.json",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev"
+    "start": "node dist/server.js",
+    "test": "vitest run",
+    "lint": "eslint ."
   },
   "dependencies": {
-    "@infamous/shared": "workspace:*",
-    "@prisma/client": "^7.4.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.2",
-    "zod": "^3.24.0",
-    "@sentry/node": "^8.33.1"
+    "express": "^4.21.0"
   },
   "devDependencies": {
-    "prisma": "^7.4.2",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.6.2"
+    "@types/express": "^4.17.21",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.3"
   }
 }

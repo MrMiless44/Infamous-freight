@@ -1,17 +1,23 @@
 {
-  "name": "@infamous/mobile",
+  "name": "mobile",
   "private": true,
+  "version": "0.0.0",
+  "main": "expo-router/entry",
   "scripts": {
-    "dev": "expo start"
+    "dev": "expo start",
+    "build": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "lint": "eslint ."
   },
   "dependencies": {
-    "@infamous/shared": "workspace:*",
-    "expo": "^55.0.5",
-    "expo-router": "^4.0.0",
+    "expo": "^51.0.0",
+    "expo-router": "^3.5.0",
+    "@infamous-freight/shared": "workspace:*",
     "react": "^18.3.1",
-    "react-native": "^0.84.1"
+    "react-native": "^0.74.5"
   },
   "devDependencies": {
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.3"
   }
 }
