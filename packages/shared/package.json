@@ -5,6 +5,6 @@
   "types": "src/index.ts",
   "private": true,
   "dependencies": {
-    "zod": "^4.3.6"
+    "zod": "^3.23.8"
   }
 }
