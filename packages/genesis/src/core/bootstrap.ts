@@ -27,7 +27,9 @@ export function createGenesis(init: GenesisInit): GenesisAPI {
   const policy = init.policy ?? defaultPolicy;
   const sessions = init.sessionStore ?? createSessionStore(25);
 
-  sessions.patch(ctx.tenantId, ctx.userId, { lastSeenAt: ctx.now() });
+  void sessions
+    .patch(ctx.tenantId, ctx.userId, { lastSeenAt: ctx.now() })
+    .catch((err) => log.error("Failed to patch session lastSeenAt on bootstrap", { err }));
 
   const avatar = loadAvatar({ id: "default" });
   const avatarSM = createAvatarStateMachine(avatar.defaultState);
