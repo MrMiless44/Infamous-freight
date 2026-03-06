@@ -1,0 +1,69 @@
+ci:
+  - changed-files:
+      - any-glob-to-any-file: ".github/workflows/**"
+
+docs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docs/**"
+          - "*.md"
+
+api:
+  - changed-files:
+      - any-glob-to-any-file: "apps/api/**"
+
+web:
+  - changed-files:
+      - any-glob-to-any-file: "apps/web/**"
+
+mobile:
+  - changed-files:
+      - any-glob-to-any-file: "apps/mobile/**"
+
+worker:
+  - changed-files:
+      - any-glob-to-any-file: "apps/worker/**"
+
+ai:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "ai/**"
+          - "apps/ai/**"
+
+compliance:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "@compliance/**"
+          - "compliance/**"
+
+infra:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docker/**"
+          - "deploy/**"
+          - "infrastructure/**"
+          - "k8s/**"
+          - "terraform/**"
+          - "nginx/**"
+          - "supabase/**"
+
+security:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".security/**"
+          - ".github/workflows/security.yml"
+          - ".github/workflows/secret-scan-lite.yml"
+          - ".github/workflows/codeql.yml"
+
+tests:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "tests/**"
+          - "e2e/**"
+          - "k6/**"
+          - "load-tests/**"
+          - "tools/load-tests/**"
+
+packages:
+  - changed-files:
+      - any-glob-to-any-file: "packages/**"
