@@ -1,6 +1,20 @@
 # Infamous Freight
 
-AI-powered freight and logistics automation platform.
+![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6?logo=typescript&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-App-000000?logo=next.js&logoColor=white)
+![AI Powered](https://img.shields.io/badge/AI-Powered-22C55E)
+![Logistics](https://img.shields.io/badge/Freight-Logistics-0EA5E9)
+![Monorepo](https://img.shields.io/badge/Monorepo-pnpm-F69220?logo=pnpm&logoColor=white)
+
+AI-powered freight and logistics automation platform with real-time tracking, carrier networks, and intelligent load orchestration.
+
+**Alternative brand-forward version**
+
+Infamous Freight — an AI-powered logistics platform connecting shippers, brokers, and carriers with real-time automation and smart load matching.
+
+**GitHub topics**
+
+`logistics`, `freight`, `supply-chain`, `saas`, `ai`, `nextjs`, `typescript`, `kubernetes`, `automation`, `transportation`
 
 This repository is a platform monorepo containing product applications, shared packages,
 AI/ML services, operational tooling, infrastructure code, compliance domains,
