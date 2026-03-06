@@ -195,7 +195,7 @@ router.post(
       const { id } = req.params;
       logger.info("Load auto-assign requested", {
         userId: req.user?.sub,
-        tenantId: req.user?.tenantId || req.user?.organizationId,
+        tenantId: req.auth?.organizationId || req.user?.tenantId || req.user?.organizationId,
         loadId: id,
       });
 
