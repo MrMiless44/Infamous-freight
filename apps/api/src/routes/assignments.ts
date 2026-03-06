@@ -32,14 +32,41 @@ assignments.post("/", requireAuth as any, async (req, res, next) => {
     });
     if (!shipment) return res.status(404).json({ error: "Shipment not found" });
 
+    const loadId = req.body?.loadId ? String(req.body.loadId) : null;
+    if (loadId) {
+      const load = await (prisma as any).load.findFirst({
+        where: { id: loadId, tenantId },
+        select: { id: true }
+      });
+      if (!load) return res.status(404).json({ error: "Load not found" });
+    }
+
+    const carrierId = req.body?.carrierId ? String(req.body.carrierId) : null;
+    if (carrierId) {
+      const carrier = await (prisma as any).carrier.findFirst({
+        where: { id: carrierId, tenantId },
+        select: { id: true }
+      });
+      if (!carrier) return res.status(404).json({ error: "Carrier not found" });
+    }
+
+    const driverId = req.body?.driverId ? String(req.body.driverId) : null;
+    if (driverId) {
+      const driver = await (prisma as any).driver.findFirst({
+        where: { id: driverId, tenantId },
+        select: { id: true }
+      });
+      if (!driver) return res.status(404).json({ error: "Driver not found" });
+    }
+
     const { assignment } = await (prisma as any).$transaction(async (tx: any) => {
       const assignmentRow = await tx.shipmentAssignment.create({
         data: {
           tenantId,
           shipmentId,
-          loadId: req.body?.loadId ?? null,
-          carrierId: req.body?.carrierId ?? null,
-          driverId: req.body?.driverId ?? null,
+          loadId,
+          carrierId,
+          driverId,
           assignedBy,
           status: "ASSIGNED"
         }
