@@ -1,9 +1,6 @@
 from app.features import build_feature_vector
 from app.schemas import RatePredictionRequest
-
-MODEL_VERSION = "baseline-v1"
-
-
+from app.config import MODEL_VERSION
 def predict_rate(payload: RatePredictionRequest) -> float:
     features = build_feature_vector(payload)
 
