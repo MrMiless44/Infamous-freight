@@ -4,6 +4,7 @@ on:
   push:
     branches: [main, develop]
   pull_request:
+  # Run security checks daily at 02:00 UTC (intentional daily cadence)
   schedule:
     - cron: '0 2 * * *'
 
