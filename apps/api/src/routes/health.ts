@@ -2,7 +2,7 @@ import { Router } from "express";
 
 export const health = Router();
 
-health.get("/", async (_req, res) => {
+health.get("/", (_req, res) => {
   res.json({
     status: "ok",
     service: "infamous-freight-api",
