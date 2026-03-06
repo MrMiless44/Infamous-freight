@@ -69,7 +69,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build shared package (required for types)
-        run: pnpm --filter @infamous/shared build
+        run: pnpm --filter @infamous/shared run build --if-present
 
       - name: Type check all packages
         run: pnpm typecheck
