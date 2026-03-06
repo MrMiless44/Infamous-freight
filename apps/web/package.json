@@ -13,7 +13,8 @@
     "@infamous/shared": "workspace:*",
     "next": "^14.2.14",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "@sentry/nextjs": "^10.42.0"
   },
   "devDependencies": {
     "typescript": "^5.6.3",
