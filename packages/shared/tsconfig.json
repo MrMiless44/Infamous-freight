@@ -1,15 +1,10 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "CommonJS",
-    "moduleResolution": "Node",
-    "declaration": true,
-    "emitDeclarationOnly": false,
-    "outDir": "dist",
     "rootDir": "src",
-    "strict": true,
-    "skipLibCheck": true,
-    "composite": true
+    "outDir": "dist",
+    "declaration": true,
+    "declarationMap": true
   },
   "include": ["src"]
 }

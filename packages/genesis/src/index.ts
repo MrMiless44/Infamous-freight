@@ -5,3 +5,5 @@ export * from "./memory/types";
 export * from "./memory/sessionStore";
 export * from "./memory/adapters/redisSessionStore";
 export * from "./memory/adapters/postgresSessionStore";
+export * from "./avatar/genesis-avatar";
+export * from "./types/genesis.types";

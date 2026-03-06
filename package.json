@@ -11,7 +11,9 @@
     "prisma:generate": "pnpm --filter ./apps/api exec prisma generate",
     "prisma:validate": "pnpm --filter ./apps/api exec prisma validate",
     "prisma:migrate:deploy": "pnpm --filter ./apps/api exec prisma migrate deploy",
-    "secret:scan": "bash ./scripts/check-secrets.sh"
+    "secret:scan": "bash ./scripts/check-secrets.sh",
+    "build:packages": "pnpm --filter @infamous/shared build && pnpm --filter @infamous/genesis build",
+    "dev:packages": "pnpm --parallel --filter @infamous/shared --filter @infamous/genesis dev"
   },
   "devDependencies": {
     "prettier": "^3.2.5"
