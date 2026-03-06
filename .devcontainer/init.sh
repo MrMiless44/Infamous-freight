@@ -31,6 +31,13 @@ if [ ! -d "node_modules" ]; then
     pnpm install
 fi
 
+if [ -f package.json ]; then
+  if node -e "const p=require('./package.json'); process.exit(p.devDependencies && p.devDependencies.husky ? 0 : 1)" 2>/dev/null; then
+    echo "==> Installing Husky hooks"
+    pnpm exec husky || true
+  fi
+fi
+
 # Build shared package
 echo "🏗️ Building shared package..."
 pnpm --filter @infamous-freight/shared build

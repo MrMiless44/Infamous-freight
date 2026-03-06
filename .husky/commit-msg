@@ -1,24 +1,16 @@
-#!/bin/sh
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-# Enforce conventional commits format
-# Format: type(scope): subject
-# Types: feat, fix, docs, style, refactor, perf, test, chore, ci, revert
+set -eu
 
-COMMIT_MSG=$(head -n 1 "$1")
-COMMIT_PATTERN="^(feat|fix|docs|style|refactor|perf|test|chore|ci|revert)(\(.+\))?!?: .{1,}"
+COMMIT_MSG_FILE="${1:?commit message file is required}"
+COMMIT_MSG="$(head -n 1 "$COMMIT_MSG_FILE")"
 
-if ! echo "$COMMIT_MSG" | grep -qE "$COMMIT_PATTERN"; then
-  echo "❌ Commit message does not follow Conventional Commits format!"
-  echo ""
-  echo "Format: type(scope): subject"
-  echo ""
-  echo "Examples:"
-  echo "  feat(api): add user authentication"
-  echo "  fix(web): resolve button styling issue"
-  echo "  docs: update README with setup instructions"
-  echo ""
-  echo "Types: feat, fix, docs, style, refactor, perf, test, chore, ci, revert"
+PATTERN='^(feat|fix|docs|style|refactor|test|chore|build|ci|perf|revert)(\([a-zA-Z0-9._/-]+\))?: .{1,}$'
+
+if ! printf '%s' "$COMMIT_MSG" | grep -Eq "$PATTERN"; then
+  echo "Invalid commit message."
+  echo "Use: type(scope): message"
+  echo "Example: feat(api): add shipment status transition guard"
   exit 1
 fi
-
-echo "✅ Commit message format is valid!"

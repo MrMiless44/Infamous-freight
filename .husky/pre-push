@@ -1,39 +1,25 @@
-#!/bin/sh
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-set -e
+set -eu
 
-echo "Running pre-push checks..."
+ROOT_DIR="$(git rev-parse --show-toplevel)"
+cd "$ROOT_DIR"
 
-# Build shared if it changed
-echo "Checking shared package..."
-if git diff origin/main HEAD -- packages/shared/src | grep -q .; then
-  echo "📦 Building shared package..."
-  pnpm --filter @infamous-freight/shared build || {
-    echo "❌ Shared build failed. Fix errors and try again."
-    exit 1
-  }
+echo "==> husky pre-push: Infamous Freight"
+
+if ! command -v pnpm >/dev/null 2>&1; then
+  echo "pnpm is required but not installed."
+  exit 1
 fi
 
-# Lint
-echo "🔍 Linting..."
-pnpm lint --max-warnings 100 || {
-  echo "❌ Lint failed. Run 'pnpm lint --fix' to auto-fix."
-  exit 1
-}
+echo "==> Running typecheck"
+pnpm typecheck
 
-# Type check
-echo "✔️ Type checking..."
-pnpm typecheck || {
-  echo "❌ Type check failed."
-  exit 1
-}
+echo "==> Running tests"
+pnpm test -- --runInBand
 
-# API tests
-echo "🧪 Running API tests..."
-pnpm --filter api test --bail || {
-  echo "❌ Tests failed."
-  exit 1
-}
+echo "==> Running build"
+pnpm build
 
-echo "✅ All pre-push checks passed!"
-exit 0
+echo "✅ husky pre-push passed"
