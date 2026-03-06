@@ -94,3 +94,17 @@ firebase-debug.*.log
 **/GoogleService-Info.plist
 **/google-services.json
 .firebase-admin-sdk.*.json
+
+# local secrets / credentials
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+credentials/
+service-account*.json
+
+# misc
+node_modules
+dist
+coverage

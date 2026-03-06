@@ -3,25 +3,35 @@ name: Prisma
 on:
   pull_request:
     paths:
-      - 'prisma/**'
-      - 'apps/api/**'
-      - 'packages/**'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
+      - "apps/api/**"
+      - "packages/**"
+      - "prisma/**"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "package.json"
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/api/**"
+      - "packages/**"
+      - "prisma/**"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "package.json"
 
-concurrency:
-  group: prisma-${{ github.ref }}
-  cancel-in-progress: true
+permissions:
+  contents: read
 
 env:
-  NODE_VERSION: 20
-  PNPM_VERSION: 9
+  NODE_VERSION: "20"
 
 jobs:
-  prisma-check:
-    name: Prisma Validate & Drift Guard
+  prisma-validate:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/api
 
     services:
       postgres:
@@ -29,18 +39,17 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: prisma_ci
+          POSTGRES_DB: infamous_freight_prisma
         ports:
           - 5432:5432
         options: >-
-          --health-cmd="pg_isready -U postgres -d prisma_ci"
+          --health-cmd="pg_isready -U postgres -d infamous_freight_prisma"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=10
+          --health-retries=5
 
     env:
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/prisma_ci?schema=public
-      DIRECT_URL: postgresql://postgres:postgres@localhost:5432/prisma_ci?schema=public
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/infamous_freight_prisma?schema=public
 
     steps:
       - name: Checkout
@@ -49,7 +58,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: ${{ env.PNPM_VERSION }}
+          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -59,18 +68,16 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        working-directory: ${{ github.workspace }}
 
       - name: Prisma format
-        run: pnpm --filter ./apps/api exec prisma format --check
+        run: pnpm exec prisma format --check
 
       - name: Prisma validate
-        run: pnpm --filter ./apps/api exec prisma validate
+        run: pnpm exec prisma validate
 
       - name: Prisma generate
-        run: pnpm --filter ./apps/api exec prisma generate
+        run: pnpm exec prisma generate
 
-      - name: Apply migrations
-        run: pnpm --filter ./apps/api exec prisma migrate deploy
-
-      - name: Check migration status
-        run: pnpm --filter ./apps/api exec prisma migrate status
+      - name: Prisma migrate status
+        run: pnpm exec prisma migrate deploy && pnpm exec prisma migrate status
