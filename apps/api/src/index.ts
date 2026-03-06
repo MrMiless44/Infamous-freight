@@ -1,5 +1,6 @@
 import cors from "cors";
 import express from "express";
+import * as Sentry from "@sentry/node";
 import { ENV } from "./env.js";
 import { health } from "./routes/health.js";
 import { ai } from "./routes/ai.js";
@@ -9,6 +10,13 @@ import { tenants } from "./routes/tenants.js";
 import { HttpError } from "./utils/errors.js";
 
 const app = express();
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  environment: process.env.NODE_ENV,
+  tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
+});
+
 app.use(cors({ origin: ENV.CORS_ORIGIN, credentials: true }));
 app.use(express.json());
 
