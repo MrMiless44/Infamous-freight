@@ -13,7 +13,7 @@
       "requiresLinearHistory": true,
       "requiresStatusChecks": true,
       "requiresStrictStatusChecks": true,
-      "restrictsPushes": false,
+      "restrictsPushes": true,
       "restrictsReviewDismissals": false,
       "requiredStatusCheckContexts": [
         "CI / Lint, Typecheck, Test, Build",

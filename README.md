@@ -1,5 +1,7 @@
 # Infamous Freight
 
+![CI](https://github.com/MrMiless44/Infamous-freight/actions/workflows/ci.yml/badge.svg)
+![Security](https://github.com/MrMiless44/Infamous-freight/actions/workflows/security.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6?logo=typescript&logoColor=white)
 ![Next.js](https://img.shields.io/badge/Next.js-App-000000?logo=next.js&logoColor=white)
 ![AI Powered](https://img.shields.io/badge/AI-Powered-22C55E)
