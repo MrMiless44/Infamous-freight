@@ -17,13 +17,13 @@ This document defines the runtime contract, required checks, and merge rules for
 
 ## Required Scripts
 
-| Script        | Command                         | Purpose                            |
-| ------------- | ------------------------------- | ---------------------------------- |
+| Script        | Command                          | Purpose                            |
+| ------------- | -------------------------------- | ---------------------------------- |
 | `ci:sanity`   | `pnpm install --frozen-lockfile` | Deterministic install from lockfile |
-| `build`       | `pnpm -r build`                 | Build all workspace packages       |
-| `test`        | `pnpm -r test`                  | Run all tests                      |
-| `lint`        | `pnpm -r lint`                  | Lint all packages                  |
-| `typecheck`   | `pnpm -r exec tsc --noEmit`     | TypeScript type checking           |
+| `build`       | `pnpm -r --if-present build`     | Build all workspace packages       |
+| `test`        | `pnpm -r --if-present test`      | Run all tests                      |
+| `lint`        | `pnpm -r --if-present lint`      | Lint all packages                  |
+| `typecheck`   | `pnpm -r exec tsc --noEmit`      | TypeScript type checking           |
 
 ## Workflows
 
