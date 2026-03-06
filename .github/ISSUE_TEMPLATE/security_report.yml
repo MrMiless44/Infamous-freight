@@ -1,42 +1,21 @@
-name: Security issue reporting
-description: Report a potential security vulnerability
+name: Security vulnerability reporting (guidance only)
+description: How to report a potential security vulnerability (do not file details as a public issue)
 title: "[Security]: "
 labels:
   - security
 
 body:
-  - type: textarea
-    id: vulnerability
+  - type: markdown
     attributes:
-      label: Vulnerability description
-      description: Describe the vulnerability.
-      placeholder: Explain the issue clearly and responsibly.
-    validations:
-      required: true
-
-  - type: textarea
-    id: impact
-    attributes:
-      label: Impact
-      description: What could an attacker do?
-      placeholder: Describe the security impact.
-    validations:
-      required: false
-
-  - type: textarea
-    id: reproduce
-    attributes:
-      label: Steps to reproduce
-      description: Provide safe, minimal reproduction details.
-      placeholder: Describe how to reproduce the issue.
-    validations:
-      required: false
-
-  - type: textarea
-    id: mitigation
-    attributes:
-      label: Suggested mitigation
-      description: If known, suggest a fix or mitigation.
-      placeholder: Describe possible mitigations.
-    validations:
-      required: false
+      value: |
+        ## Reporting security vulnerabilities
+        
+        Security vulnerabilities must **not** be reported via public GitHub issues.
+        
+        To report a potential security vulnerability, please follow the instructions in our security policy
+        (see `SECURITY.md` or the "Security" tab in this repository). Use the private reporting channels
+        listed there (for example, GitHub private vulnerability reporting or the designated security contact).
+        
+        If you reached this form while trying to report a vulnerability, please **do not** provide any
+        technical details here. Instead, go back and use the private reporting mechanism described in the
+        security policy so that your report is handled confidentially and responsibly.
