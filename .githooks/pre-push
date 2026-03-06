@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(git rev-parse --show-toplevel)"
+cd "$ROOT_DIR"
+
+echo "==> pre-push: Infamous Freight"
+
+if ! command -v pnpm >/dev/null 2>&1; then
+  echo "❌ pnpm is required but not installed."
+  exit 1
+fi
+
+echo "==> Running typecheck"
+pnpm typecheck
+
+echo "==> Running tests"
+pnpm test -- --runInBand
+
+echo "==> Running build"
+pnpm build
+
+echo "✅ pre-push passed"

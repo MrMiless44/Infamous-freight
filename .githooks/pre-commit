@@ -1,24 +1,55 @@
-#!/usr/bin/env sh
-# Prevent committing obvious secrets to the repository
+#!/usr/bin/env bash
+set -euo pipefail
 
-FILES=$(git diff --cached --name-only | tr '\n' ' ')
+ROOT_DIR="$(git rev-parse --show-toplevel)"
+cd "$ROOT_DIR"
 
-if [ -z "$FILES" ]; then
+echo "==> pre-commit: Infamous Freight"
+
+if ! command -v pnpm >/dev/null 2>&1; then
+  echo "❌ pnpm is required but not installed."
+  exit 1
+fi
+
+STAGED_FILES="$(git diff --cached --name-only --diff-filter=ACMR)"
+
+if [ -z "$STAGED_FILES" ]; then
+  echo "No staged files. Skipping hook."
   exit 0
 fi
 
-# Patterns to flag (extend as needed)
-PATTERNS='(AWS_SECRET_ACCESS_KEY|AWS_ACCESS_KEY_ID|STRIPE_SECRET_KEY|JWT_SECRET|GOOGLE_API_KEY|PRIVATE KEY-----)'
+echo "==> Checking staged diff for obvious secrets"
+if git diff --cached -- . ':(exclude)pnpm-lock.yaml' ':(exclude).githooks/*' | grep -E -i \
+  '(api[_-]?key|secret|password|token|aws_access_key_id|aws_secret_access_key|private[_-]?key|BEGIN (RSA|EC|OPENSSH) PRIVATE KEY)' \
+  >/dev/null; then
+  echo "❌ Potential secret detected in staged changes. Commit blocked."
+  exit 1
+fi
 
-for f in $FILES; do
-  if [ -f "$f" ]; then
-    if grep -E -i "$PATTERNS" "$f" >/dev/null 2>&1; then
-      echo "[pre-commit] Potential secret found in $f"
-      echo "Activate hooks via: git config core.hooksPath .githooks"
-      echo "Commit aborted. Remove/redact secrets before committing."
-      exit 1
-    fi
+echo "==> Running docs hook when markdown/docs files are staged"
+if echo "$STAGED_FILES" | grep -E '(^README\.md$|^docs/|\.md$)' >/dev/null; then
+  if [ -x ".githooks/pre-commit-docs" ]; then
+    ./.githooks/pre-commit-docs
   fi
-done
+fi
 
-exit 0
+echo "==> Formatting staged files with Prettier"
+PRETTIER_TARGETS="$(echo "$STAGED_FILES" | grep -E '\.(js|jsx|ts|tsx|json|md|yml|yaml|css|scss|html)$' || true)"
+if [ -n "$PRETTIER_TARGETS" ]; then
+  echo "$PRETTIER_TARGETS" | tr '\n' '\0' | xargs -0 pnpm exec prettier --write
+  echo "$PRETTIER_TARGETS" | tr '\n' '\0' | xargs -0 git add
+fi
+
+echo "==> Lint-fixing staged JS/TS files"
+ESLINT_TARGETS="$(echo "$STAGED_FILES" | grep -E '\.(js|jsx|ts|tsx)$' || true)"
+if [ -n "$ESLINT_TARGETS" ]; then
+  echo "$ESLINT_TARGETS" | tr '\n' '\0' | xargs -0 pnpm exec eslint --fix
+  echo "$ESLINT_TARGETS" | tr '\n' '\0' | xargs -0 git add
+fi
+
+echo "==> Running fast repo guardrails for critical paths"
+if echo "$STAGED_FILES" | grep -E '^(apps/api|apps/web|apps/mobile|packages/shared|packages/ui|prisma|\.github)/' >/dev/null; then
+  pnpm lint
+fi
+
+echo "✅ pre-commit passed"
