@@ -32,4 +32,4 @@ jobs:
         run: pnpm build
 
       - name: Run Lighthouse CI
-        run: pnpm dlx @lhci/cli@0.13.x autorun
+        run: pnpm dlx @lhci/cli@0.13.x autorun --collect.startServerCommand="cd apps/web && pnpm exec next start -p 3000"
