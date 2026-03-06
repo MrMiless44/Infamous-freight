@@ -11,7 +11,7 @@
     "build": "pnpm -r build",
     "test": "pnpm -r test",
     "lint": "pnpm -r lint",
-    "typecheck": "pnpm -r exec tsc --noEmit",
+    "typecheck": "pnpm -r --filter ./apps/* exec tsc --noEmit",
     "format": "prettier --write .",
     "prisma:generate": "pnpm --filter ./apps/api exec prisma generate",
     "prisma:validate": "pnpm --filter ./apps/api exec prisma validate",
