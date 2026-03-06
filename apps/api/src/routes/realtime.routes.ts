@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { prisma } from "../lib/prisma.js";
+import { prisma } from "../db/prisma.js";
 import { authenticate } from "../middleware/security.js";
 
 export const realtimeRoutes = Router();
