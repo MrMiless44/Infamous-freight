@@ -4,9 +4,9 @@ This document stores the ready-to-paste workflow setup for Infamous Freight's Ma
 
 ## Base System
 
-- **Main Manus inbox:** `miless8787823@manus.bot`
-- **Approved sender (minimum):** `miless8787@gmail.com`
-- Add any additional trusted operator/admin sender addresses you control.
+- **Main Manus inbox:** `MAIN_MANUS_INBOX` (see internal Secrets Manager / 1Password for the current value)
+- **Approved sender (minimum):** `PRIMARY_APPROVED_SENDER` (see internal Secrets Manager / 1Password for the current value)
+- Add any additional trusted operator/admin sender addresses you control, and document them in the internal runbook/Secrets Manager rather than this repo.
 
 ## Recommended Setup Order
 
