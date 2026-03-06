@@ -27,8 +27,7 @@ jest.mock("@sentry/node", () => ({
   },
 }));
 
-// Mock @infamous-freight/shared first before other mocks
-jest.mock("@infamous-freight/shared", () => ({
+const mockShared = {
   ApiResponse: class {
     constructor(config) {
       Object.assign(this, { success: true, ...config });
@@ -52,7 +51,10 @@ jest.mock("@infamous-freight/shared", () => ({
   validateScope: jest.fn(() => true),
   hasScope: jest.fn(() => true),
   hasAllScopes: jest.fn(() => true),
-}));
+};
+
+jest.mock("@infamous-freight/shared", () => mockShared, { virtual: true });
+jest.mock("@infamous/shared", () => mockShared, { virtual: true });
 
 global.__PRISMA_MOCK__ = global.__PRISMA_MOCK__ || {};
 global.__PRISMA_MOCK__.$on = global.__PRISMA_MOCK__.$on || jest.fn();

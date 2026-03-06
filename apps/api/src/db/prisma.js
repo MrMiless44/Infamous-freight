@@ -1,5 +1,4 @@
 const { PrismaClient } = require("@prisma/client");
-const { PrismaPg } = require("@prisma/adapter-pg");
 const { Pool } = require("pg");
 const { env } = require("../config/env");
 const { recordQuery, DEFAULT_THRESHOLD } = require("../lib/queryMetrics");
@@ -13,8 +12,23 @@ function createPrismaClient() {
   if (!databaseUrl) return null;
 
   pool = pool || new Pool({ connectionString: databaseUrl });
+  let PrismaPg;
+  try {
+    ({ PrismaPg } = require("@prisma/adapter-pg"));
+  } catch (_error) {
+    try {
+      return new PrismaClient();
+    } catch (_innerError) {
+      return null;
+    }
+  }
+
   const adapter = new PrismaPg(pool);
-  return new PrismaClient({ adapter });
+  try {
+    return new PrismaClient({ adapter });
+  } catch (_error) {
+    return null;
+  }
 }
 
 function getPrisma() {

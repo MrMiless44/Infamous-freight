@@ -5,19 +5,27 @@ const LOG_LEVEL = process.env.LOG_LEVEL || "info";
 const PERF_WARN_THRESHOLD = parseInt(process.env.PERF_WARN_THRESHOLD_MS || "1000", 10);
 const PERF_ERROR_THRESHOLD = parseInt(process.env.PERF_ERROR_THRESHOLD_MS || "5000", 10);
 
+const prettyTransport = (() => {
+  if (process.env.NODE_ENV === "production") return undefined;
+
+  try {
+    require.resolve("pino-pretty");
+    return {
+      target: "pino-pretty",
+      options: {
+        colorize: true,
+        translateTime: "SYS:standard",
+        ignore: "pid,hostname",
+      },
+    };
+  } catch (_error) {
+    return undefined;
+  }
+})();
+
 const logger = pino({
   level: LOG_LEVEL,
-  transport:
-    process.env.NODE_ENV !== "production"
-      ? {
-          target: "pino-pretty",
-          options: {
-            colorize: true,
-            translateTime: "SYS:standard",
-            ignore: "pid,hostname",
-          },
-        }
-      : undefined,
+  transport: prettyTransport,
 });
 
 const httpLogger = pinoHttp({

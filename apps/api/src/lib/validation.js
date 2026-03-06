@@ -31,15 +31,14 @@ const emailSchema = z
 // Phone validation
 const phoneSchema = z
   .string()
-  .min(
-    VALIDATION.PHONE_MIN_LENGTH,
-    `Phone must be at least ${VALIDATION.PHONE_MIN_LENGTH} characters`,
-  )
-  .max(
-    VALIDATION.PHONE_MAX_LENGTH,
-    `Phone must not exceed ${VALIDATION.PHONE_MAX_LENGTH} characters`,
-  )
-  .regex(/^\+?[0-9\s\-()]+$/, "Invalid phone format");
+  .regex(/^\+?[0-9\s\-()]+$/, "Invalid phone format")
+  .refine((value) => {
+    const digitsOnly = value.replace(/\D/g, "");
+    return (
+      digitsOnly.length >= VALIDATION.PHONE_MIN_LENGTH &&
+      digitsOnly.length <= VALIDATION.PHONE_MAX_LENGTH
+    );
+  }, `Phone must contain ${VALIDATION.PHONE_MIN_LENGTH}-${VALIDATION.PHONE_MAX_LENGTH} digits`);
 
 // Coordinate validation
 const latitudeSchema = z
