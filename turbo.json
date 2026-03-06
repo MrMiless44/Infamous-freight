@@ -1,6 +1,7 @@
 {
   "tasks": {
     "build": { "dependsOn": ["^build"], "outputs": ["dist/**", ".next/**"] },
-    "dev": { "cache": false, "persistent": true }
+    "dev": { "cache": false, "persistent": true },
+    "typecheck": { "dependsOn": ["^build"] }
   }
 }
