@@ -1,0 +1,21 @@
+name: Security issue reporting
+description: Report a potential security vulnerability
+title: "[Security]: "
+
+labels: ["security"]
+
+body:
+
+- type: textarea
+  attributes:
+    label: Vulnerability description
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Impact
+
+- type: textarea
+  attributes:
+    label: Steps to reproduce

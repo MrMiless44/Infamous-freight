@@ -1,0 +1,26 @@
+name: Codex Fix Task
+description: Deterministic tasking for AI coding and review
+title: "[Codex Fix]: "
+
+labels: ["ai-task"]
+
+body:
+
+- type: textarea
+  attributes:
+    label: Issue
+    description: What is broken?
+  validations:
+    required: true
+
+- type: textarea
+  attributes:
+    label: Root cause hypothesis
+
+- type: textarea
+  attributes:
+    label: Files affected
+
+- type: textarea
+  attributes:
+    label: Desired fix
