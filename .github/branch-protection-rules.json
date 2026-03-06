@@ -17,7 +17,7 @@
       "restrictsReviewDismissals": false,
       "requiredStatusCheckContexts": [
         "Lint, Typecheck, Test, Build",
-        "Analyze",
+        "Analyze (javascript-typescript)",
         "dependency-review"
       ]
     }
