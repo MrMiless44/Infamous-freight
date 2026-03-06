@@ -87,10 +87,10 @@ pnpm --filter ./apps/worker dev
 
 ### Run platform checks
 ```bash
-pnpm lint
-pnpm typecheck
-pnpm test
-pnpm build
+pnpm -r --if-present lint
+pnpm -r --if-present typecheck
+pnpm -r --if-present test
+pnpm -r --if-present build
 ```
 
 ## Required reading
