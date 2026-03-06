@@ -12,8 +12,8 @@
     "prisma:validate": "pnpm --filter ./apps/api exec prisma validate",
     "prisma:migrate:deploy": "pnpm --filter ./apps/api exec prisma migrate deploy",
     "secret:scan": "bash ./scripts/check-secrets.sh",
-    "repo:audit": "bash scripts/repo-audit.sh",
-    "repo:bootstrap-readmes": "bash scripts/bootstrap-readmes.sh"
+    "repo:audit": "bash ./scripts/repo-audit.sh",
+    "repo:bootstrap-readmes": "bash ./scripts/bootstrap-readmes.sh"
   },
   "devDependencies": {
     "prettier": "^3.2.5"
