@@ -1,15 +1,19 @@
 {
   "name": "ai",
-  "version": "1.0.0",
   "private": true,
-  "description": "AI services and inference for Infamous Freight",
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "echo 'AI services development not yet configured'",
-    "build": "node -e \"console.log('AI build ready for implementation')\"",
-    "typecheck": "tsc --noEmit 2>/dev/null || echo 'Type checking pending tsconfig.json setup'",
-    "lint": "echo 'Linting not configured for AI package'"
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "lint": "eslint ."
   },
+  "dependencies": {},
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.3"
   }
 }

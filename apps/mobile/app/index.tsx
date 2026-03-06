@@ -1,11 +1,16 @@
-import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
-export default function Home() {
+export default function HomeScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", gap: 12 }}>
-      <Text>Infæmous Freight Mobile</Text>
-      <Link href="/dashboard">Dashboard</Link>
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 24
+      }}
+    >
+      <Text>Infamous Freight Mobile</Text>
     </View>
   );
 }

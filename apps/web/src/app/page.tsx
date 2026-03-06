@@ -1,8 +1,8 @@
-export default function Home() {
+export default function HomePage() {
   return (
     <main style={{ padding: 24 }}>
-      <h1>Infæmous Freight</h1>
-      <p>Go to /dashboard</p>
+      <h1>Infamous Freight Web</h1>
+      <p>AI-powered freight and logistics automation platform.</p>
     </main>
   );
 }
