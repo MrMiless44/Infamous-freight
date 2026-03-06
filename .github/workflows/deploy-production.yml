@@ -15,84 +15,75 @@ on:
           - production
           - staging
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
-  NODE_VERSION: "24.x"
-  PNPM_VERSION: "10.28.2"
+  NODE_VERSION: "22.22.0"
+  PNPM_VERSION: "9.0.0"
 
 jobs:
   test:
-    name: Run Tests
+    name: Lint, Typecheck & Test
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: ${{ env.PNPM_VERSION }}
 
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Lint
+        run: pnpm -r --if-present lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
       - name: Run tests
-        run: pnpm test || echo "Tests not configured yet"
+        run: pnpm -r --if-present test
         continue-on-error: true
 
   build:
     name: Build All Packages
     runs-on: ubuntu-latest
     needs: test
+    timeout-minutes: 20
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: ${{ env.PNPM_VERSION }}
 
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Build all packages
-        run: pnpm build
+        run: pnpm -r --if-present build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -108,6 +99,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/main'
+    timeout-minutes: 10
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -122,32 +114,33 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/main'
+    timeout-minutes: 15
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Fly CLI
-        uses: superfly/flyctl-actions/setup-flyctl@master
+        uses: superfly/flyctl-actions/setup-flyctl@v1.5.0
 
       - name: Deploy to Fly.io
-        if: ${{ secrets.FLY_API_TOKEN }}
-        run: flyctl deploy --remote-only
+        run: |
+          if [ -n "$FLY_API_TOKEN" ]; then
+            flyctl deploy --config apps/api/fly.toml --remote-only
+          else
+            echo "⚠️ FLY_API_TOKEN not found in secrets"
+            echo "To enable automatic Fly.io deployments:"
+            echo "1. Get your token: flyctl auth token"
+            echo "2. Add it to GitHub Secrets: FLY_API_TOKEN"
+          fi
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-
-      - name: Skip Fly.io deployment
-        if: ${{ !secrets.FLY_API_TOKEN }}
-        run: |
-          echo "⚠️ FLY_API_TOKEN not found in secrets"
-          echo "To enable automatic Fly.io deployments:"
-          echo "1. Get your token: flyctl auth token"
-          echo "2. Add it to GitHub Secrets: FLY_API_TOKEN"
 
   verify-deployment:
     name: Verify Production Deployment
     runs-on: ubuntu-latest
     needs: [deploy-web, deploy-api]
     if: github.ref == 'refs/heads/main'
+    timeout-minutes: 10
     steps:
       - name: Wait for deployments
         run: sleep 60
