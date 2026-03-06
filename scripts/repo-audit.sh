@@ -28,6 +28,11 @@ check_path "k8s"
 check_path "terraform"
 check_path "tests"
 check_path "docs"
+check_path "services"
+check_path "payments"
+check_path "configs"
+check_path "scripts"
+check_path "public"
 
 echo
 echo "==> Ambiguous/overlapping roots"
