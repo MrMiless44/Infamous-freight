@@ -67,8 +67,9 @@ jobs:
               - 'tsconfig*.json'
             e2e:
               - 'e2e/**'
-              - 'apps/**'
-              - 'packages/**'
+              - 'apps/web/**'
+              - 'apps/api/**'
+              - 'packages/shared/**'
               - 'pnpm-lock.yaml'
               - 'package.json'
               - 'pnpm-workspace.yaml'
