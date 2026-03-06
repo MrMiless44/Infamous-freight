@@ -15,13 +15,12 @@
       "requiresStrictStatusChecks": true,
       "restrictsPushes": false,
       "restrictsReviewDismissals": false,
-      "requiredStatusCheckContexts": [
-        "CI",
-        "Security",
-        "Analyze",
-        "secret-scan",
-        "dependency-review",
-        "sanity"
+        "CI / Lint, Typecheck, Test, Build",
+        "Security / secret-scan",
+        "CodeQL / Analyze",
+        "Dependency Review / dependency-review",
+        "repo-structure",
+        "CI Sanity / sanity"
       ]
     }
   ]
