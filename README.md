@@ -6,6 +6,11 @@
 ![Logistics](https://img.shields.io/badge/Freight-Logistics-0EA5E9)
 ![Monorepo](https://img.shields.io/badge/Monorepo-pnpm-F69220?logo=pnpm&logoColor=white)
 
+<img src="https://github.com/MrMiless44/Infamous-freight/actions/workflows/ci.yml/badge.svg">
+<img src="https://github.com/MrMiless44/Infamous-freight/actions/workflows/ci-sanity.yml/badge.svg">
+<img src="https://github.com/MrMiless44/Infamous-freight/actions/workflows/security.yml/badge.svg">
+<img src="https://github.com/MrMiless44/Infamous-freight/actions/workflows/repo-structure.yml/badge.svg">
+
 AI-powered freight and logistics automation platform with real-time tracking, carrier networks, and intelligent load orchestration.
 
 **Alternative brand-forward version**

@@ -16,6 +16,7 @@
       "restrictsPushes": false,
       "restrictsReviewDismissals": false,
       "requiredStatusCheckContexts": [
+        "CI Sanity / sanity",
         "CI / Lint, Typecheck, Test, Build",
         "CodeQL / Analyze",
         "Dependency Review / dependency-review"
