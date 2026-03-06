@@ -1,64 +1,24 @@
 name: Release
 description: Production deployment checklist
-title: "Release: <version>"
+title: "[Release]: "
+
 labels: ["release"]
+
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Complete all items before production deployment.
 
-  - type: checkboxes
-    id: build
-    attributes:
-      label: Build Verification
-      options:
-        - label: lint passed
-        - label: typecheck passed
-        - label: tests passed
-        - label: build passed
+- type: markdown
+  attributes:
+    value: |
+      Confirm the following before releasing.
 
-  - type: checkboxes
-    id: env
-    attributes:
-      label: Environment Variables
-      options:
-        - label: production env verified
-        - label: staging env verified
-        - label: secrets configured
+- type: checkboxes
+  id: release_checklist
+  attributes:
+    label: Checklist
+    options:
 
-  - type: checkboxes
-    id: migration
-    attributes:
-      label: Database Migration
-      options:
-        - label: migration reviewed
-        - label: staging migration successful
-        - label: backup snapshot confirmed
-
-  - type: checkboxes
-    id: health
-    attributes:
-      label: Health Checks
-      options:
-        - label: API health OK
-        - label: DB connectivity OK
-        - label: Redis connectivity OK
-
-  - type: checkboxes
-    id: observability
-    attributes:
-      label: Observability
-      options:
-        - label: Sentry reporting errors
-        - label: logs visible
-        - label: metrics dashboards healthy
-
-  - type: checkboxes
-    id: rollout
-    attributes:
-      label: Rollout Plan
-      options:
-        - label: rollout strategy defined
-        - label: rollback version identified
-        - label: monitoring window scheduled
+      - label: CI is green
+      - label: Tests passing
+      - label: Security scan clean
+      - label: Version updated
+      - label: Deployment plan ready

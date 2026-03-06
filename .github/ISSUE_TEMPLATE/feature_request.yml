@@ -1,55 +1,22 @@
 name: Feature Request
 description: Propose a new feature or enhancement
-title: "[Feature] "
-labels:
-  - enhancement
+title: "[Feature]: "
+labels: ["enhancement"]
+
 body:
-  - type: textarea
-    id: problem
-    attributes:
-      label: Problem
-      description: What problem are we solving?
-      placeholder: Brokers need a faster way to move from load creation to carrier assignment.
-    validations:
-      required: true
 
-  - type: textarea
-    id: proposal
-    attributes:
-      label: Proposed Solution
-      description: Describe the desired behavior.
-      placeholder: Add an assign carrier action directly in the load board row actions.
-    validations:
-      required: true
+- type: textarea
+  attributes:
+    label: Problem
+    description: What problem does this feature solve?
+  validations:
+    required: true
 
-  - type: textarea
-    id: impact
-    attributes:
-      label: Business / Operational Impact
-      placeholder: Reduces dispatch friction and improves load conversion speed.
+- type: textarea
+  attributes:
+    label: Proposed solution
+    description: Describe the feature.
 
-  - type: dropdown
-    id: area
-    attributes:
-      label: Area
-      options:
-        - API
-        - Web
-        - Mobile
-        - Shared packages
-        - Prisma / DB
-        - CI/CD
-        - Infra
-        - Docs
-    validations:
-      required: true
-
-  - type: checkboxes
-    id: risk
-    attributes:
-      label: Risk / Guardrails
-      options:
-        - label: This may affect auth / RBAC
-        - label: This may affect tenant isolation
-        - label: This may affect schema / migrations
-        - label: This may affect performance
+- type: textarea
+  attributes:
+    label: Alternatives considered

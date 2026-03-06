@@ -1,73 +1,34 @@
 name: Bug Report
 description: Report a reproducible bug
-title: "[Bug] "
-labels:
-  - bug
+title: "[Bug]: "
+labels: ["bug"]
+
 body:
-  - type: textarea
-    id: summary
-    attributes:
-      label: Summary
-      description: What is broken?
-      placeholder: Shipment status does not update after dispatch confirmation.
-    validations:
-      required: true
 
-  - type: textarea
-    id: steps
-    attributes:
-      label: Steps to Reproduce
-      description: Give exact steps.
-      placeholder: |
-        1. Go to ...
-        2. Click ...
-        3. Observe ...
-    validations:
-      required: true
+- type: textarea
+  attributes:
+    label: Description
+    description: What happened?
+  validations:
+    required: true
 
-  - type: textarea
-    id: expected
-    attributes:
-      label: Expected Behavior
-      placeholder: Shipment should transition from scheduled to in_transit.
-    validations:
-      required: true
+- type: textarea
+  attributes:
+    label: Steps to reproduce
+    description: How can we reproduce the issue?
+  validations:
+    required: true
 
-  - type: textarea
-    id: actual
-    attributes:
-      label: Actual Behavior
-      placeholder: UI stays on scheduled and API returns 500.
-    validations:
-      required: true
+- type: textarea
+  attributes:
+    label: Expected behavior
+    description: What should happen?
 
-  - type: dropdown
-    id: area
-    attributes:
-      label: Area
-      options:
-        - API
-        - Web
-        - Mobile
-        - Shared packages
-        - Prisma / DB
-        - CI/CD
-        - Infra
-        - Docs
-    validations:
-      required: true
+- type: input
+  attributes:
+    label: Environment
+    placeholder: Node version, OS, browser, etc.
 
-  - type: textarea
-    id: logs
-    attributes:
-      label: Logs / Screenshots / Evidence
-      placeholder: Paste stack traces, screenshots, CI logs, or request/response data here.
-
-  - type: checkboxes
-    id: checks
-    attributes:
-      label: Pre-flight
-      options:
-        - label: I searched for existing issues
-        - label: I included reproducible steps
-        - label: I removed secrets from logs and screenshots
+- type: textarea
+  attributes:
+    label: Logs or screenshots
