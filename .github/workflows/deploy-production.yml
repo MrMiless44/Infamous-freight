@@ -53,7 +53,7 @@ jobs:
         run: pnpm -r --if-present lint
 
       - name: Typecheck
-        run: pnpm -r --if-present typecheck
+        run: pnpm typecheck
 
       - name: Run tests
         run: pnpm -r --if-present test
