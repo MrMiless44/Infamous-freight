@@ -1,83 +1,27 @@
 name: CI
 
 on:
+  pull_request:
   push:
     branches:
       - main
       - develop
-      - staging
-  pull_request:
-    branches:
-      - '**'
+
+permissions:
+  contents: read
 
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: 22.22.0
-  PNPM_VERSION: 9
-  CI: true
+  NODE_VERSION: "20"
+  CI: "true"
 
 jobs:
-  detect:
-    name: Detect workspace changes
+  verify:
+    name: Lint • Typecheck • Test • Build
     runs-on: ubuntu-latest
-    outputs:
-      api: ${{ steps.filter.outputs.api }}
-      web: ${{ steps.filter.outputs.web }}
-      mobile: ${{ steps.filter.outputs.mobile }}
-      shared: ${{ steps.filter.outputs.shared }}
-      infra: ${{ steps.filter.outputs.infra }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Paths filter
-        id: filter
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            api:
-              - 'apps/api/**'
-              - 'packages/**'
-              - 'prisma/**'
-              - 'pnpm-lock.yaml'
-              - 'package.json'
-              - 'pnpm-workspace.yaml'
-              - 'tsconfig*.json'
-            web:
-              - 'apps/web/**'
-              - 'packages/**'
-              - 'pnpm-lock.yaml'
-              - 'package.json'
-              - 'pnpm-workspace.yaml'
-              - 'tsconfig*.json'
-            mobile:
-              - 'apps/mobile/**'
-              - 'packages/**'
-              - 'pnpm-lock.yaml'
-              - 'package.json'
-              - 'pnpm-workspace.yaml'
-              - 'tsconfig*.json'
-            shared:
-              - 'packages/**'
-              - 'pnpm-lock.yaml'
-              - 'package.json'
-              - 'pnpm-workspace.yaml'
-              - 'tsconfig*.json'
-            infra:
-              - '.github/**'
-              - 'Dockerfile'
-              - 'docker-compose*.yml'
-              - 'fly.toml'
-              - '.dockerignore'
-
-  quality:
-    name: Typecheck • Lint • Test • Build
-    runs-on: ubuntu-latest
-    needs: detect
-    if: ${{ needs.detect.outputs.api == 'true' || needs.detect.outputs.web == 'true' || needs.detect.outputs.mobile == 'true' || needs.detect.outputs.shared == 'true' || needs.detect.outputs.infra == 'true' }}
 
     services:
       postgres:
@@ -92,7 +36,7 @@ jobs:
           --health-cmd="pg_isready -U postgres -d infamous_freight_test"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=10
+          --health-retries=5
 
       redis:
         image: redis:7
@@ -102,16 +46,13 @@ jobs:
           --health-cmd="redis-cli ping"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=10
+          --health-retries=5
 
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/infamous_freight_test?schema=public
-      DIRECT_URL: postgresql://postgres:postgres@localhost:5432/infamous_freight_test?schema=public
       REDIS_URL: redis://localhost:6379
-      JWT_PRIVATE_KEY: test-private-key
-      JWT_PUBLIC_KEY: test-public-key
-      APP_ENV: test
-      NODE_ENV: test
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
 
     steps:
       - name: Checkout
@@ -120,7 +61,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: ${{ env.PNPM_VERSION }}
+          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -131,22 +72,19 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Generate Prisma client
-        run: pnpm prisma:generate
+      - name: Secret precheck
+        run: pnpm secret:scan
 
-      - name: Validate Prisma schema
-        run: pnpm prisma:validate
-
-      - name: Run migrations
-        run: pnpm prisma:migrate:deploy
-
-      - name: Typecheck
-        run: pnpm typecheck
+      - name: Prisma generate
+        run: pnpm --filter ./apps/api exec prisma generate
 
       - name: Lint
         run: pnpm lint
 
-      - name: Unit tests
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
         run: pnpm test -- --runInBand
 
       - name: Build

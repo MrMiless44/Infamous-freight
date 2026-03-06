@@ -1,0 +1,8 @@
+title = "Infamous Freight Gitleaks Config"
+
+[allowlist]
+description = "global allow list"
+paths = [
+  '''\.env\.example$''',
+  '''pnpm-lock\.yaml$'''
+]
