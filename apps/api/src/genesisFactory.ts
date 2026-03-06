@@ -30,8 +30,8 @@ export function makeGenesis(auth: { tenantId: string; sub: string; role: string 
         return rows.map((s: any) => ({
           shipmentId: s.id,
           status: s.status,
-          etaMs: s.etaMs ? Number(s.etaMs) : undefined,
-          lastPingMs: s.lastPingMs ? Number(s.lastPingMs) : undefined,
+          etaMs: s.etaMs != null ? Number(s.etaMs) : undefined,
+          lastPingMs: s.lastPingMs != null ? Number(s.lastPingMs) : undefined,
           nowMs
         }));
       }
