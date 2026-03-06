@@ -118,7 +118,10 @@ export async function handleWebhookEvent({ event, delivery, payload }) {
     const body = payload.comment?.body || "";
     if (!body.trim().startsWith(CONFIG.runCommand)) return;
 
-    const issueNumber = payload.issue?.number;
+    const issue = payload.issue;
+    if (!issue || issue.pull_request) return;
+
+    const issueNumber = issue.number;
     if (!issueNumber) return;
 
     auditLog({
