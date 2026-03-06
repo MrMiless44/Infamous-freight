@@ -16,7 +16,7 @@ Example:
 
 ```bash
 git checkout v1.2.3
-fly deploy
+fly deploy -c fly.api.toml
 ```
 
 3. Restore database snapshot if migration caused failure.
