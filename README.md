@@ -14,12 +14,12 @@ Infamous Freight is a modern logistics automation platform designed to connect c
 
 ## Core Capabilities
 
-- real-time shipment tracking
-- carrier network management
-- intelligent load orchestration
-- automated dispatch workflows
+- Real-time shipment tracking
+- Carrier network management
+- Intelligent load orchestration
+- Automated dispatch workflows
 - AI-assisted logistics operations
-- multi-tenant SaaS platform architecture
+- Multi-tenant SaaS platform architecture
 
 ## Architecture
 
