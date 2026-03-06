@@ -79,10 +79,17 @@ export function evaluateCarrierCompliance(input: CarrierComplianceInput): Compli
     });
   }
 
-  if (isExpired(input.insuranceExpiresAt, asOf)) {
+  if (!input.insuranceExpiresAt) {
+    findings.push({
+      code: "MISSING_INSURANCE",
+      message: "Carrier insurance information has not been provided.",
+      severity: "critical",
+      field: "insuranceExpiresAt",
+    });
+  } else if (isExpired(input.insuranceExpiresAt, asOf)) {
     findings.push({
       code: "INSURANCE_EXPIRED",
-      message: "Carrier insurance is missing or expired.",
+      message: "Carrier insurance is expired.",
       severity: "critical",
       field: "insuranceExpiresAt",
     });
