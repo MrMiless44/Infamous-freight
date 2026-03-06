@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: Security issue reporting
-    url: "https://github.com/MrMiless44/Infamous-freight/security/policy"
+    url: "https://github.com/MrMiless44/Infamous-freight-enterprises/security/policy"
     about: Please follow the security policy for reporting vulnerabilities.
