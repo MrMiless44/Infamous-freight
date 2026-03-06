@@ -60,7 +60,7 @@
     {
       "label": "Dev: API",
       "type": "shell",
-      "command": "pnpm --filter api dev",
+      "command": "pnpm --filter @infamous/api dev",
       "isBackground": true,
       "problemMatcher": {
         "owner": "custom",
