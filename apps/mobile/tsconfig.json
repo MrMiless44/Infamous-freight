@@ -3,6 +3,11 @@
     "target": "ES2022",
     "module": "esnext",
     "strict": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@infamous/shared": ["../../packages/shared/src"],
+      "@infamous-freight/shared": ["../../packages/shared/src"]
+    }
   }
 }
