@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(adminRouter());
 
 // Webhook endpoint MUST use raw body for signature verification
-app.post("/github/webhook", express.raw({ type: "application/json" }), async (req, res) => {
+app.post("/github/webhook", express.raw({ type: "application/json", limit: "2mb" }), async (req, res) => {
   const delivery = req.get("X-GitHub-Delivery") || "";
   const event = req.get("X-GitHub-Event") || "";
   const signature = req.get("X-Hub-Signature-256") || "";
