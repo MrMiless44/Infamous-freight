@@ -8,7 +8,7 @@ FROM base AS deps
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps ./apps
 COPY packages ./packages
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
 FROM deps AS build
 RUN pnpm --filter ./apps/api exec prisma generate
