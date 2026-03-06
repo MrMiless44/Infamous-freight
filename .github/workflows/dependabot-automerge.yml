@@ -8,6 +8,10 @@ permissions:
   contents: write
   pull-requests: write
 
+concurrency:
+  group: ci-${ github.ref }-${ github.workflow }
+  cancel-in-progress: true
+
 jobs:
   automerge:
     if: github.actor == 'dependabot[bot]'

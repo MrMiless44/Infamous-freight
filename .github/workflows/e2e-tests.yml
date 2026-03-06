@@ -9,6 +9,14 @@ on:
     # Run daily at 2 AM UTC
     - cron: "0 2 * * *"
 
+concurrency:
+  group: ci-${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   e2e-tests:
     name: Playwright E2E Tests
@@ -22,33 +30,18 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: "24"
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Setup pnpm (use packageManager)
+      - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          run_install: false
+          version: 9.0.0
 
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Cache pnpm dependencies
-        uses: actions/cache@v5
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          node-version: "22"
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -147,20 +140,21 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.0.0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: "22"
+          cache: "pnpm"
 
       - name: Enable Corepack
         run: corepack enable
-
-      - name: Setup pnpm (use packageManager)
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: false
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -221,20 +215,18 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: "24"
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Setup pnpm (use packageManager)
+      - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          run_install: false
+          version: 9.0.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

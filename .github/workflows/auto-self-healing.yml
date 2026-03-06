@@ -8,6 +8,13 @@ on:
     paths:
       - '.github/workflows/auto-self-healing.yml'
 
+concurrency:
+  group: ci-${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
 jobs:
   # ═══════════════════════════════════════════════════════════════════
   # AUTOMATED FIXES & HEALING
@@ -24,7 +31,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: 🔧 Install pnpm

@@ -18,8 +18,11 @@ on:
         type: string
 
 concurrency:
-  group: railway-db-${{ github.ref }}
-  cancel-in-progress: true
+  group: ci-${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
 
 env:
   RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
@@ -49,12 +52,12 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9.15.0
+          version: 9.0.0
           run_install: false
 
       - name: Install dependencies

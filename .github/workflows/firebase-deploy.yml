@@ -16,6 +16,13 @@ on:
 env:
   NODE_VERSION: "18.x"
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${ github.ref }-${ github.workflow }
+  cancel-in-progress: false
+
 jobs:
   # Verify Firebase configuration
   verify:

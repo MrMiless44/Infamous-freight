@@ -4,6 +4,13 @@ on:
     - cron: "0 2 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${ github.ref }-${ github.workflow }
+  cancel-in-progress: false
+
 jobs:
   health:
     runs-on: ubuntu-latest

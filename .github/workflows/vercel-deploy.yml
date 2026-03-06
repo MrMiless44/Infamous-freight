@@ -8,6 +8,13 @@ on:
         description: "Deployed Vercel app URL"
         value: ${{ jobs.deploy-web.outputs.deploy_url }}
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${ github.ref }-${ github.workflow }
+  cancel-in-progress: true
+
 jobs:
   deploy-web:
     runs-on: ubuntu-latest

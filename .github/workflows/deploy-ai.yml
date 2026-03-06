@@ -4,6 +4,13 @@ on:
   workflow_dispatch:
   workflow_call:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${ github.ref }-${ github.workflow }
+  cancel-in-progress: false
+
 jobs:
   deploy-ai:
     runs-on: ubuntu-latest

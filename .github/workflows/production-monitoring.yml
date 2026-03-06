@@ -17,6 +17,10 @@ permissions:
   contents: read
   statuses: write
 
+concurrency:
+  group: ci-${ github.ref }-${ github.workflow }
+  cancel-in-progress: true
+
 jobs:
   health-check:
     name: 🏥 Service Health Check

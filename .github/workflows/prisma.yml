@@ -26,6 +26,10 @@ permissions:
 env:
   NODE_VERSION: "20"
 
+concurrency:
+  group: ci-${ github.ref }-${ github.workflow }
+  cancel-in-progress: true
+
 jobs:
   prisma-validate:
     runs-on: ubuntu-latest

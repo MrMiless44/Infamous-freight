@@ -3,6 +3,13 @@ name: Autonoma Tests
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${ github.ref }-${ github.workflow }
+  cancel-in-progress: true
+
 jobs:
   run_autonoma_tests:
     runs-on: ubuntu-latest

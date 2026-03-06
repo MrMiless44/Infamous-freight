@@ -16,13 +16,17 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${ github.ref }-${ github.workflow }
+  cancel-in-progress: true
+
 jobs:
   validate-compliance-policies:
     name: Validate Compliance Policies
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Validate Compliance Policies
         run: |

@@ -4,6 +4,10 @@ on:
   pull_request:
     branches: ["main", "master"]
 
+concurrency:
+  group: ci-${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -19,7 +23,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 9.0.0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -30,14 +34,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Typecheck
-        run: pnpm typecheck
-
       - name: Lint
         run: pnpm lint
 
+      - name: Typecheck
+        run: pnpm typecheck
+
       - name: Test
         run: pnpm test -- --runInBand
+
+      - name: Build
+        run: pnpm build
 
   summarize-on-fail:
     name: Summarize CI failures

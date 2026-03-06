@@ -7,8 +7,11 @@ on:
       - main
 
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
+  group: ci-${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   validate:

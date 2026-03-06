@@ -33,15 +33,22 @@ on:
         default: "dist"
         description: "Path to artifact files"
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${ github.ref }-${ github.workflow }
+  cancel-in-progress: true
+
 jobs:
   build:
     name: Build ${{ inputs.package-name }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ inputs.node-version }}
 
@@ -54,7 +61,7 @@ jobs:
           run_install: false
 
       - name: Setup Node cache
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ inputs.node-version }}
           cache: pnpm

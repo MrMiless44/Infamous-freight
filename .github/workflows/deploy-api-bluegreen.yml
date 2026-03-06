@@ -8,9 +8,13 @@ on:
       - "packages/shared/**"
       - "pnpm-lock.yaml"
   workflow_call: {}
+
 concurrency:
-  group: deploy-api-bluegreen
-  cancel-in-progress: true
+  group: ci-${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
 
 jobs:
   deploy:
@@ -29,13 +33,13 @@ jobs:
           echo "Production freeze is enabled. Blocking deploy."
           exit 1
 
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 9.0.0
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
