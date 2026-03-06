@@ -47,11 +47,14 @@ loadboard.post("/:id/claim", authenticate as any, async (req, res, next) => {
     if (!load) return res.status(404).json({ error: "Load not found" });
     if (load.status !== "OPEN") return res.status(409).json({ error: "Load not open" });
 
-    await (prisma as any).load.update({
-      where: { id: load.id },
+    const result = await (prisma as any).load.updateMany({
+      where: { id: load.id, organizationId: tenantId, status: "OPEN" },
       data: { status: "CLAIMED", claimedByUserId: userId, claimedAt: new Date() }
     });
 
+    if (result.count === 0) {
+      return res.status(409).json({ error: "Load not open" });
+    }
     sseBroadcast(tenantId, "load.updated", { id: load.id, status: "CLAIMED" });
     res.json({ ok: true, id: load.id });
   } catch (e) {
