@@ -4,8 +4,6 @@ set -euo pipefail
 ROOT_DIR="$(git rev-parse --show-toplevel)"
 cd "$ROOT_DIR"
 
-mkdir -p docs
-
 write_readme_if_missing() {
   local dir="$1"
   local file="$dir/README.md"
