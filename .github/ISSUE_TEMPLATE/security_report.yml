@@ -1,42 +1,31 @@
 name: Security issue reporting
-description: Report a potential security vulnerability
+description: Guidance on how to report a potential security vulnerability privately
 title: "[Security]: "
 labels:
   - security
 
 body:
-  - type: textarea
-    id: vulnerability
+  - type: markdown
     attributes:
-      label: Vulnerability description
-      description: Describe the vulnerability.
-      placeholder: Explain the issue clearly and responsibly.
-    validations:
-      required: true
-
-  - type: textarea
-    id: impact
-    attributes:
-      label: Impact
-      description: What could an attacker do?
-      placeholder: Describe the security impact.
-    validations:
-      required: false
-
-  - type: textarea
-    id: reproduce
-    attributes:
-      label: Steps to reproduce
-      description: Provide safe, minimal reproduction details.
-      placeholder: Describe how to reproduce the issue.
-    validations:
-      required: false
-
-  - type: textarea
-    id: mitigation
-    attributes:
-      label: Suggested mitigation
-      description: If known, suggest a fix or mitigation.
-      placeholder: Describe possible mitigations.
-    validations:
-      required: false
+      value: |-
+        ## Reporting security vulnerabilities
+        
+        Thank you for taking the time to report a potential security issue.
+        
+        To protect our users and systems, **do not include any sensitive security details, exploit code, or step-by-step reproduction instructions in a public GitHub issue**.
+        
+        Instead, please report vulnerabilities privately using GitHub's security reporting flow:
+        
+        1. Go to this repository's **Security** tab.
+        2. Click **"Report a vulnerability"**.
+        3. Follow the prompts to submit your report privately to the maintainers.
+        
+        If this project has a documented **Security Policy**, please review and follow it as well. You can typically find it via:
+        
+        - The **Security** tab → **"Security policy"**, or
+        - A `SECURITY.md` file in the repository.
+        
+        If you opened this issue by mistake, you may close it and re-submit your report through the private vulnerability reporting flow described above.
+        
+        ---
+        If you are unable to use the GitHub Security tab for any reason, please contact the maintainers using the method described in the Security Policy and avoid sharing sensitive details publicly.
