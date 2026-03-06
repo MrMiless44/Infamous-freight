@@ -20,8 +20,8 @@ fi
 
 echo "==> Checking staged diff for obvious secrets"
 if git diff --cached -- . ':(exclude)pnpm-lock.yaml' ':(exclude).githooks/*' | grep -E -i \
-  '(api[_-]?key|secret|password|token|aws_access_key_id|aws_secret_access_key|private[_-]?key|BEGIN (RSA|EC|OPENSSH) PRIVATE KEY)' \
-  >/dev/null; then
+  -e '(api[_-]?key|aws_access_key_id|aws_secret_access_key|private[_-]?key|jwt[_-]?secret|secret[_-]?key|x-api-key|database_url)[[:space:]]*[:=][[:space:]]*[[:graph:]]{16,}' \
+  -e 'BEGIN (RSA|EC|OPENSSH) PRIVATE KEY' -e 'AKIA[0-9A-Z]{16}' >/dev/null; then
   echo "❌ Potential secret detected in staged changes. Commit blocked."
   exit 1
 fi
