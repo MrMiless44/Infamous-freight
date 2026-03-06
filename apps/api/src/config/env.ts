@@ -14,8 +14,8 @@ const envSchema = z.object({
   PORT: z.string().default("3000"),
   API_PORT: z.string().default("3000"),
 
-  DATABASE_URL: requiredString("DATABASE_URL"),
-  REDIS_URL: requiredString("REDIS_URL"),
+  DATABASE_URL: z.string().url("DATABASE_URL must be a valid URL"),
+  REDIS_URL: z.string().url("REDIS_URL must be a valid URL"),
   PERSISTENCE_MODE: z.enum(["auto", "json"]).default("auto"),
 
   JWT_SECRET: requiredString("JWT_SECRET"),
