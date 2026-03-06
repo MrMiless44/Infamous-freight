@@ -16,9 +16,9 @@
       "restrictsPushes": false,
       "restrictsReviewDismissals": false,
       "requiredStatusCheckContexts": [
-        "Lint, Typecheck, Test, Build",
-        "Analyze",
-        "dependency-review"
+        "CI / Lint, Typecheck, Test, Build",
+        "CodeQL / Analyze",
+        "Dependency Review / dependency-review"
       ]
     }
   ]
