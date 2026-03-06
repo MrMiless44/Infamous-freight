@@ -29,9 +29,7 @@
   },
   "scripts": {
     "dev": "tsc -p tsconfig.json --watch",
-    "build": "tsc -p tsconfig.json",
-    "lint": "eslint .",
-    "test": "vitest run"
+    "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
     "zod": "^4.3.6"
