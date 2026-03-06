@@ -128,19 +128,11 @@ Review pass checklist:
 
 **Step B — tell it to fix everything important**
 
-```text
-@codex address all review feedback on this PR and prioritize CI stability. Keep patches minimal and production-safe. Focus first on the highest-impact issues: failing tests, broken mocks, auth/RBAC compatibility, Prisma guard issues, import/path problems, and any security-sensitive review comments. Avoid unrelated refactors. After updating the PR, provide a concise summary of:
-1. root causes,
-2. exact files changed,
-3. tests fixed,
-4. any remaining risks or follow-ups.
-```
+Use the stronger "fix all" command from **Section 9 – Stronger "fix all" command**.
 
 **Step C — if needed, narrow to test failures only**
 
-```text
-@codex fix the failing CI and test issues on this pull request first. Prioritize the top repeating failures, keep patches minimal, and avoid unrelated refactors. Focus on mocks, auth/rbac middleware compatibility, Prisma guards, path/import issues, and test stability. After updating the PR, summarize the root causes and the exact files changed.
-```
+Use the CI/test-focused command from **Section 4 – If CI/tests are failing**.
 
 **Step D — re-review**
 
