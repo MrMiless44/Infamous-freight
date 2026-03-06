@@ -14,6 +14,9 @@ import { billingRoutes } from './routes/billing.routes.js';
 import { aiRoutes } from './routes/ai.routes.js';
 import { documentsRoutes } from './routes/documents.routes.js';
 import { realtimeRoutes } from './routes/realtime.routes.js';
+import { loadboard } from './routes/loadboard.js';
+import { assignments } from './routes/assignments.js';
+import { realtime } from './routes/realtime.js';
 import { stripeRoutes } from './routes/stripe.routes.js';
 
 import prisma from './lib/prisma.js';
@@ -67,6 +70,9 @@ app.use('/ai', aiRoutes);
 // docs + realtime + stripe
 app.use('/documents', documentsRoutes);
 app.use('/realtime', realtimeRoutes);
+app.use('/loadboard', loadboard);
+app.use('/assignments', assignments);
+app.use('/realtime', realtime);
 app.use('/stripe', stripeRoutes);
 
 app.listen(env.PORT, () => {

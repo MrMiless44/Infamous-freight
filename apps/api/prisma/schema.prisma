@@ -386,6 +386,8 @@ model User {
   // Phase 19: Organization (multi-tenancy)
   organizationId String?
   organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  carrierId      String?
+  driverId       String?
 
   // Phase 6: notification channels
   phone         String?
@@ -429,10 +431,14 @@ model User {
   analyticsPredictions AnalyticsPrediction[]
   referralsCreated     Referral[] @relation("referralsCreated")
   referralsReceived    Referral[] @relation("referralsReceived")
+  carrier              Carrier?   @relation(fields: [carrierId], references: [id])
+  driver               Driver?    @relation("userDriver", fields: [driverId], references: [id])
 
   @@index([email])
   @@index([role])
   @@index([organizationId])
+  @@index([carrierId])
+  @@index([driverId])
   @@index([createdAt])
   @@index([phone])
   @@index([expoPushToken])
@@ -445,13 +451,19 @@ model Driver {
   email     String   @unique
   phone     String
   status    String   @default("available")
+  organizationId String?
+  carrierId      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   shipments Shipment[]
+  carrier   Carrier?  @relation(fields: [carrierId], references: [id])
+  users     User[]    @relation("userDriver")
 
   @@index([email])
   @@index([status])
+  @@index([organizationId])
+  @@index([carrierId])
   @@index([createdAt])
   @@map("drivers")
 }
@@ -465,12 +477,17 @@ model Shipment {
   destination String
   status      ShipmentStatus @default(CREATED)
   reference   String?
+  etaMs       BigInt?
+  lastPingMs  BigInt?
+  lastLat     Float?
+  lastLng     Float?
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
 
   // Relations
   user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   driver Driver? @relation(fields: [driverId], references: [id], onDelete: SetNull)
+  assignments ShipmentAssignment[]
 
   @@index([trackingId])
   @@index([userId])
@@ -480,6 +497,88 @@ model Shipment {
   @@index([updatedAt])
   @@index([userId, status])
   @@map("shipments")
+}
+
+model Carrier {
+  id             String   @id @default(uuid())
+  organizationId String?
+  name           String
+  mcNumber       String?
+  dotNumber      String?
+  createdAt      DateTime @default(now())
+
+  drivers Driver[]
+  users   User[]
+
+  @@index([organizationId])
+  @@map("carriers")
+}
+
+model GenesisSession {
+  k              String   @id
+  organizationId String?
+  userId         String?
+  payload        Json
+  updatedAt      DateTime @updatedAt
+
+  @@index([organizationId])
+  @@map("genesis_sessions")
+}
+
+model Load {
+  id              String   @id @default(uuid())
+  organizationId  String?
+  originCity      String
+  originState     String
+  destCity        String
+  destState       String
+  distanceMi      Int
+  weightLb        Int
+  rateCents       Int
+  status          String   @default("OPEN")
+  claimedByUserId String?
+  claimedAt       DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  assignments ShipmentAssignment[]
+
+  @@index([organizationId])
+  @@index([status])
+  @@map("loads")
+}
+
+model ShipmentAssignment {
+  id             String   @id @default(uuid())
+  organizationId String?
+  shipmentId     String
+  loadId         String?
+  carrierId      String?
+  driverId       String?
+  assignedBy     String?
+  status         String   @default("ASSIGNED")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  shipment Shipment @relation(fields: [shipmentId], references: [id])
+  load     Load?    @relation(fields: [loadId], references: [id])
+
+  @@index([organizationId])
+  @@index([shipmentId])
+  @@map("shipment_assignments")
+}
+
+model SavedLoadSearch {
+  id             String   @id @default(uuid())
+  organizationId String?
+  userId         String?
+  name           String
+  filters        Json
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([organizationId])
+  @@map("saved_load_searches")
 }
 
 model AiEvent {
