@@ -30,13 +30,12 @@ shared
 genesis
 
 ai/
-inference
-orchestration
+main.py
+rate-prediction-service/
 
-infrastructure/
-terraform
-k8s
-deploy
+terraform/
+k8s/
+deploy/
 
 monitoring/
 observability/
