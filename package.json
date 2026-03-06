@@ -3,14 +3,14 @@
   "private": true,
   "packageManager": "pnpm@9.0.0",
   "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build"
-  },
-  "devDependencies": {
-    "turbo": "^2.0.0"
-  },
-  "volta": {
-    "node": "22.22.0",
-    "pnpm": "9.0.0"
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "start:api": "pnpm --filter ./apps/api run start",
+    "prisma:generate": "pnpm --filter ./apps/api exec prisma generate",
+    "prisma:format": "pnpm --filter ./apps/api exec prisma format",
+    "prisma:validate": "pnpm --filter ./apps/api exec prisma validate",
+    "prisma:migrate:status": "pnpm --filter ./apps/api exec prisma migrate status"
   }
 }
