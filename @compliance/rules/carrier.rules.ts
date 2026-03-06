@@ -147,7 +147,7 @@ export function evaluateCarrierCompliance(input: CarrierComplianceInput): Compli
     carrierId: input.carrierId,
     status,
     score,
-    checkedAt: new Date().toISOString(),
+    checkedAt: asOf,
     findings,
     eligibleForBooking: status === "compliant",
   };
