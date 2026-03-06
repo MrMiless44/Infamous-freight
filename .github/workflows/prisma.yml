@@ -61,16 +61,16 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Prisma format
-        run: pnpm exec prisma format
+        run: pnpm --filter ./apps/api exec prisma format
 
       - name: Prisma validate
-        run: pnpm exec prisma validate
+        run: pnpm --filter ./apps/api exec prisma validate
 
       - name: Prisma generate
-        run: pnpm exec prisma generate
+        run: pnpm --filter ./apps/api exec prisma generate
 
       - name: Apply migrations
-        run: pnpm exec prisma migrate deploy
+        run: pnpm --filter ./apps/api exec prisma migrate deploy
 
       - name: Check migration status
-        run: pnpm exec prisma migrate status
+        run: pnpm --filter ./apps/api exec prisma migrate status
