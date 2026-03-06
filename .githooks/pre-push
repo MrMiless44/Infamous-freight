@@ -15,7 +15,7 @@ echo "==> Running typecheck"
 pnpm typecheck
 
 echo "==> Running tests"
-pnpm test -- --runInBand
+pnpm test
 
 echo "==> Running build"
 pnpm build
