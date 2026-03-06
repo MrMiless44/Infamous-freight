@@ -19,8 +19,10 @@ loadboard.get("/", requireAuth as any, async (req, res, next) => {
     const tenantId = String((req as any).auth?.tenantId ?? "");
     if (!tenantId) return res.status(401).json({ error: "Unauthorized" });
 
-    const page = Math.max(1, Number(req.query.page ?? 1));
-    const pageSize = Math.min(100, Math.max(1, Number(req.query.pageSize ?? 25)));
+    const rawPage = Number(req.query.page ?? 1);
+    const page = Number.isFinite(rawPage) ? Math.max(1, rawPage) : 1;
+    const rawPageSize = Number(req.query.pageSize ?? 25);
+    const pageSize = Number.isFinite(rawPageSize) ? Math.min(100, Math.max(1, rawPageSize)) : 25;
     const skip = (page - 1) * pageSize;
 
     const q = String(req.query.q ?? "").trim();
