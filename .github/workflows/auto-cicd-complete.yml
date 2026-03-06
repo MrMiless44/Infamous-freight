@@ -19,7 +19,8 @@ env:
   CACHE_DIR: .cache
 
 permissions:
-  contents: read
+  contents: write
+  issues: write
 
 jobs:
   # ═══════════════════════════════════════════════════════════════════
