@@ -21,7 +21,6 @@
         "Analyze",
         "secret-scan",
         "dependency-review",
-        "repo-structure",
         "sanity"
       ]
     }
