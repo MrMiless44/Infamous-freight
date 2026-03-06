@@ -43,7 +43,7 @@ fi
 echo "==> Lint-fixing staged JS/TS files"
 ESLINT_TARGETS="$(echo "$STAGED_FILES" | grep -E '\.(js|jsx|ts|tsx)$' || true)"
 if [ -n "$ESLINT_TARGETS" ]; then
-  echo "$ESLINT_TARGETS" | tr '\n' '\0' | xargs -0 pnpm exec eslint --fix
+  echo "$ESLINT_TARGETS" | tr '\n' '\0' | xargs -0 pnpm exec eslint --fix --
   echo "$ESLINT_TARGETS" | tr '\n' '\0' | xargs -0 git add
 fi
 
