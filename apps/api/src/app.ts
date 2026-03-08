@@ -6,6 +6,7 @@ import { errorHandler, notFound } from "./middleware/error-handler.js";
 import { requestId } from "./middleware/request-id.js";
 import aiRoutes from "./routes/ai.js";
 import carrierRoutes from "./routes/carriers.js";
+import docsRouter from "./routes/docs.js";
 import rateRoutes from "./routes/rates.js";
 import shipmentRoutes from "./routes/shipments.js";
 
@@ -31,6 +32,7 @@ export function createApp() {
   app.use("/api/carriers", carrierRoutes);
   app.use("/api/rates", rateRoutes);
   app.use("/api/shipments", shipmentRoutes);
+  app.use("/api/docs", docsRouter);
 
   app.use(notFound);
   app.use(errorHandler);

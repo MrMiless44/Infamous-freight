@@ -1,67 +1,251 @@
 openapi: 3.0.3
 info:
-  title: INFÆMOUS FREIGHT API
-  version: 2.0.0
+  title: Infamous Freight API
+  description: |
+    REST API for Infamous Freight — an AI-powered logistics platform.
+    Provides endpoints for shipment tracking, carrier intelligence,
+    rate prediction, and AI-driven ETA risk analysis.
+  version: 1.0.0
+  contact:
+    name: Infamous Freight
+    url: https://github.com/MrMiless44/Infamous-freight
 servers:
   - url: /api
+    description: Current server
+
+tags:
+  - name: Health
+    description: Service health checks
+  - name: Shipments
+    description: ETA risk and shipment intelligence
+  - name: Carriers
+    description: Carrier ranking and intelligence
+  - name: Rates
+    description: Freight rate prediction
+  - name: AI
+    description: AI-assisted logistics features
+  - name: Auth
+    description: Authentication
+  - name: Loads
+    description: Load board management
+  - name: Analytics
+    description: Lane profitability analytics
+  - name: Billing
+    description: Subscription billing
+
 paths:
+  /health:
+    get:
+      tags: [Health]
+      summary: Health check
+      description: Returns the service health status and uptime.
+      operationId: getHealth
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+                  service:
+                    type: string
+                    example: infamous-freight-api
+                  uptime:
+                    type: number
+                    description: Process uptime in seconds
+                    example: 42.5
+                required: [ok, service, uptime]
+
+  /shipments/eta-risk:
+    post:
+      tags: [Shipments]
+      summary: Predict ETA risk
+      description: |
+        Returns an AI-computed ETA risk score based on distance, speed,
+        weather, traffic, and carrier reliability inputs.
+      operationId: predictEtaRisk
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EtaRiskInput'
+      responses:
+        '200':
+          description: ETA risk prediction result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/EtaRiskResult'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+
+  /carriers/rank:
+    post:
+      tags: [Carriers]
+      summary: Rank carriers for a lane
+      description: |
+        Scores and ranks a list of carriers for a given lane and equipment type
+        using on-time rate, tender acceptance, safety, and pricing signals.
+      operationId: rankCarriers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarrierRankInput'
+      responses:
+        '200':
+          description: Ranked carrier list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankedCarrier'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+
+  /rates/predict:
+    post:
+      tags: [Rates]
+      summary: Predict freight rate
+      description: |
+        Returns a predicted all-in freight rate for a lane based on fuel price,
+        seasonality, market capacity, and demand signals.
+      operationId: predictRate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RatePredictionInput'
+      responses:
+        '200':
+          description: Rate prediction
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/RatePredictionResult'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+
   /auth/login:
     post:
+      tags: [Auth]
       summary: Login user
+      description: Authenticates a user and returns a signed JWT.
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+              required: [email, password]
       responses:
         '200':
           description: JWT token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Invalid credentials
+
   /loads:
     get:
+      tags: [Loads]
       summary: List loads
+      description: Returns a paginated list of available loads.
+      operationId: listLoads
       responses:
         '200':
           description: Loads returned
     post:
+      tags: [Loads]
       summary: Create load
+      description: Creates a new load on the load board.
+      operationId: createLoad
       responses:
         '201':
           description: Load created
-  /invoices/generate/{loadId}:
-    post:
-      summary: Generate invoice
-      parameters:
-        - in: path
-          name: loadId
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Invoice generated
+
   /analytics/lane-profit:
     get:
-      summary: Calculate lane profitability recommendation
+      tags: [Analytics]
+      summary: Calculate lane profitability
+      description: Returns a profitability recommendation for a lane based on rate, mileage, and operating costs.
+      operationId: calcLaneProfit
       parameters:
         - in: query
           name: rate
-          schema: { type: number }
+          schema:
+            type: number
+          description: Total rate in USD
         - in: query
           name: mileage
-          schema: { type: number }
+          schema:
+            type: number
+          description: Lane distance in miles
         - in: query
           name: fuelPrice
-          schema: { type: number }
+          schema:
+            type: number
+          description: Fuel price in USD per gallon
         - in: query
           name: mpg
-          schema: { type: number }
+          schema:
+            type: number
+          description: Miles per gallon for the truck
         - in: query
           name: detentionHours
-          schema: { type: number }
+          schema:
+            type: number
+          description: Expected detention hours
         - in: query
           name: brokerScore
-          schema: { type: number }
+          schema:
+            type: number
+          description: Broker reliability score (0-1)
       responses:
         '200':
           description: Profitability payload
+
   /billing/subscribe:
     post:
+      tags: [Billing]
       summary: Create Stripe subscription checkout session
+      operationId: createSubscription
       responses:
         '201':
           description: Checkout session URL
@@ -80,7 +264,211 @@ paths:
                         format: uri
                       sessionId:
                         type: string
-                required:
-                  - success
-                  - data
+                required: [success, data]
                 additionalProperties: false
+
+components:
+  schemas:
+    EtaRiskInput:
+      type: object
+      required:
+        - distanceRemainingMiles
+        - averageSpeedMph
+        - weatherRisk
+        - trafficRisk
+        - carrierReliability
+      properties:
+        distanceRemainingMiles:
+          type: number
+          minimum: 0
+          example: 350
+        averageSpeedMph:
+          type: number
+          exclusiveMinimum: 0
+          example: 55
+        weatherRisk:
+          type: number
+          minimum: 0
+          maximum: 1
+          example: 0.2
+        trafficRisk:
+          type: number
+          minimum: 0
+          maximum: 1
+          example: 0.4
+        carrierReliability:
+          type: number
+          minimum: 0
+          maximum: 1
+          example: 0.85
+
+    EtaRiskResult:
+      type: object
+      properties:
+        riskScore:
+          type: number
+          description: Composite risk score between 0 (low) and 1 (high)
+          example: 0.35
+        estimatedDelayHours:
+          type: number
+          example: 1.5
+        recommendation:
+          type: string
+          example: Monitor closely
+
+    CarrierProfile:
+      type: object
+      required:
+        - id
+        - name
+        - onTimeRate
+        - tenderAcceptanceRate
+        - safetyScore
+        - priceCompetitiveness
+        - serviceRating
+        - equipmentTypes
+        - activeLanes
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        onTimeRate:
+          type: number
+          minimum: 0
+          maximum: 1
+        tenderAcceptanceRate:
+          type: number
+          minimum: 0
+          maximum: 1
+        safetyScore:
+          type: number
+          minimum: 0
+          maximum: 1
+        priceCompetitiveness:
+          type: number
+          minimum: 0
+          maximum: 1
+        serviceRating:
+          type: number
+          minimum: 0
+          maximum: 1
+        equipmentTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EquipmentType'
+        activeLanes:
+          type: array
+          items:
+            type: string
+
+    EquipmentType:
+      type: string
+      enum: [VAN, REEFER, FLATBED]
+
+    Lane:
+      type: object
+      required: [origin, destination, distanceMiles]
+      properties:
+        origin:
+          type: string
+          example: Chicago, IL
+        destination:
+          type: string
+          example: Dallas, TX
+        distanceMiles:
+          type: number
+          exclusiveMinimum: 0
+          example: 920
+
+    CarrierRankInput:
+      type: object
+      required: [lane, equipmentType, carriers]
+      properties:
+        lane:
+          $ref: '#/components/schemas/Lane'
+        equipmentType:
+          $ref: '#/components/schemas/EquipmentType'
+        carriers:
+          type: array
+          items:
+            $ref: '#/components/schemas/CarrierProfile'
+
+    RankedCarrier:
+      allOf:
+        - $ref: '#/components/schemas/CarrierProfile'
+        - type: object
+          properties:
+            score:
+              type: number
+              description: Composite ranking score
+              example: 0.79
+
+    RatePredictionInput:
+      type: object
+      required:
+        - lane
+        - equipmentType
+        - fuelPriceUsdPerGallon
+        - seasonalityIndex
+        - marketCapacityIndex
+        - demandIndex
+      properties:
+        lane:
+          $ref: '#/components/schemas/Lane'
+        equipmentType:
+          $ref: '#/components/schemas/EquipmentType'
+        fuelPriceUsdPerGallon:
+          type: number
+          exclusiveMinimum: 0
+          example: 3.85
+        seasonalityIndex:
+          type: number
+          exclusiveMinimum: 0
+          example: 1.1
+        marketCapacityIndex:
+          type: number
+          exclusiveMinimum: 0
+          example: 0.95
+        demandIndex:
+          type: number
+          exclusiveMinimum: 0
+          example: 1.05
+
+    RatePredictionResult:
+      type: object
+      properties:
+        predictedRateUsd:
+          type: number
+          example: 2450
+        confidenceInterval:
+          type: object
+          properties:
+            low:
+              type: number
+              example: 2100
+            high:
+              type: number
+              example: 2800
+
+    ErrorResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: Validation failed
+        details:
+          type: array
+          items:
+            type: object
+
+  responses:
+    ValidationError:
+      description: Invalid request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
