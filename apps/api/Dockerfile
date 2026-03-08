@@ -14,4 +14,4 @@ RUN addgroup -S nodejs && adduser -S nodejs -G nodejs && chown -R nodejs:nodejs 
 # Run the application as the non-root user
 USER nodejs
 EXPOSE 4000
-CMD ["npm", "run", "start"]
+CMD ["npm", "--workspace", "apps/api", "run", "start"]
