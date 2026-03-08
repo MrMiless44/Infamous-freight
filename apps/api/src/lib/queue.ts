@@ -1,5 +1,5 @@
 import { Queue, Worker } from "bullmq";
-import { redis } from "./redis.js";
+import { redis } from "./redis";
 
 export const dispatchQueue = new Queue("dispatch-recompute", {
   connection: redis
