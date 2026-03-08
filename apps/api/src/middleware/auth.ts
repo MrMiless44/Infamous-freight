@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { env } from "../config/env.js";
+import { env } from "../config/env.ts";
 
 export function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const header = req.header("authorization");
