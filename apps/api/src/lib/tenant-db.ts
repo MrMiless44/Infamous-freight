@@ -7,9 +7,7 @@ export async function withOrganizationContext<T>(
     : never
 ): Promise<T> {
   return prisma.$transaction(async (tx) => {
-    await tx.$executeRawUnsafe(
-      `SELECT set_config('app.current_organization_id', '${organizationId}', true)`
-    );
+    await tx.$executeRaw`SELECT set_config('app.current_organization_id', ${organizationId}, true)`;
 
     return fn(tx as never);
   });
