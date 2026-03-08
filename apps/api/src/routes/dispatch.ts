@@ -9,71 +9,96 @@ const optimizer = new DispatchOptimizer();
 dispatchRouter.post(
   "/:loadId/recommend",
   requireScope("dispatch.recommend"),
-  async (req, res) => {
-    const organizationId = req.auth!.organizationId;
-    const { loadId } = req.params;
+  async (req, res, next) => {
+    try {
+      const organizationId = req.auth!.organizationId;
+      const { loadId } = req.params;
 
-    const db = prisma as any;
-    const load = await db.load.findFirst({
-      where: { id: loadId, organizationId },
-    });
+      if (!loadId || typeof loadId !== "string") {
+        return res.status(400).json({ error: "Invalid loadId" });
+      }
 
-    if (!load) {
-      return res.status(404).json({ error: "Load not found" });
-    }
+      const db = prisma as any;
+      const load = await db.load.findFirst({
+        where: { id: loadId, organizationId },
+      });
 
-    const drivers = await db.driver.findMany({
-      where: {
+      if (!load) {
+        return res.status(404).json({ error: "Load not found" });
+      }
+
+      const drivers = await db.driver.findMany({
+        where: {
+          organizationId,
+          status: "AVAILABLE",
+        },
+        include: {
+          truck: true,
+        },
+      });
+
+      const rankings = optimizer.rankDrivers(load, drivers);
+
+      return res.json({
+        loadId,
         organizationId,
-        status: "AVAILABLE",
-      },
-      include: {
-        truck: true,
-      },
-    });
-
-    const rankings = optimizer.rankDrivers(load, drivers);
-
-    return res.json({
-      loadId,
-      organizationId,
-      recommendations: rankings,
-    });
+        recommendations: rankings,
+      });
+    } catch (error) {
+      return next(error);
+    }
   },
 );
 
 dispatchRouter.post(
   "/:loadId/assign/:driverId",
   requireScope("dispatch.assign"),
-  async (req, res) => {
-    const organizationId = req.auth!.organizationId;
-    const { loadId, driverId } = req.params;
+  async (req, res, next) => {
+    try {
+      const organizationId = req.auth!.organizationId;
+      const { loadId, driverId } = req.params;
 
-    const db = prisma as any;
-    const [load, driver] = await Promise.all([
-      db.load.findFirst({ where: { id: loadId, organizationId } }),
-      db.driver.findFirst({
-        where: { id: driverId, organizationId },
-        include: { truck: true },
-      }),
-    ]);
+      if (
+        !loadId ||
+        typeof loadId !== "string" ||
+        !driverId ||
+        typeof driverId !== "string"
+      ) {
+        return res
+          .status(400)
+          .json({ error: "Invalid loadId or driverId" });
+      }
 
-    if (!load || !driver) {
-      return res.status(404).json({ error: "Load or driver not found" });
+      const db = prisma as any;
+      const [load, driver] = await Promise.all([
+        db.load.findFirst({ where: { id: loadId, organizationId } }),
+        db.driver.findFirst({
+          where: { id: driverId, organizationId },
+          include: { truck: true },
+        }),
+      ]);
+
+      if (!load || !driver) {
+        return res
+          .status(404)
+          .json({ error: "Load or driver not found" });
+      }
+
+      await db.load.update({
+        where: { id: load.id },
+        data: {
+          driverId: driver.id,
+          status: "ASSIGNED",
+        },
+      });
+
+      return res.json({
+        success: true,
+        loadId,
+        driverId,
+      });
+    } catch (error) {
+      return next(error);
     }
-
-    await db.load.update({
-      where: { id: load.id },
-      data: {
-        driverId: driver.id,
-        status: "ASSIGNED",
-      },
-    });
-
-    return res.json({
-      success: true,
-      loadId,
-      driverId,
-    });
   },
 );
