@@ -8,7 +8,7 @@ on:
 
 jobs:
   api-ci:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest  # Recommend using GitHub-hosted runners for better scalability
 
     steps:
       - name: Checkout
@@ -25,11 +25,20 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Lint
+        run: pnpm lint  # Add linting with ESLint
+
       - name: Typecheck
         run: pnpm typecheck
 
+      - name: Run Tests
+        run: pnpm test --if-present  # Ensure tests are run before building
+
       - name: Build
         run: pnpm build
+
+      - name: Security Audit
+        run: pnpm audit  # Check for dependencies with vulnerabilities
 
       - name: Health summary
         run: echo "CI passed for Infamous Freight API"
