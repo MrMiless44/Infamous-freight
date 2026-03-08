@@ -53,18 +53,26 @@ export async function idempotencyMiddleware(
 
   const originalJson = res.json.bind(res);
   res.json = ((body: unknown) => {
-    void prisma.idempotencyKey.update({
-      where: {
-        organizationId_key: {
-          organizationId,
-          key
+    prisma.idempotencyKey
+      .update({
+        where: {
+          organizationId_key: {
+            organizationId,
+            key
+          }
+        },
+        data: {
+          responseCode: res.statusCode,
+          responseBody: body as Record<string, unknown>
         }
-      },
-      data: {
-        responseCode: res.statusCode,
-        responseBody: body as Record<string, unknown>
-      }
-    });
+      })
+      .catch((error) => {
+        console.error("Failed to update idempotency key", {
+          organizationId,
+          key,
+          error
+        });
+      });
 
     return originalJson(body);
   }) as typeof res.json;
