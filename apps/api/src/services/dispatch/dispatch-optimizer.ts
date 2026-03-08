@@ -54,6 +54,8 @@ export class DispatchOptimizer {
         reasons.push("Low deadhead distance");
       }
 
+      if (linehaul.eta > load.deliveryDeadline) continue;
+
       scores.push({
         driverId: driver.id,
         totalScore: Number(score.toFixed(2)),
