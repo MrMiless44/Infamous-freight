@@ -43,29 +43,29 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
 
-      - run: npm install
+      - run: pnpm install --frozen-lockfile
 
-      - run: npm run prisma:generate
+      - run: pnpm run prisma:generate
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/infamous_test
 
-      - run: npm run lint
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/infamous_test
-          REDIS_URL: redis://localhost:6379
-          JWT_PUBLIC_KEY: test-public-key
-          NODE_ENV: test
-
-      - run: npm run test
+      - run: pnpm run lint
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/infamous_test
           REDIS_URL: redis://localhost:6379
           JWT_PUBLIC_KEY: test-public-key
           NODE_ENV: test
 
-      - run: npm run build
+      - run: pnpm run test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/infamous_test
+          REDIS_URL: redis://localhost:6379
+          JWT_PUBLIC_KEY: test-public-key
+          NODE_ENV: test
+
+      - run: pnpm run build
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/infamous_test
           REDIS_URL: redis://localhost:6379
