@@ -8,12 +8,11 @@ ALTER TABLE "RoutePlan" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "GpsPing" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "Anomaly" ENABLE ROW LEVEL SECURITY;
 
+CREATE POLICY organization_org_isolation ON "Organization"
+USING ("id" = current_setting('app.current_organization_id', true));
+
 CREATE POLICY user_org_isolation ON "User"
 USING ("organizationId" = current_setting('app.current_organization_id', true));
-
-CREATE POLICY driver_org_isolation ON "Driver"
-USING ("organizationId" = current_setting('app.current_organization_id', true));
-
 CREATE POLICY truck_org_isolation ON "Truck"
 USING ("organizationId" = current_setting('app.current_organization_id', true));
 
