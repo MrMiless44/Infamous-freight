@@ -1,9 +1,5 @@
-import { z } from "zod";
-
-export const commandSchema = z.object({
-  command: z.string().min(3)
-});
-
+// Validation schema for commands is defined at the route layer; this service
+// is responsible only for parsing validated commands into intents.
 export type ParsedIntent =
   | { type: "PRICE_LOAD"; origin: string; destination: string }
   | { type: "FIND_CARRIER"; origin: string; destination: string }
