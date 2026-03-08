@@ -1,5 +1,5 @@
 import { writeAuditLog } from "../../lib/audit.js";
-import { prisma } from "../../lib/prisma.js";
+import prisma from "../../lib/prisma.js";
 import { GpsAnomalyService } from "./gps-anomaly.service.js";
 
 const gps = new GpsAnomalyService();
