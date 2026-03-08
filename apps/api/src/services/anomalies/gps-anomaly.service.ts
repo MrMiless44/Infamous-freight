@@ -34,7 +34,7 @@ export class GpsAnomalyService {
     const minutes = (now.getTime() - lastPingAt.getTime()) / 60000;
     return {
       anomalous: minutes > thresholdMin,
-      score: Math.min(100, minutes * 2),
+      score: Math.max(0, Math.min(100, minutes * 2)),
       minutesWithoutSignal: Number(minutes.toFixed(1))
     };
   }
