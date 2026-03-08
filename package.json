@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "pnpm --filter @infamous/api dev",
     "build": "pnpm -r --if-present build",
+    "build:shared": "pnpm --filter @infamous-freight/shared build",
     "typecheck": "pnpm -r --if-present typecheck",
     "lint": "pnpm -r --if-present lint",
     "test": "pnpm -r --if-present test"

@@ -27,5 +27,17 @@ export const zCreateLoad = z.object({
 export const zAICommand = z.object({
   tenantId: zTenantId,
   input: z.string().min(1),
-  context: z.record(z.any()).optional()
+  context: z.record(z.string(), z.any()).optional()
 });
+
+export const EnvSchema = z.object({
+  NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+  API_PORT: z.coerce.number().default(3001),
+  DATABASE_URL: z.string().optional(),
+  REDIS_URL: z.string().optional(),
+  JWT_SECRET: z.string().optional(),
+  STRIPE_SECRET_KEY: z.string().optional(),
+  STRIPE_WEBHOOK_SECRET: z.string().optional(),
+});
+
+export type EnvSchemaConfig = z.infer<typeof EnvSchema>;
