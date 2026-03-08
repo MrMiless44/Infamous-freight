@@ -3,15 +3,32 @@ import { signAccessToken } from "../../lib/jwt.js";
 import { randomToken, sha256 } from "../../lib/crypto.js";
 import { env } from "../../config/env.js";
 import { HttpError } from "../../utils/http-error.js";
+import bcrypt from "bcryptjs";
 
 export class AuthService {
-  async login(email: string) {
+  async login(email: string, password?: string) {
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
       throw new HttpError(401, "Invalid credentials");
     }
 
+    const isDevMode = env.NODE_ENV === "development";
+
+    // In non-development environments, require a valid password and verify
+    // it against the stored password hash. Email-only login is allowed
+    // exclusively in development as a dev/demo convenience and MUST NOT
+    // be relied upon for production authentication.
+    if (!isDevMode) {
+      if (!password || !user.passwordHash) {
+        throw new HttpError(401, "Invalid credentials");
+      }
+
+      const passwordMatches = await bcrypt.compare(password, user.passwordHash);
+      if (!passwordMatches) {
+        throw new HttpError(401, "Invalid credentials");
+      }
+    }
     const accessToken = signAccessToken({
       sub: user.id,
       email: user.email,
