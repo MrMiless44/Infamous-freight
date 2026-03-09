@@ -76,7 +76,7 @@ pnpm dev:mobile
 ---
 
 ### **Developer Checklist: Get Code Merged on Enterprise Rigs. Successful & Rejectable CLI the milestones Fulfilled!!. Thank.
-
+### Developer Checklist
 ## Local Infrastructure
 
 Start local Postgres and Redis:
