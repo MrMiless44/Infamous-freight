@@ -29,7 +29,7 @@ Aerial shots of semi trucks traveling across American highways while glowing dig
 Cut to a modern freight command center where dispatchers monitor shipments using an AI assistant.
 Large transparent dashboards show load boards, shipment tracking, and route optimization.
 Dark interface with neon green accents.
-Premium SaaS commercial style, dramatic cinematic lighting, smooth camera motion, 4k quality.
+Premium SaaS commercial style, dramatic cinematic lighting, smooth camera motion, 4K quality.
 ```
 
 ## Logistics Intelligence Prompt
