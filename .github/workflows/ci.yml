@@ -175,8 +175,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build shared package
-        run: pnpm run build:shared
-
       - name: Run build
         run: pnpm build
