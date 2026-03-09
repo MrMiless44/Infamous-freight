@@ -9,8 +9,19 @@ const generatorDir = path.join(engineRoot, 'generator');
 const outputDir = path.join(engineRoot, 'output');
 
 const outputCountArg = process.argv[2];
-const outputCount = Number.isInteger(Number(outputCountArg)) ? Number(outputCountArg) : 30;
+let outputCount = 30;
 
+if (typeof outputCountArg !== 'undefined') {
+  const parsedOutputCount = Number(outputCountArg);
+
+  if (Number.isInteger(parsedOutputCount) && parsedOutputCount > 0) {
+    outputCount = parsedOutputCount;
+  } else {
+    console.error(
+      `Invalid output count "${outputCountArg}". Expected a positive integer. Using default of ${outputCount}.`
+    );
+  }
+}
 function readLines(filePath) {
   return fs
     .readFileSync(filePath, 'utf8')
