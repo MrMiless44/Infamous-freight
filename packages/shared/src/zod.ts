@@ -35,7 +35,7 @@ export const zAICommand = z.object({
  */
 export const EnvSchema = z.object({
   NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
-  API_PORT: z.coerce.number().default(3001),
+  API_PORT: z.coerce.number().default(4000),
   DATABASE_URL: z.string().optional(),
   REDIS_URL: z.string().optional(),
   JWT_SECRET: z.string().optional(),
