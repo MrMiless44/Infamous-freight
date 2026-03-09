@@ -1,5 +1,5 @@
 # Weekly Prompt Batch
-Generated: 2026-03-09T11:26:26.882Z
+Generated: (example static sample, not auto-generated)
 Count: 30
 
 ## Image Prompts
