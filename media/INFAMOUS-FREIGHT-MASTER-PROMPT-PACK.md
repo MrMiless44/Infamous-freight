@@ -144,6 +144,6 @@ modern freight command center environment, dispatchers monitoring shipments, AI 
 | Instagram | 2 per week |
 | Website hero video | Monthly refresh |
 
-## Strategic Insight
+## 11) Strategic Insight
 
 Generative systems are probabilistic visual simulators. Standardizing prompts using a stable grammar (`environment + subject + action + style + lighting`) constrains the probability space so outputs repeatedly converge on the same visual identity. In practice, this transforms generation from ad hoc experimentation into a reliable production pipeline.
