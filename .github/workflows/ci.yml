@@ -10,6 +10,8 @@ jobs:
   test-api:
     name: API Unit & Integration Tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     defaults:
       run:
         working-directory: apps/api
@@ -41,6 +43,8 @@ jobs:
   test-shared:
     name: Shared Package Tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     defaults:
       run:
         working-directory: packages/shared
@@ -72,6 +76,8 @@ jobs:
   typecheck:
     name: Type Check
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
@@ -95,6 +101,8 @@ jobs:
   security-scan:
     name: Security Audit
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
