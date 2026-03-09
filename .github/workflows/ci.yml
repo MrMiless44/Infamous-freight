@@ -115,7 +115,7 @@ jobs:
 
       - name: Audit API dependencies
         working-directory: apps/api
-        run: npm install && npm audit --audit-level=high || true
+        run: npm install && npm audit --audit-level=high
 
       - name: Audit shared dependencies
         working-directory: packages/shared
