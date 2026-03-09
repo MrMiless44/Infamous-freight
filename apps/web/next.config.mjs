@@ -14,9 +14,7 @@ const nextConfig = {
     poweredByHeader: false,
     trailingSlash: false,
 
-    // Enable instrumentation hook for Sentry
     experimental: {
-        instrumentationHook: true,
         serverActions: {
             bodySizeLimit: '2mb'
         }

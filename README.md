@@ -65,7 +65,7 @@ infamous-freight/
 | Layer | Technology |
 |---|---|
 | API | Express 5, TypeScript, Zod, Pino |
-| Web | Next.js 14, React, Tailwind CSS |
+| Web | Next.js 15, React, Tailwind CSS |
 | Mobile | React Native, Expo |
 | Database | PostgreSQL via Prisma ORM |
 | Cache / Queue | Redis |
