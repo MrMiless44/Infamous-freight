@@ -6,7 +6,7 @@ HEALTH_URL="${API_URL}/health"
 
 echo "==> Running smoke test against ${HEALTH_URL}"
 
-response="$(curl --silent --show-error --fail "${HEALTH_URL}")"
+response="$(curl --silent --show-error --fail --connect-timeout 5 --max-time 10 "${HEALTH_URL}")"
 
 echo "==> Health response:"
 echo "${response}"
