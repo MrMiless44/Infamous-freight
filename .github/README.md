@@ -1,78 +1,337 @@
-# GitHub Control Room
+Infæmous Freight
 
-This directory contains the governance, automation, and operational configuration for the **Infamous Freight** repository.
+Technical Architecture Blueprint
 
-It defines how the repository behaves in terms of CI/CD, issue intake, security checks, and contribution workflows.
+AI-Powered Freight & Logistics Automation Platform
 
-Think of this directory as the **control room** for the repository.
+Infæmous Freight is designed as a logistics intelligence platform that provides operational visibility, routing intelligence, and automation tools for freight transportation networks.
 
----
+The system integrates:
+	•	shipment tracking
+	•	dispatch operations
+	•	logistics analytics
+	•	AI command orchestration
 
-## Canonical Contents
+⸻
 
-### workflows/
+System Design Principles
 
-Location of all GitHub Actions pipelines.
+The platform follows several architectural principles.
 
-These workflows automate core repository operations such as:
+Modular services
+Core logistics functions are separated into independent modules.
 
-- continuous integration
-- build validation
-- test execution
-- security scanning
-- deployment pipelines
-- repository health checks
+API-first architecture
+All features are accessible through REST APIs.
 
----
+Monorepo structure
+Applications share common packages and types.
 
-### ISSUE_TEMPLATE/
+Scalable infrastructure
+The platform is designed to scale horizontally.
 
-Structured issue templates used when creating new issues.
+⸻
 
-These ensure contributors provide useful information and help automation tools like **Copilot** and **Codex** understand tasks clearly.
+Platform Architecture Overview
 
-Templates include:
+                Web Interface
+                 (Next.js)
+                     │
+                     │ REST API
+                     │
+              API Gateway Layer
+                     │
+                     │
+             Core Service Layer
+   ┌─────────────────────────────────┐
+   │ AI Command Engine               │
+   │ Shipment Management             │
+   │ Carrier Management              │
+   │ Logistics Intelligence Engine   │
+   └─────────────────────────────────┘
+                     │
+                     │
+               Data Services
+         ┌────────────────────┐
+         │ Databases          │
+         │ Analytics Systems  │
+         └────────────────────┘
 
-- bug reports
-- feature requests
-- workflow failure reports
-- AI coding tasks
-- release checklists
 
----
+⸻
 
-### CODEOWNERS
+Core Platform Modules
 
-Defines ownership of parts of the codebase.
+1. AI Command Engine
 
-GitHub automatically requests review from maintainers when files change.
+The command engine interprets user instructions and executes platform actions.
 
----
+Example input:
 
-### dependabot.yml
+Track shipment IF-2045
 
-Configuration for **Dependabot**.
+Processing steps:
 
-Dependabot scans the repository for outdated or vulnerable dependencies and creates pull requests to update them.
+command input
+      │
+      ▼
+intent detection
+      │
+      ▼
+service routing
+      │
+      ▼
+data retrieval
+      │
+      ▼
+response generation
 
----
+This module acts as the control interface for logistics operations.
 
-### codeql-config.yml
+⸻
 
-Configuration for GitHub **CodeQL security analysis**.
+2. Shipment Management
 
-CodeQL scans the codebase for security vulnerabilities and unsafe patterns.
+This module manages shipment data and operational state.
 
----
+Responsibilities:
+	•	shipment lifecycle tracking
+	•	route updates
+	•	delivery status monitoring
+	•	shipment history
 
-## Operational Philosophy
+Example data model:
 
-Infrastructure should enforce discipline automatically.
+Shipment
+ ├─ shipmentId
+ ├─ carrierId
+ ├─ origin
+ ├─ destination
+ ├─ route
+ ├─ status
+ └─ timestamps
 
-The repository uses automation to ensure:
 
-- builds always validate
-- dependencies remain secure
-- issues follow structured formats
-- reviewers are automatically assigned
-- releases follow checklists
+⸻
+
+3. Carrier Management
+
+Handles freight carriers and fleet information.
+
+Capabilities:
+	•	carrier profiles
+	•	fleet metadata
+	•	carrier performance analytics
+	•	operational metrics
+
+⸻
+
+4. Logistics Intelligence Engine
+
+This service analyzes freight movement and generates insights.
+
+Core tasks:
+	•	route optimization
+	•	freight flow visualization
+	•	network analytics
+	•	anomaly detection
+
+Example analytics pipeline:
+
+freight data
+     │
+     ▼
+data aggregation
+     │
+     ▼
+analytics processing
+     │
+     ▼
+logistics insights
+
+
+⸻
+
+Monorepo Architecture
+
+Infæmous Freight uses pnpm workspaces for modular development.
+
+apps/
+   api/
+   web/
+   mobile/
+
+packages/
+   shared/
+
+API
+
+The backend service provides the platform’s core logic.
+
+Responsibilities:
+	•	logistics APIs
+	•	AI command routing
+	•	business logic
+
+Technologies:
+	•	Node.js
+	•	Express
+	•	TypeScript
+	•	Zod validation
+
+⸻
+
+Web Application
+
+The web application functions as the operations control plane.
+
+Capabilities:
+	•	shipment dashboards
+	•	freight monitoring
+	•	analytics views
+	•	logistics interfaces
+
+Technologies:
+	•	Next.js
+	•	React
+	•	TypeScript
+
+⸻
+
+Shared Packages
+
+Shared packages contain reusable components.
+
+Examples:
+	•	common types
+	•	shared utilities
+	•	domain models
+
+⸻
+
+Logistics Data Flow
+
+Freight Operations
+        │
+        ▼
+Shipment Data Collection
+        │
+        ▼
+AI Command Processing
+        │
+        ▼
+Logistics Intelligence Engine
+        │
+        ▼
+Operational Dashboards
+
+This pipeline converts raw freight data into actionable insights.
+
+⸻
+
+Deployment Architecture
+
+Production deployment follows a layered model.
+
+                     CDN
+                      │
+                Web Frontend
+                 (Next.js)
+                      │
+                Load Balancer
+                      │
+                API Services
+                (Express)
+                      │
+                Data Layer
+           ┌─────────────────┐
+           │ Databases       │
+           │ Analytics       │
+           └─────────────────┘
+
+
+⸻
+
+Kubernetes Deployment Model
+
+cluster
+ ├── web-service
+ │     └── nextjs pods
+ │
+ ├── api-service
+ │     └── express pods
+ │
+ ├── worker-service
+ │     └── background processors
+ │
+ └── database
+       └── postgres cluster
+
+Workers can later handle:
+	•	shipment event processing
+	•	analytics pipelines
+	•	AI orchestration tasks
+
+⸻
+
+Observability and Monitoring
+
+Production deployments should include:
+	•	structured logging
+	•	metrics monitoring
+	•	distributed tracing
+
+Recommended tooling:
+
+Prometheus
+Grafana
+OpenTelemetry
+
+
+⸻
+
+Security Practices
+
+The platform follows standard security measures.
+	•	input validation
+	•	API request limits
+	•	environment variable configuration
+	•	middleware error handling
+	•	structured request IDs
+
+⸻
+
+Development Workflow
+
+Typical workflow:
+
+git checkout -b feature/new-feature
+pnpm install
+pnpm dev
+pnpm validate
+
+Validation command runs:
+	•	build
+	•	tests
+	•	linting
+	•	type checking
+
+⸻
+
+Future Platform Capabilities
+
+Planned features include:
+	•	real-time GPS shipment tracking
+	•	predictive freight analytics
+	•	automated dispatch optimization
+	•	multi-tenant logistics networks
+	•	anomaly detection systems
+	•	AI route planning
+
+⸻
+
+Platform Vision
+
+Freight logistics is a massive operational system moving goods across the world.
+
+Infæmous Freight aims to build the intelligence layer that coordinates this system, enabling organizations to manage freight networks using modern software and AI-driven insights.
