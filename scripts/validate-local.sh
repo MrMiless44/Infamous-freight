@@ -11,6 +11,6 @@ echo "==> Linting"
 pnpm lint
 
 echo "==> Testing"
-pnpm test
+pnpm test:ci
 
 echo "All local validation checks passed."
