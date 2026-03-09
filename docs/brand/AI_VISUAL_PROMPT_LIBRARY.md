@@ -3,7 +3,7 @@
 Use this library to keep all generated images and videos in a coherent brand universe:
 
 - **Brand domain:** AI-driven freight and logistics automation
-- **Visual system:** dark enterprise interface, neon-green accents
+- **Visual system:** dark enterprise interface, neon green accents
 - **Geographic anchor:** American freight infrastructure
 - **Tone:** confident, premium, enterprise technology
 
