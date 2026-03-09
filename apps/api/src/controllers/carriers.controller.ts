@@ -9,7 +9,7 @@ export function rankCarriers(req: Request, res: Response): void {
   const ranked = service.rankCarriersForLane(
     body.carriers,
     body.lane,
-    body.equipmentType,
+    body.equipmentType
   );
   res.json({ ok: true, data: ranked });
 }
