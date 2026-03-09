@@ -75,4 +75,57 @@ pnpm dev:mobile
 
 ---
 
+## Local Infrastructure
+
+Postgres and Redis are defined in `docker-compose.yml` with health checks.  
+Use the `Makefile` targets to manage them without remembering Docker flags:
+
+```bash
+# Start Postgres and Redis in the background
+make infra-up
+
+# Tail logs from both services
+make infra-logs
+
+# Tear everything down (data volumes are preserved)
+make infra-down
+```
+
+After `make infra-up`, set the following in your `.env`:
+
+```env
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/infamous_freight
+REDIS_URL=redis://localhost:6379
+```
+
+---
+
+## Smoke Testing
+
+A lightweight smoke test validates the API `/health` endpoint:
+
+```bash
+# Against the default local server (http://localhost:4000)
+make smoke
+
+# Against a specific environment
+API_URL=https://staging.api.infamous-freight.com bash scripts/smoke.sh
+```
+
+The smoke test retries up to 5 times and exits non-zero on failure, making it safe to use in CI pipelines and deployment gates.
+
+---
+
+## Release Discipline
+
+See [`docs/RELEASE.md`](docs/RELEASE.md) for the full pre-release checklist, environment verification steps, tagging convention, and rollback procedure.
+
+Summary:
+1. Confirm all CI checks are green on `main`.
+2. Run `pnpm audit`, `pnpm test`, `pnpm build`.
+3. Smoke-test staging: `API_URL=https://staging.api.infamous-freight.com bash scripts/smoke.sh`.
+4. Tag the release: `git tag -a vX.Y.Z -m "Release vX.Y.Z" && git push origin vX.Y.Z`.
+
+---
+
 ### **Developer Checklist: Get Code Merged on Enterprise Rigs. Successful & Rejectable CLI the milestones Fulfilled!!. Thank.

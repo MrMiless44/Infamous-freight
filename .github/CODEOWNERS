@@ -1,7 +1,31 @@
+# Default: all files require review from the repo owner
 * @MrMiless44
 
+# Application code
 /apps/api/ @MrMiless44
 /apps/web/ @MrMiless44
-/packages/shared/ @MrMiless44
-/.github/workflows/ @MrMiless44
+/apps/mobile/ @MrMiless44
+
+# Shared packages
+/packages/ @MrMiless44
+
+# GitHub configuration and CI/CD workflows (highest sensitivity)
 /.github/ @MrMiless44
+/.github/workflows/ @MrMiless44
+
+# Infrastructure and deployment (high sensitivity)
+/docker-compose.yml @MrMiless44
+/Makefile @MrMiless44
+/k8s/ @MrMiless44
+/terraform/ @MrMiless44
+/deploy/ @MrMiless44
+/infrastructure/ @MrMiless44
+
+# Security-sensitive configuration
+/.env.example @MrMiless44
+
+# Docs
+/docs/ @MrMiless44
+
+# Scripts
+/scripts/ @MrMiless44
