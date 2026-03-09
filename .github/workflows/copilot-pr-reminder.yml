@@ -5,6 +5,7 @@ on:
     types:
       - opened
       - reopened
+      - labeled
 
 permissions:
   pull-requests: write
