@@ -35,13 +35,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: npm audit (root)
-        run: |
-          if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then
-            npm audit --audit-level=high
-          else
-            echo "Skipping npm audit: no npm lockfile found in this pnpm workspace"
-          fi
-
       - name: pnpm audit (monorepo)
         run: pnpm -r audit --prod --audit-level high
