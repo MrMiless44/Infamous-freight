@@ -14,12 +14,9 @@ const nextConfig = {
     poweredByHeader: false,
     trailingSlash: false,
 
-    // Enable instrumentation hook for Sentry
-    experimental: {
-        instrumentationHook: true,
-        serverActions: {
-            bodySizeLimit: '2mb'
-        }
+    // Server Actions configuration (stable in Next.js 15)
+    serverActions: {
+        bodySizeLimit: '2mb'
     },
 
     // Performance Optimizations

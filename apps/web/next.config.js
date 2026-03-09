@@ -23,11 +23,11 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
+  serverActions: {
+    bodySizeLimit: "2mb",
+  },
   experimental: {
-    serverActions: {
-      bodySizeLimit: "2mb",
-    },
-    optimizePackageImports: ["@infamous-freight/shared", "recharts", "@supabase/supabase-js"],
+    optimizePackageImports: ["@infamous/shared", "recharts", "@supabase/supabase-js"],
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
