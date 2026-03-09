@@ -41,6 +41,16 @@ media/
 
 ---
 
+## 🎥 AI Media Generation Playbook
+
+For repeatable AI-generated marketing content (prompt pack, workflow, output quotas, and release cadence), use:
+
+- [`media/INFAMOUS-FREIGHT-MASTER-PROMPT-PACK.md`](./INFAMOUS-FREIGHT-MASTER-PROMPT-PACK.md)
+
+This playbook standardizes brand tone and visual grammar for trailer clips, product demos, social shorts, and freight cinematic sequences.
+
+---
+
 ## 🎨 Brand Identity
 
 ### Primary Logo
