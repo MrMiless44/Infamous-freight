@@ -83,7 +83,7 @@ If a deployment must be reverted:
 |-------------|-----------------|----------------------|-------------|
 | Development | feature branches | local `docker compose` | No           |
 | Staging     | `main`           | Fly.io (staging app) | Yes (CI)    |
-| Production  | `v*` tags        | Fly.io (prod app)    | Yes (tag)   |
+| Production  | `main` (or manual dispatch) | Fly.io (prod app)    | Yes (CI/manual) |
 
 ---
 
