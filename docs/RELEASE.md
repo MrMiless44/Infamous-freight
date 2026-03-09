@@ -54,7 +54,7 @@ git tag -a v1.2.3 -m "Release v1.2.3"
 git push origin v1.2.3
 ```
 
-Pushing the tag triggers the `release.yml` workflow which builds artifacts and publishes the GitHub Release.
+Release publication is handled by `release.yml` on pushes to `main`; pushing a tag alone does not trigger that workflow.
 
 ### 5. Post-Release Verification
 
