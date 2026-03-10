@@ -3,7 +3,7 @@ import { db } from "../lib/db.js";
 
 const router = Router();
 
-router.get("/health", async (_req, res) => {
+router.get("/", async (_req, res) => {
   try {
     await db.$queryRaw`SELECT 1`;
     res.json({
