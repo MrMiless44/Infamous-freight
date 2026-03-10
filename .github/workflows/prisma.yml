@@ -49,8 +49,8 @@ jobs:
           --health-retries=5
 
     env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      DIRECT_URL: ${{ secrets.DIRECT_URL }}
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/infamous_freight_prisma
+      DIRECT_URL: postgresql://postgres:postgres@localhost:5432/infamous_freight_prisma
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       REDIS_URL: ${{ secrets.REDIS_URL }}
 
