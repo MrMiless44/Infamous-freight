@@ -21,22 +21,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: 🧰 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: 📦 Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
       - name: 🧪 Environment Diagnostics
         run: |
           set -euxo pipefail
           echo "🧪 Runtime Diagnostics:"
           echo "  - Node: $(node -v)"
-          echo "  - pnpm: $(pnpm -v)"
           echo "  - Branch: $(git branch --show-current)"
           echo "  - Workdir: $(pwd)"
           echo ""
