@@ -313,16 +313,16 @@ Examples:
 
 ## CI/CD
 
-The repository uses a simplified workflow set to reduce noise and duplication.
+The repository defines a core set of CI/CD workflows to keep feedback fast and signal-focused.
 
-Active workflows include:
+Key workflows include (not exhaustive):
 
 - `ci.yml` — build, lint, typecheck, test
 - `codeql.yml` — security scanning
 - `security-audit.yml` — dependency audits
 - `cd.yml` — deployment workflow
 
-This structure ensures a clear CI signal without redundant pipelines.
+Additional workflows (e.g., deploy-*, security-*, e2e) live under `.github/workflows/`; refer to that directory for the complete automation surface area.
 
 ---
 
