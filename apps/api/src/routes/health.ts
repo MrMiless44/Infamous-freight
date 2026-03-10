@@ -13,11 +13,20 @@ router.get("/", async (_req, res) => {
       uptime: process.uptime(),
     });
   } catch (error) {
+    // Log full error details server-side for observability.
+    console.error("Health check database connectivity failed", error);
+
+    const isProduction = process.env.NODE_ENV === "production";
+    const publicErrorMessage =
+      !isProduction && error instanceof Error
+        ? error.message
+        : "Database connectivity check failed";
+
     res.status(503).json({
       ok: false,
       service: "infamous-freight-api",
       database: "disconnected",
-      error: error instanceof Error ? error.message : "Unknown database error",
+      error: publicErrorMessage,
     });
   }
 });
