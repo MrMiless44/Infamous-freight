@@ -11,7 +11,7 @@
 
 ## Release Process
 
-1. Increment the version in `package.json` using semantic versioning.
+1. Bump the version by running `node scripts/release-version.js` (this updates `package.json` using semantic versioning based on conventional commit messages; avoid manual edits).
 2. Tag the release: `git tag -a v<version> -m "Release <version>"`.
 3. Push changes: `git push && git push --tags`.
 4. Publish release and changelog:
