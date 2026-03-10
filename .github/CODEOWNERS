@@ -9,9 +9,12 @@
 /apps/api/ @MrMiless44
 /apps/web/ @MrMiless44
 /apps/mobile/ @MrMiless44
+/apps/worker/ @MrMiless44
+/apps/ai/ @MrMiless44
 
 # Shared packages and tooling
 /packages/shared/ @MrMiless44
+/packages/genesis/ @MrMiless44
 /scripts/ @MrMiless44
 
 # Documentation and infrastructure
