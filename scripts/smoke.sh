@@ -16,7 +16,7 @@ for attempt in $(seq 1 "$MAX_ATTEMPTS"); do
       echo "Smoke check passed"
       exit 0
     }
-    echo "Health endpoint responded, but did not contain ok=true"
+    echo "Attempt $attempt/$MAX_ATTEMPTS: health endpoint responded, but did not contain ok=true"
   else
     echo "Attempt $attempt/$MAX_ATTEMPTS failed"
   fi
