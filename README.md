@@ -95,6 +95,7 @@ packages/
   shared/     Shared schemas, utilities, domain models
 ```
 
+> Note: This overview highlights the primary product surfaces. Additional internal workspaces (for example, `apps/ai`, `apps/worker`, and `packages/genesis`) also exist in the pnpm monorepo but are omitted here for brevity.
 ### Surface Responsibilities
 
 | Surface         | Purpose                                  |
