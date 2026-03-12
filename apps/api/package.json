@@ -9,7 +9,8 @@
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "eslint src --ext .ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "smoke": "curl -fsS ${API_URL:-http://localhost:4000}/health >/dev/null"
   },
   "dependencies": {
     "@infamous-freight/shared": "workspace:*",
