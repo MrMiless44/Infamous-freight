@@ -43,7 +43,7 @@ Set secrets in Vercel/Railway dashboards and keep local secrets out of git.
 
 - Confirm API health endpoint returns success.
 - Confirm web home page renders.
-- Confirm background worker loop is active.
+- Confirm worker service is running and emitting expected startup/heartbeat logs.
 - Run `scripts/release-smoke-check.sh` against production URLs.
 
 ## 6. Rollback
