@@ -10,9 +10,9 @@ export default function BookDemoPage() {
           contract review. Share your team details and we will schedule a guided demo.
         </p>
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
-          <Link href="mailto:sales@infamousfreight.com" className="btn btn-primary text-center">
+          <a href="mailto:sales@infamousfreight.com" className="btn btn-primary text-center">
             Email Sales
-          </Link>
+          </a>
           <Link href="/contact-sales" className="btn btn-secondary text-center">
             Contact Sales Form
           </Link>
