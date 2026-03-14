@@ -14,7 +14,7 @@ export default function BookDemoPage() {
             Email Sales
           </a>
           <Link href="/contact-sales" className="btn btn-secondary text-center">
-            Contact Sales Form
+            Contact Sales
           </Link>
         </div>
       </div>
