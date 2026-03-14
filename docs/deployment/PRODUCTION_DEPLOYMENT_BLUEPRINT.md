@@ -20,7 +20,7 @@
 - `apps/web` — Next.js frontend
 
 #### Railway
-- `apps/api` — Node/Express/Apollo API
+- `apps/api` — Node/Express REST API
 - `apps/worker` — background jobs, scheduled tasks, queues
 - `postgres` — primary database
 - `redis` — cache, queue backend, rate-limiting primitives
