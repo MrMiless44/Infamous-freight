@@ -1,4 +1,3 @@
-import React from "react";
 import { Badge } from "@/components/pricing/Badge";
 import { PricingButton } from "@/components/pricing/PricingButton";
 
