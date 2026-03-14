@@ -116,15 +116,15 @@ OPENAI_API_KEY=
 
 ## Vercel configuration
 
-`vercel.json` is configured to:
+`vercel.json` (at the repository root) is configured to:
 - use Next.js framework
 - install dependencies with pnpm
-- build `apps/web`
+- build `apps/web` from the monorepo root (output at `apps/web/.next`)
 - enable deployments from `main` and `staging`
 
 ### Web deployment notes
 
-- Root project should point to `apps/web`
+- Vercel project **Root Directory** should be the repository root (the monorepo), not `apps/web` — `vercel.json` and pnpm workspace filters handle building `apps/web`
 - Enable preview deployments for PRs
 - Add production domain and staging subdomain
 - Store only public web variables in the Vercel project for the frontend
