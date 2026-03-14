@@ -5,8 +5,8 @@ export default function BillingPolicyPage() {
         <h1 className="text-3xl font-black">Billing Policy</h1>
         <ul className="mt-6 space-y-3 text-sm text-white/80">
           <li>• Starter and Professional are billed monthly via Stripe self-serve checkout.</li>
-          <li>• Enterprise is invoice-first and requires a signed commercial agreement.</li>
-          <li>• Enterprise minimum monthly spend is $2,500.</li>
+          <li>• Enterprise is invoice-first, includes a $499/month platform fee, and requires a signed commercial agreement.</li>
+          <li>• Enterprise minimum monthly spend is $2,500 (including platform fee and usage-based charges).</li>
           <li>• Failed payments may result in account suspension until billing is resolved.</li>
           <li>• Subscription cancellations stop future renewals at the end of the billing period.</li>
         </ul>
