@@ -25,5 +25,6 @@ jobs:
             else
               echo "⚠️  Health check failed for $TARGET (curl exit code: $EXIT_CODE, HTTP: $HTTP_CODE)."
               echo "    The service may be temporarily unavailable."
+              exit "$EXIT_CODE"
             fi
           fi
