@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@infamous-freight/shared": "workspace:*",
-    "@react-native-async-storage/async-storage": "^1.24.0",
+    "@react-native-async-storage/async-storage": "^2.2.0",
     "expo": "^55.0.5",
     "expo-router": "^55.0.4",
     "react": "^19.2.4",
