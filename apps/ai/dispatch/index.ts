@@ -18,6 +18,8 @@ function logAudit(action, details) {
         timestamp: new Date().toISOString(),
     };
     auditLog.push(auditEntry);
+    // Audit logs are output to structured logging system in production
+    // eslint-disable-next-line no-console
     console.log(`Logged Action: ${action}`, details);
 }
 
