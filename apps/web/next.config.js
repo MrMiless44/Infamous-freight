@@ -1,9 +1,13 @@
-import path from "path";
-import crypto from "crypto";
-import { fileURLToPath } from "url";
+// This file is intentionally a stub.
+// The authoritative Next.js configuration is next.config.mjs
+// Next.js will use next.config.mjs in preference to this file.
+// Do not add configuration here.
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+/** @type {import('next').NextConfig} */
+const nextConfig = {};
+
+module.exports = nextConfig;
+
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
