@@ -37,7 +37,7 @@ export const logger: Logger = pino({
   },
 
   // Pretty print in development only
-  ...(env.NODE_ENV !== "production" && {
+  ...(env.NODE_ENV === "development" && {
     transport: {
       target: "pino-pretty",
       options: {
