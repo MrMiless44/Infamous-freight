@@ -21,7 +21,7 @@ export function createApp() {
       ? env.CORS_ORIGIN ?? (() => { throw new Error("CORS_ORIGIN must be set in production"); })()
       : (env.CORS_ORIGIN ?? "*");
 
-  app.use(cors({ origin: corsOrigin, credentials: true }));
+  app.use(cors({ origin: corsOrigin === "*" ? true : corsOrigin, credentials: true }));
 
   // Body parsing
   app.use(express.json({ limit: "1mb" }));
