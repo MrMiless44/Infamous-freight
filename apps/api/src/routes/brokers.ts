@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { pool } from "../lib/db";
+import { pool } from "../lib/db.js";
 
 export default async function brokerRoutes(app: FastifyInstance) {
   app.get("/", { preHandler: [app.authenticate] }, async (req: any) => {

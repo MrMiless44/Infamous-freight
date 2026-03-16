@@ -1,7 +1,7 @@
 import type { FastifyInstance } from "fastify";
 import { Queue } from "bullmq";
 import IORedis from "ioredis";
-import { pool } from "../lib/db";
+import { pool } from "../lib/db.js";
 
 const connection = new IORedis(process.env.REDIS_URL);
 const invoiceQueue = new Queue("invoiceQueue", { connection });

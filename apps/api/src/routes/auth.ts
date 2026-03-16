@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import type { FastifyInstance } from "fastify";
-import { pool } from "../lib/db";
+import { pool } from "../lib/db.js";
 
 export default async function authRoutes(app: FastifyInstance) {
   app.post("/register", async (req: any, reply) => {
