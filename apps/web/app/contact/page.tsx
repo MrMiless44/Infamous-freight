@@ -1,7 +1,6 @@
 "use client";
 
 import { type FormEvent, useState } from "react";
-import type { Metadata } from "next";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
