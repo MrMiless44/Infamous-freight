@@ -22,7 +22,7 @@
     ],
     "react/no-unescaped-entities": "warn",
     "@next/next/no-html-link-for-pages": "warn",
-    "react-hooks/rules-of-hooks": "warn"
+    "react-hooks/rules-of-hooks": "error"
   },
   "plugins": [
     "@typescript-eslint"
