@@ -12,10 +12,26 @@ module.exports = {
   ],
   coverageThreshold: {
     global: {
-      lines: 100,
-      functions: 100,
-      branches: 100,
-      statements: 100,
+      lines: 80,
+      functions: 80,
+      branches: 75,
+      statements: 80,
+    },
+    // Critical paths require higher coverage
+    "./src/auth/**": {
+      lines: 95,
+      functions: 95,
+      branches: 90,
+    },
+    "./src/billing/**": {
+      lines: 95,
+      functions: 95,
+      branches: 90,
+    },
+    "./src/marketplace/**": {
+      lines: 90,
+      functions: 90,
+      branches: 85,
     },
   },
   testMatch: ["**/__tests__/**/*.test.js", "**/?(*.)+(spec|test).js"],

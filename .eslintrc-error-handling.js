@@ -38,7 +38,7 @@ module.exports = {
         
         // Standard rules
         'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-        'no-console': ['warn', { allow: ['warn', 'error'] }],
+        'no-console': ['error', { allow: ['warn', 'error'] }], // Upgraded to error
     },
     plugins: ['infamous-freight-error-handling'],
     overrides: [
