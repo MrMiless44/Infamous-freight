@@ -137,7 +137,7 @@ WORKDIR /app
 COPY --from=builder /app/apps/api/dist ./dist
 USER node
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["node", "dist/index.js"]
+CMD ["node", "dist/server.js"]
 ```
 
 **Actions**:
