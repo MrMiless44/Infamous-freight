@@ -4,7 +4,7 @@
  * Every log line includes tenantId, requestId, and service context automatically.
  *
  * Usage:
- *   import { logger } from "./lib/logger";
+ *   import { logger } from "./lib/logger.js";
  *   logger.info({ shipmentId }, "Shipment created");
  *   logger.error({ err, tenantId }, "Failed to deliver webhook");
  */

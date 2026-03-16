@@ -8,8 +8,8 @@
 import { Queue, Worker, QueueEvents } from "bullmq";
 import Redis from "redis";
 import { PrismaClient } from "@prisma/client";
-import { generateMonthlyInvoices } from "./invoicing";
-import { logAuditEvent, AUDIT_ACTIONS } from "../audit/orgAuditLog";
+import { generateMonthlyInvoices } from "./invoicing.js";
+import { logAuditEvent, AUDIT_ACTIONS } from "../audit/orgAuditLog.js";
 
 const prisma = new PrismaClient();
 

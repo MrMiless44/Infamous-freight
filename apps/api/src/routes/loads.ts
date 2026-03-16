@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { pool } from "../lib/db";
+import { pool } from "../lib/db.js";
 import { ApiResponse, HTTP_STATUS } from "@infamous-freight/shared";
 
 export default async function loadRoutes(app: FastifyInstance) {
