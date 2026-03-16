@@ -10,7 +10,7 @@ export default function HomeScreen() {
         padding: 24,
       }}
     >
-      <Text>Infamous Freight Mobile</Text>
+      <Text>Infæmous Freight Mobile</Text>
     </View>
   );
 }

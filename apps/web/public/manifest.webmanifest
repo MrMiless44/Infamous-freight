@@ -1,7 +1,7 @@
 {
-  "name": "Infamous Freight",
-  "short_name": "Infamous",
-  "description": "Infamous Freight platform",
+  "name": "Infæmous Freight",
+  "short_name": "Infæmous",
+  "description": "Infæmous Freight platform",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

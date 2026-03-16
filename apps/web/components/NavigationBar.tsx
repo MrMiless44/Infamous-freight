@@ -93,9 +93,9 @@ export const NavigationBar: React.FC = () => {
     <nav className={styles.navbar} role="navigation" aria-label="Main navigation">
       <div className={styles.navbarContainer}>
         {/* Logo */}
-        <Link href="/" className={styles.logo} aria-label="Infamous Freight Home">
+        <Link href="/" className={styles.logo} aria-label="Infæmous Freight Home">
           <span className={styles.logoIcon}>⚡</span>
-          <span className={styles.logoText}>Infamous Freight</span>
+          <span className={styles.logoText}>Infæmous Freight</span>
         </Link>
 
         {/* Desktop Navigation */}

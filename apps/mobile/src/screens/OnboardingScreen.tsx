@@ -26,7 +26,7 @@ export default function OnboardingScreen({ navigation }: any) {
   const steps: OnboardingStep[] = [
     {
       id: "welcome",
-      title: "Welcome to Infamous Freight",
+      title: "Welcome to Infæmous Freight",
       description: "Let's get your account set up in a few simple steps",
       component: <WelcomeStep />,
     },
@@ -39,7 +39,7 @@ export default function OnboardingScreen({ navigation }: any) {
     {
       id: "account-type",
       title: "Account Type",
-      description: "What will you use Infamous Freight for?",
+      description: "What will you use Infæmous Freight for?",
       component: <AccountTypeStep data={formData} onChange={setFormData} />,
     },
     {
@@ -141,7 +141,7 @@ function WelcomeStep() {
   return (
     <View style={{ paddingVertical: 20 }}>
       <Text style={{ fontSize: 16, textAlign: "center" }}>
-        Ship smarter, deliver faster. Welcome to Infamous Freight - your all-in-one shipping
+        Ship smarter, deliver faster. Welcome to Infæmous Freight - your all-in-one shipping
         solution.
       </Text>
     </View>

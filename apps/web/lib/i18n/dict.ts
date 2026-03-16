@@ -2,7 +2,7 @@ export type Locale = "en" | "es";
 
 export const dict = {
   en: {
-    appName: "Infamous Freight",
+    appName: "Infæmous Freight",
     nav: {
       avatar: "Avatar Settings",
       genesis: "Genesis",
@@ -16,7 +16,7 @@ export const dict = {
     },
     genesis: {
       title: "Genesis",
-      subtitle: "AI operator for Infamous Freight Enterprises",
+      subtitle: "AI operator for Infæmous Freight Enterprises",
       placeholder: "Message Genesis...",
     },
     avatar: {
@@ -30,7 +30,7 @@ export const dict = {
     },
   },
   es: {
-    appName: "Infamous Freight",
+    appName: "Infæmous Freight",
     nav: {
       avatar: "Configuración de Avatar",
       genesis: "Génesis",
@@ -44,7 +44,7 @@ export const dict = {
     },
     genesis: {
       title: "Génesis",
-      subtitle: "Operador de IA para Infamous Freight Enterprises",
+      subtitle: "Operador de IA para Infæmous Freight Enterprises",
       placeholder: "Mensaje a Génesis...",
     },
     avatar: {

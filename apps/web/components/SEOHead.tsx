@@ -12,7 +12,7 @@ interface SEOHeadProps {
 }
 
 export default function SEOHead({
-  title = "Infamous Freight Enterprises - Enterprise Logistics & Fleet Management",
+  title = "Infæmous Freight Enterprises - Enterprise Logistics & Fleet Management",
   description = "Commercial-grade logistics platform with real-time tracking, AI-powered route optimization, and comprehensive fleet management. Trusted by enterprises worldwide.",
   image = "/og-image.png",
   type = "website",
@@ -50,7 +50,7 @@ export default function SEOHead({
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={fullImageUrl} />
-      <meta property="og:site_name" content="Infamous Freight Enterprises" />
+      <meta property="og:site_name" content="Infæmous Freight Enterprises" />
 
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
@@ -65,8 +65,8 @@ export default function SEOHead({
       <link rel="shortcut icon" href="/favicon.ico" />
 
       {/* PWA */}
-      <meta name="application-name" content="Infamous Freight" />
-      <meta name="apple-mobile-web-app-title" content="Infamous Freight" />
+      <meta name="application-name" content="Infæmous Freight" />
+      <meta name="apple-mobile-web-app-title" content="Infæmous Freight" />
 
       {/* Security */}
       <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
