@@ -35,7 +35,7 @@ jobs:
           config-file: .github/codeql-config.yml
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: pnpm
