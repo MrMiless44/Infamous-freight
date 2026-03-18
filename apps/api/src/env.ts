@@ -22,7 +22,10 @@ const envSchema = z.object({
   STRIPE_SECRET_KEY: z.string().optional(),
   OPENAI_API_KEY: z.string().optional(),
   ANTHROPIC_API_KEY: z.string().optional(),
-  SENTRY_DSN: z.string().url().optional(),
+  SENTRY_DSN: z.preprocess(
+    (val) => (val === "" ? undefined : val),
+    z.string().url().optional(),
+  ),
 });
 
 const result = envSchema.safeParse(process.env);
