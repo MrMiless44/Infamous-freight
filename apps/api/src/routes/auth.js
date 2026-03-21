@@ -100,7 +100,11 @@ router.post(
         return res.status(401).json({ error: "Invalid or expired refresh token" });
       }
 
-      const accessToken = issueAccessToken(stored.user, env.JWT_SECRET);
+      const jwtSecret = env.jwtSecret || process.env.JWT_SECRET;
+      if (!jwtSecret) {
+        return res.status(500).json({ error: "JWT secret not configured" });
+      }
+      const accessToken = issueAccessToken(stored.user, jwtSecret);
 
       res.json({ ok: true, accessToken });
     } catch (err) {
