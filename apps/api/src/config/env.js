@@ -6,7 +6,9 @@ const env = {
   apiPort: Number(process.env.API_PORT || process.env.PORT || 4000),
   databaseUrl: process.env.DATABASE_URL || "",
   jwtSecret: process.env.JWT_SECRET || "dev_insecure_change_me_please_update",
-  jwtExpiry: process.env.JWT_EXPIRY || "30d",
+  jwtExpiry: process.env.JWT_EXPIRY || "15m",
+  jwtRefreshSecret: process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET || "dev_insecure_change_me_please_update",
+  jwtRefreshExpiry: process.env.JWT_REFRESH_EXPIRY || "30d",
   avatarStorage: process.env.AVATAR_STORAGE || "local",
   avatarUploadDir:
     process.env.AVATAR_UPLOAD_DIR || path.join(process.cwd(), "apps/api/public/uploads"),

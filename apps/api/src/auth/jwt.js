@@ -1,20 +1,48 @@
+const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const { env } = require("../config/env");
 
+function getAccessSecret() {
+  return env.jwtSecret;
+}
+
+function getRefreshSecret() {
+  return env.jwtRefreshSecret || env.jwtSecret;
+}
+
+function signAccessToken(payload) {
+  return jwt.sign(payload, getAccessSecret(), { expiresIn: env.jwtExpiry || "15m" });
+}
+
+function signRefreshToken(payload) {
+  return jwt.sign(payload, getRefreshSecret(), { expiresIn: env.jwtRefreshExpiry || "30d" });
+}
+
 function signUserToken(userId) {
-  const claims = { sub: userId, scopes: ["user:avatar"] };
-  return jwt.sign(claims, env.jwtSecret, { expiresIn: env.jwtExpiry || "30d" });
+  return signAccessToken({ sub: userId, scopes: ["user:avatar"], role: "dispatcher", org_id: "dev-tenant" });
 }
 
 function verifyToken(token) {
   try {
-    return jwt.verify(token, env.jwtSecret);
+    return jwt.verify(token, getAccessSecret());
   } catch {
     return null;
   }
 }
 
+function verifyRefreshToken(token) {
+  return jwt.verify(token, getRefreshSecret());
+}
+
+function hashRefreshToken(token) {
+  return crypto.createHash("sha256").update(token).digest("hex");
+}
+
 module.exports = {
+  signAccessToken,
+  signRefreshToken,
   signUserToken,
   verifyToken,
+  verifyRefreshToken,
+  hashRefreshToken,
 };
