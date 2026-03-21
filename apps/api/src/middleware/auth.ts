@@ -1,29 +1,39 @@
 import type { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import { ENV } from "../env.js";
+import { ApiError } from "../utils/errors.js";
+import { verifyAccessToken } from "../modules/auth/auth.utils.js";
 
-export interface AuthenticatedRequest extends Request {
-  user: { id: string; tenantId: string; role: string; email: string };
-}
+export type AuthenticatedRequest = Request;
 
-export function requireAuth(req: Request, res: Response, next: NextFunction): void {
-  const authHeader = req.headers.authorization;
-  if (!authHeader?.startsWith("Bearer ")) {
-    res.status(401).json({ error: "Missing or invalid authorization header" });
+export function requireAuth(req: Request, _res: Response, next: NextFunction): void {
+  const authorization = req.headers.authorization;
+
+  if (!authorization?.startsWith("Bearer ")) {
+    next(new ApiError(401, "AUTH_REQUIRED", "Authentication required"));
     return;
   }
 
-  const token = authHeader.slice(7);
   try {
-    const payload = jwt.verify(token, ENV.JWT_SECRET) as jwt.JwtPayload;
-    (req as AuthenticatedRequest).user = {
-      id: payload.id ?? payload.sub ?? "",
-      tenantId: payload.tenant_id ?? payload.tenantId ?? "",
-      role: payload.role ?? "dispatcher",
-      email: payload.email ?? "",
+    const claims = verifyAccessToken(authorization.slice(7));
+
+    req.auth = {
+      userId: claims.sub,
+      role: claims.role,
+      tokenType: claims.type,
+      organizationId: undefined,
+      orgId: undefined,
     };
+    req.user = {
+      id: claims.sub,
+      email: claims.email ?? "",
+      role: claims.role,
+      tenantId: "",
+    };
+    req.tenantId = "";
+    req.orgId = undefined;
+    req.organizationId = undefined;
+
     next();
   } catch {
-    res.status(401).json({ error: "Invalid or expired token" });
+    next(new ApiError(401, "INVALID_ACCESS_TOKEN", "Invalid or expired access token"));
   }
 }
