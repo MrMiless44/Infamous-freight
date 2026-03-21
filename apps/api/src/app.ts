@@ -20,7 +20,12 @@ export function createApp(): Express {
 
   app.use(
     helmet({
-      contentSecurityPolicy: false,
+      contentSecurityPolicy: {
+        useDefaults: true,
+        directives: {
+          defaultSrc: ["'self'"],
+        },
+      },
       crossOriginResourcePolicy: { policy: "cross-origin" },
     }),
   );
