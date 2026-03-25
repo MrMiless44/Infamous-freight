@@ -115,7 +115,7 @@ describe('Button', () => {
 
 ## 🔧 Environment Variables
 
-See `.env.example` for the full variable catalog and `docs/NETLIFY_ENV_AUDIT.md` for the Netlify-specific production checklist. The most important web variables are:
+See `.env.example` for the full variable catalog and `../../docs/NETLIFY_ENV_AUDIT.md` for the Netlify-specific production checklist. The most important web variables are:
 
 - `NEXT_PUBLIC_API_URL`: Browser-facing API base URL used across the frontend
 - `NEXT_PUBLIC_APP_URL`: Canonical public URL for the web app
