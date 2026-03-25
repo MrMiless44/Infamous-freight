@@ -16,9 +16,18 @@ describe("auth schemas", () => {
   it("accepts login payloads with 12 character passwords", () => {
     const result = loginSchema.safeParse({
       email: "ada@example.com",
-      password: "LongPassword1!",
+      password: "Passw0rd!!12",
     });
 
     expect(result.success).toBe(true);
+  });
+
+  it("rejects login payloads with 11 character passwords", () => {
+    const result = loginSchema.safeParse({
+      email: "ada@example.com",
+      password: "Passw0rd!!1",
+    });
+
+    expect(result.success).toBe(false);
   });
 });
