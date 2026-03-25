@@ -9,6 +9,9 @@ const hashingOptions: argon2.Options & { raw?: false } = {
 };
 
 function withPepper(password: string): string {
+  if (!env.passwordPepper) {
+    throw new Error("PASSWORD_PEPPER must be configured");
+  }
   return `${password}${env.passwordPepper}`;
 }
 
