@@ -1,32 +1,31 @@
 FROM node:22-alpine AS base
 WORKDIR /app
-
 RUN corepack enable
 
+FROM base AS deps
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY apps/api/package.json apps/api/package.json
+COPY apps ./apps
+COPY packages ./packages
+RUN pnpm install --frozen-lockfile
 
-RUN pnpm install --filter @infamous/api... --no-frozen-lockfile
-
+FROM deps AS build
 COPY . .
+RUN pnpm --dir apps/api exec prisma generate --schema=prisma/schema.prisma
+RUN pnpm --dir apps/api build
 
-RUN npx prisma generate
-
-RUN pnpm --filter @infamous/api build
-
-FROM node:22-alpine AS runtime
+FROM node:22-alpine AS runner
 WORKDIR /app
+ENV NODE_ENV=production
 RUN corepack enable
 
-COPY --from=base /app/apps/api/dist ./dist
-COPY --from=base /app/apps/api/package.json ./package.json
-COPY --from=base /app/node_modules ./node_modules
+COPY --from=build /app/apps/api/dist ./dist
+COPY --from=build /app/apps/api/package.json ./package.json
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/apps/api/prisma ./prisma
 
-ENV NODE_ENV=production
-EXPOSE 4000
+EXPOSE 3000
 
-# Health check to verify API is responding
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:4000/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))"
+  CMD node -e "require('http').get('http://localhost:3000/api/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"
 
 CMD ["node", "dist/server.js"]
