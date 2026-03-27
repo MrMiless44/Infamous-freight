@@ -5,7 +5,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.js"
+    ".": "./dist/index.js",
+    "./payments/config": "./dist/payments/config.js",
+    "./payments/types": "./dist/payments/types.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",

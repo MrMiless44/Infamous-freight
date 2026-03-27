@@ -14,6 +14,8 @@ import driverRoutes from "./routes/drivers.js";
 import loadRoutes from "./routes/loads.js";
 import rateRoutes from "./routes/rates.js";
 import shipmentRoutes from "./routes/shipments.js";
+import { createCheckoutSession } from "./routes/payments/createCheckoutSession.js";
+import { stripeWebhook } from "./routes/webhooks/stripeWebhook.js";
 
 export function createApp(): Express {
   const app = express();
@@ -40,6 +42,13 @@ export function createApp(): Express {
   );
 
   app.use(cookieParser(env.cookieSecret));
+
+  app.post(
+    "/api/webhooks/stripe",
+    express.raw({ type: "application/json" }),
+    stripeWebhook,
+  );
+
   app.use(express.json({ limit: "1mb" }));
   app.use(express.urlencoded({ extended: true }));
   app.use(requestIdMiddleware);
@@ -70,6 +79,8 @@ export function createApp(): Express {
   app.use("/api/loads", loadRoutes);
   app.use("/api/rates", rateRoutes);
   app.use("/api/shipments", shipmentRoutes);
+
+  app.post("/api/payments/checkout-session", createCheckoutSession);
 
   app.use(notFound);
   app.use(errorHandler);
