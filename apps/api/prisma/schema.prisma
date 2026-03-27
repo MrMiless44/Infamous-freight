@@ -20,6 +20,8 @@ model Tenant {
   carrierScores   CarrierScore[]
   predictions     PredictionEvent[]
   pricingSnapshots PricingSnapshot[]
+  payments        Payment[]
+  loadPayments    LoadPayment[]
 }
 
 model User {
@@ -37,6 +39,7 @@ model User {
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
   refreshTokens    RefreshToken[]
+  payments         Payment[]
 
   @@index([tenantId])
   @@index([email])
@@ -130,8 +133,59 @@ model Load {
   claimedAt       DateTime?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  loadPayments    LoadPayment[]
 
   @@index([tenantId])
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  tenantId      String
+  tenant        Tenant        @relation(fields: [tenantId], references: [id])
+  userId        String?
+  user          User?         @relation(fields: [userId], references: [id])
+  loadId        String?
+  amount        Int
+  status        String
+  provider      String
+  externalId    String?
+  checkoutUrl   String?
+  currency      String        @default("usd")
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  transactions  Transaction[]
+  loadPayments  LoadPayment[]
+
+  @@index([tenantId, status, createdAt])
+  @@index([tenantId, loadId])
+  @@unique([provider, externalId])
+}
+
+model Transaction {
+  id           String   @id @default(cuid())
+  paymentId    String
+  payment      Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  externalId   String?
+  status       String
+  rawResponse  Json?
+  createdAt    DateTime @default(now())
+
+  @@index([paymentId, createdAt])
+}
+
+model LoadPayment {
+  id         String   @id @default(cuid())
+  tenantId   String
+  tenant     Tenant   @relation(fields: [tenantId], references: [id])
+  loadId     String
+  load       Load     @relation(fields: [loadId], references: [id], onDelete: Cascade)
+  paymentId  String
+  payment    Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  status     String   @default("PENDING")
+  createdAt  DateTime @default(now())
+
+  @@unique([loadId, paymentId])
+  @@index([tenantId, loadId, status])
 }
 
 // Phase 2: AI Operations Models

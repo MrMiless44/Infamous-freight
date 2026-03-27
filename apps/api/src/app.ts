@@ -12,8 +12,10 @@ import carrierRoutes from "./routes/carriers.js";
 import dispatchRoutes from "./routes/dispatches.js";
 import driverRoutes from "./routes/drivers.js";
 import loadRoutes from "./routes/loads.js";
+import paymentRoutes from "./routes/payments.js";
 import rateRoutes from "./routes/rates.js";
 import shipmentRoutes from "./routes/shipments.js";
+import stripeWebhookRoutes from "./webhooks/stripe.js";
 
 export function createApp(): Express {
   const app = express();
@@ -40,6 +42,7 @@ export function createApp(): Express {
   );
 
   app.use(cookieParser(env.cookieSecret));
+  app.use("/api/payments/stripe/webhook", express.raw({ type: "application/json" }), stripeWebhookRoutes);
   app.use(express.json({ limit: "1mb" }));
   app.use(express.urlencoded({ extended: true }));
   app.use(requestIdMiddleware);
@@ -68,6 +71,7 @@ export function createApp(): Express {
   app.use("/api/dispatches", dispatchRoutes);
   app.use("/api/drivers", driverRoutes);
   app.use("/api/loads", loadRoutes);
+  app.use("/api/payments", paymentRoutes);
   app.use("/api/rates", rateRoutes);
   app.use("/api/shipments", shipmentRoutes);
 
