@@ -87,7 +87,7 @@ echo "=== Root fly.toml Configuration Tests ==="
 
 assert_eq "root fly.toml exists" "true" "$([ -f "$ROOT_FLY_TOML" ] && echo true || echo false)"
 
-ROOT_APP_NAME=$(grep -E '^app\s*=' "$ROOT_FLY_TOML" | head -1 | sed -E 's/.*=\s*"?([^" ]+)"?/\1/')
+ROOT_APP_NAME=$(grep -E '^app\s*=' "$ROOT_FLY_TOML" | head -1 | sed -E 's/.*=\s*"?([^" ]+)"?/\1/' || true)
 assert_eq "root fly.toml app name is 'infamous-freight'" "infamous-freight" "$ROOT_APP_NAME"
 
 ROOT_REGION=$(grep -E '^primary_region\s*=' "$ROOT_FLY_TOML" | head -1 | sed -E 's/.*=\s*"?([^" ]+)"?/\1/')
