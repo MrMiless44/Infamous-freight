@@ -11,12 +11,22 @@ const router = Router();
 
 const createGoDaddyCheckoutSchema = z.object({
   type: z.enum(Object.keys(PAYMENT_LINKS) as [keyof typeof PAYMENT_LINKS, ...Array<keyof typeof PAYMENT_LINKS>]),
-  amount: z.number().positive(),
+  amount: z
+    .number()
+    .positive()
+    .refine((value) => Number.isInteger(value * 100), {
+      message: "Amount must have at most two decimal places",
+    }),
   loadId: z.string().optional(),
 });
 
 const createStripeIntentSchema = z.object({
-  amount: z.number().positive(),
+  amount: z
+    .number()
+    .positive()
+    .refine((value) => Number.isInteger(value * 100), {
+      message: "Amount must have at most two decimal places",
+    }),
   currency: z.string().default("usd"),
   loadId: z.string().optional(),
 });
