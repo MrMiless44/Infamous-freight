@@ -114,11 +114,11 @@ assert_eq "root fly.toml auto_start_machines is 'true'" "true" "$ROOT_AUTO_START
 ROOT_FORCE_HTTPS=$(grep -E 'force_https\s*=' "$ROOT_FLY_TOML" | head -1 | sed -E 's/.*=\s*(.*)/\1/' | tr -d ' ')
 assert_eq "root fly.toml force_https is 'true'" "true" "$ROOT_FORCE_HTTPS"
 
-# Verify memory_mb is NOT present (was removed in this PR)
+# Verify memory_mb is present
 if grep -q 'memory_mb' "$ROOT_FLY_TOML"; then
-  fail "root fly.toml should NOT contain memory_mb (was removed in PR)"
+  pass "root fly.toml contains memory_mb (expected)"
 else
-  pass "root fly.toml does not contain memory_mb (correctly removed)"
+  fail "root fly.toml should contain memory_mb"
 fi
 
 # Verify [env] section is present
