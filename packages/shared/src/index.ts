@@ -5,3 +5,6 @@ export * from "./utils";
 export * from "./env";
 export * from "./rbac";
 export * from "./scopes";
+
+export * from "./payments/config";
+export * from "./payments/types";

@@ -1,16 +1,9 @@
-/*
- * Copyright © 2025 Infæmous Freight. All Rights Reserved.
- * Proprietary and Confidential - See COPYRIGHT file for details.
- * Module: Stripe Client Helper
- */
-
 import Stripe from "stripe";
 
-const key = process.env.STRIPE_SECRET_KEY;
-if (!key) {
-  throw new Error("Missing STRIPE_SECRET_KEY environment variable");
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error("Missing STRIPE_SECRET_KEY");
 }
 
-export const stripe = new Stripe(key, {
-  apiVersion: "2024-06-20",
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: "2025-02-24.acacia" as Stripe.LatestApiVersion,
 });
