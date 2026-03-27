@@ -1,5 +1,6 @@
 import { AvatarDock } from "../../components/AvatarDock";
 import { getDemoAuth } from "../../lib/auth";
+import { PaymentActions } from "../../components/PaymentActions";
 
 export default async function Dashboard() {
   const { token, tenantId } = getDemoAuth();
@@ -22,6 +23,8 @@ export default async function Dashboard() {
           <a href="/loadboard">Open Load Board →</a>
         </div>
       </div>
+
+      <PaymentActions />
 
       <AvatarDock token={token} tenantId={tenantId} />
     </main>
