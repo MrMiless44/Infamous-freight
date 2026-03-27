@@ -158,7 +158,7 @@ model Payment {
 
   @@index([tenantId, status, createdAt])
   @@index([tenantId, loadId])
-  @@index([externalId])
+  @@unique([provider, externalId])
 }
 
 model Transaction {
