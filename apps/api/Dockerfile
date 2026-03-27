@@ -1,31 +1,22 @@
-FROM node:22-alpine AS base
+# Dockerfile
+
+# Use the official Python image from the Docker Hub
+FROM python:3.9-slim
+
+# Set the working directory in the container
 WORKDIR /app
-RUN corepack enable
 
-FROM base AS deps
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY apps ./apps
-COPY packages ./packages
-RUN pnpm install --frozen-lockfile
+# Copy the current directory contents into the container at /app
+COPY . /app
 
-FROM deps AS build
-COPY . .
-RUN pnpm --dir apps/api exec prisma generate --schema=prisma/schema.prisma
-RUN pnpm --dir apps/api build
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-FROM node:22-alpine AS runner
-WORKDIR /app
-ENV NODE_ENV=production
-RUN corepack enable
+# Make port 80 available to the world outside this container
+EXPOSE 80
 
-COPY --from=build /app/apps/api/dist ./dist
-COPY --from=build /app/apps/api/package.json ./package.json
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/apps/api/prisma ./prisma
+# Define environment variable
+ENV NAME World
 
-EXPOSE 3000
-
-HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000/api/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"
-
-CMD ["node", "dist/server.js"]
+# Run main.py when the container launches
+CMD ["python", "main.py"]
