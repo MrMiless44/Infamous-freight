@@ -1,37 +1,49 @@
-CREATE TABLE IF NOT EXISTS payments (
-  id UUID PRIMARY KEY,
-  org_id UUID NOT NULL,
-  user_id UUID NULL,
-  load_id UUID NULL,
-  provider TEXT NOT NULL CHECK (provider IN ('godaddy', 'stripe')),
-  payment_type TEXT NOT NULL CHECK (payment_type IN ('booking', 'dispatch', 'reservation', 'subscription')),
-  amount_cents INTEGER NOT NULL CHECK (amount_cents > 0),
-  currency TEXT NOT NULL DEFAULT 'usd',
-  status TEXT NOT NULL CHECK (status IN ('pending', 'paid', 'failed', 'refunded', 'cancelled')),
-  external_reference TEXT NULL,
-  metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
-  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
-);
-
-CREATE INDEX IF NOT EXISTS idx_payments_org_id ON payments(org_id);
-CREATE INDEX IF NOT EXISTS idx_payments_load_id ON payments(load_id);
-CREATE INDEX IF NOT EXISTS idx_payments_status ON payments(status);
-CREATE INDEX IF NOT EXISTS idx_payments_external_reference ON payments(external_reference);
-
-CREATE TABLE IF NOT EXISTS payment_events (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  payment_id UUID NULL REFERENCES payments(id) ON DELETE SET NULL,
-  provider TEXT NOT NULL,
-  event_type TEXT NOT NULL,
-  external_event_id TEXT NULL,
-  payload JSONB NOT NULL,
-  created_at TIMESTAMP NOT NULL DEFAULT NOW()
-);
-
-CREATE TABLE IF NOT EXISTS load_payment_links (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  load_id UUID NOT NULL,
-  payment_id UUID NOT NULL REFERENCES payments(id) ON DELETE CASCADE,
-  created_at TIMESTAMP NOT NULL DEFAULT NOW()
-);
+-- NOTE: This file is kept for reference only.
+-- The payments-related schema is managed via Prisma:
+--   - Models are defined in apps/api/prisma/schema.prisma
+--   - Migrations live under apps/api/prisma/migrations/
+-- 
+-- Do NOT apply this file directly in any environment.
+-- If you need to change the payments schema, update schema.prisma
+-- and generate a new Prisma migration instead of editing SQL here.
+--
+-- Legacy schema sketch:
+--
+-- CREATE TABLE IF NOT EXISTS payments (
+--   id UUID PRIMARY KEY,
+--   org_id UUID NOT NULL,
+--   user_id UUID NULL,
+--   load_id UUID NULL,
+--   provider TEXT NOT NULL CHECK (provider IN ('godaddy', 'stripe')),
+--   payment_type TEXT NOT NULL CHECK (payment_type IN ('booking', 'dispatch', 'reservation', 'subscription')),
+--   amount_cents INTEGER NOT NULL CHECK (amount_cents > 0),
+--   currency TEXT NOT NULL DEFAULT 'usd',
+--   status TEXT NOT NULL CHECK (status IN ('pending', 'paid', 'failed', 'refunded', 'cancelled')),
+--   external_reference TEXT NULL,
+--   metadata JSONB NOT NULL DEFAULT '{}'::jsonb,
+--   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+--   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+-- );
+--
+-- CREATE INDEX IF NOT EXISTS idx_payments_org_id ON payments(org_id);
+-- CREATE INDEX IF NOT EXISTS idx_payments_load_id ON payments(load_id);
+-- CREATE INDEX IF NOT EXISTS idx_payments_status ON payments(status);
+-- CREATE INDEX IF NOT EXISTS idx_payments_external_reference ON payments(external_reference);
+--
+-- CREATE TABLE IF NOT EXISTS payment_events (
+--   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+--   payment_id UUID NULL REFERENCES payments(id) ON DELETE SET NULL,
+--   provider TEXT NOT NULL,
+--   event_type TEXT NOT NULL,
+--   external_event_id TEXT NULL,
+--   payload JSONB NOT NULL,
+--   created_at TIMESTAMP NOT NULL DEFAULT NOW()
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS load_payment_links (
+--   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+--   load_id UUID NOT NULL,
+--   payment_id UUID NOT NULL REFERENCES payments(id) ON DELETE CASCADE,
+--   created_at TIMESTAMP NOT NULL DEFAULT NOW()
+-- );
+--
