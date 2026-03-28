@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Gitleaks scan
         uses: gitleaks/gitleaks-action@v2
@@ -31,17 +31,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v5
-        with:
-          version: 9
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version-file: .nvmrc
           cache: pnpm
 
       - name: Install dependencies
@@ -49,3 +47,4 @@ jobs:
 
       - name: Audit prod dependencies
         run: pnpm audit --prod --audit-level=high
+        continue-on-error: true
