@@ -34,6 +34,14 @@ export async function createCheckoutSession(req: Request, res: Response) {
       paymentType,
     });
 
+    if (!session.url) {
+      console.error("createCheckoutSession error: missing session URL", {
+        sessionId: (session as any).id,
+      });
+      return res
+        .status(502)
+        .json({ error: "Checkout session missing redirect URL" });
+    }
     return res.json({ url: session.url });
   } catch (error) {
     console.error("createCheckoutSession error", error);
