@@ -6,6 +6,7 @@
 
 import { PrismaClient } from "@prisma/client";
 import { aiSyntheticClient } from "../services/aiSyntheticClient.js";
+import { logger } from "../lib/logger.js";
 
 const prisma = new PrismaClient();
 
@@ -98,7 +99,7 @@ async function analyzeCompany(domain: string, company: string): Promise<CompanyI
       likelyFleetSize = 50;
       estimatedMonthlyLoads = 500;
       break;
-    case ("enterprise" as any):
+    case "enterprise" as any:
       likelyFleetSize = 200;
       estimatedMonthlyLoads = 2000;
       break;
@@ -129,7 +130,7 @@ function calculateDealScore(intel: CompanyIntel, leadData: any): number {
 
   // Company size (40 points)
   switch (intel.estimatedSize) {
-    case ("enterprise" as any):
+    case "enterprise" as any:
       score += 40;
       break;
     case "large":
@@ -362,7 +363,7 @@ export async function qualifyLead(leadId: string): Promise<LeadQualificationResu
     },
   });
 
-  console.log(`[Genesis AI] Qualified lead ${lead.email}: Score ${dealScore}, Next: ${nextAction}`);
+  logger.info({ email: lead.email, score: dealScore, nextAction }, "[Genesis AI] Lead qualified");
 
   return {
     dealScore,
@@ -397,7 +398,7 @@ export async function autoQualifyNewLeads(): Promise<number> {
       await qualifyLead(lead.id);
       qualified++;
     } catch (error) {
-      console.error(`[Genesis AI] Failed to qualify lead ${lead.id}:`, error);
+      logger.error({ err: error, leadId: lead.id }, "[Genesis AI] Failed to qualify lead");
     }
   }
 
@@ -477,7 +478,7 @@ export async function markOpportunityWon(opportunityId: string, orgId: string) {
     },
   });
 
-  console.log(`[Genesis AI] Deal won! Lead ${opportunity.lead.email} → Org ${orgId}`);
+  logger.info({ email: opportunity.lead.email, orgId }, "[Genesis AI] Deal won");
 
   return opportunity;
 }

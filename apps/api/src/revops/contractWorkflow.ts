@@ -7,6 +7,7 @@
 import { PrismaClient } from "@prisma/client";
 import { docusignService } from "../services/docusignService.js";
 import { aiSyntheticClient } from "../services/aiSyntheticClient.js";
+import { logger } from "../lib/logger.js";
 
 const prisma = new PrismaClient();
 
@@ -76,7 +77,7 @@ Format as a professional MSA. Be concise but comprehensive.`;
 
     return response.choices[0]?.message?.content || generateFallbackContract(terms);
   } catch (error) {
-    console.error("[Contract] AI generation failed, using template:", error);
+    logger.error({ err: error }, "[Contract] AI generation failed, using template");
     return generateFallbackContract(terms);
   }
 }
@@ -286,7 +287,7 @@ async function sendForSignature(
   // In production, integrate with DocuSign API
   // For now, return mock signature request ID
 
-  console.log(`[Contract] Sending for signature to ${signerEmail}`);
+  logger.debug({ signerEmail }, "[Contract] Sending for signature");
   const envelopeId = await docusignService.sendForSigning({
     documentUrl: contract.contractUrl,
     signerEmail,
@@ -306,7 +307,7 @@ export async function generateEnterpriseContract(
   opportunityId: string,
   terms: ContractTerms,
 ): Promise<string> {
-  console.log(`[Contract] Generating enterprise contract for ${terms.orgName}`);
+  logger.info({ orgName: terms.orgName }, "[Contract] Generating enterprise contract");
 
   // 1. Generate contract documents
   const contractText = await generateContractDocument(terms);
@@ -353,7 +354,7 @@ export async function generateEnterpriseContract(
     data: { signatureRequestId },
   });
 
-  console.log(`[Contract] Sent for signature: ${signatureRequestId}`);
+  logger.info({ signatureRequestId }, "[Contract] Sent for signature");
 
   return contract.id;
 }
@@ -386,7 +387,7 @@ export async function handleSignatureCompleted(
     },
   });
 
-  console.log(`[Contract] Signed by ${signerEmail}: ${contract.id}`);
+  logger.info({ signerEmail, contractId: contract.id }, "[Contract] Signed");
 
   // Trigger post-signature workflow
   await executeContractProvisioningPostSignature(contract.id);
@@ -405,7 +406,7 @@ async function executeContractProvisioningPostSignature(contractId: string) {
 
   if (!contract) return;
 
-  console.log(`[Contract] Provisioning resources for org ${contract.orgId}`);
+  logger.info({ orgId: contract.orgId }, "[Contract] Provisioning resources for org");
 
   // 1. Set up Stripe subscription
   // await stripeSync.createSubscription(contract.orgId, contract.plan);

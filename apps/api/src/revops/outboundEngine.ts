@@ -7,6 +7,7 @@
 import { PrismaClient } from "@prisma/client";
 import { aiSyntheticClient } from "../services/aiSyntheticClient.js";
 import { sendEmail as sendTransactionalEmail } from "../services/emailService.js";
+import { logger } from "../lib/logger.js";
 
 const prisma = new PrismaClient();
 
@@ -94,7 +95,7 @@ Body: [email body]`;
 
     return { subject, body };
   } catch (error) {
-    console.error("[Outbound] AI generation failed, using template:", error);
+    logger.error({ err: error }, "[Outbound] AI generation failed, using template");
 
     // Fallback template
     return {
@@ -199,7 +200,10 @@ export async function sendCampaignMessages(campaignId: string, batchSize: number
 
       sent++;
     } catch (error) {
-      console.error(`[Outbound] Failed to send to ${message.recipientEmail}:`, error);
+      logger.error(
+        { err: error, email: message.recipientEmail },
+        "[Outbound] Failed to send email",
+      );
 
       await prisma.outboundMessage.update({
         where: { id: message.id },
@@ -325,7 +329,7 @@ export async function trackEmailReply(messageId: string) {
       data: { leadId: lead.id },
     });
 
-    console.log(`[Outbound] Reply converted to lead: ${lead.email}`);
+    logger.info({ email: lead.email }, "[Outbound] Reply converted to lead");
 
     return { message, lead };
   }
@@ -416,7 +420,7 @@ export async function createNurtureCampaign() {
 
   await addRecipientsToCampaign(campaign.id, recipients);
 
-  console.log(`[Outbound] Created nurture campaign with ${recipients.length} recipients`);
+  logger.info({ recipientCount: recipients.length }, "[Outbound] Created nurture campaign");
 
   return campaign;
 }
@@ -425,7 +429,7 @@ export async function createNurtureCampaign() {
  * Mock email sending (replace with real SendGrid/SES integration)
  */
 async function sendEmail(to: string, subject: string, body: string): Promise<void> {
-  console.log(`[Outbound] Sending email to ${to}: ${subject}`);
+  logger.debug({ to, subject }, "[Outbound] Sending email");
 
   await sendTransactionalEmail({
     to,

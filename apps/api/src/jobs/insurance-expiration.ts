@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { logger } from "../lib/logger.js";
 
 const { runExpirationSweep } = require("../modules/insurance/service");
 
@@ -16,9 +17,9 @@ export async function runInsuranceExpirationSweep() {
       const summary = await runExpirationSweep({ orgId: org.id });
       results.push({ orgId: org.id, name: org.name, summary });
     } catch (error) {
-      console.error(
-        `[InsuranceExpiration] Failed for ${org.name}:`,
-        error instanceof Error ? error.message : String(error),
+      logger.error(
+        { err: error, orgName: org.name },
+        "[InsuranceExpiration] Failed for organization",
       );
     }
   }
@@ -29,11 +30,11 @@ export async function runInsuranceExpirationSweep() {
 if (require.main === module) {
   runInsuranceExpirationSweep()
     .then((results) => {
-      console.log("[InsuranceExpiration] Completed sweep", results);
+      logger.info({ results }, "[InsuranceExpiration] Completed sweep");
       process.exit(0);
     })
     .catch((error) => {
-      console.error("[InsuranceExpiration] Fatal error", error);
+      logger.error({ err: error }, "[InsuranceExpiration] Fatal error");
       process.exit(1);
     });
 }

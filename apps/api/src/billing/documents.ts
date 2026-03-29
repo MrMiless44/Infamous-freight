@@ -14,6 +14,7 @@ import { promises as fs } from "fs";
 import { join } from "path";
 import { PrismaClient } from "@prisma/client";
 import Stripe from "stripe";
+import { logger } from "../lib/logger.js";
 
 const prisma = new PrismaClient();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
@@ -378,7 +379,7 @@ export async function storeComplianceDocuments(
 
     return { dpaPdf: dpaPdfUrl, soc2Pdf: soc2PdfUrl };
   } catch (err) {
-    console.error("Failed to generate compliance documents:", err);
+    logger.error({ err }, "[Documents] Failed to generate compliance documents");
     throw err;
   }
 }

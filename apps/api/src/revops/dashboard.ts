@@ -6,6 +6,7 @@
 
 import { PrismaClient } from "@prisma/client";
 import { aiSyntheticClient } from "../services/aiSyntheticClient.js";
+import { logger } from "../lib/logger.js";
 
 const prisma = new PrismaClient();
 
@@ -385,7 +386,7 @@ Focus on: pricing strategy, sales efficiency, or operational improvements.`;
       });
     }
   } catch (error) {
-    console.error("[RevOps] AI recommendation failed:", error);
+    logger.error({ err: error }, "[RevOps] AI recommendation failed");
   }
 
   return recommendations;
@@ -395,7 +396,7 @@ Focus on: pricing strategy, sales efficiency, or operational improvements.`;
  * Main function: Get complete RevOps dashboard
  */
 export async function getRevOpsDashboard(): Promise<RevOpsDashboard> {
-  console.log("[RevOps] Generating dashboard...");
+  logger.debug(null, "[RevOps] Generating dashboard");
 
   // Sales metrics
   const pipeline = await calculatePipelineValue();
@@ -553,7 +554,7 @@ export async function getRevOpsDashboard(): Promise<RevOpsDashboard> {
   // Generate AI recommendations
   dashboard.recommendations = await generateRecommendations(dashboard);
 
-  console.log("[RevOps] Dashboard generated successfully");
+  logger.info(null, "[RevOps] Dashboard generated successfully");
 
   return dashboard;
 }

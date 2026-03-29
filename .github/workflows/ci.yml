@@ -55,6 +55,10 @@ jobs:
       - name: Build shared package
         run: pnpm run build:shared
 
+      - name: Security audit
+        run: pnpm audit --audit-level=high
+        continue-on-error: true
+
       - name: Run fly config test
         run: bash tests/ci/fly-config.test.sh
 
