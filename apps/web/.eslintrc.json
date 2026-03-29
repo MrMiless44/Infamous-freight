@@ -15,6 +15,7 @@
         "varsIgnorePattern": "^_"
       }
     ],
-    "react/no-unescaped-entities": "warn"
+    "react/no-unescaped-entities": "warn",
+    "no-unassigned-vars": "off"
   }
 }
