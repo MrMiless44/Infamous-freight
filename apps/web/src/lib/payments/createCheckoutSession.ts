@@ -1,8 +1,10 @@
+import type { PaymentType } from "@infamous-freight/shared/payments/types";
+
 type CreateCheckoutSessionPayload = {
   loadId: string;
   amountCents: number;
   customerEmail?: string;
-  paymentType: "booking" | "dispatch" | "reservation" | "subscription";
+  paymentType: PaymentType;
 };
 
 export async function createCheckoutSession(payload: CreateCheckoutSessionPayload) {
