@@ -19,8 +19,15 @@ RUN pnpm install --no-frozen-lockfile
 # Copy application code
 COPY . .
 
+ARG API_BUILD_NO_CHECK=false
+
 # Build the shared package and API
-RUN pnpm --filter @infamous-freight/shared build && pnpm --filter api build
+RUN pnpm --filter @infamous-freight/shared build \
+  && if [ "$API_BUILD_NO_CHECK" = "true" ]; then \
+       pnpm --filter @infamous/api run build:nocheck; \
+     else \
+       pnpm --filter @infamous/api run build; \
+     fi
 
 # Generate Prisma client
 RUN cd apps/api && pnpm prisma:generate || true
