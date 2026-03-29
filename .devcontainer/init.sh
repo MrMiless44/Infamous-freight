@@ -10,12 +10,26 @@ node --version
 npm --version
 
 if ! command -v pnpm >/dev/null 2>&1; then
-  echo "==> Enabling pnpm via corepack"
-  corepack enable
-  corepack prepare pnpm@9.15.0 --activate
+  if command -v corepack >/dev/null 2>&1; then
+    echo "==> Enabling pnpm via corepack"
+    corepack enable
+    corepack prepare pnpm@9.15.0 --activate
+  else
+    echo "==> Installing pnpm via npm"
+    npm install -g pnpm@9.15.0
+  fi
 fi
 
 pnpm --version
+
+if [ -f .nvmrc ]; then
+  required_node_major="$(tr -d 'v[:space:]' < .nvmrc | cut -d. -f1)"
+  current_node_major="$(node -p 'process.versions.node.split(".")[0]')"
+
+  if [ "$required_node_major" != "$current_node_major" ]; then
+    echo "==> WARNING: repo expects Node ${required_node_major}, current runtime is $(node --version)"
+  fi
+fi
 
 if [ -f package.json ]; then
   echo "==> Installing workspace dependencies"
@@ -44,5 +58,5 @@ echo "Common commands:"
 echo "  pnpm install"
 echo "  pnpm lint"
 echo "  pnpm typecheck"
-echo "  pnpm test -- --runInBand"
+echo "  pnpm test:ci"
 echo "  pnpm build"

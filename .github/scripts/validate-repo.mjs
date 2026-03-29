@@ -16,6 +16,7 @@ const root = process.cwd();
 
 const readFile = (file) => fs.readFileSync(path.join(root, file), "utf8");
 const readJson = (file) => JSON.parse(readFile(file));
+const majorFromVersion = (value) => String(value).trim().replace(/^v/, "").split(".")[0];
 
 if (!fs.existsSync(path.join(root, ".nvmrc"))) {
   fail("Missing .nvmrc at repository root.");
@@ -31,6 +32,7 @@ if (!fs.existsSync(path.join(root, "package.json"))) {
 
 const nvmrc = readFile(".nvmrc").trim();
 const pkg = readJson("package.json");
+const expectedNodeMajor = majorFromVersion(nvmrc);
 
 if (!pkg.packageManager) {
   fail('Root package.json must define "packageManager", for example "pnpm@9.15.0".');
@@ -41,20 +43,47 @@ if (!String(pkg.packageManager).startsWith("pnpm@")) {
 }
 
 if (!pkg.engines?.node) {
-  fail('Root package.json must define engines.node.');
+  fail("Root package.json must define engines.node.");
 }
 
 if (!pkg.engines?.pnpm) {
-  fail('Root package.json must define engines.pnpm.');
+  fail("Root package.json must define engines.pnpm.");
 }
 
-const nodeMajorFromNvmrc = nvmrc.replace(/^v/, "").split(".")[0];
 const currentNodeMajor = process.versions.node.split(".")[0];
 
-if (nodeMajorFromNvmrc !== currentNodeMajor) {
-  fail(
-    `Node version mismatch. .nvmrc=${nvmrc}, runner node=${process.versions.node}.`
-  );
+if (expectedNodeMajor !== majorFromVersion(pkg.engines.node)) {
+  fail(`Node engine mismatch. .nvmrc=${nvmrc}, package.json engines.node=${pkg.engines.node}.`);
+}
+
+for (const versionFile of [".node-version", "apps/web/.node-version"]) {
+  if (!fs.existsSync(path.join(root, versionFile))) {
+    continue;
+  }
+
+  const fileVersion = readFile(versionFile).trim();
+  if (majorFromVersion(fileVersion) !== expectedNodeMajor) {
+    fail(`Node version mismatch. ${versionFile}=${fileVersion}, .nvmrc=${nvmrc}.`);
+  }
+}
+
+for (const netlifyFile of [
+  "netlify.toml",
+  "apps/web/netlify.toml",
+  "apps/web/.netlify/netlify.toml",
+]) {
+  if (!fs.existsSync(path.join(root, netlifyFile))) {
+    continue;
+  }
+
+  const match = readFile(netlifyFile).match(/NODE_VERSION\s*=\s*"([^"]+)"/);
+  if (match && majorFromVersion(match[1]) !== expectedNodeMajor) {
+    fail(`Node version mismatch. ${netlifyFile} NODE_VERSION=${match[1]}, .nvmrc=${nvmrc}.`);
+  }
+}
+
+if (expectedNodeMajor !== currentNodeMajor) {
+  fail(`Node version mismatch. .nvmrc=${nvmrc}, runner node=${process.versions.node}.`);
 }
 
 const requiredScripts = ["lint", "typecheck", "test", "build"];

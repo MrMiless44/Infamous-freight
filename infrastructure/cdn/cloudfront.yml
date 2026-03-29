@@ -4,7 +4,7 @@ Description: "CloudFront CDN Configuration for Infamous Freight Enterprises"
 Parameters:
   DomainName:
     Type: String
-    Default: "infamous-freight.com"
+    Default: "infamousfreight.com"
     Description: "Primary domain name"
 
   CertificateArn:
@@ -13,7 +13,7 @@ Parameters:
 
   OriginDomain:
     Type: String
-    Default: "infamous-freight-web.vercel.app"
+    Default: "infamous-freight.netlify.app"
     Description: "Origin domain for Next.js app"
 
 Resources:

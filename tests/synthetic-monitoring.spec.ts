@@ -9,8 +9,8 @@ import { test, expect, chromium } from "@playwright/test";
 /**
  * Configuration
  */
-const BASE_URL = process.env.MONITOR_BASE_URL || "https://infamous-freight.com";
-const API_URL = process.env.MONITOR_API_URL || "https://api.infamous-freight.com";
+const BASE_URL = process.env.MONITOR_BASE_URL || "https://www.infamousfreight.com";
+const API_URL = process.env.MONITOR_API_URL || "https://api.infamousfreight.com";
 const ALERT_WEBHOOK = process.env.ALERT_WEBHOOK_URL || "";
 
 /**

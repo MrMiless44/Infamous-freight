@@ -24,7 +24,7 @@
     {
       "label": "Test",
       "type": "shell",
-      "command": "pnpm -r --if-present test -- --runInBand",
+      "command": "pnpm test:ci",
       "group": "test",
       "problemMatcher": []
     },

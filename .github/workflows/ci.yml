@@ -178,20 +178,26 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run dependency security audit
-        run: pnpm audit --audit-level=high
-        continue-on-error: true
+      - name: Run full dependency audit
+        run: pnpm run audit
 
-      - name: Generate audit report
+      - name: Run production dependency audit
+        run: pnpm run audit:prod
+
+      - name: Generate audit reports
         if: failure()
-        run: pnpm audit --json > audit-report.json
+        run: |
+          pnpm audit --json > audit-report-full.json || true
+          pnpm audit --prod --json > audit-report-prod.json || true
 
-      - name: Upload audit report
+      - name: Upload audit reports
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: security-audit-report
-          path: audit-report.json
+          path: |
+            audit-report-full.json
+            audit-report-prod.json
           if-no-files-found: warn
 
   build:
