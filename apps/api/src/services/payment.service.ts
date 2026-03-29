@@ -3,6 +3,8 @@ import { PAYMENT_LINKS, type PaymentLinkType } from "@infamous-freight/shared";
 import { env } from "../config/env.js";
 import { prisma } from "../db/prisma.js";
 
+const db = prisma as any;
+
 const stripe = env.STRIPE_SECRET_KEY ? new Stripe(env.STRIPE_SECRET_KEY) : null;
 
 export async function createGoDaddyRedirectPayment(params: {
@@ -14,7 +16,7 @@ export async function createGoDaddyRedirectPayment(params: {
 }) {
   const checkoutUrl = PAYMENT_LINKS[params.type];
 
-  const payment = await prisma.payment.create({
+  const payment = await db.payment.create({
     data: {
       tenantId: params.tenantId,
       userId: params.userId,
@@ -27,7 +29,7 @@ export async function createGoDaddyRedirectPayment(params: {
     },
   });
 
-  await prisma.transaction.create({
+  await db.transaction.create({
     data: {
       paymentId: payment.id,
       status: "PENDING",
@@ -40,7 +42,7 @@ export async function createGoDaddyRedirectPayment(params: {
   });
 
   if (params.loadId) {
-    await prisma.loadPayment.create({
+    await db.loadPayment.create({
       data: {
         tenantId: params.tenantId,
         loadId: params.loadId,
@@ -77,7 +79,7 @@ export async function createStripePaymentIntent(params: {
     },
   });
 
-  const payment = await prisma.payment.create({
+  const payment = await db.payment.create({
     data: {
       tenantId: params.tenantId,
       userId: params.userId,
@@ -90,7 +92,7 @@ export async function createStripePaymentIntent(params: {
     },
   });
 
-  await prisma.transaction.create({
+  await db.transaction.create({
     data: {
       paymentId: payment.id,
       externalId: intent.id,
@@ -100,7 +102,7 @@ export async function createStripePaymentIntent(params: {
   });
 
   if (params.loadId) {
-    await prisma.loadPayment.create({
+    await db.loadPayment.create({
       data: {
         tenantId: params.tenantId,
         loadId: params.loadId,
@@ -122,7 +124,7 @@ export async function markPaymentSucceeded(input: {
   stripePaymentIntentId: string;
   rawEvent: unknown;
 }) {
-  const payments = await prisma.payment.findMany({
+  const payments = await db.payment.findMany({
     where: {
       provider: "stripe",
       externalId: input.stripePaymentIntentId,
@@ -139,14 +141,14 @@ export async function markPaymentSucceeded(input: {
   }
 
   const payment = payments[0];
-  const updatedPayment = await prisma.payment.update({
+  const updatedPayment = await db.payment.update({
     where: { id: payment.id },
     data: {
       status: "PAID",
     },
   });
 
-  await prisma.transaction.create({
+  await db.transaction.create({
     data: {
       paymentId: payment.id,
       externalId: input.stripePaymentIntentId,
@@ -156,12 +158,12 @@ export async function markPaymentSucceeded(input: {
   });
 
   if (payment.loadId) {
-    await prisma.load.updateMany({
+    await db.load.updateMany({
       where: { id: payment.loadId, tenantId: payment.tenantId },
       data: { status: "PAID" },
     });
 
-    await prisma.loadPayment.updateMany({
+    await db.loadPayment.updateMany({
       where: { paymentId: payment.id, loadId: payment.loadId, tenantId: payment.tenantId },
       data: { status: "PAID" },
     });

@@ -31,22 +31,26 @@ export const authRepository = {
     return prisma.user.findUnique({ where: { id }, select: safeUserSelect });
   },
 
-  createUser(data: Pick<User, "email" | "firstName" | "lastName" | "passwordHash">): Promise<SafeUserRecord> {
+  createUser(
+    data: Pick<User, "email" | "firstName" | "lastName" | "passwordHash">,
+  ): Promise<SafeUserRecord> {
     return prisma.user.create({
       data: {
         ...data,
-        role: "user",
+        role: "SHIPPER" as const,
       },
       select: safeUserSelect,
     });
   },
 
   updateLastLoginAt(userId: string): Promise<void> {
-    return prisma.user.update({
-      where: { id: userId },
-      data: { lastLoginAt: new Date() },
-      select: { id: true },
-    }).then(() => undefined);
+    return prisma.user
+      .update({
+        where: { id: userId },
+        data: { lastLoginAt: new Date() },
+        select: { id: true },
+      })
+      .then(() => undefined);
   },
 
   createRefreshToken(data: Prisma.RefreshTokenUncheckedCreateInput): Promise<RefreshToken> {
@@ -64,7 +68,11 @@ export const authRepository = {
     }) as Promise<RefreshTokenRecord | null>;
   },
 
-  revokeRefreshToken(tokenId: string, revokedByIp: string | null, replacedByTokenId?: string): Promise<RefreshToken> {
+  revokeRefreshToken(
+    tokenId: string,
+    revokedByIp: string | null,
+    replacedByTokenId?: string,
+  ): Promise<RefreshToken> {
     return prisma.refreshToken.update({
       where: { id: tokenId },
       data: {
@@ -76,16 +84,18 @@ export const authRepository = {
   },
 
   revokeAllActiveRefreshTokensForUser(userId: string, revokedByIp: string | null): Promise<number> {
-    return prisma.refreshToken.updateMany({
-      where: {
-        userId,
-        revokedAt: null,
-        expiresAt: { gt: new Date() },
-      },
-      data: {
-        revokedAt: new Date(),
-        revokedByIp,
-      },
-    }).then((result) => result.count);
+    return prisma.refreshToken
+      .updateMany({
+        where: {
+          userId,
+          revokedAt: null,
+          expiresAt: { gt: new Date() },
+        },
+        data: {
+          revokedAt: new Date(),
+          revokedByIp,
+        },
+      })
+      .then((result) => result.count);
   },
 };

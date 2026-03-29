@@ -28,7 +28,7 @@ export async function generateDPAPDF(
   outputPath?: string,
 ): Promise<{ path: string; buffer: Buffer }> {
   const doc = new PDFDocument({
-    margins: 40,
+    margins: { top: 40, bottom: 40, left: 40, right: 40 },
     size: "A4",
   });
 
@@ -183,7 +183,7 @@ export async function generateSOC2PDF(
   outputPath?: string,
 ): Promise<{ path: string; buffer: Buffer }> {
   const doc = new PDFDocument({
-    margins: 40,
+    margins: { top: 40, bottom: 40, left: 40, right: 40 },
     size: "A4",
   });
 
@@ -269,9 +269,8 @@ export async function generateSOC2PDF(
   criteria.forEach((criterion, i) => {
     doc.fontSize(11).font("Helvetica-Bold").text(criterion.name);
     doc.fontSize(10).font("Helvetica").text(criterion.description);
-    doc.fontSize(10).font("Helvetica-Bold").text(criterion.status, {
-      color: "006400",
-    });
+    doc.fontSize(10).font("Helvetica-Bold").fillColor("#006400").text(criterion.status);
+    doc.fillColor("#000000");
     doc.moveDown(0.5);
   });
 

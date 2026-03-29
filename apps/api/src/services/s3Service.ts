@@ -138,7 +138,7 @@ class S3Service {
               Key: options.key,
             });
 
-      const signedUrl = await getSignedUrl(this.client, command as any, {
+      const signedUrl = await getSignedUrl(this.client as any, command as any, {
         expiresIn: expirationSeconds,
       });
 

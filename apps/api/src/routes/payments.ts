@@ -7,10 +7,15 @@ import {
   createStripePaymentIntent,
 } from "../services/payment.service.js";
 
-const router = Router();
+const router: Router = Router();
 
 const createGoDaddyCheckoutSchema = z.object({
-  type: z.enum(Object.keys(PAYMENT_LINKS) as [keyof typeof PAYMENT_LINKS, ...Array<keyof typeof PAYMENT_LINKS>]),
+  type: z.enum(
+    Object.keys(PAYMENT_LINKS) as [
+      keyof typeof PAYMENT_LINKS,
+      ...Array<keyof typeof PAYMENT_LINKS>,
+    ],
+  ),
   amount: z
     .number()
     .positive()
@@ -33,7 +38,7 @@ const createStripeIntentSchema = z.object({
 
 router.post("/godaddy/checkout", requireAuth, async (req, res, next) => {
   try {
-    const { tenantId, id: userId } = (req as AuthenticatedRequest).user;
+    const { tenantId, id: userId } = (req as AuthenticatedRequest).user!;
     const body = createGoDaddyCheckoutSchema.parse(req.body);
 
     if (!tenantId) {
@@ -57,7 +62,7 @@ router.post("/godaddy/checkout", requireAuth, async (req, res, next) => {
 
 router.post("/stripe/payment-intent", requireAuth, async (req, res, next) => {
   try {
-    const { tenantId, id: userId } = (req as AuthenticatedRequest).user;
+    const { tenantId, id: userId } = (req as AuthenticatedRequest).user!;
     const body = createStripeIntentSchema.parse(req.body);
 
     if (!tenantId) {

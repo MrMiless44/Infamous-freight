@@ -1,13 +1,15 @@
 import type { Load } from "@infamous-freight/shared";
 import { prisma } from "../db/prisma.js";
 
+const db = prisma as any;
+
 /**
  * Lists loads scoped to a single tenant in reverse chronological order.
  */
 export async function listLoads(tenantId: string): Promise<Load[]> {
-  const rows = await prisma.load.findMany({
+  const rows = await db.load.findMany({
     where: { tenantId },
-    orderBy: { createdAt: "desc" }
+    orderBy: { createdAt: "desc" },
   });
 
   return rows.map((r) => ({
@@ -25,7 +27,7 @@ export async function listLoads(tenantId: string): Promise<Load[]> {
     claimedByUserId: r.claimedByUserId ?? undefined,
     claimedAt: r.claimedAt ? r.claimedAt.toISOString() : undefined,
     createdAt: r.createdAt.toISOString(),
-    updatedAt: r.updatedAt.toISOString()
+    updatedAt: r.updatedAt.toISOString(),
   }));
 }
 
@@ -35,18 +37,18 @@ export async function listLoads(tenantId: string): Promise<Load[]> {
  * Returns true if the claim succeeds and false if another claimant already won.
  */
 export async function claimLoad(tenantId: string, loadId: string, userId?: string) {
-  const updated = await prisma.load.updateMany({
+  const updated = await db.load.updateMany({
     where: {
       id: loadId,
       tenantId,
       status: "OPEN",
-      claimedByUserId: null
+      claimedByUserId: null,
     },
     data: {
       status: "CLAIMED",
       claimedByUserId: userId ?? null,
-      claimedAt: new Date()
-    }
+      claimedAt: new Date(),
+    },
   });
 
   return updated.count > 0;

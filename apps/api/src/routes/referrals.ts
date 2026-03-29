@@ -5,13 +5,13 @@ import { Router } from "express";
  * Tier-based rewards: Free users get $10 credit, Pro users get $50
  */
 
-const router = Router();
+const router: Router = Router();
 
 // GET /api/referrals/link - Get user's referral link
 router.get("/link", (req, res, next) => {
   try {
     const user = req.user;
-    const referralCode = user?.referral_code || generateReferralCode();
+    const referralCode = (user as any)?.referral_code || generateReferralCode();
 
     res.json({
       success: true,

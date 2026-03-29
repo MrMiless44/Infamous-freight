@@ -74,10 +74,11 @@ export async function getMetricsSnapshot(): Promise<MetricsSnapshot> {
         status: "COMPLETED",
       },
       select: {
-        jobPrice: true,
+        priceUsd: true,
+        organizationId: true,
       },
     });
-    const gmv = jobs30.reduce((sum, j) => sum + Number(j.jobPrice || 0), 0);
+    const gmv = jobs30.reduce((sum, j) => sum + Number(j.priceUsd || 0), 0);
 
     // Platform Take (our commission)
     // Assuming 10% average across all jobs
@@ -92,13 +93,13 @@ export async function getMetricsSnapshot(): Promise<MetricsSnapshot> {
       (
         await prisma.job.findMany({
           where: {
-            acceptedByUserId: { not: null },
+            driverId: { not: null },
             createdAt: { gte: last30Days },
           },
-          select: { acceptedByUserId: true },
-          distinct: ["acceptedByUserId"],
+          select: { driverId: true },
+          distinct: ["driverId"],
         })
-      ).map((j) => j.acceptedByUserId),
+      ).map((j) => j.driverId),
     );
     const activeDrivers = activeDriverIds.size;
 
@@ -107,13 +108,13 @@ export async function getMetricsSnapshot(): Promise<MetricsSnapshot> {
       (
         await prisma.job.findMany({
           where: {
-            createdByUserId: { not: null },
+            shipperId: { not: null as any },
             createdAt: { gte: last30Days },
           },
-          select: { createdByUserId: true },
-          distinct: ["createdByUserId"],
+          select: { shipperId: true },
+          distinct: ["shipperId"],
         })
-      ).map((j) => j.createdByUserId),
+      ).map((j) => j.shipperId),
     );
     const activeShippers = activeShipperIds.size;
 
@@ -170,16 +171,16 @@ export async function getMetricsSnapshot(): Promise<MetricsSnapshot> {
 
     // Average jobs per driver
     const driverJobCounts = await prisma.job.groupBy({
-      by: ["acceptedByUserId"],
+      by: ["driverId"],
       _count: { id: true },
       where: {
-        acceptedByUserId: { not: null },
+        driverId: { not: null },
         createdAt: { gte: last30Days },
       },
     });
     const avgJobsPerDriver =
       driverJobCounts.length > 0
-        ? driverJobCounts.reduce((sum, d) => sum + d._count.id, 0) / driverJobCounts.length
+        ? driverJobCounts.reduce((sum, d) => sum + (d._count?.id ?? 0), 0) / driverJobCounts.length
         : 0;
 
     // Average revenue per organization
@@ -194,7 +195,7 @@ export async function getMetricsSnapshot(): Promise<MetricsSnapshot> {
     const activeOrgsPercent = totalOrgs > 0 ? (orgsWithJobs.size / totalOrgs) * 100 : 0;
 
     // Driver retention (drivers with 2+ jobs in last 30 days vs total)
-    const repeatingDrivers = driverJobCounts.filter((d) => d._count.id >= 2).length;
+    const repeatingDrivers = driverJobCounts.filter((d) => (d._count?.id ?? 0) >= 2).length;
     const driverRetention = activeDrivers > 0 ? (repeatingDrivers / activeDrivers) * 100 : 0;
 
     return {

@@ -56,7 +56,7 @@ export async function createReferral(
   try {
     const referral = await prisma.referral.create({
       data: {
-        referrerId: referrerEmail,
+        referrerUserId: referrerEmail,
         refereeEmail,
         rewardAmount,
         rewardType,
@@ -148,7 +148,7 @@ export async function checkReferralMilestone(
       if (jobCount >= milestone) {
         // Milestone met! Mark as completed
         const updated = await prisma.referral.update({
-          where: { id: referral?.id || organizationId },
+          where: { id: (referral as any)?.id || organizationId },
           data: {
             status: "COMPLETED",
             conditionMet: new Date(),
@@ -190,17 +190,17 @@ export async function processReferralPayout(referral: any): Promise<any> {
       return referral;
     }
 
-    const { rewardAmount, rewardType, referrerId } = referral;
+    const { rewardAmount, rewardType, referrerUserId } = referral;
 
     switch (rewardType) {
       case "credit":
         // Add account credit
-        await processAccountCredit(referrerId, rewardAmount);
+        await processAccountCredit(referrerUserId, rewardAmount);
         break;
 
       case "cash":
         // Process via Stripe Connect payout (if referrer has Connect account)
-        await processStripePayout(referrerId, rewardAmount);
+        await processStripePayout(referrerUserId, rewardAmount);
         break;
 
       case "percentage":
@@ -219,7 +219,7 @@ export async function processReferralPayout(referral: any): Promise<any> {
       },
     });
 
-    console.log(`[Referral] Payout processed: ${referrerId} - $${rewardAmount} (${rewardType})`);
+    console.log(`[Referral] Payout processed: ${referrerUserId} - $${rewardAmount} (${rewardType})`);
 
     // Notify referrer
     try {
@@ -248,11 +248,11 @@ export async function processReferralPayout(referral: any): Promise<any> {
 /**
  * Add account credit to referrer's account
  */
-async function processAccountCredit(referrerId: string, amount: number): Promise<void> {
+async function processAccountCredit(referrerUserId: string, amount: number): Promise<void> {
   const existing = await prisma.entitlement.findUnique({
     where: {
       userId_key: {
-        userId: referrerId,
+        userId: referrerUserId,
         key: "account_credit",
       },
     },
@@ -264,26 +264,26 @@ async function processAccountCredit(referrerId: string, amount: number): Promise
   await prisma.entitlement.upsert({
     where: {
       userId_key: {
-        userId: referrerId,
+        userId: referrerUserId,
         key: "account_credit",
       },
     },
     update: { value: updated.toFixed(2) },
     create: {
-      userId: referrerId,
+      userId: referrerUserId,
       key: "account_credit",
       value: updated.toFixed(2),
     },
   });
 
-  console.log(`[Referral] Credit applied: ${referrerId} - $${amount}`);
+  console.log(`[Referral] Credit applied: ${referrerUserId} - $${amount}`);
 }
 
 /**
  * Process payout via Stripe Connect
  */
-async function processStripePayout(referrerId: string, amount: number): Promise<void> {
-  console.log(`[Referral] Stripe payout queued for manual processing: ${referrerId} - $${amount}`);
+async function processStripePayout(referrerUserId: string, amount: number): Promise<void> {
+  console.log(`[Referral] Stripe payout queued for manual processing: ${referrerUserId} - $${amount}`);
 }
 
 // ============================================
@@ -296,7 +296,7 @@ async function processStripePayout(referrerId: string, amount: number): Promise<
 export async function getReferralStats(referrerEmail: string): Promise<any> {
   try {
     const referrals = await prisma.referral.findMany({
-      where: { referrerId: referrerEmail },
+      where: { referrerUserId: referrerEmail },
     });
 
     const stats = {
@@ -324,7 +324,7 @@ export async function getReferralStats(referrerEmail: string): Promise<any> {
 export async function getTopReferrers(limit: number = 10): Promise<any[]> {
   try {
     const topReferrers = await prisma.referral.groupBy({
-      by: ["referrerId"],
+      by: ["referrerUserId"],
       _count: { id: true },
       _sum: { rewardAmount: true },
       where: {
@@ -337,9 +337,9 @@ export async function getTopReferrers(limit: number = 10): Promise<any[]> {
     });
 
     return topReferrers.map((r) => ({
-      referrerId: r.referrerId,
-      referralCount: r._count.id,
-      totalEarnings: r._sum.rewardAmount,
+      referrerUserId: r.referrerUserId,
+      referralCount: (r._count?.id ?? 0),
+      totalEarnings: (r._sum?.rewardAmount ?? 0),
     }));
   } catch (err) {
     console.error(`[Referral] Failed to get top referrers:`, err);
@@ -368,7 +368,7 @@ async function notifyReferrerSignup(referral: any): Promise<void> {
               type: "mrkdwn",
               text:
                 `*Referral Signup Tracked*\n` +
-                `Referrer: ${referral.referrerId}\n` +
+                `Referrer: ${referral.referrerUserId}\n` +
                 `Referee: ${referral.refereeEmail}\n` +
                 `Potential Reward: $${referral.rewardAmount}`,
             },
@@ -398,7 +398,7 @@ async function notifyReferrerPayout(referral: any): Promise<void> {
               type: "mrkdwn",
               text:
                 `*Referral Reward Paid*\n` +
-                `Referrer: ${referral.referrerId}\n` +
+                `Referrer: ${referral.referrerUserId}\n` +
                 `Reward: $${referral.rewardAmount}\n` +
                 `Type: ${referral.rewardType}`,
             },

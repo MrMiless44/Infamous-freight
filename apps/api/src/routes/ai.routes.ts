@@ -1,18 +1,22 @@
-import { Router, Request, Response, NextFunction } from 'express';
-import { aiDispatchService } from '../services/ai-dispatch.service';
-import { carrierIntelligenceService } from '../services/carrier-intelligence.service';
-import { smartPricingService } from '../services/smart-pricing.service';
-import { predictiveOperationsService } from '../services/predictive-operations.service';
-import { prisma } from '../db/prisma';
+import { Router, Request, Response, NextFunction } from "express";
+import { aiDispatchService } from "../services/ai-dispatch.service.js";
+import { CarrierIntelligenceService } from "../services/carrier-intelligence.service.js";
 
-const router = Router();
+const carrierIntelligenceService = new CarrierIntelligenceService();
+import { smartPricingService } from "../services/smart-pricing.service.js";
+import { predictiveOperationsService } from "../services/predictive-operations.service.js";
+import { prisma } from "../db/prisma.js";
+
+const db = prisma as any;
+
+const router: Router = Router();
 
 /**
  * Middleware: Require authentication and tenant context
  */
 const requireAuth = (req: Request, res: Response, next: NextFunction) => {
   if (!req.user || !req.user.tenantId) {
-    return res.status(401).json({ error: 'Unauthorized' });
+    return res.status(401).json({ error: "Unauthorized" });
   }
   next();
 };
@@ -21,28 +25,24 @@ const requireAuth = (req: Request, res: Response, next: NextFunction) => {
  * POST /api/ai/dispatch/recommend
  * Get dispatch recommendation for a load
  */
-router.post('/dispatch/recommend', requireAuth, async (req: Request, res: Response) => {
+router.post("/dispatch/recommend", requireAuth, async (req: Request, res: Response) => {
   try {
     const { loadId } = req.body;
-    const tenantId = req.user!.tenantId;
+    const tenantId = req.user!.tenantId!;
     const userId = req.user!.id;
 
     if (!loadId) {
-      return res.status(400).json({ error: 'loadId required' });
+      return res.status(400).json({ error: "loadId required" });
     }
 
-    const recommendation = await aiDispatchService.recommendDispatch(
-      tenantId,
-      loadId,
-      userId
-    );
+    const recommendation = await aiDispatchService.recommendDispatch(tenantId, loadId, userId);
 
     res.json(recommendation);
   } catch (error: any) {
-    if (error.message.includes('not found')) {
+    if (error.message.includes("not found")) {
       return res.status(404).json({ error: error.message });
     }
-    res.status(500).json({ error: 'Failed to recommend dispatch' });
+    res.status(500).json({ error: "Failed to recommend dispatch" });
   }
 });
 
@@ -50,29 +50,24 @@ router.post('/dispatch/recommend', requireAuth, async (req: Request, res: Respon
  * POST /api/ai/dispatch/execute
  * Execute dispatch for a load and driver
  */
-router.post('/dispatch/execute', requireAuth, async (req: Request, res: Response) => {
+router.post("/dispatch/execute", requireAuth, async (req: Request, res: Response) => {
   try {
     const { loadId, driverId } = req.body;
-    const tenantId = req.user!.tenantId;
+    const tenantId = req.user!.tenantId!;
     const userId = req.user!.id;
 
     if (!loadId || !driverId) {
-      return res.status(400).json({ error: 'loadId and driverId required' });
+      return res.status(400).json({ error: "loadId and driverId required" });
     }
 
-    const result = await aiDispatchService.executeDispatch(
-      tenantId,
-      loadId,
-      driverId,
-      userId
-    );
+    const result = await aiDispatchService.executeDispatch(tenantId, loadId, driverId, userId);
 
     res.json(result);
   } catch (error: any) {
-    if (error.message.includes('not found')) {
+    if (error.message.includes("not found")) {
       return res.status(404).json({ error: error.message });
     }
-    res.status(500).json({ error: 'Failed to execute dispatch' });
+    res.status(500).json({ error: "Failed to execute dispatch" });
   }
 });
 
@@ -80,23 +75,20 @@ router.post('/dispatch/execute', requireAuth, async (req: Request, res: Response
  * GET /api/ai/carriers/:driverId/score
  * Get current carrier score
  */
-router.get('/carriers/:driverId/score', requireAuth, async (req: Request, res: Response) => {
+router.get("/carriers/:driverId/score", requireAuth, async (req: Request, res: Response) => {
   try {
-    const { driverId } = req.params;
-    const tenantId = req.user!.tenantId;
+    const driverId = req.params.driverId as string;
+    const tenantId = req.user!.tenantId!;
 
-    const score = await carrierIntelligenceService.getCarrierScore(
-      tenantId,
-      driverId
-    );
+    const score = await carrierIntelligenceService.getCarrierScore(tenantId, driverId);
 
     if (!score) {
-      return res.status(404).json({ error: 'Carrier score not found' });
+      return res.status(404).json({ error: "Carrier score not found" });
     }
 
     res.json(score);
   } catch (error: any) {
-    res.status(500).json({ error: 'Failed to get carrier score' });
+    res.status(500).json({ error: "Failed to get carrier score" });
   }
 });
 
@@ -104,22 +96,19 @@ router.get('/carriers/:driverId/score', requireAuth, async (req: Request, res: R
  * POST /api/ai/carriers/:driverId/recompute
  * Recompute carrier score
  */
-router.post('/carriers/:driverId/recompute', requireAuth, async (req: Request, res: Response) => {
+router.post("/carriers/:driverId/recompute", requireAuth, async (req: Request, res: Response) => {
   try {
-    const { driverId } = req.params;
-    const tenantId = req.user!.tenantId;
+    const driverId = req.params.driverId as string;
+    const tenantId = req.user!.tenantId!;
 
-    const score = await carrierIntelligenceService.computeCarrierScore(
-      tenantId,
-      driverId
-    );
+    const score = await carrierIntelligenceService.computeCarrierScore(tenantId, driverId);
 
     res.json(score);
   } catch (error: any) {
-    if (error.message.includes('not found')) {
+    if (error.message.includes("not found")) {
       return res.status(404).json({ error: error.message });
     }
-    res.status(500).json({ error: 'Failed to recompute carrier score' });
+    res.status(500).json({ error: "Failed to recompute carrier score" });
   }
 });
 
@@ -127,23 +116,23 @@ router.post('/carriers/:driverId/recompute', requireAuth, async (req: Request, r
  * POST /api/ai/pricing/recommend
  * Get pricing recommendation for a load
  */
-router.post('/pricing/recommend', requireAuth, async (req: Request, res: Response) => {
+router.post("/pricing/recommend", requireAuth, async (req: Request, res: Response) => {
   try {
     const { loadId } = req.body;
-    const tenantId = req.user!.tenantId;
+    const tenantId = req.user!.tenantId!;
 
     if (!loadId) {
-      return res.status(400).json({ error: 'loadId required' });
+      return res.status(400).json({ error: "loadId required" });
     }
 
     const pricing = await smartPricingService.recommendPricing(tenantId, loadId);
 
     res.json(pricing);
   } catch (error: any) {
-    if (error.message.includes('not found')) {
+    if (error.message.includes("not found")) {
       return res.status(404).json({ error: error.message });
     }
-    res.status(500).json({ error: 'Failed to recommend pricing' });
+    res.status(500).json({ error: "Failed to recommend pricing" });
   }
 });
 
@@ -151,16 +140,16 @@ router.post('/pricing/recommend', requireAuth, async (req: Request, res: Respons
  * GET /api/ai/pricing/load/:loadId
  * Get pricing history for a load
  */
-router.get('/pricing/load/:loadId', requireAuth, async (req: Request, res: Response) => {
+router.get("/pricing/load/:loadId", requireAuth, async (req: Request, res: Response) => {
   try {
-    const { loadId } = req.params;
-    const tenantId = req.user!.tenantId;
+    const loadId = req.params.loadId as string;
+    const tenantId = req.user!.tenantId!;
 
     const history = await smartPricingService.getPricingHistory(tenantId, loadId);
 
     res.json(history);
   } catch (error: any) {
-    res.status(500).json({ error: 'Failed to get pricing history' });
+    res.status(500).json({ error: "Failed to get pricing history" });
   }
 });
 
@@ -168,22 +157,19 @@ router.get('/pricing/load/:loadId', requireAuth, async (req: Request, res: Respo
  * GET /api/ai/predict/load/:loadId
  * Get delay prediction for a load
  */
-router.get('/predict/load/:loadId', requireAuth, async (req: Request, res: Response) => {
+router.get("/predict/load/:loadId", requireAuth, async (req: Request, res: Response) => {
   try {
-    const { loadId } = req.params;
-    const tenantId = req.user!.tenantId;
+    const loadId = req.params.loadId as string;
+    const tenantId = req.user!.tenantId!;
 
-    const prediction = await predictiveOperationsService.predictLoadIssues(
-      tenantId,
-      loadId
-    );
+    const prediction = await predictiveOperationsService.predictLoadIssues(tenantId, loadId);
 
     res.json(prediction);
   } catch (error: any) {
-    if (error.message.includes('not found')) {
+    if (error.message.includes("not found")) {
       return res.status(404).json({ error: error.message });
     }
-    res.status(500).json({ error: 'Failed to predict load issues' });
+    res.status(500).json({ error: "Failed to predict load issues" });
   }
 });
 
@@ -191,22 +177,22 @@ router.get('/predict/load/:loadId', requireAuth, async (req: Request, res: Respo
  * GET /api/ai/predict/shipment/:shipmentId
  * Get delay prediction for a shipment
  */
-router.get('/predict/shipment/:shipmentId', requireAuth, async (req: Request, res: Response) => {
+router.get("/predict/shipment/:shipmentId", requireAuth, async (req: Request, res: Response) => {
   try {
-    const { shipmentId } = req.params;
-    const tenantId = req.user!.tenantId;
+    const shipmentId = req.params.shipmentId as string;
+    const tenantId = req.user!.tenantId!;
 
     const prediction = await predictiveOperationsService.predictShipmentIssues(
       tenantId,
-      shipmentId
+      shipmentId,
     );
 
     res.json(prediction);
   } catch (error: any) {
-    if (error.message.includes('not found')) {
+    if (error.message.includes("not found")) {
       return res.status(404).json({ error: error.message });
     }
-    res.status(500).json({ error: 'Failed to predict shipment issues' });
+    res.status(500).json({ error: "Failed to predict shipment issues" });
   }
 });
 
@@ -214,26 +200,24 @@ router.get('/predict/shipment/:shipmentId', requireAuth, async (req: Request, re
  * GET /api/dashboard/ai-overview
  * Get AI operations overview for dashboard
  */
-router.get('/dashboard/ai-overview', requireAuth, async (req: Request, res: Response) => {
+router.get("/dashboard/ai-overview", requireAuth, async (req: Request, res: Response) => {
   try {
-    const tenantId = req.user!.tenantId;
+    const tenantId = req.user!.tenantId!;
 
     // Get recent AI decisions
-    const recentDecisions = await prisma.aiDecisionLog.findMany({
+    const recentDecisions = await db.aiDecisionLog.findMany({
       where: { tenantId },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
       take: 20,
     });
 
     // Get metrics
     const dispatchCount = recentDecisions.filter(
-      (d) => d.module === 'DISPATCH_RECOMMENDATION'
+      (d) => d.module === "DISPATCH_RECOMMENDATION",
     ).length;
-    const pricingCount = recentDecisions.filter(
-      (d) => d.module === 'SMART_PRICING'
-    ).length;
+    const pricingCount = recentDecisions.filter((d) => d.module === "SMART_PRICING").length;
     const predictionCount = recentDecisions.filter(
-      (d) => d.module === 'PREDICTIVE_OPERATIONS'
+      (d) => d.module === "PREDICTIVE_OPERATIONS",
     ).length;
 
     res.json({
@@ -246,7 +230,7 @@ router.get('/dashboard/ai-overview', requireAuth, async (req: Request, res: Resp
       },
     });
   } catch (error: any) {
-    res.status(500).json({ error: 'Failed to get AI overview' });
+    res.status(500).json({ error: "Failed to get AI overview" });
   }
 });
 
@@ -254,27 +238,27 @@ router.get('/dashboard/ai-overview', requireAuth, async (req: Request, res: Resp
  * GET /api/dashboard/reliability
  * Get reliability metrics for dashboard
  */
-router.get('/dashboard/reliability', requireAuth, async (req: Request, res: Response) => {
+router.get("/dashboard/reliability", requireAuth, async (req: Request, res: Response) => {
   try {
-    const tenantId = req.user!.tenantId;
+    const tenantId = req.user!.tenantId!;
 
     // Get high-risk carriers
-    const highRiskCarriers = await prisma.carrierScore.findMany({
+    const highRiskCarriers = await db.carrierScore.findMany({
       where: {
         tenantId,
-        riskLevel: 'HIGH',
+        riskLevel: "HIGH",
       },
-      orderBy: { updatedAt: 'desc' },
+      orderBy: { updatedAt: "desc" },
       take: 10,
     });
 
     // Get high-risk predictions
-    const highRiskPredictions = await prisma.predictionEvent.findMany({
+    const highRiskPredictions = await db.predictionEvent.findMany({
       where: {
         tenantId,
-        severity: 'HIGH',
+        severity: "HIGH",
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
       take: 10,
     });
 
@@ -287,7 +271,7 @@ router.get('/dashboard/reliability', requireAuth, async (req: Request, res: Resp
       },
     });
   } catch (error: any) {
-    res.status(500).json({ error: 'Failed to get reliability metrics' });
+    res.status(500).json({ error: "Failed to get reliability metrics" });
   }
 });
 
@@ -295,22 +279,21 @@ router.get('/dashboard/reliability', requireAuth, async (req: Request, res: Resp
  * GET /api/dashboard/revenue
  * Get revenue optimization metrics for dashboard
  */
-router.get('/dashboard/revenue', requireAuth, async (req: Request, res: Response) => {
+router.get("/dashboard/revenue", requireAuth, async (req: Request, res: Response) => {
   try {
-    const tenantId = req.user!.tenantId;
+    const tenantId = req.user!.tenantId!;
 
     // Get recent pricing recommendations
-    const recentPricing = await prisma.pricingSnapshot.findMany({
+    const recentPricing = await db.pricingSnapshot.findMany({
       where: { tenantId },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
       take: 20,
     });
 
     // Calculate average recommended rate
     const avgRate =
       recentPricing.length > 0
-        ? recentPricing.reduce((sum, p) => sum + p.recommendedRateCents, 0) /
-          recentPricing.length
+        ? recentPricing.reduce((sum, p) => sum + p.recommendedRateCents, 0) / recentPricing.length
         : 0;
 
     // Calculate average acceptance probability
@@ -329,7 +312,7 @@ router.get('/dashboard/revenue', requireAuth, async (req: Request, res: Response
       },
     });
   } catch (error: any) {
-    res.status(500).json({ error: 'Failed to get revenue metrics' });
+    res.status(500).json({ error: "Failed to get revenue metrics" });
   }
 });
 
@@ -337,30 +320,30 @@ router.get('/dashboard/revenue', requireAuth, async (req: Request, res: Response
  * GET /api/dashboard/alerts
  * Get active alerts for dashboard
  */
-router.get('/dashboard/alerts', requireAuth, async (req: Request, res: Response) => {
+router.get("/dashboard/alerts", requireAuth, async (req: Request, res: Response) => {
   try {
-    const tenantId = req.user!.tenantId;
+    const tenantId = req.user!.tenantId!;
 
     // Get high-severity predictions (alerts)
-    const alerts = await prisma.predictionEvent.findMany({
+    const alerts = await db.predictionEvent.findMany({
       where: {
         tenantId,
-        severity: { in: ['HIGH', 'MEDIUM'] },
+        severity: { in: ["HIGH", "MEDIUM"] },
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
       take: 20,
     });
 
     res.json({
       alerts,
       summary: {
-        criticalAlerts: alerts.filter((a) => a.severity === 'HIGH').length,
-        warningAlerts: alerts.filter((a) => a.severity === 'MEDIUM').length,
+        criticalAlerts: alerts.filter((a) => a.severity === "HIGH").length,
+        warningAlerts: alerts.filter((a) => a.severity === "MEDIUM").length,
         totalAlerts: alerts.length,
       },
     });
   } catch (error: any) {
-    res.status(500).json({ error: 'Failed to get alerts' });
+    res.status(500).json({ error: "Failed to get alerts" });
   }
 });
 

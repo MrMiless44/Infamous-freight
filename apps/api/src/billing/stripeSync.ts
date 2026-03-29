@@ -245,8 +245,8 @@ export async function syncSubscriptionStatus(organizationId: string): Promise<vo
       where: { organizationId },
       data: {
         stripeStatus: subscription.status,
-        billingCycleStart: new Date(subscription.current_period_start * 1000),
-        nextBillingDate: new Date(subscription.current_period_end * 1000),
+        billingCycleStart: new Date((subscription as any).current_period_start * 1000),
+        nextBillingDate: new Date((subscription as any).current_period_end * 1000),
       },
     });
 
@@ -288,8 +288,8 @@ export async function getSubscriptionDetails(organizationId: string) {
       organization: billing.organization,
       plan: billing.plan,
       status: subscription.status,
-      currentPeriodStart: new Date(subscription.current_period_start * 1000),
-      currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+      currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
+      currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
       cancelAt: subscription.cancel_at ? new Date(subscription.cancel_at * 1000) : null,
       items: subscription.items.data.map((item) => ({
         priceId: item.price.id,

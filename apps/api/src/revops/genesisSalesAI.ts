@@ -98,7 +98,7 @@ async function analyzeCompany(domain: string, company: string): Promise<CompanyI
       likelyFleetSize = 50;
       estimatedMonthlyLoads = 500;
       break;
-    case "enterprise":
+    case ("enterprise" as any):
       likelyFleetSize = 200;
       estimatedMonthlyLoads = 2000;
       break;
@@ -129,7 +129,7 @@ function calculateDealScore(intel: CompanyIntel, leadData: any): number {
 
   // Company size (40 points)
   switch (intel.estimatedSize) {
-    case "enterprise":
+    case ("enterprise" as any):
       score += 40;
       break;
     case "large":

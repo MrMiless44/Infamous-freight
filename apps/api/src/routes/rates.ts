@@ -2,7 +2,7 @@ import { Router } from "express";
 import { z } from "zod";
 import { RatePredictionService } from "../services/rate-prediction.service.js";
 
-const router = Router();
+const router: Router = Router();
 const service = new RatePredictionService();
 
 router.post("/predict", (req, res) => {

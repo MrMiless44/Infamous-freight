@@ -10,7 +10,12 @@
 
 import { Router } from "express";
 import Stripe from "stripe";
-import { authenticate, requireOrganization, requireScope, limiters } from "../middleware/security.js";
+import {
+  authenticate,
+  requireOrganization,
+  requireScope,
+  limiters,
+} from "../middleware/security.js";
 import { handleValidationErrors, validateString } from "../middleware/validation.js";
 import { logAuditEvent, AUDIT_ACTIONS } from "../audit/orgAuditLog.js";
 import { tenantPrisma } from "../db/tenant.js";
@@ -35,7 +40,7 @@ import {
   markInvoicePaid,
 } from "../billing/invoicing.js";
 
-const router = Router();
+const router: Router = Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
@@ -56,7 +61,7 @@ router.get(
   requireScope("billing:read"),
   async (req, res, next) => {
     try {
-      const orgId = req.auth?.organizationId;
+      const orgId = req.auth?.organizationId ?? "";
       const billing = await prisma.orgBilling.findUnique({
         where: { organizationId: orgId },
         select: { stripeCustomerId: true },
@@ -99,7 +104,7 @@ router.post(
   handleValidationErrors,
   async (req, res, next) => {
     try {
-      const orgId = req.auth?.organizationId;
+      const orgId = req.auth?.organizationId ?? "";
       const userId = req.auth?.userId;
       const { plan } = req.body;
 
@@ -149,7 +154,7 @@ router.post(
   handleValidationErrors,
   async (req, res, next) => {
     try {
-      const orgId = req.auth?.organizationId;
+      const orgId = req.auth?.organizationId ?? "";
       const userId = req.auth?.userId;
       const { plan } = req.body;
 
@@ -192,7 +197,7 @@ router.post(
   handleValidationErrors,
   async (req, res, next) => {
     try {
-      const orgId = req.auth?.organizationId;
+      const orgId = req.auth?.organizationId ?? "";
       const userId = req.auth?.userId;
       const { immediately } = req.body;
 
@@ -231,7 +236,7 @@ router.get(
   requireScope("billing:read"),
   async (req, res, next) => {
     try {
-      const orgId = req.auth?.organizationId;
+      const orgId = req.auth?.organizationId ?? "";
 
       const details = await getSubscriptionDetails(orgId);
 
@@ -267,7 +272,7 @@ router.get(
   requireScope("billing:read"),
   async (req, res, next) => {
     try {
-      const orgId = req.auth?.organizationId;
+      const orgId = req.auth?.organizationId ?? "";
       const { month } = req.query;
 
       const usage = await getMonthlyUsage(orgId, month as string);
@@ -317,7 +322,7 @@ router.get(
   handleValidationErrors,
   async (req, res, next) => {
     try {
-      const orgId = req.auth?.organizationId;
+      const orgId = req.auth?.organizationId ?? "";
       const { from, to } = req.query;
 
       const summary = await getUsageSummary(orgId, from as string, to as string);
@@ -348,7 +353,7 @@ router.get(
   requireScope("billing:read"),
   async (req, res, next) => {
     try {
-      const orgId = req.auth?.organizationId;
+      const orgId = req.auth?.organizationId ?? "";
       const { month } = req.params;
 
       const invoice = await getInvoice(orgId, month);
@@ -381,11 +386,11 @@ router.post(
   requireScope("billing:write"),
   async (req, res, next) => {
     try {
-      const orgId = req.auth?.organizationId;
+      const orgId = req.auth?.organizationId ?? "";
       const { month } = req.params;
 
       // Check admin role
-      if (req.auth?.role !== "ADMIN") {
+      if ((req.auth?.role as string) !== "ADMIN") {
         return res.status(403).json({
           error: "Forbidden",
           message: "Only admins can send invoice reminders",

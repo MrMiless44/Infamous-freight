@@ -32,8 +32,8 @@ function getClientMetadata(request: Request): RefreshTokenRequestContext {
   const ipAddress = Array.isArray(forwardedFor)
     ? forwardedFor[0]
     : typeof forwardedFor === "string"
-      ? forwardedFor.split(",")[0]?.trim() ?? null
-      : request.ip ?? null;
+      ? (forwardedFor.split(",")[0]?.trim() ?? null)
+      : (request.ip ?? null);
 
   return {
     ipAddress,
@@ -90,7 +90,10 @@ function extractRefreshToken(request: Request): string | null {
   return typeof bodyToken === "string" && bodyToken.length > 0 ? bodyToken : null;
 }
 
-function buildAuthResponse(user: SanitizedUser, tokenPair: TokenPair): { user: SanitizedUser; accessToken: string; accessTokenExpiresIn: string } {
+function buildAuthResponse(
+  user: SanitizedUser,
+  tokenPair: TokenPair,
+): { user: SanitizedUser; accessToken: string; accessTokenExpiresIn: string } {
   return {
     user,
     accessToken: tokenPair.accessToken,
@@ -107,7 +110,11 @@ export const authService = {
   ): Promise<{ user: SanitizedUser; tokens: TokenPair }> {
     const existingUser = await authRepository.findUserByEmail(input.email);
     if (existingUser) {
-      throw new ApiError(409, AUTH_ERROR_CODES.emailAlreadyRegistered, "Email is already registered");
+      throw new ApiError(
+        409,
+        AUTH_ERROR_CODES.emailAlreadyRegistered,
+        "Email is already registered",
+      );
     }
 
     const passwordHash = await hashPassword(input.password);
@@ -128,7 +135,7 @@ export const authService = {
   ): Promise<{ user: SanitizedUser; tokens: TokenPair }> {
     const user = await authRepository.findUserByEmail(input.email);
 
-    if (!user || !(await verifyPassword(user.passwordHash, input.password))) {
+    if (!user || !(await verifyPassword(user.passwordHash ?? "", input.password))) {
       throw new ApiError(401, AUTH_ERROR_CODES.invalidCredentials, INVALID_CREDENTIALS_MESSAGE);
     }
 
@@ -163,17 +170,30 @@ export const authService = {
     const tokenHash = hashRefreshToken(rawRefreshToken);
 
     if (tokenRecord.tokenHash !== tokenHash) {
-      await authRepository.revokeAllActiveRefreshTokensForUser(tokenRecord.userId, context.ipAddress);
+      await authRepository.revokeAllActiveRefreshTokensForUser(
+        tokenRecord.userId,
+        context.ipAddress,
+      );
       throw new ApiError(401, AUTH_ERROR_CODES.invalidRefreshToken, "Invalid refresh token");
     }
 
     if (tokenRecord.revokedAt || tokenRecord.expiresAt <= new Date()) {
-      await authRepository.revokeAllActiveRefreshTokensForUser(tokenRecord.userId, context.ipAddress);
-      throw new ApiError(401, AUTH_ERROR_CODES.invalidRefreshToken, "Refresh token is no longer valid");
+      await authRepository.revokeAllActiveRefreshTokensForUser(
+        tokenRecord.userId,
+        context.ipAddress,
+      );
+      throw new ApiError(
+        401,
+        AUTH_ERROR_CODES.invalidRefreshToken,
+        "Refresh token is no longer valid",
+      );
     }
 
     if (!tokenRecord.user.isActive) {
-      await authRepository.revokeAllActiveRefreshTokensForUser(tokenRecord.userId, context.ipAddress);
+      await authRepository.revokeAllActiveRefreshTokensForUser(
+        tokenRecord.userId,
+        context.ipAddress,
+      );
       throw new ApiError(403, AUTH_ERROR_CODES.inactiveUser, "User account is inactive");
     }
 
@@ -185,7 +205,11 @@ export const authService = {
       throw new ApiError(500, "REFRESH_ROTATION_FAILED", "Failed to rotate refresh token");
     }
 
-    await authRepository.revokeRefreshToken(tokenRecord.id, context.ipAddress, replacementRecord.id);
+    await authRepository.revokeRefreshToken(
+      tokenRecord.id,
+      context.ipAddress,
+      replacementRecord.id,
+    );
 
     return {
       accessToken: replacementTokenPair.accessToken,

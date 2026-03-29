@@ -5,7 +5,8 @@ import { prisma } from "../db/prisma.js";
 import { claimLoad, listLoads } from "../services/loadboard.service.js";
 import { parseOrThrow } from "../utils/validate.js";
 
-export const loadboard = Router();
+const db = prisma as any;
+export const loadboard: Router = Router();
 
 /**
  * Lists available loads for the authenticated tenant.
@@ -34,7 +35,7 @@ loadboard.post("/", requireAuth, async (req, res, next) => {
   try {
     const body = parseOrThrow(zCreateLoad, req.body);
     const tenantId = zTenantId.parse((req as any).auth.tenantId);
-    const row = await prisma.load.create({
+    const row = await db.load.create({
       data: {
         tenantId,
         originCity: body.originCity,
@@ -43,8 +44,8 @@ loadboard.post("/", requireAuth, async (req, res, next) => {
         destState: body.destState,
         distanceMi: body.distanceMi,
         weightLb: body.weightLb,
-        rateCents: body.rateCents
-      }
+        rateCents: body.rateCents,
+      },
     });
     res.status(201).json({ id: row.id });
   } catch (e) {
@@ -63,7 +64,7 @@ loadboard.post("/:id/claim", requireAuth, async (req, res, next) => {
     if (typeof userId !== "string" || userId.length === 0) {
       return res.status(401).json({ error: "Invalid authentication token." });
     }
-    const claimed = await claimLoad(tenantId, req.params.id, userId);
+    const claimed = await claimLoad(tenantId, req.params.id as string, userId);
 
     if (!claimed) {
       return res.status(409).json({ error: "Load already claimed or not available." });

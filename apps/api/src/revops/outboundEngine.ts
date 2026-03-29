@@ -140,7 +140,7 @@ export async function addRecipientsToCampaign(campaignId: string, recipients: Re
 
   // Generate personalized copy for each recipient
   for (const recipient of recipients) {
-    const { subject, body } = await generateOutboundCopy(recipient, campaign.callToAction);
+    const { subject, body } = await generateOutboundCopy(recipient, campaign.callToAction ?? "");
 
     messages.push({
       campaignId,

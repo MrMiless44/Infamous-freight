@@ -31,7 +31,7 @@ import {
 import { env } from "../config/env.js";
 import { handlePresign } from "./presign.js";
 
-const router = express.Router();
+const router: express.Router = express.Router();
 const storageMode = env.avatarStorage || "local";
 
 function toResponseAvatar(avatar) {
@@ -51,7 +51,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const userId = getUserId(req);
     if (!userId) {
-      return cb(new Error("Unauthorized"));
+      return cb(new Error("Unauthorized"), "");
     }
 
     const uploadDir = path.join(env.avatarUploadDir, userId);
@@ -69,7 +69,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({
+const upload = (multer as any)({
   storage,
   limits: {
     fileSize: env.avatarMaxFileSizeMB * 1024 * 1024,

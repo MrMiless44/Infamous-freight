@@ -151,7 +151,7 @@ export async function transitionJob(input: TransitionInput): Promise<{
     await tx.jobEvent.create({
       data: {
         jobId,
-        eventType,
+        type: eventType,
         actorUserId: actor.userId,
         actorRole: actor.role === "SYSTEM" ? UserRole.ADMIN : actor.role,
         message: reason || `Transitioned from ${from} to ${to}`,

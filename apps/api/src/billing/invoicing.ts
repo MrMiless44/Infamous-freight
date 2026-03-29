@@ -133,7 +133,7 @@ export async function generateOrgInvoice(
         baseFee: billing.monthlyBase,
         overageCharge: usage.overageCharge,
         totalAmount: totalAmount / 100,
-        pdfUrl: finalizedInvoice.pdf,
+        pdfUrl: finalizedInvoice.invoice_pdf ?? undefined,
       },
       update: {
         stripeInvoiceId: finalizedInvoice.id,
@@ -141,7 +141,7 @@ export async function generateOrgInvoice(
         baseFee: billing.monthlyBase,
         overageCharge: usage.overageCharge,
         totalAmount: totalAmount / 100,
-        pdfUrl: finalizedInvoice.pdf,
+        pdfUrl: finalizedInvoice.invoice_pdf ?? undefined,
       },
     });
 
@@ -163,7 +163,7 @@ export async function generateOrgInvoice(
       stripeInvoiceId: finalizedInvoice.id,
       amount: totalAmount / 100,
       status: finalizedInvoice.status || "draft",
-      pdfUrl: finalizedInvoice.pdf,
+      pdfUrl: finalizedInvoice.invoice_pdf ?? undefined,
     };
   } catch (error) {
     console.error("Failed to generate invoice", {
@@ -242,7 +242,7 @@ export async function generateMonthlyInvoices(): Promise<{
  */
 export async function getInvoice(organizationId: string, month: string) {
   try {
-    const invoice = await prisma.orgInvoice.findUnique({
+    const invoice = await (prisma.orgInvoice as any).findUnique({
       where: { organizationId_month: { organizationId, month } },
       include: {
         organization: {
@@ -260,7 +260,7 @@ export async function getInvoice(organizationId: string, month: string) {
         ...invoice,
         stripeStatus: stripeInvoice.status,
         hostedInvoiceUrl: stripeInvoice.hosted_invoice_url,
-        pdfUrl: stripeInvoice.pdf,
+        pdfUrl: stripeInvoice.invoice_pdf,
       };
     }
 

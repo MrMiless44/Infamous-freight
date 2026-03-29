@@ -10,7 +10,7 @@ import {
   registerController,
 } from "./auth.controller.js";
 
-const router = Router();
+const router: Router = Router();
 
 router.post("/register", authLimiter, registerController);
 router.post("/login", authLimiter, loginController);

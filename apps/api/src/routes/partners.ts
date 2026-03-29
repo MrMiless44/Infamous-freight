@@ -5,7 +5,7 @@ import { Router } from "express";
  * 15% revenue-share commission for integrators, resellers, white-label
  */
 
-const router = Router();
+const router: Router = Router();
 
 // POST /api/partners/apply - Apply for marketplace program
 router.post("/apply", async (req, res, next) => {

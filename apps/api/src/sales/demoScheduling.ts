@@ -242,7 +242,7 @@ async function createCalendlyEvent(input: CalendarEventInput): Promise<CalendarE
     headers: { Authorization: `Bearer ${apiKey}` },
   });
 
-  const { resource } = await meResponse.json();
+  const { resource } = await meResponse.json() as any;
   const orgUri = resource.organization;
 
   // Create event
@@ -261,7 +261,7 @@ async function createCalendlyEvent(input: CalendarEventInput): Promise<CalendarE
     }),
   });
 
-  const { resource: event } = await eventResponse.json();
+  const { resource: event } = await eventResponse.json() as any;
 
   return {
     eventId: event.uri.split("/").pop(),
@@ -311,7 +311,7 @@ async function createGoogleCalendarEvent(input: CalendarEventInput): Promise<Cal
     },
   );
 
-  const result = await response.json();
+  const result = await response.json() as any;
 
   return {
     eventId: result.id,

@@ -1,4 +1,6 @@
-import { prisma } from '../db/prisma';
+import { prisma } from '../db/prisma.js';
+
+const db = prisma as any;
 
 export interface PredictionResult {
   entityId: string;
@@ -25,7 +27,7 @@ export class PredictiveOperationsService {
     loadId: string
   ): Promise<PredictionResult> {
     // Fetch load
-    const load = await prisma.load.findUnique({
+    const load = await db.load.findUnique({
       where: { id: loadId },
     });
 
@@ -59,7 +61,7 @@ export class PredictiveOperationsService {
     const confidence = this.calculateConfidence(factors, delayProbability);
 
     // Save prediction event
-    await prisma.predictionEvent.create({
+    await db.predictionEvent.create({
       data: {
         tenantId,
         entityType: 'LOAD',
@@ -101,7 +103,7 @@ export class PredictiveOperationsService {
     shipmentId: string
   ): Promise<PredictionResult> {
     // Fetch shipment
-    const shipment = await prisma.shipment.findUnique({
+    const shipment = await db.shipment.findUnique({
       where: { id: shipmentId },
     });
 
@@ -138,7 +140,7 @@ export class PredictiveOperationsService {
     const confidence = this.calculateConfidence(factors, delayProbability);
 
     // Save prediction event
-    await prisma.predictionEvent.create({
+    await db.predictionEvent.create({
       data: {
         tenantId,
         entityType: 'SHIPMENT',
@@ -402,7 +404,7 @@ export class PredictiveOperationsService {
     reasonCodes: string[],
     factors: Record<string, number>
   ): Promise<void> {
-    await prisma.aiDecisionLog.create({
+    await db.aiDecisionLog.create({
       data: {
         tenantId,
         entityType: 'LOAD',

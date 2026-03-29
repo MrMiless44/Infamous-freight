@@ -49,6 +49,7 @@ enum JobStatus {
   DRAFT
   REQUIRES_PAYMENT
   OPEN
+  HELD
   ACCEPTED
   PICKED_UP
   DELIVERED
@@ -127,7 +128,7 @@ model Organization {
   contracts           EnterpriseContract[]
   churnPredictions    ChurnPrediction[]
   usageMetrics        UsageMetric[]
-  
+
   // Tier 1-3: Security & Compliance
   encryptionKeys      EncryptionKey[]
   complianceAudits    ComplianceAudit[]
@@ -317,6 +318,14 @@ model User {
   name  String?
   role  UserRole @default(SHIPPER)
 
+  // Auth fields for OAuth/password-based auth
+  firstName       String?
+  lastName        String?
+  passwordHash    String?
+  isActive        Boolean   @default(true)
+  emailVerifiedAt DateTime?
+  lastLoginAt     DateTime?
+
   // Phase 19: Organization (multi-tenancy)
   organizationId String?
   organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -353,6 +362,7 @@ model User {
 
   // Tier 1-3: Security & Compliance
   twoFactorAuth        TwoFactorAuth?
+  refreshTokens        RefreshToken[]
   dataProcessingLogs   DataProcessingLog[]
   userConsents         UserConsent[]
   securityEvents       SecurityEvent[]
@@ -883,7 +893,7 @@ model Referral {
 
   referrerUserId   String
   referrer         User   @relation("referralsCreated", fields: [referrerUserId], references: [id], onDelete: Cascade)
-  
+
   refereeEmail     String
   referreeUserId   String?
   referree         User?  @relation("referralsReceived", fields: [referreeUserId], references: [id], onDelete: SetNull)
@@ -1702,6 +1712,29 @@ enum PartnerTier {
 
 
 // ============================================
+// Refresh Tokens (Auth)
+// ============================================
+
+model RefreshToken {
+  id               String    @id @default(cuid())
+  jti              String    @unique
+  userId           String
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash        String
+  expiresAt        DateTime
+  revokedAt        DateTime?
+  revokedByIp      String?
+  replacedByTokenId String?
+  createdByIp      String?
+  userAgent        String?
+  createdAt        DateTime  @default(now())
+
+  @@index([userId])
+  @@index([jti])
+  @@map("refresh_tokens")
+}
+
+// ============================================
 // Two-Factor Authentication (TIER 3)
 // ============================================
 
@@ -1709,23 +1742,23 @@ model TwoFactorAuth {
   id                  String   @id @default(cuid())
   userId              String   @unique
   user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   // TOTP Setup (Phase 7 Tier 4)
   secret              String?  // Base32-encoded TOTP secret (encrypted in production)
   enabled             Boolean  @default(false)
   verifiedAt          DateTime? // When 2FA was first verified and enabled
-  
+
   // Backup Codes (Phase 7 Tier 4)
   backupCodes         String[] // Array of SHA-256 hashes
   backupCodesUsed     String[] // Track which codes were used (deprecated - now removes used codes)
-  
+
   // Recovery Options
   recoveryEmailSent   DateTime?
   recoveryPhoneNumber String?
-  
+
   // Status Tracking
   disabledAt          DateTime? // When 2FA was disabled
-  
+
   // Metadata
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
@@ -1744,22 +1777,22 @@ model EncryptionKey {
   id                String   @id @default(cuid())
   organizationId    String
   organization      Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  
+
   // Key Material (encrypted by master key in HSM)
   keyVersionId      String   @unique
   keyType           String   @default("aes-256-gcm") // Algorithm
   keyStatus         String   @default("active") // active | rotated | retired
-  
+
   // Rotation Policy
   createdAt         DateTime @default(now())
   rotatedAt         DateTime?
   expiresAt         DateTime?
   nextRotationDate  DateTime?
-  
+
   // Audit
   createdBy         String?
   rotationReason    String?
-  
+
   // Data encrypted by this key
   encryptedRecords  Int      @default(0)
 
@@ -1777,21 +1810,21 @@ model DataProcessingLog {
   id                String   @id @default(cuid())
   userId            String
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   // Operation Details
   operation         String   // read | write | delete | export | share | consent_recorded | data_export | data_erasure
   purpose           String   // service_delivery | contract_fulfillment | legal_obligation | consent | legitimate_interest
   dataCategories    String?  // JSON array of data categories (personal, financial, location, behavioral, communications)
-  
+
   // GDPR Legal Basis (Article 6)
   legalBasis        String?  // Article 6(1)(a) - Consent | Article 6(1)(b) - Contract | Article 6(1)(c) - Legal obligation
-  
+
   // Context
   ipAddress         String?
   userAgent         String?
   endpoint          String?
   metadata          String?  // JSON string for additional context
-  
+
   // Audit
   timestamp         DateTime @default(now())
   retained          Boolean  @default(true)
@@ -1809,19 +1842,19 @@ model UserConsent {
   id                String   @id @default(cuid())
   userId            String
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   // Consent Type
   consentType       String   // marketing | analytics | profiling | third_party_sharing | location_tracking | ai_processing
   granted           Boolean  @default(false) // Renamed from 'value' for clarity
   version           Int      @default(1)
-  
+
   // Record Keeping (GDPR Article 7 - Conditions for consent)
   grantedAt         DateTime?
   revokedAt         DateTime? // Renamed from 'withdrawnAt' for GDPR terminology
   ipAddress         String?   // Renamed from 'recordedIp' for consistency
   userAgent         String?   // Renamed from 'recordedUserAgent'
   metadata          String?   // JSON string for additional context
-  
+
   // Audit
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
@@ -1842,24 +1875,24 @@ model ComplianceAudit {
   id                String             @id @default(cuid())
   organizationId    String
   organization      Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  
+
   // Audit Details
   standard          String             // GDPR | CCPA | SOC2 | ISO27001 | PCIDSS
   status            ComplianceStatus   @default(PENDING)
-  
+
   // Findings
   findingsJson      Json? // Array of findings with severity
   remediationItems  String[]
-  
+
   // Timeline
   auditDate         DateTime
   completedAt       DateTime?
   nextAuditDate     DateTime?
-  
+
   // Evidence
   evidenceLinks     String[]
   auditorNotes      String?
-  
+
   @@index([organizationId, standard])
   @@index([status])
   @@index([auditDate])
@@ -1870,22 +1903,22 @@ model ComplianceReport {
   id                String   @id @default(cuid())
   organizationId    String
   organization      Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  
+
   // Report Details
   reportType        String   // daily | weekly | monthly | quarterly | annual
   period            String   // YYYY-MM for monthly, etc
-  
+
   // Metrics
   dataProcessedRecords       Int     @default(0)
   dataAccessEvents           Int     @default(0)
   dataDeleteRequests         Int     @default(0)
   securityIncidents          Int     @default(0)
-  
+
   // Compliance Score
   complianceScore   Float    @default(0) // 0-100
   areasOfConcern    String[]
   recommendations   String[]
-  
+
   // Report
   reportUrl         String?  // S3 PDF link
   generatedAt       DateTime @default(now())
@@ -1904,31 +1937,31 @@ model SecurityEvent {
   organizationId    String?
   userId            String?
   user              User? @relation(fields: [userId], references: [id], onDelete: SetNull)
-  
+
   // Event Details
   eventType         String   // login_success | login_failure | data_access | data_modification | data_deletion | system_config_change | suspicious_activity
   severity          String   @default("low") // info | low | medium | high | critical
-  
+
   // Resource & Action (SOC2 CC6.2)
   resource          String?  // Resource being accessed
   action            String?  // Action being performed
   result            String   @default("success") // success | denied | unauthorized | error
-  
+
   // Context
   ipAddress         String?
   userAgent         String?
   endpoint          String?
   method            String?
-  
+
   // Detection
   detectedBy        String   @default("system") // rate_limiter | anomaly_detector | waf | manual | system
   metadata          Json?    // Additional detection data
-  
+
   // Response
   actionTaken       String?  // blocked | warned | logged | escalated
   resolved          Boolean  @default(false)
   resolvedAt        DateTime?
-  
+
   // Timeline
   timestamp         DateTime @default(now())
 
@@ -1945,27 +1978,27 @@ model AnomalyDetection {
   id                String   @id @default(cuid())
   userId            String?
   user              User? @relation(fields: [userId], references: [id], onDelete: SetNull)
-  
+
   // Anomaly Details
   anomalyType       String   @default("unknown") // unusual_location | impossible_travel | unusual_time | multiple_failed_logins | rapid_data_access | multiple_ip_addresses | after_hours_activity
   anomalies         Json?    // Array of detected anomalies with details
   severity          String   @default("medium") // info | low | medium | high | critical
   confidence        Float    @default(0) // 0-1
-  
+
   // Baseline Data
   normalBehavior    Json?    // Historical average
   currentBehavior   Json?    // Current event
   deviation         Float?   // How many standard deviations
-  
+
   // Status (SOC2 CC7.2)
   status            String   @default("detected") // detected | investigating | resolved | false_positive
   detectedAt        DateTime @default(now())
-  
+
   // Review
   reviewedAt        DateTime?
   reviewedBy        String?
   falsePositive     Boolean?
-  
+
   @@index([userId])
   @@index([anomalyType])
   @@index([confidence])
@@ -1985,12 +2018,12 @@ model UsageMetric {
   organization      Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   userId            String?
   user              User? @relation(fields: [userId], references: [id], onDelete: SetNull)
-  
+
   // Metric Details
   metricName        String   // api_requests | ai_commands | storage_gb | etc
   quantity          Int      @default(1)
   value             Float?   // e.g. bytes, tokens
-  
+
   // Timestamp
   recordedAt        DateTime @default(now())
   month             String   // YYYY-MM for aggregation
@@ -2111,29 +2144,29 @@ model Partner {
   id                String           @id @default(cuid())
   organizationId    String?
   organization      Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
-  
+
   // Partner Details
   name              String           @unique
   email             String           @unique
   website           String?
-  
+
   // Tier & Commission
   tier              PartnerTier      @default(RESELLER)
   commissionRate    Float            @default(0.20) // 20% default
-  
+
   // Status
   isActive          Boolean          @default(true)
   approvedAt        DateTime?
-  
+
   // Earnings
   totalEarnings     Float            @default(0)
   transactionCount  Int              @default(0)
-  
+
   // Metadata
   metadata          Json?
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
-  
+
   // Relations
   commissions       PartnerCommission[]
 
@@ -2147,13 +2180,13 @@ model PartnerCommission {
   id                String   @id @default(cuid())
   partnerId         String
   partner           Partner  @relation(fields: [partnerId], references: [id], onDelete: Cascade)
-  
+
   // Transaction
   transactionId     String
   amount            Float
   commissionRate    Float
   commission        Float
-  
+
   // Tracking
   createdAt         DateTime @default(now())
   paidAt            DateTime?
@@ -2168,25 +2201,25 @@ model UpsellOpportunity {
   id                String   @id @default(cuid())
   organizationId    String
   organization      Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  
+
   // Opportunity
   opportunityType   String   // upgrade | addon | seat_expansion
   targetTier        String?  // Suggested tier
   estimatedValue    Float?
-  
+
   // Personalization
   reason            String?  // Why this org is a good fit
   contextJson       Json?    // Usage patterns, etc
-  
+
   // Campaign
   campaignId        String?
   campaignStatus    String   @default("draft") // draft | active | completed
-  
+
   // Results
   exposed           DateTime?
   clicked           DateTime?
   converted         DateTime?
-  
+
   @@index([organizationId])
   @@index([campaignStatus])
   @@map("upsell_opportunities")
@@ -2198,24 +2231,24 @@ model UpsellOpportunity {
 
 model BackupLog {
   id                String   @id @default(cuid())
-  
+
   // Backup Details
   backupType        String   // full | incremental | wal
   backupDate        DateTime @default(now())
   s3Key             String
-  
+
   // Metadata
   size              BigInt?  // Bytes
   status            String   @default("success") // success | failed
   checksumSha256    String?
-  
+
   // Verification
   verified          Boolean  @default(false)
   verifiedAt        DateTime?
-  
+
   // Retention
   retentionUntil    DateTime?
-  
+
   @@index([backupDate])
   @@index([status])
   @@index([backupType])
@@ -2225,21 +2258,21 @@ model BackupLog {
 model RestoreLog {
   id                String   @id @default(cuid())
   backupLogId       String?
-  
+
   // Restore Details
   initiatedAt       DateTime @default(now())
   completedAt       DateTime?
   status            String   @default("pending") // pending | in_progress | success | failed
-  
+
   // Context
   reason            String   // disaster | test | manual
   initiatedBy       String?
-  
+
   // Result
   rto               Int?     // Minutes
   rpo               Int?     // Minutes
   errors            String?
-  
+
   @@index([status])
   @@index([initiatedAt])
   @@map("restore_logs")

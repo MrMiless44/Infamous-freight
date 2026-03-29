@@ -1,5 +1,6 @@
-import { prisma } from '../db/prisma';
-import { AiDecisionLog } from '@prisma/client';
+import { prisma } from "../db/prisma.js";
+
+const db = prisma as any;
 
 export interface DispatchRecommendation {
   recommendedDriverId: string;
@@ -34,43 +35,39 @@ export class AiDispatchService {
   async recommendDispatch(
     tenantId: string,
     loadId: string,
-    userId: string
+    userId: string,
   ): Promise<DispatchRecommendation> {
     // Fetch load and available drivers
-    const load = await prisma.load.findUnique({
+    const load = await db.load.findUnique({
       where: { id: loadId },
     });
 
     if (!load || load.tenantId !== tenantId) {
-      throw new Error('Load not found or access denied');
+      throw new Error("Load not found or access denied");
     }
 
-    const availableDrivers = await prisma.driver.findMany({
+    const availableDrivers = await db.driver.findMany({
       where: {
         tenantId,
-        status: 'AVAILABLE',
+        status: "AVAILABLE",
       },
     });
 
     if (availableDrivers.length === 0) {
-      throw new Error('No available drivers');
+      throw new Error("No available drivers");
     }
 
     // Score each driver
     const scoredDrivers = await Promise.all(
       availableDrivers.map(async (driver) => {
-        const factors = await this.calculateScoreFactors(
-          tenantId,
-          driver.id,
-          load
-        );
+        const factors = await this.calculateScoreFactors(tenantId, driver.id, load);
         const score = this.calculateCompositeScore(factors);
         return {
           driverId: driver.id,
           score,
           factors,
         };
-      })
+      }),
     );
 
     // Sort by score descending
@@ -83,14 +80,14 @@ export class AiDispatchService {
     // Log the decision
     await this.logAiDecision(
       tenantId,
-      'LOAD',
+      "LOAD",
       loadId,
-      'DISPATCH_RECOMMENDATION',
+      "DISPATCH_RECOMMENDATION",
       `Recommended driver ${topRecommendation.driverId}`,
       confidence,
       reasonCodes,
       { loadId, availableDriverCount: availableDrivers.length },
-      { recommendedDriverId: topRecommendation.driverId, score: topRecommendation.score }
+      { recommendedDriverId: topRecommendation.driverId, score: topRecommendation.score },
     );
 
     return {
@@ -109,46 +106,46 @@ export class AiDispatchService {
     tenantId: string,
     loadId: string,
     driverId: string,
-    userId: string
+    userId: string,
   ): Promise<DispatchExecutionResult> {
     // Verify load and driver exist in tenant
-    const load = await prisma.load.findUnique({
+    const load = await db.load.findUnique({
       where: { id: loadId },
     });
 
-    const driver = await prisma.driver.findUnique({
+    const driver = await db.driver.findUnique({
       where: { id: driverId },
     });
 
     if (!load || load.tenantId !== tenantId) {
-      throw new Error('Load not found or access denied');
+      throw new Error("Load not found or access denied");
     }
 
     if (!driver || driver.tenantId !== tenantId) {
-      throw new Error('Driver not found or access denied');
+      throw new Error("Driver not found or access denied");
     }
 
     // Create dispatch record
-    const dispatch = await prisma.dispatch.create({
+    const dispatch = await db.dispatch.create({
       data: {
         tenantId,
         loadId,
         driverId,
-        status: 'ASSIGNED',
+        status: "ASSIGNED",
       },
     });
 
     // Log the execution
     await this.logAiDecision(
       tenantId,
-      'DISPATCH',
+      "DISPATCH",
       dispatch.id,
-      'DISPATCH_EXECUTED',
+      "DISPATCH_EXECUTED",
       `Dispatch created for load ${loadId} and driver ${driverId}`,
       1.0,
-      ['DISPATCH_EXECUTED'],
+      ["DISPATCH_EXECUTED"],
       { loadId, driverId },
-      { dispatchId: dispatch.id, status: dispatch.status }
+      { dispatchId: dispatch.id, status: dispatch.status },
     );
 
     return {
@@ -166,7 +163,7 @@ export class AiDispatchService {
   private async calculateScoreFactors(
     tenantId: string,
     driverId: string,
-    load: any
+    load: any,
   ): Promise<Record<string, number>> {
     // Proximity score (0-100): based on distance to pickup
     const proximityScore = this.calculateProximityScore(load.distanceMi);
@@ -178,20 +175,13 @@ export class AiDispatchService {
     const onTimeScore = await this.calculateOnTimeScore(tenantId, driverId);
 
     // Acceptance rate (0-100)
-    const acceptanceScore = await this.calculateAcceptanceScore(
-      tenantId,
-      driverId
-    );
+    const acceptanceScore = await this.calculateAcceptanceScore(tenantId, driverId);
 
     // Trust score (0-100) from CarrierScore
     const trustScore = await this.calculateTrustScore(tenantId, driverId);
 
     // Lane experience score (0-100)
-    const laneExperienceScore = await this.calculateLaneExperienceScore(
-      tenantId,
-      driverId,
-      load
-    );
+    const laneExperienceScore = await this.calculateLaneExperienceScore(tenantId, driverId, load);
 
     return {
       proximityScore,
@@ -238,10 +228,7 @@ export class AiDispatchService {
   /**
    * On-time rate from historical dispatches
    */
-  private async calculateOnTimeScore(
-    tenantId: string,
-    driverId: string
-  ): Promise<number> {
+  private async calculateOnTimeScore(tenantId: string, driverId: string): Promise<number> {
     // Placeholder: would fetch from Shipment/Dispatch history
     // For now, return 75 (neutral)
     return 75;
@@ -250,10 +237,7 @@ export class AiDispatchService {
   /**
    * Acceptance rate: how often driver accepts loads
    */
-  private async calculateAcceptanceScore(
-    tenantId: string,
-    driverId: string
-  ): Promise<number> {
+  private async calculateAcceptanceScore(tenantId: string, driverId: string): Promise<number> {
     // Placeholder: would calculate from Dispatch history
     return 80;
   }
@@ -261,16 +245,13 @@ export class AiDispatchService {
   /**
    * Trust score from CarrierScore model
    */
-  private async calculateTrustScore(
-    tenantId: string,
-    driverId: string
-  ): Promise<number> {
-    const carrierScore = await prisma.carrierScore.findFirst({
+  private async calculateTrustScore(tenantId: string, driverId: string): Promise<number> {
+    const carrierScore = await db.carrierScore.findFirst({
       where: {
         tenantId,
         driverId,
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
 
     if (!carrierScore) {
@@ -286,7 +267,7 @@ export class AiDispatchService {
   private async calculateLaneExperienceScore(
     tenantId: string,
     driverId: string,
-    load: any
+    load: any,
   ): Promise<number> {
     // Placeholder: would check historical shipments for same lane
     return 60;
@@ -298,13 +279,13 @@ export class AiDispatchService {
   private generateReasonCodes(factors: Record<string, number>): string[] {
     const codes: string[] = [];
 
-    if (factors.proximityScore > 80) codes.push('CLOSE_TO_PICKUP');
-    if (factors.onTimeScore > 85) codes.push('HIGH_ON_TIME_RATE');
-    if (factors.acceptanceScore > 85) codes.push('LOW_CANCELLATION_HISTORY');
-    if (factors.laneExperienceScore > 70) codes.push('STRONG_LANE_HISTORY');
-    if (factors.trustScore > 80) codes.push('HIGH_TRUST_SCORE');
+    if (factors.proximityScore > 80) codes.push("CLOSE_TO_PICKUP");
+    if (factors.onTimeScore > 85) codes.push("HIGH_ON_TIME_RATE");
+    if (factors.acceptanceScore > 85) codes.push("LOW_CANCELLATION_HISTORY");
+    if (factors.laneExperienceScore > 70) codes.push("STRONG_LANE_HISTORY");
+    if (factors.trustScore > 80) codes.push("HIGH_TRUST_SCORE");
 
-    return codes.length > 0 ? codes : ['BEST_AVAILABLE_MATCH'];
+    return codes.length > 0 ? codes : ["BEST_AVAILABLE_MATCH"];
   }
 
   /**
@@ -328,9 +309,9 @@ export class AiDispatchService {
     confidence: number,
     reasonCodes: string[],
     inputSnapshot: any,
-    outputSnapshot: any
-  ): Promise<AiDecisionLog> {
-    return prisma.aiDecisionLog.create({
+    outputSnapshot: any,
+  ): Promise<any> {
+    return (prisma as any).aiDecisionLog.create({
       data: {
         tenantId,
         entityType,

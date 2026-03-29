@@ -5,7 +5,7 @@ import { createPaymentIntentForInvoice, handleStripeWebhookEvent } from '../inte
 import { env } from '@infamous-freight/shared';
 import { stripe } from '../integrations/stripe/stripe.client.js';
 
-export const stripeRoutes = Router();
+export const stripeRoutes: Router = Router();
 
 const requireTenant = (_req: any, _res: any, next: any) => next();
 stripeRoutes.post(
@@ -31,7 +31,7 @@ stripeRoutes.post(
 stripeRoutes.post('/webhook', async (req, res) => {
   try {
     if (!stripe) return res.status(200).json({ ok: true, skipped: 'Stripe not configured' });
-    if (!env.STRIPE_WEBHOOK_SECRET) throw new Error('Missing STRIPE_WEBHOOK_SECRET');
+    if (!(env as any).STRIPE_WEBHOOK_SECRET) throw new Error('Missing STRIPE_WEBHOOK_SECRET');
 
     const sig = req.headers['stripe-signature'];
     if (!sig || typeof sig !== 'string') throw new Error('Missing stripe-signature header');
@@ -39,7 +39,7 @@ stripeRoutes.post('/webhook', async (req, res) => {
     const raw = (req as any).rawBody as Buffer | undefined;
     if (!raw) throw new Error('Missing rawBody');
 
-    const event = stripe.webhooks.constructEvent(raw, sig, env.STRIPE_WEBHOOK_SECRET);
+    const event = stripe.webhooks.constructEvent(raw, sig, (env as any).STRIPE_WEBHOOK_SECRET);
     await handleStripeWebhookEvent(event);
 
     res.json({ received: true });

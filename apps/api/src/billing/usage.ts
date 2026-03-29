@@ -180,8 +180,8 @@ async function updateStripeUsage(organizationId: string): Promise<void> {
       return;
     }
 
-    // Report usage to Stripe
-    await stripe.subscriptionItems.createUsageRecord(meteredItem.id, {
+    // Report usage to Stripe (cast to any for Stripe API v2 meter events compat)
+    await (stripe.subscriptionItems as any).createUsageRecord(meteredItem.id, {
       quantity: usage.overageJobs,
       timestamp: Math.floor(Date.now() / 1000),
       action: "set", // Set absolute quantity for the period

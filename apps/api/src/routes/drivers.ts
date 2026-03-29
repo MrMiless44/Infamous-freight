@@ -3,7 +3,8 @@ import { z } from "zod";
 import { requireAuth, type AuthenticatedRequest } from "../middleware/auth.js";
 import { prisma } from "../db/prisma.js";
 
-const router = Router();
+const db = prisma as any;
+const router: Router = Router();
 
 const createDriverSchema = z.object({
   name: z.string().min(1),
@@ -14,8 +15,8 @@ const createDriverSchema = z.object({
 
 router.get("/", requireAuth, async (req, res, next) => {
   try {
-    const { tenantId } = (req as AuthenticatedRequest).user;
-    const drivers = await prisma.driver.findMany({
+    const tenantId = (req as AuthenticatedRequest).user?.tenantId ?? "";
+    const drivers = await db.driver.findMany({
       where: { tenantId },
       orderBy: { name: "asc" },
     });
@@ -27,9 +28,9 @@ router.get("/", requireAuth, async (req, res, next) => {
 
 router.post("/", requireAuth, async (req, res, next) => {
   try {
-    const { tenantId } = (req as AuthenticatedRequest).user;
+    const tenantId = (req as AuthenticatedRequest).user?.tenantId ?? "";
     const body = createDriverSchema.parse(req.body);
-    const driver = await prisma.driver.create({
+    const driver = await db.driver.create({
       data: { tenantId, ...body },
     });
     res.status(201).json({ ok: true, data: driver });
@@ -40,12 +41,14 @@ router.post("/", requireAuth, async (req, res, next) => {
 
 router.patch("/:id/status", requireAuth, async (req, res, next) => {
   try {
-    const { tenantId } = (req as AuthenticatedRequest).user;
-    const { status } = z.object({
-      status: z.enum(["AVAILABLE", "ON_DUTY", "OFF_DUTY"]),
-    }).parse(req.body);
+    const tenantId = (req as AuthenticatedRequest).user?.tenantId ?? "";
+    const { status } = z
+      .object({
+        status: z.enum(["AVAILABLE", "ON_DUTY", "OFF_DUTY"]),
+      })
+      .parse(req.body);
     const id = req.params.id as string;
-    const existing = await prisma.driver.findFirst({
+    const existing = await db.driver.findFirst({
       where: { id, tenantId },
     });
     if (!existing) {

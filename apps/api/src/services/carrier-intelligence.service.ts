@@ -1,5 +1,7 @@
 import type { CarrierProfile, EquipmentType, Lane } from "../types/domain.js";
-import { prisma } from '../db/prisma';
+import { prisma } from '../db/prisma.js';
+
+const db = prisma as any;
 
 export interface CarrierScoreResult {
   driverId: string;
@@ -64,7 +66,7 @@ export class CarrierIntelligenceService {
     driverId: string
   ): Promise<CarrierScoreResult> {
     // Fetch driver
-    const driver = await prisma.driver.findUnique({
+    const driver = await db.driver.findUnique({
       where: { id: driverId },
     });
 
@@ -144,7 +146,7 @@ export class CarrierIntelligenceService {
     );
 
     // Save or update CarrierScore record
-    const carrierScore = await prisma.carrierScore.upsert({
+    const carrierScore = await db.carrierScore.upsert({
       where: {
         id: `${tenantId}-${driverId}`, // Assuming composite key or unique constraint
       },
@@ -196,7 +198,7 @@ export class CarrierIntelligenceService {
     tenantId: string,
     driverId: string
   ): Promise<CarrierScoreResult | null> {
-    const carrierScore = await prisma.carrierScore.findFirst({
+    const carrierScore = await db.carrierScore.findFirst({
       where: {
         tenantId,
         driverId,
@@ -290,7 +292,7 @@ export class CarrierIntelligenceService {
     anomalyFlags: string[],
     metrics: Record<string, number>
   ): Promise<void> {
-    await prisma.aiDecisionLog.create({
+    await db.aiDecisionLog.create({
       data: {
         tenantId,
         entityType: 'DRIVER',

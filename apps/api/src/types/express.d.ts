@@ -14,7 +14,7 @@ declare global {
         id: string;
         email: string;
         role: JwtAccessTokenPayload["role"];
-        tenantId: string;
+        tenantId?: string;
       };
       tenantId?: string;
       orgId?: string;

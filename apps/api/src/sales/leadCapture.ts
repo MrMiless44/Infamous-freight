@@ -97,7 +97,7 @@ export async function createLead(input: CreateLeadInput): Promise<any> {
         company: input.company,
         phone: input.phone,
         type: input.type,
-        source: input.source,
+        source: input.source as any,
         estimatedMonthlyVolume: input.estimatedMonthlyVolume,
         estimatedMonthlyBudget: input.estimatedMonthlyBudget,
         currentProvider: input.currentProvider,
@@ -205,9 +205,9 @@ export async function getLeads(filters?: {
 }): Promise<any[]> {
   return prisma.lead.findMany({
     where: {
-      type: filters?.type ? { equals: filters.type } : undefined,
+      type: filters?.type ? { equals: filters.type } as any : undefined,
       status: filters?.status ? { equals: filters.status } : undefined,
-      source: filters?.source ? { equals: filters.source } : undefined,
+      source: filters?.source ? { equals: filters.source } as any : undefined,
     },
     orderBy: {
       createdAt: "desc",

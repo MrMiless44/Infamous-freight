@@ -2,7 +2,8 @@ import { Router } from "express";
 import { prisma } from "../db/prisma.js";
 import { authenticate } from "../middleware/security.js";
 
-export const realtimeRoutes = Router();
+const db = prisma as any;
+export const realtimeRoutes: Router = Router();
 realtimeRoutes.use(authenticate);
 
 /**
@@ -17,9 +18,9 @@ realtimeRoutes.get("/shipments/:id/stream", async (req, res) => {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const shipment = await prisma.shipment.findFirst({
+  const shipment = await db.shipment.findFirst({
     where: { id: shipmentId, orgId },
-    select: { id: true }
+    select: { id: true },
   });
 
   if (!shipment) {
@@ -43,15 +44,15 @@ realtimeRoutes.get("/shipments/:id/stream", async (req, res) => {
   const pollTimer = setInterval(async () => {
     try {
       const [ping, events] = await Promise.all([
-        prisma.locationPing.findFirst({
-          where: { orgId, shipmentId },
-          orderBy: { createdAt: "desc" }
-        }),
-        prisma.shipmentEvent.findMany({
+        db.locationPing.findFirst({
           where: { orgId, shipmentId },
           orderBy: { createdAt: "desc" },
-          take: 5
-        })
+        }),
+        db.shipmentEvent.findMany({
+          where: { orgId, shipmentId },
+          orderBy: { createdAt: "desc" },
+          take: 5,
+        }),
       ]);
 
       if (ping && ping.id !== lastPingId) {

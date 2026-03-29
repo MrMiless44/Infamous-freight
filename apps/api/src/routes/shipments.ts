@@ -2,7 +2,7 @@ import { Router } from "express";
 import { z } from "zod";
 import { EtaRiskService } from "../services/eta-risk.service.js";
 
-const router = Router();
+const router: Router = Router();
 const etaService = new EtaRiskService();
 
 router.post("/eta-risk", (req, res) => {

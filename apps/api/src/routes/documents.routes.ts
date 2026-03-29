@@ -56,7 +56,7 @@ const upload = multer({
   }
 });
 
-export const documentsRoutes = Router();
+export const documentsRoutes: Router = Router();
 documentsRoutes.use(requireAuth, requireTenant);
 
 documentsRoutes.post(

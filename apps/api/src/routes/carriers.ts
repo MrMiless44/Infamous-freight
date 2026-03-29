@@ -3,7 +3,7 @@ import { z } from "zod";
 import { CarrierIntelligenceService } from "../services/carrier-intelligence.service.js";
 import type { CarrierProfile } from "../types/domain.js";
 
-const router = Router();
+const router: Router = Router();
 const service = new CarrierIntelligenceService();
 
 router.post("/rank", (req, res) => {

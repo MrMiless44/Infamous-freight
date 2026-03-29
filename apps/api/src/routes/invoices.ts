@@ -3,13 +3,13 @@ import { pool } from "../lib/db.js";
 import { requireAuth, type AuthenticatedRequest } from "../middleware/auth.js";
 import { generalLimiter } from "../middleware/rateLimit.js";
 
-const router = Router();
+const router: Router = Router();
 
 router.use(generalLimiter);
 
 router.post("/generate/:loadId", requireAuth, async (req, res, next) => {
   try {
-    const user = (req as AuthenticatedRequest).user;
+    const user = (req as AuthenticatedRequest).user!;
     const { loadId } = req.params;
 
     const loadResult = await pool.query(

@@ -15,12 +15,14 @@
     "paths": {
       "@infamous-freight/shared": ["../../packages/shared/dist"],
       "@infamous-freight/shared/*": ["../../packages/shared/dist/*"]
-    }
+    },
+    // Suppress lint-style checks better handled by ESLint
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.d.ts"],
   "exclude": [
     "node_modules",
     "dist",

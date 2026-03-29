@@ -50,7 +50,7 @@ import {
   getInvestorKpis,
 } from "../sales/metrics.js";
 
-const router = Router();
+const router: Router = Router();
 
 const publicLeadCaptureAttempts = new Map<string, { count: number; resetAt: number }>();
 
@@ -436,7 +436,7 @@ router.post(
  */
 router.get("/referral/stats", limiters.general, authenticate, async (req, res, next) => {
   try {
-    const email = req.user.email || req.user.sub;
+    const email = req.user!.email;
     const stats = await getReferralStats(email);
 
     res.json({ success: true, data: stats });

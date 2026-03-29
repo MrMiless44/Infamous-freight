@@ -1,3 +1,6 @@
+import { prisma } from "../db/prisma.js";
+
+const db = prisma as any;
 import { Prisma } from "@prisma/client";
 
 /**
@@ -13,7 +16,7 @@ export class MeteredBillingService {
     tier: "free" | "pro" | "enterprise",
   ) {
     // Log usage to database
-    await Prisma.usageMetric.create({
+    await db.usageMetric.create({
       data: {
         userId,
         metricType,
@@ -28,7 +31,7 @@ export class MeteredBillingService {
       const overage = this.calculateOverage(tier, metricType, quantity);
 
       // Log for billing
-      await Prisma.overageCharge.create({
+      await db.overageCharge.create({
         data: {
           userId,
           metricType,
@@ -80,7 +83,7 @@ export class MeteredBillingService {
     startOfMonth.setDate(1);
     startOfMonth.setHours(0, 0, 0, 0);
 
-    const usage = await Prisma.usageMetric.groupBy({
+    const usage = await db.usageMetric.groupBy({
       by: ["metricType"],
       where: {
         userId,
@@ -91,7 +94,7 @@ export class MeteredBillingService {
       },
     });
 
-    const overages = await Prisma.overageCharge.aggregate({
+    const overages = await db.overageCharge.aggregate({
       where: {
         userId,
         chargedAt: { gte: startOfMonth },

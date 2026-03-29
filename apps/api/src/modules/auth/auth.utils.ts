@@ -3,11 +3,7 @@ import type { CookieOptions, Response } from "express";
 import jwt, { type Algorithm, type Secret, type SignOptions } from "jsonwebtoken";
 import { env } from "../../config/env.js";
 import { ApiError } from "../../utils/errors.js";
-import type {
-  JwtAccessTokenPayload,
-  JwtRefreshTokenPayload,
-  SanitizedUser,
-} from "./auth.types.js";
+import type { JwtAccessTokenPayload, JwtRefreshTokenPayload, SanitizedUser } from "./auth.types.js";
 
 function getJwtPrivateKeyOrSecret(): Secret {
   if (env.jwtAlgorithm === "RS256") {
@@ -147,8 +143,8 @@ export function calculateExpiryDate(duration: string): Date {
 export function sanitizeUser(user: {
   id: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  firstName: string | null;
+  lastName: string | null;
   isActive: boolean;
   emailVerifiedAt: Date | null;
   createdAt: Date;

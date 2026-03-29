@@ -156,7 +156,7 @@ async function calculateAvgSalesCycle() {
 async function calculateMRR() {
   const billing = await prisma.orgBilling.findMany({
     where: {
-      stripeSubscriptionStatus: "active",
+      stripeStatus: "active",
     },
     select: {
       plan: true,
@@ -435,7 +435,7 @@ export async function getRevOpsDashboard(): Promise<RevOpsDashboard> {
       status: "COMPLETED",
     },
     select: {
-      price: true,
+      priceUsd: true,
     },
   });
 
@@ -445,12 +445,12 @@ export async function getRevOpsDashboard(): Promise<RevOpsDashboard> {
       status: "COMPLETED",
     },
     select: {
-      price: true,
+      priceUsd: true,
     },
   });
 
-  const gmv = jobs.reduce((sum, j) => sum + (j.price?.toNumber() || 0), 0);
-  const previousGmv = previousJobs.reduce((sum, j) => sum + (j.price?.toNumber() || 0), 0);
+  const gmv = jobs.reduce((sum, j) => sum + (j.priceUsd?.toNumber() || 0), 0);
+  const previousGmv = previousJobs.reduce((sum, j) => sum + (j.priceUsd?.toNumber() || 0), 0);
   const platformTake = gmv * 0.12; // Average 12% take rate
   const revenueGrowth = previousGmv > 0 ? ((gmv - previousGmv) / previousGmv) * 100 : 0;
 

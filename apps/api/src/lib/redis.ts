@@ -4,11 +4,11 @@
  * Module: Redis Caching Layer with TTL & Invalidation
  */
 
-import Redis from "ioredis";
+import { Redis } from "ioredis";
 import { logger } from "./logger.js";
 import { env } from "../config/env.js";
 
-const redis = new Redis(env.redisUrl);
+const redis = new Redis(env.redisUrl ?? "redis://localhost:6379");
 
 export interface CacheOptions {
   ttl?: number; // seconds

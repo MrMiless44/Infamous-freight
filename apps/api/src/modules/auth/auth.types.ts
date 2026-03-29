@@ -3,8 +3,8 @@ export type AuthRole = "user";
 export interface SanitizedUser {
   id: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  firstName: string | null;
+  lastName: string | null;
   isActive: boolean;
   emailVerifiedAt: Date | null;
   createdAt: Date;

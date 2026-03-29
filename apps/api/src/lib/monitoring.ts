@@ -5,7 +5,10 @@
 
 import * as Sentry from "@sentry/node";
 import { nodeProfilingIntegration } from "@sentry/profiling-node";
-import { datadogRum } from "@datadog/browser-rum";
+
+// DataDog RUM is a browser-only package — not imported in the Node.js API.
+// See apps/web for client-side RUM instrumentation.
+const datadogRum = null as null;
 
 // ═══════════════════════════════════════════════════════════════════════════
 // SENTRY CONFIGURATION
@@ -24,13 +27,8 @@ export function initSentry() {
     tracesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
     profilesSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
 
-    // Performance monitoring
-    integrations: [
-      nodeProfilingIntegration(),
-      new Sentry.Integrations.Http({ tracing: true }),
-      new Sentry.Integrations.OnUncaughtException(),
-      new Sentry.Integrations.OnUnhandledRejection(),
-    ],
+    // Performance monitoring (Sentry v10 API)
+    integrations: [nodeProfilingIntegration() as any, Sentry.httpIntegration()],
 
     // Ignore known errors
     ignoreErrors: [
@@ -56,10 +54,6 @@ export function initSentry() {
       return event;
     },
 
-    // Enabled integrations
-    autoSessionTracking: true,
-    sessionSampleRate: 0.1,
-
     // Error filtering
     denyUrls: [
       // Browser extensions
@@ -79,48 +73,9 @@ export function initSentry() {
 // ═══════════════════════════════════════════════════════════════════════════
 
 export function initDatadogRUM() {
-  if (typeof window === "undefined") return null; // Server-side guard
-
-  if (
-    !process.env.NEXT_PUBLIC_DD_APP_ID ||
-    !process.env.NEXT_PUBLIC_DD_CLIENT_TOKEN ||
-    !process.env.NEXT_PUBLIC_DD_SITE
-  ) {
-    console.warn("⚠️ Datadog RUM env vars not configured");
-    return null;
-  }
-
-  try {
-    datadogRum.init({
-      applicationId: process.env.NEXT_PUBLIC_DD_APP_ID,
-      clientToken: process.env.NEXT_PUBLIC_DD_CLIENT_TOKEN,
-      site: process.env.NEXT_PUBLIC_DD_SITE,
-      service: "infamous-freight-web",
-      env: process.env.NEXT_PUBLIC_ENV || "development",
-      version: process.env.NEXT_PUBLIC_VERSION || "unknown",
-
-      // Session sampling
-      sessionSampleRate: process.env.NEXT_PUBLIC_ENV === "production" ? 10 : 100,
-      sessionReplaySampleRate: process.env.NEXT_PUBLIC_ENV === "production" ? 20 : 100,
-
-      // Performance monitoring
-      trackUserInteractions: true,
-      trackResources: true,
-      trackLongTasks: true,
-      defaultPrivacyLevel: "mask-user-input",
-
-      // Error tracking
-      forwardErrorsToLogs: true,
-    });
-
-    datadogRum.startSessionReplayRecording();
-
-    console.log("✅ Datadog RUM initialized");
-    return datadogRum;
-  } catch (error) {
-    console.error("Failed to initialize Datadog RUM:", error);
-    return null;
-  }
+  // DataDog Browser RUM runs only in the browser (apps/web). This stub
+  // prevents accidental server-side imports from breaking the API.
+  return null;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -170,13 +125,8 @@ export function captureMessage(
 export function startTransaction(name: string, op: string = "http.request") {
   if (!Sentry) return null;
 
-  const transaction = Sentry.startTransaction({
-    name,
-    op,
-    sampled: true,
-  });
-
-  return transaction;
+  // Sentry v10 uses startSpan instead of the deprecated startTransaction
+  return Sentry.startInactiveSpan({ name, op });
 }
 
 export function capturePerformanceMetric(
@@ -216,12 +166,9 @@ export function setUserContext(user: {
     });
   }
 
-  if (typeof datadogRum !== "undefined") {
-    datadogRum.setUser({
-      id: user.id,
-      email: user.email,
-      name: user.role,
-    });
+  if (false) {
+    // datadogRum is null in the API (browser-only)
+    void datadogRum;
   }
 }
 

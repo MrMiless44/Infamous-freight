@@ -3,7 +3,7 @@ import { z } from "zod";
 import { OrchestrationService } from "../services/orchestration.service.js";
 import { requireAuth } from "../middleware/auth.js";
 
-const router = Router();
+const router: Router = Router();
 const orchestration = new OrchestrationService();
 
 const commandSchema = z.object({ command: z.string().min(3).max(2000) });

@@ -4,7 +4,7 @@ import { env } from "../config/env.js";
 import { logger } from "../lib/logger.js";
 import { markPaymentSucceeded } from "../services/payment.service.js";
 
-const router = Router();
+const router: Router = Router();
 
 const stripe = env.STRIPE_SECRET_KEY ? new Stripe(env.STRIPE_SECRET_KEY) : null;
 
