@@ -1,4 +1,5 @@
 import type { GenesisAPI, GenesisInit, GenesisAvatarSnapshot } from "./types";
+import type { GenesisCommandInput } from "../ai/commandRouter";
 import { createGenesisContext } from "./context";
 import { EventBus } from "../events/bus";
 import { telemetry } from "../runtime/telemetry";
@@ -51,14 +52,22 @@ export function createGenesis(init: GenesisInit): GenesisAPI {
       message,
       now,
     );
-    store.set({ avatarState: next.state, avatarMessage: next.message, avatarUpdatedAt: next.updatedAt });
+    store.set({
+      avatarState: next.state,
+      avatarMessage: next.message,
+      avatarUpdatedAt: next.updatedAt,
+    });
     sessions.patch(ctx.tenantId, ctx.userId, { avatarState: next.state });
     bus.emit({ type: "avatar/state", payload: { state: next.state, message: next.message } });
   }
 
   function getAvatar(): GenesisAvatarSnapshot {
     const s = store.get();
-    return { state: s.avatarState, message: s.avatarMessage, lastUpdatedAt: isoNow(s.avatarUpdatedAt) };
+    return {
+      state: s.avatarState,
+      message: s.avatarMessage,
+      lastUpdatedAt: isoNow(s.avatarUpdatedAt),
+    };
   }
 
   async function maybeAutoAlert() {
@@ -70,7 +79,7 @@ export function createGenesis(init: GenesisInit): GenesisAPI {
     if (res.severity === "ALERT") setAvatarState("alert", res.message);
   }
 
-  function command(req) {
+  function command(req: GenesisCommandInput) {
     const input = req.input ?? "";
     const policyCtx = { tenantId: ctx.tenantId, userId: ctx.userId, role };
     try {

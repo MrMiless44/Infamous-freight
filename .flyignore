@@ -71,7 +71,6 @@ tmp/
 !.env.example
 
 # Not needed for this build
-Dockerfile.api
 Dockerfile.web
 Dockerfile.fly
 Dockerfile.monorepo

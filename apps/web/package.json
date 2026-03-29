@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start -p 3000",
     "test": "vitest run",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@datadog/browser-rum": "^6.31.0",

@@ -11,7 +11,7 @@ Freight Enterprises repository.
 
 Analyzes GitHub Actions usage and costs.
 
-**Purpose:** Track workflow runs, calculate costs, and project monthly usage  
+**Purpose:** Track workflow runs, calculate costs, and project monthly usage
 **Usage:**
 
 ```bash
@@ -34,8 +34,7 @@ Analyzes GitHub Actions usage and costs.
 
 Triggers the automated metrics collection workflow.
 
-**Purpose:** Manually start metrics collection for the dashboard  
-**Usage:**
+**Purpose:** Manually start metrics collection for the dashboard **Usage:**
 
 ```bash
 ./scripts/trigger-metrics-collection.sh
@@ -49,8 +48,8 @@ Triggers the automated metrics collection workflow.
 - Saves to `docs/metrics/workflow-data.json`
 - Updates real-time analytics dashboard
 
-**Requirements:** GitHub CLI (`gh`) installed  
-**Alternative:** Trigger manually in GitHub Actions UI
+**Requirements:** GitHub CLI (`gh`) installed **Alternative:** Trigger manually
+in GitHub Actions UI
 
 ---
 
@@ -58,7 +57,7 @@ Triggers the automated metrics collection workflow.
 
 Helps set up GitHub Pages for the analytics dashboard.
 
-**Purpose:** Enable public hosting of the workflow analytics dashboard  
+**Purpose:** Enable public hosting of the workflow analytics dashboard
 **Usage:**
 
 ```bash
@@ -75,8 +74,8 @@ Helps set up GitHub Pages for the analytics dashboard.
 **Result:** Dashboard accessible at
 `https://mrmiless44.github.io/Infamous-freight-enterprises/workflows-dashboard.html`
 
-**Requirements:** None (provides instructions)  
-**Optional:** GitHub CLI (`gh`) for automated checks
+**Requirements:** None (provides instructions) **Optional:** GitHub CLI (`gh`)
+for automated checks
 
 ---
 
@@ -84,8 +83,7 @@ Helps set up GitHub Pages for the analytics dashboard.
 
 Interactive helper for publishing custom actions to GitHub Marketplace.
 
-**Purpose:** Streamline the marketplace publishing process  
-**Usage:**
+**Purpose:** Streamline the marketplace publishing process **Usage:**
 
 ```bash
 ./scripts/publish-to-marketplace.sh
@@ -203,6 +201,43 @@ missing.
 ```bash
 ./scripts/start-firebase-emulator.sh
 ```
+
+---
+
+### 12. **fly-preflight.sh**
+
+Validates Fly API deploy prerequisites before attempting deployment.
+
+**Usage:**
+
+```bash
+./scripts/fly-preflight.sh
+```
+
+**What it checks:**
+
+- `flyctl` is installed and authenticated
+- Target app from `fly.api.toml` (or `FLY_APP`) is visible to current auth
+  context
+- Configured dockerfile path exists
+- `fly.api.toml` passes `flyctl config validate`
+
+---
+
+### 13. **fly-deploy-api.sh**
+
+Runs preflight checks and deploys the API with app override support.
+
+**Usage:**
+
+```bash
+./scripts/fly-deploy-api.sh
+```
+
+**Optional environment overrides:**
+
+- `FLY_APP` to deploy to a different accessible Fly app
+- `FLY_ORG` to scope app visibility checks
 
 ---
 
@@ -350,8 +385,7 @@ ls -la docs/metrics/workflow-data.json
 
 ---
 
-**Last Updated:** December 31, 2025  
-**Maintained by:** DevOps Team
+**Last Updated:** December 31, 2025 **Maintained by:** DevOps Team
 
 Need help? Check the [QUICK_REFERENCE.md](../QUICK_REFERENCE.md) or create an
 issue using our [issue templates](../.github/ISSUE_TEMPLATE/).

@@ -44,12 +44,12 @@ interface LanguageSwitcherProps {
 }
 
 export default function LanguageSwitcher({
-  variant = "dropdown",
+  variant: _variant = "dropdown",
   showFlag = true,
   showNativeName = true,
 }: LanguageSwitcherProps): React.ReactElement {
   const router = useRouter();
-  const { t, i18n } = useTranslation("common");
+  const { t } = useTranslation("common");
   const [isOpen, setIsOpen] = useState(false);
   const [currentLocale, setCurrentLocale] = useState<Locale | undefined>();
 

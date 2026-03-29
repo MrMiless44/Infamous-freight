@@ -1,7 +1,13 @@
 import { z } from "zod";
 import { REFRESH_TOKEN_COOKIE_BODY_FIELD } from "./auth.constants.js";
 
-  password: z.string().min(12, "Password must be at least 12 characters long").max(128),
+const emailSchema = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .email("Please provide a valid email address")
+  .max(254, "Email must be 254 characters or fewer");
+
 const passwordSchema = z
   .string()
   .min(12, "Password must be at least 12 characters long")

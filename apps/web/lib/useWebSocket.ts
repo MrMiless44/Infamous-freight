@@ -10,7 +10,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 type Socket = unknown; // Will be socket.io Socket when package is installed
 
 // Placeholder for socket.io when not installed
-const io = (url: string, options?: unknown): Socket => {
+const io = (_url: string, _options?: unknown): Socket => {
   console.warn("socket.io-client not installed");
   return {} as Socket;
 };
