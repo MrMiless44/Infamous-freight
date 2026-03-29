@@ -1,9 +1,15 @@
+import {
+  PaymentProvider,
+  PaymentStatus,
+  PaymentType,
+} from "@infamous-freight/shared/payments/types";
+
 type PaymentItem = {
   id: string;
-  provider: "godaddy" | "stripe";
-  paymentType: string;
+  provider: PaymentProvider;
+  paymentType: PaymentType;
   amountCents: number;
-  status: "pending" | "paid" | "failed" | "refunded" | "cancelled";
+  status: PaymentStatus;
   createdAt: string;
 };
 
