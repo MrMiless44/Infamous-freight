@@ -3,6 +3,10 @@
 - why it changed
 - impacted systems
 
+## Linear Issue
+- Issue key: INF-
+- Issue link:
+
 ## Scope
 - [ ] api
 - [ ] web
@@ -40,6 +44,10 @@
 - current coverage:
 - changed files covered:
 - known uncovered paths:
+
+## Linear Linking Checklist
+- [ ] PR title or body includes `INF-<number>`
+- [ ] At least one commit includes `INF-<number>`
 
 ## Notes
 - additional context
