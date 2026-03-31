@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:24-alpine AS base
 WORKDIR /app
 RUN corepack enable
 
@@ -9,10 +9,10 @@ COPY packages ./packages
 RUN pnpm install --frozen-lockfile
 
 FROM deps AS build
-RUN pnpm prisma:generate
+RUN pnpm exec prisma generate --schema=apps/api/prisma/schema.prisma
 RUN pnpm --filter ./apps/api build
 
-FROM node:20-alpine AS runner
+FROM node:24-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 RUN corepack enable
@@ -21,4 +21,4 @@ COPY --from=build /app ./
 
 EXPOSE 3000
 
-CMD ["node", "apps/api/dist/index.js"]
+CMD ["node", "apps/api/dist/server.js"]

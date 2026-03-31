@@ -20,35 +20,108 @@ router.post("/", async (req, res) => {
     return;
   }
 
+  let event: Stripe.Event;
+
   try {
-    const event = stripe.webhooks.constructEvent(
+    event = stripe.webhooks.constructEvent(
       req.body as Buffer,
       signature,
       env.STRIPE_WEBHOOK_SECRET,
     );
+  } catch (error) {
+    logger.error({ err: error }, "Failed to verify Stripe webhook signature");
+    res.status(400).json({ ok: false, error: "Invalid webhook signature" });
+    return;
+  }
 
-    if (event.type === "payment_intent.succeeded") {
-      const paymentIntent = event.data.object as Stripe.PaymentIntent;
-      const updated = await markPaymentSucceeded({
-        stripePaymentIntentId: paymentIntent.id,
-        rawEvent: event,
-      });
+  try {
+    switch (event.type) {
+      case "payment_intent.succeeded": {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        const updated = await markPaymentSucceeded({
+          stripePaymentIntentId: paymentIntent.id,
+          rawEvent: event,
+        });
 
-      logger.info(
-        {
-          eventType: event.type,
-          paymentIntentId: paymentIntent.id,
-          internalPaymentId: updated?.id,
-          tenantId: updated?.tenantId,
-        },
-        "Stripe payment succeeded; load marked paid and dispatch trigger ready",
-      );
+        logger.info(
+          {
+            eventType: event.type,
+            paymentIntentId: paymentIntent.id,
+            internalPaymentId: updated?.id,
+            tenantId: updated?.tenantId,
+          },
+          "Stripe payment succeeded; load marked paid and dispatch trigger ready",
+        );
+        break;
+      }
+      case "checkout.session.completed": {
+        const session = event.data.object as Stripe.Checkout.Session;
+        logger.info(
+          {
+            eventType: event.type,
+            sessionId: session.id,
+            customerId: session.customer,
+            subscriptionId: session.subscription,
+            paymentStatus: session.payment_status,
+          },
+          "Stripe checkout session completed",
+        );
+        break;
+      }
+      case "customer.subscription.created":
+      case "customer.subscription.updated":
+      case "customer.subscription.deleted": {
+        const subscription = event.data.object as Stripe.Subscription;
+        logger.info(
+          {
+            eventType: event.type,
+            subscriptionId: subscription.id,
+            customerId: subscription.customer,
+            status: subscription.status,
+            cancelAtPeriodEnd: subscription.cancel_at_period_end,
+          },
+          "Stripe subscription changed",
+        );
+        break;
+      }
+      case "invoice.paid": {
+        const invoice = event.data.object as Stripe.Invoice;
+        logger.info(
+          {
+            eventType: event.type,
+            invoiceId: invoice.id,
+            customerId: invoice.customer,
+            subscriptionId: invoice.parent?.subscription_details?.subscription ?? null,
+            amountPaid: invoice.amount_paid,
+            status: invoice.status,
+          },
+          "Stripe invoice paid",
+        );
+        break;
+      }
+      case "invoice.payment_failed": {
+        const invoice = event.data.object as Stripe.Invoice;
+        logger.warn(
+          {
+            eventType: event.type,
+            invoiceId: invoice.id,
+            customerId: invoice.customer,
+            subscriptionId: invoice.parent?.subscription_details?.subscription ?? null,
+            amountDue: invoice.amount_due,
+            status: invoice.status,
+          },
+          "Stripe invoice payment failed",
+        );
+        break;
+      }
+      default:
+        logger.info({ eventType: event.type }, "Unhandled Stripe webhook event");
     }
 
-    res.json({ received: true });
+    res.status(200).json({ received: true });
   } catch (error) {
-    logger.error({ err: error }, "Failed to process Stripe webhook");
-    res.status(400).json({ ok: false, error: "Invalid webhook request" });
+    logger.error({ err: error, eventType: event.type }, "Failed to process Stripe webhook");
+    res.status(500).json({ ok: false, error: "Webhook handler failed" });
   }
 });
 

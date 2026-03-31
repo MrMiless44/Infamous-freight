@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "lint": "eslint src --ext .ts",
     "test": "vitest run --passWithNoTests 'src/**/*.test.{ts,js,mjs}'",
-    "smoke": "node -e \"const base = (process.env.API_URL || 'http://localhost:4000').replace(/\\/$/, ''); fetch(base + '/health').then((res) => { if (!res.ok) process.exit(1); }).catch(() => process.exit(1));\""
+    "smoke": "node -e \"const base = (process.env.API_URL || 'http://localhost:4000').replace(/\\/$/, ''); fetch(base + '/health').then((res) => { if (!res.ok) process.exit(1); }).catch(() => process.exit(1));\"",
+    "prisma:generate": "prisma generate --schema=prisma/schema.prisma"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1009.0",
