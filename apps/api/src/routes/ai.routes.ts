@@ -16,6 +16,32 @@ const PLAN_ACTION_LIMITS: Record<string, number> = {
   CUSTOM: Number.MAX_SAFE_INTEGER,
 };
 
+class UsageLimitExceededError extends Error {
+  constructor() {
+    super("Usage limit exceeded");
+    this.name = "UsageLimitExceededError";
+  }
+}
+
+function resolveAiActionLimit(plan: string, monthlyQuota?: number | null): number {
+  const normalizedPlan = String(plan || "STARTER").toUpperCase();
+  const planLimit = PLAN_ACTION_LIMITS[normalizedPlan] ?? PLAN_ACTION_LIMITS.STARTER;
+  const hasConfiguredQuota = typeof monthlyQuota === "number" && Number.isFinite(monthlyQuota);
+
+  if (!hasConfiguredQuota) {
+    return planLimit;
+  }
+
+  if (
+    (normalizedPlan === "ENTERPRISE" || normalizedPlan === "CUSTOM") &&
+    monthlyQuota! <= PLAN_ACTION_LIMITS.STARTER
+  ) {
+    return planLimit;
+  }
+
+  return monthlyQuota!;
+}
+
 /**
  * Middleware: Require authentication and tenant context
  */
@@ -35,7 +61,7 @@ const requireActiveSubscription = async (req: Request, res: Response, next: Next
 
     const subscription = await prisma.orgBilling.findUnique({
       where: { organizationId },
-      select: { stripeStatus: true, plan: true },
+      select: { stripeStatus: true, plan: true, monthlyQuota: true },
     });
 
     const status = String(subscription?.stripeStatus || "incomplete").toLowerCase();
@@ -44,6 +70,7 @@ const requireActiveSubscription = async (req: Request, res: Response, next: Next
     }
 
     res.locals.subscriptionPlan = String(subscription?.plan || "STARTER").toUpperCase();
+    res.locals.monthlyQuota = subscription?.monthlyQuota;
     next();
   } catch (error) {
     next(error);
@@ -58,49 +85,52 @@ const enforceUsageLimit = async (req: Request, res: Response, next: NextFunction
     }
 
     const plan = String(res.locals.subscriptionPlan || "STARTER").toUpperCase();
-    const limit = PLAN_ACTION_LIMITS[plan] ?? PLAN_ACTION_LIMITS.STARTER;
-    if (!Number.isFinite(limit)) {
-      return next();
-    }
-
-    const now = new Date();
-    const month = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
-
-    const usage = await prisma.usageMetric.aggregate({
-      _sum: { quantity: true },
-      where: {
-        organizationId,
-        metricType: "ai_action",
-        month,
-      },
-    });
-
-    const used = usage._sum.quantity || 0;
-    if (used >= limit) {
-      return res.status(403).json({ error: "Usage limit exceeded" });
-    }
-
+    const limit = resolveAiActionLimit(plan, res.locals.monthlyQuota);
     res.locals.usageLimit = limit;
-    res.locals.usageUsed = used;
     next();
   } catch (error) {
     next(error);
   }
 };
 
-async function meterAiUsage(organizationId: string, userId: string | null, action: string) {
+async function meterAiUsage(
+  organizationId: string,
+  userId: string | null,
+  action: string,
+  usageLimit?: number,
+) {
   const now = new Date();
   const month = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
-  await prisma.usageMetric.create({
-    data: {
-      organizationId,
-      userId: userId || undefined,
-      metricName: action,
-      metricType: "ai_action",
-      quantity: 1,
-      month,
-      tier: "paid",
-    },
+  await prisma.$transaction(async (tx) => {
+    await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${`${organizationId}:${month}:ai_action`}))`;
+
+    if (typeof usageLimit === "number" && Number.isFinite(usageLimit)) {
+      const usage = await tx.usageMetric.aggregate({
+        _sum: { quantity: true },
+        where: {
+          organizationId,
+          metricType: "ai_action",
+          month,
+        },
+      });
+
+      const used = usage._sum.quantity || 0;
+      if (used >= usageLimit) {
+        throw new UsageLimitExceededError();
+      }
+    }
+
+    await tx.usageMetric.create({
+      data: {
+        organizationId,
+        userId: userId || undefined,
+        metricName: action,
+        metricType: "ai_action",
+        quantity: 1,
+        month,
+        tier: "paid",
+      },
+    });
   });
 }
 
@@ -121,8 +151,8 @@ router.post("/dispatch/recommend", requireAuth, async (req: Request, res: Respon
       return res.status(400).json({ error: "loadId required" });
     }
 
+    await meterAiUsage(organizationId, userId, "dispatch", res.locals.usageLimit);
     const recommendation = await aiDispatchService.recommendDispatch(tenantId, loadId, userId);
-    await meterAiUsage(organizationId, userId, "dispatch");
 
     if (recommendation.confidence > 0.85) {
       const carrierScore = await prisma.carrierScore.findFirst({
@@ -160,6 +190,9 @@ router.post("/dispatch/recommend", requireAuth, async (req: Request, res: Respon
 
     res.json(recommendation);
   } catch (error: any) {
+    if (error instanceof UsageLimitExceededError) {
+      return res.status(403).json({ error: "Usage limit exceeded" });
+    }
     if (error.message.includes("not found")) {
       return res.status(404).json({ error: error.message });
     }
@@ -182,11 +215,14 @@ router.post("/dispatch/execute", async (req: Request, res: Response) => {
       return res.status(400).json({ error: "loadId and driverId required" });
     }
 
+    await meterAiUsage(organizationId, userId, "execution", res.locals.usageLimit);
     const result = await aiDispatchService.executeDispatch(tenantId, loadId, driverId, userId);
-    await meterAiUsage(organizationId, userId, "execution");
 
     res.json(result);
   } catch (error: any) {
+    if (error instanceof UsageLimitExceededError) {
+      return res.status(403).json({ error: "Usage limit exceeded" });
+    }
     if (req.user?.tenantId && req.body?.loadId) {
       await prisma.predictionEvent.create({
         data: {
@@ -276,11 +312,14 @@ router.post("/pricing/recommend", async (req: Request, res: Response) => {
       return res.status(400).json({ error: "loadId required" });
     }
 
+    await meterAiUsage(organizationId, userId, "pricing", res.locals.usageLimit);
     const pricing = await smartPricingService.recommendPricing(tenantId, loadId);
-    await meterAiUsage(organizationId, userId, "pricing");
 
     res.json(pricing);
   } catch (error: any) {
+    if (error instanceof UsageLimitExceededError) {
+      return res.status(403).json({ error: "Usage limit exceeded" });
+    }
     if (error.message.includes("not found")) {
       return res.status(404).json({ error: error.message });
     }
@@ -316,11 +355,14 @@ router.get("/predict/load/:loadId", async (req: Request, res: Response) => {
     const organizationId = req.auth?.organizationId || req.user?.organizationId || tenantId;
     const userId = req.user!.id;
 
+    await meterAiUsage(organizationId, userId, "prediction", res.locals.usageLimit);
     const prediction = await predictiveOperationsService.predictLoadIssues(tenantId, loadId);
-    await meterAiUsage(organizationId, userId, "prediction");
 
     res.json(prediction);
   } catch (error: any) {
+    if (error instanceof UsageLimitExceededError) {
+      return res.status(403).json({ error: "Usage limit exceeded" });
+    }
     if (error.message.includes("not found")) {
       return res.status(404).json({ error: error.message });
     }
@@ -339,14 +381,17 @@ router.get("/predict/shipment/:shipmentId", async (req: Request, res: Response) 
     const organizationId = req.auth?.organizationId || req.user?.organizationId || tenantId;
     const userId = req.user!.id;
 
+    await meterAiUsage(organizationId, userId, "prediction", res.locals.usageLimit);
     const prediction = await predictiveOperationsService.predictShipmentIssues(
       tenantId,
       shipmentId,
     );
-    await meterAiUsage(organizationId, userId, "prediction");
 
     res.json(prediction);
   } catch (error: any) {
+    if (error instanceof UsageLimitExceededError) {
+      return res.status(403).json({ error: "Usage limit exceeded" });
+    }
     if (error.message.includes("not found")) {
       return res.status(404).json({ error: error.message });
     }
