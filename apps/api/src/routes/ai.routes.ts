@@ -108,7 +108,7 @@ async function trackAiUsage(organizationId: string, userId: string | null, actio
   try {
     await meterAiUsage(organizationId, userId, action);
   } catch (error) {
-    // Non-blocking usage tracking to avoid failing successful AI responses.
+    // Non-fatal usage tracking: log failures without failing successful AI responses.
     console.error("Failed to track AI usage", {
       organizationId,
       userId,
