@@ -104,6 +104,20 @@ async function meterAiUsage(organizationId: string, userId: string | null, actio
   });
 }
 
+async function trackAiUsage(organizationId: string, userId: string | null, action: string) {
+  try {
+    await meterAiUsage(organizationId, userId, action);
+  } catch (error) {
+    // Non-blocking usage tracking to avoid failing successful AI responses.
+    console.error("Failed to track AI usage", {
+      organizationId,
+      userId,
+      action,
+      error: error instanceof Error ? error.message : String(error),
+    });
+  }
+}
+
 router.use(requireAuth, requireActiveSubscription, enforceUsageLimit);
 
 /**
@@ -122,7 +136,7 @@ router.post("/dispatch/recommend", requireAuth, async (req: Request, res: Respon
     }
 
     const recommendation = await aiDispatchService.recommendDispatch(tenantId, loadId, userId);
-    await meterAiUsage(organizationId, userId, "dispatch");
+    await trackAiUsage(organizationId, userId, "dispatch");
 
     if (recommendation.confidence > 0.85) {
       const carrierScore = await prisma.carrierScore.findFirst({
@@ -183,7 +197,7 @@ router.post("/dispatch/execute", async (req: Request, res: Response) => {
     }
 
     const result = await aiDispatchService.executeDispatch(tenantId, loadId, driverId, userId);
-    await meterAiUsage(organizationId, userId, "execution");
+    await trackAiUsage(organizationId, userId, "execution");
 
     res.json(result);
   } catch (error: any) {
@@ -277,7 +291,7 @@ router.post("/pricing/recommend", async (req: Request, res: Response) => {
     }
 
     const pricing = await smartPricingService.recommendPricing(tenantId, loadId);
-    await meterAiUsage(organizationId, userId, "pricing");
+    await trackAiUsage(organizationId, userId, "pricing");
 
     res.json(pricing);
   } catch (error: any) {
@@ -317,7 +331,7 @@ router.get("/predict/load/:loadId", async (req: Request, res: Response) => {
     const userId = req.user!.id;
 
     const prediction = await predictiveOperationsService.predictLoadIssues(tenantId, loadId);
-    await meterAiUsage(organizationId, userId, "prediction");
+    await trackAiUsage(organizationId, userId, "prediction");
 
     res.json(prediction);
   } catch (error: any) {
@@ -343,7 +357,7 @@ router.get("/predict/shipment/:shipmentId", async (req: Request, res: Response) 
       tenantId,
       shipmentId,
     );
-    await meterAiUsage(organizationId, userId, "prediction");
+    await trackAiUsage(organizationId, userId, "prediction");
 
     res.json(prediction);
   } catch (error: any) {
