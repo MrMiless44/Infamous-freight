@@ -1,14 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { createRequire } from "node:module";
-
-const require = createRequire(import.meta.url);
-const { HTTP_STATUS } = require("@infamous-freight/shared");
-const {
+import { HTTP_STATUS } from "@infamous-freight/shared";
+import {
   requireShipper,
   requireDriver,
   requireAdmin,
   enforceOrgIsolation,
-} = require("./authGuards.js");
+} from "./authGuards.js";
 
 describe("authGuards middleware", () => {
   let req;
