@@ -39,10 +39,25 @@ vi.mock("../../middleware/rateLimit.js", () => ({
   authLimiter: (_req: any, _res: any, next: any) => next(),
 }));
 
-vi.mock("../../env.js", () => ({
-  ENV: {
-    JWT_SECRET: "test-secret",
-    CORS_ORIGIN: "http://localhost:3000",
+vi.mock("../../config/env.js", () => ({
+  env: {
+    jwtSecret: "test-secret",
+    corsOrigin: "http://localhost:3000",
+    passwordPepper: "test-pepper",
+    argon2: {
+      memoryCost: 19456,
+      timeCost: 2,
+      parallelism: 1,
+    },
+    authCookieEnabled: false,
+    authCookieName: "if_refresh_token",
+    authCookieSecure: false,
+    authCookieSameSite: "lax",
+    authCookiePath: "/",
+    jwtAccessExpiresIn: "15m",
+    jwtRefreshExpiresIn: "7d",
+    jwtIssuer: "infamous-freight",
+    jwtAudience: "infamous-freight-api",
   },
 }));
 
