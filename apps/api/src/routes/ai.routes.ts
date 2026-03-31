@@ -68,44 +68,48 @@ const enforceUsageLimit = async (req: Request, res: Response, next: NextFunction
     }
 
     const month = new Date().toISOString().slice(0, 7);
-    const usage = await prisma.orgUsage.findUnique({
-      where: { organizationId_month: { organizationId: billing.organizationId, month } },
-      select: { jobs: true },
-    });
-
     const plan = String(billing.plan ?? "STARTER").toUpperCase();
     const planLimit = PLAN_LIMITS[plan] ?? PLAN_LIMITS.STARTER;
     const configuredLimit =
       Number.isFinite(billing.monthlyQuota) && billing.monthlyQuota > 0
         ? billing.monthlyQuota
         : planLimit;
-    const currentUsage = usage?.jobs ?? 0;
 
-    if (currentUsage >= configuredLimit) {
+    if (!Number.isFinite(configuredLimit)) {
+      await prisma.orgUsage.upsert({
+        where: { organizationId_month: { organizationId: billing.organizationId, month } },
+        update: { jobs: { increment: 1 } },
+        create: { organizationId: billing.organizationId, month, jobs: 1 },
+      });
+      return next();
+    }
+
+    const didReserveQuota = await prisma.$transaction(async (tx) => {
+      await tx.orgUsage.upsert({
+        where: { organizationId_month: { organizationId: billing.organizationId, month } },
+        update: {},
+        create: { organizationId: billing.organizationId, month, jobs: 0 },
+      });
+
+      const result = await tx.orgUsage.updateMany({
+        where: {
+          organizationId: billing.organizationId,
+          month,
+          jobs: { lt: configuredLimit },
+        },
+        data: { jobs: { increment: 1 } },
+      });
+
+      return result.count === 1;
+    });
+
+    if (!didReserveQuota) {
       return res.status(403).json({ error: "Usage limit exceeded" });
     }
 
     return next();
   } catch {
     return res.status(500).json({ error: "Failed to verify usage limits" });
-  }
-};
-
-const trackAiUsage = async (req: Request) => {
-  const organizationId = req.billing?.organizationId;
-  if (!organizationId) {
-    return;
-  }
-
-  try {
-    const month = new Date().toISOString().slice(0, 7);
-    await prisma.orgUsage.upsert({
-      where: { organizationId_month: { organizationId, month } },
-      update: { jobs: { increment: 1 } },
-      create: { organizationId, month, jobs: 1 },
-    });
-  } catch {
-    // Non-blocking usage tracking to avoid failing successful AI responses.
   }
 };
 
@@ -127,8 +131,6 @@ router.post("/dispatch/recommend", enforceUsageLimit, async (req: Request, res: 
     }
 
     const recommendation = await aiDispatchService.recommendDispatch(tenantId, loadId, userId);
-    await trackAiUsage(req);
-
     res.json(recommendation);
   } catch (error: any) {
     if (error.message.includes("not found")) {
@@ -153,8 +155,6 @@ router.post("/dispatch/execute", enforceUsageLimit, async (req: Request, res: Re
     }
 
     const result = await aiDispatchService.executeDispatch(tenantId, loadId, driverId, userId);
-    await trackAiUsage(req);
-
     res.json(result);
   } catch (error: any) {
     if (error.message.includes("not found")) {
@@ -179,7 +179,6 @@ router.get("/carriers/:driverId/score", enforceUsageLimit, async (req: Request, 
       return res.status(404).json({ error: "Carrier score not found" });
     }
 
-    await trackAiUsage(req);
     res.json(score);
   } catch (error: any) {
     res.status(500).json({ error: "Failed to get carrier score" });
@@ -196,8 +195,6 @@ router.post("/carriers/:driverId/recompute", enforceUsageLimit, async (req: Requ
     const tenantId = req.user!.tenantId!;
 
     const score = await carrierIntelligenceService.computeCarrierScore(tenantId, driverId);
-    await trackAiUsage(req);
-
     res.json(score);
   } catch (error: any) {
     if (error.message.includes("not found")) {
@@ -221,8 +218,6 @@ router.post("/pricing/recommend", enforceUsageLimit, async (req: Request, res: R
     }
 
     const pricing = await smartPricingService.recommendPricing(tenantId, loadId);
-    await trackAiUsage(req);
-
     res.json(pricing);
   } catch (error: any) {
     if (error.message.includes("not found")) {
@@ -243,7 +238,6 @@ router.get("/pricing/load/:loadId", enforceUsageLimit, async (req: Request, res:
 
     const history = await smartPricingService.getPricingHistory(tenantId, loadId);
 
-    await trackAiUsage(req);
     res.json(history);
   } catch (error: any) {
     res.status(500).json({ error: "Failed to get pricing history" });
@@ -260,8 +254,6 @@ router.get("/predict/load/:loadId", enforceUsageLimit, async (req: Request, res:
     const tenantId = req.user!.tenantId!;
 
     const prediction = await predictiveOperationsService.predictLoadIssues(tenantId, loadId);
-    await trackAiUsage(req);
-
     res.json(prediction);
   } catch (error: any) {
     if (error.message.includes("not found")) {
@@ -284,8 +276,6 @@ router.get("/predict/shipment/:shipmentId", enforceUsageLimit, async (req: Reque
       tenantId,
       shipmentId,
     );
-    await trackAiUsage(req);
-
     res.json(prediction);
   } catch (error: any) {
     if (error.message.includes("not found")) {
