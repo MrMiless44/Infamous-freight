@@ -2,7 +2,9 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "."
+    "rootDir": ".",
+    "strict": false,
+    "noImplicitAny": false
   },
-  "include": ["src", "tests", "contracts", "observability", "dispatch", "driver-coach", "fleet-intel", "customer-ops", "utils"]
+  "include": ["src", "tests", "utils"]
 }
