@@ -48,13 +48,13 @@ export function createApp(): Express {
       origin: env.corsOrigin.split(",").map((origin) => origin.trim()),
       credentials: env.authCookieEnabled,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-      allowedHeaders: ["Content-Type", "Authorization", "X-Request-ID"],
+      allowedHeaders: ["Content-Type", "Authorization", "X-Request-ID", "Stripe-Signature"],
     }),
   );
 
   app.use(cookieParser(env.cookieSecret));
   app.use(
-    "/api/payments/stripe/webhook",
+    "/api/webhooks/stripe",
     express.raw({ type: "application/json" }),
     stripeWebhookRoutes,
   );
