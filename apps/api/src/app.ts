@@ -12,6 +12,7 @@ import authRoutes from "./routes/auth.js";
 import billingRoutes from "./routes/billing.js";
 import brokerRoutes from "./routes/brokers.js";
 import carrierRoutes from "./routes/carriers.js";
+import { dashboardRoutes } from "./routes/dashboard.routes.js";
 import dispatchRoutes from "./routes/dispatches.js";
 import { documentsRoutes } from "./routes/documents.routes.js";
 import driverRoutes from "./routes/drivers.js";
@@ -81,8 +82,10 @@ export function createApp(): Express {
 
   app.use("/auth", authRoutes);
   app.use("/api/auth", authRoutes);
+  app.use("/api/ai", aiV2Routes);
   app.use("/api/ai", aiRoutes);
   app.use("/api/ai/v2", aiV2Routes);
+  app.use("/api/dashboard", dashboardRoutes);
   app.use("/api/billing", billingRoutes);
   app.use("/api/brokers", brokerRoutes);
   app.use("/api/carriers", carrierRoutes);
