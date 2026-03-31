@@ -54,8 +54,8 @@ jobs:
         run: |
           git add package.json
           git commit -m "chore(release): v${{ steps.version.outputs.version }} [skip ci]"
-          git tag "v${{ steps.version.outputs.version }}"
-          git push origin main --follow-tags
+          git tag -a "v${{ steps.version.outputs.version }}" -m "Release v${{ steps.version.outputs.version }}"
+          git push origin main "v${{ steps.version.outputs.version }}"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
