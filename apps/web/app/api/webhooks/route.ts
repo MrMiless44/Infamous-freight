@@ -4,8 +4,6 @@ import { stripe } from "@/lib/stripe";
 
 export const runtime = "nodejs";
 
-type StripeEvent = Parameters<typeof stripe.webhooks.constructEvent>[0];
-
 export async function POST(req: Request) {
   const body = await req.text();
   const sig = req.headers.get("stripe-signature");
