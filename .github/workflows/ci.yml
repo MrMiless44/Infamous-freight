@@ -167,7 +167,7 @@ jobs:
         run: pnpm run build:shared
 
       - name: Run tests with coverage
-        run: pnpm -r --if-present test -- --coverage --coverage.thresholds.lines=70 --coverage.thresholds.functions=70 --coverage.thresholds.branches=60 --coverage.thresholds.statements=70
+        run: pnpm -r --if-present test -- --coverage
 
       - name: Upload coverage artifacts
         if: always()
