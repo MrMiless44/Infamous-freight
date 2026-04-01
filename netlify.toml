@@ -3,7 +3,7 @@
 
 [build]
   base = "."
-  command = "pnpm install --frozen-lockfile && pnpm --filter web build"
+  command = "pnpm install --frozen-lockfile && pnpm --filter web... build"
   publish = "apps/web/.next"
   functions = "apps/web/.netlify/functions"
 
