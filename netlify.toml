@@ -1,8 +1,23 @@
-# Netlify configuration file
+# Netlify configuration for monorepo web deployment.
+# Deploys apps/web (Next.js) from the workspace root.
 
 [build]
-  publish = "./out"
-  command = "npm run build"
+  base = "."
+  command = "pnpm install --frozen-lockfile && pnpm --filter web build"
+  publish = "apps/web/.next"
+  functions = "apps/web/.netlify/functions"
 
-[functions]
-  node_version = "24"
+[build.environment]
+  NODE_VERSION = "22"
+  PNPM_VERSION = "9.15.0"
+  NEXT_TELEMETRY_DISABLED = "1"
+  BUILD_TARGET = "netlify"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[dev]
+  command = "pnpm --filter web dev"
+  port = 8888
+  targetPort = 3000
+  autoLaunch = false
