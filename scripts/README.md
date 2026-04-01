@@ -402,7 +402,7 @@ Verifies expected HTTP responses for the 24 production API routes (billing, AI e
 ENDPOINT_BASE_URL=https://api.example.com ENDPOINT_AUTH_TOKEN=<bearer-token> ./scripts/test-production-endpoints.sh
 ```
 
-**Accepted responses:** 2xx, 401/403 (auth boundary), and 405 (method-protected).
+**Accepted responses:** 2xx and 401/403 (auth boundary). Any other status is treated as a failure.
 
 ---
 
