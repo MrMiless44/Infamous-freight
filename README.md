@@ -185,6 +185,53 @@ Build the workspace.
 pnpm build
 ```
 
+### Android (Termux) Node.js setup
+
+If you are developing from Android (for example, a Samsung Galaxy device), use the official Termux build from **F-Droid** or **GitHub**. Do not use the deprecated Google Play release.
+
+1. Update Termux packages:
+
+   ```bash
+   pkg update && pkg upgrade -y
+   ```
+
+2. Remove existing Node.js packages (only one of `nodejs` or `nodejs-lts` can be installed at a time):
+
+   ```bash
+   pkg uninstall nodejs nodejs-lts -y
+   ```
+
+3. Install Node.js and verify versions:
+
+   ```bash
+   pkg install nodejs -y
+   node -v
+   npm -v
+   ```
+
+4. If `nodejs` does not provide the expected major version, switch to LTS package:
+
+   ```bash
+   pkg uninstall nodejs -y
+   pkg install nodejs-lts -y
+   node -v
+   npm -v
+   ```
+
+5. Install pnpm and verify:
+
+   ```bash
+   npm install -g pnpm
+   pnpm -v
+   ```
+
+6. Reinstall workspace dependencies in your project:
+
+   ```bash
+   rm -rf node_modules
+   pnpm install
+   ```
+
 ---
 
 ## Development
