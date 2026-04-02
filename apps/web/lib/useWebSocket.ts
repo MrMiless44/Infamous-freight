@@ -28,6 +28,23 @@ const io = (_url: string, _options?: unknown): Socket => {
   return {} as Socket;
 };
 
+
+interface ShipmentUpdatedEvent {
+  id?: string;
+  shipmentId?: string;
+  [key: string]: unknown;
+}
+
+interface DriverUpdatedEvent {
+  id?: string;
+  driverId?: string;
+  [key: string]: unknown;
+}
+
+interface SocketErrorPayload {
+  message?: string;
+}
+
 interface UseWebSocketOptions {
   userId?: string;
   role?: string;
@@ -101,20 +118,21 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
       });
     });
 
-    socket.on("connect_error", (error) => {
-      console.error("[WebSocket] Connection error:", error.message);
+    socket.on("connect_error", (error: SocketErrorPayload) => {
+      const message = error.message ?? "Connection error";
+      console.error("[WebSocket] Connection error:", message);
       setStatus({
         connected: false,
-        error: error.message,
+        error: message,
         transport: null,
       });
     });
 
-    socket.on("error", (error) => {
+    socket.on("error", (error: SocketErrorPayload) => {
       console.error("[WebSocket] Error:", error);
       setStatus((prev) => ({
         ...prev,
-        error: error.message || "Unknown error",
+        error: error.message ?? "Unknown error",
       }));
     });
 
@@ -152,13 +170,13 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
       socket.emit("subscribe:shipment", shipmentId);
 
       // Listen for updates
-      socket.on("shipment:updated", (data) => {
+      socket.on("shipment:updated", (data: ShipmentUpdatedEvent) => {
         if (data.id === shipmentId) {
           callback(data);
         }
       });
 
-      socket.on("shipment:location:updated", (data) => {
+      socket.on("shipment:location:updated", (data: ShipmentUpdatedEvent) => {
         if (data.shipmentId === shipmentId) {
           callback(data);
         }
@@ -187,13 +205,13 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
     socket.emit("subscribe:driver", driverId);
 
     // Listen for updates
-    socket.on("driver:updated", (data) => {
+    socket.on("driver:updated", (data: DriverUpdatedEvent) => {
       if (data.id === driverId) {
         callback(data);
       }
     });
 
-    socket.on("driver:location:updated", (data) => {
+    socket.on("driver:location:updated", (data: DriverUpdatedEvent) => {
       if (data.driverId === driverId) {
         callback(data);
       }
