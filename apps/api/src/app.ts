@@ -128,8 +128,29 @@ export function createApp(): Express {
     });
   }
 
-  app.use((err: unknown, _req: Request, _res: Response, next: NextFunction) => {
-    Sentry.captureException(err);
+  app.use((err: unknown, req: Request, _res: Response, next: NextFunction) => {
+    const statusCode =
+      typeof err === "object" &&
+      err !== null &&
+      "statusCode" in err &&
+      typeof err.statusCode === "number"
+        ? err.statusCode
+        : 500;
+
+    if (statusCode >= 500) {
+      Sentry.withScope((scope) => {
+        scope.setTag("method", req.method);
+        scope.setTag("path", req.originalUrl || req.url);
+
+        const requestId = req.headers["x-request-id"];
+        if (typeof requestId === "string" && requestId.length > 0) {
+          scope.setTag("request_id", requestId);
+        }
+
+        scope.setExtra("statusCode", statusCode);
+        Sentry.captureException(err);
+      });
+    }
     next(err);
   });
 
