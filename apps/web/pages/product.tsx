@@ -571,13 +571,15 @@ function SiteHeader({
           )}
         </div>
 
-        <Button
-          variant="outline"
-          onClick={onOpenMenu}
-          className="rounded-2xl border-red-500/25 bg-black/50 px-4 py-2 text-red-100 hover:bg-red-500/10 hover:text-red-50 md:hidden"
-        >
-          <Menu className="h-4 w-4" />
-        </Button>
+        {onOpenMenu && (
+          <Button
+            variant="outline"
+            onClick={onOpenMenu}
+            className="rounded-2xl border-red-500/25 bg-black/50 px-4 py-2 text-red-100 hover:bg-red-500/10 hover:text-red-50 md:hidden"
+          >
+            <Menu className="h-4 w-4" />
+          </Button>
+        )}
       </div>
     </div>
   );
