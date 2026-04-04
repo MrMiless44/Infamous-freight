@@ -8,9 +8,10 @@ describe("isValidDatabaseUrl", () => {
     expect(isValidDatabaseUrl("postgres://infamous-freight-db.flycast:5432/infamous_freight_prod")).toBe(true);
   });
 
-  it("rejects urls without a database name", () => {
+  it("rejects urls without a database name or hostname", () => {
     expect(isValidDatabaseUrl("postgresql://infamous-freight-db.flycast")).toBe(false);
     expect(isValidDatabaseUrl("postgresql://infamous-freight-db.flycast/")).toBe(false);
+    expect(isValidDatabaseUrl("postgresql:///infamous_freight_prod")).toBe(false);
   });
 
   it("rejects non-postgres protocols", () => {
