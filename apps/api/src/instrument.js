@@ -3,14 +3,12 @@ let Sentry = null;
 
 try {
   Sentry = require("@sentry/node");
-  const dsn = process.env.SENTRY_DSN;
-  if (dsn) {
-    Sentry.init({
-      dsn,
-      environment: process.env.NODE_ENV || "development",
-      tracesSampleRate: Number(process.env.SENTRY_TRACES_SAMPLE_RATE || 0),
-    });
-  }
+  Sentry.init({
+    dsn:
+      process.env.SENTRY_DSN ||
+      "https://6bfe6c333544c976cbba3633aad08ad4@o4511126931963904.ingest.us.sentry.io/4511126932226048",
+    sendDefaultPii: true,
+  });
 } catch (err) {
   // If Sentry isn't available, fail open
   Sentry = null;
