@@ -68,6 +68,8 @@ export async function handleMiddleware(
   } catch (error) {
     console.error(error)
 
-    return new Response(error.message, { status: 500 })
+    const message = error instanceof Error ? error.message : String(error)
+
+    return new Response(message, { status: 500 })
   }
 }
