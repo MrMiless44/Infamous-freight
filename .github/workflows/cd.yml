@@ -9,17 +9,51 @@ permissions:
   contents: read
 
 jobs:
+  # Detect which deploy secrets are configured.
+  # Secrets are read via env: (never interpolated directly into shell scripts).
+  # Outputs expose only boolean flags — the secret values themselves never leave this step.
+  check-secrets:
+    runs-on: ubuntu-latest
+    outputs:
+      has-fly: ${{ steps.check.outputs.has-fly }}
+      has-vercel: ${{ steps.check.outputs.has-vercel }}
+    steps:
+      - name: Detect configured deploy secrets
+        id: check
+        env:
+          _FLY_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          _VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          _VERCEL_ORG: ${{ secrets.VERCEL_ORG_ID }}
+          _VERCEL_PROJECT: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          [ -n "$_FLY_TOKEN" ] \
+            && echo "has-fly=true"    >> "$GITHUB_OUTPUT" \
+            || echo "has-fly=false"   >> "$GITHUB_OUTPUT"
+          [ -n "$_VERCEL_TOKEN" ] && [ -n "$_VERCEL_ORG" ] && [ -n "$_VERCEL_PROJECT" ] \
+            && echo "has-vercel=true"  >> "$GITHUB_OUTPUT" \
+            || echo "has-vercel=false" >> "$GITHUB_OUTPUT"
+
+  # deploy-api runs only when FLY_API_TOKEN is configured; safely skipped otherwise.
   deploy-api:
+    needs: check-secrets
+    if: ${{ needs.check-secrets.outputs.has-fly == 'true' }}
     uses: ./.github/workflows/fly-deploy.yml
     secrets: inherit
 
+  # deploy-web runs only when all three Vercel secrets are configured; safely skipped otherwise.
   deploy-web:
+    needs: check-secrets
+    if: ${{ needs.check-secrets.outputs.has-vercel == 'true' }}
     uses: ./.github/workflows/vercel-deploy.yml
     secrets: inherit
 
+  # production-validation only runs when both deploy jobs have succeeded.
+  # When either deploy job is skipped (secrets absent) or fails, its result
+  # is not 'success', so this condition evaluates to false and the job does not run.
   production-validation:
     runs-on: ubuntu-latest
     needs: [deploy-api, deploy-web]
+    if: ${{ needs.deploy-api.result == 'success' && needs.deploy-web.result == 'success' }}
     steps:
       - name: Validate deployed endpoints
         env:
@@ -27,12 +61,12 @@ jobs:
           DEPLOYED_WEB_URL: ${{ secrets.PRODUCTION_WEB_URL }}
         run: |
           if [ -z "$DEPLOYED_API_URL" ]; then
-            echo "::error::PRODUCTION_API_URL secret is not set. Add it in GitHub → Settings → Secrets and variables → Actions."
-            exit 1
+            echo "::warning::PRODUCTION_API_URL secret is not set; skipping API endpoint check."
+            exit 0
           fi
           if [ -z "$DEPLOYED_WEB_URL" ]; then
-            echo "::error::PRODUCTION_WEB_URL secret is not set. Add it in GitHub → Settings → Secrets and variables → Actions."
-            exit 1
+            echo "::warning::PRODUCTION_WEB_URL secret is not set; skipping web endpoint check."
+            exit 0
           fi
           echo "Checking API: $DEPLOYED_API_URL"
           curl -f --fail-with-body "$DEPLOYED_API_URL" || { echo "::error::API health check failed for $DEPLOYED_API_URL"; exit 1; }

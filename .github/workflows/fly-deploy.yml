@@ -33,9 +33,8 @@ jobs:
           fi
 
       - name: Setup pnpm
+        # Version is read from the "packageManager" field in package.json (pnpm@9.15.0) — single source of truth.
         uses: pnpm/action-setup@v5
-        with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
