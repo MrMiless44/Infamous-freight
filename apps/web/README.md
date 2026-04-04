@@ -6,8 +6,8 @@ Next.js 14 frontend application for the Infamous Freight platform.
 
 ### Prerequisites
 
-- Node.js >= 20.0.0
-- pnpm >= 9.15.0
+- Node.js 24.x (required by the monorepo root `package.json`/`.nvmrc`)
+- pnpm >= 10.15.0
 
 ### Installation
 

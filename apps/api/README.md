@@ -7,8 +7,8 @@ billing, AI integration, and real-time features.
 
 ### Prerequisites
 
-- Node.js >= 20.0.0
-- pnpm >= 9.15.0
+- Node.js 24.x (required by the monorepo's enforced engine setting)
+- pnpm >= 10.15.0
 - PostgreSQL database
 - Redis (for caching and rate limiting)
 

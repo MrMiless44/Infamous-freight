@@ -164,7 +164,30 @@ Enable pnpm via Corepack.
 
 ```bash
 corepack enable
-corepack prepare pnpm@9.15.0 --activate
+corepack prepare pnpm@10.15.0 --activate
+```
+
+### Reproducible local setup (NVM + pnpm)
+
+To match CI and Codex automation, use the repository-configured Node version through NVM before running installs or builds:
+
+```bash
+export NVM_DIR="$HOME/.nvm"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+  . "$NVM_DIR/nvm.sh"
+else
+  echo "NVM is required for this setup. Install it first: https://github.com/nvm-sh/nvm#installing-and-updating" >&2
+  exit 1
+fi
+
+nvm install 24
+nvm use 24
+
+corepack enable
+corepack prepare pnpm@10.15.0 --activate
+
+node -v
+pnpm -v
 ```
 
 Copy environment variables.
@@ -179,7 +202,17 @@ Install dependencies.
 pnpm install
 ```
 
-> **Runtime requirement:** this repo enforces Node.js **24.x** (see `.node-version`). If you are not on Node 24.x, `pnpm` will fail with `ERR_PNPM_UNSUPPORTED_ENGINE`.
+> **Runtime requirement:** this repo enforces Node.js **24.x** (see `.node-version` / `.nvmrc`). If you are not on the pinned Node version, `pnpm` will fail with `ERR_PNPM_UNSUPPORTED_ENGINE`.
+>
+> If you hit that error, switch to the version defined by the repo and retry install:
+>
+> ```bash
+> nvm install
+> nvm use
+> corepack enable
+> corepack prepare pnpm@10.15.0 --activate
+> pnpm install
+> ```
 
 Initialize database tooling for local development.
 
@@ -225,7 +258,7 @@ If you are developing from Android (for example, a Samsung Galaxy device), use t
 
    ```bash
    corepack enable
-   corepack prepare pnpm@9.15.0 --activate
+   corepack prepare pnpm@10.15.0 --activate
    pnpm -v
    ```
 
@@ -338,7 +371,7 @@ CI enforces baseline test coverage thresholds (lines/functions/statements: 70%, 
 ## Runtime Policy
 
 - Required runtime: Node.js 24.x
-- Required package manager: pnpm 9.x
+- Required package manager: pnpm 10.x
 - Source of truth: `.nvmrc` + root `package.json` engines
 
 If your local runtime does not match these versions, switch with your version manager before running installs or checks.
