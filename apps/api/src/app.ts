@@ -1,7 +1,8 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import express, { type Express } from "express";
+import express, { type Express, type NextFunction, type Request, type Response } from "express";
 import helmet from "helmet";
+import * as Sentry from "@sentry/node";
 import { env } from "./config/env.js";
 import { requestIdMiddleware, httpLoggerMiddleware } from "./lib/logger.js";
 import { errorHandler, notFound } from "./middleware/error-handler.js";
@@ -114,6 +115,44 @@ export function createApp(): Express {
   app.use("/api/shipments", shipmentRoutes);
   app.use("/api/stripe", stripeRoutes);
   app.use("/api/tenants", tenants);
+
+  if (env.nodeEnv !== "production") {
+    app.get("/debug/sentry", (_req, res) => {
+      const error = new Error("Sentry verification route triggered");
+      const eventId = Sentry.captureException(error);
+      res.status(500).json({
+        success: false,
+        error: "Sentry test event sent",
+        eventId,
+      });
+    });
+  }
+
+  app.use((err: unknown, req: Request, _res: Response, next: NextFunction) => {
+    const statusCode =
+      typeof err === "object" &&
+      err !== null &&
+      "statusCode" in err &&
+      typeof err.statusCode === "number"
+        ? err.statusCode
+        : 500;
+
+    if (statusCode >= 500) {
+      Sentry.withScope((scope) => {
+        scope.setTag("method", req.method);
+        scope.setTag("path", req.originalUrl || req.url);
+
+        const requestId = req.headers["x-request-id"];
+        if (typeof requestId === "string" && requestId.length > 0) {
+          scope.setTag("request_id", requestId);
+        }
+
+        scope.setExtra("statusCode", statusCode);
+        Sentry.captureException(err);
+      });
+    }
+    next(err);
+  });
 
   app.use(notFound);
   app.use(errorHandler);
