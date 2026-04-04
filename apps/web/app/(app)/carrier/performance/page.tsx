@@ -157,7 +157,7 @@ export default function CarrierPerformancePage() {
                 </div>
                 <div className="mt-1 flex items-center gap-3">
                   <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-800">
-                    <div className="h-full rounded-full bg-slate-600" style={{ width: `${parseInt(metric.networkAvg)}%` }} />
+                    <div className="h-full rounded-full bg-slate-600" style={{ width: `${metric.networkAvg.includes('/') ? (parseFloat(metric.networkAvg.split('/')[0]) / parseFloat(metric.networkAvg.split('/')[1])) * 100 : parseFloat(metric.networkAvg)}%` }} />
                   </div>
                   <span className="w-12 text-right text-[10px] text-slate-500">{metric.networkAvg}</span>
                 </div>
