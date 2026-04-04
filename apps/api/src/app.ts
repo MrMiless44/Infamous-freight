@@ -3,6 +3,7 @@ import cors from "cors";
 import express, { type Express } from "express";
 import helmet from "helmet";
 import { env } from "./config/env.js";
+import { sentryErrorHandler, verifySentryCapture } from "./instrument.js";
 import { requestIdMiddleware, httpLoggerMiddleware } from "./lib/logger.js";
 import { errorHandler, notFound } from "./middleware/error-handler.js";
 import { generalLimiter } from "./middleware/rateLimit.js";
@@ -87,6 +88,16 @@ export function createApp(): Express {
     });
   });
 
+  app.post("/api/health/sentry-check", (req, res) => {
+    if (env.nodeEnv === "production") {
+      res.status(404).json({ success: false, error: { code: "NOT_FOUND", message: "Route not found" } });
+      return;
+    }
+
+    verifySentryCapture();
+    res.status(202).json({ success: true, data: { captured: true } });
+  });
+
   app.get("/readyz", (_req, res) => {
     res.json({ success: true, data: { ok: true } });
   });
@@ -116,6 +127,7 @@ export function createApp(): Express {
   app.use("/api/tenants", tenants);
 
   app.use(notFound);
+  app.use(sentryErrorHandler);
   app.use(errorHandler);
 
   return app;
