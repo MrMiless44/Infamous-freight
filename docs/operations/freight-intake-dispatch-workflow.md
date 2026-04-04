@@ -20,7 +20,7 @@
    - special requirements (liftgate, reefer, team driver)
 3. Auto-validate required fields and geocode addresses.
 4. Price load (rule-based + market benchmark).
-5. Send quote and store expiration SLA.
+5. Send quote and store quote expiration timestamp.
 
 **Automation opportunities:**
 - Email parsing + OCR for rate requests.
