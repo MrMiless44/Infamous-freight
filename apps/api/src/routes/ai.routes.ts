@@ -216,9 +216,9 @@ router.post("/dispatch/execute", async (req: Request, res: Response) => {
       return res.status(400).json({ error: "loadId and driverId required" });
     }
 
-    const result = await aiDispatchService.executeDispatch(tenantId, loadId, driverId, userId);
-
     await meterAiUsage(organizationId, userId, "execution", res.locals.usageLimit);
+
+    const result = await aiDispatchService.executeDispatch(tenantId, loadId, driverId, userId);
     res.json(result);
   } catch (error: any) {
     if (error instanceof UsageLimitExceededError) {
