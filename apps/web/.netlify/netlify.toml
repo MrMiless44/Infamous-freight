@@ -1,8 +1,20 @@
 functionsDirectory = "/opt/build/repo/apps/web/.netlify/functions"
 functionsDirectoryOrigin = "config-v1"
-headers = []
-redirects = []
 
+[[headers]]
+for = "/*"
+
+[headers.values]
+Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+X-Frame-Options = "DENY"
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+for = "/_next/static/*"
+
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
 [dev]
 command = "pnpm --filter web dev"
 port = 8888
