@@ -14,13 +14,6 @@ const nextConfig = {
     poweredByHeader: false,
     trailingSlash: false,
 
-    // Phase 7 Tier 5: Internationalization (i18n)
-    i18n: {
-        defaultLocale: 'en',
-        locales: ['en', 'es', 'fr', 'de', 'pt', 'zh', 'ja', 'ko', 'ar', 'he', 'ru', 'it'],
-        localeDetection: true,
-    },
-
     // Enable instrumentation hook for Sentry
     experimental: {
         instrumentationHook: true,
