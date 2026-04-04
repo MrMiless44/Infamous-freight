@@ -82,7 +82,7 @@ export function normalizeLocalePath(pathname: string, locales?: string[]): PathL
 /**
  * This is how Next handles rewritten URLs.
  */
-export function relativizeURL(url: string | string, base: string | URL) {
+export function relativizeURL(url: string | URL, base: string | URL) {
   const baseURL = typeof base === 'string' ? new URL(base) : base
   const relative = new URL(url, base)
   const origin = `${baseURL.protocol}//${baseURL.host}`
