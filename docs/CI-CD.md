@@ -280,7 +280,7 @@ curl -X POST \
 
 **Environment Variables**:
 
-- `NODE_VERSION`: 22.16.0
+- `NODE_VERSION`: 24.x
 - `PNPM_VERSION`: 10.15.0
 
 ### 2. Security Workflow (`.github/workflows/security.yml`)
