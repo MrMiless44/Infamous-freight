@@ -202,7 +202,17 @@ Install dependencies.
 pnpm install
 ```
 
-> **Runtime requirement:** this repo enforces Node.js **24.x** (see `.node-version`). If you are not on Node 24.x, `pnpm` will fail with `ERR_PNPM_UNSUPPORTED_ENGINE`.
+> **Runtime requirement:** this repo enforces Node.js **24.x** (see `.node-version` / `.nvmrc`). If you are not on the pinned Node version, `pnpm` will fail with `ERR_PNPM_UNSUPPORTED_ENGINE`.
+>
+> If you hit that error, switch to the version defined by the repo and retry install:
+>
+> ```bash
+> nvm install
+> nvm use
+> corepack enable
+> corepack prepare pnpm@10.15.0 --activate
+> pnpm install
+> ```
 
 Initialize database tooling for local development.
 
