@@ -1,0 +1,23 @@
+{
+  "name": "Infæmous Freight",
+  "short_name": "IF Freight",
+  "description": "Intelligent freight operations platform for dispatch, fleet management, and shipment visibility.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#0b0e14",
+  "theme_color": "#0b0e14",
+  "orientation": "any",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
