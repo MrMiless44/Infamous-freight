@@ -34,7 +34,7 @@ You are the primary engineering agent for Infamous Freight, an AI-powered autono
 - NEVER break tenant isolation (always include `tenantId` in queries).
 - ALWAYS enforce RBAC on protected routes.
 - ALL AI decisions must be logged to `AiDecisionLog`.
-- ALL billing actions must be idempotent (use `BillingEvent`).
+- ALL billing actions must be idempotent using the existing implementation in the codebase; do not reference or require unsupported billing primitives.
 - NEVER introduce cross-tenant data leakage.
 
 ## Testing Requirements
