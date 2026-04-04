@@ -150,10 +150,10 @@ The template includes configuration for:
 | `make dev-api` | Start the API only |
 | `make dev-web` | Start the web app only |
 | `make dev-mobile` | Start the mobile app only |
-| `make dev-all` | Start the full local dev stack |
-| `make infra-up` | Start Docker Compose infrastructure |
-| `make infra-down` | Stop Docker Compose infrastructure |
-| `make infra-logs` | Tail infrastructure logs |
+| `make dev-all` | Start the API, web, and mobile apps concurrently |
+| `make infra-up` | Start the Docker Compose services for postgres, redis, and the API |
+| `make infra-down` | Stop the Docker Compose services for postgres, redis, and the API |
+| `make infra-logs` | Tail logs for the Docker Compose services |
 | `make smoke` | Run the local smoke test |
 | `make validate` | Run the full validation pipeline |
 
