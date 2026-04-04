@@ -31,7 +31,7 @@ You are the primary engineering agent for Infamous Freight, an AI-powered autono
 
 ## Critical Rules
 
-- NEVER break tenant isolation (always include `tenantId` in queries).
+- NEVER break tenant isolation (always scope queries by the actual tenant key used by the API, typically `organizationId`/`orgId`, or via the existing tenant-scoping helper).
 - ALWAYS enforce RBAC on protected routes.
 - ALL AI decisions must be logged to `AiDecisionLog`.
 - ALL billing actions must be idempotent using the existing implementation in the codebase; do not reference or require unsupported billing primitives.
