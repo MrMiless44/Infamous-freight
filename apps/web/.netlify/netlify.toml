@@ -1,7 +1,7 @@
 functionsDirectory = "/opt/build/repo/apps/web/.netlify/functions"
 functionsDirectoryOrigin = "config-v1"
-headers = []
-redirects = []
+# Do not reset `headers` or `redirects` to empty arrays here.
+# Doing so clears previously configured/generated security headers and redirects at deploy time.
 
 [dev]
 command = "pnpm --filter web dev"
