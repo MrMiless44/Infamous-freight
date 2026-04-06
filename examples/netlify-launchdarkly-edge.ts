@@ -1,7 +1,7 @@
 import { init as initLD } from "@netlify/launchdarkly-server-sdk";
 
 interface Bindings {
-  LAUNCHDARKLY_CLIENT_SIDE_ID: string;
+  LAUNCHDARKLY_CLIENT_SIDE_ID?: string;
   LAUNCHDARKLY_FLAG_KEY?: string;
 }
 
