@@ -25,7 +25,7 @@
     "typecheck": "pnpm run prisma:generate && pnpm run build:shared && pnpm -r --if-present typecheck",
     "lint": "pnpm -r --if-present run lint",
     "test": "pnpm run prisma:generate:offline && pnpm run build:shared && pnpm -r --if-present --workspace-concurrency=1 test",
-    "test:ci": "pnpm run prisma:generate:offline && pnpm run build:shared && pnpm -r --if-present --workspace-concurrency=1 test",
+    "test:ci": "pnpm run prisma:generate && pnpm run build:shared && pnpm -r --if-present --workspace-concurrency=1 test",
     "audit": "pnpm audit",
     "audit:prod": "pnpm audit --prod",
     "audit:ci": "pnpm run audit && pnpm run audit:prod",
