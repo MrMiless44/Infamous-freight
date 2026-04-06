@@ -50,11 +50,15 @@ PermitRootLogin no
 PubkeyAuthentication yes
 ```
 
-Validate and restart:
+Validate and apply the change safely:
+
+Keep your current root/admin SSH session open while testing. Open a second session to confirm key-based login still works before closing the original session. The SSH service name varies by distro (`sshd` on many RHEL/CentOS/Fedora systems, `ssh` on Debian/Ubuntu).
 
 ```bash
 sudo sshd -t
-sudo systemctl restart ssh
+sudo systemctl reload sshd || sudo systemctl reload ssh
+# If reload is not supported on your system, use:
+# sudo systemctl restart sshd || sudo systemctl restart ssh
 ```
 
 ## 5) Enable firewall
