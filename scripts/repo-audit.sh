@@ -51,13 +51,13 @@ else
 fi
 
 section "Tracked artifact hygiene"
-if git ls-files | rg -q '/node_modules/'; then
+if git ls-files | grep -E -q '/node_modules/'; then
   fail "Tracked node_modules directories detected"
 else
   pass "No tracked node_modules directories"
 fi
 
-if git ls-files | rg -q '\.env$|\.env\.[^/]+$'; then
+if git ls-files | grep -E -q '\.env$|\.env\.[^/]+$'; then
   fail "Tracked .env files detected"
 else
   pass "No tracked .env files"
