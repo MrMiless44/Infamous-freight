@@ -11,12 +11,31 @@ set -euo pipefail
 SSHD_CONFIG="${SSHD_CONFIG:-/etc/ssh/sshd_config}"
 ALLOW_USERS="${ALLOW_USERS:-}"
 
+validate_allow_users() {
+  local value="$1"
+  local entry
+
+  if [[ "${value}" == *$'\n'* || "${value}" == *$'\r'* ]]; then
+    echo "ERROR: ALLOW_USERS must not contain newline or carriage return characters."
+    exit 1
+  fi
+
+  for entry in ${value}; do
+    if [[ ! "${entry}" =~ ^[A-Za-z0-9._*?-]+(@[A-Za-z0-9._*?-]+)?$ ]]; then
+      echo "ERROR: invalid AllowUsers entry: ${entry}"
+      echo 'Expected entries like "deployer" or "deployer@example-host", separated by spaces.'
+      exit 1
+    fi
+  done
+}
+
 if [[ -z "${ALLOW_USERS}" ]]; then
   echo "ERROR: ALLOW_USERS is required."
   echo 'Example: ALLOW_USERS="deployer youradmin" ./harden-ssh.sh'
   exit 1
 fi
 
+validate_allow_users "${ALLOW_USERS}"
 if [[ "${EUID}" -ne 0 ]]; then
   echo "ERROR: must be run as root (or with sudo)."
   exit 1
