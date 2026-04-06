@@ -167,22 +167,45 @@ corepack enable
 corepack prepare pnpm@9.15.0 --activate
 ```
 
-Copy environment variables.
-
-```bash
-cp .env.example .env
-```
-
 Install dependencies.
 
 ```bash
 pnpm install
 ```
 
-Build the workspace.
+> **Runtime requirement:** this repo enforces Node.js **24.x** (see `.node-version`). If you are on Node 22 or earlier, `pnpm` will fail with `ERR_PNPM_UNSUPPORTED_ENGINE`.
+
+Copy app environment files.
 
 ```bash
-pnpm build
+cp apps/api/.env.example apps/api/.env
+cp apps/web/.env.example apps/web/.env.local
+```
+
+Set your database connection in `apps/api/.env`.
+
+```bash
+DATABASE_URL=postgresql://postgres:[YOUR-PASSWORD]@db.wnaievjffghrztjuvutp.supabase.co:5432/postgres?schema=public
+```
+
+Start local infrastructure (optional if you are not using Supabase-hosted services).
+
+```bash
+docker compose up -d
+```
+
+Prepare and migrate the database.
+
+```bash
+pnpm prisma:generate
+pnpm prisma:migrate:deploy
+pnpm db:seed
+```
+
+Start development.
+
+```bash
+pnpm dev
 ```
 
 ### Android (Termux) Node.js setup
