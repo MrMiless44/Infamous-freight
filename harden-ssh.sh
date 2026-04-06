@@ -129,13 +129,24 @@ rm -f "${tmp}"
 
 echo "Validated and wrote hardened SSH config."
 
+restart_succeeded=false
 if command -v systemctl >/dev/null 2>&1; then
-  systemctl restart sshd 2>/dev/null || systemctl restart ssh 2>/dev/null || true
+  if systemctl restart sshd 2>/dev/null || systemctl restart ssh 2>/dev/null; then
+    restart_succeeded=true
+  fi
 else
-  service sshd restart 2>/dev/null || service ssh restart 2>/dev/null || true
+  if service sshd restart 2>/dev/null || service ssh restart 2>/dev/null; then
+    restart_succeeded=true
+  fi
 fi
 
-echo "Done. Current key settings:"
+if [[ "${restart_succeeded}" == true ]]; then
+  echo "Done. SSH service restarted successfully. Current key settings:"
+else
+  echo "WARNING: Hardened SSH config was written to ${SSHD_CONFIG}, but the SSH service could not be restarted."
+  echo "WARNING: sshd may still be running with the previous configuration. Restart the service manually."
+  echo "Current key settings on disk:"
+fi
 for k in PermitRootLogin PasswordAuthentication AllowUsers; do
   awk -v key="$k" 'tolower($1)==tolower(key){line=$0} END{if(line) print line}' "${SSHD_CONFIG}"
 done
