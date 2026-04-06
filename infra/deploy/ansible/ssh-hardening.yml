@@ -1,6 +1,7 @@
 ---
 - name: Harden SSH daemon configuration
   hosts: all
+  serial: 1
   become: true
   gather_facts: true
 
