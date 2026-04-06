@@ -1,14 +1,15 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help install build typecheck lint test validate dev dev-api dev-web dev-mobile dev-all clean infra-up infra-down infra-logs smoke
+.PHONY: help bootstrap install build typecheck lint test validate audit health dev dev-api dev-web dev-mobile dev-all clean infra-up infra-down infra-logs smoke
 
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
 
-install: ## Install all dependencies
-	corepack enable
-	corepack prepare pnpm@10.15.0 --activate
-	pnpm install
+bootstrap: ## Initialize Node + pnpm runtime via NVM
+	bash scripts/bootstrap-runtime.sh
+
+install: bootstrap ## Install all dependencies
+	pnpm install --frozen-lockfile
 
 build: ## Build all packages and apps
 	pnpm run build
@@ -24,6 +25,12 @@ test: ## Run tests across all workspaces
 
 validate: ## Run full validation (build + typecheck + lint + test)
 	pnpm run validate
+
+audit: ## Run repository hygiene audit
+	pnpm run check:repo
+
+health: ## Run audit + lint + typecheck + tests
+	pnpm run health
 
 dev: ## Start the API in development mode
 	pnpm run dev

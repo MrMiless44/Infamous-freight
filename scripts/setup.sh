@@ -1,24 +1,31 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "==> Enabling pnpm via Corepack"
-corepack enable
-corepack prepare pnpm@10.15.0 --activate
+ROOT_DIR="$(git rev-parse --show-toplevel)"
+cd "$ROOT_DIR"
 
-if [ -f ".env.example" ] && [ ! -f ".env" ]; then
+bash scripts/bootstrap-runtime.sh
+
+if [[ -f ".env.example" && ! -f ".env" ]]; then
   echo "==> Creating .env from .env.example"
   cp .env.example .env
 fi
 
-echo "==> Installing dependencies"
-pnpm install
+echo "==> Installing dependencies (frozen lockfile)"
+pnpm install --frozen-lockfile
+
+echo "==> Running workspace hygiene checks"
+pnpm run check:repo
 
 echo "==> Building shared package and workspaces"
-pnpm build
+pnpm run build
 
-echo ""
-echo "Bootstrap complete."
-echo "Run one of:"
-echo "  pnpm dev"
-echo "  pnpm dev:web"
-echo "  pnpm dev:mobile"
+echo
+cat <<'MSG'
+Bootstrap complete.
+
+Next commands:
+  pnpm run lint
+  pnpm run typecheck
+  pnpm run test
+MSG

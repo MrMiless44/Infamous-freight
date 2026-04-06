@@ -202,6 +202,13 @@ Install dependencies.
 pnpm install
 ```
 
+Run repository hygiene checks and full validation:
+
+```bash
+pnpm run check:repo
+pnpm run validate
+```
+
 > **Runtime requirement:** this repo enforces Node.js **24.x** (see `.node-version` / `.nvmrc`). If you are not on the pinned Node version, `pnpm` will fail with `ERR_PNPM_UNSUPPORTED_ENGINE`.
 >
 > If you hit that error, switch to the version defined by the repo and retry install:
