@@ -44,6 +44,7 @@ ansible-playbook -i inventory.ini infra/deploy/ansible/ssh-hardening.yml \
 
 Notes:
 - Set host groups/inventory according to your environment.
+- Ensure the SSH user Ansible connects as is included in `ssh_allow_users` before the play reloads SSH, or stage the rollout only where you have an out-of-band access path (for example, console or bastion recovery) to avoid locking out automation.
 - Roll out in batches and verify access before expanding scope.
 
 ## 3) Fly-host execution
