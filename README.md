@@ -159,7 +159,8 @@ pnpm typecheck              # TS/Prisma checks
 pnpm test                   # unit/integration tests
 pnpm build                  # workspace build
 pnpm run validate           # build + typecheck + lint + test
-make infra-up|infra-down    # local infra
+make infra-up               # start local infra
+make infra-down             # stop local infra
 make infra-logs             # tail infra logs
 make smoke                  # /health smoke test
 ```
