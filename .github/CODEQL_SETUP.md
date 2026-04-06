@@ -38,16 +38,16 @@ If you prefer to use the default setup instead:
 2. Delete `.github/codeql-config.yml` and `.github/codeql/codeql-config.yml`
 3. Keep the default setup enabled
 
-**Note**: This option loses the custom query configurations and path filters currently in place.
+**Note**: This option loses the custom query configuration and path exclusions currently in place.
 
 ## Why Use Advanced Configuration?
 
 This repository uses advanced configuration because it has:
 
-- Custom query suites (`security-and-quality`)
-- Specific path inclusions/exclusions
-- Custom CodeQL configuration for JavaScript/TypeScript analysis
-- Fine-grained control over what gets scanned
+- A custom query suite selection (`security-and-quality`)
+- Repository-specific scan exclusions defined in the CodeQL config
+- An explicit workflow-based CodeQL configuration that is maintained in version control
+- More control than the default setup over how CodeQL is run for this repository
 
 ## Verification
 
