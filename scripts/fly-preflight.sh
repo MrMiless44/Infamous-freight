@@ -55,7 +55,7 @@ if ! "$FLYCTL_BIN" auth whoami >/dev/null 2>&1; then
   echo "ERROR: flyctl is not authenticated."
   echo "Run one of the following before deploying:"
   echo "  1) flyctl auth login"
-  echo "  2) export FLY_API_TOKEN=<token>"
+  echo "  2) export FLY_API_TOKEN=<token> (or export FLY_ACCESS_TOKEN=<token>)"
   exit 1
 fi
 
