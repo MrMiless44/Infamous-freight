@@ -227,11 +227,16 @@ export default function InfamousFreightWebApp() {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <button className="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-6 py-3 text-white">
+              <a
+                href="#quote"
+                className="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-6 py-3 text-white"
+              >
                 Get a Freight Quote
                 <ArrowRight className="ml-2 h-4 w-4" />
-              </button>
-              <button className="rounded-2xl border border-slate-300 px-6 py-3">View Customer Portal</button>
+              </a>
+              <a href="#portal" className="rounded-2xl border border-slate-300 px-6 py-3">
+                View Customer Portal
+              </a>
             </div>
 
             <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
