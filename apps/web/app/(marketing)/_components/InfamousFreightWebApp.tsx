@@ -168,8 +168,20 @@ export default function InfamousFreightWebApp() {
           </nav>
 
           <div className="hidden items-center gap-3 md:flex">
-            <button className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium">Customer Portal</button>
-            <button className="rounded-2xl bg-slate-900 px-4 py-2 text-sm font-medium text-white">Book Shipment</button>
+            <button
+              type="button"
+              disabled
+              className="cursor-not-allowed rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium opacity-60 disabled:pointer-events-none"
+            >
+              Customer Portal
+            </button>
+            <button
+              type="button"
+              disabled
+              className="cursor-not-allowed rounded-2xl bg-slate-900 px-4 py-2 text-sm font-medium text-white opacity-60 disabled:pointer-events-none"
+            >
+              Book Shipment
+            </button>
           </div>
 
           <button
