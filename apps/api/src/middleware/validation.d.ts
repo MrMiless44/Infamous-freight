@@ -13,3 +13,17 @@ export declare function validateEnum(field: string, values: string[]): Validatio
 export declare function validateEnumQuery(field: string, values: string[]): ValidationChain;
 export declare function validatePaginationQuery(): ValidationChain[];
 export declare const handleValidationErrors: RequestHandler;
+
+declare const validation: {
+  validateString: typeof validateString;
+  validateEmail: typeof validateEmail;
+  validatePhone: typeof validatePhone;
+  validateUUID: typeof validateUUID;
+  validateUUIDBody: typeof validateUUIDBody;
+  validateEnum: typeof validateEnum;
+  validateEnumQuery: typeof validateEnumQuery;
+  validatePaginationQuery: typeof validatePaginationQuery;
+  handleValidationErrors: typeof handleValidationErrors;
+};
+
+export default validation;
