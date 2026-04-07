@@ -1,4 +1,4 @@
-app = "infamous-freight"
+app = "infamous-freight-db"
 primary_region = "iad"
 
 [build]
