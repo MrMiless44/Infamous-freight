@@ -26,7 +26,7 @@ resolve_flyctl() {
     return 0
   fi
 
-  echo "ERROR: flyctl not found. Install it first: https://fly.io/docs/hands-on/install-flyctl/"
+  echo "ERROR: flyctl not found. Install it first: https://fly.io/docs/hands-on/install-flyctl/" >&2
   return 1
 }
 
