@@ -21,7 +21,8 @@ import { dashboardRoutes } from "./dashboard.routes.js";
 function makeApp() {
   const app = express();
   app.use((req: any, _res, next) => {
-    req.user = { tenantId: "tenant_1", organizationId: "tenant_1" };
+    req.auth = { organizationId: "tenant_1" };
+    req.user = { tenantId: "tenant_1" };
     next();
   });
   app.use("/api/dashboard", dashboardRoutes);
