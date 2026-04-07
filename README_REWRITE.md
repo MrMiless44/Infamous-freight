@@ -70,7 +70,7 @@ cd Infamous-freight
 
 ```bash
 corepack enable
-corepack prepare pnpm@9.15.0 --activate
+corepack prepare pnpm@10.33.0 --activate
 ```
 
 > **Runtime requirement:** this repository requires **Node.js 24.x** and **pnpm 9.x**.
@@ -220,7 +220,7 @@ pkg update && pkg upgrade -y
 pkg uninstall nodejs nodejs-lts -y
 pkg install nodejs -y
 corepack enable
-corepack prepare pnpm@9.15.0 --activate
+corepack prepare pnpm@10.33.0 --activate
 pnpm install
 ```
 

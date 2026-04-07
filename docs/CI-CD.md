@@ -281,7 +281,7 @@ curl -X POST \
 **Environment Variables**:
 
 - `NODE_VERSION`: Read from `.nvmrc` (currently `24`)
-- `PNPM_VERSION`: 10.15.0
+- `PNPM_VERSION`: 10.33.0
 
 ### 2. Security Workflow (`.github/workflows/security.yml`)
 

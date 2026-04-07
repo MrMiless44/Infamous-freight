@@ -1,13 +1,13 @@
 # Infamous Freight Web
 
-Next.js 14 frontend application for the Infamous Freight platform.
+Next.js 16 frontend application for the Infamous Freight platform.
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
 - Node.js 24.x (required by the monorepo root `package.json`/`.nvmrc`)
-- pnpm >= 10.15.0
+- pnpm >= 10.33.0
 
 ### Installation
 
@@ -69,7 +69,7 @@ apps/web/
 
 ## 🛠️ Key Features
 
-- **Next.js 14**: App Router with React Server Components
+- **Next.js 16**: App Router with React Server Components
 - **TypeScript**: Full type safety
 - **Shared Types**: Import types from `@infamous-freight/shared`
 - **Analytics**: Vercel Analytics and Speed Insights
@@ -148,7 +148,7 @@ Opens bundle analyzer to identify large dependencies.
 
 ## 🌐 Routing
 
-Next.js 14 uses file-based routing:
+Next.js 16 uses file-based routing:
 
 - `pages/index.tsx` → `/`
 - `pages/about.tsx` → `/about`

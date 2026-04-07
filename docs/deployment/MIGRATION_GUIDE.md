@@ -32,7 +32,7 @@
 ### 1. Install pnpm
 
 ```bash
-npm install -g pnpm@8
+npm install -g pnpm@10.33.0
 ```
 
 ### 2. Clean old dependencies
@@ -191,7 +191,7 @@ const formattedDate = formatDate(new Date());
 ### pnpm not found
 
 ```bash
-npm install -g pnpm@8
+npm install -g pnpm@10.33.0
 ```
 
 ### Module not found: @infamous-freight/shared

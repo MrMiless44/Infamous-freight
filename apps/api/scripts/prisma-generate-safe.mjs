@@ -1,6 +1,6 @@
 import { spawnSync } from 'node:child_process';
 
-const args = ['generate', '--no-engine', '--schema=prisma/schema.prisma'];
+const args = ['generate', '--schema=prisma/schema.prisma', '--no-hints'];
 const env = {
   ...process.env,
   PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING:
@@ -22,12 +22,17 @@ if (result.stderr) {
 }
 
 const output = `${result.stdout ?? ''}\n${result.stderr ?? ''}`;
-const isEngineFetch403 =
-  output.includes('Failed to fetch the engine file') && output.includes('403 Forbidden');
+const isEngineDownloadIssue =
+  output.includes('Failed to fetch the engine file') ||
+  output.includes('Unable to download the query engine library') ||
+  output.includes('ENOTFOUND') ||
+  output.includes('EAI_AGAIN') ||
+  output.includes('ECONNRESET') ||
+  output.includes('403 Forbidden');
 
-if (isEngineFetch403) {
+if (isEngineDownloadIssue) {
   console.warn(
-    '[api prisma:generate] Prisma engine download unavailable (403). Skipping generate for offline compatibility.',
+    '[api prisma:generate] Prisma engine download unavailable. Skipping generate for offline compatibility.',
   );
   process.exit(0);
 }

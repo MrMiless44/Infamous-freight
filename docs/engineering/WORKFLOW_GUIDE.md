@@ -49,8 +49,8 @@ Enterprises repository, their purposes, triggers, and troubleshooting steps.
 **Environment Variables:**
 
 ```
-NODE_VERSION: 20.x
-PNPM_VERSION: 8.15.9
+NODE_VERSION: 24.x
+PNPM_VERSION: 10.33.0
 API_PORT: 4000
 WEB_PORT: 3000
 DATABASE_URL: postgres://... (from secrets)
