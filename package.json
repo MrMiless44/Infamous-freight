@@ -6,7 +6,7 @@
     "node": "24.x",
     "pnpm": "10.x"
   },
-  "packageManager": "pnpm@10.15.0",
+  "packageManager": "pnpm@10.33.0",
   "scripts": {
     "dev": "pnpm --filter @infamous/api dev",
     "dev:api": "pnpm --filter @infamous/api dev",
@@ -15,17 +15,17 @@
     "build:shared": "pnpm --filter @infamous-freight/shared build",
     "setup:offline": "bash -c 'pnpm --config.engine-strict=false run prisma:generate:offline; pnpm --config.engine-strict=false --filter @infamous-freight/shared build'",
     "prisma:generate:offline": "PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 pnpm --config.engine-strict=false -r --if-present prisma:generate || echo \"[prisma:generate:offline] prisma generate skipped (engine fetch unavailable)\"",
-    "prisma:generate": "pnpm -r --if-present prisma:generate || pnpm run prisma:generate:offline",
+    "prisma:generate": "pnpm -r --if-present prisma:generate",
     "prisma:generate:relaxed": "pnpm --config.engine-strict=false -r --if-present prisma:generate",
     "db:migrate": "pnpm --filter @infamous/api db:migrate",
     "db:migrate:relaxed": "pnpm --config.engine-strict=false --filter @infamous/api db:migrate",
-    "build": "pnpm run prisma:generate && pnpm run build:shared && pnpm -r build",
-    "build:nocheck": "pnpm run prisma:generate && pnpm run build:shared && pnpm -r --if-present run build:nocheck",
+    "build": "pnpm run prisma:generate:offline && pnpm run build:shared && pnpm -r build",
+    "build:nocheck": "pnpm run prisma:generate:offline && pnpm run build:shared && pnpm -r --if-present run build:nocheck",
     "deploy:nocheck": "pnpm run build:nocheck && pnpm run audit:prod && pnpm run smoke:release",
-    "typecheck": "pnpm run prisma:generate && pnpm run build:shared && pnpm -r --if-present typecheck",
+    "typecheck": "pnpm run prisma:generate:offline && pnpm run build:shared && pnpm -r --if-present typecheck",
     "lint": "pnpm -r --if-present run lint",
-    "test": "pnpm run prisma:generate && pnpm run build:shared && pnpm -r --if-present --workspace-concurrency=1 test",
-    "test:ci": "pnpm run prisma:generate && pnpm run build:shared && pnpm -r --if-present --workspace-concurrency=1 test",
+    "test": "pnpm run prisma:generate:offline && pnpm run build:shared && pnpm -r --if-present --workspace-concurrency=1 test",
+    "test:ci": "pnpm run prisma:generate:offline && pnpm run build:shared && pnpm -r --if-present --workspace-concurrency=1 test",
     "audit": "pnpm audit",
     "audit:prod": "pnpm audit --prod",
     "audit:ci": "pnpm run audit && pnpm run audit:prod",
@@ -36,7 +36,9 @@
     "validate": "pnpm run build && pnpm run typecheck && pnpm run lint && pnpm run test",
     "smoke:release": "bash scripts/release-smoke-check.sh",
     "deploy:check": "pnpm validate && pnpm audit:prod && pnpm smoke:release",
-    "deploy:work": "bash scripts/deploy-work-branch.sh"
+    "deploy:work": "bash scripts/deploy-work-branch.sh",
+    "health": "pnpm run lint && pnpm run typecheck && pnpm run test",
+    "health:quick": "pnpm run lint && pnpm run typecheck"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -46,6 +48,9 @@
     "prettier": "^3.8.1"
   },
   "pnpm": {
+    "autoInstallPeers": true,
+    "strictPeerDependencies": false,
+    "shamefullyHoist": false,
     "overrides": {
       "esbuild@<=0.24.2": ">=0.25.0",
       "lodash@>=4.0.0 <=4.17.23": ">=4.18.0",
@@ -70,6 +75,19 @@
       "path-to-regexp@>=8.0.0 <8.4.0": ">=8.4.0",
       "brace-expansion@5.0.4": "5.0.5",
       "defu@<=6.1.4": ">=6.1.5"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@firebase/util",
+      "@prisma/engines",
+      "@sentry-internal/node-cpu-profiler",
+      "@sentry/cli",
+      "argon2",
+      "esbuild",
+      "msgpackr-extract",
+      "prisma",
+      "protobufjs",
+      "sharp",
+      "unrs-resolver"
+    ]
   }
 }
