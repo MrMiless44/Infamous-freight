@@ -6,6 +6,7 @@
 app = "infamous-freight-db"
 primary_region = "iad"
 
+[build]
 [http_service]
   internal_port = 3000
   force_https = true
