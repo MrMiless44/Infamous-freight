@@ -6,7 +6,7 @@ export default function Head() {
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       <meta name="mobile-web-app-capable" content="yes" />
       <link rel="manifest" href="/manifest.webmanifest" />
-      <link rel="apple-touch-icon" href="/apple-icon" />
+      <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
       <link rel="mask-icon" href="/mask-icon.svg" color="#0f172a" />
       <script
         dangerouslySetInnerHTML={{
