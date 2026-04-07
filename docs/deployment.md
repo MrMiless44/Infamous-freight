@@ -151,7 +151,7 @@ export FLYCTL_INSTALL="$HOME/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
 # Authenticate
-fly auth login
+flyctl auth login
 ```
 
 **API Deployment to Render:**
