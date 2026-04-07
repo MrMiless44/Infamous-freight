@@ -12,7 +12,7 @@
 import { Router, type Request, type Response, type NextFunction } from "express";
 import { body, query } from "express-validator";
 import { authenticate, requireScope, limiters } from "../middleware/security.js";
-import { handleValidationErrors } from "../middleware/validation.js";
+import validation from "../middleware/validation.js";
 
 import {
   createLead,
@@ -57,6 +57,7 @@ import {
 } from "../sales/metrics.js";
 
 const router: Router = Router();
+const { handleValidationErrors } = validation;
 
 const publicLeadCaptureAttempts = new Map<string, { count: number; resetAt: number }>();
 
