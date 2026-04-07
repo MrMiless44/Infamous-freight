@@ -9,7 +9,7 @@
 node --version
 
 # pnpm required
-npm install -g pnpm@8.15.9
+npm install -g pnpm@10.33.0
 
 # Global LHCI installation (optional for CI/CD)
 npm install -g @lhci/cli@0.9.x

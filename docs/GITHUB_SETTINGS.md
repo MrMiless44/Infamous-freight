@@ -179,8 +179,8 @@ NPM_TOKEN            # If publishing packages (optional)
 ### Required Variables
 
 ```
-NODE_VERSION=20
-PNPM_VERSION=8
+NODE_VERSION=24
+PNPM_VERSION=10.33.0
 ```
 
 ## 🔐 GitHub OAuth App (Supabase Auth)
