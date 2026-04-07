@@ -3,7 +3,7 @@
 # This root config is used by CI/CD deploy commands such as:
 # flyctl deploy -a infamous-freight --config fly.toml
 
-app = "infamous-freight"
+app = "infamous-freight-db"
 primary_region = "iad"
 
 [http_service]
