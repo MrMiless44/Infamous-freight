@@ -32,8 +32,10 @@ class GitHubClient:
         )
 
     def load_event(self) -> dict[str, Any]:
-        assert self.settings.github_event_path is not None
-        return json.loads(Path(self.settings.github_event_path).read_text(encoding="utf-8"))
+        github_event_path = self.settings.github_event_path
+        if github_event_path is None:
+            raise RuntimeError("github_event_path is required to load the GitHub event payload")
+        return json.loads(Path(github_event_path).read_text(encoding="utf-8"))
 
     def request(self, method: str, path: str, **kwargs: Any) -> Any:
         url = f"{self.base_url}{path}"
