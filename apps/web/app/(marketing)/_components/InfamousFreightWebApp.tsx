@@ -418,22 +418,46 @@ export default function InfamousFreightWebApp() {
                   ["contact", "Contact name"],
                   ["email", "Email"],
                   ["origin", "Origin city / state"],
-                ].map(([field, placeholder]) => (
-                  <input
-                    key={field}
-                    placeholder={placeholder}
-                    className="h-12 rounded-2xl border border-slate-300 px-4"
-                    value={quoteForm[field as keyof typeof quoteForm]}
-                    onChange={(e) => setQuoteForm((prev) => ({ ...prev, [field]: e.target.value }))}
-                  />
-                ))}
+                ].map(([field, placeholder]) => {
+                  const type = field === "email" ? "email" : "text";
+                  const autoComplete =
+                    field === "company"
+                      ? "organization"
+                      : field === "contact"
+                        ? "name"
+                        : field === "email"
+                          ? "email"
+                          : field === "origin"
+                            ? "address-level2"
+                            : "off";
+
+                  return (
+                    <input
+                      key={field}
+                      name={field}
+                      type={type}
+                      autoComplete={autoComplete}
+                      aria-label={placeholder}
+                      placeholder={placeholder}
+                      className="h-12 rounded-2xl border border-slate-300 px-4"
+                      value={quoteForm[field as keyof typeof quoteForm]}
+                      onChange={(e) => setQuoteForm((prev) => ({ ...prev, [field]: e.target.value }))}
+                    />
+                  );
+                })}
                 <input
+                  name="destination"
+                  type="text"
+                  autoComplete="address-level2"
+                  aria-label="Destination city / state"
                   placeholder="Destination city / state"
                   className="h-12 rounded-2xl border border-slate-300 px-4 md:col-span-2"
                   value={quoteForm.destination}
                   onChange={(e) => setQuoteForm((prev) => ({ ...prev, destination: e.target.value }))}
                 />
                 <textarea
+                  name="details"
+                  aria-label="Freight details, weight, equipment type, pickup date, or any special handling notes"
                   placeholder="Freight details, weight, equipment type, pickup date, or any special handling notes"
                   className="min-h-[140px] rounded-2xl border border-slate-300 p-4 md:col-span-2"
                   value={quoteForm.details}
