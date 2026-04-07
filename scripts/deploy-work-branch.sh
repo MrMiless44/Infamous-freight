@@ -39,6 +39,11 @@ FLYCTL_BIN="$(resolve_flyctl)"
 
 cd "$ROOT_DIR"
 
+# Fly CLI primarily reads FLY_ACCESS_TOKEN. Accept FLY_API_TOKEN for compatibility.
+if [ -z "${FLY_ACCESS_TOKEN:-}" ] && [ -n "${FLY_API_TOKEN:-}" ]; then
+  export FLY_ACCESS_TOKEN="$FLY_API_TOKEN"
+fi
+
 echo "Using repo root: $ROOT_DIR"
 
 echo "Checking git remote and branch"
@@ -55,6 +60,12 @@ fi
 
 echo "Pushing branch '$CURRENT_BRANCH' to origin"
 git push origin "$CURRENT_BRANCH"
+
+if ! "$FLYCTL_BIN" auth whoami >/dev/null 2>&1; then
+  echo "ERROR: flyctl is not authenticated."
+  echo "Set FLY_ACCESS_TOKEN (or FLY_API_TOKEN) or run: flyctl auth login"
+  exit 1
+fi
 
 echo "Deploying backend app: infamous-freight-api"
 "$FLYCTL_BIN" deploy --app infamous-freight-api --no-cache --remote-only

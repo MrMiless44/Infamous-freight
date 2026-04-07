@@ -34,12 +34,18 @@ echo "Running Fly preflight checks"
 echo "Config: $CONFIG_PATH"
 echo "Target app: $TARGET_APP"
 
+# Fly CLI expects FLY_ACCESS_TOKEN. Normalize from legacy/new env var naming.
+if [ -z "${FLY_ACCESS_TOKEN:-}" ] && [ -n "${FLY_API_TOKEN:-}" ]; then
+  export FLY_ACCESS_TOKEN="$FLY_API_TOKEN"
+fi
+
 if [ -z "${FLY_API_TOKEN:-}" ] && [ -z "${FLY_ACCESS_TOKEN:-}" ]; then
   echo "INFO: No Fly token env var set. Relying on existing flyctl auth session."
 fi
 
 if ! "$FLYCTL_BIN" auth whoami >/dev/null 2>&1; then
-  echo "ERROR: flyctl is not authenticated. Run: flyctl auth login"
+  echo "ERROR: flyctl is not authenticated."
+  echo "Set FLY_ACCESS_TOKEN (or FLY_API_TOKEN) or run: flyctl auth login"
   exit 1
 fi
 
