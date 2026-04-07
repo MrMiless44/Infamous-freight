@@ -48,7 +48,7 @@ Deletion page should clearly state:
 As of 2026-04-05, confirm:
 
 1. Developer account verification is complete.
-2. Target SDK requirement is met for new submissions (Android 15 / API 35+).
+2. Target SDK requirement is met for new submissions (see current Google Play target API level requirement: https://developer.android.com/google/play/requirements/target-sdk).
 3. Play App Signing is configured for first release.
 4. App content declarations are complete:
    - Data safety
