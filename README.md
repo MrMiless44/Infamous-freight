@@ -183,7 +183,7 @@ Enable pnpm via Corepack.
 
 ```bash
 corepack enable
-corepack prepare pnpm@10.15.0 --activate
+corepack prepare pnpm@10.33.0 --activate
 ```
 
 ### Reproducible local setup (NVM + pnpm)
@@ -203,7 +203,7 @@ nvm install 24
 nvm use 24
 
 corepack enable
-corepack prepare pnpm@10.15.0 --activate
+corepack prepare pnpm@10.33.0 --activate
 
 node -v
 pnpm -v
@@ -229,7 +229,7 @@ pnpm install
 > nvm install
 > nvm use
 > corepack enable
-> corepack prepare pnpm@10.15.0 --activate
+> corepack prepare pnpm@10.33.0 --activate
 > pnpm install
 > ```
 
@@ -277,7 +277,7 @@ If you are developing from Android (for example, a Samsung Galaxy device), use t
 
    ```bash
    corepack enable
-   corepack prepare pnpm@10.15.0 --activate
+   corepack prepare pnpm@10.33.0 --activate
    pnpm -v
    ```
 
