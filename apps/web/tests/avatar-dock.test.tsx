@@ -36,15 +36,7 @@ describe("AvatarDock", () => {
       action: { type: "NAVIGATE", payload: { to: "shipments" } },
     });
 
-    const hrefSetter = vi.fn();
-    Object.defineProperty(window, "location", {
-      configurable: true,
-      value: {
-        set href(value: string) {
-          hrefSetter(value);
-        },
-      },
-    });
+    const hrefSetter = vi.spyOn(window.location, "href", "set");
 
     render(<AvatarDock token="jwt-token" tenantId="tenant_abc" />);
     fireEvent.click(screen.getByRole("button", { name: "Track" }));
