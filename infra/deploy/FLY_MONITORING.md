@@ -116,8 +116,8 @@ sudo systemctl start alloy
 5. Point your app OTLP exporter to Alloy:
 
 ```bash
-OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317
-OTEL_SERVICE_NAME=asserts-custom-ui
+export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317
+export OTEL_SERVICE_NAME=asserts-custom-ui
 ```
 
 ## Uptime Monitoring
