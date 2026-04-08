@@ -70,6 +70,9 @@ router.get(
         where.userId = req.user?.sub;
       }
       Object.assign(where, tenantScope);
+      if (req.user?.role !== "admin") {
+        where.userId = req.user?.sub;
+      }
 
       if (status) where.status = status;
       if (driverId) where.driverId = driverId;
