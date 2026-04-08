@@ -26,7 +26,6 @@ export default function Dashboard() {
         setLoads(loadDocs);
         setError(null);
       } catch (err) {
-        // eslint-disable-next-line no-console
         console.error("Failed to load dashboard data", err);
         setError("Failed to load dashboard data. Please try again.");
       } finally {
