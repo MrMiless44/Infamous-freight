@@ -2,7 +2,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { type Express, type NextFunction, type Request, type Response } from "express";
 import helmet from "helmet";
-import * as Sentry from "@sentry/node";
+import { Sentry, sentryEnabled } from "./instrument.js";
 import { env } from "./config/env.js";
 import { requestIdMiddleware, httpLoggerMiddleware } from "./lib/logger.js";
 import { errorHandler, notFound } from "./middleware/error-handler.js";
@@ -29,6 +29,7 @@ import shipmentRoutes from "./routes/shipments.js";
 import { stripeRoutes } from "./routes/stripe.routes.js";
 import { tenants } from "./routes/tenants.js";
 import stripeWebhookRoutes from "./webhooks/stripe.js";
+
 
 export function createApp(): Express {
   const app = express();
@@ -118,7 +119,7 @@ export function createApp(): Express {
 
   if (env.nodeEnv !== "production") {
     app.get("/debug/sentry", (_req, res) => {
-      if (!env.sentryDsn) {
+      if (!sentryEnabled) {
         res.status(503).json({
           success: false,
           error: "Sentry is disabled: SENTRY_DSN is not configured",
@@ -147,7 +148,7 @@ export function createApp(): Express {
         ? err.statusCode
         : 500;
 
-    if (statusCode >= 500) {
+    if (sentryEnabled && statusCode >= 500) {
       Sentry.withScope((scope) => {
         scope.setTag("method", req.method);
         scope.setTag("path", req.originalUrl || req.url);
