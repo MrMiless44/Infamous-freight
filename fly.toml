@@ -3,8 +3,8 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "infamous-freight"
-primary_region = "dfw"
+app = "infamous-freight-db"
+primary_region = "iad"
 
 [build]
 context = "."
