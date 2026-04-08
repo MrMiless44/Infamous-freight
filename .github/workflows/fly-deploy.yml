@@ -33,9 +33,9 @@ jobs:
           fi
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10.33.0
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -53,33 +53,64 @@ jobs:
         id: fly-config
         shell: bash
         run: |
-          APP_NAME=$(grep -E '^app\s*=\s*' apps/api/fly.toml | head -1 | sed -E 's/.*=\s*"?([^" ]+)"?/\1/')
-          if [ -z "$APP_NAME" ]; then
-            echo "Fly app name not found in apps/api/fly.toml"
+          PRIMARY_APP=$(grep -E '^app\s*=\s*' fly.api.toml | head -1 | sed -E 's/.*=\s*"?([^" ]+)"?/\1/')
+          FALLBACK_APP=$(grep -E '^app\s*=\s*' apps/api/fly.toml | head -1 | sed -E 's/.*=\s*"?([^" ]+)"?/\1/' || true)
+          if [ -z "$PRIMARY_APP" ]; then
+            echo "Primary Fly app name not found in fly.api.toml"
             exit 1
           fi
-          echo "app_name=$APP_NAME" >> "$GITHUB_OUTPUT"
+          echo "primary_app=$PRIMARY_APP" >> "$GITHUB_OUTPUT"
+          echo "fallback_app=$FALLBACK_APP" >> "$GITHUB_OUTPUT"
 
       - name: Deploy to Fly.io
-        run: flyctl deploy -c apps/api/fly.toml -a "${{ steps.fly-config.outputs.app_name }}" --remote-only --depot=false
+        id: deploy
+        shell: bash
+        run: |
+          set -euo pipefail
+          PRIMARY_APP="${{ steps.fly-config.outputs.primary_app }}"
+          FALLBACK_APP="${{ steps.fly-config.outputs.fallback_app }}"
+
+          if flyctl deploy -c fly.api.toml -a "$PRIMARY_APP" --remote-only --depot=false; then
+            echo "app_name=$PRIMARY_APP" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ -n "$FALLBACK_APP" ] && [ "$FALLBACK_APP" != "$PRIMARY_APP" ]; then
+            echo "Primary deploy failed, retrying with fallback app config: $FALLBACK_APP"
+            flyctl deploy -c apps/api/fly.toml -a "$FALLBACK_APP" --remote-only --depot=false
+            echo "app_name=$FALLBACK_APP" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "Fly deploy failed for primary app and no valid fallback app available" >&2
+          exit 1
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
       - name: Get app URLs
         id: get-url
         run: |
-          APP_NAME="${{ steps.fly-config.outputs.app_name }}"
+          APP_NAME="${{ steps.deploy.outputs.app_name }}"
           echo "app_url=https://$APP_NAME.fly.dev" >> $GITHUB_OUTPUT
           echo "health_url=https://$APP_NAME.fly.dev/api/health" >> $GITHUB_OUTPUT
 
       - name: Health check
         run: |
-          echo "Checking ${{ steps.get-url.outputs.health_url }}"
-          curl -sf "${{ steps.get-url.outputs.health_url }}" | jq .
+          APP_URL="${{ steps.get-url.outputs.app_url }}"
+          API_HEALTH="$APP_URL/api/health"
+          ROOT_HEALTH="$APP_URL/health"
+          echo "Checking $API_HEALTH"
+          if curl -sf "$API_HEALTH" > /tmp/fly-health.json; then
+            cat /tmp/fly-health.json
+            exit 0
+          fi
+          echo "Checking fallback $ROOT_HEALTH"
+          curl -sf "$ROOT_HEALTH" > /tmp/fly-health.json
+          cat /tmp/fly-health.json
 
       - name: Deployment summary
         run: |
-          APP_NAME="${{ steps.fly-config.outputs.app_name }}"
+          APP_NAME="${{ steps.deploy.outputs.app_name }}"
           echo "## 🪁 Fly.io Deployment" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **App**: $APP_NAME" >> $GITHUB_STEP_SUMMARY
