@@ -3,6 +3,8 @@ name: Unified Deploy (Fly + Netlify)
 on:
   push:
     branches:
+      - main
+    branches:
       - "**"
   workflow_dispatch:
 
