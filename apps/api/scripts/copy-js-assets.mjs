@@ -29,7 +29,7 @@ async function copyJsFiles(currentDir) {
     const relativePath = path.relative(srcRoot, fullPath);
     const tsSourcePath = fullPath.slice(0, -3) + ".ts";
     const tsSourceExists = await stat(tsSourcePath).then((file) => file.isFile()).catch(() => false);
-    const forceCjs = forceCjsCopies.has(relativePath);
+    const forceCjs = forceCjsCopies.has(relativePath.split(path.sep).join("/"));
     const shouldCopyAsCjs = tsSourceExists || forceCjs;
 
     if (forceCjs) {
