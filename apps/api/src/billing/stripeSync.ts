@@ -6,8 +6,15 @@
  */
 
 import Stripe from "stripe";
-import { BillingPlan } from "@prisma/client";
 import { prisma } from "../db/prisma.js";
+
+type BillingPlan = "STARTER" | "GROWTH" | "ENTERPRISE";
+
+const BillingPlan = {
+  STARTER: "STARTER",
+  GROWTH: "GROWTH",
+  ENTERPRISE: "ENTERPRISE",
+} as const;
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
 

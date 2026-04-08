@@ -1,6 +1,10 @@
 import { createRequire } from "node:module";
 
+import { logger } from "../lib/logger.js";
+
 const require = createRequire(import.meta.url);
+
+let warnedLegacyUnavailable = false;
 
 type LegacyEmailService = {
   sendEmail?: (...args: any[]) => Promise<any>;
@@ -13,8 +17,19 @@ type LegacyEmailService = {
 function loadLegacy(): LegacyEmailService {
   try {
     return require("./emailService.cjs") as LegacyEmailService;
-  } catch {
-    return {};
+  } catch (error: any) {
+    if (error?.code === "MODULE_NOT_FOUND") {
+      if (!warnedLegacyUnavailable) {
+        warnedLegacyUnavailable = true;
+        logger.warn(
+          { reason: error.message },
+          "Legacy email service unavailable; email operations are no-op",
+        );
+      }
+      return {};
+    }
+
+    throw error;
   }
 }
 
