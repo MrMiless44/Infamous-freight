@@ -28,7 +28,19 @@ export NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_live_..."
 export JWT_SECRET="$(openssl rand -base64 32)"
 ```
 
-### 3) Apply to Netlify environment
+### 3) Apply automatically with one script (recommended)
+
+```bash
+./scripts/bootstrap-production-secrets.sh
+```
+
+Use `DRY_RUN=1` first to preview changes:
+
+```bash
+DRY_RUN=1 ./scripts/bootstrap-production-secrets.sh
+```
+
+### 4) Apply to Netlify environment
 
 ```bash
 printf '%s' "$NEXT_PUBLIC_API_URL" | netlify env:set NEXT_PUBLIC_API_URL production
@@ -36,7 +48,7 @@ printf '%s' "$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" | netlify env:set NEXT_PUBLIC_
 printf '%s' "$JWT_SECRET" | netlify env:set JWT_SECRET production
 ```
 
-### 4) Apply to Fly.io environment
+### 5) Apply to Fly.io environment
 
 ```bash
 flyctl secrets set \
@@ -45,7 +57,7 @@ flyctl secrets set \
   --app infamous-freight-api
 ```
 
-### 5) Post-setup verification
+### 6) Post-setup verification
 
 ```bash
 netlify env:list --context production
