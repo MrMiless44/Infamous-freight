@@ -142,7 +142,7 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${GITHUB_REF_NAME}" = "main" ]; then
-            pnpm dlx netlify-cli deploy --build --prod --message "GitHub Actions deploy from ${GITHUB_REF_NAME}" --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN"
+            pnpm --package=netlify-cli dlx netlify deploy --build --prod --message "GitHub Actions deploy from ${GITHUB_REF_NAME}" --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN"
           else
-            pnpm dlx netlify-cli deploy --build --message "GitHub Actions preview deploy from ${GITHUB_REF_NAME}" --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN"
+            pnpm --package=netlify-cli dlx netlify deploy --build --message "GitHub Actions preview deploy from ${GITHUB_REF_NAME}" --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN"
           fi
