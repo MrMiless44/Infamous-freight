@@ -35,7 +35,7 @@ const resolveTenantContext = (req) => {
   const tenantId = req.auth?.organizationId || req.user?.tenantId || req.user?.organizationId;
   return {
     tenantId: tenantId || null,
-    orgId: req.user?.organizationId || req.user?.orgId || tenantId || null,
+    orgId: req.user?.organizationId || req.user?.orgId || null,
   };
 };
 
