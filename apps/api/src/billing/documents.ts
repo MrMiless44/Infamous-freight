@@ -12,11 +12,10 @@ import PDFDocument from "pdfkit";
 import { createWriteStream } from "fs";
 import { promises as fs } from "fs";
 import { join } from "path";
-import { PrismaClient } from "@prisma/client";
 import Stripe from "stripe";
 import { logger } from "../lib/logger.js";
+import { prisma } from "../db/prisma.js";
 
-const prisma = new PrismaClient();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
 
 // ============================================

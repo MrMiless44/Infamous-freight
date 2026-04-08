@@ -16,8 +16,9 @@ import {
   requireScope,
   limiters,
 } from "../middleware/security.js";
-import validation from "../middleware/validation.js";
+import * as validation from "../middleware/validation.js";
 import { logAuditEvent, AUDIT_ACTIONS } from "../audit/orgAuditLog.js";
+import { prisma } from "../db/prisma.js";
 import { tenantPrisma } from "../db/tenant.js";
 import { body, query } from "express-validator";
 
@@ -43,8 +44,6 @@ import {
 const router: Router = Router();
 const { handleValidationErrors, validateString } = validation;
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
 
 // ============================================
 // Billing Portal (Stripe)

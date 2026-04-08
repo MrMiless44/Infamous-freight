@@ -1,4 +1,4 @@
-const { getPrisma } = require("../db/prisma");
+const { getPrisma } = require("../db/prisma.cjs");
 
 const prisma = getPrisma();
 
@@ -14,3 +14,6 @@ if (prisma) {
     },
   };
 }
+
+// Allow ESM default imports from TypeScript route modules.
+module.exports.default = module.exports;

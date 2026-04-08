@@ -7,11 +7,12 @@
  * - Track attendance
  */
 
-import { PrismaClient } from "@prisma/client";
+import { createRequire } from "module";
 import { createLead, convertLead } from "./leadCapture.js";
-import { sendEmail } from "../services/emailService.js";
+import { prisma } from "../db/prisma.js";
 
-const prisma = new PrismaClient();
+const require = createRequire(import.meta.url);
+const { sendEmail } = require("../services/emailService.js");
 
 // ============================================
 // Demo Booking

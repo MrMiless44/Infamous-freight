@@ -5,10 +5,9 @@
  * Runs as a scheduled BullMQ job (1st of month)
  */
 
-import { PrismaClient } from "@prisma/client";
 import Stripe from "stripe";
+import { prisma } from "../db/prisma.js";
 
-const prisma = new PrismaClient();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
 
 /**
