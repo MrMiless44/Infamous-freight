@@ -14,7 +14,6 @@ jobs:
     secrets: inherit
 
   deploy-web:
-    if: ${{ vars.VERCEL_DEPLOY_ENABLED == 'true' }}
     uses: ./.github/workflows/vercel-deploy.yml
     secrets: inherit
 
