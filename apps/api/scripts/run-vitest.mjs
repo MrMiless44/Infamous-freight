@@ -6,6 +6,10 @@ const sanitizedArgs = [];
 let forceSingleWorker = false;
 
 for (const arg of forwardedArgs) {
+  if (arg === '--') {
+    continue;
+  }
+
   if (arg === '--runInBand') {
     forceSingleWorker = true;
     continue;
@@ -14,7 +18,18 @@ for (const arg of forwardedArgs) {
   sanitizedArgs.push(arg);
 }
 
-const vitestArgs = ['run', '--passWithNoTests', 'src/**/*.test.{ts,js,mjs}'];
+const defaultPatterns = [
+  'src/**/*.test.ts',
+  'src/**/*.spec.ts',
+  'src/**/__tests__/**/*.test.ts',
+];
+
+const hasExplicitFileFilter = sanitizedArgs.some((arg) => !arg.startsWith('-'));
+const vitestArgs = ['run', '--passWithNoTests'];
+
+if (!hasExplicitFileFilter) {
+  vitestArgs.push(...defaultPatterns);
+}
 
 if (forceSingleWorker && !sanitizedArgs.some((arg) => arg.startsWith('--maxWorkers'))) {
   vitestArgs.push('--maxWorkers=1');
