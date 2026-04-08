@@ -214,10 +214,17 @@ function requireScope(required) {
   // Validate all required scopes are in the registry
   const invalidScopes = requiredScopes.filter((scope) => !validateScope(scope));
   if (invalidScopes.length > 0) {
-    logger.error("Invalid scopes in requireScope():", {
+    logger.error("Invalid scopes in requireScope()", {
       invalidScopes,
+      requiredScopes,
       hint: "Ensure scopes are defined in @infamous-freight/shared/src/scopes.ts",
     });
+
+    return (_req, res) =>
+      res.status(500).json({
+        error: "Server scope misconfiguration",
+        invalidScopes,
+      });
   }
 
   return (req, res, next) => {
