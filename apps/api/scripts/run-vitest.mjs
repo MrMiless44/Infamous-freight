@@ -19,9 +19,9 @@ for (const arg of forwardedArgs) {
 }
 
 const defaultPatterns = [
-  'src/**/*.test.ts',
+  'src/**/*.test.{ts,js,mjs}',
   'src/**/*.spec.ts',
-  'src/**/__tests__/**/*.test.ts',
+  'src/**/__tests__/**/*.test.{ts,js,mjs}',
 ];
 
 const hasExplicitFileFilter = sanitizedArgs.some((arg) => !arg.startsWith('-'));
