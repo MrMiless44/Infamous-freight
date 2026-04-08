@@ -63,6 +63,7 @@ describe("dashboard page", () => {
     const errorMessage = await screen.findByText("Failed to load dashboard data. Please try again.");
 
     expect(errorMessage).toBeInTheDocument();
+    expect(listLoadsMock).toHaveBeenCalledTimes(1);
     expect(reportSentryErrorMock).toHaveBeenCalledTimes(1);
   });
 
@@ -98,6 +99,7 @@ describe("dashboard page", () => {
       expect(pushMock).toHaveBeenCalledWith("/login");
     });
 
+    expect(listLoadsMock).toHaveBeenCalledTimes(1);
     expect(screen.queryByText(/DAL-HOU/)).not.toBeInTheDocument();
   });
 });
