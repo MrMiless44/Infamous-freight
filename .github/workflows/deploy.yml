@@ -14,9 +14,39 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  quality-gate:
+    name: Quality Gate (API tests + Docker build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm --filter @infamous/api prisma:generate
+
+      - name: Run API tests (runInBand)
+        run: pnpm --filter @infamous/api test -- --runInBand
+
+      - name: Build API Docker image
+        run: docker build -f Dockerfile.api -t infamous-freight-api:ci .
+
   deploy-api:
     name: Deploy API to Fly.io
     runs-on: ubuntu-latest
+    needs: [quality-gate]
     if: ${{ secrets.FLY_API_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
@@ -50,6 +80,7 @@ jobs:
   deploy-web:
     name: Deploy Web to Netlify
     runs-on: ubuntu-latest
+    needs: [quality-gate]
     if: ${{ secrets.NETLIFY_AUTH_TOKEN != '' && secrets.NETLIFY_SITE_ID != '' }}
     steps:
       - uses: actions/checkout@v4
