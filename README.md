@@ -76,9 +76,7 @@ Infamous Freight is designed to centralize those workflows into a single logisti
 
 ## 📸 Screenshots
 
-| Landing Page | Platform Overview |
-|---|---|
-| ![Infamous Freight Landing Page](docs/screenshots/infamousfreight-landing-page.png) | ![Infamous Freight Platform Overview](docs/screenshots/infamousfreight-platform-overview.png) |
+Screenshots will be added once UI assets are available in the repository.
 
 ---
 
