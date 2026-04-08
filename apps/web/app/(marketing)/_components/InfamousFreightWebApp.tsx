@@ -245,7 +245,7 @@ export default function InfamousFreightWebApp() {
                 Get a Freight Quote
                 <ArrowRight className="ml-2 h-4 w-4" />
               </a>
-              <a href="#portal" className="rounded-2xl border border-slate-300 px-6 py-3">
+              <a href="/dashboard" className="rounded-2xl border border-slate-300 px-6 py-3">
                 View Customer Portal
               </a>
             </div>
