@@ -2,6 +2,7 @@ app = "infamous-freight"
 primary_region = "iad"
 
 [build]
+context = "."
 dockerfile = "Dockerfile.api"
 
 [http_service]
