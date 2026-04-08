@@ -32,7 +32,7 @@
     "deploy:check": "pnpm validate && pnpm audit:prod && pnpm smoke:release"
   },
   "devDependencies": {
-    "@eslint/js": "^10.1.0",
+    "@eslint/js": "^10.0.1",
     "@typescript-eslint/eslint-plugin": "^8.46.4",
     "@typescript-eslint/parser": "^8.46.4",
     "eslint-config-prettier": "^10.0.1",
