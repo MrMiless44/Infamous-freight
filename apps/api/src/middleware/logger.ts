@@ -1,7 +1,7 @@
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const loggerModule = require("./logger.cjs");
+const loggerModule = require("./logger.js");
 
 export const httpLogger = loggerModule.httpLogger;
 export const logger = loggerModule.logger;
