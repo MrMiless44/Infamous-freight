@@ -8,6 +8,8 @@
 .codex/
 .vscode/
 .idea/
+.githooks/
+.husky/
 
 # Dependency caches and local artifacts
 node_modules/
