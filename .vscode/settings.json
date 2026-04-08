@@ -26,17 +26,20 @@
     "**/node_modules": true,
     "**/pnpm-lock.yaml": false
   },
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
-  "eslint.workingDirectories": [
-    { "mode": "auto" }
-  ],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.workingDirectories": [{ "mode": "auto" }],
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "npm.packageManager": "pnpm",
+  "terminal.integrated.profiles.linux": {
+    "bash": {
+      "path": "/bin/bash",
+      "args": ["-l"]
+    }
+  },
+  "terminal.integrated.automationProfile.linux": {
+    "path": "/bin/bash",
+    "args": ["-l"]
+  },
   "terminal.integrated.defaultProfile.linux": "bash",
   "terminal.integrated.cwd": "${workspaceFolder}",
   "debug.node.autoAttach": "smart",
