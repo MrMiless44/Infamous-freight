@@ -49,24 +49,21 @@ describe("dashboard page", () => {
     render(<Dashboard />);
 
     await waitFor(() => {
-      expect(reportSentryErrorMock).toHaveBeenCalledWith(
-        expect.any(Error),
-        expect.objectContaining({
-          contexts: expect.objectContaining({
-            component: "dashboard",
-            action: "listLoads",
-          }),
+      expect(reportSentryErrorMock).toHaveBeenCalledTimes(1);
+
+      const [reportedError, reportedContext] = reportSentryErrorMock.mock.calls[0];
+      expect(reportedError).toBeInstanceOf(Error);
+      expect((reportedError as Error).message).toBe("firestore unavailable");
+      expect(reportedContext).toEqual(expect.objectContaining({
+        contexts: expect.objectContaining({
+          component: "dashboard",
+          action: "listLoads",
         }),
-      );
+      }));
     });
 
     const errorMessage = await screen.findByText("Failed to load dashboard data. Please try again.");
     expect(errorMessage).toBeInTheDocument();
-    expect(reportSentryErrorMock).toHaveBeenCalledTimes(1);
-
-    const [reportedError] = reportSentryErrorMock.mock.calls[0] ?? [];
-    expect(reportedError).toBeInstanceOf(Error);
-    expect((reportedError as Error).message).toBe("firestore unavailable");
   });
 
   it("redirects unauthenticated users to login", async () => {
