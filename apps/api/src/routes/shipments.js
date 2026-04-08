@@ -35,12 +35,11 @@ const resolveTenantContext = (req) => {
   const tenantId = req.auth?.organizationId || req.user?.tenantId || req.user?.organizationId;
   return {
     tenantId: tenantId || null,
-    orgId: req.user?.organizationId || req.user?.orgId || tenantId || null,
+    orgId: req.user?.organizationId || req.user?.orgId || null,
   };
 };
-const shipmentTenantScope = ({ tenantId, orgId }) => {
+const shipmentTenantScope = ({ tenantId }) => {
   if (tenantId) return { tenantId };
-  if (orgId) return { orgId };
   return null;
 };
 
@@ -61,8 +60,8 @@ router.get(
   asyncHandler(async (req, res) => {
       const { status, driverId } = req.query;
       const where = {};
-      const { tenantId, orgId } = resolveTenantContext(req);
-      const tenantScope = shipmentTenantScope({ tenantId, orgId });
+      const { tenantId } = resolveTenantContext(req);
+      const tenantScope = shipmentTenantScope({ tenantId });
       if (!tenantScope) {
         return res.status(403).json({ ok: false, error: "Tenant context is required" });
       }
@@ -108,8 +107,8 @@ router.get(
   validateUUID("id"),
   handleValidationErrors,
   asyncHandler(async (req, res) => {
-      const { tenantId, orgId } = resolveTenantContext(req);
-      const tenantScope = shipmentTenantScope({ tenantId, orgId });
+      const { tenantId } = resolveTenantContext(req);
+      const tenantScope = shipmentTenantScope({ tenantId });
       if (!tenantScope) {
         return res.status(403).json({ ok: false, error: "Tenant context is required" });
       }
@@ -170,7 +169,7 @@ router.post(
 
       const userId = req.user?.sub;
       const { tenantId, orgId } = resolveTenantContext(req);
-      if (!tenantId && !orgId) {
+      if (!tenantId) {
         return res.status(403).json({ ok: false, error: "Tenant context is required" });
       }
       const newTrackingId =
@@ -265,8 +264,8 @@ router.patch(
     try {
       const { status, driverId } = req.body;
       const updates = {};
-      const { tenantId, orgId } = resolveTenantContext(req);
-      const tenantScope = shipmentTenantScope({ tenantId, orgId });
+      const { tenantId } = resolveTenantContext(req);
+      const tenantScope = shipmentTenantScope({ tenantId });
       if (!tenantScope) {
         return res.status(403).json({ ok: false, error: "Tenant context is required" });
       }
@@ -406,8 +405,8 @@ router.delete(
   [validateUUID("id"), handleValidationErrors],
   asyncHandler(async (req, res) => {
     try {
-      const { tenantId, orgId } = resolveTenantContext(req);
-      const tenantScope = shipmentTenantScope({ tenantId, orgId });
+      const { tenantId } = resolveTenantContext(req);
+      const tenantScope = shipmentTenantScope({ tenantId });
       if (!tenantScope) {
         return res.status(403).json({ ok: false, error: "Tenant context is required" });
       }
@@ -454,8 +453,8 @@ router.get(
   asyncHandler(async (req, res) => {
       const { format } = req.params;
       const { status, driverId } = req.query;
-      const { tenantId, orgId } = resolveTenantContext(req);
-      const tenantScope = shipmentTenantScope({ tenantId, orgId });
+      const { tenantId } = resolveTenantContext(req);
+      const tenantScope = shipmentTenantScope({ tenantId });
       if (!tenantScope) {
         return res.status(403).json({ ok: false, error: "Tenant context is required" });
       }
