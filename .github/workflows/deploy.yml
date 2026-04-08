@@ -38,8 +38,17 @@ jobs:
       - name: Generate Prisma client
         run: pnpm --filter @infamous/api prisma:generate
 
+      - name: Build API
+        run: pnpm --filter @infamous/api build
+
       - name: Run API tests (runInBand)
-        run: pnpm --filter @infamous/api test -- --runInBand
+        run: |
+          set -euo pipefail
+          if pnpm --filter @infamous/api exec -- jest --version >/dev/null 2>&1; then
+            pnpm --filter @infamous/api exec -- jest --runInBand
+          else
+            pnpm --filter @infamous/api test -- --runInBand
+          fi
 
       - name: Build API Docker image
         run: docker build -f Dockerfile.api -t infamous-freight-api:ci .
@@ -67,7 +76,7 @@ jobs:
         run: |
           set -euo pipefail
           APP_NAME=$(awk -F'=' '/^app\s*=/{gsub(/[ "\t]/, "", $2); print $2; exit}' fly.api.toml)
-          HEALTH_URL="https://${APP_NAME}.fly.dev/api/health"
+          HEALTH_URL="https://${APP_NAME}.fly.dev/health"
           for attempt in 1 2 3 4 5; do
             if curl -fsS "$HEALTH_URL" >/dev/null; then
               echo "Health check passed: $HEALTH_URL"
