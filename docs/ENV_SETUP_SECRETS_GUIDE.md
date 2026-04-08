@@ -43,9 +43,9 @@ DRY_RUN=1 ./scripts/bootstrap-production-secrets.sh
 ### 4) Apply to Netlify environment
 
 ```bash
-printf '%s' "$NEXT_PUBLIC_API_URL" | netlify env:set NEXT_PUBLIC_API_URL production
-printf '%s' "$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" | netlify env:set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY production
-printf '%s' "$JWT_SECRET" | netlify env:set JWT_SECRET production
+printf '%s' "$NEXT_PUBLIC_API_URL" | netlify env:set NEXT_PUBLIC_API_URL --context production --site "$NETLIFY_SITE_ID"
+printf '%s' "$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" | netlify env:set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY --context production --site "$NETLIFY_SITE_ID"
+printf '%s' "$JWT_SECRET" | netlify env:set JWT_SECRET --context production --site "$NETLIFY_SITE_ID"
 ```
 
 ### 5) Apply to Fly.io environment
