@@ -113,15 +113,6 @@ const envSchema = z
       });
     }
 
-    if (values.JWT_ALGORITHM === "RS256" && !hasRs256Keys && !canFallbackToHs256) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["JWT_ALGORITHM"],
-        message:
-          "JWT_ALGORITHM=RS256 requires JWT_PRIVATE_KEY/JWT_PUBLIC_KEY or JWT_SECRET for HS256 fallback",
-      });
-    }
-
     if (values.AUTH_COOKIE_SAME_SITE === "none" && !values.AUTH_COOKIE_SECURE) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
