@@ -2,7 +2,7 @@ app = "infamous-freight"
 primary_region = "iad"
 
 [build]
-dockerfile = "Dockerfile.web"
+dockerfile = "Dockerfile.api"
 
 [http_service]
 auto_start_machines = true

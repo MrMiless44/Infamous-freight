@@ -8,7 +8,7 @@ if [ "${1:-}" != "" ] && [[ "${1}" == *.toml ]]; then
   CONFIG_PATH="$1"
   shift
 else
-  CONFIG_PATH="$ROOT_DIR/fly.toml"
+  CONFIG_PATH="$ROOT_DIR/fly.web.toml"
 fi
 
 if [ ! -f "$CONFIG_PATH" ]; then
