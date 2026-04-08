@@ -12,9 +12,16 @@ Built as a `pnpm` monorepo, the platform includes API, web, mobile, and shared p
 
 ## ⚡ Quick Start
 
+> This repository requires Node.js 24.x and pnpm 10.x before running `pnpm install` or any `pnpm ... build` command.
+
 ```bash
 git clone https://github.com/MrMiless44/Infamous-freight.git
 cd Infamous-freight
+
+export NVM_DIR="$HOME/.nvm"
+. "$NVM_DIR/nvm.sh"
+nvm install
+nvm use
 
 corepack enable
 corepack prepare pnpm@10.33.0 --activate
@@ -187,7 +194,7 @@ pnpm dev:mobile       # run mobile app
 pnpm build            # generate Prisma client (offline-safe) + build workspaces
 pnpm lint             # lint all workspaces
 pnpm typecheck        # strict TypeScript checks
-pnpm test             # run workspace tests serially
+pnpm test -- --runInBand  # run Jest suites in-band for stability
 pnpm health           # lint + typecheck + test
 pnpm validate         # full build + typecheck + lint + test
 pnpm audit            # dependency audit
@@ -286,7 +293,7 @@ pnpm install
 pnpm dev:api
 pnpm lint
 pnpm typecheck
-pnpm test
+pnpm test -- --runInBand
 ```
 
 ### API
@@ -365,7 +372,7 @@ Or step by step:
 pnpm build
 pnpm typecheck
 pnpm lint
-pnpm test
+pnpm test -- --runInBand
 ```
 
 CI enforces baseline coverage thresholds for coverage-enabled test suites.
