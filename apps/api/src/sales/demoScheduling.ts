@@ -12,7 +12,7 @@ import { createLead, convertLead } from "./leadCapture.js";
 import { prisma } from "../db/prisma.js";
 
 const require = createRequire(import.meta.url);
-const { sendEmail } = require("../services/emailService.js");
+const { sendEmail } = require("../services/emailService.cjs");
 
 // ============================================
 // Demo Booking
