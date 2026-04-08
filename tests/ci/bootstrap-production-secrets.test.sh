@@ -83,7 +83,7 @@ dry_run_output="$(env "${BASE_ENV[@]}" DRY_RUN=1 "$SCRIPT" 2>&1)"
 dry_run_code=$?
 set -e
 assert_eq "dry run exits zero" "0" "$dry_run_code"
-assert_contains "dry run prints netlify command" "$dry_run_output" "netlify env:set NEXT_PUBLIC_API_URL production"
+assert_contains "dry run prints netlify key/value/context command" "$dry_run_output" 'netlify env:set NEXT_PUBLIC_API_URL "$NEXT_PUBLIC_API_URL" --context production'
 assert_contains "dry run prints fly command" "$dry_run_output" "flyctl secrets set DATABASE_URL="
 
 if [ "$FAIL" -gt 0 ]; then
