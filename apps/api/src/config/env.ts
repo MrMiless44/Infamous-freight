@@ -7,6 +7,11 @@ import { isValidDatabaseUrl } from "./database-url.js";
 const durationSchema = z.string().trim().min(2);
 const pemSchema = z.string().trim().min(1).transform((value) => value.replace(/\\n/g, "\n"));
 const booleanStringSchema = z.enum(["true", "false"]).transform((value) => value === "true");
+const optionalNonEmptyString = (schema: z.ZodType<string>) =>
+  z.preprocess(
+    (value) => (typeof value === "string" && value.trim() === "" ? undefined : value),
+    schema.optional(),
+  );
 
 const envSchema = z
   .object({
@@ -20,9 +25,9 @@ const envSchema = z
       .min(1)
       .refine(isValidDatabaseUrl, "DATABASE_URL must be a valid postgres URL with a hostname and database name"),
     JWT_ALGORITHM: z.enum(["RS256", "HS256"]).default("RS256"),
-    JWT_PRIVATE_KEY: pemSchema.optional(),
-    JWT_PUBLIC_KEY: pemSchema.optional(),
-    JWT_SECRET: z.string().trim().min(32).optional(),
+    JWT_PRIVATE_KEY: optionalNonEmptyString(pemSchema),
+    JWT_PUBLIC_KEY: optionalNonEmptyString(pemSchema),
+    JWT_SECRET: optionalNonEmptyString(z.string().trim().min(32)),
     JWT_ACCESS_EXPIRES_IN: durationSchema.default("15m"),
     JWT_REFRESH_EXPIRES_IN: durationSchema.default("7d"),
     JWT_ISSUER: z.string().trim().min(1).default("infamous-freight"),
@@ -77,20 +82,25 @@ const envSchema = z
     GOOGLE_CLIENT_SECRET: z.string().optional(),
   })
   .superRefine((values, ctx) => {
+    const hasRs256Keys = Boolean(values.JWT_PRIVATE_KEY && values.JWT_PUBLIC_KEY);
+    const canFallbackToHs256 = Boolean(values.JWT_SECRET);
+
     if (values.JWT_ALGORITHM === "RS256") {
-      if (!values.JWT_PRIVATE_KEY) {
+      if (!values.JWT_PRIVATE_KEY && !canFallbackToHs256) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["JWT_PRIVATE_KEY"],
-          message: "JWT_PRIVATE_KEY is required when JWT_ALGORITHM=RS256",
+          message:
+            "JWT_PRIVATE_KEY is required when JWT_ALGORITHM=RS256 unless JWT_SECRET is set for HS256 fallback",
         });
       }
 
-      if (!values.JWT_PUBLIC_KEY) {
+      if (!values.JWT_PUBLIC_KEY && !canFallbackToHs256) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["JWT_PUBLIC_KEY"],
-          message: "JWT_PUBLIC_KEY is required when JWT_ALGORITHM=RS256",
+          message:
+            "JWT_PUBLIC_KEY is required when JWT_ALGORITHM=RS256 unless JWT_SECRET is set for HS256 fallback",
         });
       }
     }
@@ -113,12 +123,24 @@ const envSchema = z
   });
 
 const parsed = envSchema.parse(process.env);
+const shouldFallbackToHs256 =
+  parsed.JWT_ALGORITHM === "RS256" &&
+  (!parsed.JWT_PRIVATE_KEY || !parsed.JWT_PUBLIC_KEY) &&
+  Boolean(parsed.JWT_SECRET);
+const effectiveJwtAlgorithm = shouldFallbackToHs256 ? "HS256" : parsed.JWT_ALGORITHM;
+
+if (shouldFallbackToHs256) {
+  console.warn(
+    "[config] JWT_ALGORITHM is configured as RS256, but JWT_PRIVATE_KEY and/or JWT_PUBLIC_KEY are missing while JWT_SECRET is set. Falling back to HS256.",
+  );
+}
 
 export const env = {
   nodeEnv: parsed.NODE_ENV,
   appPort: parsed.PORT ?? parsed.API_PORT ?? parsed.APP_PORT,
   databaseUrl: parsed.DATABASE_URL,
-  jwtAlgorithm: parsed.JWT_ALGORITHM,
+  configuredJwtAlgorithm: parsed.JWT_ALGORITHM,
+  jwtAlgorithm: effectiveJwtAlgorithm,
   jwtPrivateKey: parsed.JWT_PRIVATE_KEY,
   jwtPublicKey: parsed.JWT_PUBLIC_KEY,
   jwtSecret: parsed.JWT_SECRET,
