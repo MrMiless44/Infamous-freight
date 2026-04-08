@@ -49,7 +49,15 @@ describe("dashboard page", () => {
     render(<Dashboard />);
 
     await waitFor(() => {
-      expect(reportSentryErrorMock).toHaveBeenCalledTimes(1);
+      expect(reportSentryErrorMock).toHaveBeenCalledWith(
+        expect.any(Error),
+        expect.objectContaining({
+          contexts: expect.objectContaining({
+            component: "dashboard",
+            action: "listLoads",
+          }),
+        }),
+      );
     });
 
     expect(screen.getByText("Failed to load dashboard data. Please try again.")).toBeInTheDocument();
