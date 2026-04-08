@@ -1,89 +1,100 @@
-# Infæmous Freight
+<h1 align="center">
+  <span style="color:#ff2b2b;">INFÆMOUS FREIGHT</span>
+</h1>
+
+<p align="center"><strong>🚛 AI-powered freight operations platform</strong></p>
+
+Infamous Freight is an AI-powered freight operations platform for dispatch automation, shipment tracking, fleet coordination, and logistics intelligence.
+
+Built as a `pnpm` monorepo, the platform includes API, web, mobile, and shared package surfaces for modern logistics operations.
 
 ---
 
-## Overview
+## ⚡ Quick Start
 
-Infæmous Freight is an AI-powered freight and logistics operations platform built to optimize dispatch workflows, shipment visibility, fleet coordination, and operational intelligence.
+```bash
+git clone https://github.com/MrMiless44/Infamous-freight.git
+cd Infamous-freight
 
-The platform combines modern logistics infrastructure with AI-driven automation and analytics to help carriers, dispatch teams, and logistics operators run efficient freight operations.
+corepack enable
+corepack prepare pnpm@10.33.0 --activate
 
-The repository is organized as a pnpm monorepo delivering a unified platform across API, web, and mobile surfaces.
-
----
-
-## Platform Vision
-
-The goal of Infæmous Freight is to become a logistics intelligence platform capable of:
-
-- dispatch automation
-- operational analytics
-- fleet intelligence
-- shipment lifecycle visibility
-- driver coordination
-- AI-driven operational insights
-
-Rather than acting as a simple load management tool, Infæmous Freight is designed as a freight operating system.
+cp .env.example .env
+pnpm install
+pnpm build
+pnpm dev:api
+```
 
 ---
 
-## Product Architecture
+## 📌 Current Status
 
-The Infæmous ecosystem consists of three major layers.
+### ✅ Implemented
 
-### Infæmous Freight
+- `pnpm` monorepo workspace structure
+- API, web, mobile, and shared package surfaces
+- Prisma, PostgreSQL, and Redis-backed platform foundations
+- validation, linting, typechecking, testing, and audit workflows
+- local infrastructure helpers and deployment documentation
+- CI/CD, security scanning, and release governance
 
-**Category:** Core Product
+### 🚧 In Progress
 
-The primary logistics platform responsible for managing freight operations.
-
-Capabilities include:
-
-- dispatch workflow automation
-- shipment lifecycle tracking
-- fleet activity monitoring
-- routing intelligence
-- operational dashboards
-- logistics analytics
-
-Infæmous Freight acts as the system of record for logistics workflows.
+- dispatch workflow logic
+- shipment lifecycle services
+- AI orchestration capabilities
+- mobile operations experience
+- platform expansion areas under `docs/platform-expansion/`
 
 ---
 
-### Genesis Avatar
+## 🎯 Why It Exists
 
-**Category:** AI Interface Layer
+Freight operations often rely on fragmented tools, manual coordination, delayed updates, and limited visibility across the shipment lifecycle.
 
-Genesis Avatar is the conversational AI and avatar interface used to interact with the platform.
-
-Capabilities include:
-
-- conversational operational queries
-- AI-driven command execution
-- logistics insights
-- workflow assistance
-- cross-surface assistant experience
-
-Genesis Avatar provides the AI interaction layer for the platform.
+Infamous Freight is designed to centralize those workflows into a single logistics operating system for carriers, dispatch teams, and logistics operators.
 
 ---
 
-### Platform Infrastructure
+## 🧠 Core Capabilities
 
-Supporting infrastructure powers the entire ecosystem:
-
-- authentication
-- tenant isolation
-- data orchestration
-- observability
-- API infrastructure
-- shared domain models
-
-These components support the platform but are not standalone products.
+- Dispatch workflow automation
+- Shipment lifecycle tracking
+- Fleet coordination and monitoring
+- Routing and operational analytics
+- Driver workflow support
+- AI-assisted operational insights
 
 ---
 
-## Monorepo Structure
+## 📸 Screenshots
+
+| Landing Page | Platform Overview |
+|---|---|
+| ![Infamous Freight Landing Page](docs/screenshots/infamousfreight-landing-page.png) | ![Infamous Freight Platform Overview](docs/screenshots/infamousfreight-platform-overview.png) |
+
+---
+
+## 🧩 Platform Surfaces
+
+### 🚛 Infamous Freight
+**Core product**
+
+The primary logistics platform for managing freight operations across dispatch, tracking, routing, and fleet activity.
+
+### 🤖 Genesis Avatar
+**AI interface layer**
+
+A conversational interface for interacting with operational data, workflows, and logistics intelligence across platform surfaces.
+
+### 🏗️ Platform Infrastructure
+**Shared foundation**
+
+Supporting infrastructure for authentication, tenant isolation, observability, orchestration, and shared domain models.
+
+---
+
+## 🗂️ Monorepo Structure
 
 ```text
 apps/
@@ -92,40 +103,43 @@ apps/
   mobile/     Mobile operations interface
 
 packages/
-  shared/     Shared schemas, utilities, domain models
+  shared/     Shared schemas, utilities, and domain models
 ```
 
-> Note: This overview highlights the primary product surfaces. Additional internal workspaces (for example, `apps/ai`, `apps/worker`, and `packages/genesis`) also exist in the pnpm monorepo but are omitted here for brevity.
-
-### Repository Boundaries
-
-To keep onboarding clear in a large repository, use the following ownership model:
-
-- `apps/*` and `packages/*` are the primary pnpm workspace surfaces and default contributors should focus here.
-- `infra/*` contains deployment/infrastructure assets and should be treated as operations-owned.
-- Top-level experiments, prototypes, and incubating initiatives outside `apps/*` / `packages/*` should be considered non-core unless explicitly referenced by active roadmap docs.
-
-When opening PRs, state clearly whether your change targets:
-
-1. Core product workspace (`apps/*`, `packages/*`)
-2. Platform infrastructure (`infra/*`, deployment config)
-3. Experimental or incubating surfaces
-
-### Surface Responsibilities
-
-| Surface         | Purpose                                  |
-|----------------|------------------------------------------|
-| apps/api       | Platform orchestration and logistics engine |
-| apps/web       | Operations control plane                 |
-| apps/mobile    | Field operations interface               |
-| packages/shared| Shared types and utilities               |
+> This overview highlights the primary product surfaces. Additional internal workspaces such as `apps/ai`, `apps/worker`, and `packages/genesis` may also exist in the monorepo.
 
 ---
 
-## Technology Stack
+## 🧱 Surface Responsibilities
+
+| Surface | Purpose |
+|---|---|
+| `apps/api` | Platform orchestration and logistics engine |
+| `apps/web` | Operations dashboard and control plane |
+| `apps/mobile` | Field operations interface |
+| `packages/shared` | Shared types, schemas, constants, and utilities |
+
+---
+
+## 📍 Repository Boundaries
+
+To keep onboarding clear in a large repository:
+
+- `apps/*` and `packages/*` are the primary product workspaces
+- `infra/*` contains deployment and infrastructure assets
+- top-level experiments or prototypes outside core workspaces should be treated as non-core unless explicitly tied to active roadmap work
+
+When opening a PR, make it clear whether the change targets:
+
+1. Core product workspace
+2. Platform infrastructure
+3. Experimental or incubating surfaces
+
+---
+
+## 🛠️ Technology Stack
 
 ### Backend
-
 - Node.js
 - Express
 - Prisma ORM
@@ -133,17 +147,15 @@ When opening PRs, state clearly whether your change targets:
 - Redis
 
 ### Frontend
-
 - Next.js
 - TypeScript
+- Tailwind CSS
 
 ### Mobile
-
 - React Native
 - Expo
 
 ### Infrastructure
-
 - Docker
 - GitHub Actions
 - CodeQL
@@ -151,44 +163,58 @@ When opening PRs, state clearly whether your change targets:
 
 ---
 
-## Operator Command Map
+## 📏 Engineering Standards
 
-Use these root commands for deterministic day-to-day operation:
+This repository enforces:
+
+- Node.js 24.x
+- `pnpm` 10.x
+- workspace-based development
+- shared validation and domain contracts
+- dependency auditing
+- release smoke checks
+- CI-based build, lint, typecheck, and test gates
+
+---
+
+## 🧪 Common Commands
 
 ```bash
-pnpm install          # install all workspace dependencies
+pnpm install          # install workspace dependencies
 pnpm dev:api          # run API in dev mode
-pnpm build            # generate Prisma client (offline-safe) + build all workspaces
+pnpm dev:web          # run web dashboard
+pnpm dev:mobile       # run mobile app
+pnpm build            # generate Prisma client (offline-safe) + build workspaces
 pnpm lint             # lint all workspaces
 pnpm typecheck        # strict TypeScript checks
 pnpm test             # run workspace tests serially
-pnpm audit            # full dependency audit
-pnpm audit:prod       # production dependency audit
-pnpm health           # lint + typecheck + test (no full workspace build)
+pnpm health           # lint + typecheck + test
 pnpm validate         # full build + typecheck + lint + test
+pnpm audit            # dependency audit
+pnpm audit:prod       # production dependency audit
 ```
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
-Clone the repository.
+### 📥 Clone the Repository
 
 ```bash
 git clone https://github.com/MrMiless44/Infamous-freight.git
 cd Infamous-freight
 ```
 
-Enable pnpm via Corepack.
+### 📦 Enable pnpm via Corepack
 
 ```bash
 corepack enable
 corepack prepare pnpm@10.33.0 --activate
 ```
 
-### Reproducible local setup (NVM + pnpm)
+### 🔁 Reproducible Local Setup (NVM + pnpm)
 
-To match CI and Codex automation, use the repository-configured Node version through NVM before running installs or builds:
+To match CI and local automation, use the repository-configured Node version before installing dependencies:
 
 ```bash
 export NVM_DIR="$HOME/.nvm"
@@ -209,92 +235,51 @@ node -v
 pnpm -v
 ```
 
-Copy environment variables.
+### 🔐 Copy Environment Variables
 
 ```bash
 cp .env.example .env
 ```
 
-Install dependencies.
+### 📦 Install Dependencies
 
 ```bash
 pnpm install
 ```
 
-> **Runtime requirement:** this repo enforces Node.js **24.x** (see `.node-version` / `.nvmrc`). If you are not on the pinned Node version, `pnpm` will fail with `ERR_PNPM_UNSUPPORTED_ENGINE`.
->
-> If you hit that error, switch to the version defined by the repo and retry install:
->
-> ```bash
-> nvm install
-> nvm use
-> corepack enable
-> corepack prepare pnpm@10.33.0 --activate
-> pnpm install
-> ```
+> Runtime requirement: this repository enforces Node.js 24.x. If your local runtime does not match the pinned version, `pnpm` may fail with `ERR_PNPM_UNSUPPORTED_ENGINE`.
 
-Initialize database tooling for local development.
+If that happens:
 
 ```bash
-# PostgreSQL CLI required for createdb
+nvm install
+nvm use
+corepack enable
+corepack prepare pnpm@10.33.0 --activate
+pnpm install
+```
+
+### 🗄️ Initialize Database Tooling for Local Development
+
+```bash
 createdb infamous_freight
 pnpm prisma:generate
 pnpm db:migrate
 ```
 
-Build the workspace.
+### 🏗️ Build the Workspace
 
 ```bash
 pnpm build
 ```
 
-### Android (Termux) Node.js setup
-
-If you are developing from Android (for example, a Samsung Galaxy device), use the official Termux build from **F-Droid** or **GitHub**. Do not use the deprecated Google Play release.
-
-1. Update Termux packages:
-
-   ```bash
-   pkg update && pkg upgrade -y
-   ```
-
-2. Remove existing Node.js packages (only one of `nodejs` or `nodejs-lts` can be installed at a time):
-
-   ```bash
-   pkg uninstall nodejs nodejs-lts -y
-   ```
-
-3. Install Node.js and verify versions:
-
-   ```bash
-   pkg install nodejs -y
-   node -v    # expect v24.x.x (or the major version specified in Runtime Policy / .nvmrc)
-   npm -v
-   npm -v
-   ```
-
-5. Install pnpm and verify:
-
-   ```bash
-   corepack enable
-   corepack prepare pnpm@10.33.0 --activate
-   pnpm -v
-   ```
-
-6. Reinstall workspace dependencies in your project:
-
-   ```bash
-   rm -rf node_modules
-   pnpm install
-   ```
-
 ---
 
-## Development
+## 💻 Development
 
-Canonical developer interface is `pnpm` scripts. `make` targets are convenience wrappers around the same flows.
+Canonical developer workflows use `pnpm` scripts. `make` targets are convenience wrappers around the same flows.
 
-Recommended daily workflow:
+### 🔄 Recommended Daily Flow
 
 ```bash
 pnpm install
@@ -330,53 +315,51 @@ pnpm dev:mobile
 
 ---
 
-## Local Infrastructure
+## 🧰 Local Infrastructure
 
-Infæmous Freight includes a local infrastructure environment for development.
-
-Services include:
+Infamous Freight includes a local development environment with:
 
 - PostgreSQL
 - Redis
 - API container
 
-Start infrastructure
+### ▶️ Start Infrastructure
 
 ```bash
 make infra-up
 ```
 
-View logs
+### 📜 View Logs
 
 ```bash
 make infra-logs
 ```
 
-Run health smoke test
+### 🧪 Run the Smoke Test
 
 ```bash
 make smoke
 ```
 
-Stop infrastructure
+### ⏹️ Stop Infrastructure
 
 ```bash
 make infra-down
 ```
 
-The smoke test validates the `/health` endpoint to confirm that the platform services are operational.
+The smoke test validates the `/health` endpoint to confirm that platform services are running correctly.
 
 ---
 
-## Validation
+## ✅ Validation
 
-Before opening a pull request, run the validation suite.
+Before opening a pull request, run the validation suite:
 
 ```bash
 pnpm run validate
 ```
 
-Or step-by-step:
+Or step by step:
 
 ```bash
 pnpm build
@@ -385,21 +368,21 @@ pnpm lint
 pnpm test
 ```
 
-CI enforces baseline test coverage thresholds (lines/functions/statements: 70%, branches: 60%) for coverage-enabled test suites.
-
-## Runtime Policy
-
-- Required runtime: Node.js 24.x
-- Required package manager: pnpm 10.x
-- Source of truth: `.nvmrc` + root `package.json` engines
-
-If your local runtime does not match these versions, switch with your version manager before running installs or checks.
+CI enforces baseline coverage thresholds for coverage-enabled test suites.
 
 ---
 
-## Makefile Commands
+## 🧭 Runtime Policy
 
-Common development helpers are available via make.
+- Required runtime: Node.js 24.x
+- Required package manager: `pnpm` 10.x
+- Source of truth: `.nvmrc`, `.node-version`, and root `package.json`
+
+If your local environment does not match these versions, switch before running installs or checks.
+
+---
+
+## 🪛 Makefile Commands
 
 ```bash
 make install
@@ -417,62 +400,15 @@ make smoke
 
 ---
 
-## Contributing
+## 🏛️ Architecture
 
-See:
+Architecture documentation is available at:
 
-`CONTRIBUTING.md`
+```text
+docs/ARCHITECTURE.md
+```
 
-### Pull Request Checklist
-
-Before submitting a PR:
-
-- build passes
-- lint passes
-- tests pass
-- validation passes
-
-### Branch naming examples
-
-- `feature/dispatch-engine`
-- `feature/shipment-tracking`
-- `fix/api-timeout`
-- `docs/readme-update`
-
-### Commit format
-
-This repository follows Conventional Commits.
-
-Examples:
-
-- `feat: add shipment tracking API`
-- `fix: resolve pnpm workspace dependency issue`
-- `docs: update architecture documentation`
-
----
-
-## CI/CD
-
-The repository defines a core set of CI/CD workflows to keep feedback fast and signal-focused.
-
-Key workflows include (not exhaustive):
-
-- `ci.yml` — build, lint, typecheck, test
-- `codeql.yml` — security scanning
-- `security-audit.yml` — dependency audits
-- `cd.yml` — deployment workflow
-
-Additional workflows (e.g., deploy-*, security-*, e2e) live under `.github/workflows/`; refer to that directory for the complete automation surface area.
-
----
-
-## Architecture
-
-Full architecture documentation can be found in:
-
-`docs/ARCHITECTURE.md`
-
-Platform model:
+### 🔄 Platform Model
 
 ```text
 Client (Web / Mobile)
@@ -492,43 +428,40 @@ Data Layer (PostgreSQL + Redis)
 
 ---
 
-## New Platform Expansion Areas
+## 📈 Platform Expansion Areas
 
-To support the next major build phase with zero overlap to existing workstreams, a dedicated documentation package has been added under:
+The next major build phase is documented under:
 
-`docs/platform-expansion/`
+```text
+docs/platform-expansion/
+```
 
 Included areas:
 
-1. **Observability & Monitoring**
-2. **OpenAPI Documentation**
-3. **Testing Strategy**
-4. **Mobile App Scaffolding**
-5. **Multi-region & Data Residency**
-6. **Developer Portal & Webhook Debugger**
+1. Observability and monitoring
+2. OpenAPI documentation
+3. Testing strategy
+4. Mobile app scaffolding
+5. Multi-region and data residency
+6. Developer portal and webhook debugger
 
-Start here:
+Start with:
 
-- `docs/platform-expansion/README.md`
-
-Then review each area document in sequence:
-
-- `docs/platform-expansion/01-observability-monitoring.md`
-- `docs/platform-expansion/02-openapi-documentation.md`
-- `docs/platform-expansion/03-testing-strategy.md`
-- `docs/platform-expansion/04-mobile-app-scaffolding.md`
-- `docs/platform-expansion/05-multi-region-data-residency.md`
-- `docs/platform-expansion/06-developer-portal-webhook-debugger.md`
+```text
+docs/platform-expansion/README.md
+```
 
 ---
 
-## Deployment
+## 🚚 Deployment
 
-Deployment guidance is documented in:
+Deployment guidance lives in:
 
-`docs/DEPLOYMENT.md`
+```text
+docs/DEPLOYMENT.md
+```
 
-Deployment documentation includes:
+It includes:
 
 - environment setup
 - secret management
@@ -537,11 +470,13 @@ Deployment documentation includes:
 
 ---
 
-## Release Governance
+## 🛡️ Release Governance
 
 Release procedures are documented in:
 
-`docs/RELEASE.md`
+```text
+docs/RELEASE.md
+```
 
 This checklist includes:
 
@@ -553,9 +488,24 @@ This checklist includes:
 
 ---
 
-## Security
+## 🔁 CI/CD
 
-Security guidelines include:
+The repository uses a focused workflow set to keep feedback clear and reduce duplication.
+
+Key workflows include:
+
+- `ci.yml` — build, lint, typecheck, test
+- `codeql.yml` — security scanning
+- `security-audit.yml` — dependency audits
+- `cd.yml` — deployment workflow
+
+Additional workflows may exist under `.github/workflows/` for deploy, security, and end-to-end support.
+
+---
+
+## 🔒 Security
+
+Security expectations include:
 
 - never commit secrets
 - validate all external inputs
@@ -564,7 +514,37 @@ Security guidelines include:
 
 ---
 
-## Support for Contributors
+## 🤝 Contributing
+
+See `CONTRIBUTING.md`.
+
+### ✅ Pull Request Checklist
+
+Before submitting a PR:
+
+- build passes
+- lint passes
+- tests pass
+- validation passes
+
+### 🌿 Branch Naming Examples
+
+- `feature/dispatch-engine`
+- `feature/shipment-tracking`
+- `fix/api-timeout`
+- `docs/readme-update`
+
+### 📝 Commit Format
+
+This repository follows Conventional Commits.
+
+Examples:
+
+- `feat: add shipment tracking API`
+- `fix: resolve pnpm workspace dependency issue`
+- `docs: update architecture documentation`
+
+### 📎 Contributor Guidelines
 
 When contributing:
 
@@ -573,6 +553,8 @@ When contributing:
 - document operational changes
 - include logs or screenshots when helpful
 
-The goal is simple:
+---
 
-predictable, repeatable, production-grade logistics software.
+## 🎯 Goal
+
+The goal is simple: predictable, repeatable, production-grade logistics software.
