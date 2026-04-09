@@ -5,21 +5,12 @@
  * Syncs org billing with Stripe's subscription model
  */
 
-import Stripe from "stripe";
 import { getPrisma } from "../db/prisma.js";
+import { getStripeClient } from "../lib/stripeClient.js";
+import type Stripe from "stripe";
 
-let stripeClient: Stripe | null = null;
-
-function stripeOrThrow(): Stripe {
-  if (stripeClient) return stripeClient;
-
-  const apiKey = process.env.STRIPE_SECRET_KEY;
-  if (!apiKey) {
-    throw new Error("STRIPE_SECRET_KEY is required for Stripe billing operations");
-  }
-
-  stripeClient = new Stripe(apiKey);
-  return stripeClient;
+function stripeOrThrow() {
+  return getStripeClient();
 }
 const BillingPlan = {
   STARTER: "STARTER",
