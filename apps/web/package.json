@@ -9,6 +9,7 @@
     "prebuild:nocheck": "pnpm --filter @infamous-freight/shared build",
     "build:nocheck": "ALLOW_WEB_TS_ERRORS=true next build --webpack",
     "start": "next start -p 3000",
+    "netlify:set-production-branch": "node scripts/set-netlify-production-branch.mjs",
     "test": "vitest run",
     "lint": "eslint ."
   },

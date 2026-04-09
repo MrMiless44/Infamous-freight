@@ -223,9 +223,30 @@ Outputs to `.next/` directory.
 
 ### Deployment
 
-- **Vercel**: Automatic deployment on push (recommended)
+- **Netlify**: Primary deployment target for production
+- **Vercel**: Supported for preview workflows
 - **Docker**: Use provided Dockerfile
 - **Static Export**: Not supported (uses SSR features)
+
+### Netlify branch configuration
+
+If Netlify fails with `git ref refs/heads/Main does not exist`, set the production
+branch to lowercase `main`.
+
+```bash
+NETLIFY_AUTH_TOKEN=... \
+NETLIFY_SITE_ID=... \
+pnpm --filter web netlify:set-production-branch
+```
+
+Optional override:
+
+```bash
+NETLIFY_AUTH_TOKEN=... \
+NETLIFY_SITE_ID=... \
+NETLIFY_PRODUCTION_BRANCH=release \
+pnpm --filter web netlify:set-production-branch
+```
 
 ### Docker Deployment
 
