@@ -120,6 +120,13 @@ assert_eq "stripe test keys rejected by default" "1" "$test_keys_code"
 assert_contains "stripe test keys rejection has explicit message" "$test_keys_output" "must be a live key (set ALLOW_TEST_KEYS=1 to bypass)"
 
 set +e
+invalid_allow_test_keys_output="$(env "${BASE_ENV[@]}" ALLOW_TEST_KEYS=maybe "$SCRIPT" 2>&1)"
+invalid_allow_test_keys_code=$?
+set -e
+assert_eq "invalid ALLOW_TEST_KEYS exits non-zero" "1" "$invalid_allow_test_keys_code"
+assert_contains "invalid ALLOW_TEST_KEYS has explicit message" "$invalid_allow_test_keys_output" "ALLOW_TEST_KEYS must be 0 or 1"
+
+set +e
 allow_test_keys_output="$(env "${BASE_ENV[@]}" NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_123 STRIPE_SECRET_KEY=sk_test_123 ALLOW_TEST_KEYS=1 DRY_RUN=1 "$SCRIPT" 2>&1)"
 allow_test_keys_code=$?
 set -e

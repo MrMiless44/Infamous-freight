@@ -44,7 +44,7 @@ Use `DRY_RUN=1` first to preview changes:
 DRY_RUN=1 ./scripts/bootstrap-production-secrets.sh
 ```
 
-If you are running a non-production drill with Stripe test credentials, set `ALLOW_TEST_KEYS=1`.
+If you are running a non-production drill with Stripe test credentials, set `ALLOW_TEST_KEYS=1` (only valid values are `0` or `1`).
 
 ### 4) Apply to Netlify environment
 

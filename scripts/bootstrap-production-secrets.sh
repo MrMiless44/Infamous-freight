@@ -38,6 +38,11 @@ fi
 
 ALLOW_TEST_KEYS="${ALLOW_TEST_KEYS:-0}"
 
+if [[ "$ALLOW_TEST_KEYS" != "0" && "$ALLOW_TEST_KEYS" != "1" ]]; then
+  echo "[bootstrap-secrets] ALLOW_TEST_KEYS must be 0 or 1" >&2
+  exit 1
+fi
+
 require_var() {
   local name="$1"
   if [[ -z "${!name:-}" ]]; then
