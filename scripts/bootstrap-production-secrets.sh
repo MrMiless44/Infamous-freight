@@ -100,24 +100,24 @@ FLY_APP_NAME="${FLY_APP_NAME:-infamous-freight-api}"
 NETLIFY_CONTEXT="${NETLIFY_CONTEXT:-production}"
 DRY_RUN="${DRY_RUN:-0}"
 
-echo "[bootstrap-secrets] Applying Netlify env vars to context '${NETLIFY_CONTEXT}' for site '${NETLIFY_SITE_ID}'."
+echo "[bootstrap-secrets] Applying Netlify env vars to context '${NETLIFY_CONTEXT}' for site '***'."
 if [[ "$DRY_RUN" == "1" ]]; then
-  echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** NETLIFY_SITE_ID=*** netlify env:set NEXT_PUBLIC_API_URL \"\$NEXT_PUBLIC_API_URL\" --context ${NETLIFY_CONTEXT}"
-  echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** NETLIFY_SITE_ID=*** netlify env:set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY \"\$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY\" --context ${NETLIFY_CONTEXT}"
-  echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** NETLIFY_SITE_ID=*** netlify env:set STRIPE_SECRET_KEY \"\$STRIPE_SECRET_KEY\" --context ${NETLIFY_CONTEXT}"
-  echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** NETLIFY_SITE_ID=*** netlify env:set STRIPE_WEBHOOK_SECRET \"\$STRIPE_WEBHOOK_SECRET\" --context ${NETLIFY_CONTEXT}"
-  echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** NETLIFY_SITE_ID=*** netlify env:set JWT_SECRET \"\$JWT_SECRET\" --context ${NETLIFY_CONTEXT}"
+  echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** netlify env:set NEXT_PUBLIC_API_URL \"\$NEXT_PUBLIC_API_URL\" --context ${NETLIFY_CONTEXT} --site ***"
+  echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** netlify env:set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY \"\$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY\" --context ${NETLIFY_CONTEXT} --site ***"
+  echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** netlify env:set STRIPE_SECRET_KEY \"\$STRIPE_SECRET_KEY\" --context ${NETLIFY_CONTEXT} --site ***"
+  echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** netlify env:set STRIPE_WEBHOOK_SECRET \"\$STRIPE_WEBHOOK_SECRET\" --context ${NETLIFY_CONTEXT} --site ***"
+  echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** netlify env:set JWT_SECRET \"\$JWT_SECRET\" --context ${NETLIFY_CONTEXT} --site ***"
 else
-  env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
-    netlify env:set NEXT_PUBLIC_API_URL "$NEXT_PUBLIC_API_URL" --context "$NETLIFY_CONTEXT"
-  env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
-    netlify env:set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY "$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" --context "$NETLIFY_CONTEXT"
-  env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
-    netlify env:set STRIPE_SECRET_KEY "$STRIPE_SECRET_KEY" --context "$NETLIFY_CONTEXT"
-  env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
-    netlify env:set STRIPE_WEBHOOK_SECRET "$STRIPE_WEBHOOK_SECRET" --context "$NETLIFY_CONTEXT"
-  env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
-    netlify env:set JWT_SECRET "$JWT_SECRET" --context "$NETLIFY_CONTEXT"
+  env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" \
+    netlify env:set NEXT_PUBLIC_API_URL "$NEXT_PUBLIC_API_URL" --context "$NETLIFY_CONTEXT" --site "$NETLIFY_SITE_ID"
+  env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" \
+    netlify env:set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY "$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" --context "$NETLIFY_CONTEXT" --site "$NETLIFY_SITE_ID"
+  env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" \
+    netlify env:set STRIPE_SECRET_KEY "$STRIPE_SECRET_KEY" --context "$NETLIFY_CONTEXT" --site "$NETLIFY_SITE_ID"
+  env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" \
+    netlify env:set STRIPE_WEBHOOK_SECRET "$STRIPE_WEBHOOK_SECRET" --context "$NETLIFY_CONTEXT" --site "$NETLIFY_SITE_ID"
+  env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" \
+    netlify env:set JWT_SECRET "$JWT_SECRET" --context "$NETLIFY_CONTEXT" --site "$NETLIFY_SITE_ID"
 fi
 
 echo "[bootstrap-secrets] Applying Fly.io secrets to app '${FLY_APP_NAME}'."
@@ -133,5 +133,5 @@ else
 fi
 
 echo "[bootstrap-secrets] Done. Verify with:"
-echo "  NETLIFY_AUTH_TOKEN=*** NETLIFY_SITE_ID=*** netlify env:list --context ${NETLIFY_CONTEXT}"
+echo "  NETLIFY_AUTH_TOKEN=*** netlify env:list --context ${NETLIFY_CONTEXT} --site ***"
 echo "  FLY_API_TOKEN=*** flyctl secrets list --app ${FLY_APP_NAME}"

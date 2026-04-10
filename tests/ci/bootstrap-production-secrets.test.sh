@@ -110,7 +110,7 @@ dry_run_output="$(env "${BASE_ENV[@]}" DRY_RUN=1 "$SCRIPT" 2>&1)"
 dry_run_code=$?
 set -e
 assert_eq "dry run exits zero" "0" "$dry_run_code"
-assert_contains "dry run prints netlify key/value/context command" "$dry_run_output" 'netlify env:set NEXT_PUBLIC_API_URL "$NEXT_PUBLIC_API_URL" --context production'
+assert_contains "dry run prints netlify key/value/context command" "$dry_run_output" 'netlify env:set NEXT_PUBLIC_API_URL "$NEXT_PUBLIC_API_URL" --context production --site ***'
 assert_contains "dry run prints fly command" "$dry_run_output" "flyctl secrets set DATABASE_URL="
 assert_contains "dry run includes stripe server key placeholder" "$dry_run_output" 'STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY"'
 assert_contains "dry run includes stripe webhook placeholder" "$dry_run_output" 'STRIPE_WEBHOOK_SECRET="$STRIPE_WEBHOOK_SECRET"'
@@ -119,6 +119,7 @@ assert_not_contains "dry run redacts database password segment" "$dry_run_output
 assert_not_contains "dry run redacts jwt secret value" "$dry_run_output" "abcdefghijklmnopqrstuvwxyz123456"
 assert_not_contains "dry run redacts fly token value" "$dry_run_output" "test-fly-token"
 assert_not_contains "dry run redacts netlify token value" "$dry_run_output" "test-netlify-token"
+assert_not_contains "dry run redacts netlify site id value" "$dry_run_output" "test-site-id"
 assert_not_contains "dry run redacts stripe secret key value" "$dry_run_output" "sk_live_test"
 assert_not_contains "dry run redacts stripe webhook secret value" "$dry_run_output" "whsec_test"
 

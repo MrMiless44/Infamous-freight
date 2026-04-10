@@ -47,16 +47,16 @@ DRY_RUN=1 ./scripts/bootstrap-production-secrets.sh
 ### 4) Apply to Netlify environment
 
 ```bash
-env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
-  netlify env:set NEXT_PUBLIC_API_URL "$NEXT_PUBLIC_API_URL" --context production
-env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
-  netlify env:set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY "$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" --context production
-env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
-  netlify env:set STRIPE_SECRET_KEY "$STRIPE_SECRET_KEY" --context production
-env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
-  netlify env:set STRIPE_WEBHOOK_SECRET "$STRIPE_WEBHOOK_SECRET" --context production
-env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
-  netlify env:set JWT_SECRET "$JWT_SECRET" --context production
+env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" \
+  netlify env:set NEXT_PUBLIC_API_URL "$NEXT_PUBLIC_API_URL" --context production --site "$NETLIFY_SITE_ID"
+env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" \
+  netlify env:set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY "$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" --context production --site "$NETLIFY_SITE_ID"
+env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" \
+  netlify env:set STRIPE_SECRET_KEY "$STRIPE_SECRET_KEY" --context production --site "$NETLIFY_SITE_ID"
+env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" \
+  netlify env:set STRIPE_WEBHOOK_SECRET "$STRIPE_WEBHOOK_SECRET" --context production --site "$NETLIFY_SITE_ID"
+env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" \
+  netlify env:set JWT_SECRET "$JWT_SECRET" --context production --site "$NETLIFY_SITE_ID"
 ```
 
 ### 5) Apply to Fly.io environment
@@ -73,7 +73,7 @@ flyctl secrets set \
 ### 6) Post-setup verification
 
 ```bash
-netlify env:list --context production
+netlify env:list --context production --site "$NETLIFY_SITE_ID"
 flyctl secrets list --app infamous-freight-api
 ```
 
