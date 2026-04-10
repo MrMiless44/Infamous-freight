@@ -14,6 +14,8 @@ Use this checklist when wiring production credentials for the current deployment
 | `DATABASE_URL` | API + Prisma | required | Use the managed Postgres connection string with a real password. |
 | `NEXT_PUBLIC_API_URL` | Web frontend | required | Public API origin (for example `https://infamous.fly.dev`). |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe checkout UI | required | Must be the publishable key (`pk_...`), never a secret key. |
+| `STRIPE_SECRET_KEY` | Stripe server API | required | Secret key used by server-side checkout/webhook handlers (`sk_live_...`). |
+| `STRIPE_WEBHOOK_SECRET` | Stripe webhook verification | required | Signing secret for Stripe webhook validation (`whsec_...`). |
 | `JWT_SECRET` | API auth signing (HS256 mode + web stripe route) | required | Generate with `openssl rand -base64 32`. |
 
 ### 2) Export locally (do not commit secrets)
@@ -25,6 +27,8 @@ export FLY_API_TOKEN="$(flyctl auth token)"
 export DATABASE_URL="postgresql://postgres:<password>@<host>:5432/postgres?schema=public"
 export NEXT_PUBLIC_API_URL="https://infamous.fly.dev"
 export NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_live_..."
+export STRIPE_SECRET_KEY="sk_live_..."
+export STRIPE_WEBHOOK_SECRET="whsec_..."
 export JWT_SECRET="$(openssl rand -base64 32)"
 ```
 
@@ -43,9 +47,16 @@ DRY_RUN=1 ./scripts/bootstrap-production-secrets.sh
 ### 4) Apply to Netlify environment
 
 ```bash
-printf '%s' "$NEXT_PUBLIC_API_URL" | netlify env:set NEXT_PUBLIC_API_URL production
-printf '%s' "$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" | netlify env:set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY production
-printf '%s' "$JWT_SECRET" | netlify env:set JWT_SECRET production
+env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
+  netlify env:set NEXT_PUBLIC_API_URL "$NEXT_PUBLIC_API_URL" --context production
+env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
+  netlify env:set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY "$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" --context production
+env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
+  netlify env:set STRIPE_SECRET_KEY "$STRIPE_SECRET_KEY" --context production
+env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
+  netlify env:set STRIPE_WEBHOOK_SECRET "$STRIPE_WEBHOOK_SECRET" --context production
+env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
+  netlify env:set JWT_SECRET "$JWT_SECRET" --context production
 ```
 
 ### 5) Apply to Fly.io environment
@@ -54,6 +65,8 @@ printf '%s' "$JWT_SECRET" | netlify env:set JWT_SECRET production
 flyctl secrets set \
   DATABASE_URL="$DATABASE_URL" \
   JWT_SECRET="$JWT_SECRET" \
+  STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY" \
+  STRIPE_WEBHOOK_SECRET="$STRIPE_WEBHOOK_SECRET" \
   --app infamous-freight-api
 ```
 
