@@ -167,7 +167,9 @@ export async function createStripeSubscription(
 
     return result;
   } catch (error) {
-    await failBillingEvent(idempotencyKey, (error as Error).message);
+    try {
+      await failBillingEvent(idempotencyKey, (error as Error).message);
+    } catch { /* ignore – preserve original error */ }
 
     console.error("Failed to create Stripe subscription", {
       organizationId,
