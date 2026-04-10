@@ -86,7 +86,7 @@ if [[ ! "${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}" =~ ^pk_(live|test)_ ]]; then
   exit 1
 fi
 
-if [[ ! "${STRIPE_SECRET_KEY}" =~ ^sk_(live|test)_ ]]; then
+if [[ ! "${STRIPE_SECRET_KEY}" =~ ^sk_(live|test)_[[:alnum:]]+$ ]]; then
   echo "[bootstrap-secrets] STRIPE_SECRET_KEY must be a Stripe secret key" >&2
   exit 1
 fi
