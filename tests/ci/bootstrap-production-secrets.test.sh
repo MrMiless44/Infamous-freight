@@ -92,11 +92,25 @@ assert_eq "http api url exits non-zero" "1" "$invalid_url_code"
 assert_contains "http api url has explicit message" "$invalid_url_output" "NEXT_PUBLIC_API_URL must be https:// in production"
 
 set +e
+invalid_db_output="$(env "${BASE_ENV[@]}" DATABASE_URL=mysql://localhost/db "$SCRIPT" 2>&1)"
+invalid_db_code=$?
+set -e
+assert_eq "invalid database url exits non-zero" "1" "$invalid_db_code"
+assert_contains "invalid database url has explicit message" "$invalid_db_output" "DATABASE_URL must start with postgres:// or postgresql://"
+
+set +e
 invalid_site_id_output="$(env "${BASE_ENV[@]}" NETLIFY_SITE_ID=not-a-uuid "$SCRIPT" 2>&1)"
 invalid_site_id_code=$?
 set -e
 assert_eq "invalid netlify site id exits non-zero" "1" "$invalid_site_id_code"
 assert_contains "invalid netlify site id has explicit message" "$invalid_site_id_output" "NETLIFY_SITE_ID must be a UUID"
+
+set +e
+invalid_context_output="$(env "${BASE_ENV[@]}" NETLIFY_CONTEXT=staging "$SCRIPT" 2>&1)"
+invalid_context_code=$?
+set -e
+assert_eq "invalid netlify context exits non-zero" "1" "$invalid_context_code"
+assert_contains "invalid netlify context has explicit message" "$invalid_context_output" "NETLIFY_CONTEXT must be one of: production, deploy-preview, branch-deploy"
 
 set +e
 invalid_stripe_secret_output="$(env "${BASE_ENV[@]}" STRIPE_SECRET_KEY=pk_live_wrong "$SCRIPT" 2>&1)"
@@ -125,6 +139,20 @@ invalid_allow_test_keys_code=$?
 set -e
 assert_eq "invalid ALLOW_TEST_KEYS exits non-zero" "1" "$invalid_allow_test_keys_code"
 assert_contains "invalid ALLOW_TEST_KEYS has explicit message" "$invalid_allow_test_keys_output" "ALLOW_TEST_KEYS must be 0 or 1"
+
+set +e
+invalid_verify_only_output="$(env "${BASE_ENV[@]}" VERIFY_ONLY=2 "$SCRIPT" 2>&1)"
+invalid_verify_only_code=$?
+set -e
+assert_eq "invalid VERIFY_ONLY exits non-zero" "1" "$invalid_verify_only_code"
+assert_contains "invalid VERIFY_ONLY has explicit message" "$invalid_verify_only_output" "VERIFY_ONLY must be 0 or 1"
+
+set +e
+short_jwt_output="$(env "${BASE_ENV[@]}" JWT_SECRET=short_secret "$SCRIPT" 2>&1)"
+short_jwt_code=$?
+set -e
+assert_eq "short jwt exits non-zero" "1" "$short_jwt_code"
+assert_contains "short jwt has explicit message" "$short_jwt_output" "JWT_SECRET must be at least 32 characters"
 
 set +e
 allow_test_keys_output="$(env "${BASE_ENV[@]}" NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_123 STRIPE_SECRET_KEY=sk_test_123 ALLOW_TEST_KEYS=1 DRY_RUN=1 "$SCRIPT" 2>&1)"
@@ -159,6 +187,15 @@ assert_eq "apply mode exits zero" "0" "$apply_code"
 assert_contains "apply mode netlify command includes explicit site flag" "$apply_output" "netlify env:set NEXT_PUBLIC_API_URL https://infamous.fly.dev --context production --site 11111111-2222-3333-4444-555555555555"
 assert_contains "apply mode netlify includes stripe webhook secret key name" "$apply_output" "netlify env:set STRIPE_WEBHOOK_SECRET"
 assert_contains "apply mode fly command includes stripe server secret key name" "$apply_output" "flyctl secrets set DATABASE_URL=postgresql://postgres:pw@localhost:5432/postgres?schema=public JWT_SECRET=abcdefghijklmnopqrstuvwxyz123456 STRIPE_SECRET_KEY=sk_live_test STRIPE_WEBHOOK_SECRET=whsec_test --app infamous-freight-api"
+
+set +e
+verify_only_output="$(env "${BASE_ENV[@]}" VERIFY_ONLY=1 "$SCRIPT" 2>&1)"
+verify_only_code=$?
+set -e
+assert_eq "verify-only mode exits zero" "0" "$verify_only_code"
+assert_contains "verify-only mode prints skip message" "$verify_only_output" "VERIFY_ONLY=1: skipping apply steps"
+assert_contains "verify-only mode lists netlify env" "$verify_only_output" "netlify env:list --context production --site 11111111-2222-3333-4444-555555555555"
+assert_contains "verify-only mode lists fly secrets" "$verify_only_output" "flyctl secrets list --app infamous-freight-api"
 
 if [ "$FAIL" -gt 0 ]; then
   echo ""

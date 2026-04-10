@@ -20,6 +20,7 @@ Optional environment variables:
   FLY_APP_NAME         (default: infamous-freight-api)
   NETLIFY_CONTEXT      (default: production)
   ALLOW_TEST_KEYS      (set to 1 to allow Stripe test keys for non-prod drills)
+  VERIFY_ONLY          (set to 1 to only run post-apply verification checks)
   DRY_RUN              (set to 1 to print actions without applying)
 
 Example:
@@ -37,9 +38,18 @@ if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
 fi
 
 ALLOW_TEST_KEYS="${ALLOW_TEST_KEYS:-0}"
+VERIFY_ONLY="${VERIFY_ONLY:-0}"
+NETLIFY_CONTEXT="${NETLIFY_CONTEXT:-production}"
+FLY_APP_NAME="${FLY_APP_NAME:-infamous-freight-api}"
+DRY_RUN="${DRY_RUN:-0}"
 
 if [[ "$ALLOW_TEST_KEYS" != "0" && "$ALLOW_TEST_KEYS" != "1" ]]; then
   echo "[bootstrap-secrets] ALLOW_TEST_KEYS must be 0 or 1" >&2
+  exit 1
+fi
+
+if [[ "$VERIFY_ONLY" != "0" && "$VERIFY_ONLY" != "1" ]]; then
+  echo "[bootstrap-secrets] VERIFY_ONLY must be 0 or 1" >&2
   exit 1
 fi
 
@@ -76,6 +86,11 @@ done
 
 if [[ ! "${NETLIFY_SITE_ID}" =~ ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$ ]]; then
   echo "[bootstrap-secrets] NETLIFY_SITE_ID must be a UUID" >&2
+  exit 1
+fi
+
+if [[ ! "${NETLIFY_CONTEXT}" =~ ^(production|deploy-preview|branch-deploy)$ ]]; then
+  echo "[bootstrap-secrets] NETLIFY_CONTEXT must be one of: production, deploy-preview, branch-deploy" >&2
   exit 1
 fi
 
@@ -121,9 +136,17 @@ if [[ ${#JWT_SECRET} -lt 32 ]]; then
   exit 1
 fi
 
-FLY_APP_NAME="${FLY_APP_NAME:-infamous-freight-api}"
-NETLIFY_CONTEXT="${NETLIFY_CONTEXT:-production}"
-DRY_RUN="${DRY_RUN:-0}"
+if [[ "$VERIFY_ONLY" == "1" ]]; then
+  echo "[bootstrap-secrets] VERIFY_ONLY=1: skipping apply steps and running verification checks."
+  if [[ "$DRY_RUN" == "1" ]]; then
+    echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** netlify env:list --context ${NETLIFY_CONTEXT} --site ***"
+    echo "[dry-run] env FLY_API_TOKEN=*** flyctl secrets list --app ${FLY_APP_NAME}"
+  else
+    env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" netlify env:list --context "$NETLIFY_CONTEXT" --site "$NETLIFY_SITE_ID"
+    env FLY_API_TOKEN="$FLY_API_TOKEN" flyctl secrets list --app "$FLY_APP_NAME"
+  fi
+  exit 0
+fi
 
 echo "[bootstrap-secrets] Applying Netlify env vars to context '${NETLIFY_CONTEXT}' for site '***'."
 if [[ "$DRY_RUN" == "1" ]]; then

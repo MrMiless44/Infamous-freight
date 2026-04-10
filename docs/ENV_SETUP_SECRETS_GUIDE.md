@@ -45,6 +45,7 @@ DRY_RUN=1 ./scripts/bootstrap-production-secrets.sh
 ```
 
 If you are running a non-production drill with Stripe test credentials, set `ALLOW_TEST_KEYS=1` (only valid values are `0` or `1`).
+You can also run `VERIFY_ONLY=1` to skip writes and only run `netlify env:list` / `flyctl secrets list` checks.
 
 ### 4) Apply to Netlify environment
 
@@ -78,6 +79,8 @@ flyctl secrets set \
 netlify env:list --context production --site "$NETLIFY_SITE_ID"
 flyctl secrets list --app infamous-freight-api
 ```
+
+Supported Netlify contexts for this bootstrap script are `production`, `deploy-preview`, and `branch-deploy`.
 
 > Security note: keep real token/key values in your secret manager and CI provider; commit only placeholders in tracked files.
 
