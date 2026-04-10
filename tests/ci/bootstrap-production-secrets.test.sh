@@ -123,6 +123,15 @@ assert_not_contains "dry run redacts netlify site id value" "$dry_run_output" "t
 assert_not_contains "dry run redacts stripe secret key value" "$dry_run_output" "sk_live_test"
 assert_not_contains "dry run redacts stripe webhook secret value" "$dry_run_output" "whsec_test"
 
+set +e
+apply_output="$(env "${BASE_ENV[@]}" "$SCRIPT" 2>&1)"
+apply_code=$?
+set -e
+assert_eq "apply mode exits zero" "0" "$apply_code"
+assert_contains "apply mode netlify command includes explicit site flag" "$apply_output" "netlify env:set NEXT_PUBLIC_API_URL https://infamous.fly.dev --context production --site test-site-id"
+assert_contains "apply mode netlify includes stripe webhook secret key name" "$apply_output" "netlify env:set STRIPE_WEBHOOK_SECRET"
+assert_contains "apply mode fly command includes stripe server secret key name" "$apply_output" "flyctl secrets set DATABASE_URL=postgresql://postgres:pw@localhost:5432/postgres?schema=public JWT_SECRET=abcdefghijklmnopqrstuvwxyz123456 STRIPE_SECRET_KEY=sk_live_test STRIPE_WEBHOOK_SECRET=whsec_test --app infamous-freight-api"
+
 if [ "$FAIL" -gt 0 ]; then
   echo ""
   echo "RESULT: FAIL ($FAIL failed, $PASS passed)"
