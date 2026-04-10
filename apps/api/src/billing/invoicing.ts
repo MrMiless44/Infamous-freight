@@ -202,7 +202,9 @@ export async function generateOrgInvoice(
 
     return result;
   } catch (error) {
-    await failBillingEvent(idempotencyKey, (error as Error).message);
+    await failBillingEvent(idempotencyKey, (error as Error).message).catch((failErr) => {
+      console.error("Failed to record billing event failure", { idempotencyKey, failErr });
+    });
 
     console.error("Failed to generate invoice", {
       organizationId,
