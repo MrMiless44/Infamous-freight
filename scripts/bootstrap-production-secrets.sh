@@ -85,23 +85,18 @@ FLY_APP_NAME="${FLY_APP_NAME:-infamous-freight-api}"
 NETLIFY_CONTEXT="${NETLIFY_CONTEXT:-production}"
 DRY_RUN="${DRY_RUN:-0}"
 
-run_cmd() {
-  if [[ "$DRY_RUN" == "1" ]]; then
-    echo "[dry-run] $*"
-  else
-    "$@"
-  fi
-}
-
 echo "[bootstrap-secrets] Applying Netlify env vars to context '${NETLIFY_CONTEXT}' for site '${NETLIFY_SITE_ID}'."
 if [[ "$DRY_RUN" == "1" ]]; then
-  echo "[dry-run] printf '%s' \"\$NEXT_PUBLIC_API_URL\" | netlify env:set NEXT_PUBLIC_API_URL ${NETLIFY_CONTEXT}"
-  echo "[dry-run] printf '%s' \"\$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY\" | netlify env:set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ${NETLIFY_CONTEXT}"
-  echo "[dry-run] printf '%s' \"\$JWT_SECRET\" | netlify env:set JWT_SECRET ${NETLIFY_CONTEXT}"
+  echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** NETLIFY_SITE_ID=*** netlify env:set NEXT_PUBLIC_API_URL \"\$NEXT_PUBLIC_API_URL\" --context ${NETLIFY_CONTEXT}"
+  echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** NETLIFY_SITE_ID=*** netlify env:set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY \"\$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY\" --context ${NETLIFY_CONTEXT}"
+  echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** NETLIFY_SITE_ID=*** netlify env:set JWT_SECRET \"\$JWT_SECRET\" --context ${NETLIFY_CONTEXT}"
 else
-  printf '%s' "$NEXT_PUBLIC_API_URL" | env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" netlify env:set NEXT_PUBLIC_API_URL "$NETLIFY_CONTEXT"
-  printf '%s' "$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" | env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" netlify env:set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY "$NETLIFY_CONTEXT"
-  printf '%s' "$JWT_SECRET" | env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" netlify env:set JWT_SECRET "$NETLIFY_CONTEXT"
+  env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
+    netlify env:set NEXT_PUBLIC_API_URL "$NEXT_PUBLIC_API_URL" --context "$NETLIFY_CONTEXT"
+  env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
+    netlify env:set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY "$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY" --context "$NETLIFY_CONTEXT"
+  env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" NETLIFY_SITE_ID="$NETLIFY_SITE_ID" \
+    netlify env:set JWT_SECRET "$JWT_SECRET" --context "$NETLIFY_CONTEXT"
 fi
 
 echo "[bootstrap-secrets] Applying Fly.io secrets to app '${FLY_APP_NAME}'."
