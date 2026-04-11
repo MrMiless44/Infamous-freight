@@ -16,7 +16,7 @@
 - [ ] `https://www.infamousfreight.com` loads correctly
 - [ ] Frontend API calls resolve against `https://api.infamousfreight.com/api`
 - [ ] Stripe webhook endpoint is reachable at `https://hooks.infamousfreight.com/api/webhooks/stripe`
-- [ ] CORS allows `www.infamousfreight.com`
+- [ ] CORS allows `www.infamousfreight.com`, `app.infamousfreight.com`, and `portal.infamousfreight.com`
 
 ## DNS cutover
 
