@@ -1,0 +1,101 @@
+rank,compositeScore,roiScore,effortScore,dependencyOrder,recommendation,priority,horizon,category
+1,24,10,2,1,"Standardize structured logging with request, org, shipment, and job correlation context.",High,Now,Engineering
+2,22,10,3,1,"Centralize environment validation for API, web, mobile, and workers with typed schemas.",Critical,Now,Engineering
+3,22,10,3,1,"Offer self-serve demo environments with realistic operational data.",High,Now,Growth
+4,20,10,3,2,"Enforce tenant-scoped repository and service access patterns across all non-public endpoints.",Critical,Now,Engineering
+5,20,10,3,2,"Add API contract tests around load, shipment, tracking, and billing workflows.",High,Now,Engineering
+6,20,10,3,2,"Establish SLOs and alert thresholds for latency, job failures, and webhook processing.",High,Now,Engineering
+7,20,10,3,2,"Audit all protected routes for standard middleware ordering and scope enforcement.",High,Now,Engineering
+8,20,10,3,2,"Review Prisma queries for missing indexes, N+1 patterns, and unbounded list access.",High,Now,Engineering
+9,20,10,2,3,"Create role-based home dashboards for carrier, broker, and shipper users so each persona lands on their highest-value operational view first.",Critical,Now,Product
+10,20,10,2,3,"Launch landing pages for carrier, broker, shipper, and enterprise operations personas.",Critical,Now,Growth
+11,20,10,2,3,"Create direct comparison pages against spreadsheets, legacy TMS, and generic CRM workflows.",High,Now,Growth
+12,20,10,2,3,"Strengthen security, compliance, and reliability pages with concrete controls and uptime metrics.",High,Now,Growth
+13,20,10,2,3,"Redesign operations dashboards around urgent queues and pending decisions rather than static analytics blocks.",Critical,Now,UI/UX
+14,20,10,2,3,"Introduce dense table modes with sticky action columns, filters, and saved views for dispatch workflows.",High,Now,UI/UX
+15,20,10,2,3,"Make shipment detail pages timeline-first with status evidence and next actions.",High,Now,UI/UX
+16,19,9,3,1,"Replace scattered direct env access and non-null assertions with config accessors.",High,Next,Engineering
+17,19,9,3,1,"Track insurance, W9, authority, and safety document freshness across carriers.",Medium,Next,Logistics Operations
+18,18,10,4,2,"Expand tracing around dispatch workflows, external integrations, and document processing.",High,Now,Engineering
+19,18,10,3,3,"Build exception management queues for late pickup, detention, failed delivery, and missed check calls.",High,Now,Product
+20,18,10,3,3,"Introduce customer-facing shipment visibility portals with branded tracking pages.",High,Now,Product
+21,18,10,3,3,"Show full action histories for status changes, pricing edits, and user interventions.",High,Now,Product
+22,18,10,3,3,"Build ROI calculators around reduced empty miles, faster billing, and fewer service failures.",High,Now,Growth
+23,18,10,3,3,"Create onboarding journeys by fleet size, revenue band, and logistics maturity.",High,Now,Growth
+24,18,10,3,3,"Add role-specific lead magnets, calculators, templates, and diagnostic checklists.",Medium,Now,Growth
+25,18,10,3,3,"Add persistent search and command entry for loads, shipments, carriers, documents, and actions.",High,Now,UI/UX
+26,18,10,3,3,"Standardize alert severity, state badges, and recovery actions across the product.",High,Now,UI/UX
+27,18,10,3,3,"Add dispatch recommendations using buy rate, sell rate, margin thresholds, and service risk.",Critical,Now,Logistics Operations
+28,18,10,3,3,"Build appointment scheduling and rescheduling workflows with notifications and accountability.",High,Now,Logistics Operations
+29,18,10,3,3,"Capture detention, lumper, TONU, and layover events with timestamps and evidence.",High,Now,Logistics Operations
+30,18,10,3,3,"Implement document intelligence for BOL, POD, and rate confirmation ingestion and classification.",High,Now,Logistics Operations
+31,18,10,3,3,"Create carrier scorecards for on-time pickup, claims, communication, and paperwork quality.",High,Now,Logistics Operations
+32,18,10,3,3,"Automate check-call cadences with exception-triggered human escalation.",High,Next,Logistics Operations
+33,18,10,3,3,"Add claims intake, investigation, and resolution workflows with document timelines.",High,Next,Logistics Operations
+34,18,10,3,3,"Create invoice readiness queues that block billing until required evidence is complete.",High,Next,Logistics Operations
+35,18,10,3,3,"Attach standard playbooks to delay, breakdown, temperature, and claim events.",High,Next,Logistics Operations
+36,17,9,3,2,"Add idempotency, retries, dead-letter handling, and replay tooling for async jobs.",High,Next,Engineering
+37,17,9,3,2,"Add dependency scanning, secret scanning, and container scanning into CI.",High,Next,Engineering
+38,16,8,3,1,"Introduce tenant-aware feature flags for controlled rollouts and experiments.",Medium,Next,Engineering
+39,16,10,4,3,"Add load lifecycle automation with status-driven tasks, reminders, and handoff rules.",Critical,Now,Product
+40,16,10,4,3,"Add configurable workflow templates by customer segment and freight mode.",High,Now,Product
+41,16,10,4,3,"Show shipment and customer profitability after accessorials, delays, and claims.",High,Next,Logistics Operations
+42,15,9,3,3,"Unify rate confirmations, BOL, POD, and invoices in a shipment-centric document workspace.",High,Next,Product
+43,15,9,3,3,"Offer guided AI actions for dispatch updates, check calls, and exception summaries.",High,Next,Product
+44,15,9,3,3,"Add approval flows when quoted rates fall below configured margin thresholds.",High,Next,Product
+45,15,9,3,3,"Detect missing charges, missed accessorials, and incomplete paperwork before invoicing.",High,Next,Product
+46,15,9,3,3,"Publish proof-based case studies showing margin improvement and dispatch efficiency gains.",High,Next,Growth
+47,15,9,3,3,"Trigger upsell motions based on workflow adoption, load volume, and team growth.",High,Next,Growth
+48,15,9,3,3,"Offer white-glove migration and setup packages for larger accounts.",High,Next,Growth
+49,15,9,3,3,"Track shipper and receiver dwell, delays, rejections, and service issues by facility.",Medium,Next,Logistics Operations
+50,15,9,3,3,"Integrate location and driver status feeds to improve ETA quality and automate exceptions.",Medium,Next,Logistics Operations
+51,15,9,3,3,"Expose SLA performance by shipper, lane, facility, and account manager.",Medium,Next,Logistics Operations
+52,15,9,3,3,"Bundle status evidence, communication, and documents into a single service record.",Medium,Next,Logistics Operations
+53,14,8,3,2,"Move duplicated domain constants and schemas into the shared package.",Medium,Next,Engineering
+54,14,8,3,2,"Provide realistic multi-tenant freight seed data for local development and demos.",Medium,Next,Engineering
+55,14,8,3,2,"Define a shared error taxonomy and client-safe error response format.",Medium,Next,Engineering
+56,14,8,3,2,"Document rollback-safe migration patterns and data backfill procedures.",Medium,Next,Engineering
+57,14,8,2,3,"Save user filters, table layouts, and recent workspaces per role and tenant.",High,Next,UI/UX
+58,13,9,4,3,"Package AI automation as a measurable premium add-on tied to operator productivity.",High,Next,Growth
+59,12,8,4,2,"Split lint, typecheck, unit, integration, and build checks for faster feedback and clearer failures.",Medium,Next,Engineering
+60,12,8,3,3,"Add shared notes, tasks, and approvals for internal and external stakeholders.",Medium,Next,Product
+61,12,8,3,3,"Support parent-child organizations, divisions, and branch visibility models.",Medium,Next,Product
+62,12,8,3,3,"Ship industry playbooks for dry van, reefer, flatbed, drayage, and final mile.",Medium,Next,Product
+63,12,8,3,3,"Let teams define service-level targets and track SLA breaches by account and shipment.",Medium,Next,Product
+64,12,8,3,3,"Create referral incentives for brokers, carriers, and consultants.",Medium,Next,Growth
+65,12,8,3,3,"Use hiring, growth, and fleet expansion signals to prioritize outbound accounts.",Medium,Next,Growth
+66,12,8,3,3,"Publish operational benchmarks on detention, on-time pickup, and invoice cycle times.",Medium,Next,Growth
+67,12,8,3,3,"Institutionalize win-loss interviews and feed the results back into product and messaging.",Medium,Next,Growth
+68,12,8,3,3,"Enable in-context previews for BOL, POD, invoices, and confirmations without route changes.",High,Next,UI/UX
+69,12,8,3,3,"Surface buy rate, sell rate, margin, and exception risk near dispatch decisions.",High,Next,UI/UX
+70,12,8,3,3,"Add a purposeful map view for active loads with delay and cluster overlays.",High,Next,UI/UX
+71,11,9,5,3,"Create a no-code rules engine for operational automations and escalations.",High,Next,Product
+72,11,9,5,3,"Launch a marketplace for TMS, accounting, ELD, telematics, and document integrations.",High,Next,Product
+73,11,7,2,3,"Integrate concise contextual guidance inside complex workflows instead of relying only on docs.",Medium,Next,UI/UX
+74,10,8,4,3,"Test packaging by shipment volume, user seats, and automation depth.",Medium,Next,Growth
+75,10,8,4,3,"Use product signals to trigger customer success interventions before renewal risk grows.",Medium,Next,Growth
+76,9,7,3,3,"Add keyboard shortcuts for common dispatcher actions and record navigation.",Medium,Next,UI/UX
+77,9,7,3,3,"Hide secondary controls behind progressive disclosure in complex screens.",Medium,Next,UI/UX
+78,9,7,3,3,"Design role-specific empty states that teach the next operational action.",Medium,Next,UI/UX
+79,9,7,3,3,"Create a unified notification center with triage, snooze, and assignment features.",Medium,Next,UI/UX
+80,9,7,3,3,"Standardize validation patterns, helper text, and save behavior across forms.",Medium,Next,UI/UX
+81,9,7,3,3,"Use side panels for quick record inspection and edits from list views.",Medium,Next,UI/UX
+82,9,7,3,3,"Tailor workflows for reefer, flatbed, drayage, and final-mile constraints.",Medium,Later,Logistics Operations
+83,9,7,3,3,"Add route quality scoring based on historical dwell, tolls, and service outcomes.",Medium,Later,Logistics Operations
+84,9,7,3,3,"Support stop-level sequencing, timing, and service notes for multi-stop loads.",Medium,Later,Logistics Operations
+85,9,7,3,3,"Track lane-level carrier performance and spot-buy outcomes to improve procurement decisions.",Medium,Later,Logistics Operations
+86,9,7,3,3,"Score loads for delay, claim, and margin risk before tender acceptance.",Medium,Later,Logistics Operations
+87,8,6,3,2,"Document ownership and review paths for each app, package, and critical flow.",Medium,Later,Engineering
+88,8,6,3,2,"Design retry and local cache strategies for mobile field workflows.",Medium,Later,Engineering
+89,6,6,4,2,"Run repeatable load tests for high-volume dispatch and tracking workloads.",Medium,Later,Engineering
+90,6,6,3,3,"Add scenario planning for capacity constraints, delays, and route disruptions.",Medium,Later,Product
+91,6,6,3,3,"Embed workflow coaching and contextual checklists inside complex screens.",Medium,Later,Product
+92,6,6,3,3,"Create shared operational workspaces for strategic shipper and carrier partners.",Medium,Later,Product
+93,6,6,3,3,"Develop reseller and implementation partner programs for freight consultants and agencies.",Medium,Later,Growth
+94,6,6,3,3,"Build a dispatch and operations community with templates, playbooks, and office hours.",Medium,Later,Growth
+95,4,6,4,3,"Allow custom fields, statuses, and object relationships per tenant.",Medium,Later,Product
+96,4,6,4,3,"Monetize partner integrations and data services through rev-share or premium placement.",Medium,Later,Growth
+97,3,5,3,3,"Build mobile-first quick actions for field users handling status updates and document capture.",Medium,Later,UI/UX
+98,3,5,3,3,"Show who changed what and when in live operational records.",Medium,Later,UI/UX
+99,3,5,3,3,"Audit focus states, contrast, keyboard support, and screen reader labeling across core flows.",Medium,Later,UI/UX
+100,3,5,3,3,"Highlight probable downstream consequences before major state changes or cancellations.",Medium,Later,UI/UX

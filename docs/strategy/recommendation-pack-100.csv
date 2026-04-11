@@ -1,0 +1,101 @@
+id,category,priority,horizon,title,recommendation,impact
+PRD-001,Product,Critical,Now,Role-based dashboards,Create role-based home dashboards for carrier broker and shipper users so each persona lands on their highest-value operational view first,Improves adoption and cuts time-to-value
+PRD-002,Product,Critical,Now,Load lifecycle automation,Add load lifecycle automation with status-driven tasks reminders and handoff rules,Reduces manual dispatch coordination
+PRD-003,Product,High,Now,Exception queues,Build exception management queues for late pickup detention failed delivery and missed check calls,Improves service recovery speed
+PRD-004,Product,High,Now,Visibility portal,Introduce customer-facing shipment visibility portals with branded tracking pages,Increases retention and reduces support volume
+PRD-005,Product,High,Now,Workflow templates,Add configurable workflow templates by customer segment and freight mode,Accelerates onboarding for new accounts
+PRD-006,Product,High,Next,Rules engine,Create a no-code rules engine for operational automations and escalations,Scales operations without proportional headcount
+PRD-007,Product,High,Next,Document workspace,Unify rate confirmations BOL POD and invoices in a shipment-centric document workspace,Improves retrieval and audit readiness
+PRD-008,Product,Medium,Next,Customer collaboration,Add shared notes tasks and approvals for internal and external stakeholders,Reduces communication fragmentation
+PRD-009,Product,High,Next,AI copilot prompts,Offer guided AI actions for dispatch updates check calls and exception summaries,Turns AI into workflow acceleration
+PRD-010,Product,Medium,Next,Multi-entity support,Support parent child organizations divisions and branch visibility models,Enables larger enterprise accounts
+PRD-011,Product,Medium,Later,Custom objects,Allow custom fields statuses and object relationships per tenant,Improves enterprise flexibility
+PRD-012,Product,High,Next,Pricing guardrails,Add approval flows when quoted rates fall below configured margin thresholds,Protects gross margin
+PRD-013,Product,Medium,Next,Playbook library,Ship industry playbooks for dry van reefer flatbed drayage and final mile,Speeds adoption in target niches
+PRD-014,Product,High,Next,Integration marketplace,Launch a marketplace for TMS accounting ELD telematics and document integrations,Expands ecosystem value
+PRD-015,Product,Medium,Later,What-if planning,Add scenario planning for capacity delays and route disruptions,Improves decision quality
+PRD-016,Product,High,Now,Audit-ready histories,Show full action histories for status changes pricing edits and user interventions,Builds trust and compliance confidence
+PRD-017,Product,Medium,Next,SLA management,Let teams define service level targets and track SLA breaches by account and shipment,Improves customer accountability
+PRD-018,Product,Medium,Later,Embedded training,Embed workflow coaching and contextual checklists inside complex screens,Reduces onboarding friction
+PRD-019,Product,High,Next,Revenue leakage checks,Detect missing charges missed accessorials and incomplete paperwork before invoicing,Improves realized margin
+PRD-020,Product,Medium,Later,Partner workspace,Create shared operational workspaces for strategic shipper and carrier partners,Deepens platform stickiness
+ENG-021,Engineering,Critical,Now,Centralized env validation,Centralize environment validation for API web mobile and workers with typed schemas,Prevents runtime configuration failures
+ENG-022,Engineering,Critical,Now,Tenant-safe data access,Enforce tenant-scoped repository and service access patterns across all non-public endpoints,Reduces cross-tenant risk
+ENG-023,Engineering,High,Now,Contract tests,Add API contract tests around load shipment tracking and billing workflows,Prevents breaking changes
+ENG-024,Engineering,High,Now,Structured logging,Standardize structured logging with request org shipment and job correlation context,Improves incident diagnosis
+ENG-025,Engineering,High,Now,SLOs and alerts,Establish SLOs and alert thresholds for latency job failures and webhook processing,Improves reliability discipline
+ENG-026,Engineering,High,Next,Background job hardening,Add idempotency retries dead-letter handling and replay tooling for async jobs,Reduces silent operational failures
+ENG-027,Engineering,High,Now,Auth middleware consistency,Audit all protected routes for standard middleware ordering and scope enforcement,Closes security gaps
+ENG-028,Engineering,Medium,Next,Shared package boundaries,Move duplicated domain constants and schemas into the shared package,Reduces drift across apps
+ENG-029,Engineering,High,Now,Prisma query review,Review Prisma queries for missing indexes N+1 patterns and unbounded list access,Improves performance and cost
+ENG-030,Engineering,Medium,Next,Feature flags,Introduce tenant-aware feature flags for controlled rollouts and experiments,Reduces release risk
+ENG-031,Engineering,Medium,Next,Developer seed data,Provide realistic multi-tenant freight seed data for local development and demos,Speeds testing and sales demos
+ENG-032,Engineering,Medium,Next,Error taxonomy,Define a shared error taxonomy and client-safe error response format,Improves debuggability and UX
+ENG-033,Engineering,High,Now,Monitoring coverage,Expand tracing around dispatch workflows external integrations and document processing,Improves root-cause analysis
+ENG-034,Engineering,Medium,Next,CI quality gates,Split lint typecheck unit integration and build checks for faster feedback and clearer failures,Improves delivery speed
+ENG-035,Engineering,Medium,Later,Monorepo ownership map,Document ownership and review paths for each app package and critical flow,Reduces coordination friction
+ENG-036,Engineering,High,Next,Secrets hygiene,Replace scattered direct env access and non-null assertions with config accessors,Improves safety and maintainability
+ENG-037,Engineering,Medium,Later,Offline resilience,Design retry and local cache strategies for mobile field workflows,Improves field reliability
+ENG-038,Engineering,Medium,Next,Schema evolution playbooks,Document rollback-safe migration patterns and data backfill procedures,Reduces migration risk
+ENG-039,Engineering,High,Next,Security automation,Add dependency scanning secret scanning and container scanning into CI,Improves preventative security posture
+ENG-040,Engineering,Medium,Later,Capacity testing,Run repeatable load tests for high-volume dispatch and tracking workloads,Builds scaling confidence
+GTM-041,Growth,Critical,Now,Vertical landing pages,Launch landing pages for carrier broker shipper and enterprise operations personas,Improves message-market fit
+GTM-042,Growth,High,Now,ROI calculator,Build ROI calculators around reduced empty miles faster billing and fewer service failures,Improves conversion quality
+GTM-043,Growth,High,Now,Seeded demo environments,Offer self-serve demo environments with realistic operational data,Shortens sales cycle
+GTM-044,Growth,High,Now,Segmented onboarding,Create onboarding journeys by fleet size revenue band and logistics maturity,Improves activation
+GTM-045,Growth,High,Next,Premium AI packaging,Package AI automation as a measurable premium add-on tied to operator productivity,Improves ARPU
+GTM-046,Growth,High,Next,Case study engine,Publish proof-based case studies showing margin improvement and dispatch efficiency gains,Improves trust in enterprise deals
+GTM-047,Growth,Medium,Next,Referral loop,Create referral incentives for brokers carriers and consultants,Expands distribution efficiently
+GTM-048,Growth,Medium,Next,Outbound signal scoring,Use hiring growth and fleet expansion signals to prioritize outbound accounts,Improves pipeline efficiency
+GTM-049,Growth,High,Now,Comparison pages,Create direct comparison pages against spreadsheets legacy TMS and generic CRM workflows,Improves evaluation-stage conversion
+GTM-050,Growth,Medium,Next,Pricing experiments,Test packaging by shipment volume user seats and automation depth,Improves monetization fit
+GTM-051,Growth,Medium,Later,Partner channel strategy,Develop reseller and implementation partner programs for freight consultants and agencies,Scales reach without large headcount
+GTM-052,Growth,Medium,Next,Content moat,Publish operational benchmarks on detention on-time pickup and invoice cycle times,Builds authority and inbound traffic
+GTM-053,Growth,Medium,Now,Lead capture upgrades,Add role-specific lead magnets calculators templates and diagnostic checklists,Improves lead quality
+GTM-054,Growth,High,Next,Expansion revenue plays,Trigger upsell motions based on workflow adoption load volume and team growth,Improves net revenue retention
+GTM-055,Growth,Medium,Later,Community strategy,Build a dispatch and operations community with templates playbooks and office hours,Builds durable brand affinity
+GTM-056,Growth,High,Next,Onboarding concierge,Offer white-glove migration and setup packages for larger accounts,Improves win rate for mid-market deals
+GTM-057,Growth,Medium,Next,Churn warning program,Use product signals to trigger customer success interventions before renewal risk grows,Reduces churn
+GTM-058,Growth,Medium,Later,Marketplace monetization,Monetize partner integrations and data services through rev-share or premium placement,Creates ancillary revenue
+GTM-059,Growth,High,Now,Trust assets,Strengthen security compliance and reliability pages with concrete controls and uptime metrics,Removes enterprise buying friction
+GTM-060,Growth,Medium,Next,Win-loss review loop,Institutionalize win-loss interviews and feed the results back into product and messaging,Improves strategic learning
+UX-061,UI/UX,Critical,Now,Urgency-first dashboard,Redesign operations dashboards around urgent queues and pending decisions rather than static analytics blocks,Improves operator focus
+UX-062,UI/UX,High,Now,Global command bar,Add persistent search and command entry for loads shipments carriers documents and actions,Speeds navigation
+UX-063,UI/UX,High,Now,Dense table mode,Introduce dense table modes with sticky actions column filters and saved views for dispatch workflows,Improves daily throughput
+UX-064,UI/UX,High,Now,Timeline detail pages,Make shipment detail pages timeline-first with status evidence and next actions,Improves situational awareness
+UX-065,UI/UX,High,Now,Severity system,Standardize alert severity state badges and recovery actions across the product,Improves clarity under pressure
+UX-066,UI/UX,Medium,Next,Keyboard efficiency,Add keyboard shortcuts for common dispatcher actions and record navigation,Improves operator speed
+UX-067,UI/UX,Medium,Next,Progressive disclosure,Hide secondary controls behind progressive disclosure in complex screens,Reduces cognitive overload
+UX-068,UI/UX,High,Next,Document preview flows,Enable in-context previews for BOL POD invoices and confirmations without route changes,Reduces context switching
+UX-069,UI/UX,Medium,Next,Empty state strategy,Design role-specific empty states that teach the next operational action,Improves activation and comprehension
+UX-070,UI/UX,Medium,Later,Mobile operations shortcuts,Build mobile-first quick actions for field users handling status updates and document capture,Improves field completion rate
+UX-071,UI/UX,High,Next,Filter persistence,Save user filters table layouts and recent workspaces per role and tenant,Improves repeat workflow efficiency
+UX-072,UI/UX,Medium,Next,Notification center,Create a unified notification center with triage snooze and assignment features,Improves follow-through
+UX-073,UI/UX,Medium,Later,On-screen collaboration cues,Show who changed what and when in live operational records,Improves coordination confidence
+UX-074,UI/UX,High,Next,Margin visibility,Surface buy rate sell rate margin and exception risk near dispatch decisions,Improves decision quality
+UX-075,UI/UX,Medium,Next,Form design system,Standardize validation patterns helper text and save behavior across forms,Reduces input errors
+UX-076,UI/UX,Medium,Later,Accessibility hardening,Audit focus states contrast keyboard support and screen reader labeling across core flows,Improves inclusivity and enterprise readiness
+UX-077,UI/UX,Medium,Next,Context panels,Use side panels for quick record inspection and edits from list views,Speeds multitasking workflows
+UX-078,UI/UX,High,Next,Operational map view,Add a purposeful map view for active loads with delay and cluster overlays,Improves spatial awareness
+UX-079,UI/UX,Medium,Later,Scenario highlighting,Highlight probable downstream consequences before major state changes or cancellations,Improves confidence in irreversible actions
+UX-080,UI/UX,Medium,Next,Embedded guidance,Integrate concise contextual guidance inside complex workflows instead of relying only on docs,Improves self-serve adoption
+OPS-081,Logistics Operations,Critical,Now,Margin-aware dispatch,Add dispatch recommendations using buy rate sell rate margin thresholds and service risk,Protects profitability
+OPS-082,Logistics Operations,High,Now,Appointment workflows,Build appointment scheduling and rescheduling workflows with notifications and accountability,Reduces missed appointments
+OPS-083,Logistics Operations,High,Now,Accessorial capture,Capture detention lumper TONU and layover events with timestamps and evidence,Prevents missed revenue
+OPS-084,Logistics Operations,High,Now,Document intelligence,Implement document intelligence for BOL POD and rate confirmation ingestion and classification,Speeds billing and audit prep
+OPS-085,Logistics Operations,High,Now,Carrier scorecards,Create carrier scorecards for on-time pickup claims communication and paperwork quality,Improves network quality
+OPS-086,Logistics Operations,High,Next,Check-call automation,Automate check-call cadences with exception-triggered human escalation,Reduces manual follow-up load
+OPS-087,Logistics Operations,Medium,Next,Facility performance views,Track shipper and receiver dwell delays rejections and service issues by facility,Improves account management
+OPS-088,Logistics Operations,High,Next,Shipment profitability,Show shipment and customer profitability after accessorials delays and claims,Improves pricing discipline
+OPS-089,Logistics Operations,Medium,Later,Mode-specific flows,Tailor workflows for reefer flatbed drayage and final mile constraints,Improves operational fit
+OPS-090,Logistics Operations,High,Next,Claims management,Add claims intake investigation and resolution workflows with document timelines,Improves recovery and accountability
+OPS-091,Logistics Operations,Medium,Next,ELD and telematics integrations,Integrate location and driver status feeds to improve ETA quality and automate exceptions,Improves visibility accuracy
+OPS-092,Logistics Operations,Medium,Later,Routing recommendations,Add route quality scoring based on historical dwell tolls and service outcomes,Improves planning quality
+OPS-093,Logistics Operations,High,Next,Invoice readiness queue,Create invoice readiness queues that block billing until required evidence is complete,Improves clean invoicing
+OPS-094,Logistics Operations,Medium,Next,Compliance document tracking,Track insurance W9 authority and safety document freshness across carriers,Reduces compliance risk
+OPS-095,Logistics Operations,Medium,Later,Multi-stop complexity tools,Support stop-level sequencing timing and service notes for multi-stop loads,Improves execution accuracy
+OPS-096,Logistics Operations,Medium,Next,Customer SLA dashboards,Expose SLA performance by shipper lane facility and account manager,Improves renewals and accountability
+OPS-097,Logistics Operations,High,Next,Exception playbooks,Attach standard playbooks to delay breakdown temperature and claim events,Improves recovery consistency
+OPS-098,Logistics Operations,Medium,Later,Procurement intelligence,Track lane-level carrier performance and spot-buy outcomes to improve procurement decisions,Improves margin and service consistency
+OPS-099,Logistics Operations,Medium,Next,Proof-of-service bundle,Bundle status evidence communication and documents into a single service record,Improves dispute resolution
+OPS-100,Logistics Operations,Medium,Later,Predictive risk scoring,Score loads for delay claim and margin risk before tender acceptance,Improves proactive decision making

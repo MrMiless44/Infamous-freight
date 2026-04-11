@@ -62,6 +62,12 @@ jobs:
       - name: Run fly config test
         run: bash tests/ci/fly-config.test.sh
 
+      - name: Run release readiness test
+        run: bash tests/ci/release-readiness.test.sh
+
+      - name: Run runbook governance test
+        run: bash tests/ci/runbook-governance.test.sh
+
   lint:
     name: lint
     runs-on: ubuntu-latest

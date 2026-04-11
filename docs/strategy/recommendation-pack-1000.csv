@@ -1,0 +1,1001 @@
+rank,variantIndex,recommendation,persona,context,metric
+1,1,"Standardize structured logging with request, org, shipment, and job correlation context. for Small (5-20) Intermodal operations",Dispatcher,"Holiday Peak Season in North America",On-time Delivery Rate
+1,2,"Standardize structured logging with request, org, shipment, and job correlation context. for Medium (20-100) Air Freight operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",Empty Miles
+1,3,"Standardize structured logging with request, org, shipment, and job correlation context. for Enterprise (> 100) Ocean operations",Broker Agent,"Extreme Weather Event in APAC",Carbon Footprint
+1,4,"Standardize structured logging with request, org, shipment, and job correlation context. for Micro (< 5) FTL operations",Compliance Officer,"Port Congestion in LATAM",On-time Delivery Rate
+1,5,"Standardize structured logging with request, org, shipment, and job correlation context. for Small (5-20) LTL operations",Warehouse Supervisor,"Carrier Shortage in North America",Empty Miles
+1,6,"Standardize structured logging with request, org, shipment, and job correlation context. for Medium (20-100) Intermodal operations",Carrier Owner,"Global Supply Chain Crisis in EMEA",Carbon Footprint
+1,7,"Standardize structured logging with request, org, shipment, and job correlation context. for Enterprise (> 100) Air Freight operations",Driver,"Holiday Peak Season in APAC",On-time Delivery Rate
+1,8,"Standardize structured logging with request, org, shipment, and job correlation context. for Micro (< 5) Ocean operations",Audit Specialist,"Last-mile Delivery Surge in LATAM",Empty Miles
+1,9,"Standardize structured logging with request, org, shipment, and job correlation context. for Small (5-20) FTL operations",Dispatcher,"Extreme Weather Event in North America",Carbon Footprint
+1,10,"Standardize structured logging with request, org, shipment, and job correlation context. for Medium (20-100) LTL operations",Fleet Manager,"Port Congestion in EMEA",On-time Delivery Rate
+2,1,"Centralize environment validation for API, web, mobile, and workers with typed schemas. for Small (5-20) Intermodal operations",Dispatcher,"Last-mile Delivery Surge in North America",On-time Delivery Rate
+2,2,"Centralize environment validation for API, web, mobile, and workers with typed schemas. for Medium (20-100) Air Freight operations",Fleet Manager,"Extreme Weather Event in EMEA",Empty Miles
+2,3,"Centralize environment validation for API, web, mobile, and workers with typed schemas. for Enterprise (> 100) Ocean operations",Broker Agent,"Port Congestion in APAC",Carbon Footprint
+2,4,"Centralize environment validation for API, web, mobile, and workers with typed schemas. for Micro (< 5) FTL operations",Compliance Officer,"Carrier Shortage in LATAM",On-time Delivery Rate
+2,5,"Centralize environment validation for API, web, mobile, and workers with typed schemas. for Small (5-20) LTL operations",Warehouse Supervisor,"Global Supply Chain Crisis in North America",Empty Miles
+2,6,"Centralize environment validation for API, web, mobile, and workers with typed schemas. for Medium (20-100) Intermodal operations",Carrier Owner,"Holiday Peak Season in EMEA",Carbon Footprint
+2,7,"Centralize environment validation for API, web, mobile, and workers with typed schemas. for Enterprise (> 100) Air Freight operations",Driver,"Last-mile Delivery Surge in APAC",On-time Delivery Rate
+2,8,"Centralize environment validation for API, web, mobile, and workers with typed schemas. for Micro (< 5) Ocean operations",Audit Specialist,"Extreme Weather Event in LATAM",Empty Miles
+2,9,"Centralize environment validation for API, web, mobile, and workers with typed schemas. for Small (5-20) FTL operations",Dispatcher,"Port Congestion in North America",Carbon Footprint
+2,10,"Centralize environment validation for API, web, mobile, and workers with typed schemas. for Medium (20-100) LTL operations",Fleet Manager,"Carrier Shortage in EMEA",On-time Delivery Rate
+3,1,"Offer self-serve demo environments with realistic operational data. for Small (5-20) Intermodal operations",Dispatcher,"Extreme Weather Event in North America",On-time Delivery Rate
+3,2,"Offer self-serve demo environments with realistic operational data. for Medium (20-100) Air Freight operations",Fleet Manager,"Port Congestion in EMEA",Empty Miles
+3,3,"Offer self-serve demo environments with realistic operational data. for Enterprise (> 100) Ocean operations",Broker Agent,"Carrier Shortage in APAC",Carbon Footprint
+3,4,"Offer self-serve demo environments with realistic operational data. for Micro (< 5) FTL operations",Compliance Officer,"Global Supply Chain Crisis in LATAM",On-time Delivery Rate
+3,5,"Offer self-serve demo environments with realistic operational data. for Small (5-20) LTL operations",Warehouse Supervisor,"Holiday Peak Season in North America",Empty Miles
+3,6,"Offer self-serve demo environments with realistic operational data. for Medium (20-100) Intermodal operations",Carrier Owner,"Last-mile Delivery Surge in EMEA",Carbon Footprint
+3,7,"Offer self-serve demo environments with realistic operational data. for Enterprise (> 100) Air Freight operations",Driver,"Extreme Weather Event in APAC",On-time Delivery Rate
+3,8,"Offer self-serve demo environments with realistic operational data. for Micro (< 5) Ocean operations",Audit Specialist,"Port Congestion in LATAM",Empty Miles
+3,9,"Offer self-serve demo environments with realistic operational data. for Small (5-20) FTL operations",Dispatcher,"Carrier Shortage in North America",Carbon Footprint
+3,10,"Offer self-serve demo environments with realistic operational data. for Medium (20-100) LTL operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",On-time Delivery Rate
+4,1,"Enforce tenant-scoped repository and service access patterns across all non-public endpoints. for Small (5-20) Intermodal operations",Dispatcher,"Port Congestion in North America",On-time Delivery Rate
+4,2,"Enforce tenant-scoped repository and service access patterns across all non-public endpoints. for Medium (20-100) Air Freight operations",Fleet Manager,"Carrier Shortage in EMEA",Empty Miles
+4,3,"Enforce tenant-scoped repository and service access patterns across all non-public endpoints. for Enterprise (> 100) Ocean operations",Broker Agent,"Global Supply Chain Crisis in APAC",Carbon Footprint
+4,4,"Enforce tenant-scoped repository and service access patterns across all non-public endpoints. for Micro (< 5) FTL operations",Compliance Officer,"Holiday Peak Season in LATAM",On-time Delivery Rate
+4,5,"Enforce tenant-scoped repository and service access patterns across all non-public endpoints. for Small (5-20) LTL operations",Warehouse Supervisor,"Last-mile Delivery Surge in North America",Empty Miles
+4,6,"Enforce tenant-scoped repository and service access patterns across all non-public endpoints. for Medium (20-100) Intermodal operations",Carrier Owner,"Extreme Weather Event in EMEA",Carbon Footprint
+4,7,"Enforce tenant-scoped repository and service access patterns across all non-public endpoints. for Enterprise (> 100) Air Freight operations",Driver,"Port Congestion in APAC",On-time Delivery Rate
+4,8,"Enforce tenant-scoped repository and service access patterns across all non-public endpoints. for Micro (< 5) Ocean operations",Audit Specialist,"Carrier Shortage in LATAM",Empty Miles
+4,9,"Enforce tenant-scoped repository and service access patterns across all non-public endpoints. for Small (5-20) FTL operations",Dispatcher,"Global Supply Chain Crisis in North America",Carbon Footprint
+4,10,"Enforce tenant-scoped repository and service access patterns across all non-public endpoints. for Medium (20-100) LTL operations",Fleet Manager,"Holiday Peak Season in EMEA",On-time Delivery Rate
+5,1,"Add API contract tests around load, shipment, tracking, and billing workflows. for Small (5-20) Intermodal operations",Dispatcher,"Carrier Shortage in North America",On-time Delivery Rate
+5,2,"Add API contract tests around load, shipment, tracking, and billing workflows. for Medium (20-100) Air Freight operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",Empty Miles
+5,3,"Add API contract tests around load, shipment, tracking, and billing workflows. for Enterprise (> 100) Ocean operations",Broker Agent,"Holiday Peak Season in APAC",Carbon Footprint
+5,4,"Add API contract tests around load, shipment, tracking, and billing workflows. for Micro (< 5) FTL operations",Compliance Officer,"Last-mile Delivery Surge in LATAM",On-time Delivery Rate
+5,5,"Add API contract tests around load, shipment, tracking, and billing workflows. for Small (5-20) LTL operations",Warehouse Supervisor,"Extreme Weather Event in North America",Empty Miles
+5,6,"Add API contract tests around load, shipment, tracking, and billing workflows. for Medium (20-100) Intermodal operations",Carrier Owner,"Port Congestion in EMEA",Carbon Footprint
+5,7,"Add API contract tests around load, shipment, tracking, and billing workflows. for Enterprise (> 100) Air Freight operations",Driver,"Carrier Shortage in APAC",On-time Delivery Rate
+5,8,"Add API contract tests around load, shipment, tracking, and billing workflows. for Micro (< 5) Ocean operations",Audit Specialist,"Global Supply Chain Crisis in LATAM",Empty Miles
+5,9,"Add API contract tests around load, shipment, tracking, and billing workflows. for Small (5-20) FTL operations",Dispatcher,"Holiday Peak Season in North America",Carbon Footprint
+5,10,"Add API contract tests around load, shipment, tracking, and billing workflows. for Medium (20-100) LTL operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",On-time Delivery Rate
+6,1,"Establish SLOs and alert thresholds for latency, job failures, and webhook processing. for Small (5-20) Intermodal operations",Dispatcher,"Global Supply Chain Crisis in North America",On-time Delivery Rate
+6,2,"Establish SLOs and alert thresholds for latency, job failures, and webhook processing. for Medium (20-100) Air Freight operations",Fleet Manager,"Holiday Peak Season in EMEA",Empty Miles
+6,3,"Establish SLOs and alert thresholds for latency, job failures, and webhook processing. for Enterprise (> 100) Ocean operations",Broker Agent,"Last-mile Delivery Surge in APAC",Carbon Footprint
+6,4,"Establish SLOs and alert thresholds for latency, job failures, and webhook processing. for Micro (< 5) FTL operations",Compliance Officer,"Extreme Weather Event in LATAM",On-time Delivery Rate
+6,5,"Establish SLOs and alert thresholds for latency, job failures, and webhook processing. for Small (5-20) LTL operations",Warehouse Supervisor,"Port Congestion in North America",Empty Miles
+6,6,"Establish SLOs and alert thresholds for latency, job failures, and webhook processing. for Medium (20-100) Intermodal operations",Carrier Owner,"Carrier Shortage in EMEA",Carbon Footprint
+6,7,"Establish SLOs and alert thresholds for latency, job failures, and webhook processing. for Enterprise (> 100) Air Freight operations",Driver,"Global Supply Chain Crisis in APAC",On-time Delivery Rate
+6,8,"Establish SLOs and alert thresholds for latency, job failures, and webhook processing. for Micro (< 5) Ocean operations",Audit Specialist,"Holiday Peak Season in LATAM",Empty Miles
+6,9,"Establish SLOs and alert thresholds for latency, job failures, and webhook processing. for Small (5-20) FTL operations",Dispatcher,"Last-mile Delivery Surge in North America",Carbon Footprint
+6,10,"Establish SLOs and alert thresholds for latency, job failures, and webhook processing. for Medium (20-100) LTL operations",Fleet Manager,"Extreme Weather Event in EMEA",On-time Delivery Rate
+7,1,"Audit all protected routes for standard middleware ordering and scope enforcement. for Small (5-20) Intermodal operations",Dispatcher,"Holiday Peak Season in North America",On-time Delivery Rate
+7,2,"Audit all protected routes for standard middleware ordering and scope enforcement. for Medium (20-100) Air Freight operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",Empty Miles
+7,3,"Audit all protected routes for standard middleware ordering and scope enforcement. for Enterprise (> 100) Ocean operations",Broker Agent,"Extreme Weather Event in APAC",Carbon Footprint
+7,4,"Audit all protected routes for standard middleware ordering and scope enforcement. for Micro (< 5) FTL operations",Compliance Officer,"Port Congestion in LATAM",On-time Delivery Rate
+7,5,"Audit all protected routes for standard middleware ordering and scope enforcement. for Small (5-20) LTL operations",Warehouse Supervisor,"Carrier Shortage in North America",Empty Miles
+7,6,"Audit all protected routes for standard middleware ordering and scope enforcement. for Medium (20-100) Intermodal operations",Carrier Owner,"Global Supply Chain Crisis in EMEA",Carbon Footprint
+7,7,"Audit all protected routes for standard middleware ordering and scope enforcement. for Enterprise (> 100) Air Freight operations",Driver,"Holiday Peak Season in APAC",On-time Delivery Rate
+7,8,"Audit all protected routes for standard middleware ordering and scope enforcement. for Micro (< 5) Ocean operations",Audit Specialist,"Last-mile Delivery Surge in LATAM",Empty Miles
+7,9,"Audit all protected routes for standard middleware ordering and scope enforcement. for Small (5-20) FTL operations",Dispatcher,"Extreme Weather Event in North America",Carbon Footprint
+7,10,"Audit all protected routes for standard middleware ordering and scope enforcement. for Medium (20-100) LTL operations",Fleet Manager,"Port Congestion in EMEA",On-time Delivery Rate
+8,1,"Review Prisma queries for missing indexes, N+1 patterns, and unbounded list access. for Small (5-20) Intermodal operations",Dispatcher,"Last-mile Delivery Surge in North America",On-time Delivery Rate
+8,2,"Review Prisma queries for missing indexes, N+1 patterns, and unbounded list access. for Medium (20-100) Air Freight operations",Fleet Manager,"Extreme Weather Event in EMEA",Empty Miles
+8,3,"Review Prisma queries for missing indexes, N+1 patterns, and unbounded list access. for Enterprise (> 100) Ocean operations",Broker Agent,"Port Congestion in APAC",Carbon Footprint
+8,4,"Review Prisma queries for missing indexes, N+1 patterns, and unbounded list access. for Micro (< 5) FTL operations",Compliance Officer,"Carrier Shortage in LATAM",On-time Delivery Rate
+8,5,"Review Prisma queries for missing indexes, N+1 patterns, and unbounded list access. for Small (5-20) LTL operations",Warehouse Supervisor,"Global Supply Chain Crisis in North America",Empty Miles
+8,6,"Review Prisma queries for missing indexes, N+1 patterns, and unbounded list access. for Medium (20-100) Intermodal operations",Carrier Owner,"Holiday Peak Season in EMEA",Carbon Footprint
+8,7,"Review Prisma queries for missing indexes, N+1 patterns, and unbounded list access. for Enterprise (> 100) Air Freight operations",Driver,"Last-mile Delivery Surge in APAC",On-time Delivery Rate
+8,8,"Review Prisma queries for missing indexes, N+1 patterns, and unbounded list access. for Micro (< 5) Ocean operations",Audit Specialist,"Extreme Weather Event in LATAM",Empty Miles
+8,9,"Review Prisma queries for missing indexes, N+1 patterns, and unbounded list access. for Small (5-20) FTL operations",Dispatcher,"Port Congestion in North America",Carbon Footprint
+8,10,"Review Prisma queries for missing indexes, N+1 patterns, and unbounded list access. for Medium (20-100) LTL operations",Fleet Manager,"Carrier Shortage in EMEA",On-time Delivery Rate
+9,1,"Create role-based home dashboards for carrier, broker, and shipper users so each persona lands on their highest-value operational view first. for Small (5-20) Intermodal operations",Dispatcher,"Extreme Weather Event in North America",On-time Delivery Rate
+9,2,"Create role-based home dashboards for carrier, broker, and shipper users so each persona lands on their highest-value operational view first. for Medium (20-100) Air Freight operations",Fleet Manager,"Port Congestion in EMEA",Empty Miles
+9,3,"Create role-based home dashboards for carrier, broker, and shipper users so each persona lands on their highest-value operational view first. for Enterprise (> 100) Ocean operations",Broker Agent,"Carrier Shortage in APAC",Carbon Footprint
+9,4,"Create role-based home dashboards for carrier, broker, and shipper users so each persona lands on their highest-value operational view first. for Micro (< 5) FTL operations",Compliance Officer,"Global Supply Chain Crisis in LATAM",On-time Delivery Rate
+9,5,"Create role-based home dashboards for carrier, broker, and shipper users so each persona lands on their highest-value operational view first. for Small (5-20) LTL operations",Warehouse Supervisor,"Holiday Peak Season in North America",Empty Miles
+9,6,"Create role-based home dashboards for carrier, broker, and shipper users so each persona lands on their highest-value operational view first. for Medium (20-100) Intermodal operations",Carrier Owner,"Last-mile Delivery Surge in EMEA",Carbon Footprint
+9,7,"Create role-based home dashboards for carrier, broker, and shipper users so each persona lands on their highest-value operational view first. for Enterprise (> 100) Air Freight operations",Driver,"Extreme Weather Event in APAC",On-time Delivery Rate
+9,8,"Create role-based home dashboards for carrier, broker, and shipper users so each persona lands on their highest-value operational view first. for Micro (< 5) Ocean operations",Audit Specialist,"Port Congestion in LATAM",Empty Miles
+9,9,"Create role-based home dashboards for carrier, broker, and shipper users so each persona lands on their highest-value operational view first. for Small (5-20) FTL operations",Dispatcher,"Carrier Shortage in North America",Carbon Footprint
+9,10,"Create role-based home dashboards for carrier, broker, and shipper users so each persona lands on their highest-value operational view first. for Medium (20-100) LTL operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",On-time Delivery Rate
+10,1,"Launch landing pages for carrier, broker, shipper, and enterprise operations personas. for Small (5-20) Intermodal operations",Dispatcher,"Port Congestion in North America",On-time Delivery Rate
+10,2,"Launch landing pages for carrier, broker, shipper, and enterprise operations personas. for Medium (20-100) Air Freight operations",Fleet Manager,"Carrier Shortage in EMEA",Empty Miles
+10,3,"Launch landing pages for carrier, broker, shipper, and enterprise operations personas. for Enterprise (> 100) Ocean operations",Broker Agent,"Global Supply Chain Crisis in APAC",Carbon Footprint
+10,4,"Launch landing pages for carrier, broker, shipper, and enterprise operations personas. for Micro (< 5) FTL operations",Compliance Officer,"Holiday Peak Season in LATAM",On-time Delivery Rate
+10,5,"Launch landing pages for carrier, broker, shipper, and enterprise operations personas. for Small (5-20) LTL operations",Warehouse Supervisor,"Last-mile Delivery Surge in North America",Empty Miles
+10,6,"Launch landing pages for carrier, broker, shipper, and enterprise operations personas. for Medium (20-100) Intermodal operations",Carrier Owner,"Extreme Weather Event in EMEA",Carbon Footprint
+10,7,"Launch landing pages for carrier, broker, shipper, and enterprise operations personas. for Enterprise (> 100) Air Freight operations",Driver,"Port Congestion in APAC",On-time Delivery Rate
+10,8,"Launch landing pages for carrier, broker, shipper, and enterprise operations personas. for Micro (< 5) Ocean operations",Audit Specialist,"Carrier Shortage in LATAM",Empty Miles
+10,9,"Launch landing pages for carrier, broker, shipper, and enterprise operations personas. for Small (5-20) FTL operations",Dispatcher,"Global Supply Chain Crisis in North America",Carbon Footprint
+10,10,"Launch landing pages for carrier, broker, shipper, and enterprise operations personas. for Medium (20-100) LTL operations",Fleet Manager,"Holiday Peak Season in EMEA",On-time Delivery Rate
+11,1,"Create direct comparison pages against spreadsheets, legacy TMS, and generic CRM workflows. for Small (5-20) Intermodal operations",Dispatcher,"Carrier Shortage in North America",On-time Delivery Rate
+11,2,"Create direct comparison pages against spreadsheets, legacy TMS, and generic CRM workflows. for Medium (20-100) Air Freight operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",Empty Miles
+11,3,"Create direct comparison pages against spreadsheets, legacy TMS, and generic CRM workflows. for Enterprise (> 100) Ocean operations",Broker Agent,"Holiday Peak Season in APAC",Carbon Footprint
+11,4,"Create direct comparison pages against spreadsheets, legacy TMS, and generic CRM workflows. for Micro (< 5) FTL operations",Compliance Officer,"Last-mile Delivery Surge in LATAM",On-time Delivery Rate
+11,5,"Create direct comparison pages against spreadsheets, legacy TMS, and generic CRM workflows. for Small (5-20) LTL operations",Warehouse Supervisor,"Extreme Weather Event in North America",Empty Miles
+11,6,"Create direct comparison pages against spreadsheets, legacy TMS, and generic CRM workflows. for Medium (20-100) Intermodal operations",Carrier Owner,"Port Congestion in EMEA",Carbon Footprint
+11,7,"Create direct comparison pages against spreadsheets, legacy TMS, and generic CRM workflows. for Enterprise (> 100) Air Freight operations",Driver,"Carrier Shortage in APAC",On-time Delivery Rate
+11,8,"Create direct comparison pages against spreadsheets, legacy TMS, and generic CRM workflows. for Micro (< 5) Ocean operations",Audit Specialist,"Global Supply Chain Crisis in LATAM",Empty Miles
+11,9,"Create direct comparison pages against spreadsheets, legacy TMS, and generic CRM workflows. for Small (5-20) FTL operations",Dispatcher,"Holiday Peak Season in North America",Carbon Footprint
+11,10,"Create direct comparison pages against spreadsheets, legacy TMS, and generic CRM workflows. for Medium (20-100) LTL operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",On-time Delivery Rate
+12,1,"Strengthen security, compliance, and reliability pages with concrete controls and uptime metrics. for Small (5-20) Intermodal operations",Dispatcher,"Global Supply Chain Crisis in North America",On-time Delivery Rate
+12,2,"Strengthen security, compliance, and reliability pages with concrete controls and uptime metrics. for Medium (20-100) Air Freight operations",Fleet Manager,"Holiday Peak Season in EMEA",Empty Miles
+12,3,"Strengthen security, compliance, and reliability pages with concrete controls and uptime metrics. for Enterprise (> 100) Ocean operations",Broker Agent,"Last-mile Delivery Surge in APAC",Carbon Footprint
+12,4,"Strengthen security, compliance, and reliability pages with concrete controls and uptime metrics. for Micro (< 5) FTL operations",Compliance Officer,"Extreme Weather Event in LATAM",On-time Delivery Rate
+12,5,"Strengthen security, compliance, and reliability pages with concrete controls and uptime metrics. for Small (5-20) LTL operations",Warehouse Supervisor,"Port Congestion in North America",Empty Miles
+12,6,"Strengthen security, compliance, and reliability pages with concrete controls and uptime metrics. for Medium (20-100) Intermodal operations",Carrier Owner,"Carrier Shortage in EMEA",Carbon Footprint
+12,7,"Strengthen security, compliance, and reliability pages with concrete controls and uptime metrics. for Enterprise (> 100) Air Freight operations",Driver,"Global Supply Chain Crisis in APAC",On-time Delivery Rate
+12,8,"Strengthen security, compliance, and reliability pages with concrete controls and uptime metrics. for Micro (< 5) Ocean operations",Audit Specialist,"Holiday Peak Season in LATAM",Empty Miles
+12,9,"Strengthen security, compliance, and reliability pages with concrete controls and uptime metrics. for Small (5-20) FTL operations",Dispatcher,"Last-mile Delivery Surge in North America",Carbon Footprint
+12,10,"Strengthen security, compliance, and reliability pages with concrete controls and uptime metrics. for Medium (20-100) LTL operations",Fleet Manager,"Extreme Weather Event in EMEA",On-time Delivery Rate
+13,1,"Redesign operations dashboards around urgent queues and pending decisions rather than static analytics blocks. for Small (5-20) Intermodal operations",Dispatcher,"Holiday Peak Season in North America",On-time Delivery Rate
+13,2,"Redesign operations dashboards around urgent queues and pending decisions rather than static analytics blocks. for Medium (20-100) Air Freight operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",Empty Miles
+13,3,"Redesign operations dashboards around urgent queues and pending decisions rather than static analytics blocks. for Enterprise (> 100) Ocean operations",Broker Agent,"Extreme Weather Event in APAC",Carbon Footprint
+13,4,"Redesign operations dashboards around urgent queues and pending decisions rather than static analytics blocks. for Micro (< 5) FTL operations",Compliance Officer,"Port Congestion in LATAM",On-time Delivery Rate
+13,5,"Redesign operations dashboards around urgent queues and pending decisions rather than static analytics blocks. for Small (5-20) LTL operations",Warehouse Supervisor,"Carrier Shortage in North America",Empty Miles
+13,6,"Redesign operations dashboards around urgent queues and pending decisions rather than static analytics blocks. for Medium (20-100) Intermodal operations",Carrier Owner,"Global Supply Chain Crisis in EMEA",Carbon Footprint
+13,7,"Redesign operations dashboards around urgent queues and pending decisions rather than static analytics blocks. for Enterprise (> 100) Air Freight operations",Driver,"Holiday Peak Season in APAC",On-time Delivery Rate
+13,8,"Redesign operations dashboards around urgent queues and pending decisions rather than static analytics blocks. for Micro (< 5) Ocean operations",Audit Specialist,"Last-mile Delivery Surge in LATAM",Empty Miles
+13,9,"Redesign operations dashboards around urgent queues and pending decisions rather than static analytics blocks. for Small (5-20) FTL operations",Dispatcher,"Extreme Weather Event in North America",Carbon Footprint
+13,10,"Redesign operations dashboards around urgent queues and pending decisions rather than static analytics blocks. for Medium (20-100) LTL operations",Fleet Manager,"Port Congestion in EMEA",On-time Delivery Rate
+14,1,"Introduce dense table modes with sticky action columns, filters, and saved views for dispatch workflows. for Small (5-20) Intermodal operations",Dispatcher,"Last-mile Delivery Surge in North America",On-time Delivery Rate
+14,2,"Introduce dense table modes with sticky action columns, filters, and saved views for dispatch workflows. for Medium (20-100) Air Freight operations",Fleet Manager,"Extreme Weather Event in EMEA",Empty Miles
+14,3,"Introduce dense table modes with sticky action columns, filters, and saved views for dispatch workflows. for Enterprise (> 100) Ocean operations",Broker Agent,"Port Congestion in APAC",Carbon Footprint
+14,4,"Introduce dense table modes with sticky action columns, filters, and saved views for dispatch workflows. for Micro (< 5) FTL operations",Compliance Officer,"Carrier Shortage in LATAM",On-time Delivery Rate
+14,5,"Introduce dense table modes with sticky action columns, filters, and saved views for dispatch workflows. for Small (5-20) LTL operations",Warehouse Supervisor,"Global Supply Chain Crisis in North America",Empty Miles
+14,6,"Introduce dense table modes with sticky action columns, filters, and saved views for dispatch workflows. for Medium (20-100) Intermodal operations",Carrier Owner,"Holiday Peak Season in EMEA",Carbon Footprint
+14,7,"Introduce dense table modes with sticky action columns, filters, and saved views for dispatch workflows. for Enterprise (> 100) Air Freight operations",Driver,"Last-mile Delivery Surge in APAC",On-time Delivery Rate
+14,8,"Introduce dense table modes with sticky action columns, filters, and saved views for dispatch workflows. for Micro (< 5) Ocean operations",Audit Specialist,"Extreme Weather Event in LATAM",Empty Miles
+14,9,"Introduce dense table modes with sticky action columns, filters, and saved views for dispatch workflows. for Small (5-20) FTL operations",Dispatcher,"Port Congestion in North America",Carbon Footprint
+14,10,"Introduce dense table modes with sticky action columns, filters, and saved views for dispatch workflows. for Medium (20-100) LTL operations",Fleet Manager,"Carrier Shortage in EMEA",On-time Delivery Rate
+15,1,"Make shipment detail pages timeline-first with status evidence and next actions. for Small (5-20) Intermodal operations",Dispatcher,"Extreme Weather Event in North America",On-time Delivery Rate
+15,2,"Make shipment detail pages timeline-first with status evidence and next actions. for Medium (20-100) Air Freight operations",Fleet Manager,"Port Congestion in EMEA",Empty Miles
+15,3,"Make shipment detail pages timeline-first with status evidence and next actions. for Enterprise (> 100) Ocean operations",Broker Agent,"Carrier Shortage in APAC",Carbon Footprint
+15,4,"Make shipment detail pages timeline-first with status evidence and next actions. for Micro (< 5) FTL operations",Compliance Officer,"Global Supply Chain Crisis in LATAM",On-time Delivery Rate
+15,5,"Make shipment detail pages timeline-first with status evidence and next actions. for Small (5-20) LTL operations",Warehouse Supervisor,"Holiday Peak Season in North America",Empty Miles
+15,6,"Make shipment detail pages timeline-first with status evidence and next actions. for Medium (20-100) Intermodal operations",Carrier Owner,"Last-mile Delivery Surge in EMEA",Carbon Footprint
+15,7,"Make shipment detail pages timeline-first with status evidence and next actions. for Enterprise (> 100) Air Freight operations",Driver,"Extreme Weather Event in APAC",On-time Delivery Rate
+15,8,"Make shipment detail pages timeline-first with status evidence and next actions. for Micro (< 5) Ocean operations",Audit Specialist,"Port Congestion in LATAM",Empty Miles
+15,9,"Make shipment detail pages timeline-first with status evidence and next actions. for Small (5-20) FTL operations",Dispatcher,"Carrier Shortage in North America",Carbon Footprint
+15,10,"Make shipment detail pages timeline-first with status evidence and next actions. for Medium (20-100) LTL operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",On-time Delivery Rate
+16,1,"Replace scattered direct env access and non-null assertions with config accessors. for Small (5-20) Intermodal operations",Dispatcher,"Port Congestion in North America",On-time Delivery Rate
+16,2,"Replace scattered direct env access and non-null assertions with config accessors. for Medium (20-100) Air Freight operations",Fleet Manager,"Carrier Shortage in EMEA",Empty Miles
+16,3,"Replace scattered direct env access and non-null assertions with config accessors. for Enterprise (> 100) Ocean operations",Broker Agent,"Global Supply Chain Crisis in APAC",Carbon Footprint
+16,4,"Replace scattered direct env access and non-null assertions with config accessors. for Micro (< 5) FTL operations",Compliance Officer,"Holiday Peak Season in LATAM",On-time Delivery Rate
+16,5,"Replace scattered direct env access and non-null assertions with config accessors. for Small (5-20) LTL operations",Warehouse Supervisor,"Last-mile Delivery Surge in North America",Empty Miles
+16,6,"Replace scattered direct env access and non-null assertions with config accessors. for Medium (20-100) Intermodal operations",Carrier Owner,"Extreme Weather Event in EMEA",Carbon Footprint
+16,7,"Replace scattered direct env access and non-null assertions with config accessors. for Enterprise (> 100) Air Freight operations",Driver,"Port Congestion in APAC",On-time Delivery Rate
+16,8,"Replace scattered direct env access and non-null assertions with config accessors. for Micro (< 5) Ocean operations",Audit Specialist,"Carrier Shortage in LATAM",Empty Miles
+16,9,"Replace scattered direct env access and non-null assertions with config accessors. for Small (5-20) FTL operations",Dispatcher,"Global Supply Chain Crisis in North America",Carbon Footprint
+16,10,"Replace scattered direct env access and non-null assertions with config accessors. for Medium (20-100) LTL operations",Fleet Manager,"Holiday Peak Season in EMEA",On-time Delivery Rate
+17,1,"Track insurance, W9, authority, and safety document freshness across carriers. for Small (5-20) Intermodal operations",Dispatcher,"Carrier Shortage in North America",On-time Delivery Rate
+17,2,"Track insurance, W9, authority, and safety document freshness across carriers. for Medium (20-100) Air Freight operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",Empty Miles
+17,3,"Track insurance, W9, authority, and safety document freshness across carriers. for Enterprise (> 100) Ocean operations",Broker Agent,"Holiday Peak Season in APAC",Carbon Footprint
+17,4,"Track insurance, W9, authority, and safety document freshness across carriers. for Micro (< 5) FTL operations",Compliance Officer,"Last-mile Delivery Surge in LATAM",On-time Delivery Rate
+17,5,"Track insurance, W9, authority, and safety document freshness across carriers. for Small (5-20) LTL operations",Warehouse Supervisor,"Extreme Weather Event in North America",Empty Miles
+17,6,"Track insurance, W9, authority, and safety document freshness across carriers. for Medium (20-100) Intermodal operations",Carrier Owner,"Port Congestion in EMEA",Carbon Footprint
+17,7,"Track insurance, W9, authority, and safety document freshness across carriers. for Enterprise (> 100) Air Freight operations",Driver,"Carrier Shortage in APAC",On-time Delivery Rate
+17,8,"Track insurance, W9, authority, and safety document freshness across carriers. for Micro (< 5) Ocean operations",Audit Specialist,"Global Supply Chain Crisis in LATAM",Empty Miles
+17,9,"Track insurance, W9, authority, and safety document freshness across carriers. for Small (5-20) FTL operations",Dispatcher,"Holiday Peak Season in North America",Carbon Footprint
+17,10,"Track insurance, W9, authority, and safety document freshness across carriers. for Medium (20-100) LTL operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",On-time Delivery Rate
+18,1,"Expand tracing around dispatch workflows, external integrations, and document processing. for Small (5-20) Intermodal operations",Dispatcher,"Global Supply Chain Crisis in North America",On-time Delivery Rate
+18,2,"Expand tracing around dispatch workflows, external integrations, and document processing. for Medium (20-100) Air Freight operations",Fleet Manager,"Holiday Peak Season in EMEA",Empty Miles
+18,3,"Expand tracing around dispatch workflows, external integrations, and document processing. for Enterprise (> 100) Ocean operations",Broker Agent,"Last-mile Delivery Surge in APAC",Carbon Footprint
+18,4,"Expand tracing around dispatch workflows, external integrations, and document processing. for Micro (< 5) FTL operations",Compliance Officer,"Extreme Weather Event in LATAM",On-time Delivery Rate
+18,5,"Expand tracing around dispatch workflows, external integrations, and document processing. for Small (5-20) LTL operations",Warehouse Supervisor,"Port Congestion in North America",Empty Miles
+18,6,"Expand tracing around dispatch workflows, external integrations, and document processing. for Medium (20-100) Intermodal operations",Carrier Owner,"Carrier Shortage in EMEA",Carbon Footprint
+18,7,"Expand tracing around dispatch workflows, external integrations, and document processing. for Enterprise (> 100) Air Freight operations",Driver,"Global Supply Chain Crisis in APAC",On-time Delivery Rate
+18,8,"Expand tracing around dispatch workflows, external integrations, and document processing. for Micro (< 5) Ocean operations",Audit Specialist,"Holiday Peak Season in LATAM",Empty Miles
+18,9,"Expand tracing around dispatch workflows, external integrations, and document processing. for Small (5-20) FTL operations",Dispatcher,"Last-mile Delivery Surge in North America",Carbon Footprint
+18,10,"Expand tracing around dispatch workflows, external integrations, and document processing. for Medium (20-100) LTL operations",Fleet Manager,"Extreme Weather Event in EMEA",On-time Delivery Rate
+19,1,"Build exception management queues for late pickup, detention, failed delivery, and missed check calls. for Small (5-20) Intermodal operations",Dispatcher,"Holiday Peak Season in North America",On-time Delivery Rate
+19,2,"Build exception management queues for late pickup, detention, failed delivery, and missed check calls. for Medium (20-100) Air Freight operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",Empty Miles
+19,3,"Build exception management queues for late pickup, detention, failed delivery, and missed check calls. for Enterprise (> 100) Ocean operations",Broker Agent,"Extreme Weather Event in APAC",Carbon Footprint
+19,4,"Build exception management queues for late pickup, detention, failed delivery, and missed check calls. for Micro (< 5) FTL operations",Compliance Officer,"Port Congestion in LATAM",On-time Delivery Rate
+19,5,"Build exception management queues for late pickup, detention, failed delivery, and missed check calls. for Small (5-20) LTL operations",Warehouse Supervisor,"Carrier Shortage in North America",Empty Miles
+19,6,"Build exception management queues for late pickup, detention, failed delivery, and missed check calls. for Medium (20-100) Intermodal operations",Carrier Owner,"Global Supply Chain Crisis in EMEA",Carbon Footprint
+19,7,"Build exception management queues for late pickup, detention, failed delivery, and missed check calls. for Enterprise (> 100) Air Freight operations",Driver,"Holiday Peak Season in APAC",On-time Delivery Rate
+19,8,"Build exception management queues for late pickup, detention, failed delivery, and missed check calls. for Micro (< 5) Ocean operations",Audit Specialist,"Last-mile Delivery Surge in LATAM",Empty Miles
+19,9,"Build exception management queues for late pickup, detention, failed delivery, and missed check calls. for Small (5-20) FTL operations",Dispatcher,"Extreme Weather Event in North America",Carbon Footprint
+19,10,"Build exception management queues for late pickup, detention, failed delivery, and missed check calls. for Medium (20-100) LTL operations",Fleet Manager,"Port Congestion in EMEA",On-time Delivery Rate
+20,1,"Introduce customer-facing shipment visibility portals with branded tracking pages. for Small (5-20) Intermodal operations",Dispatcher,"Last-mile Delivery Surge in North America",On-time Delivery Rate
+20,2,"Introduce customer-facing shipment visibility portals with branded tracking pages. for Medium (20-100) Air Freight operations",Fleet Manager,"Extreme Weather Event in EMEA",Empty Miles
+20,3,"Introduce customer-facing shipment visibility portals with branded tracking pages. for Enterprise (> 100) Ocean operations",Broker Agent,"Port Congestion in APAC",Carbon Footprint
+20,4,"Introduce customer-facing shipment visibility portals with branded tracking pages. for Micro (< 5) FTL operations",Compliance Officer,"Carrier Shortage in LATAM",On-time Delivery Rate
+20,5,"Introduce customer-facing shipment visibility portals with branded tracking pages. for Small (5-20) LTL operations",Warehouse Supervisor,"Global Supply Chain Crisis in North America",Empty Miles
+20,6,"Introduce customer-facing shipment visibility portals with branded tracking pages. for Medium (20-100) Intermodal operations",Carrier Owner,"Holiday Peak Season in EMEA",Carbon Footprint
+20,7,"Introduce customer-facing shipment visibility portals with branded tracking pages. for Enterprise (> 100) Air Freight operations",Driver,"Last-mile Delivery Surge in APAC",On-time Delivery Rate
+20,8,"Introduce customer-facing shipment visibility portals with branded tracking pages. for Micro (< 5) Ocean operations",Audit Specialist,"Extreme Weather Event in LATAM",Empty Miles
+20,9,"Introduce customer-facing shipment visibility portals with branded tracking pages. for Small (5-20) FTL operations",Dispatcher,"Port Congestion in North America",Carbon Footprint
+20,10,"Introduce customer-facing shipment visibility portals with branded tracking pages. for Medium (20-100) LTL operations",Fleet Manager,"Carrier Shortage in EMEA",On-time Delivery Rate
+21,1,"Show full action histories for status changes, pricing edits, and user interventions. for Small (5-20) Intermodal operations",Dispatcher,"Extreme Weather Event in North America",On-time Delivery Rate
+21,2,"Show full action histories for status changes, pricing edits, and user interventions. for Medium (20-100) Air Freight operations",Fleet Manager,"Port Congestion in EMEA",Empty Miles
+21,3,"Show full action histories for status changes, pricing edits, and user interventions. for Enterprise (> 100) Ocean operations",Broker Agent,"Carrier Shortage in APAC",Carbon Footprint
+21,4,"Show full action histories for status changes, pricing edits, and user interventions. for Micro (< 5) FTL operations",Compliance Officer,"Global Supply Chain Crisis in LATAM",On-time Delivery Rate
+21,5,"Show full action histories for status changes, pricing edits, and user interventions. for Small (5-20) LTL operations",Warehouse Supervisor,"Holiday Peak Season in North America",Empty Miles
+21,6,"Show full action histories for status changes, pricing edits, and user interventions. for Medium (20-100) Intermodal operations",Carrier Owner,"Last-mile Delivery Surge in EMEA",Carbon Footprint
+21,7,"Show full action histories for status changes, pricing edits, and user interventions. for Enterprise (> 100) Air Freight operations",Driver,"Extreme Weather Event in APAC",On-time Delivery Rate
+21,8,"Show full action histories for status changes, pricing edits, and user interventions. for Micro (< 5) Ocean operations",Audit Specialist,"Port Congestion in LATAM",Empty Miles
+21,9,"Show full action histories for status changes, pricing edits, and user interventions. for Small (5-20) FTL operations",Dispatcher,"Carrier Shortage in North America",Carbon Footprint
+21,10,"Show full action histories for status changes, pricing edits, and user interventions. for Medium (20-100) LTL operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",On-time Delivery Rate
+22,1,"Build ROI calculators around reduced empty miles, faster billing, and fewer service failures. for Small (5-20) Intermodal operations",Dispatcher,"Port Congestion in North America",On-time Delivery Rate
+22,2,"Build ROI calculators around reduced empty miles, faster billing, and fewer service failures. for Medium (20-100) Air Freight operations",Fleet Manager,"Carrier Shortage in EMEA",Empty Miles
+22,3,"Build ROI calculators around reduced empty miles, faster billing, and fewer service failures. for Enterprise (> 100) Ocean operations",Broker Agent,"Global Supply Chain Crisis in APAC",Carbon Footprint
+22,4,"Build ROI calculators around reduced empty miles, faster billing, and fewer service failures. for Micro (< 5) FTL operations",Compliance Officer,"Holiday Peak Season in LATAM",On-time Delivery Rate
+22,5,"Build ROI calculators around reduced empty miles, faster billing, and fewer service failures. for Small (5-20) LTL operations",Warehouse Supervisor,"Last-mile Delivery Surge in North America",Empty Miles
+22,6,"Build ROI calculators around reduced empty miles, faster billing, and fewer service failures. for Medium (20-100) Intermodal operations",Carrier Owner,"Extreme Weather Event in EMEA",Carbon Footprint
+22,7,"Build ROI calculators around reduced empty miles, faster billing, and fewer service failures. for Enterprise (> 100) Air Freight operations",Driver,"Port Congestion in APAC",On-time Delivery Rate
+22,8,"Build ROI calculators around reduced empty miles, faster billing, and fewer service failures. for Micro (< 5) Ocean operations",Audit Specialist,"Carrier Shortage in LATAM",Empty Miles
+22,9,"Build ROI calculators around reduced empty miles, faster billing, and fewer service failures. for Small (5-20) FTL operations",Dispatcher,"Global Supply Chain Crisis in North America",Carbon Footprint
+22,10,"Build ROI calculators around reduced empty miles, faster billing, and fewer service failures. for Medium (20-100) LTL operations",Fleet Manager,"Holiday Peak Season in EMEA",On-time Delivery Rate
+23,1,"Create onboarding journeys by fleet size, revenue band, and logistics maturity. for Small (5-20) Intermodal operations",Dispatcher,"Carrier Shortage in North America",On-time Delivery Rate
+23,2,"Create onboarding journeys by fleet size, revenue band, and logistics maturity. for Medium (20-100) Air Freight operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",Empty Miles
+23,3,"Create onboarding journeys by fleet size, revenue band, and logistics maturity. for Enterprise (> 100) Ocean operations",Broker Agent,"Holiday Peak Season in APAC",Carbon Footprint
+23,4,"Create onboarding journeys by fleet size, revenue band, and logistics maturity. for Micro (< 5) FTL operations",Compliance Officer,"Last-mile Delivery Surge in LATAM",On-time Delivery Rate
+23,5,"Create onboarding journeys by fleet size, revenue band, and logistics maturity. for Small (5-20) LTL operations",Warehouse Supervisor,"Extreme Weather Event in North America",Empty Miles
+23,6,"Create onboarding journeys by fleet size, revenue band, and logistics maturity. for Medium (20-100) Intermodal operations",Carrier Owner,"Port Congestion in EMEA",Carbon Footprint
+23,7,"Create onboarding journeys by fleet size, revenue band, and logistics maturity. for Enterprise (> 100) Air Freight operations",Driver,"Carrier Shortage in APAC",On-time Delivery Rate
+23,8,"Create onboarding journeys by fleet size, revenue band, and logistics maturity. for Micro (< 5) Ocean operations",Audit Specialist,"Global Supply Chain Crisis in LATAM",Empty Miles
+23,9,"Create onboarding journeys by fleet size, revenue band, and logistics maturity. for Small (5-20) FTL operations",Dispatcher,"Holiday Peak Season in North America",Carbon Footprint
+23,10,"Create onboarding journeys by fleet size, revenue band, and logistics maturity. for Medium (20-100) LTL operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",On-time Delivery Rate
+24,1,"Add role-specific lead magnets, calculators, templates, and diagnostic checklists. for Small (5-20) Intermodal operations",Dispatcher,"Global Supply Chain Crisis in North America",On-time Delivery Rate
+24,2,"Add role-specific lead magnets, calculators, templates, and diagnostic checklists. for Medium (20-100) Air Freight operations",Fleet Manager,"Holiday Peak Season in EMEA",Empty Miles
+24,3,"Add role-specific lead magnets, calculators, templates, and diagnostic checklists. for Enterprise (> 100) Ocean operations",Broker Agent,"Last-mile Delivery Surge in APAC",Carbon Footprint
+24,4,"Add role-specific lead magnets, calculators, templates, and diagnostic checklists. for Micro (< 5) FTL operations",Compliance Officer,"Extreme Weather Event in LATAM",On-time Delivery Rate
+24,5,"Add role-specific lead magnets, calculators, templates, and diagnostic checklists. for Small (5-20) LTL operations",Warehouse Supervisor,"Port Congestion in North America",Empty Miles
+24,6,"Add role-specific lead magnets, calculators, templates, and diagnostic checklists. for Medium (20-100) Intermodal operations",Carrier Owner,"Carrier Shortage in EMEA",Carbon Footprint
+24,7,"Add role-specific lead magnets, calculators, templates, and diagnostic checklists. for Enterprise (> 100) Air Freight operations",Driver,"Global Supply Chain Crisis in APAC",On-time Delivery Rate
+24,8,"Add role-specific lead magnets, calculators, templates, and diagnostic checklists. for Micro (< 5) Ocean operations",Audit Specialist,"Holiday Peak Season in LATAM",Empty Miles
+24,9,"Add role-specific lead magnets, calculators, templates, and diagnostic checklists. for Small (5-20) FTL operations",Dispatcher,"Last-mile Delivery Surge in North America",Carbon Footprint
+24,10,"Add role-specific lead magnets, calculators, templates, and diagnostic checklists. for Medium (20-100) LTL operations",Fleet Manager,"Extreme Weather Event in EMEA",On-time Delivery Rate
+25,1,"Add persistent search and command entry for loads, shipments, carriers, documents, and actions. for Small (5-20) Intermodal operations",Dispatcher,"Holiday Peak Season in North America",On-time Delivery Rate
+25,2,"Add persistent search and command entry for loads, shipments, carriers, documents, and actions. for Medium (20-100) Air Freight operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",Empty Miles
+25,3,"Add persistent search and command entry for loads, shipments, carriers, documents, and actions. for Enterprise (> 100) Ocean operations",Broker Agent,"Extreme Weather Event in APAC",Carbon Footprint
+25,4,"Add persistent search and command entry for loads, shipments, carriers, documents, and actions. for Micro (< 5) FTL operations",Compliance Officer,"Port Congestion in LATAM",On-time Delivery Rate
+25,5,"Add persistent search and command entry for loads, shipments, carriers, documents, and actions. for Small (5-20) LTL operations",Warehouse Supervisor,"Carrier Shortage in North America",Empty Miles
+25,6,"Add persistent search and command entry for loads, shipments, carriers, documents, and actions. for Medium (20-100) Intermodal operations",Carrier Owner,"Global Supply Chain Crisis in EMEA",Carbon Footprint
+25,7,"Add persistent search and command entry for loads, shipments, carriers, documents, and actions. for Enterprise (> 100) Air Freight operations",Driver,"Holiday Peak Season in APAC",On-time Delivery Rate
+25,8,"Add persistent search and command entry for loads, shipments, carriers, documents, and actions. for Micro (< 5) Ocean operations",Audit Specialist,"Last-mile Delivery Surge in LATAM",Empty Miles
+25,9,"Add persistent search and command entry for loads, shipments, carriers, documents, and actions. for Small (5-20) FTL operations",Dispatcher,"Extreme Weather Event in North America",Carbon Footprint
+25,10,"Add persistent search and command entry for loads, shipments, carriers, documents, and actions. for Medium (20-100) LTL operations",Fleet Manager,"Port Congestion in EMEA",On-time Delivery Rate
+26,1,"Standardize alert severity, state badges, and recovery actions across the product. for Small (5-20) Intermodal operations",Dispatcher,"Last-mile Delivery Surge in North America",On-time Delivery Rate
+26,2,"Standardize alert severity, state badges, and recovery actions across the product. for Medium (20-100) Air Freight operations",Fleet Manager,"Extreme Weather Event in EMEA",Empty Miles
+26,3,"Standardize alert severity, state badges, and recovery actions across the product. for Enterprise (> 100) Ocean operations",Broker Agent,"Port Congestion in APAC",Carbon Footprint
+26,4,"Standardize alert severity, state badges, and recovery actions across the product. for Micro (< 5) FTL operations",Compliance Officer,"Carrier Shortage in LATAM",On-time Delivery Rate
+26,5,"Standardize alert severity, state badges, and recovery actions across the product. for Small (5-20) LTL operations",Warehouse Supervisor,"Global Supply Chain Crisis in North America",Empty Miles
+26,6,"Standardize alert severity, state badges, and recovery actions across the product. for Medium (20-100) Intermodal operations",Carrier Owner,"Holiday Peak Season in EMEA",Carbon Footprint
+26,7,"Standardize alert severity, state badges, and recovery actions across the product. for Enterprise (> 100) Air Freight operations",Driver,"Last-mile Delivery Surge in APAC",On-time Delivery Rate
+26,8,"Standardize alert severity, state badges, and recovery actions across the product. for Micro (< 5) Ocean operations",Audit Specialist,"Extreme Weather Event in LATAM",Empty Miles
+26,9,"Standardize alert severity, state badges, and recovery actions across the product. for Small (5-20) FTL operations",Dispatcher,"Port Congestion in North America",Carbon Footprint
+26,10,"Standardize alert severity, state badges, and recovery actions across the product. for Medium (20-100) LTL operations",Fleet Manager,"Carrier Shortage in EMEA",On-time Delivery Rate
+27,1,"Add dispatch recommendations using buy rate, sell rate, margin thresholds, and service risk. for Small (5-20) Intermodal operations",Dispatcher,"Extreme Weather Event in North America",On-time Delivery Rate
+27,2,"Add dispatch recommendations using buy rate, sell rate, margin thresholds, and service risk. for Medium (20-100) Air Freight operations",Fleet Manager,"Port Congestion in EMEA",Empty Miles
+27,3,"Add dispatch recommendations using buy rate, sell rate, margin thresholds, and service risk. for Enterprise (> 100) Ocean operations",Broker Agent,"Carrier Shortage in APAC",Carbon Footprint
+27,4,"Add dispatch recommendations using buy rate, sell rate, margin thresholds, and service risk. for Micro (< 5) FTL operations",Compliance Officer,"Global Supply Chain Crisis in LATAM",On-time Delivery Rate
+27,5,"Add dispatch recommendations using buy rate, sell rate, margin thresholds, and service risk. for Small (5-20) LTL operations",Warehouse Supervisor,"Holiday Peak Season in North America",Empty Miles
+27,6,"Add dispatch recommendations using buy rate, sell rate, margin thresholds, and service risk. for Medium (20-100) Intermodal operations",Carrier Owner,"Last-mile Delivery Surge in EMEA",Carbon Footprint
+27,7,"Add dispatch recommendations using buy rate, sell rate, margin thresholds, and service risk. for Enterprise (> 100) Air Freight operations",Driver,"Extreme Weather Event in APAC",On-time Delivery Rate
+27,8,"Add dispatch recommendations using buy rate, sell rate, margin thresholds, and service risk. for Micro (< 5) Ocean operations",Audit Specialist,"Port Congestion in LATAM",Empty Miles
+27,9,"Add dispatch recommendations using buy rate, sell rate, margin thresholds, and service risk. for Small (5-20) FTL operations",Dispatcher,"Carrier Shortage in North America",Carbon Footprint
+27,10,"Add dispatch recommendations using buy rate, sell rate, margin thresholds, and service risk. for Medium (20-100) LTL operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",On-time Delivery Rate
+28,1,"Build appointment scheduling and rescheduling workflows with notifications and accountability. for Small (5-20) Intermodal operations",Dispatcher,"Port Congestion in North America",On-time Delivery Rate
+28,2,"Build appointment scheduling and rescheduling workflows with notifications and accountability. for Medium (20-100) Air Freight operations",Fleet Manager,"Carrier Shortage in EMEA",Empty Miles
+28,3,"Build appointment scheduling and rescheduling workflows with notifications and accountability. for Enterprise (> 100) Ocean operations",Broker Agent,"Global Supply Chain Crisis in APAC",Carbon Footprint
+28,4,"Build appointment scheduling and rescheduling workflows with notifications and accountability. for Micro (< 5) FTL operations",Compliance Officer,"Holiday Peak Season in LATAM",On-time Delivery Rate
+28,5,"Build appointment scheduling and rescheduling workflows with notifications and accountability. for Small (5-20) LTL operations",Warehouse Supervisor,"Last-mile Delivery Surge in North America",Empty Miles
+28,6,"Build appointment scheduling and rescheduling workflows with notifications and accountability. for Medium (20-100) Intermodal operations",Carrier Owner,"Extreme Weather Event in EMEA",Carbon Footprint
+28,7,"Build appointment scheduling and rescheduling workflows with notifications and accountability. for Enterprise (> 100) Air Freight operations",Driver,"Port Congestion in APAC",On-time Delivery Rate
+28,8,"Build appointment scheduling and rescheduling workflows with notifications and accountability. for Micro (< 5) Ocean operations",Audit Specialist,"Carrier Shortage in LATAM",Empty Miles
+28,9,"Build appointment scheduling and rescheduling workflows with notifications and accountability. for Small (5-20) FTL operations",Dispatcher,"Global Supply Chain Crisis in North America",Carbon Footprint
+28,10,"Build appointment scheduling and rescheduling workflows with notifications and accountability. for Medium (20-100) LTL operations",Fleet Manager,"Holiday Peak Season in EMEA",On-time Delivery Rate
+29,1,"Capture detention, lumper, TONU, and layover events with timestamps and evidence. for Small (5-20) Intermodal operations",Dispatcher,"Carrier Shortage in North America",On-time Delivery Rate
+29,2,"Capture detention, lumper, TONU, and layover events with timestamps and evidence. for Medium (20-100) Air Freight operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",Empty Miles
+29,3,"Capture detention, lumper, TONU, and layover events with timestamps and evidence. for Enterprise (> 100) Ocean operations",Broker Agent,"Holiday Peak Season in APAC",Carbon Footprint
+29,4,"Capture detention, lumper, TONU, and layover events with timestamps and evidence. for Micro (< 5) FTL operations",Compliance Officer,"Last-mile Delivery Surge in LATAM",On-time Delivery Rate
+29,5,"Capture detention, lumper, TONU, and layover events with timestamps and evidence. for Small (5-20) LTL operations",Warehouse Supervisor,"Extreme Weather Event in North America",Empty Miles
+29,6,"Capture detention, lumper, TONU, and layover events with timestamps and evidence. for Medium (20-100) Intermodal operations",Carrier Owner,"Port Congestion in EMEA",Carbon Footprint
+29,7,"Capture detention, lumper, TONU, and layover events with timestamps and evidence. for Enterprise (> 100) Air Freight operations",Driver,"Carrier Shortage in APAC",On-time Delivery Rate
+29,8,"Capture detention, lumper, TONU, and layover events with timestamps and evidence. for Micro (< 5) Ocean operations",Audit Specialist,"Global Supply Chain Crisis in LATAM",Empty Miles
+29,9,"Capture detention, lumper, TONU, and layover events with timestamps and evidence. for Small (5-20) FTL operations",Dispatcher,"Holiday Peak Season in North America",Carbon Footprint
+29,10,"Capture detention, lumper, TONU, and layover events with timestamps and evidence. for Medium (20-100) LTL operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",On-time Delivery Rate
+30,1,"Implement document intelligence for BOL, POD, and rate confirmation ingestion and classification. for Small (5-20) Intermodal operations",Dispatcher,"Global Supply Chain Crisis in North America",On-time Delivery Rate
+30,2,"Implement document intelligence for BOL, POD, and rate confirmation ingestion and classification. for Medium (20-100) Air Freight operations",Fleet Manager,"Holiday Peak Season in EMEA",Empty Miles
+30,3,"Implement document intelligence for BOL, POD, and rate confirmation ingestion and classification. for Enterprise (> 100) Ocean operations",Broker Agent,"Last-mile Delivery Surge in APAC",Carbon Footprint
+30,4,"Implement document intelligence for BOL, POD, and rate confirmation ingestion and classification. for Micro (< 5) FTL operations",Compliance Officer,"Extreme Weather Event in LATAM",On-time Delivery Rate
+30,5,"Implement document intelligence for BOL, POD, and rate confirmation ingestion and classification. for Small (5-20) LTL operations",Warehouse Supervisor,"Port Congestion in North America",Empty Miles
+30,6,"Implement document intelligence for BOL, POD, and rate confirmation ingestion and classification. for Medium (20-100) Intermodal operations",Carrier Owner,"Carrier Shortage in EMEA",Carbon Footprint
+30,7,"Implement document intelligence for BOL, POD, and rate confirmation ingestion and classification. for Enterprise (> 100) Air Freight operations",Driver,"Global Supply Chain Crisis in APAC",On-time Delivery Rate
+30,8,"Implement document intelligence for BOL, POD, and rate confirmation ingestion and classification. for Micro (< 5) Ocean operations",Audit Specialist,"Holiday Peak Season in LATAM",Empty Miles
+30,9,"Implement document intelligence for BOL, POD, and rate confirmation ingestion and classification. for Small (5-20) FTL operations",Dispatcher,"Last-mile Delivery Surge in North America",Carbon Footprint
+30,10,"Implement document intelligence for BOL, POD, and rate confirmation ingestion and classification. for Medium (20-100) LTL operations",Fleet Manager,"Extreme Weather Event in EMEA",On-time Delivery Rate
+31,1,"Create carrier scorecards for on-time pickup, claims, communication, and paperwork quality. for Small (5-20) Intermodal operations",Dispatcher,"Holiday Peak Season in North America",On-time Delivery Rate
+31,2,"Create carrier scorecards for on-time pickup, claims, communication, and paperwork quality. for Medium (20-100) Air Freight operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",Empty Miles
+31,3,"Create carrier scorecards for on-time pickup, claims, communication, and paperwork quality. for Enterprise (> 100) Ocean operations",Broker Agent,"Extreme Weather Event in APAC",Carbon Footprint
+31,4,"Create carrier scorecards for on-time pickup, claims, communication, and paperwork quality. for Micro (< 5) FTL operations",Compliance Officer,"Port Congestion in LATAM",On-time Delivery Rate
+31,5,"Create carrier scorecards for on-time pickup, claims, communication, and paperwork quality. for Small (5-20) LTL operations",Warehouse Supervisor,"Carrier Shortage in North America",Empty Miles
+31,6,"Create carrier scorecards for on-time pickup, claims, communication, and paperwork quality. for Medium (20-100) Intermodal operations",Carrier Owner,"Global Supply Chain Crisis in EMEA",Carbon Footprint
+31,7,"Create carrier scorecards for on-time pickup, claims, communication, and paperwork quality. for Enterprise (> 100) Air Freight operations",Driver,"Holiday Peak Season in APAC",On-time Delivery Rate
+31,8,"Create carrier scorecards for on-time pickup, claims, communication, and paperwork quality. for Micro (< 5) Ocean operations",Audit Specialist,"Last-mile Delivery Surge in LATAM",Empty Miles
+31,9,"Create carrier scorecards for on-time pickup, claims, communication, and paperwork quality. for Small (5-20) FTL operations",Dispatcher,"Extreme Weather Event in North America",Carbon Footprint
+31,10,"Create carrier scorecards for on-time pickup, claims, communication, and paperwork quality. for Medium (20-100) LTL operations",Fleet Manager,"Port Congestion in EMEA",On-time Delivery Rate
+32,1,"Automate check-call cadences with exception-triggered human escalation. for Small (5-20) Intermodal operations",Dispatcher,"Last-mile Delivery Surge in North America",On-time Delivery Rate
+32,2,"Automate check-call cadences with exception-triggered human escalation. for Medium (20-100) Air Freight operations",Fleet Manager,"Extreme Weather Event in EMEA",Empty Miles
+32,3,"Automate check-call cadences with exception-triggered human escalation. for Enterprise (> 100) Ocean operations",Broker Agent,"Port Congestion in APAC",Carbon Footprint
+32,4,"Automate check-call cadences with exception-triggered human escalation. for Micro (< 5) FTL operations",Compliance Officer,"Carrier Shortage in LATAM",On-time Delivery Rate
+32,5,"Automate check-call cadences with exception-triggered human escalation. for Small (5-20) LTL operations",Warehouse Supervisor,"Global Supply Chain Crisis in North America",Empty Miles
+32,6,"Automate check-call cadences with exception-triggered human escalation. for Medium (20-100) Intermodal operations",Carrier Owner,"Holiday Peak Season in EMEA",Carbon Footprint
+32,7,"Automate check-call cadences with exception-triggered human escalation. for Enterprise (> 100) Air Freight operations",Driver,"Last-mile Delivery Surge in APAC",On-time Delivery Rate
+32,8,"Automate check-call cadences with exception-triggered human escalation. for Micro (< 5) Ocean operations",Audit Specialist,"Extreme Weather Event in LATAM",Empty Miles
+32,9,"Automate check-call cadences with exception-triggered human escalation. for Small (5-20) FTL operations",Dispatcher,"Port Congestion in North America",Carbon Footprint
+32,10,"Automate check-call cadences with exception-triggered human escalation. for Medium (20-100) LTL operations",Fleet Manager,"Carrier Shortage in EMEA",On-time Delivery Rate
+33,1,"Add claims intake, investigation, and resolution workflows with document timelines. for Small (5-20) Intermodal operations",Dispatcher,"Extreme Weather Event in North America",On-time Delivery Rate
+33,2,"Add claims intake, investigation, and resolution workflows with document timelines. for Medium (20-100) Air Freight operations",Fleet Manager,"Port Congestion in EMEA",Empty Miles
+33,3,"Add claims intake, investigation, and resolution workflows with document timelines. for Enterprise (> 100) Ocean operations",Broker Agent,"Carrier Shortage in APAC",Carbon Footprint
+33,4,"Add claims intake, investigation, and resolution workflows with document timelines. for Micro (< 5) FTL operations",Compliance Officer,"Global Supply Chain Crisis in LATAM",On-time Delivery Rate
+33,5,"Add claims intake, investigation, and resolution workflows with document timelines. for Small (5-20) LTL operations",Warehouse Supervisor,"Holiday Peak Season in North America",Empty Miles
+33,6,"Add claims intake, investigation, and resolution workflows with document timelines. for Medium (20-100) Intermodal operations",Carrier Owner,"Last-mile Delivery Surge in EMEA",Carbon Footprint
+33,7,"Add claims intake, investigation, and resolution workflows with document timelines. for Enterprise (> 100) Air Freight operations",Driver,"Extreme Weather Event in APAC",On-time Delivery Rate
+33,8,"Add claims intake, investigation, and resolution workflows with document timelines. for Micro (< 5) Ocean operations",Audit Specialist,"Port Congestion in LATAM",Empty Miles
+33,9,"Add claims intake, investigation, and resolution workflows with document timelines. for Small (5-20) FTL operations",Dispatcher,"Carrier Shortage in North America",Carbon Footprint
+33,10,"Add claims intake, investigation, and resolution workflows with document timelines. for Medium (20-100) LTL operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",On-time Delivery Rate
+34,1,"Create invoice readiness queues that block billing until required evidence is complete. for Small (5-20) Intermodal operations",Dispatcher,"Port Congestion in North America",On-time Delivery Rate
+34,2,"Create invoice readiness queues that block billing until required evidence is complete. for Medium (20-100) Air Freight operations",Fleet Manager,"Carrier Shortage in EMEA",Empty Miles
+34,3,"Create invoice readiness queues that block billing until required evidence is complete. for Enterprise (> 100) Ocean operations",Broker Agent,"Global Supply Chain Crisis in APAC",Carbon Footprint
+34,4,"Create invoice readiness queues that block billing until required evidence is complete. for Micro (< 5) FTL operations",Compliance Officer,"Holiday Peak Season in LATAM",On-time Delivery Rate
+34,5,"Create invoice readiness queues that block billing until required evidence is complete. for Small (5-20) LTL operations",Warehouse Supervisor,"Last-mile Delivery Surge in North America",Empty Miles
+34,6,"Create invoice readiness queues that block billing until required evidence is complete. for Medium (20-100) Intermodal operations",Carrier Owner,"Extreme Weather Event in EMEA",Carbon Footprint
+34,7,"Create invoice readiness queues that block billing until required evidence is complete. for Enterprise (> 100) Air Freight operations",Driver,"Port Congestion in APAC",On-time Delivery Rate
+34,8,"Create invoice readiness queues that block billing until required evidence is complete. for Micro (< 5) Ocean operations",Audit Specialist,"Carrier Shortage in LATAM",Empty Miles
+34,9,"Create invoice readiness queues that block billing until required evidence is complete. for Small (5-20) FTL operations",Dispatcher,"Global Supply Chain Crisis in North America",Carbon Footprint
+34,10,"Create invoice readiness queues that block billing until required evidence is complete. for Medium (20-100) LTL operations",Fleet Manager,"Holiday Peak Season in EMEA",On-time Delivery Rate
+35,1,"Attach standard playbooks to delay, breakdown, temperature, and claim events. for Small (5-20) Intermodal operations",Dispatcher,"Carrier Shortage in North America",On-time Delivery Rate
+35,2,"Attach standard playbooks to delay, breakdown, temperature, and claim events. for Medium (20-100) Air Freight operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",Empty Miles
+35,3,"Attach standard playbooks to delay, breakdown, temperature, and claim events. for Enterprise (> 100) Ocean operations",Broker Agent,"Holiday Peak Season in APAC",Carbon Footprint
+35,4,"Attach standard playbooks to delay, breakdown, temperature, and claim events. for Micro (< 5) FTL operations",Compliance Officer,"Last-mile Delivery Surge in LATAM",On-time Delivery Rate
+35,5,"Attach standard playbooks to delay, breakdown, temperature, and claim events. for Small (5-20) LTL operations",Warehouse Supervisor,"Extreme Weather Event in North America",Empty Miles
+35,6,"Attach standard playbooks to delay, breakdown, temperature, and claim events. for Medium (20-100) Intermodal operations",Carrier Owner,"Port Congestion in EMEA",Carbon Footprint
+35,7,"Attach standard playbooks to delay, breakdown, temperature, and claim events. for Enterprise (> 100) Air Freight operations",Driver,"Carrier Shortage in APAC",On-time Delivery Rate
+35,8,"Attach standard playbooks to delay, breakdown, temperature, and claim events. for Micro (< 5) Ocean operations",Audit Specialist,"Global Supply Chain Crisis in LATAM",Empty Miles
+35,9,"Attach standard playbooks to delay, breakdown, temperature, and claim events. for Small (5-20) FTL operations",Dispatcher,"Holiday Peak Season in North America",Carbon Footprint
+35,10,"Attach standard playbooks to delay, breakdown, temperature, and claim events. for Medium (20-100) LTL operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",On-time Delivery Rate
+36,1,"Add idempotency, retries, dead-letter handling, and replay tooling for async jobs. for Small (5-20) Intermodal operations",Dispatcher,"Global Supply Chain Crisis in North America",On-time Delivery Rate
+36,2,"Add idempotency, retries, dead-letter handling, and replay tooling for async jobs. for Medium (20-100) Air Freight operations",Fleet Manager,"Holiday Peak Season in EMEA",Empty Miles
+36,3,"Add idempotency, retries, dead-letter handling, and replay tooling for async jobs. for Enterprise (> 100) Ocean operations",Broker Agent,"Last-mile Delivery Surge in APAC",Carbon Footprint
+36,4,"Add idempotency, retries, dead-letter handling, and replay tooling for async jobs. for Micro (< 5) FTL operations",Compliance Officer,"Extreme Weather Event in LATAM",On-time Delivery Rate
+36,5,"Add idempotency, retries, dead-letter handling, and replay tooling for async jobs. for Small (5-20) LTL operations",Warehouse Supervisor,"Port Congestion in North America",Empty Miles
+36,6,"Add idempotency, retries, dead-letter handling, and replay tooling for async jobs. for Medium (20-100) Intermodal operations",Carrier Owner,"Carrier Shortage in EMEA",Carbon Footprint
+36,7,"Add idempotency, retries, dead-letter handling, and replay tooling for async jobs. for Enterprise (> 100) Air Freight operations",Driver,"Global Supply Chain Crisis in APAC",On-time Delivery Rate
+36,8,"Add idempotency, retries, dead-letter handling, and replay tooling for async jobs. for Micro (< 5) Ocean operations",Audit Specialist,"Holiday Peak Season in LATAM",Empty Miles
+36,9,"Add idempotency, retries, dead-letter handling, and replay tooling for async jobs. for Small (5-20) FTL operations",Dispatcher,"Last-mile Delivery Surge in North America",Carbon Footprint
+36,10,"Add idempotency, retries, dead-letter handling, and replay tooling for async jobs. for Medium (20-100) LTL operations",Fleet Manager,"Extreme Weather Event in EMEA",On-time Delivery Rate
+37,1,"Add dependency scanning, secret scanning, and container scanning into CI. for Small (5-20) Intermodal operations",Dispatcher,"Holiday Peak Season in North America",On-time Delivery Rate
+37,2,"Add dependency scanning, secret scanning, and container scanning into CI. for Medium (20-100) Air Freight operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",Empty Miles
+37,3,"Add dependency scanning, secret scanning, and container scanning into CI. for Enterprise (> 100) Ocean operations",Broker Agent,"Extreme Weather Event in APAC",Carbon Footprint
+37,4,"Add dependency scanning, secret scanning, and container scanning into CI. for Micro (< 5) FTL operations",Compliance Officer,"Port Congestion in LATAM",On-time Delivery Rate
+37,5,"Add dependency scanning, secret scanning, and container scanning into CI. for Small (5-20) LTL operations",Warehouse Supervisor,"Carrier Shortage in North America",Empty Miles
+37,6,"Add dependency scanning, secret scanning, and container scanning into CI. for Medium (20-100) Intermodal operations",Carrier Owner,"Global Supply Chain Crisis in EMEA",Carbon Footprint
+37,7,"Add dependency scanning, secret scanning, and container scanning into CI. for Enterprise (> 100) Air Freight operations",Driver,"Holiday Peak Season in APAC",On-time Delivery Rate
+37,8,"Add dependency scanning, secret scanning, and container scanning into CI. for Micro (< 5) Ocean operations",Audit Specialist,"Last-mile Delivery Surge in LATAM",Empty Miles
+37,9,"Add dependency scanning, secret scanning, and container scanning into CI. for Small (5-20) FTL operations",Dispatcher,"Extreme Weather Event in North America",Carbon Footprint
+37,10,"Add dependency scanning, secret scanning, and container scanning into CI. for Medium (20-100) LTL operations",Fleet Manager,"Port Congestion in EMEA",On-time Delivery Rate
+38,1,"Introduce tenant-aware feature flags for controlled rollouts and experiments. for Small (5-20) Intermodal operations",Dispatcher,"Last-mile Delivery Surge in North America",On-time Delivery Rate
+38,2,"Introduce tenant-aware feature flags for controlled rollouts and experiments. for Medium (20-100) Air Freight operations",Fleet Manager,"Extreme Weather Event in EMEA",Empty Miles
+38,3,"Introduce tenant-aware feature flags for controlled rollouts and experiments. for Enterprise (> 100) Ocean operations",Broker Agent,"Port Congestion in APAC",Carbon Footprint
+38,4,"Introduce tenant-aware feature flags for controlled rollouts and experiments. for Micro (< 5) FTL operations",Compliance Officer,"Carrier Shortage in LATAM",On-time Delivery Rate
+38,5,"Introduce tenant-aware feature flags for controlled rollouts and experiments. for Small (5-20) LTL operations",Warehouse Supervisor,"Global Supply Chain Crisis in North America",Empty Miles
+38,6,"Introduce tenant-aware feature flags for controlled rollouts and experiments. for Medium (20-100) Intermodal operations",Carrier Owner,"Holiday Peak Season in EMEA",Carbon Footprint
+38,7,"Introduce tenant-aware feature flags for controlled rollouts and experiments. for Enterprise (> 100) Air Freight operations",Driver,"Last-mile Delivery Surge in APAC",On-time Delivery Rate
+38,8,"Introduce tenant-aware feature flags for controlled rollouts and experiments. for Micro (< 5) Ocean operations",Audit Specialist,"Extreme Weather Event in LATAM",Empty Miles
+38,9,"Introduce tenant-aware feature flags for controlled rollouts and experiments. for Small (5-20) FTL operations",Dispatcher,"Port Congestion in North America",Carbon Footprint
+38,10,"Introduce tenant-aware feature flags for controlled rollouts and experiments. for Medium (20-100) LTL operations",Fleet Manager,"Carrier Shortage in EMEA",On-time Delivery Rate
+39,1,"Add load lifecycle automation with status-driven tasks, reminders, and handoff rules. for Small (5-20) Intermodal operations",Dispatcher,"Extreme Weather Event in North America",On-time Delivery Rate
+39,2,"Add load lifecycle automation with status-driven tasks, reminders, and handoff rules. for Medium (20-100) Air Freight operations",Fleet Manager,"Port Congestion in EMEA",Empty Miles
+39,3,"Add load lifecycle automation with status-driven tasks, reminders, and handoff rules. for Enterprise (> 100) Ocean operations",Broker Agent,"Carrier Shortage in APAC",Carbon Footprint
+39,4,"Add load lifecycle automation with status-driven tasks, reminders, and handoff rules. for Micro (< 5) FTL operations",Compliance Officer,"Global Supply Chain Crisis in LATAM",On-time Delivery Rate
+39,5,"Add load lifecycle automation with status-driven tasks, reminders, and handoff rules. for Small (5-20) LTL operations",Warehouse Supervisor,"Holiday Peak Season in North America",Empty Miles
+39,6,"Add load lifecycle automation with status-driven tasks, reminders, and handoff rules. for Medium (20-100) Intermodal operations",Carrier Owner,"Last-mile Delivery Surge in EMEA",Carbon Footprint
+39,7,"Add load lifecycle automation with status-driven tasks, reminders, and handoff rules. for Enterprise (> 100) Air Freight operations",Driver,"Extreme Weather Event in APAC",On-time Delivery Rate
+39,8,"Add load lifecycle automation with status-driven tasks, reminders, and handoff rules. for Micro (< 5) Ocean operations",Audit Specialist,"Port Congestion in LATAM",Empty Miles
+39,9,"Add load lifecycle automation with status-driven tasks, reminders, and handoff rules. for Small (5-20) FTL operations",Dispatcher,"Carrier Shortage in North America",Carbon Footprint
+39,10,"Add load lifecycle automation with status-driven tasks, reminders, and handoff rules. for Medium (20-100) LTL operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",On-time Delivery Rate
+40,1,"Add configurable workflow templates by customer segment and freight mode. for Small (5-20) Intermodal operations",Dispatcher,"Port Congestion in North America",On-time Delivery Rate
+40,2,"Add configurable workflow templates by customer segment and freight mode. for Medium (20-100) Air Freight operations",Fleet Manager,"Carrier Shortage in EMEA",Empty Miles
+40,3,"Add configurable workflow templates by customer segment and freight mode. for Enterprise (> 100) Ocean operations",Broker Agent,"Global Supply Chain Crisis in APAC",Carbon Footprint
+40,4,"Add configurable workflow templates by customer segment and freight mode. for Micro (< 5) FTL operations",Compliance Officer,"Holiday Peak Season in LATAM",On-time Delivery Rate
+40,5,"Add configurable workflow templates by customer segment and freight mode. for Small (5-20) LTL operations",Warehouse Supervisor,"Last-mile Delivery Surge in North America",Empty Miles
+40,6,"Add configurable workflow templates by customer segment and freight mode. for Medium (20-100) Intermodal operations",Carrier Owner,"Extreme Weather Event in EMEA",Carbon Footprint
+40,7,"Add configurable workflow templates by customer segment and freight mode. for Enterprise (> 100) Air Freight operations",Driver,"Port Congestion in APAC",On-time Delivery Rate
+40,8,"Add configurable workflow templates by customer segment and freight mode. for Micro (< 5) Ocean operations",Audit Specialist,"Carrier Shortage in LATAM",Empty Miles
+40,9,"Add configurable workflow templates by customer segment and freight mode. for Small (5-20) FTL operations",Dispatcher,"Global Supply Chain Crisis in North America",Carbon Footprint
+40,10,"Add configurable workflow templates by customer segment and freight mode. for Medium (20-100) LTL operations",Fleet Manager,"Holiday Peak Season in EMEA",On-time Delivery Rate
+41,1,"Show shipment and customer profitability after accessorials, delays, and claims. for Small (5-20) Intermodal operations",Dispatcher,"Carrier Shortage in North America",On-time Delivery Rate
+41,2,"Show shipment and customer profitability after accessorials, delays, and claims. for Medium (20-100) Air Freight operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",Empty Miles
+41,3,"Show shipment and customer profitability after accessorials, delays, and claims. for Enterprise (> 100) Ocean operations",Broker Agent,"Holiday Peak Season in APAC",Carbon Footprint
+41,4,"Show shipment and customer profitability after accessorials, delays, and claims. for Micro (< 5) FTL operations",Compliance Officer,"Last-mile Delivery Surge in LATAM",On-time Delivery Rate
+41,5,"Show shipment and customer profitability after accessorials, delays, and claims. for Small (5-20) LTL operations",Warehouse Supervisor,"Extreme Weather Event in North America",Empty Miles
+41,6,"Show shipment and customer profitability after accessorials, delays, and claims. for Medium (20-100) Intermodal operations",Carrier Owner,"Port Congestion in EMEA",Carbon Footprint
+41,7,"Show shipment and customer profitability after accessorials, delays, and claims. for Enterprise (> 100) Air Freight operations",Driver,"Carrier Shortage in APAC",On-time Delivery Rate
+41,8,"Show shipment and customer profitability after accessorials, delays, and claims. for Micro (< 5) Ocean operations",Audit Specialist,"Global Supply Chain Crisis in LATAM",Empty Miles
+41,9,"Show shipment and customer profitability after accessorials, delays, and claims. for Small (5-20) FTL operations",Dispatcher,"Holiday Peak Season in North America",Carbon Footprint
+41,10,"Show shipment and customer profitability after accessorials, delays, and claims. for Medium (20-100) LTL operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",On-time Delivery Rate
+42,1,"Unify rate confirmations, BOL, POD, and invoices in a shipment-centric document workspace. for Small (5-20) Intermodal operations",Dispatcher,"Global Supply Chain Crisis in North America",On-time Delivery Rate
+42,2,"Unify rate confirmations, BOL, POD, and invoices in a shipment-centric document workspace. for Medium (20-100) Air Freight operations",Fleet Manager,"Holiday Peak Season in EMEA",Empty Miles
+42,3,"Unify rate confirmations, BOL, POD, and invoices in a shipment-centric document workspace. for Enterprise (> 100) Ocean operations",Broker Agent,"Last-mile Delivery Surge in APAC",Carbon Footprint
+42,4,"Unify rate confirmations, BOL, POD, and invoices in a shipment-centric document workspace. for Micro (< 5) FTL operations",Compliance Officer,"Extreme Weather Event in LATAM",On-time Delivery Rate
+42,5,"Unify rate confirmations, BOL, POD, and invoices in a shipment-centric document workspace. for Small (5-20) LTL operations",Warehouse Supervisor,"Port Congestion in North America",Empty Miles
+42,6,"Unify rate confirmations, BOL, POD, and invoices in a shipment-centric document workspace. for Medium (20-100) Intermodal operations",Carrier Owner,"Carrier Shortage in EMEA",Carbon Footprint
+42,7,"Unify rate confirmations, BOL, POD, and invoices in a shipment-centric document workspace. for Enterprise (> 100) Air Freight operations",Driver,"Global Supply Chain Crisis in APAC",On-time Delivery Rate
+42,8,"Unify rate confirmations, BOL, POD, and invoices in a shipment-centric document workspace. for Micro (< 5) Ocean operations",Audit Specialist,"Holiday Peak Season in LATAM",Empty Miles
+42,9,"Unify rate confirmations, BOL, POD, and invoices in a shipment-centric document workspace. for Small (5-20) FTL operations",Dispatcher,"Last-mile Delivery Surge in North America",Carbon Footprint
+42,10,"Unify rate confirmations, BOL, POD, and invoices in a shipment-centric document workspace. for Medium (20-100) LTL operations",Fleet Manager,"Extreme Weather Event in EMEA",On-time Delivery Rate
+43,1,"Offer guided AI actions for dispatch updates, check calls, and exception summaries. for Small (5-20) Intermodal operations",Dispatcher,"Holiday Peak Season in North America",On-time Delivery Rate
+43,2,"Offer guided AI actions for dispatch updates, check calls, and exception summaries. for Medium (20-100) Air Freight operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",Empty Miles
+43,3,"Offer guided AI actions for dispatch updates, check calls, and exception summaries. for Enterprise (> 100) Ocean operations",Broker Agent,"Extreme Weather Event in APAC",Carbon Footprint
+43,4,"Offer guided AI actions for dispatch updates, check calls, and exception summaries. for Micro (< 5) FTL operations",Compliance Officer,"Port Congestion in LATAM",On-time Delivery Rate
+43,5,"Offer guided AI actions for dispatch updates, check calls, and exception summaries. for Small (5-20) LTL operations",Warehouse Supervisor,"Carrier Shortage in North America",Empty Miles
+43,6,"Offer guided AI actions for dispatch updates, check calls, and exception summaries. for Medium (20-100) Intermodal operations",Carrier Owner,"Global Supply Chain Crisis in EMEA",Carbon Footprint
+43,7,"Offer guided AI actions for dispatch updates, check calls, and exception summaries. for Enterprise (> 100) Air Freight operations",Driver,"Holiday Peak Season in APAC",On-time Delivery Rate
+43,8,"Offer guided AI actions for dispatch updates, check calls, and exception summaries. for Micro (< 5) Ocean operations",Audit Specialist,"Last-mile Delivery Surge in LATAM",Empty Miles
+43,9,"Offer guided AI actions for dispatch updates, check calls, and exception summaries. for Small (5-20) FTL operations",Dispatcher,"Extreme Weather Event in North America",Carbon Footprint
+43,10,"Offer guided AI actions for dispatch updates, check calls, and exception summaries. for Medium (20-100) LTL operations",Fleet Manager,"Port Congestion in EMEA",On-time Delivery Rate
+44,1,"Add approval flows when quoted rates fall below configured margin thresholds. for Small (5-20) Intermodal operations",Dispatcher,"Last-mile Delivery Surge in North America",On-time Delivery Rate
+44,2,"Add approval flows when quoted rates fall below configured margin thresholds. for Medium (20-100) Air Freight operations",Fleet Manager,"Extreme Weather Event in EMEA",Empty Miles
+44,3,"Add approval flows when quoted rates fall below configured margin thresholds. for Enterprise (> 100) Ocean operations",Broker Agent,"Port Congestion in APAC",Carbon Footprint
+44,4,"Add approval flows when quoted rates fall below configured margin thresholds. for Micro (< 5) FTL operations",Compliance Officer,"Carrier Shortage in LATAM",On-time Delivery Rate
+44,5,"Add approval flows when quoted rates fall below configured margin thresholds. for Small (5-20) LTL operations",Warehouse Supervisor,"Global Supply Chain Crisis in North America",Empty Miles
+44,6,"Add approval flows when quoted rates fall below configured margin thresholds. for Medium (20-100) Intermodal operations",Carrier Owner,"Holiday Peak Season in EMEA",Carbon Footprint
+44,7,"Add approval flows when quoted rates fall below configured margin thresholds. for Enterprise (> 100) Air Freight operations",Driver,"Last-mile Delivery Surge in APAC",On-time Delivery Rate
+44,8,"Add approval flows when quoted rates fall below configured margin thresholds. for Micro (< 5) Ocean operations",Audit Specialist,"Extreme Weather Event in LATAM",Empty Miles
+44,9,"Add approval flows when quoted rates fall below configured margin thresholds. for Small (5-20) FTL operations",Dispatcher,"Port Congestion in North America",Carbon Footprint
+44,10,"Add approval flows when quoted rates fall below configured margin thresholds. for Medium (20-100) LTL operations",Fleet Manager,"Carrier Shortage in EMEA",On-time Delivery Rate
+45,1,"Detect missing charges, missed accessorials, and incomplete paperwork before invoicing. for Small (5-20) Intermodal operations",Dispatcher,"Extreme Weather Event in North America",On-time Delivery Rate
+45,2,"Detect missing charges, missed accessorials, and incomplete paperwork before invoicing. for Medium (20-100) Air Freight operations",Fleet Manager,"Port Congestion in EMEA",Empty Miles
+45,3,"Detect missing charges, missed accessorials, and incomplete paperwork before invoicing. for Enterprise (> 100) Ocean operations",Broker Agent,"Carrier Shortage in APAC",Carbon Footprint
+45,4,"Detect missing charges, missed accessorials, and incomplete paperwork before invoicing. for Micro (< 5) FTL operations",Compliance Officer,"Global Supply Chain Crisis in LATAM",On-time Delivery Rate
+45,5,"Detect missing charges, missed accessorials, and incomplete paperwork before invoicing. for Small (5-20) LTL operations",Warehouse Supervisor,"Holiday Peak Season in North America",Empty Miles
+45,6,"Detect missing charges, missed accessorials, and incomplete paperwork before invoicing. for Medium (20-100) Intermodal operations",Carrier Owner,"Last-mile Delivery Surge in EMEA",Carbon Footprint
+45,7,"Detect missing charges, missed accessorials, and incomplete paperwork before invoicing. for Enterprise (> 100) Air Freight operations",Driver,"Extreme Weather Event in APAC",On-time Delivery Rate
+45,8,"Detect missing charges, missed accessorials, and incomplete paperwork before invoicing. for Micro (< 5) Ocean operations",Audit Specialist,"Port Congestion in LATAM",Empty Miles
+45,9,"Detect missing charges, missed accessorials, and incomplete paperwork before invoicing. for Small (5-20) FTL operations",Dispatcher,"Carrier Shortage in North America",Carbon Footprint
+45,10,"Detect missing charges, missed accessorials, and incomplete paperwork before invoicing. for Medium (20-100) LTL operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",On-time Delivery Rate
+46,1,"Publish proof-based case studies showing margin improvement and dispatch efficiency gains. for Small (5-20) Intermodal operations",Dispatcher,"Port Congestion in North America",On-time Delivery Rate
+46,2,"Publish proof-based case studies showing margin improvement and dispatch efficiency gains. for Medium (20-100) Air Freight operations",Fleet Manager,"Carrier Shortage in EMEA",Empty Miles
+46,3,"Publish proof-based case studies showing margin improvement and dispatch efficiency gains. for Enterprise (> 100) Ocean operations",Broker Agent,"Global Supply Chain Crisis in APAC",Carbon Footprint
+46,4,"Publish proof-based case studies showing margin improvement and dispatch efficiency gains. for Micro (< 5) FTL operations",Compliance Officer,"Holiday Peak Season in LATAM",On-time Delivery Rate
+46,5,"Publish proof-based case studies showing margin improvement and dispatch efficiency gains. for Small (5-20) LTL operations",Warehouse Supervisor,"Last-mile Delivery Surge in North America",Empty Miles
+46,6,"Publish proof-based case studies showing margin improvement and dispatch efficiency gains. for Medium (20-100) Intermodal operations",Carrier Owner,"Extreme Weather Event in EMEA",Carbon Footprint
+46,7,"Publish proof-based case studies showing margin improvement and dispatch efficiency gains. for Enterprise (> 100) Air Freight operations",Driver,"Port Congestion in APAC",On-time Delivery Rate
+46,8,"Publish proof-based case studies showing margin improvement and dispatch efficiency gains. for Micro (< 5) Ocean operations",Audit Specialist,"Carrier Shortage in LATAM",Empty Miles
+46,9,"Publish proof-based case studies showing margin improvement and dispatch efficiency gains. for Small (5-20) FTL operations",Dispatcher,"Global Supply Chain Crisis in North America",Carbon Footprint
+46,10,"Publish proof-based case studies showing margin improvement and dispatch efficiency gains. for Medium (20-100) LTL operations",Fleet Manager,"Holiday Peak Season in EMEA",On-time Delivery Rate
+47,1,"Trigger upsell motions based on workflow adoption, load volume, and team growth. for Small (5-20) Intermodal operations",Dispatcher,"Carrier Shortage in North America",On-time Delivery Rate
+47,2,"Trigger upsell motions based on workflow adoption, load volume, and team growth. for Medium (20-100) Air Freight operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",Empty Miles
+47,3,"Trigger upsell motions based on workflow adoption, load volume, and team growth. for Enterprise (> 100) Ocean operations",Broker Agent,"Holiday Peak Season in APAC",Carbon Footprint
+47,4,"Trigger upsell motions based on workflow adoption, load volume, and team growth. for Micro (< 5) FTL operations",Compliance Officer,"Last-mile Delivery Surge in LATAM",On-time Delivery Rate
+47,5,"Trigger upsell motions based on workflow adoption, load volume, and team growth. for Small (5-20) LTL operations",Warehouse Supervisor,"Extreme Weather Event in North America",Empty Miles
+47,6,"Trigger upsell motions based on workflow adoption, load volume, and team growth. for Medium (20-100) Intermodal operations",Carrier Owner,"Port Congestion in EMEA",Carbon Footprint
+47,7,"Trigger upsell motions based on workflow adoption, load volume, and team growth. for Enterprise (> 100) Air Freight operations",Driver,"Carrier Shortage in APAC",On-time Delivery Rate
+47,8,"Trigger upsell motions based on workflow adoption, load volume, and team growth. for Micro (< 5) Ocean operations",Audit Specialist,"Global Supply Chain Crisis in LATAM",Empty Miles
+47,9,"Trigger upsell motions based on workflow adoption, load volume, and team growth. for Small (5-20) FTL operations",Dispatcher,"Holiday Peak Season in North America",Carbon Footprint
+47,10,"Trigger upsell motions based on workflow adoption, load volume, and team growth. for Medium (20-100) LTL operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",On-time Delivery Rate
+48,1,"Offer white-glove migration and setup packages for larger accounts. for Small (5-20) Intermodal operations",Dispatcher,"Global Supply Chain Crisis in North America",On-time Delivery Rate
+48,2,"Offer white-glove migration and setup packages for larger accounts. for Medium (20-100) Air Freight operations",Fleet Manager,"Holiday Peak Season in EMEA",Empty Miles
+48,3,"Offer white-glove migration and setup packages for larger accounts. for Enterprise (> 100) Ocean operations",Broker Agent,"Last-mile Delivery Surge in APAC",Carbon Footprint
+48,4,"Offer white-glove migration and setup packages for larger accounts. for Micro (< 5) FTL operations",Compliance Officer,"Extreme Weather Event in LATAM",On-time Delivery Rate
+48,5,"Offer white-glove migration and setup packages for larger accounts. for Small (5-20) LTL operations",Warehouse Supervisor,"Port Congestion in North America",Empty Miles
+48,6,"Offer white-glove migration and setup packages for larger accounts. for Medium (20-100) Intermodal operations",Carrier Owner,"Carrier Shortage in EMEA",Carbon Footprint
+48,7,"Offer white-glove migration and setup packages for larger accounts. for Enterprise (> 100) Air Freight operations",Driver,"Global Supply Chain Crisis in APAC",On-time Delivery Rate
+48,8,"Offer white-glove migration and setup packages for larger accounts. for Micro (< 5) Ocean operations",Audit Specialist,"Holiday Peak Season in LATAM",Empty Miles
+48,9,"Offer white-glove migration and setup packages for larger accounts. for Small (5-20) FTL operations",Dispatcher,"Last-mile Delivery Surge in North America",Carbon Footprint
+48,10,"Offer white-glove migration and setup packages for larger accounts. for Medium (20-100) LTL operations",Fleet Manager,"Extreme Weather Event in EMEA",On-time Delivery Rate
+49,1,"Track shipper and receiver dwell, delays, rejections, and service issues by facility. for Small (5-20) Intermodal operations",Dispatcher,"Holiday Peak Season in North America",On-time Delivery Rate
+49,2,"Track shipper and receiver dwell, delays, rejections, and service issues by facility. for Medium (20-100) Air Freight operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",Empty Miles
+49,3,"Track shipper and receiver dwell, delays, rejections, and service issues by facility. for Enterprise (> 100) Ocean operations",Broker Agent,"Extreme Weather Event in APAC",Carbon Footprint
+49,4,"Track shipper and receiver dwell, delays, rejections, and service issues by facility. for Micro (< 5) FTL operations",Compliance Officer,"Port Congestion in LATAM",On-time Delivery Rate
+49,5,"Track shipper and receiver dwell, delays, rejections, and service issues by facility. for Small (5-20) LTL operations",Warehouse Supervisor,"Carrier Shortage in North America",Empty Miles
+49,6,"Track shipper and receiver dwell, delays, rejections, and service issues by facility. for Medium (20-100) Intermodal operations",Carrier Owner,"Global Supply Chain Crisis in EMEA",Carbon Footprint
+49,7,"Track shipper and receiver dwell, delays, rejections, and service issues by facility. for Enterprise (> 100) Air Freight operations",Driver,"Holiday Peak Season in APAC",On-time Delivery Rate
+49,8,"Track shipper and receiver dwell, delays, rejections, and service issues by facility. for Micro (< 5) Ocean operations",Audit Specialist,"Last-mile Delivery Surge in LATAM",Empty Miles
+49,9,"Track shipper and receiver dwell, delays, rejections, and service issues by facility. for Small (5-20) FTL operations",Dispatcher,"Extreme Weather Event in North America",Carbon Footprint
+49,10,"Track shipper and receiver dwell, delays, rejections, and service issues by facility. for Medium (20-100) LTL operations",Fleet Manager,"Port Congestion in EMEA",On-time Delivery Rate
+50,1,"Integrate location and driver status feeds to improve ETA quality and automate exceptions. for Small (5-20) Intermodal operations",Dispatcher,"Last-mile Delivery Surge in North America",On-time Delivery Rate
+50,2,"Integrate location and driver status feeds to improve ETA quality and automate exceptions. for Medium (20-100) Air Freight operations",Fleet Manager,"Extreme Weather Event in EMEA",Empty Miles
+50,3,"Integrate location and driver status feeds to improve ETA quality and automate exceptions. for Enterprise (> 100) Ocean operations",Broker Agent,"Port Congestion in APAC",Carbon Footprint
+50,4,"Integrate location and driver status feeds to improve ETA quality and automate exceptions. for Micro (< 5) FTL operations",Compliance Officer,"Carrier Shortage in LATAM",On-time Delivery Rate
+50,5,"Integrate location and driver status feeds to improve ETA quality and automate exceptions. for Small (5-20) LTL operations",Warehouse Supervisor,"Global Supply Chain Crisis in North America",Empty Miles
+50,6,"Integrate location and driver status feeds to improve ETA quality and automate exceptions. for Medium (20-100) Intermodal operations",Carrier Owner,"Holiday Peak Season in EMEA",Carbon Footprint
+50,7,"Integrate location and driver status feeds to improve ETA quality and automate exceptions. for Enterprise (> 100) Air Freight operations",Driver,"Last-mile Delivery Surge in APAC",On-time Delivery Rate
+50,8,"Integrate location and driver status feeds to improve ETA quality and automate exceptions. for Micro (< 5) Ocean operations",Audit Specialist,"Extreme Weather Event in LATAM",Empty Miles
+50,9,"Integrate location and driver status feeds to improve ETA quality and automate exceptions. for Small (5-20) FTL operations",Dispatcher,"Port Congestion in North America",Carbon Footprint
+50,10,"Integrate location and driver status feeds to improve ETA quality and automate exceptions. for Medium (20-100) LTL operations",Fleet Manager,"Carrier Shortage in EMEA",On-time Delivery Rate
+51,1,"Expose SLA performance by shipper, lane, facility, and account manager. for Small (5-20) Intermodal operations",Dispatcher,"Extreme Weather Event in North America",On-time Delivery Rate
+51,2,"Expose SLA performance by shipper, lane, facility, and account manager. for Medium (20-100) Air Freight operations",Fleet Manager,"Port Congestion in EMEA",Empty Miles
+51,3,"Expose SLA performance by shipper, lane, facility, and account manager. for Enterprise (> 100) Ocean operations",Broker Agent,"Carrier Shortage in APAC",Carbon Footprint
+51,4,"Expose SLA performance by shipper, lane, facility, and account manager. for Micro (< 5) FTL operations",Compliance Officer,"Global Supply Chain Crisis in LATAM",On-time Delivery Rate
+51,5,"Expose SLA performance by shipper, lane, facility, and account manager. for Small (5-20) LTL operations",Warehouse Supervisor,"Holiday Peak Season in North America",Empty Miles
+51,6,"Expose SLA performance by shipper, lane, facility, and account manager. for Medium (20-100) Intermodal operations",Carrier Owner,"Last-mile Delivery Surge in EMEA",Carbon Footprint
+51,7,"Expose SLA performance by shipper, lane, facility, and account manager. for Enterprise (> 100) Air Freight operations",Driver,"Extreme Weather Event in APAC",On-time Delivery Rate
+51,8,"Expose SLA performance by shipper, lane, facility, and account manager. for Micro (< 5) Ocean operations",Audit Specialist,"Port Congestion in LATAM",Empty Miles
+51,9,"Expose SLA performance by shipper, lane, facility, and account manager. for Small (5-20) FTL operations",Dispatcher,"Carrier Shortage in North America",Carbon Footprint
+51,10,"Expose SLA performance by shipper, lane, facility, and account manager. for Medium (20-100) LTL operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",On-time Delivery Rate
+52,1,"Bundle status evidence, communication, and documents into a single service record. for Small (5-20) Intermodal operations",Dispatcher,"Port Congestion in North America",On-time Delivery Rate
+52,2,"Bundle status evidence, communication, and documents into a single service record. for Medium (20-100) Air Freight operations",Fleet Manager,"Carrier Shortage in EMEA",Empty Miles
+52,3,"Bundle status evidence, communication, and documents into a single service record. for Enterprise (> 100) Ocean operations",Broker Agent,"Global Supply Chain Crisis in APAC",Carbon Footprint
+52,4,"Bundle status evidence, communication, and documents into a single service record. for Micro (< 5) FTL operations",Compliance Officer,"Holiday Peak Season in LATAM",On-time Delivery Rate
+52,5,"Bundle status evidence, communication, and documents into a single service record. for Small (5-20) LTL operations",Warehouse Supervisor,"Last-mile Delivery Surge in North America",Empty Miles
+52,6,"Bundle status evidence, communication, and documents into a single service record. for Medium (20-100) Intermodal operations",Carrier Owner,"Extreme Weather Event in EMEA",Carbon Footprint
+52,7,"Bundle status evidence, communication, and documents into a single service record. for Enterprise (> 100) Air Freight operations",Driver,"Port Congestion in APAC",On-time Delivery Rate
+52,8,"Bundle status evidence, communication, and documents into a single service record. for Micro (< 5) Ocean operations",Audit Specialist,"Carrier Shortage in LATAM",Empty Miles
+52,9,"Bundle status evidence, communication, and documents into a single service record. for Small (5-20) FTL operations",Dispatcher,"Global Supply Chain Crisis in North America",Carbon Footprint
+52,10,"Bundle status evidence, communication, and documents into a single service record. for Medium (20-100) LTL operations",Fleet Manager,"Holiday Peak Season in EMEA",On-time Delivery Rate
+53,1,"Move duplicated domain constants and schemas into the shared package. for Small (5-20) Intermodal operations",Dispatcher,"Carrier Shortage in North America",On-time Delivery Rate
+53,2,"Move duplicated domain constants and schemas into the shared package. for Medium (20-100) Air Freight operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",Empty Miles
+53,3,"Move duplicated domain constants and schemas into the shared package. for Enterprise (> 100) Ocean operations",Broker Agent,"Holiday Peak Season in APAC",Carbon Footprint
+53,4,"Move duplicated domain constants and schemas into the shared package. for Micro (< 5) FTL operations",Compliance Officer,"Last-mile Delivery Surge in LATAM",On-time Delivery Rate
+53,5,"Move duplicated domain constants and schemas into the shared package. for Small (5-20) LTL operations",Warehouse Supervisor,"Extreme Weather Event in North America",Empty Miles
+53,6,"Move duplicated domain constants and schemas into the shared package. for Medium (20-100) Intermodal operations",Carrier Owner,"Port Congestion in EMEA",Carbon Footprint
+53,7,"Move duplicated domain constants and schemas into the shared package. for Enterprise (> 100) Air Freight operations",Driver,"Carrier Shortage in APAC",On-time Delivery Rate
+53,8,"Move duplicated domain constants and schemas into the shared package. for Micro (< 5) Ocean operations",Audit Specialist,"Global Supply Chain Crisis in LATAM",Empty Miles
+53,9,"Move duplicated domain constants and schemas into the shared package. for Small (5-20) FTL operations",Dispatcher,"Holiday Peak Season in North America",Carbon Footprint
+53,10,"Move duplicated domain constants and schemas into the shared package. for Medium (20-100) LTL operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",On-time Delivery Rate
+54,1,"Provide realistic multi-tenant freight seed data for local development and demos. for Small (5-20) Intermodal operations",Dispatcher,"Global Supply Chain Crisis in North America",On-time Delivery Rate
+54,2,"Provide realistic multi-tenant freight seed data for local development and demos. for Medium (20-100) Air Freight operations",Fleet Manager,"Holiday Peak Season in EMEA",Empty Miles
+54,3,"Provide realistic multi-tenant freight seed data for local development and demos. for Enterprise (> 100) Ocean operations",Broker Agent,"Last-mile Delivery Surge in APAC",Carbon Footprint
+54,4,"Provide realistic multi-tenant freight seed data for local development and demos. for Micro (< 5) FTL operations",Compliance Officer,"Extreme Weather Event in LATAM",On-time Delivery Rate
+54,5,"Provide realistic multi-tenant freight seed data for local development and demos. for Small (5-20) LTL operations",Warehouse Supervisor,"Port Congestion in North America",Empty Miles
+54,6,"Provide realistic multi-tenant freight seed data for local development and demos. for Medium (20-100) Intermodal operations",Carrier Owner,"Carrier Shortage in EMEA",Carbon Footprint
+54,7,"Provide realistic multi-tenant freight seed data for local development and demos. for Enterprise (> 100) Air Freight operations",Driver,"Global Supply Chain Crisis in APAC",On-time Delivery Rate
+54,8,"Provide realistic multi-tenant freight seed data for local development and demos. for Micro (< 5) Ocean operations",Audit Specialist,"Holiday Peak Season in LATAM",Empty Miles
+54,9,"Provide realistic multi-tenant freight seed data for local development and demos. for Small (5-20) FTL operations",Dispatcher,"Last-mile Delivery Surge in North America",Carbon Footprint
+54,10,"Provide realistic multi-tenant freight seed data for local development and demos. for Medium (20-100) LTL operations",Fleet Manager,"Extreme Weather Event in EMEA",On-time Delivery Rate
+55,1,"Define a shared error taxonomy and client-safe error response format. for Small (5-20) Intermodal operations",Dispatcher,"Holiday Peak Season in North America",On-time Delivery Rate
+55,2,"Define a shared error taxonomy and client-safe error response format. for Medium (20-100) Air Freight operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",Empty Miles
+55,3,"Define a shared error taxonomy and client-safe error response format. for Enterprise (> 100) Ocean operations",Broker Agent,"Extreme Weather Event in APAC",Carbon Footprint
+55,4,"Define a shared error taxonomy and client-safe error response format. for Micro (< 5) FTL operations",Compliance Officer,"Port Congestion in LATAM",On-time Delivery Rate
+55,5,"Define a shared error taxonomy and client-safe error response format. for Small (5-20) LTL operations",Warehouse Supervisor,"Carrier Shortage in North America",Empty Miles
+55,6,"Define a shared error taxonomy and client-safe error response format. for Medium (20-100) Intermodal operations",Carrier Owner,"Global Supply Chain Crisis in EMEA",Carbon Footprint
+55,7,"Define a shared error taxonomy and client-safe error response format. for Enterprise (> 100) Air Freight operations",Driver,"Holiday Peak Season in APAC",On-time Delivery Rate
+55,8,"Define a shared error taxonomy and client-safe error response format. for Micro (< 5) Ocean operations",Audit Specialist,"Last-mile Delivery Surge in LATAM",Empty Miles
+55,9,"Define a shared error taxonomy and client-safe error response format. for Small (5-20) FTL operations",Dispatcher,"Extreme Weather Event in North America",Carbon Footprint
+55,10,"Define a shared error taxonomy and client-safe error response format. for Medium (20-100) LTL operations",Fleet Manager,"Port Congestion in EMEA",On-time Delivery Rate
+56,1,"Document rollback-safe migration patterns and data backfill procedures. for Small (5-20) Intermodal operations",Dispatcher,"Last-mile Delivery Surge in North America",On-time Delivery Rate
+56,2,"Document rollback-safe migration patterns and data backfill procedures. for Medium (20-100) Air Freight operations",Fleet Manager,"Extreme Weather Event in EMEA",Empty Miles
+56,3,"Document rollback-safe migration patterns and data backfill procedures. for Enterprise (> 100) Ocean operations",Broker Agent,"Port Congestion in APAC",Carbon Footprint
+56,4,"Document rollback-safe migration patterns and data backfill procedures. for Micro (< 5) FTL operations",Compliance Officer,"Carrier Shortage in LATAM",On-time Delivery Rate
+56,5,"Document rollback-safe migration patterns and data backfill procedures. for Small (5-20) LTL operations",Warehouse Supervisor,"Global Supply Chain Crisis in North America",Empty Miles
+56,6,"Document rollback-safe migration patterns and data backfill procedures. for Medium (20-100) Intermodal operations",Carrier Owner,"Holiday Peak Season in EMEA",Carbon Footprint
+56,7,"Document rollback-safe migration patterns and data backfill procedures. for Enterprise (> 100) Air Freight operations",Driver,"Last-mile Delivery Surge in APAC",On-time Delivery Rate
+56,8,"Document rollback-safe migration patterns and data backfill procedures. for Micro (< 5) Ocean operations",Audit Specialist,"Extreme Weather Event in LATAM",Empty Miles
+56,9,"Document rollback-safe migration patterns and data backfill procedures. for Small (5-20) FTL operations",Dispatcher,"Port Congestion in North America",Carbon Footprint
+56,10,"Document rollback-safe migration patterns and data backfill procedures. for Medium (20-100) LTL operations",Fleet Manager,"Carrier Shortage in EMEA",On-time Delivery Rate
+57,1,"Save user filters, table layouts, and recent workspaces per role and tenant. for Small (5-20) Intermodal operations",Dispatcher,"Extreme Weather Event in North America",On-time Delivery Rate
+57,2,"Save user filters, table layouts, and recent workspaces per role and tenant. for Medium (20-100) Air Freight operations",Fleet Manager,"Port Congestion in EMEA",Empty Miles
+57,3,"Save user filters, table layouts, and recent workspaces per role and tenant. for Enterprise (> 100) Ocean operations",Broker Agent,"Carrier Shortage in APAC",Carbon Footprint
+57,4,"Save user filters, table layouts, and recent workspaces per role and tenant. for Micro (< 5) FTL operations",Compliance Officer,"Global Supply Chain Crisis in LATAM",On-time Delivery Rate
+57,5,"Save user filters, table layouts, and recent workspaces per role and tenant. for Small (5-20) LTL operations",Warehouse Supervisor,"Holiday Peak Season in North America",Empty Miles
+57,6,"Save user filters, table layouts, and recent workspaces per role and tenant. for Medium (20-100) Intermodal operations",Carrier Owner,"Last-mile Delivery Surge in EMEA",Carbon Footprint
+57,7,"Save user filters, table layouts, and recent workspaces per role and tenant. for Enterprise (> 100) Air Freight operations",Driver,"Extreme Weather Event in APAC",On-time Delivery Rate
+57,8,"Save user filters, table layouts, and recent workspaces per role and tenant. for Micro (< 5) Ocean operations",Audit Specialist,"Port Congestion in LATAM",Empty Miles
+57,9,"Save user filters, table layouts, and recent workspaces per role and tenant. for Small (5-20) FTL operations",Dispatcher,"Carrier Shortage in North America",Carbon Footprint
+57,10,"Save user filters, table layouts, and recent workspaces per role and tenant. for Medium (20-100) LTL operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",On-time Delivery Rate
+58,1,"Package AI automation as a measurable premium add-on tied to operator productivity. for Small (5-20) Intermodal operations",Dispatcher,"Port Congestion in North America",On-time Delivery Rate
+58,2,"Package AI automation as a measurable premium add-on tied to operator productivity. for Medium (20-100) Air Freight operations",Fleet Manager,"Carrier Shortage in EMEA",Empty Miles
+58,3,"Package AI automation as a measurable premium add-on tied to operator productivity. for Enterprise (> 100) Ocean operations",Broker Agent,"Global Supply Chain Crisis in APAC",Carbon Footprint
+58,4,"Package AI automation as a measurable premium add-on tied to operator productivity. for Micro (< 5) FTL operations",Compliance Officer,"Holiday Peak Season in LATAM",On-time Delivery Rate
+58,5,"Package AI automation as a measurable premium add-on tied to operator productivity. for Small (5-20) LTL operations",Warehouse Supervisor,"Last-mile Delivery Surge in North America",Empty Miles
+58,6,"Package AI automation as a measurable premium add-on tied to operator productivity. for Medium (20-100) Intermodal operations",Carrier Owner,"Extreme Weather Event in EMEA",Carbon Footprint
+58,7,"Package AI automation as a measurable premium add-on tied to operator productivity. for Enterprise (> 100) Air Freight operations",Driver,"Port Congestion in APAC",On-time Delivery Rate
+58,8,"Package AI automation as a measurable premium add-on tied to operator productivity. for Micro (< 5) Ocean operations",Audit Specialist,"Carrier Shortage in LATAM",Empty Miles
+58,9,"Package AI automation as a measurable premium add-on tied to operator productivity. for Small (5-20) FTL operations",Dispatcher,"Global Supply Chain Crisis in North America",Carbon Footprint
+58,10,"Package AI automation as a measurable premium add-on tied to operator productivity. for Medium (20-100) LTL operations",Fleet Manager,"Holiday Peak Season in EMEA",On-time Delivery Rate
+59,1,"Split lint, typecheck, unit, integration, and build checks for faster feedback and clearer failures. for Small (5-20) Intermodal operations",Dispatcher,"Carrier Shortage in North America",On-time Delivery Rate
+59,2,"Split lint, typecheck, unit, integration, and build checks for faster feedback and clearer failures. for Medium (20-100) Air Freight operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",Empty Miles
+59,3,"Split lint, typecheck, unit, integration, and build checks for faster feedback and clearer failures. for Enterprise (> 100) Ocean operations",Broker Agent,"Holiday Peak Season in APAC",Carbon Footprint
+59,4,"Split lint, typecheck, unit, integration, and build checks for faster feedback and clearer failures. for Micro (< 5) FTL operations",Compliance Officer,"Last-mile Delivery Surge in LATAM",On-time Delivery Rate
+59,5,"Split lint, typecheck, unit, integration, and build checks for faster feedback and clearer failures. for Small (5-20) LTL operations",Warehouse Supervisor,"Extreme Weather Event in North America",Empty Miles
+59,6,"Split lint, typecheck, unit, integration, and build checks for faster feedback and clearer failures. for Medium (20-100) Intermodal operations",Carrier Owner,"Port Congestion in EMEA",Carbon Footprint
+59,7,"Split lint, typecheck, unit, integration, and build checks for faster feedback and clearer failures. for Enterprise (> 100) Air Freight operations",Driver,"Carrier Shortage in APAC",On-time Delivery Rate
+59,8,"Split lint, typecheck, unit, integration, and build checks for faster feedback and clearer failures. for Micro (< 5) Ocean operations",Audit Specialist,"Global Supply Chain Crisis in LATAM",Empty Miles
+59,9,"Split lint, typecheck, unit, integration, and build checks for faster feedback and clearer failures. for Small (5-20) FTL operations",Dispatcher,"Holiday Peak Season in North America",Carbon Footprint
+59,10,"Split lint, typecheck, unit, integration, and build checks for faster feedback and clearer failures. for Medium (20-100) LTL operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",On-time Delivery Rate
+60,1,"Add shared notes, tasks, and approvals for internal and external stakeholders. for Small (5-20) Intermodal operations",Dispatcher,"Global Supply Chain Crisis in North America",On-time Delivery Rate
+60,2,"Add shared notes, tasks, and approvals for internal and external stakeholders. for Medium (20-100) Air Freight operations",Fleet Manager,"Holiday Peak Season in EMEA",Empty Miles
+60,3,"Add shared notes, tasks, and approvals for internal and external stakeholders. for Enterprise (> 100) Ocean operations",Broker Agent,"Last-mile Delivery Surge in APAC",Carbon Footprint
+60,4,"Add shared notes, tasks, and approvals for internal and external stakeholders. for Micro (< 5) FTL operations",Compliance Officer,"Extreme Weather Event in LATAM",On-time Delivery Rate
+60,5,"Add shared notes, tasks, and approvals for internal and external stakeholders. for Small (5-20) LTL operations",Warehouse Supervisor,"Port Congestion in North America",Empty Miles
+60,6,"Add shared notes, tasks, and approvals for internal and external stakeholders. for Medium (20-100) Intermodal operations",Carrier Owner,"Carrier Shortage in EMEA",Carbon Footprint
+60,7,"Add shared notes, tasks, and approvals for internal and external stakeholders. for Enterprise (> 100) Air Freight operations",Driver,"Global Supply Chain Crisis in APAC",On-time Delivery Rate
+60,8,"Add shared notes, tasks, and approvals for internal and external stakeholders. for Micro (< 5) Ocean operations",Audit Specialist,"Holiday Peak Season in LATAM",Empty Miles
+60,9,"Add shared notes, tasks, and approvals for internal and external stakeholders. for Small (5-20) FTL operations",Dispatcher,"Last-mile Delivery Surge in North America",Carbon Footprint
+60,10,"Add shared notes, tasks, and approvals for internal and external stakeholders. for Medium (20-100) LTL operations",Fleet Manager,"Extreme Weather Event in EMEA",On-time Delivery Rate
+61,1,"Support parent-child organizations, divisions, and branch visibility models. for Small (5-20) Intermodal operations",Dispatcher,"Holiday Peak Season in North America",On-time Delivery Rate
+61,2,"Support parent-child organizations, divisions, and branch visibility models. for Medium (20-100) Air Freight operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",Empty Miles
+61,3,"Support parent-child organizations, divisions, and branch visibility models. for Enterprise (> 100) Ocean operations",Broker Agent,"Extreme Weather Event in APAC",Carbon Footprint
+61,4,"Support parent-child organizations, divisions, and branch visibility models. for Micro (< 5) FTL operations",Compliance Officer,"Port Congestion in LATAM",On-time Delivery Rate
+61,5,"Support parent-child organizations, divisions, and branch visibility models. for Small (5-20) LTL operations",Warehouse Supervisor,"Carrier Shortage in North America",Empty Miles
+61,6,"Support parent-child organizations, divisions, and branch visibility models. for Medium (20-100) Intermodal operations",Carrier Owner,"Global Supply Chain Crisis in EMEA",Carbon Footprint
+61,7,"Support parent-child organizations, divisions, and branch visibility models. for Enterprise (> 100) Air Freight operations",Driver,"Holiday Peak Season in APAC",On-time Delivery Rate
+61,8,"Support parent-child organizations, divisions, and branch visibility models. for Micro (< 5) Ocean operations",Audit Specialist,"Last-mile Delivery Surge in LATAM",Empty Miles
+61,9,"Support parent-child organizations, divisions, and branch visibility models. for Small (5-20) FTL operations",Dispatcher,"Extreme Weather Event in North America",Carbon Footprint
+61,10,"Support parent-child organizations, divisions, and branch visibility models. for Medium (20-100) LTL operations",Fleet Manager,"Port Congestion in EMEA",On-time Delivery Rate
+62,1,"Ship industry playbooks for dry van, reefer, flatbed, drayage, and final mile. for Small (5-20) Intermodal operations",Dispatcher,"Last-mile Delivery Surge in North America",On-time Delivery Rate
+62,2,"Ship industry playbooks for dry van, reefer, flatbed, drayage, and final mile. for Medium (20-100) Air Freight operations",Fleet Manager,"Extreme Weather Event in EMEA",Empty Miles
+62,3,"Ship industry playbooks for dry van, reefer, flatbed, drayage, and final mile. for Enterprise (> 100) Ocean operations",Broker Agent,"Port Congestion in APAC",Carbon Footprint
+62,4,"Ship industry playbooks for dry van, reefer, flatbed, drayage, and final mile. for Micro (< 5) FTL operations",Compliance Officer,"Carrier Shortage in LATAM",On-time Delivery Rate
+62,5,"Ship industry playbooks for dry van, reefer, flatbed, drayage, and final mile. for Small (5-20) LTL operations",Warehouse Supervisor,"Global Supply Chain Crisis in North America",Empty Miles
+62,6,"Ship industry playbooks for dry van, reefer, flatbed, drayage, and final mile. for Medium (20-100) Intermodal operations",Carrier Owner,"Holiday Peak Season in EMEA",Carbon Footprint
+62,7,"Ship industry playbooks for dry van, reefer, flatbed, drayage, and final mile. for Enterprise (> 100) Air Freight operations",Driver,"Last-mile Delivery Surge in APAC",On-time Delivery Rate
+62,8,"Ship industry playbooks for dry van, reefer, flatbed, drayage, and final mile. for Micro (< 5) Ocean operations",Audit Specialist,"Extreme Weather Event in LATAM",Empty Miles
+62,9,"Ship industry playbooks for dry van, reefer, flatbed, drayage, and final mile. for Small (5-20) FTL operations",Dispatcher,"Port Congestion in North America",Carbon Footprint
+62,10,"Ship industry playbooks for dry van, reefer, flatbed, drayage, and final mile. for Medium (20-100) LTL operations",Fleet Manager,"Carrier Shortage in EMEA",On-time Delivery Rate
+63,1,"Let teams define service-level targets and track SLA breaches by account and shipment. for Small (5-20) Intermodal operations",Dispatcher,"Extreme Weather Event in North America",On-time Delivery Rate
+63,2,"Let teams define service-level targets and track SLA breaches by account and shipment. for Medium (20-100) Air Freight operations",Fleet Manager,"Port Congestion in EMEA",Empty Miles
+63,3,"Let teams define service-level targets and track SLA breaches by account and shipment. for Enterprise (> 100) Ocean operations",Broker Agent,"Carrier Shortage in APAC",Carbon Footprint
+63,4,"Let teams define service-level targets and track SLA breaches by account and shipment. for Micro (< 5) FTL operations",Compliance Officer,"Global Supply Chain Crisis in LATAM",On-time Delivery Rate
+63,5,"Let teams define service-level targets and track SLA breaches by account and shipment. for Small (5-20) LTL operations",Warehouse Supervisor,"Holiday Peak Season in North America",Empty Miles
+63,6,"Let teams define service-level targets and track SLA breaches by account and shipment. for Medium (20-100) Intermodal operations",Carrier Owner,"Last-mile Delivery Surge in EMEA",Carbon Footprint
+63,7,"Let teams define service-level targets and track SLA breaches by account and shipment. for Enterprise (> 100) Air Freight operations",Driver,"Extreme Weather Event in APAC",On-time Delivery Rate
+63,8,"Let teams define service-level targets and track SLA breaches by account and shipment. for Micro (< 5) Ocean operations",Audit Specialist,"Port Congestion in LATAM",Empty Miles
+63,9,"Let teams define service-level targets and track SLA breaches by account and shipment. for Small (5-20) FTL operations",Dispatcher,"Carrier Shortage in North America",Carbon Footprint
+63,10,"Let teams define service-level targets and track SLA breaches by account and shipment. for Medium (20-100) LTL operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",On-time Delivery Rate
+64,1,"Create referral incentives for brokers, carriers, and consultants. for Small (5-20) Intermodal operations",Dispatcher,"Port Congestion in North America",On-time Delivery Rate
+64,2,"Create referral incentives for brokers, carriers, and consultants. for Medium (20-100) Air Freight operations",Fleet Manager,"Carrier Shortage in EMEA",Empty Miles
+64,3,"Create referral incentives for brokers, carriers, and consultants. for Enterprise (> 100) Ocean operations",Broker Agent,"Global Supply Chain Crisis in APAC",Carbon Footprint
+64,4,"Create referral incentives for brokers, carriers, and consultants. for Micro (< 5) FTL operations",Compliance Officer,"Holiday Peak Season in LATAM",On-time Delivery Rate
+64,5,"Create referral incentives for brokers, carriers, and consultants. for Small (5-20) LTL operations",Warehouse Supervisor,"Last-mile Delivery Surge in North America",Empty Miles
+64,6,"Create referral incentives for brokers, carriers, and consultants. for Medium (20-100) Intermodal operations",Carrier Owner,"Extreme Weather Event in EMEA",Carbon Footprint
+64,7,"Create referral incentives for brokers, carriers, and consultants. for Enterprise (> 100) Air Freight operations",Driver,"Port Congestion in APAC",On-time Delivery Rate
+64,8,"Create referral incentives for brokers, carriers, and consultants. for Micro (< 5) Ocean operations",Audit Specialist,"Carrier Shortage in LATAM",Empty Miles
+64,9,"Create referral incentives for brokers, carriers, and consultants. for Small (5-20) FTL operations",Dispatcher,"Global Supply Chain Crisis in North America",Carbon Footprint
+64,10,"Create referral incentives for brokers, carriers, and consultants. for Medium (20-100) LTL operations",Fleet Manager,"Holiday Peak Season in EMEA",On-time Delivery Rate
+65,1,"Use hiring, growth, and fleet expansion signals to prioritize outbound accounts. for Small (5-20) Intermodal operations",Dispatcher,"Carrier Shortage in North America",On-time Delivery Rate
+65,2,"Use hiring, growth, and fleet expansion signals to prioritize outbound accounts. for Medium (20-100) Air Freight operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",Empty Miles
+65,3,"Use hiring, growth, and fleet expansion signals to prioritize outbound accounts. for Enterprise (> 100) Ocean operations",Broker Agent,"Holiday Peak Season in APAC",Carbon Footprint
+65,4,"Use hiring, growth, and fleet expansion signals to prioritize outbound accounts. for Micro (< 5) FTL operations",Compliance Officer,"Last-mile Delivery Surge in LATAM",On-time Delivery Rate
+65,5,"Use hiring, growth, and fleet expansion signals to prioritize outbound accounts. for Small (5-20) LTL operations",Warehouse Supervisor,"Extreme Weather Event in North America",Empty Miles
+65,6,"Use hiring, growth, and fleet expansion signals to prioritize outbound accounts. for Medium (20-100) Intermodal operations",Carrier Owner,"Port Congestion in EMEA",Carbon Footprint
+65,7,"Use hiring, growth, and fleet expansion signals to prioritize outbound accounts. for Enterprise (> 100) Air Freight operations",Driver,"Carrier Shortage in APAC",On-time Delivery Rate
+65,8,"Use hiring, growth, and fleet expansion signals to prioritize outbound accounts. for Micro (< 5) Ocean operations",Audit Specialist,"Global Supply Chain Crisis in LATAM",Empty Miles
+65,9,"Use hiring, growth, and fleet expansion signals to prioritize outbound accounts. for Small (5-20) FTL operations",Dispatcher,"Holiday Peak Season in North America",Carbon Footprint
+65,10,"Use hiring, growth, and fleet expansion signals to prioritize outbound accounts. for Medium (20-100) LTL operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",On-time Delivery Rate
+66,1,"Publish operational benchmarks on detention, on-time pickup, and invoice cycle times. for Small (5-20) Intermodal operations",Dispatcher,"Global Supply Chain Crisis in North America",On-time Delivery Rate
+66,2,"Publish operational benchmarks on detention, on-time pickup, and invoice cycle times. for Medium (20-100) Air Freight operations",Fleet Manager,"Holiday Peak Season in EMEA",Empty Miles
+66,3,"Publish operational benchmarks on detention, on-time pickup, and invoice cycle times. for Enterprise (> 100) Ocean operations",Broker Agent,"Last-mile Delivery Surge in APAC",Carbon Footprint
+66,4,"Publish operational benchmarks on detention, on-time pickup, and invoice cycle times. for Micro (< 5) FTL operations",Compliance Officer,"Extreme Weather Event in LATAM",On-time Delivery Rate
+66,5,"Publish operational benchmarks on detention, on-time pickup, and invoice cycle times. for Small (5-20) LTL operations",Warehouse Supervisor,"Port Congestion in North America",Empty Miles
+66,6,"Publish operational benchmarks on detention, on-time pickup, and invoice cycle times. for Medium (20-100) Intermodal operations",Carrier Owner,"Carrier Shortage in EMEA",Carbon Footprint
+66,7,"Publish operational benchmarks on detention, on-time pickup, and invoice cycle times. for Enterprise (> 100) Air Freight operations",Driver,"Global Supply Chain Crisis in APAC",On-time Delivery Rate
+66,8,"Publish operational benchmarks on detention, on-time pickup, and invoice cycle times. for Micro (< 5) Ocean operations",Audit Specialist,"Holiday Peak Season in LATAM",Empty Miles
+66,9,"Publish operational benchmarks on detention, on-time pickup, and invoice cycle times. for Small (5-20) FTL operations",Dispatcher,"Last-mile Delivery Surge in North America",Carbon Footprint
+66,10,"Publish operational benchmarks on detention, on-time pickup, and invoice cycle times. for Medium (20-100) LTL operations",Fleet Manager,"Extreme Weather Event in EMEA",On-time Delivery Rate
+67,1,"Institutionalize win-loss interviews and feed the results back into product and messaging. for Small (5-20) Intermodal operations",Dispatcher,"Holiday Peak Season in North America",On-time Delivery Rate
+67,2,"Institutionalize win-loss interviews and feed the results back into product and messaging. for Medium (20-100) Air Freight operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",Empty Miles
+67,3,"Institutionalize win-loss interviews and feed the results back into product and messaging. for Enterprise (> 100) Ocean operations",Broker Agent,"Extreme Weather Event in APAC",Carbon Footprint
+67,4,"Institutionalize win-loss interviews and feed the results back into product and messaging. for Micro (< 5) FTL operations",Compliance Officer,"Port Congestion in LATAM",On-time Delivery Rate
+67,5,"Institutionalize win-loss interviews and feed the results back into product and messaging. for Small (5-20) LTL operations",Warehouse Supervisor,"Carrier Shortage in North America",Empty Miles
+67,6,"Institutionalize win-loss interviews and feed the results back into product and messaging. for Medium (20-100) Intermodal operations",Carrier Owner,"Global Supply Chain Crisis in EMEA",Carbon Footprint
+67,7,"Institutionalize win-loss interviews and feed the results back into product and messaging. for Enterprise (> 100) Air Freight operations",Driver,"Holiday Peak Season in APAC",On-time Delivery Rate
+67,8,"Institutionalize win-loss interviews and feed the results back into product and messaging. for Micro (< 5) Ocean operations",Audit Specialist,"Last-mile Delivery Surge in LATAM",Empty Miles
+67,9,"Institutionalize win-loss interviews and feed the results back into product and messaging. for Small (5-20) FTL operations",Dispatcher,"Extreme Weather Event in North America",Carbon Footprint
+67,10,"Institutionalize win-loss interviews and feed the results back into product and messaging. for Medium (20-100) LTL operations",Fleet Manager,"Port Congestion in EMEA",On-time Delivery Rate
+68,1,"Enable in-context previews for BOL, POD, invoices, and confirmations without route changes. for Small (5-20) Intermodal operations",Dispatcher,"Last-mile Delivery Surge in North America",On-time Delivery Rate
+68,2,"Enable in-context previews for BOL, POD, invoices, and confirmations without route changes. for Medium (20-100) Air Freight operations",Fleet Manager,"Extreme Weather Event in EMEA",Empty Miles
+68,3,"Enable in-context previews for BOL, POD, invoices, and confirmations without route changes. for Enterprise (> 100) Ocean operations",Broker Agent,"Port Congestion in APAC",Carbon Footprint
+68,4,"Enable in-context previews for BOL, POD, invoices, and confirmations without route changes. for Micro (< 5) FTL operations",Compliance Officer,"Carrier Shortage in LATAM",On-time Delivery Rate
+68,5,"Enable in-context previews for BOL, POD, invoices, and confirmations without route changes. for Small (5-20) LTL operations",Warehouse Supervisor,"Global Supply Chain Crisis in North America",Empty Miles
+68,6,"Enable in-context previews for BOL, POD, invoices, and confirmations without route changes. for Medium (20-100) Intermodal operations",Carrier Owner,"Holiday Peak Season in EMEA",Carbon Footprint
+68,7,"Enable in-context previews for BOL, POD, invoices, and confirmations without route changes. for Enterprise (> 100) Air Freight operations",Driver,"Last-mile Delivery Surge in APAC",On-time Delivery Rate
+68,8,"Enable in-context previews for BOL, POD, invoices, and confirmations without route changes. for Micro (< 5) Ocean operations",Audit Specialist,"Extreme Weather Event in LATAM",Empty Miles
+68,9,"Enable in-context previews for BOL, POD, invoices, and confirmations without route changes. for Small (5-20) FTL operations",Dispatcher,"Port Congestion in North America",Carbon Footprint
+68,10,"Enable in-context previews for BOL, POD, invoices, and confirmations without route changes. for Medium (20-100) LTL operations",Fleet Manager,"Carrier Shortage in EMEA",On-time Delivery Rate
+69,1,"Surface buy rate, sell rate, margin, and exception risk near dispatch decisions. for Small (5-20) Intermodal operations",Dispatcher,"Extreme Weather Event in North America",On-time Delivery Rate
+69,2,"Surface buy rate, sell rate, margin, and exception risk near dispatch decisions. for Medium (20-100) Air Freight operations",Fleet Manager,"Port Congestion in EMEA",Empty Miles
+69,3,"Surface buy rate, sell rate, margin, and exception risk near dispatch decisions. for Enterprise (> 100) Ocean operations",Broker Agent,"Carrier Shortage in APAC",Carbon Footprint
+69,4,"Surface buy rate, sell rate, margin, and exception risk near dispatch decisions. for Micro (< 5) FTL operations",Compliance Officer,"Global Supply Chain Crisis in LATAM",On-time Delivery Rate
+69,5,"Surface buy rate, sell rate, margin, and exception risk near dispatch decisions. for Small (5-20) LTL operations",Warehouse Supervisor,"Holiday Peak Season in North America",Empty Miles
+69,6,"Surface buy rate, sell rate, margin, and exception risk near dispatch decisions. for Medium (20-100) Intermodal operations",Carrier Owner,"Last-mile Delivery Surge in EMEA",Carbon Footprint
+69,7,"Surface buy rate, sell rate, margin, and exception risk near dispatch decisions. for Enterprise (> 100) Air Freight operations",Driver,"Extreme Weather Event in APAC",On-time Delivery Rate
+69,8,"Surface buy rate, sell rate, margin, and exception risk near dispatch decisions. for Micro (< 5) Ocean operations",Audit Specialist,"Port Congestion in LATAM",Empty Miles
+69,9,"Surface buy rate, sell rate, margin, and exception risk near dispatch decisions. for Small (5-20) FTL operations",Dispatcher,"Carrier Shortage in North America",Carbon Footprint
+69,10,"Surface buy rate, sell rate, margin, and exception risk near dispatch decisions. for Medium (20-100) LTL operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",On-time Delivery Rate
+70,1,"Add a purposeful map view for active loads with delay and cluster overlays. for Small (5-20) Intermodal operations",Dispatcher,"Port Congestion in North America",On-time Delivery Rate
+70,2,"Add a purposeful map view for active loads with delay and cluster overlays. for Medium (20-100) Air Freight operations",Fleet Manager,"Carrier Shortage in EMEA",Empty Miles
+70,3,"Add a purposeful map view for active loads with delay and cluster overlays. for Enterprise (> 100) Ocean operations",Broker Agent,"Global Supply Chain Crisis in APAC",Carbon Footprint
+70,4,"Add a purposeful map view for active loads with delay and cluster overlays. for Micro (< 5) FTL operations",Compliance Officer,"Holiday Peak Season in LATAM",On-time Delivery Rate
+70,5,"Add a purposeful map view for active loads with delay and cluster overlays. for Small (5-20) LTL operations",Warehouse Supervisor,"Last-mile Delivery Surge in North America",Empty Miles
+70,6,"Add a purposeful map view for active loads with delay and cluster overlays. for Medium (20-100) Intermodal operations",Carrier Owner,"Extreme Weather Event in EMEA",Carbon Footprint
+70,7,"Add a purposeful map view for active loads with delay and cluster overlays. for Enterprise (> 100) Air Freight operations",Driver,"Port Congestion in APAC",On-time Delivery Rate
+70,8,"Add a purposeful map view for active loads with delay and cluster overlays. for Micro (< 5) Ocean operations",Audit Specialist,"Carrier Shortage in LATAM",Empty Miles
+70,9,"Add a purposeful map view for active loads with delay and cluster overlays. for Small (5-20) FTL operations",Dispatcher,"Global Supply Chain Crisis in North America",Carbon Footprint
+70,10,"Add a purposeful map view for active loads with delay and cluster overlays. for Medium (20-100) LTL operations",Fleet Manager,"Holiday Peak Season in EMEA",On-time Delivery Rate
+71,1,"Create a no-code rules engine for operational automations and escalations. for Small (5-20) Intermodal operations",Dispatcher,"Carrier Shortage in North America",On-time Delivery Rate
+71,2,"Create a no-code rules engine for operational automations and escalations. for Medium (20-100) Air Freight operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",Empty Miles
+71,3,"Create a no-code rules engine for operational automations and escalations. for Enterprise (> 100) Ocean operations",Broker Agent,"Holiday Peak Season in APAC",Carbon Footprint
+71,4,"Create a no-code rules engine for operational automations and escalations. for Micro (< 5) FTL operations",Compliance Officer,"Last-mile Delivery Surge in LATAM",On-time Delivery Rate
+71,5,"Create a no-code rules engine for operational automations and escalations. for Small (5-20) LTL operations",Warehouse Supervisor,"Extreme Weather Event in North America",Empty Miles
+71,6,"Create a no-code rules engine for operational automations and escalations. for Medium (20-100) Intermodal operations",Carrier Owner,"Port Congestion in EMEA",Carbon Footprint
+71,7,"Create a no-code rules engine for operational automations and escalations. for Enterprise (> 100) Air Freight operations",Driver,"Carrier Shortage in APAC",On-time Delivery Rate
+71,8,"Create a no-code rules engine for operational automations and escalations. for Micro (< 5) Ocean operations",Audit Specialist,"Global Supply Chain Crisis in LATAM",Empty Miles
+71,9,"Create a no-code rules engine for operational automations and escalations. for Small (5-20) FTL operations",Dispatcher,"Holiday Peak Season in North America",Carbon Footprint
+71,10,"Create a no-code rules engine for operational automations and escalations. for Medium (20-100) LTL operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",On-time Delivery Rate
+72,1,"Launch a marketplace for TMS, accounting, ELD, telematics, and document integrations. for Small (5-20) Intermodal operations",Dispatcher,"Global Supply Chain Crisis in North America",On-time Delivery Rate
+72,2,"Launch a marketplace for TMS, accounting, ELD, telematics, and document integrations. for Medium (20-100) Air Freight operations",Fleet Manager,"Holiday Peak Season in EMEA",Empty Miles
+72,3,"Launch a marketplace for TMS, accounting, ELD, telematics, and document integrations. for Enterprise (> 100) Ocean operations",Broker Agent,"Last-mile Delivery Surge in APAC",Carbon Footprint
+72,4,"Launch a marketplace for TMS, accounting, ELD, telematics, and document integrations. for Micro (< 5) FTL operations",Compliance Officer,"Extreme Weather Event in LATAM",On-time Delivery Rate
+72,5,"Launch a marketplace for TMS, accounting, ELD, telematics, and document integrations. for Small (5-20) LTL operations",Warehouse Supervisor,"Port Congestion in North America",Empty Miles
+72,6,"Launch a marketplace for TMS, accounting, ELD, telematics, and document integrations. for Medium (20-100) Intermodal operations",Carrier Owner,"Carrier Shortage in EMEA",Carbon Footprint
+72,7,"Launch a marketplace for TMS, accounting, ELD, telematics, and document integrations. for Enterprise (> 100) Air Freight operations",Driver,"Global Supply Chain Crisis in APAC",On-time Delivery Rate
+72,8,"Launch a marketplace for TMS, accounting, ELD, telematics, and document integrations. for Micro (< 5) Ocean operations",Audit Specialist,"Holiday Peak Season in LATAM",Empty Miles
+72,9,"Launch a marketplace for TMS, accounting, ELD, telematics, and document integrations. for Small (5-20) FTL operations",Dispatcher,"Last-mile Delivery Surge in North America",Carbon Footprint
+72,10,"Launch a marketplace for TMS, accounting, ELD, telematics, and document integrations. for Medium (20-100) LTL operations",Fleet Manager,"Extreme Weather Event in EMEA",On-time Delivery Rate
+73,1,"Integrate concise contextual guidance inside complex workflows instead of relying only on docs. for Small (5-20) Intermodal operations",Dispatcher,"Holiday Peak Season in North America",On-time Delivery Rate
+73,2,"Integrate concise contextual guidance inside complex workflows instead of relying only on docs. for Medium (20-100) Air Freight operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",Empty Miles
+73,3,"Integrate concise contextual guidance inside complex workflows instead of relying only on docs. for Enterprise (> 100) Ocean operations",Broker Agent,"Extreme Weather Event in APAC",Carbon Footprint
+73,4,"Integrate concise contextual guidance inside complex workflows instead of relying only on docs. for Micro (< 5) FTL operations",Compliance Officer,"Port Congestion in LATAM",On-time Delivery Rate
+73,5,"Integrate concise contextual guidance inside complex workflows instead of relying only on docs. for Small (5-20) LTL operations",Warehouse Supervisor,"Carrier Shortage in North America",Empty Miles
+73,6,"Integrate concise contextual guidance inside complex workflows instead of relying only on docs. for Medium (20-100) Intermodal operations",Carrier Owner,"Global Supply Chain Crisis in EMEA",Carbon Footprint
+73,7,"Integrate concise contextual guidance inside complex workflows instead of relying only on docs. for Enterprise (> 100) Air Freight operations",Driver,"Holiday Peak Season in APAC",On-time Delivery Rate
+73,8,"Integrate concise contextual guidance inside complex workflows instead of relying only on docs. for Micro (< 5) Ocean operations",Audit Specialist,"Last-mile Delivery Surge in LATAM",Empty Miles
+73,9,"Integrate concise contextual guidance inside complex workflows instead of relying only on docs. for Small (5-20) FTL operations",Dispatcher,"Extreme Weather Event in North America",Carbon Footprint
+73,10,"Integrate concise contextual guidance inside complex workflows instead of relying only on docs. for Medium (20-100) LTL operations",Fleet Manager,"Port Congestion in EMEA",On-time Delivery Rate
+74,1,"Test packaging by shipment volume, user seats, and automation depth. for Small (5-20) Intermodal operations",Dispatcher,"Last-mile Delivery Surge in North America",On-time Delivery Rate
+74,2,"Test packaging by shipment volume, user seats, and automation depth. for Medium (20-100) Air Freight operations",Fleet Manager,"Extreme Weather Event in EMEA",Empty Miles
+74,3,"Test packaging by shipment volume, user seats, and automation depth. for Enterprise (> 100) Ocean operations",Broker Agent,"Port Congestion in APAC",Carbon Footprint
+74,4,"Test packaging by shipment volume, user seats, and automation depth. for Micro (< 5) FTL operations",Compliance Officer,"Carrier Shortage in LATAM",On-time Delivery Rate
+74,5,"Test packaging by shipment volume, user seats, and automation depth. for Small (5-20) LTL operations",Warehouse Supervisor,"Global Supply Chain Crisis in North America",Empty Miles
+74,6,"Test packaging by shipment volume, user seats, and automation depth. for Medium (20-100) Intermodal operations",Carrier Owner,"Holiday Peak Season in EMEA",Carbon Footprint
+74,7,"Test packaging by shipment volume, user seats, and automation depth. for Enterprise (> 100) Air Freight operations",Driver,"Last-mile Delivery Surge in APAC",On-time Delivery Rate
+74,8,"Test packaging by shipment volume, user seats, and automation depth. for Micro (< 5) Ocean operations",Audit Specialist,"Extreme Weather Event in LATAM",Empty Miles
+74,9,"Test packaging by shipment volume, user seats, and automation depth. for Small (5-20) FTL operations",Dispatcher,"Port Congestion in North America",Carbon Footprint
+74,10,"Test packaging by shipment volume, user seats, and automation depth. for Medium (20-100) LTL operations",Fleet Manager,"Carrier Shortage in EMEA",On-time Delivery Rate
+75,1,"Use product signals to trigger customer success interventions before renewal risk grows. for Small (5-20) Intermodal operations",Dispatcher,"Extreme Weather Event in North America",On-time Delivery Rate
+75,2,"Use product signals to trigger customer success interventions before renewal risk grows. for Medium (20-100) Air Freight operations",Fleet Manager,"Port Congestion in EMEA",Empty Miles
+75,3,"Use product signals to trigger customer success interventions before renewal risk grows. for Enterprise (> 100) Ocean operations",Broker Agent,"Carrier Shortage in APAC",Carbon Footprint
+75,4,"Use product signals to trigger customer success interventions before renewal risk grows. for Micro (< 5) FTL operations",Compliance Officer,"Global Supply Chain Crisis in LATAM",On-time Delivery Rate
+75,5,"Use product signals to trigger customer success interventions before renewal risk grows. for Small (5-20) LTL operations",Warehouse Supervisor,"Holiday Peak Season in North America",Empty Miles
+75,6,"Use product signals to trigger customer success interventions before renewal risk grows. for Medium (20-100) Intermodal operations",Carrier Owner,"Last-mile Delivery Surge in EMEA",Carbon Footprint
+75,7,"Use product signals to trigger customer success interventions before renewal risk grows. for Enterprise (> 100) Air Freight operations",Driver,"Extreme Weather Event in APAC",On-time Delivery Rate
+75,8,"Use product signals to trigger customer success interventions before renewal risk grows. for Micro (< 5) Ocean operations",Audit Specialist,"Port Congestion in LATAM",Empty Miles
+75,9,"Use product signals to trigger customer success interventions before renewal risk grows. for Small (5-20) FTL operations",Dispatcher,"Carrier Shortage in North America",Carbon Footprint
+75,10,"Use product signals to trigger customer success interventions before renewal risk grows. for Medium (20-100) LTL operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",On-time Delivery Rate
+76,1,"Add keyboard shortcuts for common dispatcher actions and record navigation. for Small (5-20) Intermodal operations",Dispatcher,"Port Congestion in North America",On-time Delivery Rate
+76,2,"Add keyboard shortcuts for common dispatcher actions and record navigation. for Medium (20-100) Air Freight operations",Fleet Manager,"Carrier Shortage in EMEA",Empty Miles
+76,3,"Add keyboard shortcuts for common dispatcher actions and record navigation. for Enterprise (> 100) Ocean operations",Broker Agent,"Global Supply Chain Crisis in APAC",Carbon Footprint
+76,4,"Add keyboard shortcuts for common dispatcher actions and record navigation. for Micro (< 5) FTL operations",Compliance Officer,"Holiday Peak Season in LATAM",On-time Delivery Rate
+76,5,"Add keyboard shortcuts for common dispatcher actions and record navigation. for Small (5-20) LTL operations",Warehouse Supervisor,"Last-mile Delivery Surge in North America",Empty Miles
+76,6,"Add keyboard shortcuts for common dispatcher actions and record navigation. for Medium (20-100) Intermodal operations",Carrier Owner,"Extreme Weather Event in EMEA",Carbon Footprint
+76,7,"Add keyboard shortcuts for common dispatcher actions and record navigation. for Enterprise (> 100) Air Freight operations",Driver,"Port Congestion in APAC",On-time Delivery Rate
+76,8,"Add keyboard shortcuts for common dispatcher actions and record navigation. for Micro (< 5) Ocean operations",Audit Specialist,"Carrier Shortage in LATAM",Empty Miles
+76,9,"Add keyboard shortcuts for common dispatcher actions and record navigation. for Small (5-20) FTL operations",Dispatcher,"Global Supply Chain Crisis in North America",Carbon Footprint
+76,10,"Add keyboard shortcuts for common dispatcher actions and record navigation. for Medium (20-100) LTL operations",Fleet Manager,"Holiday Peak Season in EMEA",On-time Delivery Rate
+77,1,"Hide secondary controls behind progressive disclosure in complex screens. for Small (5-20) Intermodal operations",Dispatcher,"Carrier Shortage in North America",On-time Delivery Rate
+77,2,"Hide secondary controls behind progressive disclosure in complex screens. for Medium (20-100) Air Freight operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",Empty Miles
+77,3,"Hide secondary controls behind progressive disclosure in complex screens. for Enterprise (> 100) Ocean operations",Broker Agent,"Holiday Peak Season in APAC",Carbon Footprint
+77,4,"Hide secondary controls behind progressive disclosure in complex screens. for Micro (< 5) FTL operations",Compliance Officer,"Last-mile Delivery Surge in LATAM",On-time Delivery Rate
+77,5,"Hide secondary controls behind progressive disclosure in complex screens. for Small (5-20) LTL operations",Warehouse Supervisor,"Extreme Weather Event in North America",Empty Miles
+77,6,"Hide secondary controls behind progressive disclosure in complex screens. for Medium (20-100) Intermodal operations",Carrier Owner,"Port Congestion in EMEA",Carbon Footprint
+77,7,"Hide secondary controls behind progressive disclosure in complex screens. for Enterprise (> 100) Air Freight operations",Driver,"Carrier Shortage in APAC",On-time Delivery Rate
+77,8,"Hide secondary controls behind progressive disclosure in complex screens. for Micro (< 5) Ocean operations",Audit Specialist,"Global Supply Chain Crisis in LATAM",Empty Miles
+77,9,"Hide secondary controls behind progressive disclosure in complex screens. for Small (5-20) FTL operations",Dispatcher,"Holiday Peak Season in North America",Carbon Footprint
+77,10,"Hide secondary controls behind progressive disclosure in complex screens. for Medium (20-100) LTL operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",On-time Delivery Rate
+78,1,"Design role-specific empty states that teach the next operational action. for Small (5-20) Intermodal operations",Dispatcher,"Global Supply Chain Crisis in North America",On-time Delivery Rate
+78,2,"Design role-specific empty states that teach the next operational action. for Medium (20-100) Air Freight operations",Fleet Manager,"Holiday Peak Season in EMEA",Empty Miles
+78,3,"Design role-specific empty states that teach the next operational action. for Enterprise (> 100) Ocean operations",Broker Agent,"Last-mile Delivery Surge in APAC",Carbon Footprint
+78,4,"Design role-specific empty states that teach the next operational action. for Micro (< 5) FTL operations",Compliance Officer,"Extreme Weather Event in LATAM",On-time Delivery Rate
+78,5,"Design role-specific empty states that teach the next operational action. for Small (5-20) LTL operations",Warehouse Supervisor,"Port Congestion in North America",Empty Miles
+78,6,"Design role-specific empty states that teach the next operational action. for Medium (20-100) Intermodal operations",Carrier Owner,"Carrier Shortage in EMEA",Carbon Footprint
+78,7,"Design role-specific empty states that teach the next operational action. for Enterprise (> 100) Air Freight operations",Driver,"Global Supply Chain Crisis in APAC",On-time Delivery Rate
+78,8,"Design role-specific empty states that teach the next operational action. for Micro (< 5) Ocean operations",Audit Specialist,"Holiday Peak Season in LATAM",Empty Miles
+78,9,"Design role-specific empty states that teach the next operational action. for Small (5-20) FTL operations",Dispatcher,"Last-mile Delivery Surge in North America",Carbon Footprint
+78,10,"Design role-specific empty states that teach the next operational action. for Medium (20-100) LTL operations",Fleet Manager,"Extreme Weather Event in EMEA",On-time Delivery Rate
+79,1,"Create a unified notification center with triage, snooze, and assignment features. for Small (5-20) Intermodal operations",Dispatcher,"Holiday Peak Season in North America",On-time Delivery Rate
+79,2,"Create a unified notification center with triage, snooze, and assignment features. for Medium (20-100) Air Freight operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",Empty Miles
+79,3,"Create a unified notification center with triage, snooze, and assignment features. for Enterprise (> 100) Ocean operations",Broker Agent,"Extreme Weather Event in APAC",Carbon Footprint
+79,4,"Create a unified notification center with triage, snooze, and assignment features. for Micro (< 5) FTL operations",Compliance Officer,"Port Congestion in LATAM",On-time Delivery Rate
+79,5,"Create a unified notification center with triage, snooze, and assignment features. for Small (5-20) LTL operations",Warehouse Supervisor,"Carrier Shortage in North America",Empty Miles
+79,6,"Create a unified notification center with triage, snooze, and assignment features. for Medium (20-100) Intermodal operations",Carrier Owner,"Global Supply Chain Crisis in EMEA",Carbon Footprint
+79,7,"Create a unified notification center with triage, snooze, and assignment features. for Enterprise (> 100) Air Freight operations",Driver,"Holiday Peak Season in APAC",On-time Delivery Rate
+79,8,"Create a unified notification center with triage, snooze, and assignment features. for Micro (< 5) Ocean operations",Audit Specialist,"Last-mile Delivery Surge in LATAM",Empty Miles
+79,9,"Create a unified notification center with triage, snooze, and assignment features. for Small (5-20) FTL operations",Dispatcher,"Extreme Weather Event in North America",Carbon Footprint
+79,10,"Create a unified notification center with triage, snooze, and assignment features. for Medium (20-100) LTL operations",Fleet Manager,"Port Congestion in EMEA",On-time Delivery Rate
+80,1,"Standardize validation patterns, helper text, and save behavior across forms. for Small (5-20) Intermodal operations",Dispatcher,"Last-mile Delivery Surge in North America",On-time Delivery Rate
+80,2,"Standardize validation patterns, helper text, and save behavior across forms. for Medium (20-100) Air Freight operations",Fleet Manager,"Extreme Weather Event in EMEA",Empty Miles
+80,3,"Standardize validation patterns, helper text, and save behavior across forms. for Enterprise (> 100) Ocean operations",Broker Agent,"Port Congestion in APAC",Carbon Footprint
+80,4,"Standardize validation patterns, helper text, and save behavior across forms. for Micro (< 5) FTL operations",Compliance Officer,"Carrier Shortage in LATAM",On-time Delivery Rate
+80,5,"Standardize validation patterns, helper text, and save behavior across forms. for Small (5-20) LTL operations",Warehouse Supervisor,"Global Supply Chain Crisis in North America",Empty Miles
+80,6,"Standardize validation patterns, helper text, and save behavior across forms. for Medium (20-100) Intermodal operations",Carrier Owner,"Holiday Peak Season in EMEA",Carbon Footprint
+80,7,"Standardize validation patterns, helper text, and save behavior across forms. for Enterprise (> 100) Air Freight operations",Driver,"Last-mile Delivery Surge in APAC",On-time Delivery Rate
+80,8,"Standardize validation patterns, helper text, and save behavior across forms. for Micro (< 5) Ocean operations",Audit Specialist,"Extreme Weather Event in LATAM",Empty Miles
+80,9,"Standardize validation patterns, helper text, and save behavior across forms. for Small (5-20) FTL operations",Dispatcher,"Port Congestion in North America",Carbon Footprint
+80,10,"Standardize validation patterns, helper text, and save behavior across forms. for Medium (20-100) LTL operations",Fleet Manager,"Carrier Shortage in EMEA",On-time Delivery Rate
+81,1,"Use side panels for quick record inspection and edits from list views. for Small (5-20) Intermodal operations",Dispatcher,"Extreme Weather Event in North America",On-time Delivery Rate
+81,2,"Use side panels for quick record inspection and edits from list views. for Medium (20-100) Air Freight operations",Fleet Manager,"Port Congestion in EMEA",Empty Miles
+81,3,"Use side panels for quick record inspection and edits from list views. for Enterprise (> 100) Ocean operations",Broker Agent,"Carrier Shortage in APAC",Carbon Footprint
+81,4,"Use side panels for quick record inspection and edits from list views. for Micro (< 5) FTL operations",Compliance Officer,"Global Supply Chain Crisis in LATAM",On-time Delivery Rate
+81,5,"Use side panels for quick record inspection and edits from list views. for Small (5-20) LTL operations",Warehouse Supervisor,"Holiday Peak Season in North America",Empty Miles
+81,6,"Use side panels for quick record inspection and edits from list views. for Medium (20-100) Intermodal operations",Carrier Owner,"Last-mile Delivery Surge in EMEA",Carbon Footprint
+81,7,"Use side panels for quick record inspection and edits from list views. for Enterprise (> 100) Air Freight operations",Driver,"Extreme Weather Event in APAC",On-time Delivery Rate
+81,8,"Use side panels for quick record inspection and edits from list views. for Micro (< 5) Ocean operations",Audit Specialist,"Port Congestion in LATAM",Empty Miles
+81,9,"Use side panels for quick record inspection and edits from list views. for Small (5-20) FTL operations",Dispatcher,"Carrier Shortage in North America",Carbon Footprint
+81,10,"Use side panels for quick record inspection and edits from list views. for Medium (20-100) LTL operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",On-time Delivery Rate
+82,1,"Tailor workflows for reefer, flatbed, drayage, and final-mile constraints. for Small (5-20) Intermodal operations",Dispatcher,"Port Congestion in North America",On-time Delivery Rate
+82,2,"Tailor workflows for reefer, flatbed, drayage, and final-mile constraints. for Medium (20-100) Air Freight operations",Fleet Manager,"Carrier Shortage in EMEA",Empty Miles
+82,3,"Tailor workflows for reefer, flatbed, drayage, and final-mile constraints. for Enterprise (> 100) Ocean operations",Broker Agent,"Global Supply Chain Crisis in APAC",Carbon Footprint
+82,4,"Tailor workflows for reefer, flatbed, drayage, and final-mile constraints. for Micro (< 5) FTL operations",Compliance Officer,"Holiday Peak Season in LATAM",On-time Delivery Rate
+82,5,"Tailor workflows for reefer, flatbed, drayage, and final-mile constraints. for Small (5-20) LTL operations",Warehouse Supervisor,"Last-mile Delivery Surge in North America",Empty Miles
+82,6,"Tailor workflows for reefer, flatbed, drayage, and final-mile constraints. for Medium (20-100) Intermodal operations",Carrier Owner,"Extreme Weather Event in EMEA",Carbon Footprint
+82,7,"Tailor workflows for reefer, flatbed, drayage, and final-mile constraints. for Enterprise (> 100) Air Freight operations",Driver,"Port Congestion in APAC",On-time Delivery Rate
+82,8,"Tailor workflows for reefer, flatbed, drayage, and final-mile constraints. for Micro (< 5) Ocean operations",Audit Specialist,"Carrier Shortage in LATAM",Empty Miles
+82,9,"Tailor workflows for reefer, flatbed, drayage, and final-mile constraints. for Small (5-20) FTL operations",Dispatcher,"Global Supply Chain Crisis in North America",Carbon Footprint
+82,10,"Tailor workflows for reefer, flatbed, drayage, and final-mile constraints. for Medium (20-100) LTL operations",Fleet Manager,"Holiday Peak Season in EMEA",On-time Delivery Rate
+83,1,"Add route quality scoring based on historical dwell, tolls, and service outcomes. for Small (5-20) Intermodal operations",Dispatcher,"Carrier Shortage in North America",On-time Delivery Rate
+83,2,"Add route quality scoring based on historical dwell, tolls, and service outcomes. for Medium (20-100) Air Freight operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",Empty Miles
+83,3,"Add route quality scoring based on historical dwell, tolls, and service outcomes. for Enterprise (> 100) Ocean operations",Broker Agent,"Holiday Peak Season in APAC",Carbon Footprint
+83,4,"Add route quality scoring based on historical dwell, tolls, and service outcomes. for Micro (< 5) FTL operations",Compliance Officer,"Last-mile Delivery Surge in LATAM",On-time Delivery Rate
+83,5,"Add route quality scoring based on historical dwell, tolls, and service outcomes. for Small (5-20) LTL operations",Warehouse Supervisor,"Extreme Weather Event in North America",Empty Miles
+83,6,"Add route quality scoring based on historical dwell, tolls, and service outcomes. for Medium (20-100) Intermodal operations",Carrier Owner,"Port Congestion in EMEA",Carbon Footprint
+83,7,"Add route quality scoring based on historical dwell, tolls, and service outcomes. for Enterprise (> 100) Air Freight operations",Driver,"Carrier Shortage in APAC",On-time Delivery Rate
+83,8,"Add route quality scoring based on historical dwell, tolls, and service outcomes. for Micro (< 5) Ocean operations",Audit Specialist,"Global Supply Chain Crisis in LATAM",Empty Miles
+83,9,"Add route quality scoring based on historical dwell, tolls, and service outcomes. for Small (5-20) FTL operations",Dispatcher,"Holiday Peak Season in North America",Carbon Footprint
+83,10,"Add route quality scoring based on historical dwell, tolls, and service outcomes. for Medium (20-100) LTL operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",On-time Delivery Rate
+84,1,"Support stop-level sequencing, timing, and service notes for multi-stop loads. for Small (5-20) Intermodal operations",Dispatcher,"Global Supply Chain Crisis in North America",On-time Delivery Rate
+84,2,"Support stop-level sequencing, timing, and service notes for multi-stop loads. for Medium (20-100) Air Freight operations",Fleet Manager,"Holiday Peak Season in EMEA",Empty Miles
+84,3,"Support stop-level sequencing, timing, and service notes for multi-stop loads. for Enterprise (> 100) Ocean operations",Broker Agent,"Last-mile Delivery Surge in APAC",Carbon Footprint
+84,4,"Support stop-level sequencing, timing, and service notes for multi-stop loads. for Micro (< 5) FTL operations",Compliance Officer,"Extreme Weather Event in LATAM",On-time Delivery Rate
+84,5,"Support stop-level sequencing, timing, and service notes for multi-stop loads. for Small (5-20) LTL operations",Warehouse Supervisor,"Port Congestion in North America",Empty Miles
+84,6,"Support stop-level sequencing, timing, and service notes for multi-stop loads. for Medium (20-100) Intermodal operations",Carrier Owner,"Carrier Shortage in EMEA",Carbon Footprint
+84,7,"Support stop-level sequencing, timing, and service notes for multi-stop loads. for Enterprise (> 100) Air Freight operations",Driver,"Global Supply Chain Crisis in APAC",On-time Delivery Rate
+84,8,"Support stop-level sequencing, timing, and service notes for multi-stop loads. for Micro (< 5) Ocean operations",Audit Specialist,"Holiday Peak Season in LATAM",Empty Miles
+84,9,"Support stop-level sequencing, timing, and service notes for multi-stop loads. for Small (5-20) FTL operations",Dispatcher,"Last-mile Delivery Surge in North America",Carbon Footprint
+84,10,"Support stop-level sequencing, timing, and service notes for multi-stop loads. for Medium (20-100) LTL operations",Fleet Manager,"Extreme Weather Event in EMEA",On-time Delivery Rate
+85,1,"Track lane-level carrier performance and spot-buy outcomes to improve procurement decisions. for Small (5-20) Intermodal operations",Dispatcher,"Holiday Peak Season in North America",On-time Delivery Rate
+85,2,"Track lane-level carrier performance and spot-buy outcomes to improve procurement decisions. for Medium (20-100) Air Freight operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",Empty Miles
+85,3,"Track lane-level carrier performance and spot-buy outcomes to improve procurement decisions. for Enterprise (> 100) Ocean operations",Broker Agent,"Extreme Weather Event in APAC",Carbon Footprint
+85,4,"Track lane-level carrier performance and spot-buy outcomes to improve procurement decisions. for Micro (< 5) FTL operations",Compliance Officer,"Port Congestion in LATAM",On-time Delivery Rate
+85,5,"Track lane-level carrier performance and spot-buy outcomes to improve procurement decisions. for Small (5-20) LTL operations",Warehouse Supervisor,"Carrier Shortage in North America",Empty Miles
+85,6,"Track lane-level carrier performance and spot-buy outcomes to improve procurement decisions. for Medium (20-100) Intermodal operations",Carrier Owner,"Global Supply Chain Crisis in EMEA",Carbon Footprint
+85,7,"Track lane-level carrier performance and spot-buy outcomes to improve procurement decisions. for Enterprise (> 100) Air Freight operations",Driver,"Holiday Peak Season in APAC",On-time Delivery Rate
+85,8,"Track lane-level carrier performance and spot-buy outcomes to improve procurement decisions. for Micro (< 5) Ocean operations",Audit Specialist,"Last-mile Delivery Surge in LATAM",Empty Miles
+85,9,"Track lane-level carrier performance and spot-buy outcomes to improve procurement decisions. for Small (5-20) FTL operations",Dispatcher,"Extreme Weather Event in North America",Carbon Footprint
+85,10,"Track lane-level carrier performance and spot-buy outcomes to improve procurement decisions. for Medium (20-100) LTL operations",Fleet Manager,"Port Congestion in EMEA",On-time Delivery Rate
+86,1,"Score loads for delay, claim, and margin risk before tender acceptance. for Small (5-20) Intermodal operations",Dispatcher,"Last-mile Delivery Surge in North America",On-time Delivery Rate
+86,2,"Score loads for delay, claim, and margin risk before tender acceptance. for Medium (20-100) Air Freight operations",Fleet Manager,"Extreme Weather Event in EMEA",Empty Miles
+86,3,"Score loads for delay, claim, and margin risk before tender acceptance. for Enterprise (> 100) Ocean operations",Broker Agent,"Port Congestion in APAC",Carbon Footprint
+86,4,"Score loads for delay, claim, and margin risk before tender acceptance. for Micro (< 5) FTL operations",Compliance Officer,"Carrier Shortage in LATAM",On-time Delivery Rate
+86,5,"Score loads for delay, claim, and margin risk before tender acceptance. for Small (5-20) LTL operations",Warehouse Supervisor,"Global Supply Chain Crisis in North America",Empty Miles
+86,6,"Score loads for delay, claim, and margin risk before tender acceptance. for Medium (20-100) Intermodal operations",Carrier Owner,"Holiday Peak Season in EMEA",Carbon Footprint
+86,7,"Score loads for delay, claim, and margin risk before tender acceptance. for Enterprise (> 100) Air Freight operations",Driver,"Last-mile Delivery Surge in APAC",On-time Delivery Rate
+86,8,"Score loads for delay, claim, and margin risk before tender acceptance. for Micro (< 5) Ocean operations",Audit Specialist,"Extreme Weather Event in LATAM",Empty Miles
+86,9,"Score loads for delay, claim, and margin risk before tender acceptance. for Small (5-20) FTL operations",Dispatcher,"Port Congestion in North America",Carbon Footprint
+86,10,"Score loads for delay, claim, and margin risk before tender acceptance. for Medium (20-100) LTL operations",Fleet Manager,"Carrier Shortage in EMEA",On-time Delivery Rate
+87,1,"Document ownership and review paths for each app, package, and critical flow. for Small (5-20) Intermodal operations",Dispatcher,"Extreme Weather Event in North America",On-time Delivery Rate
+87,2,"Document ownership and review paths for each app, package, and critical flow. for Medium (20-100) Air Freight operations",Fleet Manager,"Port Congestion in EMEA",Empty Miles
+87,3,"Document ownership and review paths for each app, package, and critical flow. for Enterprise (> 100) Ocean operations",Broker Agent,"Carrier Shortage in APAC",Carbon Footprint
+87,4,"Document ownership and review paths for each app, package, and critical flow. for Micro (< 5) FTL operations",Compliance Officer,"Global Supply Chain Crisis in LATAM",On-time Delivery Rate
+87,5,"Document ownership and review paths for each app, package, and critical flow. for Small (5-20) LTL operations",Warehouse Supervisor,"Holiday Peak Season in North America",Empty Miles
+87,6,"Document ownership and review paths for each app, package, and critical flow. for Medium (20-100) Intermodal operations",Carrier Owner,"Last-mile Delivery Surge in EMEA",Carbon Footprint
+87,7,"Document ownership and review paths for each app, package, and critical flow. for Enterprise (> 100) Air Freight operations",Driver,"Extreme Weather Event in APAC",On-time Delivery Rate
+87,8,"Document ownership and review paths for each app, package, and critical flow. for Micro (< 5) Ocean operations",Audit Specialist,"Port Congestion in LATAM",Empty Miles
+87,9,"Document ownership and review paths for each app, package, and critical flow. for Small (5-20) FTL operations",Dispatcher,"Carrier Shortage in North America",Carbon Footprint
+87,10,"Document ownership and review paths for each app, package, and critical flow. for Medium (20-100) LTL operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",On-time Delivery Rate
+88,1,"Design retry and local cache strategies for mobile field workflows. for Small (5-20) Intermodal operations",Dispatcher,"Port Congestion in North America",On-time Delivery Rate
+88,2,"Design retry and local cache strategies for mobile field workflows. for Medium (20-100) Air Freight operations",Fleet Manager,"Carrier Shortage in EMEA",Empty Miles
+88,3,"Design retry and local cache strategies for mobile field workflows. for Enterprise (> 100) Ocean operations",Broker Agent,"Global Supply Chain Crisis in APAC",Carbon Footprint
+88,4,"Design retry and local cache strategies for mobile field workflows. for Micro (< 5) FTL operations",Compliance Officer,"Holiday Peak Season in LATAM",On-time Delivery Rate
+88,5,"Design retry and local cache strategies for mobile field workflows. for Small (5-20) LTL operations",Warehouse Supervisor,"Last-mile Delivery Surge in North America",Empty Miles
+88,6,"Design retry and local cache strategies for mobile field workflows. for Medium (20-100) Intermodal operations",Carrier Owner,"Extreme Weather Event in EMEA",Carbon Footprint
+88,7,"Design retry and local cache strategies for mobile field workflows. for Enterprise (> 100) Air Freight operations",Driver,"Port Congestion in APAC",On-time Delivery Rate
+88,8,"Design retry and local cache strategies for mobile field workflows. for Micro (< 5) Ocean operations",Audit Specialist,"Carrier Shortage in LATAM",Empty Miles
+88,9,"Design retry and local cache strategies for mobile field workflows. for Small (5-20) FTL operations",Dispatcher,"Global Supply Chain Crisis in North America",Carbon Footprint
+88,10,"Design retry and local cache strategies for mobile field workflows. for Medium (20-100) LTL operations",Fleet Manager,"Holiday Peak Season in EMEA",On-time Delivery Rate
+89,1,"Run repeatable load tests for high-volume dispatch and tracking workloads. for Small (5-20) Intermodal operations",Dispatcher,"Carrier Shortage in North America",On-time Delivery Rate
+89,2,"Run repeatable load tests for high-volume dispatch and tracking workloads. for Medium (20-100) Air Freight operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",Empty Miles
+89,3,"Run repeatable load tests for high-volume dispatch and tracking workloads. for Enterprise (> 100) Ocean operations",Broker Agent,"Holiday Peak Season in APAC",Carbon Footprint
+89,4,"Run repeatable load tests for high-volume dispatch and tracking workloads. for Micro (< 5) FTL operations",Compliance Officer,"Last-mile Delivery Surge in LATAM",On-time Delivery Rate
+89,5,"Run repeatable load tests for high-volume dispatch and tracking workloads. for Small (5-20) LTL operations",Warehouse Supervisor,"Extreme Weather Event in North America",Empty Miles
+89,6,"Run repeatable load tests for high-volume dispatch and tracking workloads. for Medium (20-100) Intermodal operations",Carrier Owner,"Port Congestion in EMEA",Carbon Footprint
+89,7,"Run repeatable load tests for high-volume dispatch and tracking workloads. for Enterprise (> 100) Air Freight operations",Driver,"Carrier Shortage in APAC",On-time Delivery Rate
+89,8,"Run repeatable load tests for high-volume dispatch and tracking workloads. for Micro (< 5) Ocean operations",Audit Specialist,"Global Supply Chain Crisis in LATAM",Empty Miles
+89,9,"Run repeatable load tests for high-volume dispatch and tracking workloads. for Small (5-20) FTL operations",Dispatcher,"Holiday Peak Season in North America",Carbon Footprint
+89,10,"Run repeatable load tests for high-volume dispatch and tracking workloads. for Medium (20-100) LTL operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",On-time Delivery Rate
+90,1,"Add scenario planning for capacity constraints, delays, and route disruptions. for Small (5-20) Intermodal operations",Dispatcher,"Global Supply Chain Crisis in North America",On-time Delivery Rate
+90,2,"Add scenario planning for capacity constraints, delays, and route disruptions. for Medium (20-100) Air Freight operations",Fleet Manager,"Holiday Peak Season in EMEA",Empty Miles
+90,3,"Add scenario planning for capacity constraints, delays, and route disruptions. for Enterprise (> 100) Ocean operations",Broker Agent,"Last-mile Delivery Surge in APAC",Carbon Footprint
+90,4,"Add scenario planning for capacity constraints, delays, and route disruptions. for Micro (< 5) FTL operations",Compliance Officer,"Extreme Weather Event in LATAM",On-time Delivery Rate
+90,5,"Add scenario planning for capacity constraints, delays, and route disruptions. for Small (5-20) LTL operations",Warehouse Supervisor,"Port Congestion in North America",Empty Miles
+90,6,"Add scenario planning for capacity constraints, delays, and route disruptions. for Medium (20-100) Intermodal operations",Carrier Owner,"Carrier Shortage in EMEA",Carbon Footprint
+90,7,"Add scenario planning for capacity constraints, delays, and route disruptions. for Enterprise (> 100) Air Freight operations",Driver,"Global Supply Chain Crisis in APAC",On-time Delivery Rate
+90,8,"Add scenario planning for capacity constraints, delays, and route disruptions. for Micro (< 5) Ocean operations",Audit Specialist,"Holiday Peak Season in LATAM",Empty Miles
+90,9,"Add scenario planning for capacity constraints, delays, and route disruptions. for Small (5-20) FTL operations",Dispatcher,"Last-mile Delivery Surge in North America",Carbon Footprint
+90,10,"Add scenario planning for capacity constraints, delays, and route disruptions. for Medium (20-100) LTL operations",Fleet Manager,"Extreme Weather Event in EMEA",On-time Delivery Rate
+91,1,"Embed workflow coaching and contextual checklists inside complex screens. for Small (5-20) Intermodal operations",Dispatcher,"Holiday Peak Season in North America",On-time Delivery Rate
+91,2,"Embed workflow coaching and contextual checklists inside complex screens. for Medium (20-100) Air Freight operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",Empty Miles
+91,3,"Embed workflow coaching and contextual checklists inside complex screens. for Enterprise (> 100) Ocean operations",Broker Agent,"Extreme Weather Event in APAC",Carbon Footprint
+91,4,"Embed workflow coaching and contextual checklists inside complex screens. for Micro (< 5) FTL operations",Compliance Officer,"Port Congestion in LATAM",On-time Delivery Rate
+91,5,"Embed workflow coaching and contextual checklists inside complex screens. for Small (5-20) LTL operations",Warehouse Supervisor,"Carrier Shortage in North America",Empty Miles
+91,6,"Embed workflow coaching and contextual checklists inside complex screens. for Medium (20-100) Intermodal operations",Carrier Owner,"Global Supply Chain Crisis in EMEA",Carbon Footprint
+91,7,"Embed workflow coaching and contextual checklists inside complex screens. for Enterprise (> 100) Air Freight operations",Driver,"Holiday Peak Season in APAC",On-time Delivery Rate
+91,8,"Embed workflow coaching and contextual checklists inside complex screens. for Micro (< 5) Ocean operations",Audit Specialist,"Last-mile Delivery Surge in LATAM",Empty Miles
+91,9,"Embed workflow coaching and contextual checklists inside complex screens. for Small (5-20) FTL operations",Dispatcher,"Extreme Weather Event in North America",Carbon Footprint
+91,10,"Embed workflow coaching and contextual checklists inside complex screens. for Medium (20-100) LTL operations",Fleet Manager,"Port Congestion in EMEA",On-time Delivery Rate
+92,1,"Create shared operational workspaces for strategic shipper and carrier partners. for Small (5-20) Intermodal operations",Dispatcher,"Last-mile Delivery Surge in North America",On-time Delivery Rate
+92,2,"Create shared operational workspaces for strategic shipper and carrier partners. for Medium (20-100) Air Freight operations",Fleet Manager,"Extreme Weather Event in EMEA",Empty Miles
+92,3,"Create shared operational workspaces for strategic shipper and carrier partners. for Enterprise (> 100) Ocean operations",Broker Agent,"Port Congestion in APAC",Carbon Footprint
+92,4,"Create shared operational workspaces for strategic shipper and carrier partners. for Micro (< 5) FTL operations",Compliance Officer,"Carrier Shortage in LATAM",On-time Delivery Rate
+92,5,"Create shared operational workspaces for strategic shipper and carrier partners. for Small (5-20) LTL operations",Warehouse Supervisor,"Global Supply Chain Crisis in North America",Empty Miles
+92,6,"Create shared operational workspaces for strategic shipper and carrier partners. for Medium (20-100) Intermodal operations",Carrier Owner,"Holiday Peak Season in EMEA",Carbon Footprint
+92,7,"Create shared operational workspaces for strategic shipper and carrier partners. for Enterprise (> 100) Air Freight operations",Driver,"Last-mile Delivery Surge in APAC",On-time Delivery Rate
+92,8,"Create shared operational workspaces for strategic shipper and carrier partners. for Micro (< 5) Ocean operations",Audit Specialist,"Extreme Weather Event in LATAM",Empty Miles
+92,9,"Create shared operational workspaces for strategic shipper and carrier partners. for Small (5-20) FTL operations",Dispatcher,"Port Congestion in North America",Carbon Footprint
+92,10,"Create shared operational workspaces for strategic shipper and carrier partners. for Medium (20-100) LTL operations",Fleet Manager,"Carrier Shortage in EMEA",On-time Delivery Rate
+93,1,"Develop reseller and implementation partner programs for freight consultants and agencies. for Small (5-20) Intermodal operations",Dispatcher,"Extreme Weather Event in North America",On-time Delivery Rate
+93,2,"Develop reseller and implementation partner programs for freight consultants and agencies. for Medium (20-100) Air Freight operations",Fleet Manager,"Port Congestion in EMEA",Empty Miles
+93,3,"Develop reseller and implementation partner programs for freight consultants and agencies. for Enterprise (> 100) Ocean operations",Broker Agent,"Carrier Shortage in APAC",Carbon Footprint
+93,4,"Develop reseller and implementation partner programs for freight consultants and agencies. for Micro (< 5) FTL operations",Compliance Officer,"Global Supply Chain Crisis in LATAM",On-time Delivery Rate
+93,5,"Develop reseller and implementation partner programs for freight consultants and agencies. for Small (5-20) LTL operations",Warehouse Supervisor,"Holiday Peak Season in North America",Empty Miles
+93,6,"Develop reseller and implementation partner programs for freight consultants and agencies. for Medium (20-100) Intermodal operations",Carrier Owner,"Last-mile Delivery Surge in EMEA",Carbon Footprint
+93,7,"Develop reseller and implementation partner programs for freight consultants and agencies. for Enterprise (> 100) Air Freight operations",Driver,"Extreme Weather Event in APAC",On-time Delivery Rate
+93,8,"Develop reseller and implementation partner programs for freight consultants and agencies. for Micro (< 5) Ocean operations",Audit Specialist,"Port Congestion in LATAM",Empty Miles
+93,9,"Develop reseller and implementation partner programs for freight consultants and agencies. for Small (5-20) FTL operations",Dispatcher,"Carrier Shortage in North America",Carbon Footprint
+93,10,"Develop reseller and implementation partner programs for freight consultants and agencies. for Medium (20-100) LTL operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",On-time Delivery Rate
+94,1,"Build a dispatch and operations community with templates, playbooks, and office hours. for Small (5-20) Intermodal operations",Dispatcher,"Port Congestion in North America",On-time Delivery Rate
+94,2,"Build a dispatch and operations community with templates, playbooks, and office hours. for Medium (20-100) Air Freight operations",Fleet Manager,"Carrier Shortage in EMEA",Empty Miles
+94,3,"Build a dispatch and operations community with templates, playbooks, and office hours. for Enterprise (> 100) Ocean operations",Broker Agent,"Global Supply Chain Crisis in APAC",Carbon Footprint
+94,4,"Build a dispatch and operations community with templates, playbooks, and office hours. for Micro (< 5) FTL operations",Compliance Officer,"Holiday Peak Season in LATAM",On-time Delivery Rate
+94,5,"Build a dispatch and operations community with templates, playbooks, and office hours. for Small (5-20) LTL operations",Warehouse Supervisor,"Last-mile Delivery Surge in North America",Empty Miles
+94,6,"Build a dispatch and operations community with templates, playbooks, and office hours. for Medium (20-100) Intermodal operations",Carrier Owner,"Extreme Weather Event in EMEA",Carbon Footprint
+94,7,"Build a dispatch and operations community with templates, playbooks, and office hours. for Enterprise (> 100) Air Freight operations",Driver,"Port Congestion in APAC",On-time Delivery Rate
+94,8,"Build a dispatch and operations community with templates, playbooks, and office hours. for Micro (< 5) Ocean operations",Audit Specialist,"Carrier Shortage in LATAM",Empty Miles
+94,9,"Build a dispatch and operations community with templates, playbooks, and office hours. for Small (5-20) FTL operations",Dispatcher,"Global Supply Chain Crisis in North America",Carbon Footprint
+94,10,"Build a dispatch and operations community with templates, playbooks, and office hours. for Medium (20-100) LTL operations",Fleet Manager,"Holiday Peak Season in EMEA",On-time Delivery Rate
+95,1,"Allow custom fields, statuses, and object relationships per tenant. for Small (5-20) Intermodal operations",Dispatcher,"Carrier Shortage in North America",On-time Delivery Rate
+95,2,"Allow custom fields, statuses, and object relationships per tenant. for Medium (20-100) Air Freight operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",Empty Miles
+95,3,"Allow custom fields, statuses, and object relationships per tenant. for Enterprise (> 100) Ocean operations",Broker Agent,"Holiday Peak Season in APAC",Carbon Footprint
+95,4,"Allow custom fields, statuses, and object relationships per tenant. for Micro (< 5) FTL operations",Compliance Officer,"Last-mile Delivery Surge in LATAM",On-time Delivery Rate
+95,5,"Allow custom fields, statuses, and object relationships per tenant. for Small (5-20) LTL operations",Warehouse Supervisor,"Extreme Weather Event in North America",Empty Miles
+95,6,"Allow custom fields, statuses, and object relationships per tenant. for Medium (20-100) Intermodal operations",Carrier Owner,"Port Congestion in EMEA",Carbon Footprint
+95,7,"Allow custom fields, statuses, and object relationships per tenant. for Enterprise (> 100) Air Freight operations",Driver,"Carrier Shortage in APAC",On-time Delivery Rate
+95,8,"Allow custom fields, statuses, and object relationships per tenant. for Micro (< 5) Ocean operations",Audit Specialist,"Global Supply Chain Crisis in LATAM",Empty Miles
+95,9,"Allow custom fields, statuses, and object relationships per tenant. for Small (5-20) FTL operations",Dispatcher,"Holiday Peak Season in North America",Carbon Footprint
+95,10,"Allow custom fields, statuses, and object relationships per tenant. for Medium (20-100) LTL operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",On-time Delivery Rate
+96,1,"Monetize partner integrations and data services through rev-share or premium placement. for Small (5-20) Intermodal operations",Dispatcher,"Global Supply Chain Crisis in North America",On-time Delivery Rate
+96,2,"Monetize partner integrations and data services through rev-share or premium placement. for Medium (20-100) Air Freight operations",Fleet Manager,"Holiday Peak Season in EMEA",Empty Miles
+96,3,"Monetize partner integrations and data services through rev-share or premium placement. for Enterprise (> 100) Ocean operations",Broker Agent,"Last-mile Delivery Surge in APAC",Carbon Footprint
+96,4,"Monetize partner integrations and data services through rev-share or premium placement. for Micro (< 5) FTL operations",Compliance Officer,"Extreme Weather Event in LATAM",On-time Delivery Rate
+96,5,"Monetize partner integrations and data services through rev-share or premium placement. for Small (5-20) LTL operations",Warehouse Supervisor,"Port Congestion in North America",Empty Miles
+96,6,"Monetize partner integrations and data services through rev-share or premium placement. for Medium (20-100) Intermodal operations",Carrier Owner,"Carrier Shortage in EMEA",Carbon Footprint
+96,7,"Monetize partner integrations and data services through rev-share or premium placement. for Enterprise (> 100) Air Freight operations",Driver,"Global Supply Chain Crisis in APAC",On-time Delivery Rate
+96,8,"Monetize partner integrations and data services through rev-share or premium placement. for Micro (< 5) Ocean operations",Audit Specialist,"Holiday Peak Season in LATAM",Empty Miles
+96,9,"Monetize partner integrations and data services through rev-share or premium placement. for Small (5-20) FTL operations",Dispatcher,"Last-mile Delivery Surge in North America",Carbon Footprint
+96,10,"Monetize partner integrations and data services through rev-share or premium placement. for Medium (20-100) LTL operations",Fleet Manager,"Extreme Weather Event in EMEA",On-time Delivery Rate
+97,1,"Build mobile-first quick actions for field users handling status updates and document capture. for Small (5-20) Intermodal operations",Dispatcher,"Holiday Peak Season in North America",On-time Delivery Rate
+97,2,"Build mobile-first quick actions for field users handling status updates and document capture. for Medium (20-100) Air Freight operations",Fleet Manager,"Last-mile Delivery Surge in EMEA",Empty Miles
+97,3,"Build mobile-first quick actions for field users handling status updates and document capture. for Enterprise (> 100) Ocean operations",Broker Agent,"Extreme Weather Event in APAC",Carbon Footprint
+97,4,"Build mobile-first quick actions for field users handling status updates and document capture. for Micro (< 5) FTL operations",Compliance Officer,"Port Congestion in LATAM",On-time Delivery Rate
+97,5,"Build mobile-first quick actions for field users handling status updates and document capture. for Small (5-20) LTL operations",Warehouse Supervisor,"Carrier Shortage in North America",Empty Miles
+97,6,"Build mobile-first quick actions for field users handling status updates and document capture. for Medium (20-100) Intermodal operations",Carrier Owner,"Global Supply Chain Crisis in EMEA",Carbon Footprint
+97,7,"Build mobile-first quick actions for field users handling status updates and document capture. for Enterprise (> 100) Air Freight operations",Driver,"Holiday Peak Season in APAC",On-time Delivery Rate
+97,8,"Build mobile-first quick actions for field users handling status updates and document capture. for Micro (< 5) Ocean operations",Audit Specialist,"Last-mile Delivery Surge in LATAM",Empty Miles
+97,9,"Build mobile-first quick actions for field users handling status updates and document capture. for Small (5-20) FTL operations",Dispatcher,"Extreme Weather Event in North America",Carbon Footprint
+97,10,"Build mobile-first quick actions for field users handling status updates and document capture. for Medium (20-100) LTL operations",Fleet Manager,"Port Congestion in EMEA",On-time Delivery Rate
+98,1,"Show who changed what and when in live operational records. for Small (5-20) Intermodal operations",Dispatcher,"Last-mile Delivery Surge in North America",On-time Delivery Rate
+98,2,"Show who changed what and when in live operational records. for Medium (20-100) Air Freight operations",Fleet Manager,"Extreme Weather Event in EMEA",Empty Miles
+98,3,"Show who changed what and when in live operational records. for Enterprise (> 100) Ocean operations",Broker Agent,"Port Congestion in APAC",Carbon Footprint
+98,4,"Show who changed what and when in live operational records. for Micro (< 5) FTL operations",Compliance Officer,"Carrier Shortage in LATAM",On-time Delivery Rate
+98,5,"Show who changed what and when in live operational records. for Small (5-20) LTL operations",Warehouse Supervisor,"Global Supply Chain Crisis in North America",Empty Miles
+98,6,"Show who changed what and when in live operational records. for Medium (20-100) Intermodal operations",Carrier Owner,"Holiday Peak Season in EMEA",Carbon Footprint
+98,7,"Show who changed what and when in live operational records. for Enterprise (> 100) Air Freight operations",Driver,"Last-mile Delivery Surge in APAC",On-time Delivery Rate
+98,8,"Show who changed what and when in live operational records. for Micro (< 5) Ocean operations",Audit Specialist,"Extreme Weather Event in LATAM",Empty Miles
+98,9,"Show who changed what and when in live operational records. for Small (5-20) FTL operations",Dispatcher,"Port Congestion in North America",Carbon Footprint
+98,10,"Show who changed what and when in live operational records. for Medium (20-100) LTL operations",Fleet Manager,"Carrier Shortage in EMEA",On-time Delivery Rate
+99,1,"Audit focus states, contrast, keyboard support, and screen reader labeling across core flows. for Small (5-20) Intermodal operations",Dispatcher,"Extreme Weather Event in North America",On-time Delivery Rate
+99,2,"Audit focus states, contrast, keyboard support, and screen reader labeling across core flows. for Medium (20-100) Air Freight operations",Fleet Manager,"Port Congestion in EMEA",Empty Miles
+99,3,"Audit focus states, contrast, keyboard support, and screen reader labeling across core flows. for Enterprise (> 100) Ocean operations",Broker Agent,"Carrier Shortage in APAC",Carbon Footprint
+99,4,"Audit focus states, contrast, keyboard support, and screen reader labeling across core flows. for Micro (< 5) FTL operations",Compliance Officer,"Global Supply Chain Crisis in LATAM",On-time Delivery Rate
+99,5,"Audit focus states, contrast, keyboard support, and screen reader labeling across core flows. for Small (5-20) LTL operations",Warehouse Supervisor,"Holiday Peak Season in North America",Empty Miles
+99,6,"Audit focus states, contrast, keyboard support, and screen reader labeling across core flows. for Medium (20-100) Intermodal operations",Carrier Owner,"Last-mile Delivery Surge in EMEA",Carbon Footprint
+99,7,"Audit focus states, contrast, keyboard support, and screen reader labeling across core flows. for Enterprise (> 100) Air Freight operations",Driver,"Extreme Weather Event in APAC",On-time Delivery Rate
+99,8,"Audit focus states, contrast, keyboard support, and screen reader labeling across core flows. for Micro (< 5) Ocean operations",Audit Specialist,"Port Congestion in LATAM",Empty Miles
+99,9,"Audit focus states, contrast, keyboard support, and screen reader labeling across core flows. for Small (5-20) FTL operations",Dispatcher,"Carrier Shortage in North America",Carbon Footprint
+99,10,"Audit focus states, contrast, keyboard support, and screen reader labeling across core flows. for Medium (20-100) LTL operations",Fleet Manager,"Global Supply Chain Crisis in EMEA",On-time Delivery Rate
+100,1,"Highlight probable downstream consequences before major state changes or cancellations. for Small (5-20) Intermodal operations",Dispatcher,"Port Congestion in North America",On-time Delivery Rate
+100,2,"Highlight probable downstream consequences before major state changes or cancellations. for Medium (20-100) Air Freight operations",Fleet Manager,"Carrier Shortage in EMEA",Empty Miles
+100,3,"Highlight probable downstream consequences before major state changes or cancellations. for Enterprise (> 100) Ocean operations",Broker Agent,"Global Supply Chain Crisis in APAC",Carbon Footprint
+100,4,"Highlight probable downstream consequences before major state changes or cancellations. for Micro (< 5) FTL operations",Compliance Officer,"Holiday Peak Season in LATAM",On-time Delivery Rate
+100,5,"Highlight probable downstream consequences before major state changes or cancellations. for Small (5-20) LTL operations",Warehouse Supervisor,"Last-mile Delivery Surge in North America",Empty Miles
+100,6,"Highlight probable downstream consequences before major state changes or cancellations. for Medium (20-100) Intermodal operations",Carrier Owner,"Extreme Weather Event in EMEA",Carbon Footprint
+100,7,"Highlight probable downstream consequences before major state changes or cancellations. for Enterprise (> 100) Air Freight operations",Driver,"Port Congestion in APAC",On-time Delivery Rate
+100,8,"Highlight probable downstream consequences before major state changes or cancellations. for Micro (< 5) Ocean operations",Audit Specialist,"Carrier Shortage in LATAM",Empty Miles
+100,9,"Highlight probable downstream consequences before major state changes or cancellations. for Small (5-20) FTL operations",Dispatcher,"Global Supply Chain Crisis in North America",Carbon Footprint
+100,10,"Highlight probable downstream consequences before major state changes or cancellations. for Medium (20-100) LTL operations",Fleet Manager,"Holiday Peak Season in EMEA",On-time Delivery Rate

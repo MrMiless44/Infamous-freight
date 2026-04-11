@@ -1,0 +1,902 @@
+[
+  {
+    "id": "PRD-001",
+    "category": "Product",
+    "priority": "Critical",
+    "horizon": "Now",
+    "title": "Role-based dashboards",
+    "recommendation": "Create role-based home dashboards for carrier, broker, and shipper users so each persona lands on their highest-value operational view first.",
+    "impact": "Improves adoption and cuts time-to-value"
+  },
+  {
+    "id": "PRD-002",
+    "category": "Product",
+    "priority": "Critical",
+    "horizon": "Now",
+    "title": "Load lifecycle automation",
+    "recommendation": "Add load lifecycle automation with status-driven tasks, reminders, and handoff rules.",
+    "impact": "Reduces manual dispatch coordination"
+  },
+  {
+    "id": "PRD-003",
+    "category": "Product",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Exception queues",
+    "recommendation": "Build exception management queues for late pickup, detention, failed delivery, and missed check calls.",
+    "impact": "Improves service recovery speed"
+  },
+  {
+    "id": "PRD-004",
+    "category": "Product",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Visibility portal",
+    "recommendation": "Introduce customer-facing shipment visibility portals with branded tracking pages.",
+    "impact": "Increases retention and reduces support volume"
+  },
+  {
+    "id": "PRD-005",
+    "category": "Product",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Workflow templates",
+    "recommendation": "Add configurable workflow templates by customer segment and freight mode.",
+    "impact": "Accelerates onboarding for new accounts"
+  },
+  {
+    "id": "PRD-006",
+    "category": "Product",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Rules engine",
+    "recommendation": "Create a no-code rules engine for operational automations and escalations.",
+    "impact": "Scales operations without proportional headcount"
+  },
+  {
+    "id": "PRD-007",
+    "category": "Product",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Document workspace",
+    "recommendation": "Unify rate confirmations, BOL, POD, and invoices in a shipment-centric document workspace.",
+    "impact": "Improves retrieval and audit readiness"
+  },
+  {
+    "id": "PRD-008",
+    "category": "Product",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Customer collaboration",
+    "recommendation": "Add shared notes, tasks, and approvals for internal and external stakeholders.",
+    "impact": "Reduces communication fragmentation"
+  },
+  {
+    "id": "PRD-009",
+    "category": "Product",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "AI copilot prompts",
+    "recommendation": "Offer guided AI actions for dispatch updates, check calls, and exception summaries.",
+    "impact": "Turns AI into workflow acceleration"
+  },
+  {
+    "id": "PRD-010",
+    "category": "Product",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Multi-entity support",
+    "recommendation": "Support parent-child organizations, divisions, and branch visibility models.",
+    "impact": "Enables larger enterprise accounts"
+  },
+  {
+    "id": "PRD-011",
+    "category": "Product",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "Custom objects",
+    "recommendation": "Allow custom fields, statuses, and object relationships per tenant.",
+    "impact": "Improves enterprise flexibility"
+  },
+  {
+    "id": "PRD-012",
+    "category": "Product",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Pricing guardrails",
+    "recommendation": "Add approval flows when quoted rates fall below configured margin thresholds.",
+    "impact": "Protects gross margin"
+  },
+  {
+    "id": "PRD-013",
+    "category": "Product",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Playbook library",
+    "recommendation": "Ship industry playbooks for dry van, reefer, flatbed, drayage, and final mile.",
+    "impact": "Speeds adoption in target niches"
+  },
+  {
+    "id": "PRD-014",
+    "category": "Product",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Integration marketplace",
+    "recommendation": "Launch a marketplace for TMS, accounting, ELD, telematics, and document integrations.",
+    "impact": "Expands ecosystem value"
+  },
+  {
+    "id": "PRD-015",
+    "category": "Product",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "What-if planning",
+    "recommendation": "Add scenario planning for capacity constraints, delays, and route disruptions.",
+    "impact": "Improves decision quality"
+  },
+  {
+    "id": "PRD-016",
+    "category": "Product",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Audit-ready histories",
+    "recommendation": "Show full action histories for status changes, pricing edits, and user interventions.",
+    "impact": "Builds trust and compliance confidence"
+  },
+  {
+    "id": "PRD-017",
+    "category": "Product",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "SLA management",
+    "recommendation": "Let teams define service-level targets and track SLA breaches by account and shipment.",
+    "impact": "Improves customer accountability"
+  },
+  {
+    "id": "PRD-018",
+    "category": "Product",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "Embedded training",
+    "recommendation": "Embed workflow coaching and contextual checklists inside complex screens.",
+    "impact": "Reduces onboarding friction"
+  },
+  {
+    "id": "PRD-019",
+    "category": "Product",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Revenue leakage checks",
+    "recommendation": "Detect missing charges, missed accessorials, and incomplete paperwork before invoicing.",
+    "impact": "Improves realized margin"
+  },
+  {
+    "id": "PRD-020",
+    "category": "Product",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "Partner workspace",
+    "recommendation": "Create shared operational workspaces for strategic shipper and carrier partners.",
+    "impact": "Deepens platform stickiness"
+  },
+  {
+    "id": "ENG-021",
+    "category": "Engineering",
+    "priority": "Critical",
+    "horizon": "Now",
+    "title": "Centralized env validation",
+    "recommendation": "Centralize environment validation for API, web, mobile, and workers with typed schemas.",
+    "impact": "Prevents runtime configuration failures"
+  },
+  {
+    "id": "ENG-022",
+    "category": "Engineering",
+    "priority": "Critical",
+    "horizon": "Now",
+    "title": "Tenant-safe data access",
+    "recommendation": "Enforce tenant-scoped repository and service access patterns across all non-public endpoints.",
+    "impact": "Reduces cross-tenant risk"
+  },
+  {
+    "id": "ENG-023",
+    "category": "Engineering",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Contract tests",
+    "recommendation": "Add API contract tests around load, shipment, tracking, and billing workflows.",
+    "impact": "Prevents breaking changes"
+  },
+  {
+    "id": "ENG-024",
+    "category": "Engineering",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Structured logging",
+    "recommendation": "Standardize structured logging with request, org, shipment, and job correlation context.",
+    "impact": "Improves incident diagnosis"
+  },
+  {
+    "id": "ENG-025",
+    "category": "Engineering",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "SLOs and alerts",
+    "recommendation": "Establish SLOs and alert thresholds for latency, job failures, and webhook processing.",
+    "impact": "Improves reliability discipline"
+  },
+  {
+    "id": "ENG-026",
+    "category": "Engineering",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Background job hardening",
+    "recommendation": "Add idempotency, retries, dead-letter handling, and replay tooling for async jobs.",
+    "impact": "Reduces silent operational failures"
+  },
+  {
+    "id": "ENG-027",
+    "category": "Engineering",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Auth middleware consistency",
+    "recommendation": "Audit all protected routes for standard middleware ordering and scope enforcement.",
+    "impact": "Closes security gaps"
+  },
+  {
+    "id": "ENG-028",
+    "category": "Engineering",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Shared package boundaries",
+    "recommendation": "Move duplicated domain constants and schemas into the shared package.",
+    "impact": "Reduces drift across apps"
+  },
+  {
+    "id": "ENG-029",
+    "category": "Engineering",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Prisma query review",
+    "recommendation": "Review Prisma queries for missing indexes, N+1 patterns, and unbounded list access.",
+    "impact": "Improves performance and cost"
+  },
+  {
+    "id": "ENG-030",
+    "category": "Engineering",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Feature flags",
+    "recommendation": "Introduce tenant-aware feature flags for controlled rollouts and experiments.",
+    "impact": "Reduces release risk"
+  },
+  {
+    "id": "ENG-031",
+    "category": "Engineering",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Developer seed data",
+    "recommendation": "Provide realistic multi-tenant freight seed data for local development and demos.",
+    "impact": "Speeds testing and sales demos"
+  },
+  {
+    "id": "ENG-032",
+    "category": "Engineering",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Error taxonomy",
+    "recommendation": "Define a shared error taxonomy and client-safe error response format.",
+    "impact": "Improves debuggability and UX"
+  },
+  {
+    "id": "ENG-033",
+    "category": "Engineering",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Monitoring coverage",
+    "recommendation": "Expand tracing around dispatch workflows, external integrations, and document processing.",
+    "impact": "Improves root-cause analysis"
+  },
+  {
+    "id": "ENG-034",
+    "category": "Engineering",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "CI quality gates",
+    "recommendation": "Split lint, typecheck, unit, integration, and build checks for faster feedback and clearer failures.",
+    "impact": "Improves delivery speed"
+  },
+  {
+    "id": "ENG-035",
+    "category": "Engineering",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "Monorepo ownership map",
+    "recommendation": "Document ownership and review paths for each app, package, and critical flow.",
+    "impact": "Reduces coordination friction"
+  },
+  {
+    "id": "ENG-036",
+    "category": "Engineering",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Secrets hygiene",
+    "recommendation": "Replace scattered direct env access and non-null assertions with config accessors.",
+    "impact": "Improves safety and maintainability"
+  },
+  {
+    "id": "ENG-037",
+    "category": "Engineering",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "Offline resilience",
+    "recommendation": "Design retry and local cache strategies for mobile field workflows.",
+    "impact": "Improves field reliability"
+  },
+  {
+    "id": "ENG-038",
+    "category": "Engineering",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Schema evolution playbooks",
+    "recommendation": "Document rollback-safe migration patterns and data backfill procedures.",
+    "impact": "Reduces migration risk"
+  },
+  {
+    "id": "ENG-039",
+    "category": "Engineering",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Security automation",
+    "recommendation": "Add dependency scanning, secret scanning, and container scanning into CI.",
+    "impact": "Improves preventative security posture"
+  },
+  {
+    "id": "ENG-040",
+    "category": "Engineering",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "Capacity testing",
+    "recommendation": "Run repeatable load tests for high-volume dispatch and tracking workloads.",
+    "impact": "Builds scaling confidence"
+  },
+  {
+    "id": "GTM-041",
+    "category": "Growth",
+    "priority": "Critical",
+    "horizon": "Now",
+    "title": "Vertical landing pages",
+    "recommendation": "Launch landing pages for carrier, broker, shipper, and enterprise operations personas.",
+    "impact": "Improves message-market fit"
+  },
+  {
+    "id": "GTM-042",
+    "category": "Growth",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "ROI calculator",
+    "recommendation": "Build ROI calculators around reduced empty miles, faster billing, and fewer service failures.",
+    "impact": "Improves conversion quality"
+  },
+  {
+    "id": "GTM-043",
+    "category": "Growth",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Seeded demo environments",
+    "recommendation": "Offer self-serve demo environments with realistic operational data.",
+    "impact": "Shortens sales cycle"
+  },
+  {
+    "id": "GTM-044",
+    "category": "Growth",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Segmented onboarding",
+    "recommendation": "Create onboarding journeys by fleet size, revenue band, and logistics maturity.",
+    "impact": "Improves activation"
+  },
+  {
+    "id": "GTM-045",
+    "category": "Growth",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Premium AI packaging",
+    "recommendation": "Package AI automation as a measurable premium add-on tied to operator productivity.",
+    "impact": "Improves ARPU"
+  },
+  {
+    "id": "GTM-046",
+    "category": "Growth",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Case study engine",
+    "recommendation": "Publish proof-based case studies showing margin improvement and dispatch efficiency gains.",
+    "impact": "Improves trust in enterprise deals"
+  },
+  {
+    "id": "GTM-047",
+    "category": "Growth",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Referral loop",
+    "recommendation": "Create referral incentives for brokers, carriers, and consultants.",
+    "impact": "Expands distribution efficiently"
+  },
+  {
+    "id": "GTM-048",
+    "category": "Growth",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Outbound signal scoring",
+    "recommendation": "Use hiring, growth, and fleet expansion signals to prioritize outbound accounts.",
+    "impact": "Improves pipeline efficiency"
+  },
+  {
+    "id": "GTM-049",
+    "category": "Growth",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Comparison pages",
+    "recommendation": "Create direct comparison pages against spreadsheets, legacy TMS, and generic CRM workflows.",
+    "impact": "Improves evaluation-stage conversion"
+  },
+  {
+    "id": "GTM-050",
+    "category": "Growth",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Pricing experiments",
+    "recommendation": "Test packaging by shipment volume, user seats, and automation depth.",
+    "impact": "Improves monetization fit"
+  },
+  {
+    "id": "GTM-051",
+    "category": "Growth",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "Partner channel strategy",
+    "recommendation": "Develop reseller and implementation partner programs for freight consultants and agencies.",
+    "impact": "Scales reach without large headcount"
+  },
+  {
+    "id": "GTM-052",
+    "category": "Growth",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Content moat",
+    "recommendation": "Publish operational benchmarks on detention, on-time pickup, and invoice cycle times.",
+    "impact": "Builds authority and inbound traffic"
+  },
+  {
+    "id": "GTM-053",
+    "category": "Growth",
+    "priority": "Medium",
+    "horizon": "Now",
+    "title": "Lead capture upgrades",
+    "recommendation": "Add role-specific lead magnets, calculators, templates, and diagnostic checklists.",
+    "impact": "Improves lead quality"
+  },
+  {
+    "id": "GTM-054",
+    "category": "Growth",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Expansion revenue plays",
+    "recommendation": "Trigger upsell motions based on workflow adoption, load volume, and team growth.",
+    "impact": "Improves net revenue retention"
+  },
+  {
+    "id": "GTM-055",
+    "category": "Growth",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "Community strategy",
+    "recommendation": "Build a dispatch and operations community with templates, playbooks, and office hours.",
+    "impact": "Builds durable brand affinity"
+  },
+  {
+    "id": "GTM-056",
+    "category": "Growth",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Onboarding concierge",
+    "recommendation": "Offer white-glove migration and setup packages for larger accounts.",
+    "impact": "Improves win rate for mid-market deals"
+  },
+  {
+    "id": "GTM-057",
+    "category": "Growth",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Churn warning program",
+    "recommendation": "Use product signals to trigger customer success interventions before renewal risk grows.",
+    "impact": "Reduces churn"
+  },
+  {
+    "id": "GTM-058",
+    "category": "Growth",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "Marketplace monetization",
+    "recommendation": "Monetize partner integrations and data services through rev-share or premium placement.",
+    "impact": "Creates ancillary revenue"
+  },
+  {
+    "id": "GTM-059",
+    "category": "Growth",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Trust assets",
+    "recommendation": "Strengthen security, compliance, and reliability pages with concrete controls and uptime metrics.",
+    "impact": "Removes enterprise buying friction"
+  },
+  {
+    "id": "GTM-060",
+    "category": "Growth",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Win-loss review loop",
+    "recommendation": "Institutionalize win-loss interviews and feed the results back into product and messaging.",
+    "impact": "Improves strategic learning"
+  },
+  {
+    "id": "UX-061",
+    "category": "UI/UX",
+    "priority": "Critical",
+    "horizon": "Now",
+    "title": "Urgency-first dashboard",
+    "recommendation": "Redesign operations dashboards around urgent queues and pending decisions rather than static analytics blocks.",
+    "impact": "Improves operator focus"
+  },
+  {
+    "id": "UX-062",
+    "category": "UI/UX",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Global command bar",
+    "recommendation": "Add persistent search and command entry for loads, shipments, carriers, documents, and actions.",
+    "impact": "Speeds navigation"
+  },
+  {
+    "id": "UX-063",
+    "category": "UI/UX",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Dense table mode",
+    "recommendation": "Introduce dense table modes with sticky action columns, filters, and saved views for dispatch workflows.",
+    "impact": "Improves daily throughput"
+  },
+  {
+    "id": "UX-064",
+    "category": "UI/UX",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Timeline detail pages",
+    "recommendation": "Make shipment detail pages timeline-first with status evidence and next actions.",
+    "impact": "Improves situational awareness"
+  },
+  {
+    "id": "UX-065",
+    "category": "UI/UX",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Severity system",
+    "recommendation": "Standardize alert severity, state badges, and recovery actions across the product.",
+    "impact": "Improves clarity under pressure"
+  },
+  {
+    "id": "UX-066",
+    "category": "UI/UX",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Keyboard efficiency",
+    "recommendation": "Add keyboard shortcuts for common dispatcher actions and record navigation.",
+    "impact": "Improves operator speed"
+  },
+  {
+    "id": "UX-067",
+    "category": "UI/UX",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Progressive disclosure",
+    "recommendation": "Hide secondary controls behind progressive disclosure in complex screens.",
+    "impact": "Reduces cognitive overload"
+  },
+  {
+    "id": "UX-068",
+    "category": "UI/UX",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Document preview flows",
+    "recommendation": "Enable in-context previews for BOL, POD, invoices, and confirmations without route changes.",
+    "impact": "Reduces context switching"
+  },
+  {
+    "id": "UX-069",
+    "category": "UI/UX",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Empty state strategy",
+    "recommendation": "Design role-specific empty states that teach the next operational action.",
+    "impact": "Improves activation and comprehension"
+  },
+  {
+    "id": "UX-070",
+    "category": "UI/UX",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "Mobile operations shortcuts",
+    "recommendation": "Build mobile-first quick actions for field users handling status updates and document capture.",
+    "impact": "Improves field completion rate"
+  },
+  {
+    "id": "UX-071",
+    "category": "UI/UX",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Filter persistence",
+    "recommendation": "Save user filters, table layouts, and recent workspaces per role and tenant.",
+    "impact": "Improves repeat workflow efficiency"
+  },
+  {
+    "id": "UX-072",
+    "category": "UI/UX",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Notification center",
+    "recommendation": "Create a unified notification center with triage, snooze, and assignment features.",
+    "impact": "Improves follow-through"
+  },
+  {
+    "id": "UX-073",
+    "category": "UI/UX",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "On-screen collaboration cues",
+    "recommendation": "Show who changed what and when in live operational records.",
+    "impact": "Improves coordination confidence"
+  },
+  {
+    "id": "UX-074",
+    "category": "UI/UX",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Margin visibility",
+    "recommendation": "Surface buy rate, sell rate, margin, and exception risk near dispatch decisions.",
+    "impact": "Improves decision quality"
+  },
+  {
+    "id": "UX-075",
+    "category": "UI/UX",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Form design system",
+    "recommendation": "Standardize validation patterns, helper text, and save behavior across forms.",
+    "impact": "Reduces input errors"
+  },
+  {
+    "id": "UX-076",
+    "category": "UI/UX",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "Accessibility hardening",
+    "recommendation": "Audit focus states, contrast, keyboard support, and screen reader labeling across core flows.",
+    "impact": "Improves inclusivity and enterprise readiness"
+  },
+  {
+    "id": "UX-077",
+    "category": "UI/UX",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Context panels",
+    "recommendation": "Use side panels for quick record inspection and edits from list views.",
+    "impact": "Speeds multitasking workflows"
+  },
+  {
+    "id": "UX-078",
+    "category": "UI/UX",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Operational map view",
+    "recommendation": "Add a purposeful map view for active loads with delay and cluster overlays.",
+    "impact": "Improves spatial awareness"
+  },
+  {
+    "id": "UX-079",
+    "category": "UI/UX",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "Scenario highlighting",
+    "recommendation": "Highlight probable downstream consequences before major state changes or cancellations.",
+    "impact": "Improves confidence in irreversible actions"
+  },
+  {
+    "id": "UX-080",
+    "category": "UI/UX",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Embedded guidance",
+    "recommendation": "Integrate concise contextual guidance inside complex workflows instead of relying only on docs.",
+    "impact": "Improves self-serve adoption"
+  },
+  {
+    "id": "OPS-081",
+    "category": "Logistics Operations",
+    "priority": "Critical",
+    "horizon": "Now",
+    "title": "Margin-aware dispatch",
+    "recommendation": "Add dispatch recommendations using buy rate, sell rate, margin thresholds, and service risk.",
+    "impact": "Protects profitability"
+  },
+  {
+    "id": "OPS-082",
+    "category": "Logistics Operations",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Appointment workflows",
+    "recommendation": "Build appointment scheduling and rescheduling workflows with notifications and accountability.",
+    "impact": "Reduces missed appointments"
+  },
+  {
+    "id": "OPS-083",
+    "category": "Logistics Operations",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Accessorial capture",
+    "recommendation": "Capture detention, lumper, TONU, and layover events with timestamps and evidence.",
+    "impact": "Prevents missed revenue"
+  },
+  {
+    "id": "OPS-084",
+    "category": "Logistics Operations",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Document intelligence",
+    "recommendation": "Implement document intelligence for BOL, POD, and rate confirmation ingestion and classification.",
+    "impact": "Speeds billing and audit prep"
+  },
+  {
+    "id": "OPS-085",
+    "category": "Logistics Operations",
+    "priority": "High",
+    "horizon": "Now",
+    "title": "Carrier scorecards",
+    "recommendation": "Create carrier scorecards for on-time pickup, claims, communication, and paperwork quality.",
+    "impact": "Improves network quality"
+  },
+  {
+    "id": "OPS-086",
+    "category": "Logistics Operations",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Check-call automation",
+    "recommendation": "Automate check-call cadences with exception-triggered human escalation.",
+    "impact": "Reduces manual follow-up load"
+  },
+  {
+    "id": "OPS-087",
+    "category": "Logistics Operations",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Facility performance views",
+    "recommendation": "Track shipper and receiver dwell, delays, rejections, and service issues by facility.",
+    "impact": "Improves account management"
+  },
+  {
+    "id": "OPS-088",
+    "category": "Logistics Operations",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Shipment profitability",
+    "recommendation": "Show shipment and customer profitability after accessorials, delays, and claims.",
+    "impact": "Improves pricing discipline"
+  },
+  {
+    "id": "OPS-089",
+    "category": "Logistics Operations",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "Mode-specific flows",
+    "recommendation": "Tailor workflows for reefer, flatbed, drayage, and final-mile constraints.",
+    "impact": "Improves operational fit"
+  },
+  {
+    "id": "OPS-090",
+    "category": "Logistics Operations",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Claims management",
+    "recommendation": "Add claims intake, investigation, and resolution workflows with document timelines.",
+    "impact": "Improves recovery and accountability"
+  },
+  {
+    "id": "OPS-091",
+    "category": "Logistics Operations",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "ELD and telematics integrations",
+    "recommendation": "Integrate location and driver status feeds to improve ETA quality and automate exceptions.",
+    "impact": "Improves visibility accuracy"
+  },
+  {
+    "id": "OPS-092",
+    "category": "Logistics Operations",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "Routing recommendations",
+    "recommendation": "Add route quality scoring based on historical dwell, tolls, and service outcomes.",
+    "impact": "Improves planning quality"
+  },
+  {
+    "id": "OPS-093",
+    "category": "Logistics Operations",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Invoice readiness queue",
+    "recommendation": "Create invoice readiness queues that block billing until required evidence is complete.",
+    "impact": "Improves clean invoicing"
+  },
+  {
+    "id": "OPS-094",
+    "category": "Logistics Operations",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Compliance document tracking",
+    "recommendation": "Track insurance, W9, authority, and safety document freshness across carriers.",
+    "impact": "Reduces compliance risk"
+  },
+  {
+    "id": "OPS-095",
+    "category": "Logistics Operations",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "Multi-stop complexity tools",
+    "recommendation": "Support stop-level sequencing, timing, and service notes for multi-stop loads.",
+    "impact": "Improves execution accuracy"
+  },
+  {
+    "id": "OPS-096",
+    "category": "Logistics Operations",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Customer SLA dashboards",
+    "recommendation": "Expose SLA performance by shipper, lane, facility, and account manager.",
+    "impact": "Improves renewals and accountability"
+  },
+  {
+    "id": "OPS-097",
+    "category": "Logistics Operations",
+    "priority": "High",
+    "horizon": "Next",
+    "title": "Exception playbooks",
+    "recommendation": "Attach standard playbooks to delay, breakdown, temperature, and claim events.",
+    "impact": "Improves recovery consistency"
+  },
+  {
+    "id": "OPS-098",
+    "category": "Logistics Operations",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "Procurement intelligence",
+    "recommendation": "Track lane-level carrier performance and spot-buy outcomes to improve procurement decisions.",
+    "impact": "Improves margin and service consistency"
+  },
+  {
+    "id": "OPS-099",
+    "category": "Logistics Operations",
+    "priority": "Medium",
+    "horizon": "Next",
+    "title": "Proof-of-service bundle",
+    "recommendation": "Bundle status evidence, communication, and documents into a single service record.",
+    "impact": "Improves dispute resolution"
+  },
+  {
+    "id": "OPS-100",
+    "category": "Logistics Operations",
+    "priority": "Medium",
+    "horizon": "Later",
+    "title": "Predictive risk scoring",
+    "recommendation": "Score loads for delay, claim, and margin risk before tender acceptance.",
+    "impact": "Improves proactive decision making"
+  }
+]

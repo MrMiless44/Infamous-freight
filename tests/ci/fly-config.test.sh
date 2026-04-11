@@ -64,6 +64,8 @@ API_PACKAGE_JSON="$ROOT_DIR/apps/api/package.json"
 FLY_DEPLOY_YML="$ROOT_DIR/.github/workflows/fly-deploy.yml"
 FLY_DEPLOY_MAIN_YML="$ROOT_DIR/.github/workflows/fly-deploy-main.yml"
 POSTDEPLOY_CHECK_SCRIPT="$ROOT_DIR/scripts/fly-postdeploy-check.sh"
+ENV_SCHEMA_SYNC_SCRIPT="$ROOT_DIR/tests/ci/env-schema-sync.test.sh"
+TOOLCHAIN_CONSISTENCY_SCRIPT="$ROOT_DIR/tests/ci/toolchain-consistency.test.sh"
 
 extract_first_match() {
   local pattern="$1"
@@ -90,6 +92,8 @@ assert_eq "apps/api/package.json exists" "true" "$([ -f "$API_PACKAGE_JSON" ] &&
 assert_eq "fly-deploy.yml exists" "true" "$([ -f "$FLY_DEPLOY_YML" ] && echo true || echo false)"
 assert_eq "fly-deploy-main.yml exists" "true" "$([ -f "$FLY_DEPLOY_MAIN_YML" ] && echo true || echo false)"
 assert_eq "post-deploy Fly health script exists" "true" "$([ -f "$POSTDEPLOY_CHECK_SCRIPT" ] && echo true || echo false)"
+assert_eq "env schema sync test script exists" "true" "$([ -f "$ENV_SCHEMA_SYNC_SCRIPT" ] && echo true || echo false)"
+assert_eq "toolchain consistency test script exists" "true" "$([ -f "$TOOLCHAIN_CONSISTENCY_SCRIPT" ] && echo true || echo false)"
 
 # Root fly.toml assertions aligned with current branch state.
 ROOT_APP_NAME=$(extract_first_match '^app\s*=\s*' "$ROOT_FLY_TOML")
@@ -136,20 +140,34 @@ MAIN_DEPLOY_COMMAND=$(extract_literal 'flyctl deploy' "$FLY_DEPLOY_MAIN_YML")
 assert_contains "fly-deploy-main.yml deploy command uses root config path" "$MAIN_DEPLOY_COMMAND" '-c fly.toml'
 assert_contains "fly-deploy-main.yml includes health check step" "$(cat "$FLY_DEPLOY_MAIN_YML")" 'scripts/fly-postdeploy-check.sh'
 assert_contains "fly-deploy.yml includes health check script" "$(cat "$FLY_DEPLOY_YML")" 'scripts/fly-postdeploy-check.sh'
+assert_contains "fly-deploy.yml includes toolchain consistency step" "$(cat "$FLY_DEPLOY_YML")" 'tests/ci/toolchain-consistency.test.sh'
+assert_contains "fly-deploy-main.yml includes toolchain consistency step" "$(cat "$FLY_DEPLOY_MAIN_YML")" 'tests/ci/toolchain-consistency.test.sh'
 
 # Dependency expectations aligned with current package.json.
-API_PG_TYPES_VERSION=$(node -e "const p=require(process.argv[1]); console.log(p.dependencies['@types/pg'] || '')" "$API_PACKAGE_JSON")
+API_PG_TYPES_VERSION=$(jq -r '.dependencies["@types/pg"] // ""' "$API_PACKAGE_JSON")
 assert_eq "@types/pg version" "^8.20.0" "$API_PG_TYPES_VERSION"
 
-EXPRESS_RATE_LIMIT_VERSION=$(node -e "const p=require(process.argv[1]); console.log(p.dependencies['express-rate-limit'] || '')" "$API_PACKAGE_JSON")
+EXPRESS_RATE_LIMIT_VERSION=$(jq -r '.dependencies["express-rate-limit"] // ""' "$API_PACKAGE_JSON")
 assert_eq "express-rate-limit version" "^8.3.1" "$EXPRESS_RATE_LIMIT_VERSION"
 
-ARGON2_VERSION=$(node -e "const p=require(process.argv[1]); console.log(p.dependencies['argon2'] || '')" "$API_PACKAGE_JSON")
+ARGON2_VERSION=$(jq -r '.dependencies["argon2"] // ""' "$API_PACKAGE_JSON")
 assert_eq "argon2 version" "^0.44.0" "$ARGON2_VERSION"
 
 # Make sure the test script itself does not rely on unguarded grep failures.
 SCRIPT_SELF_CHECK=$(grep -n 'grep -E' "$ROOT_DIR/$FILENAME" || true)
 assert_not_empty "test script uses guarded grep patterns" "$SCRIPT_SELF_CHECK"
+
+if bash "$ENV_SCHEMA_SYNC_SCRIPT" >/dev/null; then
+  pass "env schema sync script passes"
+else
+  fail "env schema sync script should pass"
+fi
+
+if bash "$TOOLCHAIN_CONSISTENCY_SCRIPT" >/dev/null; then
+  pass "toolchain consistency script passes"
+else
+  fail "toolchain consistency script should pass"
+fi
 
 if [ "$FAIL" -gt 0 ]; then
   echo ""

@@ -1,0 +1,412 @@
+[
+  {
+    "key": "LOG-1001",
+    "summary": "Standardize structured logging with request, org, shipment, and job correlation context.",
+    "description": "Implement Standardize structured logging with request, org, shipment, and job correlation context.. Context: Strategic improvement. Impact: Improves incident diagnosis.",
+    "acceptanceCriteria": [
+      "Functionality for Standardize structured logging with request, org, shipment, and job correlation context. is verified.",
+      "Integration with existing Engineering systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "High",
+    "labels": [
+      "Engineering",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 6,
+    "dependencies": [],
+    "rationale": "Ranked #1 with composite score 24. High ROI of 10."
+  },
+  {
+    "key": "LOG-1002",
+    "summary": "Centralize environment validation for API, web, mobile, and workers with typed schemas.",
+    "description": "Implement Centralize environment validation for API, web, mobile, and workers with typed schemas.. Context: Strategic improvement. Impact: Prevents runtime configuration failures.",
+    "acceptanceCriteria": [
+      "Functionality for Centralize environment validation for API, web, mobile, and workers with typed schemas. is verified.",
+      "Integration with existing Engineering systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "Critical",
+    "labels": [
+      "Engineering",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 9,
+    "dependencies": [],
+    "rationale": "Ranked #2 with composite score 22. High ROI of 10."
+  },
+  {
+    "key": "LOG-1003",
+    "summary": "Offer self-serve demo environments with realistic operational data.",
+    "description": "Implement Offer self-serve demo environments with realistic operational data.. Context: Strategic improvement. Impact: Shortens sales cycle.",
+    "acceptanceCriteria": [
+      "Functionality for Offer self-serve demo environments with realistic operational data. is verified.",
+      "Integration with existing Growth systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "High",
+    "labels": [
+      "Growth",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 9,
+    "dependencies": [],
+    "rationale": "Ranked #3 with composite score 22. High ROI of 10."
+  },
+  {
+    "key": "LOG-1004",
+    "summary": "Enforce tenant-scoped repository and service access patterns across all non-public endpoints.",
+    "description": "Implement Enforce tenant-scoped repository and service access patterns across all non-public endpoints.. Context: Strategic improvement. Impact: Reduces cross-tenant risk.",
+    "acceptanceCriteria": [
+      "Functionality for Enforce tenant-scoped repository and service access patterns across all non-public endpoints. is verified.",
+      "Integration with existing Engineering systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "Critical",
+    "labels": [
+      "Engineering",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 9,
+    "dependencies": [
+      "LOG-BASE-INFRA"
+    ],
+    "rationale": "Ranked #4 with composite score 20. High ROI of 10."
+  },
+  {
+    "key": "LOG-1005",
+    "summary": "Add API contract tests around load, shipment, tracking, and billing workflows.",
+    "description": "Implement Add API contract tests around load, shipment, tracking, and billing workflows.. Context: Strategic improvement. Impact: Prevents breaking changes.",
+    "acceptanceCriteria": [
+      "Functionality for Add API contract tests around load, shipment, tracking, and billing workflows. is verified.",
+      "Integration with existing Engineering systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "High",
+    "labels": [
+      "Engineering",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 9,
+    "dependencies": [
+      "LOG-BASE-INFRA"
+    ],
+    "rationale": "Ranked #5 with composite score 20. High ROI of 10."
+  },
+  {
+    "key": "LOG-1006",
+    "summary": "Establish SLOs and alert thresholds for latency, job failures, and webhook processing.",
+    "description": "Implement Establish SLOs and alert thresholds for latency, job failures, and webhook processing.. Context: Strategic improvement. Impact: Improves reliability discipline.",
+    "acceptanceCriteria": [
+      "Functionality for Establish SLOs and alert thresholds for latency, job failures, and webhook processing. is verified.",
+      "Integration with existing Engineering systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "High",
+    "labels": [
+      "Engineering",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 9,
+    "dependencies": [
+      "LOG-BASE-INFRA"
+    ],
+    "rationale": "Ranked #6 with composite score 20. High ROI of 10."
+  },
+  {
+    "key": "LOG-1007",
+    "summary": "Audit all protected routes for standard middleware ordering and scope enforcement.",
+    "description": "Implement Audit all protected routes for standard middleware ordering and scope enforcement.. Context: Strategic improvement. Impact: Closes security gaps.",
+    "acceptanceCriteria": [
+      "Functionality for Audit all protected routes for standard middleware ordering and scope enforcement. is verified.",
+      "Integration with existing Engineering systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "High",
+    "labels": [
+      "Engineering",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 9,
+    "dependencies": [
+      "LOG-BASE-INFRA"
+    ],
+    "rationale": "Ranked #7 with composite score 20. High ROI of 10."
+  },
+  {
+    "key": "LOG-1008",
+    "summary": "Review Prisma queries for missing indexes, N+1 patterns, and unbounded list access.",
+    "description": "Implement Review Prisma queries for missing indexes, N+1 patterns, and unbounded list access.. Context: Strategic improvement. Impact: Improves performance and cost.",
+    "acceptanceCriteria": [
+      "Functionality for Review Prisma queries for missing indexes, N+1 patterns, and unbounded list access. is verified.",
+      "Integration with existing Engineering systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "High",
+    "labels": [
+      "Engineering",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 9,
+    "dependencies": [
+      "LOG-BASE-INFRA"
+    ],
+    "rationale": "Ranked #8 with composite score 20. High ROI of 10."
+  },
+  {
+    "key": "LOG-1009",
+    "summary": "Create role-based home dashboards for carrier, broker, and shipper users so each persona lands on their highest-value operational view first.",
+    "description": "Implement Create role-based home dashboards for carrier, broker, and shipper users so each persona lands on their highest-value operational view first.. Context: Strategic improvement. Impact: Improves adoption and cuts time-to-value.",
+    "acceptanceCriteria": [
+      "Functionality for Create role-based home dashboards for carrier, broker, and shipper users so each persona lands on their highest-value operational view first. is verified.",
+      "Integration with existing Product systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "Critical",
+    "labels": [
+      "Product",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 6,
+    "dependencies": [
+      "LOG-BASE-INFRA"
+    ],
+    "rationale": "Ranked #9 with composite score 20. High ROI of 10."
+  },
+  {
+    "key": "LOG-1010",
+    "summary": "Launch landing pages for carrier, broker, shipper, and enterprise operations personas.",
+    "description": "Implement Launch landing pages for carrier, broker, shipper, and enterprise operations personas.. Context: Strategic improvement. Impact: Improves message-market fit.",
+    "acceptanceCriteria": [
+      "Functionality for Launch landing pages for carrier, broker, shipper, and enterprise operations personas. is verified.",
+      "Integration with existing Growth systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "Critical",
+    "labels": [
+      "Growth",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 6,
+    "dependencies": [
+      "LOG-BASE-INFRA"
+    ],
+    "rationale": "Ranked #10 with composite score 20. High ROI of 10."
+  },
+  {
+    "key": "LOG-1011",
+    "summary": "Create direct comparison pages against spreadsheets, legacy TMS, and generic CRM workflows.",
+    "description": "Implement Create direct comparison pages against spreadsheets, legacy TMS, and generic CRM workflows.. Context: Strategic improvement. Impact: Improves evaluation-stage conversion.",
+    "acceptanceCriteria": [
+      "Functionality for Create direct comparison pages against spreadsheets, legacy TMS, and generic CRM workflows. is verified.",
+      "Integration with existing Growth systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "High",
+    "labels": [
+      "Growth",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 6,
+    "dependencies": [
+      "LOG-BASE-INFRA"
+    ],
+    "rationale": "Ranked #11 with composite score 20. High ROI of 10."
+  },
+  {
+    "key": "LOG-1012",
+    "summary": "Strengthen security, compliance, and reliability pages with concrete controls and uptime metrics.",
+    "description": "Implement Strengthen security, compliance, and reliability pages with concrete controls and uptime metrics.. Context: Strategic improvement. Impact: Removes enterprise buying friction.",
+    "acceptanceCriteria": [
+      "Functionality for Strengthen security, compliance, and reliability pages with concrete controls and uptime metrics. is verified.",
+      "Integration with existing Growth systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "High",
+    "labels": [
+      "Growth",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 6,
+    "dependencies": [
+      "LOG-BASE-INFRA"
+    ],
+    "rationale": "Ranked #12 with composite score 20. High ROI of 10."
+  },
+  {
+    "key": "LOG-1013",
+    "summary": "Redesign operations dashboards around urgent queues and pending decisions rather than static analytics blocks.",
+    "description": "Implement Redesign operations dashboards around urgent queues and pending decisions rather than static analytics blocks.. Context: Strategic improvement. Impact: Improves operator focus.",
+    "acceptanceCriteria": [
+      "Functionality for Redesign operations dashboards around urgent queues and pending decisions rather than static analytics blocks. is verified.",
+      "Integration with existing UI/UX systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "Critical",
+    "labels": [
+      "UI/UX",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 6,
+    "dependencies": [
+      "LOG-BASE-INFRA"
+    ],
+    "rationale": "Ranked #13 with composite score 20. High ROI of 10."
+  },
+  {
+    "key": "LOG-1014",
+    "summary": "Introduce dense table modes with sticky action columns, filters, and saved views for dispatch workflows.",
+    "description": "Implement Introduce dense table modes with sticky action columns, filters, and saved views for dispatch workflows.. Context: Strategic improvement. Impact: Improves daily throughput.",
+    "acceptanceCriteria": [
+      "Functionality for Introduce dense table modes with sticky action columns, filters, and saved views for dispatch workflows. is verified.",
+      "Integration with existing UI/UX systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "High",
+    "labels": [
+      "UI/UX",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 6,
+    "dependencies": [
+      "LOG-BASE-INFRA"
+    ],
+    "rationale": "Ranked #14 with composite score 20. High ROI of 10."
+  },
+  {
+    "key": "LOG-1015",
+    "summary": "Make shipment detail pages timeline-first with status evidence and next actions.",
+    "description": "Implement Make shipment detail pages timeline-first with status evidence and next actions.. Context: Strategic improvement. Impact: Improves situational awareness.",
+    "acceptanceCriteria": [
+      "Functionality for Make shipment detail pages timeline-first with status evidence and next actions. is verified.",
+      "Integration with existing UI/UX systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "High",
+    "labels": [
+      "UI/UX",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 6,
+    "dependencies": [
+      "LOG-BASE-INFRA"
+    ],
+    "rationale": "Ranked #15 with composite score 20. High ROI of 10."
+  },
+  {
+    "key": "LOG-1016",
+    "summary": "Replace scattered direct env access and non-null assertions with config accessors.",
+    "description": "Implement Replace scattered direct env access and non-null assertions with config accessors.. Context: Strategic improvement. Impact: Improves safety and maintainability.",
+    "acceptanceCriteria": [
+      "Functionality for Replace scattered direct env access and non-null assertions with config accessors. is verified.",
+      "Integration with existing Engineering systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "High",
+    "labels": [
+      "Engineering",
+      "Next",
+      "Strategic"
+    ],
+    "estimate": 9,
+    "dependencies": [],
+    "rationale": "Ranked #16 with composite score 19. High ROI of 9."
+  },
+  {
+    "key": "LOG-1017",
+    "summary": "Track insurance, W9, authority, and safety document freshness across carriers.",
+    "description": "Implement Track insurance, W9, authority, and safety document freshness across carriers.. Context: Strategic improvement. Impact: Reduces compliance risk.",
+    "acceptanceCriteria": [
+      "Functionality for Track insurance, W9, authority, and safety document freshness across carriers. is verified.",
+      "Integration with existing Logistics Operations systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "Medium",
+    "labels": [
+      "Logistics Operations",
+      "Next",
+      "Strategic"
+    ],
+    "estimate": 9,
+    "dependencies": [],
+    "rationale": "Ranked #17 with composite score 19. High ROI of 9."
+  },
+  {
+    "key": "LOG-1018",
+    "summary": "Expand tracing around dispatch workflows, external integrations, and document processing.",
+    "description": "Implement Expand tracing around dispatch workflows, external integrations, and document processing.. Context: Strategic improvement. Impact: Improves root-cause analysis.",
+    "acceptanceCriteria": [
+      "Functionality for Expand tracing around dispatch workflows, external integrations, and document processing. is verified.",
+      "Integration with existing Engineering systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "High",
+    "labels": [
+      "Engineering",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 12,
+    "dependencies": [
+      "LOG-BASE-INFRA"
+    ],
+    "rationale": "Ranked #18 with composite score 18. High ROI of 10."
+  },
+  {
+    "key": "LOG-1019",
+    "summary": "Build exception management queues for late pickup, detention, failed delivery, and missed check calls.",
+    "description": "Implement Build exception management queues for late pickup, detention, failed delivery, and missed check calls.. Context: Strategic improvement. Impact: Improves service recovery speed.",
+    "acceptanceCriteria": [
+      "Functionality for Build exception management queues for late pickup, detention, failed delivery, and missed check calls. is verified.",
+      "Integration with existing Product systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "High",
+    "labels": [
+      "Product",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 9,
+    "dependencies": [
+      "LOG-BASE-INFRA"
+    ],
+    "rationale": "Ranked #19 with composite score 18. High ROI of 10."
+  },
+  {
+    "key": "LOG-1020",
+    "summary": "Introduce customer-facing shipment visibility portals with branded tracking pages.",
+    "description": "Implement Introduce customer-facing shipment visibility portals with branded tracking pages.. Context: Strategic improvement. Impact: Increases retention and reduces support volume.",
+    "acceptanceCriteria": [
+      "Functionality for Introduce customer-facing shipment visibility portals with branded tracking pages. is verified.",
+      "Integration with existing Product systems is tested.",
+      "Performance logs confirm ROI targets."
+    ],
+    "priority": "High",
+    "labels": [
+      "Product",
+      "Now",
+      "Strategic"
+    ],
+    "estimate": 9,
+    "dependencies": [
+      "LOG-BASE-INFRA"
+    ],
+    "rationale": "Ranked #20 with composite score 18. High ROI of 10."
+  }
+]

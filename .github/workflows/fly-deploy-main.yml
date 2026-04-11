@@ -31,6 +31,14 @@ jobs:
             exit 1
           fi
 
+      - name: Validate API env schema/template sync
+        shell: bash
+        run: bash tests/ci/env-schema-sync.test.sh
+
+      - name: Validate toolchain consistency
+        shell: bash
+        run: bash tests/ci/toolchain-consistency.test.sh
+
       - name: Set up Flyctl
         uses: superfly/flyctl-actions/setup-flyctl@master
 

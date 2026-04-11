@@ -35,7 +35,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v5
         with:
-          version: 9
+          version: 9.15.0
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -43,8 +43,16 @@ jobs:
           node-version: "24"
           cache: pnpm
 
+      - name: Validate toolchain consistency
+        shell: bash
+        run: bash tests/ci/toolchain-consistency.test.sh
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Validate API env schema/template sync
+        shell: bash
+        run: bash tests/ci/env-schema-sync.test.sh
 
       - name: Setup Flyctl
         uses: superfly/flyctl-actions/setup-flyctl@master
