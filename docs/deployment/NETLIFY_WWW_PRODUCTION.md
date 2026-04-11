@@ -69,4 +69,4 @@ Use a separate backend hostname for the API and webhooks:
 
 ## What to ignore from older deployment notes
 
-If older docs reference Vercel as the required production home for the public frontend, treat those notes as optional rather than mandatory. The hard requirement is that `www.infamousfreight.com` remains on Netlify.
+If older docs reference Netlify or Vercel differently, follow `docs/deployment/TARGET_PRODUCTION_ARCHITECTURE.md` as the source of truth for production cutover. Use this runbook only as a temporary fallback when domain constraints block the planned Vercel migration.
