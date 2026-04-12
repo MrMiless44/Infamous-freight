@@ -162,6 +162,13 @@ assert_eq "short jwt exits non-zero" "1" "$short_jwt_code"
 assert_contains "short jwt has explicit message" "$short_jwt_output" "JWT_SECRET must be at least 32 characters"
 
 set +e
+invalid_ld_id_output="$(env "${BASE_ENV[@]}" LAUNCHDARKLY_CLIENT_SIDE_ID=abc "$SCRIPT" 2>&1)"
+invalid_ld_id_code=$?
+set -e
+assert_eq "invalid launchdarkly client side id exits non-zero" "1" "$invalid_ld_id_code"
+assert_contains "invalid launchdarkly client side id has explicit message" "$invalid_ld_id_output" "LAUNCHDARKLY_CLIENT_SIDE_ID looks invalid"
+
+set +e
 allow_test_keys_output="$(env "${BASE_ENV[@]}" NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_123 STRIPE_SECRET_KEY=sk_test_123 ALLOW_TEST_KEYS=1 DRY_RUN=1 "$SCRIPT" 2>&1)"
 allow_test_keys_code=$?
 set -e
@@ -203,6 +210,14 @@ assert_eq "verify-only mode exits zero" "0" "$verify_only_code"
 assert_contains "verify-only mode prints skip message" "$verify_only_output" "VERIFY_ONLY=1: skipping apply steps"
 assert_contains "verify-only mode lists netlify env" "$verify_only_output" "netlify env:list --context production --site 11111111-2222-3333-4444-555555555555"
 assert_contains "verify-only mode lists fly secrets" "$verify_only_output" "flyctl secrets list --app infamous-freight-api"
+
+set +e
+ld_apply_output="$(env "${BASE_ENV[@]}" LAUNCHDARKLY_CLIENT_SIDE_ID=client-side-id-123 "$SCRIPT" 2>&1)"
+ld_apply_code=$?
+set -e
+assert_eq "launchdarkly id apply mode exits zero" "0" "$ld_apply_code"
+assert_contains "launchdarkly id apply mode sets netlify env var" "$ld_apply_output" "netlify env:set LAUNCHDARKLY_CLIENT_SIDE_ID client-side-id-123 --context production --site 11111111-2222-3333-4444-555555555555"
+assert_contains "launchdarkly id apply mode sets fly secret" "$ld_apply_output" "LAUNCHDARKLY_CLIENT_SIDE_ID=client-side-id-123 --app infamous-freight-api"
 
 if [ "$FAIL" -gt 0 ]; then
   echo ""

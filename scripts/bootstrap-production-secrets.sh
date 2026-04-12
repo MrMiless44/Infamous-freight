@@ -20,6 +20,7 @@ Optional environment variables:
   FLY_APP_NAME         (default: infamous-freight-api)
   NETLIFY_CONTEXT      (default: production)
   ALLOW_TEST_KEYS      (set to 1 to allow Stripe test keys for non-prod drills)
+  LAUNCHDARKLY_CLIENT_SIDE_ID (optional; if set, applied to Netlify/Fly)
   VERIFY_ONLY          (set to 1 to only run post-apply verification checks)
   DRY_RUN              (set to 1 to print actions without applying)
 
@@ -42,6 +43,7 @@ VERIFY_ONLY="${VERIFY_ONLY:-0}"
 NETLIFY_CONTEXT="${NETLIFY_CONTEXT:-production}"
 FLY_APP_NAME="${FLY_APP_NAME:-infamous-freight-api}"
 DRY_RUN="${DRY_RUN:-0}"
+LAUNCHDARKLY_CLIENT_SIDE_ID="${LAUNCHDARKLY_CLIENT_SIDE_ID:-}"
 
 if [[ "$ALLOW_TEST_KEYS" != "0" && "$ALLOW_TEST_KEYS" != "1" ]]; then
   echo "[bootstrap-secrets] ALLOW_TEST_KEYS must be 0 or 1" >&2
@@ -153,6 +155,11 @@ if [[ ${#JWT_SECRET} -lt 32 ]]; then
   exit 1
 fi
 
+if [[ -n "$LAUNCHDARKLY_CLIENT_SIDE_ID" && ${#LAUNCHDARKLY_CLIENT_SIDE_ID} -lt 6 ]]; then
+  echo "[bootstrap-secrets] LAUNCHDARKLY_CLIENT_SIDE_ID looks invalid (too short)" >&2
+  exit 1
+fi
+
 if [[ "$VERIFY_ONLY" == "1" ]]; then
   echo "[bootstrap-secrets] VERIFY_ONLY=1: skipping apply steps and running verification checks."
   if [[ "$DRY_RUN" == "1" ]]; then
@@ -172,6 +179,9 @@ if [[ "$DRY_RUN" == "1" ]]; then
   echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** netlify env:set STRIPE_SECRET_KEY \"\$STRIPE_SECRET_KEY\" --context ${NETLIFY_CONTEXT} --site ***"
   echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** netlify env:set STRIPE_WEBHOOK_SECRET \"\$STRIPE_WEBHOOK_SECRET\" --context ${NETLIFY_CONTEXT} --site ***"
   echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** netlify env:set JWT_SECRET \"\$JWT_SECRET\" --context ${NETLIFY_CONTEXT} --site ***"
+  if [[ -n "$LAUNCHDARKLY_CLIENT_SIDE_ID" ]]; then
+    echo "[dry-run] env NETLIFY_AUTH_TOKEN=*** netlify env:set LAUNCHDARKLY_CLIENT_SIDE_ID \"\$LAUNCHDARKLY_CLIENT_SIDE_ID\" --context ${NETLIFY_CONTEXT} --site ***"
+  fi
 else
   env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" \
     netlify env:set NEXT_PUBLIC_API_URL "$NEXT_PUBLIC_API_URL" --context "$NETLIFY_CONTEXT" --site "$NETLIFY_SITE_ID"
@@ -183,18 +193,32 @@ else
     netlify env:set STRIPE_WEBHOOK_SECRET "$STRIPE_WEBHOOK_SECRET" --context "$NETLIFY_CONTEXT" --site "$NETLIFY_SITE_ID"
   env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" \
     netlify env:set JWT_SECRET "$JWT_SECRET" --context "$NETLIFY_CONTEXT" --site "$NETLIFY_SITE_ID"
+  if [[ -n "$LAUNCHDARKLY_CLIENT_SIDE_ID" ]]; then
+    env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" \
+      netlify env:set LAUNCHDARKLY_CLIENT_SIDE_ID "$LAUNCHDARKLY_CLIENT_SIDE_ID" --context "$NETLIFY_CONTEXT" --site "$NETLIFY_SITE_ID"
+  fi
 fi
 
 echo "[bootstrap-secrets] Applying Fly.io secrets to app '${FLY_APP_NAME}'."
 if [[ "$DRY_RUN" == "1" ]]; then
-  echo "[dry-run] env FLY_API_TOKEN=*** flyctl secrets set DATABASE_URL=\"\$DATABASE_URL\" JWT_SECRET=\"\$JWT_SECRET\" STRIPE_SECRET_KEY=\"\$STRIPE_SECRET_KEY\" STRIPE_WEBHOOK_SECRET=\"\$STRIPE_WEBHOOK_SECRET\" --app ${FLY_APP_NAME}"
+  echo "[dry-run] env FLY_API_TOKEN=*** flyctl secrets set DATABASE_URL=\"\$DATABASE_URL\" JWT_SECRET=\"\$JWT_SECRET\" STRIPE_SECRET_KEY=\"\$STRIPE_SECRET_KEY\" STRIPE_WEBHOOK_SECRET=\"\$STRIPE_WEBHOOK_SECRET\"${LAUNCHDARKLY_CLIENT_SIDE_ID:+ LAUNCHDARKLY_CLIENT_SIDE_ID=\"\$LAUNCHDARKLY_CLIENT_SIDE_ID\"} --app ${FLY_APP_NAME}"
 else
-  env FLY_API_TOKEN="$FLY_API_TOKEN" flyctl secrets set \
-    DATABASE_URL="$DATABASE_URL" \
-    JWT_SECRET="$JWT_SECRET" \
-    STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY" \
-    STRIPE_WEBHOOK_SECRET="$STRIPE_WEBHOOK_SECRET" \
-    --app "$FLY_APP_NAME"
+  if [[ -n "$LAUNCHDARKLY_CLIENT_SIDE_ID" ]]; then
+    env FLY_API_TOKEN="$FLY_API_TOKEN" flyctl secrets set \
+      DATABASE_URL="$DATABASE_URL" \
+      JWT_SECRET="$JWT_SECRET" \
+      STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY" \
+      STRIPE_WEBHOOK_SECRET="$STRIPE_WEBHOOK_SECRET" \
+      LAUNCHDARKLY_CLIENT_SIDE_ID="$LAUNCHDARKLY_CLIENT_SIDE_ID" \
+      --app "$FLY_APP_NAME"
+  else
+    env FLY_API_TOKEN="$FLY_API_TOKEN" flyctl secrets set \
+      DATABASE_URL="$DATABASE_URL" \
+      JWT_SECRET="$JWT_SECRET" \
+      STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY" \
+      STRIPE_WEBHOOK_SECRET="$STRIPE_WEBHOOK_SECRET" \
+      --app "$FLY_APP_NAME"
+  fi
 fi
 
 echo "[bootstrap-secrets] Done. Verify with:"

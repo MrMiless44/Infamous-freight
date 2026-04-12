@@ -17,6 +17,7 @@ Use this checklist when wiring production credentials for the current deployment
 | `STRIPE_SECRET_KEY` | Stripe server API | required | Use live key (`sk_live_...`) for production bootstrap (`ALLOW_TEST_KEYS=1` only for drills). |
 | `STRIPE_WEBHOOK_SECRET` | Stripe webhook verification | required | Signing secret for Stripe webhook validation (`whsec_...`). |
 | `JWT_SECRET` | API auth signing (HS256 mode + web stripe route) | required | Generate with `openssl rand -base64 32`. |
+| `LAUNCHDARKLY_CLIENT_SIDE_ID` | LaunchDarkly flag evaluation | optional | Client-side ID used by Netlify LaunchDarkly SDK integration. |
 
 ### 2) Export locally (do not commit secrets)
 
@@ -30,6 +31,8 @@ export NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_live_..."
 export STRIPE_SECRET_KEY="sk_live_..."
 export STRIPE_WEBHOOK_SECRET="whsec_..."
 export JWT_SECRET="$(openssl rand -base64 32)"
+# Optional if using LaunchDarkly integration
+export LAUNCHDARKLY_CLIENT_SIDE_ID="<your-launchdarkly-client-side-id>"
 ```
 
 ### 3) Apply automatically with one script (recommended)
@@ -61,6 +64,8 @@ env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" \
   netlify env:set STRIPE_WEBHOOK_SECRET "$STRIPE_WEBHOOK_SECRET" --context production --site "$NETLIFY_SITE_ID"
 env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" \
   netlify env:set JWT_SECRET "$JWT_SECRET" --context production --site "$NETLIFY_SITE_ID"
+env NETLIFY_AUTH_TOKEN="$NETLIFY_AUTH_TOKEN" \
+  netlify env:set LAUNCHDARKLY_CLIENT_SIDE_ID "$LAUNCHDARKLY_CLIENT_SIDE_ID" --context production --site "$NETLIFY_SITE_ID"
 ```
 
 ### 5) Apply to Fly.io environment
@@ -71,6 +76,7 @@ flyctl secrets set \
   JWT_SECRET="$JWT_SECRET" \
   STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY" \
   STRIPE_WEBHOOK_SECRET="$STRIPE_WEBHOOK_SECRET" \
+  LAUNCHDARKLY_CLIENT_SIDE_ID="$LAUNCHDARKLY_CLIENT_SIDE_ID" \
   --app infamous-freight-api
 ```
 
@@ -84,6 +90,12 @@ flyctl secrets list --app infamous-freight-api
 Supported Netlify contexts for this bootstrap script are `production`, `deploy-preview`, and `branch-deploy`.
 
 > Security note: keep real token/key values in your secret manager and CI provider; commit only placeholders in tracked files.
+
+### LaunchDarkly Netlify integration notes
+
+1. In Netlify, enable the LaunchDarkly integration for your site and redeploy.
+2. In LaunchDarkly, add the Netlify integration and provide your Netlify Site ID and Syncing token from Netlify UI.
+3. Store `LAUNCHDARKLY_CLIENT_SIDE_ID` as an environment variable and bootstrap it with this script.
 
 ---
 
