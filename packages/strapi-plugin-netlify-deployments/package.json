@@ -1,0 +1,11 @@
+{
+  "name": "strapi-plugin-netlify-deployments",
+  "version": "0.0.0-local",
+  "private": true,
+  "description": "Local no-op replacement for Netlify build plugin compatibility.",
+  "type": "module",
+  "main": "index.js",
+  "engines": {
+    "node": ">=18"
+  }
+}

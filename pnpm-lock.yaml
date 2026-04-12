@@ -313,6 +313,9 @@ importers:
       recharts:
         specifier: ^3.8.1
         version: 3.8.1(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react-is@19.2.4)(react@19.2.4)(redux@5.0.1)
+      strapi-plugin-netlify-deployments:
+        specifier: workspace:*
+        version: link:../../packages/strapi-plugin-netlify-deployments
       stripe:
         specifier: ^22.0.0
         version: 22.0.0(@types/node@25.6.0)
@@ -430,6 +433,8 @@ importers:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
+
+  packages/strapi-plugin-netlify-deployments: {}
 
 packages:
 
