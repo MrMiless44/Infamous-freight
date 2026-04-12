@@ -67,11 +67,11 @@ async function readinessPayload() {
   } else {
     try {
       const prisma = getPrisma();
-      if (!prisma || typeof prisma.$queryRawUnsafe !== "function") {
+      if (!prisma || typeof prisma.$queryRaw !== "function") {
         throw new Error("Prisma client unavailable");
       }
 
-      await prisma.$queryRawUnsafe("SELECT 1");
+      await prisma.$queryRaw`SELECT 1`;
       checks.database = { ok: true };
     } catch {
       checks.database = {
