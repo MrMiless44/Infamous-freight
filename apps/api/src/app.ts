@@ -4,6 +4,7 @@ import express, { type Express, type NextFunction, type Request, type Response }
 import helmet from "helmet";
 import { Sentry, sentryEnabled } from "./instrument.js";
 import { env } from "./config/env.js";
+import { getPrisma } from "./db/prisma.js";
 import { requestIdMiddleware, httpLoggerMiddleware } from "./lib/logger.js";
 import { errorHandler, notFound } from "./middleware/error-handler.js";
 import { generalLimiter } from "./middleware/rateLimit.js";
@@ -29,6 +30,67 @@ import shipmentRoutes from "./routes/shipments.js";
 import { stripeRoutes } from "./routes/stripe.routes.js";
 import { tenants } from "./routes/tenants.js";
 import stripeWebhookRoutes from "./webhooks/stripe.js";
+
+const releaseInfo = {
+  version: process.env.npm_package_version ?? "unknown",
+  release:
+    process.env.SENTRY_RELEASE ??
+    process.env.RELEASE ??
+    process.env.GIT_SHA ??
+    process.env.GITHUB_SHA ??
+    "unknown",
+  commit: process.env.GIT_SHA ?? process.env.GITHUB_SHA ?? "unknown",
+};
+
+function healthPayload() {
+  return {
+    service: "infamous-freight-api",
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
+    env: env.nodeEnv,
+    version: releaseInfo.version,
+    release: releaseInfo.release,
+    commit: releaseInfo.commit,
+  };
+}
+
+async function readinessPayload() {
+  const checks: Record<string, { ok: boolean; reason?: string }> = {
+    process: { ok: true },
+  };
+
+  if (!env.databaseUrl || env.persistenceMode === "json") {
+    checks.database = {
+      ok: true,
+      reason: "Database check skipped by configuration",
+    };
+  } else {
+    try {
+      const prisma = getPrisma();
+      if (!prisma || typeof prisma.$queryRawUnsafe !== "function") {
+        throw new Error("Prisma client unavailable");
+      }
+
+      await prisma.$queryRawUnsafe("SELECT 1");
+      checks.database = { ok: true };
+    } catch {
+      checks.database = {
+        ok: false,
+        reason: "Database connectivity check failed",
+      };
+    }
+  }
+
+  const ok = Object.values(checks).every((check) => check.ok);
+
+  return {
+    ok,
+    checks,
+    timestamp: new Date().toISOString(),
+    version: releaseInfo.version,
+    release: releaseInfo.release,
+  };
+}
 
 
 export function createApp(): Express {
@@ -70,27 +132,53 @@ export function createApp(): Express {
   app.get("/health", (_req, res) => {
     res.json({
       success: true,
-      data: {
-        service: "infamous-freight-api",
-        uptime: process.uptime(),
-        timestamp: new Date().toISOString(),
-      },
+      data: healthPayload(),
     });
   });
 
   app.get("/api/health", (_req, res) => {
     res.json({
       success: true,
-      data: {
-        service: "infamous-freight-api",
-        uptime: process.uptime(),
-        timestamp: new Date().toISOString(),
-      },
+      data: healthPayload(),
     });
   });
 
-  app.get("/readyz", (_req, res) => {
-    res.json({ success: true, data: { ok: true } });
+  app.get("/version", (_req, res) => {
+    res.json({
+      success: true,
+      data: releaseInfo,
+    });
+  });
+
+  app.get("/api/version", (_req, res) => {
+    res.json({
+      success: true,
+      data: releaseInfo,
+    });
+  });
+
+  app.get("/ready", async (_req, res) => {
+    const readiness = await readinessPayload();
+    res.status(readiness.ok ? 200 : 503).json({
+      success: readiness.ok,
+      data: readiness,
+    });
+  });
+
+  app.get("/api/ready", async (_req, res) => {
+    const readiness = await readinessPayload();
+    res.status(readiness.ok ? 200 : 503).json({
+      success: readiness.ok,
+      data: readiness,
+    });
+  });
+
+  app.get("/readyz", async (_req, res) => {
+    const readiness = await readinessPayload();
+    res.status(readiness.ok ? 200 : 503).json({
+      success: readiness.ok,
+      data: readiness,
+    });
   });
 
   app.use("/auth", authRoutes);
