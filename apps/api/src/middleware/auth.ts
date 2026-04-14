@@ -1,6 +1,15 @@
 import type { NextFunction, Request, Response } from "express";
 import { ApiError } from "../utils/errors.js";
+import type { JwtAccessTokenPayload } from "../modules/auth/auth.types.js";
 import { verifyAccessToken } from "../modules/auth/auth.utils.js";
+
+// Extend JwtAccessTokenPayload locally to accommodate optional tenant claims that may
+// be embedded in tokens by the issuer without being part of the base type definition.
+interface JwtClaimsWithTenant extends JwtAccessTokenPayload {
+  tenantId?: string;
+  organizationId?: string;
+  orgId?: string;
+}
 
 export type AuthenticatedRequest = Request;
 
@@ -13,36 +22,30 @@ export function requireAuth(req: Request, _res: Response, next: NextFunction): v
   }
 
   try {
-    const claims = verifyAccessToken(authorization.slice(7));
+    const claims = verifyAccessToken(authorization.slice(7)) as JwtClaimsWithTenant;
 
-    // Best-effort extraction of tenant / organization identifiers from JWT claims.
-    // We intentionally avoid defaulting to empty strings to prevent accidental
-    // "no-tenant" scopes in downstream handlers.
-    const claimsAny = claims as any;
-    const claimTenantId: string | undefined =
-      claimsAny.tenantId ?? claimsAny.organizationId ?? claimsAny.orgId;
-    const claimOrganizationId: string | undefined =
-      claimsAny.organizationId ?? claimsAny.orgId ?? claimTenantId;
-    const claimOrgId: string | undefined =
-      claimsAny.orgId ?? claimsAny.organizationId ?? claimTenantId;
+    // Resolve tenant identifier — check `tenantId` first, then alias fields.
+    const tenantId: string | undefined =
+      claims.tenantId ?? claims.organizationId ?? claims.orgId;
 
     req.auth = {
       userId: claims.sub,
       role: claims.role,
       tokenType: claims.type,
-      organizationId: claimOrganizationId,
-      orgId: claimOrgId,
+      organizationId: claims.organizationId ?? tenantId,
+      orgId: claims.orgId ?? tenantId,
     };
     req.user = {
       id: claims.sub,
       sub: claims.sub,
       email: claims.email ?? "",
       role: claims.role,
-      tenantId: claimTenantId,
+      tenantId,
+      organizationId: claims.organizationId ?? tenantId,
     };
-    req.tenantId = claimTenantId;
-    req.orgId = claimOrgId;
-    req.organizationId = claimOrganizationId;
+    req.tenantId = tenantId;
+    req.orgId = claims.orgId ?? tenantId;
+    req.organizationId = claims.organizationId ?? tenantId;
 
     next();
   } catch {

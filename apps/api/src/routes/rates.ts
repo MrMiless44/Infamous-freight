@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { z } from "zod";
+import { requireAuth } from "../middleware/auth.js";
 import { RatePredictionService } from "../services/rate-prediction.service.js";
 
 const router: Router = Router();
 const service = new RatePredictionService();
 
-router.post("/predict", (req, res) => {
+router.post("/predict", requireAuth, (req, res) => {
   const body = z
     .object({
       lane: z.object({

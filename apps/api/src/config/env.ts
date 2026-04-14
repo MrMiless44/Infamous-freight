@@ -38,6 +38,7 @@ const envSchema = z
     PASSWORD_PEPPER: z.string().default(""),
     CORS_ORIGIN: z.string().trim().min(1).default("http://localhost:3000"),
     RATE_LIMIT_AUTH_MAX: z.coerce.number().int().positive().default(10),
+    RATE_LIMIT_GENERAL_MAX: z.coerce.number().int().positive().default(100),
     ARGON2_MEMORY_COST: z.coerce.number().int().positive().default(19456),
     ARGON2_TIME_COST: z.coerce.number().int().positive().default(2),
     ARGON2_PARALLELISM: z.coerce.number().int().positive().default(1),
@@ -139,6 +140,7 @@ export const env = {
   cookieSecret: parsed.COOKIE_SECRET,
   passwordPepper: parsed.PASSWORD_PEPPER,
   rateLimitAuthMax: parsed.RATE_LIMIT_AUTH_MAX,
+  rateLimitGeneralMax: parsed.RATE_LIMIT_GENERAL_MAX,
   argon2: {
     memoryCost: parsed.ARGON2_MEMORY_COST,
     timeCost: parsed.ARGON2_TIME_COST,

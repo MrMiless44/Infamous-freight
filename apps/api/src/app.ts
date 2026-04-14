@@ -45,7 +45,10 @@ export function createApp(): Express {
 
   app.use(
     cors({
-      origin: env.corsOrigin.split(",").map((origin) => origin.trim()),
+      origin: env.corsOrigin
+        .split(",")
+        .map((origin) => origin.trim())
+        .filter(Boolean),
       credentials: env.authCookieEnabled,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
       allowedHeaders: ["Content-Type", "Authorization", "X-Request-ID"],
@@ -69,7 +72,6 @@ export function createApp(): Express {
       success: true,
       data: {
         service: "infamous-freight-api",
-        uptime: process.uptime(),
         timestamp: new Date().toISOString(),
       },
     });

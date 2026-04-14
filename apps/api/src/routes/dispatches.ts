@@ -2,8 +2,11 @@ import { Router } from "express";
 import { z } from "zod";
 import { requireAuth, type AuthenticatedRequest } from "../middleware/auth.js";
 import { prisma } from "../db/prisma.js";
+import { ApiError } from "../utils/errors.js";
 
 const router: Router = Router();
+
+const DISPATCH_STATUS = ["PENDING", "ASSIGNED", "EN_ROUTE", "COMPLETED", "CANCELLED"] as const;
 
 const createDispatchSchema = z.object({
   loadId: z.string().min(1),
@@ -11,14 +14,34 @@ const createDispatchSchema = z.object({
   notes: z.string().optional(),
 });
 
+const dispatchSelect = {
+  id: true,
+  tenantId: true,
+  loadId: true,
+  driverId: true,
+  status: true,
+  notes: true,
+  createdAt: true,
+  updatedAt: true,
+} as const;
+
 router.get("/", requireAuth, async (req, res, next) => {
   try {
-    const tenantId = (req as AuthenticatedRequest).user?.tenantId ?? "";
+    const tenantId = (req as AuthenticatedRequest).user?.tenantId;
+    if (!tenantId) {
+      res.status(401).json({ error: "Tenant context required" });
+      return;
+    }
+    const page = Math.max(1, Number(req.query.page ?? 1));
+    const limit = Math.min(100, Math.max(1, Number(req.query.limit ?? 20)));
     const dispatches = await prisma.dispatch.findMany({
       where: { tenantId },
       orderBy: { createdAt: "desc" },
+      skip: (page - 1) * limit,
+      take: limit,
+      select: dispatchSelect,
     });
-    res.json({ ok: true, data: dispatches });
+    res.json({ ok: true, data: dispatches, page, limit });
   } catch (err) {
     next(err);
   }
@@ -26,10 +49,15 @@ router.get("/", requireAuth, async (req, res, next) => {
 
 router.post("/", requireAuth, async (req, res, next) => {
   try {
-    const tenantId = (req as AuthenticatedRequest).user?.tenantId ?? "";
+    const tenantId = (req as AuthenticatedRequest).user?.tenantId;
+    if (!tenantId) {
+      res.status(401).json({ error: "Tenant context required" });
+      return;
+    }
     const body = createDispatchSchema.parse(req.body);
     const dispatch = await prisma.dispatch.create({
       data: { tenantId, ...body },
+      select: dispatchSelect,
     });
     res.status(201).json({ ok: true, data: dispatch });
   } catch (err) {
@@ -39,19 +67,24 @@ router.post("/", requireAuth, async (req, res, next) => {
 
 router.patch("/:id", requireAuth, async (req, res, next) => {
   try {
-    const tenantId = (req as AuthenticatedRequest).user?.tenantId ?? "";
-    const { status } = z.object({ status: z.string() }).parse(req.body);
-    const id = req.params.id as string;
+    const tenantId = (req as AuthenticatedRequest).user?.tenantId;
+    if (!tenantId) {
+      res.status(401).json({ error: "Tenant context required" });
+      return;
+    }
+    const { status } = z.object({ status: z.enum(DISPATCH_STATUS) }).parse(req.body);
+    const id = req.params.id;
     const existing = await prisma.dispatch.findFirst({
       where: { id, tenantId },
     });
     if (!existing) {
-      res.status(404).json({ error: "Dispatch not found" });
+      next(new ApiError(404, "DISPATCH_NOT_FOUND", "Dispatch not found"));
       return;
     }
     const updated = await prisma.dispatch.update({
       where: { id },
       data: { status },
+      select: dispatchSelect,
     });
     res.json({ ok: true, data: updated });
   } catch (err) {

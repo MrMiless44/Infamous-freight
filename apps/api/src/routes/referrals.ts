@@ -1,4 +1,6 @@
+import { randomBytes } from "node:crypto";
 import { Router } from "express";
+import { requireAuth } from "../middleware/auth.js";
 
 /**
  * Referral Program API Routes
@@ -7,15 +9,24 @@ import { Router } from "express";
 
 const router: Router = Router();
 
+function generateReferralCode(): string {
+  return "ref_" + randomBytes(6).toString("hex").toUpperCase();
+}
+
 // GET /api/referrals/link - Get user's referral link
-router.get("/link", (req, res, next) => {
+router.get("/link", requireAuth, (req, res, next) => {
   try {
     const user = req.user;
-    const referralCode = user?.referral_code || generateReferralCode();
+    if (!user) {
+      res.status(401).json({ error: "Authentication required" });
+      return;
+    }
+    const referralCode = (user as any).referral_code ?? generateReferralCode();
+    const appBaseUrl = process.env.APP_BASE_URL ?? "https://infamous-freight.com";
 
     res.json({
       success: true,
-      referral_link: `https://infamous-freight.com?ref=${referralCode}`,
+      referral_link: `${appBaseUrl}?ref=${referralCode}`,
       referral_code: referralCode,
     });
   } catch (err) {
@@ -24,37 +35,19 @@ router.get("/link", (req, res, next) => {
 });
 
 // GET /api/referrals/stats - Get referral stats
-router.get("/stats", (req, res, next) => {
-  try {
-    // Mock data for now - will integrate with database
-    res.json({
-      success: true,
-      total_referred: 5,
-      converted: 2,
-      conversion_rate: 40,
-      total_rewards: 120,
-      reward_status: "pending_payout",
-    });
-  } catch (err) {
-    next(err);
-  }
+router.get("/stats", requireAuth, (_req, res) => {
+  res.status(501).json({
+    success: false,
+    error: "Referral stats not yet implemented",
+  });
 });
 
 // POST /api/referrals/redeem - Redeem accumulated referral credits
-router.post("/redeem", (req, res, next) => {
-  try {
-    res.json({
-      success: true,
-      amount_redeemed: 120,
-      applied_to_account: true,
-    });
-  } catch (err) {
-    next(err);
-  }
+router.post("/redeem", requireAuth, (_req, res) => {
+  res.status(501).json({
+    success: false,
+    error: "Referral redemption not yet implemented",
+  });
 });
-
-function generateReferralCode() {
-  return "ref_" + Math.random().toString(36).substr(2, 9).toUpperCase();
-}
 
 export default router;

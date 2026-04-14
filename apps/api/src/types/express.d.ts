@@ -7,6 +7,7 @@ declare global {
         userId: string;
         role: JwtAccessTokenPayload["role"];
         tokenType: JwtAccessTokenPayload["type"];
+        tenantId?: string;
         organizationId?: string;
         orgId?: string;
       };

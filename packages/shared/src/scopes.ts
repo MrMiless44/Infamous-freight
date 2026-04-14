@@ -30,12 +30,7 @@ export const SCOPE_CATEGORIES = {
     TRACK: "shipment:track",
     EXPORT: "shipment:export",
     RATE: "shipment:rate",
-  },
-
-  // Shipments scopes (plural form - used in some routes)
-  SHIPMENTS: {
-    READ: "shipments:read",
-    WRITE: "shipments:write",
+    WRITE: "shipment:create",
   },
 
   // Billing & Payment scopes

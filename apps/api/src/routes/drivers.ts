@@ -2,24 +2,47 @@ import { Router } from "express";
 import { z } from "zod";
 import { requireAuth, type AuthenticatedRequest } from "../middleware/auth.js";
 import { prisma } from "../db/prisma.js";
+import { ApiError } from "../utils/errors.js";
 
 const router: Router = Router();
+
+const DRIVER_STATUS = ["AVAILABLE", "ON_DUTY", "OFF_DUTY"] as const;
 
 const createDriverSchema = z.object({
   name: z.string().min(1),
   licenseNumber: z.string().min(1),
   phone: z.string().optional(),
-  status: z.enum(["AVAILABLE", "ON_DUTY", "OFF_DUTY"]).default("AVAILABLE"),
+  status: z.enum(DRIVER_STATUS).default("AVAILABLE"),
 });
+
+const driverSelect = {
+  id: true,
+  tenantId: true,
+  name: true,
+  phone: true,
+  status: true,
+  email: true,
+  createdAt: true,
+  updatedAt: true,
+} as const;
 
 router.get("/", requireAuth, async (req, res, next) => {
   try {
-    const tenantId = (req as AuthenticatedRequest).user?.tenantId ?? "";
+    const tenantId = (req as AuthenticatedRequest).user?.tenantId;
+    if (!tenantId) {
+      res.status(401).json({ error: "Tenant context required" });
+      return;
+    }
+    const page = Math.max(1, Number(req.query.page ?? 1));
+    const limit = Math.min(100, Math.max(1, Number(req.query.limit ?? 20)));
     const drivers = await prisma.driver.findMany({
       where: { tenantId },
       orderBy: { name: "asc" },
+      skip: (page - 1) * limit,
+      take: limit,
+      select: driverSelect,
     });
-    res.json({ ok: true, data: drivers });
+    res.json({ ok: true, data: drivers, page, limit });
   } catch (err) {
     next(err);
   }
@@ -27,10 +50,15 @@ router.get("/", requireAuth, async (req, res, next) => {
 
 router.post("/", requireAuth, async (req, res, next) => {
   try {
-    const tenantId = (req as AuthenticatedRequest).user?.tenantId ?? "";
+    const tenantId = (req as AuthenticatedRequest).user?.tenantId;
+    if (!tenantId) {
+      res.status(401).json({ error: "Tenant context required" });
+      return;
+    }
     const body = createDriverSchema.parse(req.body);
     const driver = await prisma.driver.create({
       data: { tenantId, ...body },
+      select: driverSelect,
     });
     res.status(201).json({ ok: true, data: driver });
   } catch (err) {
@@ -40,23 +68,28 @@ router.post("/", requireAuth, async (req, res, next) => {
 
 router.patch("/:id/status", requireAuth, async (req, res, next) => {
   try {
-    const tenantId = (req as AuthenticatedRequest).user?.tenantId ?? "";
+    const tenantId = (req as AuthenticatedRequest).user?.tenantId;
+    if (!tenantId) {
+      res.status(401).json({ error: "Tenant context required" });
+      return;
+    }
     const { status } = z
       .object({
-        status: z.enum(["AVAILABLE", "ON_DUTY", "OFF_DUTY"]),
+        status: z.enum(DRIVER_STATUS),
       })
       .parse(req.body);
-    const id = req.params.id as string;
+    const id = req.params.id;
     const existing = await prisma.driver.findFirst({
       where: { id, tenantId },
     });
     if (!existing) {
-      res.status(404).json({ error: "Driver not found" });
+      next(new ApiError(404, "DRIVER_NOT_FOUND", "Driver not found"));
       return;
     }
     const updated = await prisma.driver.update({
       where: { id },
       data: { status },
+      select: driverSelect,
     });
     res.json({ ok: true, data: updated });
   } catch (err) {

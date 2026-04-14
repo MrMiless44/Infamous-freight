@@ -24,10 +24,10 @@ export const authLimiter = buildLimiter(
   "Too many authentication attempts. Try again later.",
 );
 
-export const trackingLimiter = buildLimiter(
+export const generalLimiter = buildLimiter(
   15 * 60 * 1000,
-  Number.parseInt(process.env.RATE_LIMIT_GENERAL_MAX ?? "100", 10),
+  env.rateLimitGeneralMax,
   "Too many requests. Please try again later.",
 );
 
-export const generalLimiter = trackingLimiter;
+export const trackingLimiter = generalLimiter;

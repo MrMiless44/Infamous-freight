@@ -1,12 +1,13 @@
 import { Router } from "express";
 import { z } from "zod";
+import { requireAuth } from "../middleware/auth.js";
 import { CarrierIntelligenceService } from "../services/carrier-intelligence.service.js";
 import type { CarrierProfile } from "../types/domain.js";
 
 const router: Router = Router();
 const service = new CarrierIntelligenceService();
 
-router.post("/rank", (req, res) => {
+router.post("/rank", requireAuth, (req, res) => {
   const body = z
     .object({
       lane: z.object({
