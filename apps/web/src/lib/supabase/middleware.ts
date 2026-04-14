@@ -3,7 +3,9 @@ import { NextResponse, type NextRequest } from "next/server";
 
 export function supabaseMiddleware(req: NextRequest, res: NextResponse) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const supabaseAnonKey =
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
   if (!supabaseUrl) {
     throw new Error(
@@ -13,7 +15,7 @@ export function supabaseMiddleware(req: NextRequest, res: NextResponse) {
 
   if (!supabaseAnonKey) {
     throw new Error(
-      "Environment variable NEXT_PUBLIC_SUPABASE_ANON_KEY is not set. It must be defined to initialize the Supabase client in middleware.",
+      "Environment variable NEXT_PUBLIC_SUPABASE_ANON_KEY (or NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) is not set. It must be defined to initialize the Supabase client in middleware.",
     );
   }
 
