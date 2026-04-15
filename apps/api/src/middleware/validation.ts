@@ -22,8 +22,9 @@ export const sanitizeInput = (req: Request, _res: Response, next: NextFunction) 
   const sanitize = (obj: unknown): unknown => {
     if (Array.isArray(obj)) return obj.map(sanitize);
     if (!obj || typeof obj !== "object") return obj;
-    const out: Record<string, unknown> = {};
+    const out: Record<string, unknown> = Object.create(null);
     for (const [k, v] of Object.entries(obj as Record<string, unknown>)) {
+      if (k === "__proto__" || k === "constructor" || k === "prototype") continue;
       if (typeof v === "string") {
         out[k] = v.trim().replace(/[<>]/g, "");
       } else {
