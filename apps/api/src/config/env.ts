@@ -57,7 +57,7 @@ const envSchema = z
       (value) => {
         if (typeof value !== "string") return undefined;
         const normalized = value.trim().toLowerCase();
-        return ["stub", "openai", "anthropic"].includes(normalized) ? normalized : undefined;
+        return normalized;
       },
       z.enum(["stub", "openai", "anthropic"]).optional().default("stub"),
     ),
