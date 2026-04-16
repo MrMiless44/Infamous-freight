@@ -38,9 +38,9 @@ These recommendations are prioritized to keep Infamous Freight stable, secure, a
 - Add non-production `GET /debug/sentry` verification only when Sentry is configured.
 
 ## 8) Billing idempotency safety
-- Use `BillingEvent` idempotency keys for all Stripe webhook and mutation handlers.
+- Use the existing idempotency mechanisms for all Stripe webhook and mutation handlers (`Idempotency-Key` + `withIdempotency` where supported, and Stripe request `idempotencyKey` usage where applicable).
 - Add replay tests for duplicate webhook events.
-- Ensure idempotency key uniqueness scope is documented (event type + provider ID + tenant).
+- Ensure idempotency key uniqueness scope is documented (for example: event type + provider ID + tenant).
 
 ## 9) Build/test/deploy reliability
 - In CI: run `prisma generate` before build/tests for every app relying on Prisma.
