@@ -1,5 +1,9 @@
 # Infæmous Freight
 
+[![Netlify deploy status for infamousfreight](https://api.netlify.com/api/v1/badges/d03682ba-fcb4-4dc6-984e-f7eae7fff59c/deploy-status)](https://app.netlify.com/projects/infamousfreight/deploys)
+
+_Deploy status only; a green badge does not guarantee the frontend is rendering correctly._
+
 ---
 
 ## Overview
