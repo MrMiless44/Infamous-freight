@@ -12,8 +12,12 @@ if ! command -v docker >/dev/null 2>&1; then
   exit 0
 fi
 
-echo "==> Logging into registry (${REGISTRY})"
-docker login "${REGISTRY}"
+if [ -n "${DOCKER_USERNAME:-}" ] && [ -n "${DOCKER_PASSWORD:-}" ]; then
+  echo "==> Logging into registry (${REGISTRY}) with provided credentials"
+  printf '%s' "${DOCKER_PASSWORD}" | docker login "${REGISTRY}" --username "${DOCKER_USERNAME}" --password-stdin
+else
+  echo "==> No Docker credentials provided; skipping registry login and continuing"
+fi
 
 echo "==> Pulling image"
 docker pull "${IMAGE}"
