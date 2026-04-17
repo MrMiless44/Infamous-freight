@@ -225,6 +225,15 @@ Install dependencies.
 pnpm install
 ```
 
+Or run the one-command API quickstart (installs deps, builds, and starts API):
+
+```bash
+pnpm run quickstart:api
+```
+
+This quickstart seeds missing env files from templates:
+`./.env`, `apps/api/.env`, and `apps/web/.env.local`.
+
 > **Runtime requirement:** this repo enforces Node.js **24.x** (see `.node-version` / `.nvmrc`). If you are not on the pinned Node version, `pnpm` will fail with `ERR_PNPM_UNSUPPORTED_ENGINE`.
 >
 > If you hit that error, switch to the version defined by the repo and retry install:
