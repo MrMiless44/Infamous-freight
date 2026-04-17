@@ -9,3 +9,8 @@
 *.sentry-*
 .sentry-*
 sentry.properties
+
+# Auto-generated Netlify resolved config (regenerated every build).
+# The source of truth is the repo-root netlify.toml; this file is not consulted
+# at deploy time and re-committing it would revive the old BUILD_TARGET=netlify value.
+.netlify/netlify.toml
