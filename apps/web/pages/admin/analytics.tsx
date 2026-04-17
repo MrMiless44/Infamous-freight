@@ -11,6 +11,9 @@ const ChartSkeleton = ({ height }: { height: number }) => (
       background: "linear-gradient(90deg, #f0f0f0 0%, #e5e5e5 50%, #f0f0f0 100%)",
       borderRadius: 4,
     }}
+    role="status"
+    aria-live="polite"
+    aria-busy="true"
     aria-label="Loading chart"
   />
 );
