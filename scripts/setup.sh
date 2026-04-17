@@ -53,7 +53,7 @@ echo "==> Installing dependencies"
 pnpm install --frozen-lockfile
 
 echo "==> Generating Prisma client"
-pnpm prisma:generate
+pnpm prisma:generate:offline
 
 echo "==> Building shared package and workspaces"
 pnpm build
