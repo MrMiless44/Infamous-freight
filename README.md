@@ -300,6 +300,12 @@ To verify a pulled image matches an expected SHA256 digest:
 pnpm run docker:verify-digest -- ifamousfreight/dhi-github-mcp:latest sha256:50b2c4f88e0dda38d3a163ad8ef1460fde82a70e2b28da73e6035f93c6f545d9
 ```
 
+To run the requested registry login/pull/scout flow for `dhi.io/github-mcp:0`:
+
+```bash
+pnpm run docker:scout:github-mcp
+```
+
 > **Runtime requirement:** this repo enforces Node.js **24.x** (see `.node-version` / `.nvmrc`). If you are not on the pinned Node version, `pnpm` will fail with `ERR_PNPM_UNSUPPORTED_ENGINE`.
 >
 > If you hit that error, switch to the version defined by the repo and retry install:

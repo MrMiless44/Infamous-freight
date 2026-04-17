@@ -18,6 +18,7 @@
     "github:rate-limit": "bash scripts/github-rate-limit.sh",
     "repo:find-deprecated-api": "bash scripts/find-deprecated-api-usage.sh",
     "docker:verify-digest": "bash scripts/verify-image-digest.sh",
+    "docker:scout:github-mcp": "bash scripts/docker-scout-github-mcp.sh",
     "predev:api": "pnpm run build:shared",
     "dev:api": "pnpm --filter @infamous/api dev",
     "dev:web": "pnpm --filter web dev",
