@@ -16,7 +16,7 @@ for (const arg of forwardedArgs) {
 
 const vitestArgs = [
   'run',
-  'src/**/*.test.ts',
+  'src/**/*.test.{ts,js,mjs}',
 ];
 
 if (forceSingleWorker && !sanitizedArgs.some((arg) => arg.startsWith('--maxWorkers'))) {
