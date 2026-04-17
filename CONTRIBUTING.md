@@ -76,7 +76,7 @@ Contributions should aim for:
 
 - Use explicit `.js` extensions on relative imports even when the source file is `.ts`. Example: `import { logger } from "./lib/logger.js";`
 - Prefer the workspace alias `@infamous-freight/shared` for cross-package imports rather than relative paths into `../../packages/*`.
-- Do not mix `.js` and `.ts` sources for the same module. If a `.ts` file exists, delete or avoid creating a stale `.js` shadow next to it.
+- Avoid accidental or stale `.js` shadows next to `.ts` sources for the same module. However, intentional legacy CommonJS `.js` assets that are paired with `.ts` facades and copied into `dist/` as `.cjs` by the build script are allowed; do not delete those without also updating the facade and build-copy logic.
 - Keep `type`-only imports explicit with `import type { ... }` to avoid accidental runtime imports of types.
 
 ## Security Requirements
