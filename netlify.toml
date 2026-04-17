@@ -110,10 +110,24 @@
 
 # Cacheable static public assets (favicons, logos, OG images, fonts).
 [[headers]]
-  for = "/static/*"
+  for = "/icons/*"
   [headers.values]
     Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
 
+[[headers]]
+  for = "/avatars/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+[[headers]]
+  for = "/favicon.ico"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
 # Short TTL for HTML entry points to speed rollback propagation.
 [[headers]]
   for = "/*.html"
