@@ -271,6 +271,12 @@ To create a PR from your current feature branch to `main`:
 bash scripts/create-github-pr.sh main "PR title" "PR description" "reviewer1,reviewer2"
 ```
 
+To find all files using a deprecated API function:
+
+```bash
+pnpm run repo:find-deprecated-api -- "<deprecated_function_name>"
+```
+
 > **Runtime requirement:** this repo enforces Node.js **24.x** (see `.node-version` / `.nvmrc`). If you are not on the pinned Node version, `pnpm` will fail with `ERR_PNPM_UNSUPPORTED_ENGINE`.
 >
 > If you hit that error, switch to the version defined by the repo and retry install:
