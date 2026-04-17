@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import WebVitalsReporter from "../components/WebVitalsReporter";
 
@@ -18,6 +18,15 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Infæmous Freight",
   },
+};
+
+// Mobile-first viewport. Without this, App Router pages render at desktop width
+// on phones, which blocks LCP and breaks layout for drivers on cellular.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#0f172a",
 };
 
 export default function RootLayout({
