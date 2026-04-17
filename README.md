@@ -259,6 +259,12 @@ pnpm run repo:structure:main
 TREE_FULL=true pnpm run repo:structure:main
 ```
 
+To create a GitHub issue from CLI (title + description + optional labels):
+
+```bash
+bash scripts/create-github-issue.sh project/repo "Bug title" "Bug description" "bug,priority:high"
+```
+
 > **Runtime requirement:** this repo enforces Node.js **24.x** (see `.node-version` / `.nvmrc`). If you are not on the pinned Node version, `pnpm` will fail with `ERR_PNPM_UNSUPPORTED_ENGINE`.
 >
 > If you hit that error, switch to the version defined by the repo and retry install:
