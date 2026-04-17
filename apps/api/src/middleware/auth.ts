@@ -50,7 +50,7 @@ export function requireAuth(req: Request, _res: Response, next: NextFunction): v
   }
 }
 
-export function requireTenantContext(req: Request, _res: Response, next: NextFunction): void {
+export function requireTenantAuthContext(req: Request, _res: Response, next: NextFunction): void {
   const tenantId = req.user?.tenantId ?? req.auth?.organizationId ?? req.tenantId;
   if (!tenantId || !req.auth) {
     next(new ApiError(403, "TENANT_CONTEXT_REQUIRED", "Tenant context is required"));
