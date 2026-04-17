@@ -1,9 +1,11 @@
 import { Router } from "express";
 import { z } from "zod";
-import { getRequiredTenantId, requireAuth, requireTenantContext } from "../middleware/auth.js";
+import { getRequiredTenantId, requireAnyRole, requireAuth, requireTenantContext } from "../middleware/auth.js";
 import { prisma } from "../db/prisma.js";
 
 const router: Router = Router();
+
+const tenantRouteRoles = ["owner", "admin", "dispatcher", "shipper", "user"];
 
 const createLoadSchema = z.object({
   originCity: z.string().min(1),
@@ -16,7 +18,7 @@ const createLoadSchema = z.object({
   status: z.literal("OPEN").default("OPEN"),
 });
 
-router.get("/", requireAuth, requireTenantContext, async (req, res, next) => {
+router.get("/", requireAuth, requireTenantContext, requireAnyRole(tenantRouteRoles), async (req, res, next) => {
   try {
     const tenantId = getRequiredTenantId(req);
     const loads = await prisma.load.findMany({
@@ -29,7 +31,7 @@ router.get("/", requireAuth, requireTenantContext, async (req, res, next) => {
   }
 });
 
-router.post("/", requireAuth, requireTenantContext, async (req, res, next) => {
+router.post("/", requireAuth, requireTenantContext, requireAnyRole(tenantRouteRoles), async (req, res, next) => {
   try {
     const tenantId = getRequiredTenantId(req);
     const body = createLoadSchema.parse(req.body);
@@ -40,7 +42,7 @@ router.post("/", requireAuth, requireTenantContext, async (req, res, next) => {
   }
 });
 
-router.patch("/:id/status", requireAuth, requireTenantContext, async (req, res, next) => {
+router.patch("/:id/status", requireAuth, requireTenantContext, requireAnyRole(tenantRouteRoles), async (req, res, next) => {
   try {
     const tenantId = getRequiredTenantId(req);
     const { status } = z.object({ status: z.string() }).parse(req.body);

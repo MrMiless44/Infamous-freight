@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import type { NextFunction, Request, Response } from "express";
 import { ApiError } from "../utils/errors.js";
-import { getRequiredTenantId, requireTenantContext } from "./auth.js";
+import { getRequiredTenantId, requireAnyRole, requireTenantContext } from "./auth.js";
 
 describe("requireTenantContext", () => {
   it("returns TENANT_CONTEXT_REQUIRED when auth or tenant context is missing", () => {
@@ -51,5 +51,26 @@ describe("requireTenantContext", () => {
     const req = { headers: {} } as Request;
     expect(() => getRequiredTenantId(req)).toThrowError(ApiError);
     expect(() => getRequiredTenantId(req)).toThrowError("Tenant context is required");
+  });
+
+  it("requireAnyRole allows when role is in allow-list", () => {
+    const req = { auth: { role: "ADMIN" }, headers: {} } as unknown as Request;
+    const next = vi.fn();
+    const middleware = requireAnyRole(["admin", "shipper"]);
+
+    middleware(req, {} as Response, next as NextFunction);
+
+    expect(next).toHaveBeenCalledWith();
+  });
+
+  it("requireAnyRole rejects when role is outside allow-list", () => {
+    const req = { auth: { role: "viewer" }, headers: {} } as unknown as Request;
+    const next = vi.fn();
+    const middleware = requireAnyRole(["admin", "shipper"]);
+
+    middleware(req, {} as Response, next as NextFunction);
+
+    const err = next.mock.calls[0]?.[0] as ApiError;
+    expect(err.code).toBe("PERMISSION_DENIED");
   });
 });

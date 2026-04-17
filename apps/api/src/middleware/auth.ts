@@ -76,3 +76,22 @@ export function getRequiredTenantId(req: Request): string {
   }
   return tenantId;
 }
+
+export function requireAnyRole(allowedRoles: string[]) {
+  const normalizedAllowedRoles = new Set(allowedRoles.map((role) => role.toLowerCase()));
+
+  return (req: Request, _res: Response, next: NextFunction): void => {
+    const role = (req.auth?.role ?? req.user?.role)?.toLowerCase();
+    if (!role) {
+      next(new ApiError(403, "ROLE_REQUIRED", "Role is required for this operation"));
+      return;
+    }
+
+    if (!normalizedAllowedRoles.has(role)) {
+      next(new ApiError(403, "PERMISSION_DENIED", "You do not have permission for this operation"));
+      return;
+    }
+
+    next();
+  };
+}
