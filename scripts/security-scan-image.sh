@@ -23,7 +23,12 @@ docker scout cves "${IMAGE}"
 
 echo "==> Trivy scan"
 if command -v trivy >/dev/null 2>&1; then
-  trivy image --scanners vuln --vex repo "${IMAGE}"
+  if [ -f "${VEX_FILE}" ]; then
+    trivy image --scanners vuln --vex "${VEX_FILE}" "${IMAGE}"
+  else
+    echo "${VEX_FILE} not found, running Trivy without VEX file"
+    trivy image --scanners vuln "${IMAGE}"
+  fi
 else
   echo "Trivy not installed, skipping"
 fi
