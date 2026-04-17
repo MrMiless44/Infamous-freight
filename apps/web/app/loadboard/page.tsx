@@ -6,7 +6,7 @@ export default function LoadboardPage() {
       eyebrow="Operations"
       title="Load Board"
       description="Browse available loads, inspect lane details, and move quickly from discovery to dispatch assignment."
-      primaryAction={{ href: "/loads", label: "Open Loads" }}
+      primaryAction={{ href: "/shipments", label: "Open Shipments" }}
       secondaryAction={{ href: "/dashboard", label: "Go to Dashboard" }}
       highlights={[
         "Lane-level rate visibility",
