@@ -306,6 +306,12 @@ To run the requested registry login/pull/scout flow for `dhi.io/github-mcp:0`:
 pnpm run docker:scout:github-mcp
 ```
 
+If Docker is not installed yet on Ubuntu, install and validate it first:
+
+```bash
+pnpm run docker:install:ubuntu
+```
+
 > **Runtime requirement:** this repo enforces Node.js **24.x** (see `.node-version` / `.nvmrc`). If you are not on the pinned Node version, `pnpm` will fail with `ERR_PNPM_UNSUPPORTED_ENGINE`.
 >
 > If you hit that error, switch to the version defined by the repo and retry install:
