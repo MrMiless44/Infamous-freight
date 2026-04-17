@@ -239,8 +239,10 @@ This quickstart seeds missing env files from templates:
 ```bash
 cp .mcp.json.example .mcp.json
 export GITHUB_PERSONAL_ACCESS_TOKEN=your-personal-access-token
+export GITHUB_API_URL=https://github.example.com/api/v3 # optional (GitHub Enterprise)
 docker run --rm -i \
   -e GITHUB_PERSONAL_ACCESS_TOKEN=your-personal-access-token \
+  -e GITHUB_API_URL=https://github.example.com/api/v3 \
   dhi.io/github-mcp
 ```
 
