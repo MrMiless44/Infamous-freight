@@ -234,6 +234,15 @@ pnpm run quickstart:api
 This quickstart seeds missing env files from templates:
 `./.env`, `apps/api/.env`, and `apps/web/.env.local`.
 
+### Optional: GitHub MCP server (Docker)
+
+```bash
+cp .mcp.json.example .mcp.json
+export GITHUB_PERSONAL_ACCESS_TOKEN=your-personal-access-token
+```
+
+The local `.mcp.json` file is gitignored to avoid committing personal tokens.
+
 > **Runtime requirement:** this repo enforces Node.js **24.x** (see `.node-version` / `.nvmrc`). If you are not on the pinned Node version, `pnpm` will fail with `ERR_PNPM_UNSUPPORTED_ENGINE`.
 >
 > If you hit that error, switch to the version defined by the repo and retry install:
