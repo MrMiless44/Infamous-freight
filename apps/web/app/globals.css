@@ -22,11 +22,52 @@
     color: #111827;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: "Inter", system-ui, sans-serif;
+    font-family: var(--font-inter), "Inter", system-ui, sans-serif;
   }
 
   a {
     color: inherit;
     text-decoration: none;
+  }
+}
+
+@layer utilities {
+  .if-fade-up {
+    animation: if-fade-up 0.45s ease-out both;
+    will-change: transform, opacity;
+  }
+
+  .if-lift {
+    transition: transform 0.2s ease-out;
+  }
+
+  .if-lift:hover {
+    transform: translateY(-4px);
+  }
+
+  @keyframes if-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .if-fade-up {
+      animation: none;
+    }
+    .if-lift {
+      transition: none;
+    }
+    .if-lift:hover {
+      transform: none;
+    }
+    html {
+      scroll-behavior: auto;
+    }
   }
 }
