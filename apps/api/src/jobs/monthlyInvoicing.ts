@@ -11,6 +11,7 @@ import { PrismaClient } from "@prisma/client";
 import { generateOrgInvoice } from "../billing/invoicing.js";
 import { logAuditEvent, AUDIT_ACTIONS } from "../audit/orgAuditLog.js";
 import { logger } from "../lib/logger.js";
+import { env } from "../config/env.js";
 
 const prisma = new PrismaClient();
 
@@ -19,9 +20,9 @@ const prisma = new PrismaClient();
 // ============================================
 
 const redisConfig = {
-  host: process.env.REDIS_HOST || "localhost",
-  port: parseInt(process.env.REDIS_PORT || "6379"),
-  password: process.env.REDIS_PASSWORD,
+  host: env.redisHost,
+  port: env.redisPort,
+  password: env.redisPassword,
   maxRetriesPerRequest: null,
 };
 
@@ -192,9 +193,9 @@ async function notifyCompletion(stats: {
   totalRevenue: number;
   errors: string[];
 }) {
-  if (process.env.SLACK_WEBHOOK_URL) {
+  if (env.slackWebhookUrl) {
     try {
-      await fetch(process.env.SLACK_WEBHOOK_URL, {
+      await fetch(env.slackWebhookUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -223,9 +224,9 @@ async function notifyCompletion(stats: {
 }
 
 async function notifyError(jobId: string, reason: string) {
-  if (process.env.SLACK_WEBHOOK_URL) {
+  if (env.slackWebhookUrl) {
     try {
-      await fetch(process.env.SLACK_WEBHOOK_URL, {
+      await fetch(env.slackWebhookUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
