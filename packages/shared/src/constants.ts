@@ -16,7 +16,7 @@ export const SHIPMENT_STATUS = {
   CANCELLED: "CANCELLED",
 } as const;
 
-export const SHIPMENT_STATUSES = Object.values(SHIPMENT_STATUS) as readonly string[];
+export const SHIPMENT_STATUSES = Object.values(SHIPMENT_STATUS) as ReadonlyArray<(typeof SHIPMENT_STATUS)[keyof typeof SHIPMENT_STATUS]>;
 
 export const SHIPMENT_TRANSITIONS: Record<string, readonly string[]> = {
   [SHIPMENT_STATUS.CREATED]: [SHIPMENT_STATUS.IN_TRANSIT, SHIPMENT_STATUS.CANCELLED],
