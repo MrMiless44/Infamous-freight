@@ -123,8 +123,8 @@ export default function LoadsPage(): React.ReactElement {
         router.push("/loads/active");
       } catch (e) {
         setErr(e instanceof Error ? e.message : "Failed to accept load");
-        setBusyId(null);
       } finally {
+        setBusyId(null);
         acceptInFlight.current = false;
       }
     },
