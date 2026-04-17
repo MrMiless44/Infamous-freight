@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { type FormEvent, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
@@ -81,9 +81,9 @@ const laneCards = [
 
 const platformLinks = [
   { label: "Operations Dashboard", href: "/dashboard" },
-  { label: "Loadboard", href: "/loads" },
-  { label: "Shipment Tracking", href: "/loads/active" },
-  { label: "Billing & Payments", href: "/account/billing" },
+  { label: "Loadboard", href: "/loadboard" },
+  { label: "Shipment Tracking", href: "/shipments" },
+  { label: "Billing & Payments", href: "/settings/billing" },
 ];
 
 const testimonials = [
@@ -146,6 +146,28 @@ export default function InfamousFreightWebApp() {
       eta: "Tomorrow by 10:30 AM",
     };
   }, [trackingId]);
+
+  const handleQuoteSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const body = [
+      `Company: ${quoteForm.company || "N/A"}`,
+      `Contact: ${quoteForm.contact || "N/A"}`,
+      `Email: ${quoteForm.email || "N/A"}`,
+      `Origin: ${quoteForm.origin || "N/A"}`,
+      `Destination: ${quoteForm.destination || "N/A"}`,
+      "",
+      "Freight details:",
+      quoteForm.details || "N/A",
+    ].join("\n");
+
+    const query = new URLSearchParams({
+      subject: `Freight quote request from ${quoteForm.company || "Website lead"}`,
+      body,
+    });
+
+    window.location.href = `mailto:quotes@infamousfreight.com?${query.toString()}`;
+  };
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
@@ -352,13 +374,13 @@ export default function InfamousFreightWebApp() {
               </ul>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
-                  href="/driver"
+                  href="/shipments"
                   className="inline-flex items-center rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-800 transition hover:bg-slate-100"
                 >
-                  Driver Workflow
+                  Shipment Workflow
                 </Link>
                 <Link
-                  href="/contact-sales"
+                  href="/contact"
                   className="inline-flex items-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
                 >
                   Request Production Setup
@@ -474,7 +496,8 @@ export default function InfamousFreightWebApp() {
               </div>
             </div>
             <div className="rounded-3xl border border-slate-200 p-6 shadow-sm sm:p-8">
-              <div className="grid gap-4 md:grid-cols-2">
+              <form onSubmit={handleQuoteSubmit}>
+                <div className="grid gap-4 md:grid-cols-2">
                 {[
                   ["company", "Company name"],
                   ["contact", "Contact name"],
@@ -498,6 +521,7 @@ export default function InfamousFreightWebApp() {
                       key={field}
                       name={field}
                       type={type}
+                      required
                       autoComplete={autoComplete}
                       aria-label={placeholder}
                       placeholder={placeholder}
@@ -510,6 +534,7 @@ export default function InfamousFreightWebApp() {
                 <input
                   name="destination"
                   type="text"
+                  required
                   autoComplete="address-level2"
                   aria-label="Destination city / state"
                   placeholder="Destination city / state"
@@ -519,17 +544,21 @@ export default function InfamousFreightWebApp() {
                 />
                 <textarea
                   name="details"
+                  required
                   aria-label="Freight details, weight, equipment type, pickup date, or any special handling notes"
                   placeholder="Freight details, weight, equipment type, pickup date, or any special handling notes"
                   className="min-h-[140px] rounded-2xl border border-slate-300 p-4 md:col-span-2"
                   value={quoteForm.details}
                   onChange={(e) => setQuoteForm((prev) => ({ ...prev, details: e.target.value }))}
                 />
-              </div>
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-sm text-slate-600">Typical quote response target: under 15 minutes for core lanes.</p>
-                <button className="rounded-2xl bg-slate-900 px-6 py-3 text-white">Request Quote</button>
-              </div>
+                </div>
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-sm text-slate-600">Typical quote response target: under 15 minutes for core lanes.</p>
+                  <button type="submit" className="rounded-2xl bg-slate-900 px-6 py-3 text-white">
+                    Request Quote
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </section>
