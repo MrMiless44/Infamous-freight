@@ -1,6 +1,6 @@
 "use client";
 
-import React, { type FormEvent, useMemo, useState } from "react";
+import React, { type FormEvent, memo, useCallback, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
@@ -22,6 +22,7 @@ import {
   Truck,
   Warehouse,
 } from "lucide-react";
+import { useDebouncedValue } from "../../../hooks/useDebouncedValue";
 
 type Service = {
   title: string;
@@ -121,11 +122,24 @@ function SectionHeader({
   );
 }
 
-export default function InfamousFreightWebApp() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [trackingId, setTrackingId] = useState("IF-482193");
-  const [activeTab, setActiveTab] = useState<"regional" | "national" | "specialized">("regional");
-  const [quoteForm, setQuoteForm] = useState({
+type QuoteFormState = {
+  company: string;
+  contact: string;
+  email: string;
+  origin: string;
+  destination: string;
+  details: string;
+};
+
+const QUOTE_FIELDS: Array<[keyof QuoteFormState, string, string, string]> = [
+  ["company", "Company name", "text", "organization"],
+  ["contact", "Contact name", "text", "name"],
+  ["email", "Email", "email", "email"],
+  ["origin", "Origin city / state", "text", "address-level2"],
+];
+
+const QuoteForm = memo(function QuoteForm() {
+  const [quoteForm, setQuoteForm] = useState<QuoteFormState>({
     company: "",
     contact: "",
     email: "",
@@ -134,8 +148,89 @@ export default function InfamousFreightWebApp() {
     details: "",
   });
 
+  const setField = useCallback((field: keyof QuoteFormState, value: string) => {
+    setQuoteForm((prev) => (prev[field] === value ? prev : { ...prev, [field]: value }));
+  }, []);
+
+  const handleQuoteSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      const body = [
+        `Company: ${quoteForm.company || "N/A"}`,
+        `Contact: ${quoteForm.contact || "N/A"}`,
+        `Email: ${quoteForm.email || "N/A"}`,
+        `Origin: ${quoteForm.origin || "N/A"}`,
+        `Destination: ${quoteForm.destination || "N/A"}`,
+        "",
+        "Freight details:",
+        quoteForm.details || "N/A",
+      ].join("\n");
+
+      const query = new URLSearchParams({
+        subject: `Freight quote request from ${quoteForm.company || "Website lead"}`,
+        body,
+      });
+
+      window.location.href = `mailto:quotes@infamousfreight.com?${query.toString()}`;
+    },
+    [quoteForm],
+  );
+
+  return (
+    <form onSubmit={handleQuoteSubmit}>
+      <div className="grid gap-4 md:grid-cols-2">
+        {QUOTE_FIELDS.map(([field, placeholder, type, autoComplete]) => (
+          <input
+            key={field}
+            name={field}
+            type={type}
+            required
+            autoComplete={autoComplete}
+            aria-label={placeholder}
+            placeholder={placeholder}
+            className="h-12 rounded-2xl border border-slate-300 px-4"
+            value={quoteForm[field]}
+            onChange={(e) => setField(field, e.target.value)}
+          />
+        ))}
+        <input
+          name="destination"
+          type="text"
+          required
+          autoComplete="address-level2"
+          aria-label="Destination city / state"
+          placeholder="Destination city / state"
+          className="h-12 rounded-2xl border border-slate-300 px-4 md:col-span-2"
+          value={quoteForm.destination}
+          onChange={(e) => setField("destination", e.target.value)}
+        />
+        <textarea
+          name="details"
+          required
+          aria-label="Freight details, weight, equipment type, pickup date, or any special handling notes"
+          placeholder="Freight details, weight, equipment type, pickup date, or any special handling notes"
+          className="min-h-[140px] rounded-2xl border border-slate-300 p-4 md:col-span-2"
+          value={quoteForm.details}
+          onChange={(e) => setField("details", e.target.value)}
+        />
+      </div>
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm text-slate-600">Typical quote response target: under 15 minutes for core lanes.</p>
+        <button type="submit" className="rounded-2xl bg-slate-900 px-6 py-3 text-white">
+          Request Quote
+        </button>
+      </div>
+    </form>
+  );
+});
+
+const TrackingLookup = memo(function TrackingLookup() {
+  const [trackingId, setTrackingId] = useState("IF-482193");
+  const debouncedTrackingId = useDebouncedValue(trackingId, 200);
+
   const trackingStatus = useMemo(() => {
-    const normalized = trackingId.trim().toUpperCase();
+    const normalized = debouncedTrackingId.trim().toUpperCase();
     if (!normalized) return null;
 
     return {
@@ -145,29 +240,57 @@ export default function InfamousFreightWebApp() {
       nextCheckpoint: "St. Louis, MO",
       eta: "Tomorrow by 10:30 AM",
     };
-  }, [trackingId]);
+  }, [debouncedTrackingId]);
 
-  const handleQuoteSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  return (
+    <div className="mt-8 rounded-3xl border border-slate-200 p-6 shadow-sm sm:p-8">
+      <div className="flex flex-col gap-4 sm:flex-row">
+        <label className="relative flex-1">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+          <input
+            value={trackingId}
+            onChange={(e) => setTrackingId(e.target.value)}
+            aria-label="Track shipment by PRO, BOL, or shipment ID"
+            className="h-12 w-full rounded-2xl border border-slate-300 pl-10"
+            placeholder="Enter PRO, BOL, or shipment ID"
+          />
+        </label>
+      </div>
 
-    const body = [
-      `Company: ${quoteForm.company || "N/A"}`,
-      `Contact: ${quoteForm.contact || "N/A"}`,
-      `Email: ${quoteForm.email || "N/A"}`,
-      `Origin: ${quoteForm.origin || "N/A"}`,
-      `Destination: ${quoteForm.destination || "N/A"}`,
-      "",
-      "Freight details:",
-      quoteForm.details || "N/A",
-    ].join("\n");
+      {trackingStatus ? (
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <div className="rounded-2xl border border-slate-200 p-5">
+            <div className="text-sm text-slate-600">Shipment ID</div>
+            <div className="mt-1 text-xl font-semibold">{trackingStatus.id}</div>
+            <span className="mt-4 inline-flex rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white">
+              {trackingStatus.stage}
+            </span>
+          </div>
+          <div className="rounded-2xl border border-slate-200 p-5">
+            <div className="flex items-center gap-2 text-sm text-slate-600">
+              <Navigation className="h-4 w-4" /> Current Position
+            </div>
+            <div className="mt-2 text-xl font-semibold">{trackingStatus.currentLocation}</div>
+          </div>
+          <div className="rounded-2xl border border-slate-200 p-5">
+            <div className="text-sm text-slate-600">Next Checkpoint</div>
+            <div className="mt-2 text-xl font-semibold">{trackingStatus.nextCheckpoint}</div>
+          </div>
+          <div className="rounded-2xl border border-slate-200 p-5">
+            <div className="text-sm text-slate-600">Estimated Delivery</div>
+            <div className="mt-2 text-xl font-semibold">{trackingStatus.eta}</div>
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+});
 
-    const query = new URLSearchParams({
-      subject: `Freight quote request from ${quoteForm.company || "Website lead"}`,
-      body,
-    });
+export default function InfamousFreightWebApp() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<"regional" | "national" | "specialized">("regional");
 
-    window.location.href = `mailto:quotes@infamousfreight.com?${query.toString()}`;
-  };
+  const toggleMenu = useCallback(() => setMenuOpen((v) => !v), []);
 
   return (
     <div className="min-h-screen bg-white text-slate-900">
@@ -215,7 +338,7 @@ export default function InfamousFreightWebApp() {
 
           <button
             className="inline-flex rounded-xl border border-slate-300 p-2 md:hidden"
-            onClick={() => setMenuOpen((v) => !v)}
+            onClick={toggleMenu}
             aria-label="Toggle navigation"
             aria-expanded={menuOpen}
             aria-controls="mobile-navigation"
@@ -396,46 +519,7 @@ export default function InfamousFreightWebApp() {
             title="Shipment lookup that customers will actually use"
             description="Simple load visibility reduces inbound calls and update-chasing."
           />
-          <div className="mt-8 rounded-3xl border border-slate-200 p-6 shadow-sm sm:p-8">
-            <div className="flex flex-col gap-4 sm:flex-row">
-              <label className="relative flex-1">
-                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
-                <input
-                  value={trackingId}
-                  onChange={(e) => setTrackingId(e.target.value)}
-                  aria-label="Track shipment by PRO, BOL, or shipment ID"
-                  className="h-12 w-full rounded-2xl border border-slate-300 pl-10"
-                  placeholder="Enter PRO, BOL, or shipment ID"
-                />
-              </label>
-            </div>
-
-            {trackingStatus ? (
-              <div className="mt-6 grid gap-4 md:grid-cols-2">
-                <div className="rounded-2xl border border-slate-200 p-5">
-                  <div className="text-sm text-slate-600">Shipment ID</div>
-                  <div className="mt-1 text-xl font-semibold">{trackingStatus.id}</div>
-                  <span className="mt-4 inline-flex rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white">
-                    {trackingStatus.stage}
-                  </span>
-                </div>
-                <div className="rounded-2xl border border-slate-200 p-5">
-                  <div className="flex items-center gap-2 text-sm text-slate-600">
-                    <Navigation className="h-4 w-4" /> Current Position
-                  </div>
-                  <div className="mt-2 text-xl font-semibold">{trackingStatus.currentLocation}</div>
-                </div>
-                <div className="rounded-2xl border border-slate-200 p-5">
-                  <div className="text-sm text-slate-600">Next Checkpoint</div>
-                  <div className="mt-2 text-xl font-semibold">{trackingStatus.nextCheckpoint}</div>
-                </div>
-                <div className="rounded-2xl border border-slate-200 p-5">
-                  <div className="text-sm text-slate-600">Estimated Delivery</div>
-                  <div className="mt-2 text-xl font-semibold">{trackingStatus.eta}</div>
-                </div>
-              </div>
-            ) : null}
-          </div>
+          <TrackingLookup />
         </section>
 
         <section id="coverage" className="border-y border-slate-200 bg-slate-50/60">
@@ -496,69 +580,7 @@ export default function InfamousFreightWebApp() {
               </div>
             </div>
             <div className="rounded-3xl border border-slate-200 p-6 shadow-sm sm:p-8">
-              <form onSubmit={handleQuoteSubmit}>
-                <div className="grid gap-4 md:grid-cols-2">
-                {[
-                  ["company", "Company name"],
-                  ["contact", "Contact name"],
-                  ["email", "Email"],
-                  ["origin", "Origin city / state"],
-                ].map(([field, placeholder]) => {
-                  const type = field === "email" ? "email" : "text";
-                  const autoComplete =
-                    field === "company"
-                      ? "organization"
-                      : field === "contact"
-                        ? "name"
-                        : field === "email"
-                          ? "email"
-                          : field === "origin"
-                            ? "address-level2"
-                            : "off";
-
-                  return (
-                    <input
-                      key={field}
-                      name={field}
-                      type={type}
-                      required
-                      autoComplete={autoComplete}
-                      aria-label={placeholder}
-                      placeholder={placeholder}
-                      className="h-12 rounded-2xl border border-slate-300 px-4"
-                      value={quoteForm[field as keyof typeof quoteForm]}
-                      onChange={(e) => setQuoteForm((prev) => ({ ...prev, [field]: e.target.value }))}
-                    />
-                  );
-                })}
-                <input
-                  name="destination"
-                  type="text"
-                  required
-                  autoComplete="address-level2"
-                  aria-label="Destination city / state"
-                  placeholder="Destination city / state"
-                  className="h-12 rounded-2xl border border-slate-300 px-4 md:col-span-2"
-                  value={quoteForm.destination}
-                  onChange={(e) => setQuoteForm((prev) => ({ ...prev, destination: e.target.value }))}
-                />
-                <textarea
-                  name="details"
-                  required
-                  aria-label="Freight details, weight, equipment type, pickup date, or any special handling notes"
-                  placeholder="Freight details, weight, equipment type, pickup date, or any special handling notes"
-                  className="min-h-[140px] rounded-2xl border border-slate-300 p-4 md:col-span-2"
-                  value={quoteForm.details}
-                  onChange={(e) => setQuoteForm((prev) => ({ ...prev, details: e.target.value }))}
-                />
-                </div>
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="text-sm text-slate-600">Typical quote response target: under 15 minutes for core lanes.</p>
-                  <button type="submit" className="rounded-2xl bg-slate-900 px-6 py-3 text-white">
-                    Request Quote
-                  </button>
-                </div>
-              </form>
+              <QuoteForm />
             </div>
           </div>
         </section>
