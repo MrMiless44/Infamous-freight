@@ -47,15 +47,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable}>
-      <head>
-        {/* Establish connections early for third-party origins used on mobile networks. */}
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://js.stripe.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://api.infamousfreight.com" />
-        <link rel="dns-prefetch" href="https://app.infamousfreight.com" />
-        <link rel="dns-prefetch" href="https://firestore.googleapis.com" />
-        <link rel="dns-prefetch" href="https://identitytoolkit.googleapis.com" />
-      </head>
       <body>
         {children}
         <Script id="register-sw" strategy="afterInteractive">
