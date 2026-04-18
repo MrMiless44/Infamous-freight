@@ -1,18 +1,22 @@
-# Fly.io Dockerfile for Next.js Web Frontend (monorepo-aware)
+# syntax=docker/dockerfile:1.7
+# Fly.io Dockerfile for Next.js Web Frontend (pnpm workspace + shared package)
+# IMPORTANT: this Dockerfile expects the build context to be the repository root.
 
 ARG NODE_VERSION=24
 FROM node:${NODE_VERSION}-alpine AS base
 
-RUN apk add --no-cache dumb-init ca-certificates wget
-RUN npm install -g pnpm@10.33.0
+RUN apk add --no-cache dumb-init ca-certificates wget \
+  && npm install -g pnpm@10.33.0
 
 # Stage 1: install dependencies for web + shared
 FROM base AS deps
 WORKDIR /app
 
+RUN mkdir -p apps/web packages/shared packages/strapi-plugin-netlify-deployments
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/web/package.json ./apps/web/package.json
 COPY packages/shared/package.json ./packages/shared/package.json
+COPY packages/strapi-plugin-netlify-deployments/package.json ./packages/strapi-plugin-netlify-deployments/package.json
 
 ENV HUSKY=0
 RUN pnpm install --filter ./apps/web... --frozen-lockfile
@@ -39,6 +43,7 @@ COPY --from=shared-builder /app/packages/shared/dist ./packages/shared/dist
 COPY --from=shared-builder /app/packages/shared/package.json ./packages/shared/package.json
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/web ./apps/web
+COPY packages/strapi-plugin-netlify-deployments ./packages/strapi-plugin-netlify-deployments
 
 WORKDIR /app/apps/web
 ENV NEXT_TELEMETRY_DISABLED=1
