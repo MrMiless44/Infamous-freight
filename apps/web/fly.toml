@@ -7,7 +7,7 @@ app = 'infamous-freight'
 primary_region = 'dfw'
 
 [build]
-  context = "."
+  context = "../.."
   dockerfile = "Dockerfile.web"
 
 [http_service]
