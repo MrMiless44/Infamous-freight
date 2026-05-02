@@ -1,0 +1,179 @@
+name: CI/CD — Infamous Freight
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-cd-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '22'
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # ===== TEST =====
+  test:
+    name: Test & Lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1  # v4.1.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e  # v6.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Type check
+        run: |
+          pnpm -C apps/api exec tsc -p tsconfig.json --noEmit
+          pnpm -C apps/web exec tsc -p tsconfig.json --noEmit
+
+      - name: Test
+        run: pnpm -C apps/api run test -- --runInBand
+
+      - name: Write test summary
+        if: always()
+        run: |
+          {
+            echo "## Test & Lint"
+            echo ""
+            echo "Validated commands:"
+            echo "- pnpm install --frozen-lockfile"
+            echo "- pnpm run lint"
+            echo "- pnpm -C apps/api exec tsc -p tsconfig.json --noEmit"
+            echo "- pnpm -C apps/web exec tsc -p tsconfig.json --noEmit"
+            echo "- pnpm -C apps/api run test -- --runInBand"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ===== BUILD API =====
+  build-api:
+    name: Build API
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1  # v4.1.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e  # v6.4.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install & Build
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run build:api
+
+      - name: Set lowercase image name
+        run: echo "IMAGE_LOWER=$(echo '${{ env.IMAGE_NAME }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: Build Docker Image
+        run: |
+          docker build -f Dockerfile -t ${{ env.REGISTRY }}/${{ env.IMAGE_LOWER }}-api:${{ github.sha }} .
+          docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_LOWER }}-api:${{ github.sha }} ${{ env.REGISTRY }}/${{ env.IMAGE_LOWER }}-api:latest
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121  # v4.1.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push API Image
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_LOWER }}-api:${{ github.sha }}
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_LOWER }}-api:latest
+
+      - name: Write build summary
+        if: always()
+        run: |
+          {
+            echo "## Build API"
+            echo ""
+            echo "Image: ${{ env.REGISTRY }}/${{ env.IMAGE_LOWER }}-api:${{ github.sha }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ===== DEPLOY TO FLY.IO =====
+  deploy-api:
+    name: Deploy API to Fly.io
+    runs-on: ubuntu-latest
+    needs: build-api
+    if: github.ref == 'refs/heads/main'
+    concurrency:
+      group: fly-api-production
+      cancel-in-progress: true
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+
+      - name: Setup Flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1  # master (2026-04-08)
+
+      - name: Deploy to Fly.io
+        run: flyctl deploy --remote-only --app infamous-freight
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Write deploy summary
+        if: always()
+        run: |
+          {
+            echo "## Deploy API"
+            echo ""
+            echo "Target: Fly.io app infamous-freight"
+            echo "API: https://api.infamousfreight.com"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ===== NOTIFY =====
+  notify:
+    name: Notify
+    runs-on: ubuntu-latest
+    needs: [test, build-api, deploy-api]
+    if: always() && github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+    steps:
+      - name: Notify on failure
+        if: |
+          needs.test.result != 'success' ||
+          needs.build-api.result != 'success' ||
+          needs.deploy-api.result != 'success'
+        run: |
+          echo "::error::Deployment failed! Check the logs above."
+
+      - name: Notify on success
+        if: |
+          needs.test.result == 'success' &&
+          needs.build-api.result == 'success' &&
+          needs.deploy-api.result == 'success'
+        run: |
+          echo "::notice::Deployment successful! API: https://api.infamousfreight.com | Web: https://www.infamousfreight.com"
