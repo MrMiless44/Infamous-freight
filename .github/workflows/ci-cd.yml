@@ -135,11 +135,20 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
 
+      - name: Verify Fly token exists
+        run: |
+          if [ -z "$FLY_API_TOKEN" ]; then
+            echo "::error::Missing GitHub Actions secret FLY_API_TOKEN. Add it in GitHub repo Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
       - name: Setup Flyctl
         uses: superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1  # master (2026-04-08)
 
       - name: Deploy to Fly.io
-        run: flyctl deploy --remote-only --app infamous-freight
+        run: flyctl deploy --remote-only --app infamous-freight --config fly.toml
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
@@ -150,6 +159,7 @@ jobs:
             echo "## Deploy API"
             echo ""
             echo "Target: Fly.io app infamous-freight"
+            echo "Config: fly.toml"
             echo "API: https://api.infamousfreight.com"
           } >> "$GITHUB_STEP_SUMMARY"
 
