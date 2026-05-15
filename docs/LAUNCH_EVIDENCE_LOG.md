@@ -83,6 +83,49 @@ None / Low / Medium / High / Critical
 # Evidence Entries
 
 ## Test
+Release Gate - Fly Direct API Health Re-Verification
+
+## Date/Time
+2026-05-15 07:49 UTC
+
+## Owner
+@copilot
+
+## Command or Action
+```bash
+flyctl status
+flyctl logs
+curl --fail --show-error --silent --max-time 15 https://infamous-freight.fly.dev/health
+curl --fail --show-error --silent --max-time 15 https://infamous-freight.fly.dev/api/health
+pnpm run production:smoke-test
+```
+
+## Expected Result
+`flyctl` confirms the app is running with no boot loop/port binding errors, both direct Fly health endpoints return HTTP 200, and `pnpm run production:smoke-test` passes.
+
+## Actual Result
+- `flyctl status`: `bash: flyctl: command not found`
+- `flyctl logs`: `bash: flyctl: command not found`
+- `curl ... /health`: `curl: (6) Could not resolve host: infamous-freight.fly.dev`
+- `curl ... /api/health`: `curl: (6) Could not resolve host: infamous-freight.fly.dev`
+- `pnpm run production:smoke-test`: failed immediately at canonical frontend check with `curl: (6) Could not resolve host: www.infamousfreight.com`
+
+## Status
+FAIL
+
+## Severity
+High
+
+## Follow-Up
+B-001: Re-run the release gate commands from a trusted environment with working DNS and Fly CLI installed, then capture passing output before paid beta/public launch.
+
+## Notes
+Updated smoke gate commands to enforce `--max-time 15` for direct Fly checks in both `scripts/production-smoke-test.sh` and `.github/workflows/smoke-test.yml` so manual and CI checks use the same timeout contract.
+
+
+---
+
+## Test
 Phase 0 - Execution Controls
 
 ## Date/Time
@@ -492,5 +535,4 @@ Fly root health (https://infamous-freight.fly.dev/health): timed out — FAIL (B
 Fly API health (https://infamous-freight.fly.dev/api/health): timed out — FAIL (B-001)
 Proxied API health (https://www.infamousfreight.com/api/health): {"ok":true} — PASS
 ```
-
 
