@@ -33,10 +33,10 @@ jobs:
           test "$final_url" = "https://www.infamousfreight.com/"
 
       - name: Check Fly root health
-        run: curl --fail --show-error --silent --retry 5 --retry-delay 10 --retry-connrefused https://infamous-freight.fly.dev/health
+        run: curl --fail --show-error --silent --max-time 15 --retry 5 --retry-delay 10 --retry-connrefused https://infamous-freight.fly.dev/health
 
       - name: Check Fly API health
-        run: curl --fail --show-error --silent --retry 5 --retry-delay 10 --retry-connrefused https://infamous-freight.fly.dev/api/health
+        run: curl --fail --show-error --silent --max-time 15 --retry 5 --retry-delay 10 --retry-connrefused https://infamous-freight.fly.dev/api/health
 
       - name: Check proxied API health
         run: curl --fail --show-error --silent --retry 5 --retry-delay 10 --retry-connrefused https://www.infamousfreight.com/api/health

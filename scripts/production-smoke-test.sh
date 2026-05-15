@@ -16,11 +16,11 @@ if [[ "${final_url}" != "${CANONICAL_SITE_URL}/" ]]; then
 fi
 
 echo "Checking Fly root health..."
-curl --fail --show-error --silent "${FLY_API_URL}/health"
+curl --fail --show-error --silent --max-time 15 "${FLY_API_URL}/health"
 echo
 
 echo "Checking Fly API health..."
-curl --fail --show-error --silent "${FLY_API_URL}/api/health"
+curl --fail --show-error --silent --max-time 15 "${FLY_API_URL}/api/health"
 echo
 
 echo "Checking proxied API health..."
