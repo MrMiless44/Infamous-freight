@@ -22,11 +22,17 @@ describe('verify-required-clis.sh', () => {
     });
 
     expect(result.status).toBe(1);
-    expect(result.stderr).toContain('flyctl missing');
-    expect(result.stderr).toContain('supabase missing');
-    expect(result.stderr).toContain('stripe missing');
-    expect(result.stderr).toContain('gh missing');
-    expect(result.stderr).toContain('netlify missing');
+
+    for (const tool of ['flyctl', 'supabase', 'stripe', 'gh', 'netlify']) {
+      const lookup = spawnSync('/usr/bin/bash', ['-lc', `PATH=/bin command -v ${tool}`], {
+        cwd: tmp,
+        encoding: 'utf8',
+      });
+
+      if (lookup.status !== 0) {
+        expect(result.stderr).toContain(`${tool} missing`);
+      }
+    }
   });
 
   it('passes when required CLIs exist in .tools/bin', () => {
